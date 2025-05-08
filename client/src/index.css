@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Material icons fix */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 222 47% 11%;
+  --primary-foreground: 60 9.1% 97.8%;
+  --secondary: 221 39% 22%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 47.9 95.8% 51.2%;
+  --accent-foreground: 26 83.3% 14.1%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --success: 142 69.2% 41.4%;
+  --success-foreground: 355 100% 97.8%;
+  --danger: 0 84.2% 60.2%;
+  --danger-foreground: 60 9.1% 97.8%;
+  --neutral: 220 14% 75%;
+  --neutral-foreground: 0 0% 98%;
+  --chart-1: 262 100% 58%;
+  --chart-2: 217 91% 60%;
+  --chart-3: 29 94% 68%;
+  --chart-4: 341 90% 67%;
+  --chart-5: 187 92% 69%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 222 47% 11%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 221 39% 22%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 47.9 95.8% 51.2%;
+  --accent-foreground: 26 83.3% 14.1%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --success: 142 69.2% 41.4%;
+  --success-foreground: 355 100% 97.8%;
+  --danger: 0 84.2% 60.2%;
+  --danger-foreground: 60 9.1% 97.8%;
+  --neutral: 220 14% 75%;
+  --neutral-foreground: 0 0% 98%;
+  --chart-1: 262 100% 58%;
+  --chart-2: 217 91% 60%;
+  --chart-3: 29 94% 68%;
+  --chart-4: 341 90% 67%;
+  --chart-5: 187 92% 69%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+/* Custom color definitions for the app */
+:root {
+  /* Customize to match the design reference */
+  --primary: 222 47% 11%;
+  --secondary: 221 39% 22%;
+  --accent: 47.9 95.8% 51.2%;
+  --success: 142 69.2% 41.4%;
+  --danger: 0 84.2% 60.2%;
+  --neutral: 220 14% 75%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  /* Set default background to dark theme */
+  body {
+    @apply font-sans antialiased bg-primary text-foreground;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+}
+
+/* Chart candles styling */
+.candle {
+  stroke-width: 1;
+}
+.candle-up {
+  fill: hsl(var(--success));
+  stroke: hsl(var(--success));
+}
+.candle-down {
+  fill: hsl(var(--danger));
+  stroke: hsl(var(--danger));
+}

@@ -1,0 +1,249 @@
+import React, { useState } from 'react';
+import StatusBar from '../components/StatusBar';
+import { useAlerts } from '../hooks/useAlerts';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from '@/components/ui/dialog';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { formatPrice } from '../lib/calculations';
+import { Alert, TIMEFRAMES } from '../types';
+import { ArrowDown, ArrowUp, Bell, Plus, Trash2, X } from 'lucide-react';
+
+const Alerts: React.FC = () => {
+  const { 
+    alerts, 
+    isLoading, 
+    createAlert, 
+    updateAlert, 
+    deleteAlert 
+  } = useAlerts();
+  
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [newAlert, setNewAlert] = useState<Omit<Alert, 'id' | 'isTriggered'>>({
+    symbol: 'BTC/USDT',
+    direction: 'LONG',
+    description: 'Price target',
+    targetPrice: 45000,
+    isActive: true
+  });
+  
+  // Handle form input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setNewAlert(prev => ({
+      ...prev,
+      [name]: name === 'targetPrice' ? parseFloat(value) : value
+    }));
+  };
+  
+  // Handle direction select change
+  const handleDirectionChange = (value: string) => {
+    setNewAlert(prev => ({
+      ...prev,
+      direction: value as 'LONG' | 'SHORT' | 'NEUTRAL'
+    }));
+  };
+  
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    createAlert(newAlert);
+    setIsAddDialogOpen(false);
+  };
+  
+  // Get direction color class
+  const getDirectionClass = (direction: string) => {
+    return direction === 'LONG' 
+      ? 'text-success' 
+      : direction === 'SHORT' 
+        ? 'text-danger' 
+        : 'text-neutral';
+  };
+  
+  // Get direction icon
+  const getDirectionIcon = (direction: string) => {
+    return direction === 'LONG' 
+      ? <ArrowUp className="h-4 w-4" /> 
+      : direction === 'SHORT' 
+        ? <ArrowDown className="h-4 w-4" /> 
+        : null;
+  };
+  
+  return (
+    <div className="flex flex-col h-screen">
+      <StatusBar />
+      
+      <header className="bg-secondary px-4 py-3 shadow-md z-10">
+        <div className="flex justify-between items-center">
+          <h1 className="text-white text-xl font-semibold">Price Alerts</h1>
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="ghost" className="text-white">
+                <Plus className="h-5 w-5" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-secondary text-white border-gray-700">
+              <DialogHeader>
+                <DialogTitle>Create New Alert</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="symbol">Symbol</Label>
+                  <Input
+                    id="symbol"
+                    name="symbol"
+                    value={newAlert.symbol}
+                    onChange={handleInputChange}
+                    className="bg-gray-800 border-gray-700"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="direction">Direction</Label>
+                  <Select 
+                    value={newAlert.direction} 
+                    onValueChange={handleDirectionChange}
+                  >
+                    <SelectTrigger className="bg-gray-800 border-gray-700">
+                      <SelectValue placeholder="Select direction" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-800 border-gray-700">
+                      <SelectItem value="LONG" className="text-success">LONG</SelectItem>
+                      <SelectItem value="SHORT" className="text-danger">SHORT</SelectItem>
+                      <SelectItem value="NEUTRAL" className="text-neutral">NEUTRAL</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="description">Description</Label>
+                  <Input
+                    id="description"
+                    name="description"
+                    value={newAlert.description}
+                    onChange={handleInputChange}
+                    className="bg-gray-800 border-gray-700"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="targetPrice">Target Price ($)</Label>
+                  <Input
+                    id="targetPrice"
+                    name="targetPrice"
+                    type="number"
+                    value={newAlert.targetPrice}
+                    onChange={handleInputChange}
+                    className="bg-gray-800 border-gray-700"
+                  />
+                </div>
+                <div className="flex justify-end space-x-2">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    onClick={() => setIsAddDialogOpen(false)}
+                    className="border-gray-700 text-white hover:bg-gray-700"
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" className="bg-accent text-primary hover:bg-amber-500">
+                    Create Alert
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </header>
+      
+      <main className="flex-1 overflow-y-auto p-4 pb-16">
+        {isLoading ? (
+          <div className="space-y-4">
+            {[1, 2, 3].map(i => (
+              <Card key={i} className="bg-secondary border-gray-700">
+                <CardContent className="p-4">
+                  <div className="h-20 bg-gray-700 rounded animate-pulse"></div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : alerts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full">
+            <Bell className="h-12 w-12 text-neutral mb-4" />
+            <h2 className="text-white text-xl font-medium mb-2">No Alerts</h2>
+            <p className="text-neutral text-center mb-4">Create price alerts to be notified when cryptocurrencies hit your target prices</p>
+            <Button 
+              className="bg-accent text-primary hover:bg-amber-500"
+              onClick={() => setIsAddDialogOpen(true)}
+            >
+              <Plus className="h-4 w-4 mr-2" /> Create Alert
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {alerts.map(alert => (
+              <Card key={alert.id} className="bg-secondary border-gray-700">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center">
+                      <span className={`flex items-center ${getDirectionClass(alert.direction)} font-medium mr-2`}>
+                        {getDirectionIcon(alert.direction)}
+                        <span className="ml-1">{alert.direction}</span>
+                      </span>
+                      <CardTitle className="text-white text-lg">{alert.symbol}</CardTitle>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-neutral hover:text-danger hover:bg-gray-700 h-8 w-8 p-0"
+                      onClick={() => deleteAlert(alert.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="pb-2">
+                  <div className="flex flex-col">
+                    <div className="flex justify-between items-center">
+                      <span className="text-neutral">Target Price:</span>
+                      <span className="text-white font-medium">
+                        {formatPrice(alert.targetPrice, alert.symbol)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-neutral">Description:</span>
+                      <span className="text-white">{alert.description}</span>
+                    </div>
+                    <div className="flex justify-between items-center mt-1">
+                      <span className="text-neutral">Status:</span>
+                      <span className={alert.isActive ? 'text-success' : 'text-neutral'}>
+                        {alert.isActive ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-gray-700 text-white hover:bg-gray-700 w-full"
+                    onClick={() => updateAlert({ id: alert.id, data: { isActive: !alert.isActive } })}
+                  >
+                    {alert.isActive ? 'Deactivate' : 'Activate'}
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        )}
+      </main>
+    </div>
+  );
+};
+
+export default Alerts;
