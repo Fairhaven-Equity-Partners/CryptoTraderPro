@@ -61,12 +61,12 @@ const DEFAULT_INDICATORS: IndicatorConfig[] = [
   { name: 'EMA-200', type: 'overlay', enabled: true, color: '#FFB300', category: IndicatorCategory.TREND, settings: { period: 200 } },
   { name: 'BB', type: 'overlay', enabled: false, color: '#4CAF50', category: IndicatorCategory.VOLATILITY, settings: { period: 20, deviation: 2 } },
   
-  // Only RSI and MACD enabled by default for oscillators
+  // All oscillators enabled by default for better demonstration of expandable panels
   { name: 'RSI', type: 'oscillator', enabled: true, color: '#9C27B0', category: IndicatorCategory.MOMENTUM, settings: { period: 14, overbought: 70, oversold: 30 } },
   { name: 'MACD', type: 'oscillator', enabled: true, color: '#00BCD4', category: IndicatorCategory.MOMENTUM, settings: { fast: 12, slow: 26, signal: 9 } },
-  { name: 'Stochastic', type: 'oscillator', enabled: false, color: '#3F51B5', category: IndicatorCategory.MOMENTUM, settings: { period: 14, smoothK: 3, smoothD: 3 } },
-  { name: 'ADX', type: 'oscillator', enabled: false, color: '#FF9800', category: IndicatorCategory.TREND, settings: { period: 14 } },
-  { name: 'ATR', type: 'oscillator', enabled: false, color: '#795548', category: IndicatorCategory.VOLATILITY, settings: { period: 14 } },
+  { name: 'Stochastic', type: 'oscillator', enabled: true, color: '#3F51B5', category: IndicatorCategory.MOMENTUM, settings: { period: 14, smoothK: 3, smoothD: 3 } },
+  { name: 'ADX', type: 'oscillator', enabled: true, color: '#FF9800', category: IndicatorCategory.TREND, settings: { period: 14 } },
+  { name: 'ATR', type: 'oscillator', enabled: true, color: '#795548', category: IndicatorCategory.VOLATILITY, settings: { period: 14 } },
   
   // Volume is essential, keep enabled
   { name: 'Volume', type: 'volume', enabled: true, color: '#607D8B', category: IndicatorCategory.VOLUME, settings: {} },
@@ -1337,7 +1337,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
                       
                       {canExpand && indicator.enabled && (
                         <button
-                          className="ml-auto text-xs text-gray-400 hover:text-white px-1"
+                          className="ml-auto text-xs bg-gray-700 text-white hover:bg-gray-600 px-2 py-0.5 rounded"
                           onClick={() => togglePanelExpansion(indicator.name)}
                           title={expandedPanels[indicator.name] ? "Collapse" : "Expand"}
                         >
