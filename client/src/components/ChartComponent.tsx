@@ -333,9 +333,10 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   const chartInstance = useRef<IChartApi | null>(null);
   const mainSeries = useRef<ISeriesApi<'Candlestick'> | ISeriesApi<'Line'> | ISeriesApi<'Area'> | null>(null);
   const volumeSeries = useRef<ISeriesApi<'Histogram'> | null>(null);
-  const indicatorSeries = useRef<Record<string, ISeriesApi<any>>>({});
-  const patternMarkers = useRef<Record<string, ISeriesApi<any>>>({});
-  const divergenceLines = useRef<Record<string, ISeriesApi<any>>>({});
+  // Properly type indicator series with string key index
+  const indicatorSeries = useRef<{[key: string]: ISeriesApi<'Line' | 'Histogram' | 'Area'>}>({});
+  const patternMarkers = useRef<{[key: string]: any}>({});
+  const divergenceLines = useRef<{[key: string]: any}>({});
 
   // Convert to lightweight-charts format
   const formattedCandlesticks = useMemo(() => {
@@ -349,9 +350,14 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     }));
   }, [chartData]);
   
+  // Define indicator data type
+  type IndicatorDataType = {
+    [key: string]: Array<{ time: UTCTimestamp, value: number, color?: string }>
+  };
+  
   // Format data for technical indicators
-  const indicatorData = useMemo(() => {
-    if (chartData.length === 0) return {};
+  const indicatorData = useMemo<IndicatorDataType>(() => {
+    if (chartData.length === 0) return {} as IndicatorDataType;
     
     const closes = chartData.map(d => d.close);
     const times = chartData.map(d => (d.time / 1000) as UTCTimestamp);
@@ -840,9 +846,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           },
           visible: true,
           autoScale: false,
-          // Using min/max values for v5 API
-          minValue: 0,
-          maxValue: 100,
+          // Using fixed range for ADX (0-100)
+          mode: 2, // PriceScaleMode.Fixed = 2
         });
         
         indicatorSeries.current['ADX'] = adxPane;
