@@ -356,28 +356,28 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     
     // Format for chart display
     const formatted = {
-      'EMA-9': times.map((time, i) => ({ time, value: ema9[i] })).filter(d => d.value !== undefined),
-      'EMA-21': times.map((time, i) => ({ time, value: ema21[i] })).filter(d => d.value !== undefined),
-      'EMA-50': times.map((time, i) => ({ time, value: ema50[i] })).filter(d => d.value !== undefined),
-      'EMA-200': times.map((time, i) => ({ time, value: ema200[i] })).filter(d => d.value !== undefined),
-      'RSI': times.map((time, i) => ({ time, value: rsi[i] })).filter(d => d.value !== undefined),
-      'BB-Upper': times.map((time, i) => ({ time, value: bb.upper[i] })).filter(d => d.value !== undefined),
-      'BB-Middle': times.map((time, i) => ({ time, value: bb.middle[i] })).filter(d => d.value !== undefined),
-      'BB-Lower': times.map((time, i) => ({ time, value: bb.lower[i] })).filter(d => d.value !== undefined),
+      'EMA-9': times.map((time, i) => ({ time, value: ema9?.[i] })).filter(d => d.value !== undefined),
+      'EMA-21': times.map((time, i) => ({ time, value: ema21?.[i] })).filter(d => d.value !== undefined),
+      'EMA-50': times.map((time, i) => ({ time, value: ema50?.[i] })).filter(d => d.value !== undefined),
+      'EMA-200': times.map((time, i) => ({ time, value: ema200?.[i] })).filter(d => d.value !== undefined),
+      'RSI': times.map((time, i) => ({ time, value: rsi?.[i] })).filter(d => d.value !== undefined),
+      'BB-Upper': times.map((time, i) => ({ time, value: bb?.upper?.[i] })).filter(d => d.value !== undefined),
+      'BB-Middle': times.map((time, i) => ({ time, value: bb?.middle?.[i] })).filter(d => d.value !== undefined),
+      'BB-Lower': times.map((time, i) => ({ time, value: bb?.lower?.[i] })).filter(d => d.value !== undefined),
       'MACD-Line': times.map((time, i) => ({ time, value: macd?.macd?.[i] })).filter(d => d.value !== undefined),
       'MACD-Signal': times.map((time, i) => ({ time, value: macd?.signal?.[i] })).filter(d => d.value !== undefined),
       'MACD-Histogram': times.map((time, i) => ({ time, value: macd?.histogram?.[i] })).filter(d => d.value !== undefined),
       'Stochastic-K': times.map((time, i) => ({ time, value: stoch?.k?.[i] })).filter(d => d.value !== undefined),
       'Stochastic-D': times.map((time, i) => ({ time, value: stoch?.d?.[i] })).filter(d => d.value !== undefined),
-      'ADX': times.map((time, i) => ({ time, value: adx?.adx?.[i] })).filter(d => d.value !== undefined),
-      'ADX-DI+': times.map((time, i) => ({ time, value: adx?.diPlus?.[i] })).filter(d => d.value !== undefined),
-      'ADX-DI-': times.map((time, i) => ({ time, value: adx?.diMinus?.[i] })).filter(d => d.value !== undefined),
-      'ATR': times.map((time, i) => ({ time, value: atr[i] })).filter(d => d.value !== undefined),
+      'ADX': times.map((time, i) => ({ time, value: adx?.adx })).filter(d => d.value !== undefined),
+      'ADX-DI+': times.map((time, i) => ({ time, value: adx?.pdi })).filter(d => d.value !== undefined),
+      'ADX-DI-': times.map((time, i) => ({ time, value: adx?.mdi })).filter(d => d.value !== undefined),
+      'ATR': times.map((time, i) => ({ time, value: atr })).filter(d => d.value !== undefined),
       'Volume': times.map((time, i) => ({ 
         time, 
-        value: volumes[i],
-        color: closes[i] >= chartData[i].open ? 'rgba(14, 203, 129, 0.5)' : 'rgba(232, 65, 66, 0.5)'
-      }))
+        value: volumes?.[i],
+        color: closes?.[i] >= chartData[i]?.open ? 'rgba(14, 203, 129, 0.5)' : 'rgba(232, 65, 66, 0.5)'
+      })).filter(d => d.value !== undefined)
     };
     
     return formatted;
@@ -757,9 +757,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         });
         
         // Set ADX data
-        adxPane.setData(indicatorData['ADX'] as LineData[]);
-        diPlusPane.setData(indicatorData['ADX-DI+'] as LineData[]);
-        diMinusPane.setData(indicatorData['ADX-DI-'] as LineData[]);
+        if (indicatorData['ADX']) adxPane.setData(indicatorData['ADX'] as LineData[]);
+        if (indicatorData['ADX-DI+']) diPlusPane.setData(indicatorData['ADX-DI+'] as LineData[]);
+        if (indicatorData['ADX-DI-']) diMinusPane.setData(indicatorData['ADX-DI-'] as LineData[]);
         
         // Add ADX threshold level
         adxPane.createPriceLine({
@@ -799,7 +799,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         paneCount++;
         
         // Set ATR data
-        atrPane.setData(indicatorData['ATR'] as LineData[]);
+        if (indicatorData['ATR']) atrPane.setData(indicatorData['ATR'] as LineData[]);
         
         // Set ATR scale
         chart.priceScale('atr').applyOptions({
