@@ -275,11 +275,109 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
   
   // If we have cached data, return it immediately
   if (chartDataCache[symbol] && chartDataCache[symbol][timeframe]) {
+    console.log(`Using cached data for ${symbol} (${timeframe})`);
     return [...chartDataCache[symbol][timeframe]];
   }
   
   try {
-    // For a real implementation, this would make an API call to a data provider
+    console.log(`Fetching chart data for ${symbol} with timeframe ${timeframe}`);
+    
+    // Map our timeframe to CoinGecko's format
+    let days = '1';
+    switch (timeframe) {
+      case '1m':
+      case '5m':
+      case '15m':
+        days = '1';
+        break;
+      case '30m':
+      case '1h':
+        days = '7';
+        break;
+      case '4h':
+        days = '30';
+        break;
+      case '1d':
+        days = '90';
+        break;
+      case '1w':
+        days = '365';
+        break;
+      case '1M':
+        days = 'max';
+        break;
+    }
+    
+    // Convert symbol to CoinGecko coin ID
+    let coinId = 'bitcoin';
+    if (symbol.includes('BTC')) {
+      coinId = 'bitcoin';
+    } else if (symbol.includes('ETH')) {
+      coinId = 'ethereum';
+    } else if (symbol.includes('BNB')) {
+      coinId = 'binancecoin';
+    } else if (symbol.includes('SOL')) {
+      coinId = 'solana';
+    } else if (symbol.includes('XRP')) {
+      coinId = 'ripple';
+    }
+    
+    // Fetch OHLC data from CoinGecko
+    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/ohlc?vs_currency=usd&days=${days}`;
+    console.log(`Fetching from: ${url}`);
+    const response = await fetch(url);
+    
+    if (response.ok) {
+      try {
+        // CoinGecko returns OHLC data as [timestamp, o, h, l, c]
+        const ohlcData = await response.json();
+        console.log(`Received ${ohlcData.length} data points from CoinGecko`);
+        
+        // Convert to our ChartData format
+        const chartData: ChartData[] = ohlcData.map((item: [number, number, number, number, number]) => {
+          // CoinGecko timestamps are in milliseconds, we need seconds
+          const time = Math.floor(item[0] / 1000);
+          return {
+            time,
+            open: item[1],
+            high: item[2],
+            low: item[3],
+            close: item[4],
+            volume: 0 // CoinGecko OHLC doesn't include volume, set to 0
+          };
+        });
+        
+        // Add volume to these candles based on price movement
+        chartData.forEach((candle, index) => {
+          const priceMove = Math.abs(candle.close - candle.open);
+          const baseVolume = getBaseVolumeForSymbol(symbol);
+          const volatilityFactor = priceMove / candle.open; // % move
+          
+          // More volatile candles have higher volume
+          candle.volume = baseVolume * (0.8 + volatilityFactor * 20);
+        });
+        
+        if (chartData.length > 0) {
+          // Cache the data
+          if (!chartDataCache[symbol]) {
+            chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
+          }
+          chartDataCache[symbol][timeframe] = chartData;
+          
+          console.log(`Cached ${chartData.length} real data points for ${symbol} (${timeframe})`);
+          return [...chartData];
+        } else {
+          throw new Error('No data returned from CoinGecko');
+        }
+      } catch (err) {
+        console.error(`Error processing ${symbol} data from CoinGecko:`, err);
+      }
+    } else {
+      console.error(`Error response from CoinGecko: ${response.status} ${response.statusText}`);
+    }
+    
+    // Fall back to generated data if CoinGecko fails
+    console.log("Falling back to generated data due to CoinGecko API limit or error");
     const data = generateChartData(timeframe, symbol);
     
     // Cache the data
