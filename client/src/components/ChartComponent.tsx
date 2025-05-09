@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickData, LineData, CrosshairMode, SeriesType, PriceScaleMode, UTCTimestamp, AutoscaleInfo, DeepPartial, PriceLineOptions } from 'lightweight-charts';
 import { useChartData } from '../hooks/useMarketData';
 import { TimeFrame, ChartData } from '../types';
-import { useSize } from 'react-use';
+// Using ResizeObserver directly instead of the useSize hook
 import { calculateEMA, calculateRSI, calculateMACD, calculateBollingerBands, calculateStochastic, calculateATR, calculateFibonacciLevels, calculateADX } from '../lib/indicators';
 
 interface ChartComponentProps {
@@ -287,8 +287,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   const [visibleTimeframes, setVisibleTimeframes] = useState<TimeFrame[]>(['1h', '4h', '1d', '1w']);
   const [showAllTimeframes, setShowAllTimeframes] = useState(false);
   
-  // Resize handling
-  const [sized] = useSize(chartContainerRef);
+  // Resize handling with a simple implementation instead of useSize
+  const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
   
   // Get chart data
   const { chartData, isLoading } = useChartData(symbol, timeframe);
@@ -365,6 +365,27 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   }, [chartData]);
   
   // Create the chart
+  // Setup ResizeObserver for chart container
+  useEffect(() => {
+    if (!chartContainerRef.current) return;
+    
+    const resizeObserver = new ResizeObserver(entries => {
+      const { width, height } = entries[0].contentRect;
+      setChartSize({ width, height });
+      
+      if (chartInstance.current) {
+        chartInstance.current.applyOptions({ width, height });
+      }
+    });
+    
+    resizeObserver.observe(chartContainerRef.current);
+    
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+  
+  // Create/update chart when container size or other dependencies change
   useEffect(() => {
     if (!chartContainerRef.current) return;
     
@@ -378,7 +399,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       divergenceLines.current = {};
     }
     
-    // Create a new chart
+    // Create a new chart with current dimensions
     const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: '#0F1929' },
@@ -859,7 +880,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     formattedCandlesticks, 
     indicatorData, 
     activeIndicators, 
-    sized, 
+    chartSize, 
     showVolume, 
     symbol, 
     timeframe
