@@ -1,9 +1,8 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Material icons fix */
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 :root {
   --background: 0 0% 100%;
