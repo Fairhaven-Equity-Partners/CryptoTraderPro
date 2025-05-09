@@ -494,10 +494,6 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           type: 'volume',
         },
         priceScaleId: 'volume',
-        scaleMargins: {
-          top: 0.8,
-          bottom: 0,
-        },
       });
       volumeSeriesRef.setData(indicatorData['Volume'] as any[]);
       volumeSeries.current = volumeSeriesRef;
@@ -545,7 +541,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           if (indicatorData[key]) {
             const series = chart.addSeries(LineSeries, {
               color: indicator.color,
-              lineWidth: 1.5,
+              lineWidth: 1,
               priceLineVisible: false,
             });
             series.setData(indicatorData[key] as LineData[]);
@@ -567,10 +563,10 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
               { level: 0, value: levels.level0, color: 'rgba(235, 77, 92, 0.8)' },
               { level: 0.236, value: levels.level236, color: 'rgba(255, 152, 0, 0.8)' },
               { level: 0.382, value: levels.level382, color: 'rgba(255, 193, 7, 0.8)' },
-              { level: 0.5, value: levels.level50, color: 'rgba(139, 195, 74, 0.8)' },
+              { level: 0.5, value: levels.level500, color: 'rgba(139, 195, 74, 0.8)' },
               { level: 0.618, value: levels.level618, color: 'rgba(33, 150, 243, 0.8)' },
               { level: 0.786, value: levels.level786, color: 'rgba(156, 39, 176, 0.8)' },
-              { level: 1, value: levels.level100, color: 'rgba(158, 158, 158, 0.8)' }
+              { level: 1, value: levels.level1000, color: 'rgba(158, 158, 158, 0.8)' }
             ];
             
             fibLevels.forEach(fib => {
@@ -599,10 +595,11 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Add RSI pane
         const rsiPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'rsi',
-          pane: paneCount++,
         });
+        
+        paneCount++;
         
         // Add RSI lines
         rsiPane.setData(indicatorData['RSI'] as LineData[]);
@@ -642,22 +639,19 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Add MACD pane
         const macdLinePane = chart.addSeries(LineSeries, {
           color: oscillator.color,
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'macd',
-          pane: paneCount,
         });
         
         const macdSignalPane = chart.addSeries(LineSeries, {
           color: '#E84142',
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'macd',
-          pane: paneCount,
         });
         
         const macdHistPane = chart.addSeries(HistogramSeries, {
           color: 'rgba(80, 80, 160, 0.8)',
           priceScaleId: 'macd',
-          pane: paneCount,
         });
         
         // Set MACD data
@@ -692,16 +686,14 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Add Stochastic pane
         const stochKPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'stoch',
-          pane: paneCount,
         });
         
         const stochDPane = chart.addSeries(LineSeries, {
           color: '#FF9800',
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'stoch',
-          pane: paneCount,
         });
         
         // Set Stochastic data
@@ -748,23 +740,20 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Add ADX pane
         const adxPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'adx',
-          pane: paneCount,
         });
         
         const diPlusPane = chart.addSeries(LineSeries, {
           color: '#0ECB81',
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'adx',
-          pane: paneCount,
         });
         
         const diMinusPane = chart.addSeries(LineSeries, {
           color: '#E84142',
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'adx',
-          pane: paneCount,
         });
         
         // Set ADX data
@@ -801,12 +790,13 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         paneCount++;
       } else if (oscillator.name === 'ATR' && indicatorData['ATR']) {
         // Add ATR pane
-        const atrPane = chart.addSeries('line', {
+        const atrPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
-          lineWidth: 1.5,
+          lineWidth: 1,
           priceScaleId: 'atr',
-          pane: paneCount++,
         });
+        
+        paneCount++;
         
         // Set ATR data
         atrPane.setData(indicatorData['ATR'] as LineData[]);
