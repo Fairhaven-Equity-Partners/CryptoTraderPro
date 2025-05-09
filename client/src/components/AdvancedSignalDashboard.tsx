@@ -420,13 +420,20 @@ export default function AdvancedSignalDashboard({
         </Tabs>
       )}
       
-      {/* Recalculate button */}
+      {/* Recalculate button and auto-update status */}
       {!isCalculating && isAllDataLoaded && (
-        <div className="flex justify-center mt-4">
+        <div className="flex flex-col items-center mt-4 space-y-2">
           <Button onClick={() => calculateAllSignals()}>
             <LineChart className="mr-2 h-4 w-4" />
-            Recalculate Signals
+            Recalculate Now
           </Button>
+          <div className="text-xs text-muted-foreground flex items-center">
+            <span className="relative flex h-2 w-2 mr-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            Auto-recalculation active (every 30 seconds)
+          </div>
         </div>
       )}
     </div>
@@ -566,7 +573,14 @@ function DetailedSignalCard({
                   <div className="text-lg font-bold">{signal.recommendedLeverage.toFixed(1)}x</div>
                 </div>
                 <div>
-                  <div className="text-xs text-muted-foreground">Position Size</div>
+                  <div className="text-xs text-muted-foreground flex items-center space-x-1">
+                    <span>Position Size</span>
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                    </span>
+                    <span className="text-xs">(auto-updating)</span>
+                  </div>
                   <div className="text-lg font-bold">${positionSettings.calculatedPosition.toFixed(2)}</div>
                 </div>
                 <div>

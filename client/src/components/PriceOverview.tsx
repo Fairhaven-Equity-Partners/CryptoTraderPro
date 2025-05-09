@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { useSignalAnalysis } from '../hooks/useSignalAnalysis';
 import { formatPrice, formatPercentage, getPriceChangeClass } from '../lib/calculations';
 import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
+import { ArrowUp, ArrowDown } from 'lucide-react';
 
 interface PriceOverviewProps {
   symbol: string;
@@ -12,6 +14,54 @@ interface PriceOverviewProps {
 const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   const { price, isLoading } = useAssetPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
+  
+  // State to track previous price for animation and comparison
+  const [priceState, setPriceState] = useState({
+    currentPrice: 0,
+    previousPrice: 0,
+    flash: false,
+    lastUpdate: new Date()
+  });
+  
+  // Ref to store interval
+  const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Update price and trigger flash animation when price changes
+  useEffect(() => {
+    if (!price) return;
+    
+    // Get the display price
+    const displayPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
+    
+    if (displayPrice !== priceState.currentPrice) {
+      setPriceState(prev => ({
+        previousPrice: prev.currentPrice,
+        currentPrice: displayPrice,
+        flash: true,
+        lastUpdate: new Date()
+      }));
+      
+      // Clear any existing flash timer
+      if (flashTimerRef.current) {
+        clearTimeout(flashTimerRef.current);
+      }
+      
+      // Set timer to remove flash effect
+      flashTimerRef.current = setTimeout(() => {
+        setPriceState(prev => ({
+          ...prev,
+          flash: false
+        }));
+      }, 2000);
+    }
+    
+    // Cleanup
+    return () => {
+      if (flashTimerRef.current) {
+        clearTimeout(flashTimerRef.current);
+      }
+    };
+  }, [price]);
   
   if (isLoading || !price) {
     return (
@@ -34,21 +84,41 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   const directionColor = direction === 'LONG' ? 'text-success' : direction === 'SHORT' ? 'text-danger' : 'text-neutral';
   const progressColor = direction === 'LONG' ? 'bg-success' : direction === 'SHORT' ? 'bg-danger' : 'bg-neutral';
   
-  // Get the display price (either price.price or price.lastPrice depending on what's available)
-  const displayPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
+  // Get flash animation class
+  const flashClass = priceState.flash ? 
+    (priceState.currentPrice > priceState.previousPrice ? 'text-green-500' : 'text-red-500') : '';
+  
+  // Calculate time since last update
+  const timeSinceUpdate = Math.floor((new Date().getTime() - priceState.lastUpdate.getTime()) / 1000);
+  
+  // Price direction indicator
+  const priceDirection = priceState.currentPrice > priceState.previousPrice ? 
+    <ArrowUp className="h-4 w-4 text-green-500" /> : 
+    <ArrowDown className="h-4 w-4 text-red-500" />;
   
   return (
     <div className="px-4 py-3 bg-secondary mb-2 border-b border-gray-700">
       <div className="flex justify-between items-center">
         <div>
-          <span className="text-2xl font-semibold text-white">
-            {formatPrice(displayPrice, symbol)}
-          </span>
+          <div className="flex items-center">
+            <span className={`text-2xl font-semibold text-white transition-colors duration-300 ${flashClass}`}>
+              {formatPrice(priceState.currentPrice, symbol)}
+            </span>
+            {priceState.flash && priceDirection}
+            <Badge variant="outline" className="ml-2 text-xs">
+              Live {timeSinceUpdate < 60 ? `${timeSinceUpdate}s ago` : 'updating...'}
+            </Badge>
+          </div>
           <div className="flex items-center space-x-2 mt-1">
             <span className={`${priceChangeClass} text-sm font-medium`}>
               {formatPercentage(price.change24h)}
             </span>
             <span className="text-neutral text-xs">(24h)</span>
+            {priceState.previousPrice > 0 && (
+              <span className="text-xs">
+                Previous: {formatPrice(priceState.previousPrice, symbol)}
+              </span>
+            )}
           </div>
         </div>
         <div className="text-right">
