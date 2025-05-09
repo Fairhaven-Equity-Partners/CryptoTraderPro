@@ -7,8 +7,10 @@ import SignalSummary from '../components/SignalSummary';
 import TimeframeAnalysis from '../components/TimeframeAnalysis';
 import LeverageCalculator from '../components/LeverageCalculator';
 import ActiveAlerts from '../components/ActiveAlerts';
+import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Analysis: React.FC = () => {
   const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
@@ -23,6 +25,8 @@ const Analysis: React.FC = () => {
     setCurrentTimeframe(timeframe);
   };
   
+  const [analysisTab, setAnalysisTab] = useState<string>("chart");
+
   return (
     <div className="flex flex-col h-screen">
       <StatusBar />
@@ -37,28 +41,48 @@ const Analysis: React.FC = () => {
           timeframe={currentTimeframe}
         />
         
-        <ChartComponent 
-          symbol={currentAsset} 
-          timeframe={currentTimeframe} 
-          onChangeTimeframe={handleChangeTimeframe}
-        />
+        <div className="px-4 py-2">
+          <Tabs value={analysisTab} onValueChange={setAnalysisTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="chart">Chart Analysis</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced Signals</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="chart" className="space-y-4 mt-2">
+              <ChartComponent 
+                symbol={currentAsset} 
+                timeframe={currentTimeframe} 
+                onChangeTimeframe={handleChangeTimeframe}
+              />
+              
+              <SignalSummary 
+                symbol={currentAsset} 
+                timeframe={currentTimeframe}
+              />
+              
+              <TimeframeAnalysis symbol={currentAsset} />
+              
+              <LeverageCalculator 
+                symbol={currentAsset} 
+                currentPrice={price?.lastPrice || 0}
+              />
+            </TabsContent>
+            
+            <TabsContent value="advanced" className="mt-2">
+              <AdvancedSignalDashboard 
+                symbol={currentAsset} 
+                onTimeframeSelect={handleChangeTimeframe}
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
         
-        <SignalSummary 
-          symbol={currentAsset} 
-          timeframe={currentTimeframe}
-        />
-        
-        <TimeframeAnalysis symbol={currentAsset} />
-        
-        <LeverageCalculator 
-          symbol={currentAsset} 
-          currentPrice={price?.lastPrice || 0}
-        />
-        
-        <ActiveAlerts 
-          symbol={currentAsset} 
-          currentPrice={price?.lastPrice || 0}
-        />
+        <div className="px-4 py-2">
+          <ActiveAlerts 
+            symbol={currentAsset} 
+            currentPrice={price?.lastPrice || 0}
+          />
+        </div>
       </main>
     </div>
   );
