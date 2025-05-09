@@ -82,7 +82,7 @@ export interface LeverageResult {
 }
 
 export interface AppTab {
-  id: 'analysis' | 'alerts' | 'portfolio' | 'settings';
+  id: 'analysis' | 'alerts' | 'settings';
   label: string;
   icon: string;
 }
