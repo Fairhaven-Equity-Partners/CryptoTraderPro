@@ -67,7 +67,7 @@ export default function AdvancedSignalDashboard({
   const [recommendation, setRecommendation] = useState<TradeRecommendation | null>(null);
   const [calculateProgress, setCalculateProgress] = useState<number>(0);
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
-  // Always show advanced stats - no toggle
+  // Always show advanced stats - no toggle functionality
   const showAdvancedStats = true;
   
   // Get chart data for all timeframes
@@ -385,7 +385,7 @@ export default function AdvancedSignalDashboard({
                 <DetailedSignalCard 
                   signal={signals[tf]!} 
                   showAdvanced={showAdvancedStats}
-                  toggleAdvanced={() => setShowAdvancedStats(!showAdvancedStats)}
+                  toggleAdvanced={() => {}}
                 />
               ) : (
                 <Card>
@@ -412,7 +412,7 @@ export default function AdvancedSignalDashboard({
   );
 }
 
-// Detailed signal card component
+// Detailed signal card component with integrated position calculator
 function DetailedSignalCard({ 
   signal, 
   showAdvanced,
@@ -422,8 +422,54 @@ function DetailedSignalCard({
   showAdvanced: boolean,
   toggleAdvanced: () => void
 }) {
+  // State for optimal position calculator
+  const [positionSettings, setPositionSettings] = useState({
+    accountBalance: 10000,
+    riskPercent: 2,
+    calculatedPosition: 0,
+    maxProfit: 0,
+    maxLoss: 0
+  });
+
+  // Auto-calculate optimal position size whenever signal changes
+  useEffect(() => {
+    if (!signal) return;
+    
+    // Calculate based on risk percentage and account balance
+    const accountBalance = positionSettings.accountBalance;
+    const riskPercent = positionSettings.riskPercent;
+    const maxRiskAmount = accountBalance * (riskPercent / 100);
+    
+    // Calculate price distances
+    const entryPrice = signal.entryPrice;
+    const stopLoss = signal.stopLoss;
+    const takeProfit = signal.takeProfit;
+    
+    // Calculate percentage risk
+    const riskPercentage = Math.abs((entryPrice - stopLoss) / entryPrice);
+    
+    // Calculate position size to risk exactly the risk amount
+    const positionNotional = maxRiskAmount / riskPercentage;
+    const positionWithLeverage = positionNotional / signal.recommendedLeverage;
+    
+    // Calculate potential profit and loss
+    const maxProfit = positionWithLeverage * signal.recommendedLeverage * Math.abs(takeProfit - entryPrice);
+    const maxLoss = positionWithLeverage * signal.recommendedLeverage * Math.abs(entryPrice - stopLoss);
+    
+    setPositionSettings({
+      ...positionSettings,
+      calculatedPosition: positionWithLeverage,
+      maxProfit,
+      maxLoss
+    });
+  }, [signal]);
+
   return (
-    <Card>
+    <Card className={`border-l-4 ${
+      signal.direction === 'LONG' ? 'border-l-green-500' : 
+      signal.direction === 'SHORT' ? 'border-l-red-500' : 
+      'border-l-gray-400'
+    }`}>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center">
@@ -440,61 +486,75 @@ function DetailedSignalCard({
           </Badge>
         </CardTitle>
         <CardDescription>
-          Signal strength indicates {signal.confidence}% confidence in a{' '}
-          {signal.direction === 'LONG' ? 'bullish' : 
-           signal.direction === 'SHORT' ? 'bearish' : 'neutral'} move
+          {signal.direction === 'LONG' ? 'Bullish' : 
+           signal.direction === 'SHORT' ? 'Bearish' : 'Neutral'} signal with {signal.confidence}% confidence
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {/* Entry/Exit levels */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Entry Price</h3>
-              <div className="text-2xl font-bold">
-                {formatCurrency(signal.entryPrice)}
-              </div>
-            </div>
+          {/* Combined Trading Strategy Panel */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Entry/Exit Strategy */}
+            <Card className="bg-secondary/10">
+              <CardHeader className="p-3 pb-0">
+                <CardTitle className="text-sm">Entry & Exit Strategy</CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 grid grid-cols-3 gap-2">
+                <div>
+                  <div className="text-xs text-muted-foreground">Entry Price</div>
+                  <div className="text-lg font-bold">{formatCurrency(signal.entryPrice)}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Stop Loss</div>
+                  <div className="text-lg font-bold text-red-500">{formatCurrency(signal.stopLoss)}</div>
+                  <div className="text-xs">{formatPercentage(Math.abs((signal.stopLoss - signal.entryPrice) / signal.entryPrice))} risk</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Take Profit</div>
+                  <div className="text-lg font-bold text-green-500">{formatCurrency(signal.takeProfit)}</div>
+                  <div className="text-xs">{formatPercentage(Math.abs((signal.takeProfit - signal.entryPrice) / signal.entryPrice))} target</div>
+                </div>
+              </CardContent>
+            </Card>
             
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-red-500">Stop Loss</h3>
-              <div className="text-2xl font-bold">
-                {formatCurrency(signal.stopLoss)}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {formatPercentage(Math.abs((signal.stopLoss - signal.entryPrice) / signal.entryPrice))} from entry
-              </div>
-            </div>
-            
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold text-green-500">Take Profit</h3>
-              <div className="text-2xl font-bold">
-                {formatCurrency(signal.takeProfit)}
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {formatPercentage(Math.abs((signal.takeProfit - signal.entryPrice) / signal.entryPrice))} from entry
-              </div>
-            </div>
+            {/* Position Calculator */}
+            <Card className="bg-secondary/10">
+              <CardHeader className="p-3 pb-0">
+                <CardTitle className="text-sm">Optimal Position</CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 grid grid-cols-3 gap-2">
+                <div>
+                  <div className="text-xs text-muted-foreground">Leverage</div>
+                  <div className="text-lg font-bold">{signal.recommendedLeverage.toFixed(1)}x</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Position Size</div>
+                  <div className="text-lg font-bold">${positionSettings.calculatedPosition.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Risk/Reward</div>
+                  <div className="text-lg font-bold">{signal.optimalRiskReward.toFixed(1)}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Max Profit</div>
+                  <div className="text-lg font-bold text-green-500">${positionSettings.maxProfit.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Max Loss</div>
+                  <div className="text-lg font-bold text-red-500">${positionSettings.maxLoss.toFixed(2)}</div>
+                </div>
+                <div>
+                  <div className="text-xs text-muted-foreground">Win Probability</div>
+                  <div className="text-lg font-bold">{signal.confidence}%</div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-          
+
           <Separator />
           
-          {/* Risk metrics */}
+          {/* Market Prediction */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Leverage</h3>
-              <div className="text-xl font-bold">
-                {signal.recommendedLeverage.toFixed(1)}x
-              </div>
-            </div>
-            
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Risk/Reward</h3>
-              <div className="text-xl font-bold">
-                {signal.optimalRiskReward.toFixed(1)}
-              </div>
-            </div>
-            
             <div className="space-y-1">
               <h3 className="text-sm font-semibold">Target Move</h3>
               <div className="text-xl font-bold">
@@ -506,6 +566,20 @@ function DetailedSignalCard({
               <h3 className="text-sm font-semibold">Time Estimate</h3>
               <div className="text-xl font-bold">
                 {signal.predictedMovement.timeEstimate}
+              </div>
+            </div>
+            
+            <div className="space-y-1">
+              <h3 className="text-sm font-semibold">Direction</h3>
+              <div className="text-xl font-bold">
+                {signal.direction}
+              </div>
+            </div>
+            
+            <div className="space-y-1">
+              <h3 className="text-sm font-semibold">Confidence</h3>
+              <div className="text-xl font-bold">
+                {signal.confidence}%
               </div>
             </div>
           </div>
