@@ -118,6 +118,14 @@ let realTimeUpdatesActive = false;
 let currentSymbols: string[] = [];
 let currentTimeframe: TimeFrame = '1h';
 
+// Start the real-time updates immediately
+// This ensures we only need to start it once for the entire app
+setTimeout(() => {
+  if (!realTimeUpdatesActive) {
+    startRealTimeUpdates();
+  }
+}, 1000);
+
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
   const cacheKey = `${symbol}_${timeframe}`;
   

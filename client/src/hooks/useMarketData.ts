@@ -7,7 +7,8 @@ import {
   connectWebSocket, 
   registerMessageHandler, 
   subscribeToSymbols,
-  registerChartUpdateListener 
+  registerChartUpdateListener,
+  startRealTimeUpdates
 } from '../lib/api';
 import { AssetPrice, ChartData, TimeFrame } from '../types';
 
@@ -56,10 +57,7 @@ export function useAssetPrice(symbol: string) {
     // Subscribe to updates for this symbol
     subscribeToSymbols([symbol]);
     
-    // Start real-time updates if not already active
-    if (!isLiveDataConnected) {
-      startRealTimeUpdates();
-    }
+    // Real-time updates are started automatically by fetchChartData
     
     return () => {
       // Clean up subscription when component unmounts
