@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -170,12 +170,21 @@ export default function AdvancedSignalDashboard({
   }, [symbol]);
   
   // Effect to watch for all data loaded and trigger calculation
+  const calculationTriggeredRef = useRef(false);
+  
   useEffect(() => {
-    if (isAllDataLoaded && !isCalculating) {
+    if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
       console.log("All data loaded for", symbol, "- calculating signals");
+      // Mark that we've triggered calculation for this data load cycle
+      calculationTriggeredRef.current = true;
+      
       // Use setTimeout to ensure UI has time to update
       setTimeout(() => {
         calculateAllSignals();
+        // Reset the flag after calculation is complete
+        setTimeout(() => {
+          calculationTriggeredRef.current = false;
+        }, 5000); // Wait 5 seconds before allowing another auto-calculation
       }, 100);
     }
   }, [isAllDataLoaded, symbol, calculateAllSignals, isCalculating]);
@@ -183,9 +192,15 @@ export default function AdvancedSignalDashboard({
   // Set up automatic recalculation interval
   useEffect(() => {
     const recalculationInterval = setInterval(() => {
-      if (isAllDataLoaded && !isCalculating) {
+      if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
         console.log("Auto-recalculating signals...");
+        calculationTriggeredRef.current = true;
         calculateAllSignals();
+        
+        // Reset the flag after a delay
+        setTimeout(() => {
+          calculationTriggeredRef.current = false;
+        }, 5000);
       }
     }, 30000); // 30 seconds interval
     
