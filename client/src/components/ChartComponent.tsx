@@ -674,12 +674,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           axisLabelVisible: true,
         });
         
-        // Set RSI scale
+        // Set RSI scale with improved spacing
         chart.priceScale('rsi').applyOptions({
           scaleMargins: {
-            // Each indicator pane gets its own vertical space segment
-            top: 0.7 + (paneCount - 1) * 0.2,
-            bottom: 0.1,
+            // Use fixed position for cleaner spacing
+            top: 0.7,
+            bottom: 0.05,
           },
           visible: true,
           autoScale: true,
@@ -721,11 +721,11 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         }));
         macdHistPane.setData(histogramData);
         
-        // Set MACD scale
+        // Set MACD scale with better spacing
         chart.priceScale('macd').applyOptions({
           scaleMargins: {
-            top: 0.1,
-            bottom: 0.1,
+            top: 0.75,
+            bottom: 0.05,
           },
           visible: true,
           autoScale: true,
@@ -775,16 +775,17 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           axisLabelVisible: true,
         });
         
-        // Set Stochastic scale
+        // Set Stochastic scale with better spacing
         chart.priceScale('stoch').applyOptions({
           scaleMargins: {
-            top: 0.1,
-            bottom: 0.1,
+            top: 0.8,
+            bottom: 0.05,
           },
           visible: true,
           autoScale: false,
-          minimumValue: 0,
-          maximumValue: 100,
+          // Use min/max instead of minimumValue/maximumValue for v5 API
+          minValue: 0,
+          maxValue: 100,
         });
         
         indicatorSeries.current['Stochastic-K'] = stochKPane;
@@ -831,16 +832,17 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           title: 'Strong Trend',
         });
         
-        // Set ADX scale
+        // Set ADX scale with better spacing
         chart.priceScale('adx').applyOptions({
           scaleMargins: {
-            top: 0.1,
-            bottom: 0.1,
+            top: 0.85,
+            bottom: 0.05,
           },
           visible: true,
           autoScale: false,
-          // Note: minimumValue/maximumValue not supported in newer versions
-          // Using minValue/maxValue or disabling autoScale and using appropriate data
+          // Using min/max values for v5 API
+          minValue: 0,
+          maxValue: 100,
         });
         
         indicatorSeries.current['ADX'] = adxPane;
@@ -863,11 +865,11 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Set ATR data
         if (indicatorData['ATR']) atrPane.setData(indicatorData['ATR'] as LineData[]);
         
-        // Set ATR scale
+        // Set ATR scale with better spacing
         chart.priceScale('atr').applyOptions({
           scaleMargins: {
-            top: 0.1,
-            bottom: 0.1,
+            top: 0.9,
+            bottom: 0.05,
           },
           visible: true,
           autoScale: true,
