@@ -1,4 +1,4 @@
-import { ChartData, Indicator, IndicatorCategory, IndicatorSignal, SignalDirection, TimeframeSignal } from '../types';
+import { ChartData, Indicator, IndicatorCategory, IndicatorSignal, IndicatorStrength, SignalDirection, TimeFrame, TimeframeSignal } from '../types';
 
 // Helper functions for technical indicators
 export function calculateRSI(prices: number[], period = 14): number {
