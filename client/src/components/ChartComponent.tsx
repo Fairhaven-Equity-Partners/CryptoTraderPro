@@ -859,142 +859,148 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       if (oscillator.name === 'Stochastic' &&
           indicatorData['Stochastic-K'] &&
           indicatorData['Stochastic-D']) {
-        // Add Stochastic pane
-        const stochKPane = chart.addSeries(LineSeries, {
-          color: oscillator.color,
-          lineWidth: 1,
-          priceScaleId: 'stoch',
-        });
-        
-        const stochDPane = chart.addSeries(LineSeries, {
-          color: '#FF9800',
-          lineWidth: 1,
-          priceScaleId: 'stoch',
-        });
-        
-        // Set Stochastic data
-        stochKPane.setData(indicatorData['Stochastic-K'] as LineData[]);
-        stochDPane.setData(indicatorData['Stochastic-D'] as LineData[]);
-        
-        // Add Stochastic overbought/oversold levels
-        stochKPane.createPriceLine({
-          price: 80,
-          color: 'rgba(232, 65, 66, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2, // Dashed
-          axisLabelVisible: true,
-          title: 'Overbought'
-        });
-        
-        stochKPane.createPriceLine({
-          price: 20,
-          color: 'rgba(14, 203, 129, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2, // Dashed
-          axisLabelVisible: true,
-          title: 'Oversold'
-        });
-        
-        // Set Stochastic scale with better spacing
-        chart.priceScale('stoch').applyOptions({
-          scaleMargins: {
-            // Place Stochastic at the bottom with good spacing from MACD
-            top: 0.90,
-            bottom: 0.05,
-          },
-          visible: true,
-          autoScale: false,
-          // Fixed mode with specific range (0-100 for Stochastic)
-          mode: 2, // PriceScaleMode.Fixed = 2
-        });
-        
-        indicatorSeries.current['Stochastic-K'] = stochKPane;
-        indicatorSeries.current['Stochastic-D'] = stochDPane;
-        
-        paneCount++;
+        // Add Stochastic pane only if it's expanded
+        if (expandedPanels['Stochastic']) {
+          const stochKPane = chart.addSeries(LineSeries, {
+            color: oscillator.color,
+            lineWidth: 1,
+            priceScaleId: 'stoch',
+          });
+          
+          const stochDPane = chart.addSeries(LineSeries, {
+            color: '#FF9800',
+            lineWidth: 1,
+            priceScaleId: 'stoch',
+          });
+          
+          // Set Stochastic data
+          stochKPane.setData(indicatorData['Stochastic-K'] as LineData[]);
+          stochDPane.setData(indicatorData['Stochastic-D'] as LineData[]);
+          
+          // Add Stochastic overbought/oversold levels
+          stochKPane.createPriceLine({
+            price: 80,
+            color: 'rgba(232, 65, 66, 0.5)',
+            lineWidth: 1,
+            lineStyle: 2, // Dashed
+            axisLabelVisible: true,
+            title: 'Overbought'
+          });
+          
+          stochKPane.createPriceLine({
+            price: 20,
+            color: 'rgba(14, 203, 129, 0.5)',
+            lineWidth: 1,
+            lineStyle: 2, // Dashed
+            axisLabelVisible: true,
+            title: 'Oversold'
+          });
+          
+          // Set Stochastic scale with better spacing
+          chart.priceScale('stoch').applyOptions({
+            scaleMargins: {
+              // Place Stochastic at the bottom with good spacing from MACD
+              top: 0.90,
+              bottom: 0.05,
+            },
+            visible: true,
+            autoScale: false,
+            // Fixed mode with specific range (0-100 for Stochastic)
+            mode: 2, // PriceScaleMode.Fixed = 2
+          });
+          
+          indicatorSeries.current['Stochastic-K'] = stochKPane;
+          indicatorSeries.current['Stochastic-D'] = stochDPane;
+          
+          paneCount++;
+        }
       }
       
       if (oscillator.name === 'ADX' &&
           indicatorData['ADX'] &&
           indicatorData['ADX-DI+'] &&
           indicatorData['ADX-DI-']) {
-        // Add ADX pane
-        const adxPane = chart.addSeries(LineSeries, {
-          color: oscillator.color,
-          lineWidth: 1,
-          priceScaleId: 'adx',
-        });
-        
-        const diPlusPane = chart.addSeries(LineSeries, {
-          color: '#0ECB81',
-          lineWidth: 1,
-          priceScaleId: 'adx',
-        });
-        
-        const diMinusPane = chart.addSeries(LineSeries, {
-          color: '#E84142',
-          lineWidth: 1,
-          priceScaleId: 'adx',
-        });
-        
-        // Set ADX data
-        if (indicatorData['ADX']) adxPane.setData(indicatorData['ADX'] as LineData[]);
-        if (indicatorData['ADX-DI+']) diPlusPane.setData(indicatorData['ADX-DI+'] as LineData[]);
-        if (indicatorData['ADX-DI-']) diMinusPane.setData(indicatorData['ADX-DI-'] as LineData[]);
-        
-        // Add ADX threshold level
-        adxPane.createPriceLine({
-          price: 25,
-          color: 'rgba(255, 255, 255, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2, // Dashed
-          axisLabelVisible: true,
-          title: 'Strong Trend',
-        });
-        
-        // Set ADX scale with better spacing
-        chart.priceScale('adx').applyOptions({
-          scaleMargins: {
-            top: 0.85,
-            bottom: 0.05,
-          },
-          visible: true,
-          autoScale: false,
-          // Using fixed range for ADX (0-100)
-          mode: 2, // PriceScaleMode.Fixed = 2
-        });
-        
-        indicatorSeries.current['ADX'] = adxPane;
-        indicatorSeries.current['ADX-DI+'] = diPlusPane;
-        indicatorSeries.current['ADX-DI-'] = diMinusPane;
-        
-        paneCount++;
+        // Add ADX pane only if it's expanded
+        if (expandedPanels['ADX']) {
+          const adxPane = chart.addSeries(LineSeries, {
+            color: oscillator.color,
+            lineWidth: 1,
+            priceScaleId: 'adx',
+          });
+          
+          const diPlusPane = chart.addSeries(LineSeries, {
+            color: '#0ECB81',
+            lineWidth: 1,
+            priceScaleId: 'adx',
+          });
+          
+          const diMinusPane = chart.addSeries(LineSeries, {
+            color: '#E84142',
+            lineWidth: 1,
+            priceScaleId: 'adx',
+          });
+          
+          // Set ADX data
+          if (indicatorData['ADX']) adxPane.setData(indicatorData['ADX'] as LineData[]);
+          if (indicatorData['ADX-DI+']) diPlusPane.setData(indicatorData['ADX-DI+'] as LineData[]);
+          if (indicatorData['ADX-DI-']) diMinusPane.setData(indicatorData['ADX-DI-'] as LineData[]);
+          
+          // Add ADX threshold level
+          adxPane.createPriceLine({
+            price: 25,
+            color: 'rgba(255, 255, 255, 0.5)',
+            lineWidth: 1,
+            lineStyle: 2, // Dashed
+            axisLabelVisible: true,
+            title: 'Strong Trend',
+          });
+          
+          // Set ADX scale with better spacing
+          chart.priceScale('adx').applyOptions({
+            scaleMargins: {
+              top: 0.85,
+              bottom: 0.05,
+            },
+            visible: true,
+            autoScale: false,
+            // Using fixed range for ADX (0-100)
+            mode: 2, // PriceScaleMode.Fixed = 2
+          });
+          
+          indicatorSeries.current['ADX'] = adxPane;
+          indicatorSeries.current['ADX-DI+'] = diPlusPane;
+          indicatorSeries.current['ADX-DI-'] = diMinusPane;
+          
+          paneCount++;
+        }
       }
       
       if (oscillator.name === 'ATR' && indicatorData['ATR']) {
-        // Add ATR pane
-        const atrPane = chart.addSeries(LineSeries, {
-          color: oscillator.color,
-          lineWidth: 1,
-          priceScaleId: 'atr',
-        });
-        
-        paneCount++;
-        
-        // Set ATR data
-        if (indicatorData['ATR']) atrPane.setData(indicatorData['ATR'] as LineData[]);
-        
-        // Set ATR scale with better spacing
-        chart.priceScale('atr').applyOptions({
-          scaleMargins: {
-            top: 0.9,
-            bottom: 0.05,
-          },
-          visible: true,
-          autoScale: true,
-        });
-        
-        indicatorSeries.current['ATR'] = atrPane;
+        // Add ATR pane only if it's expanded
+        if (expandedPanels['ATR']) {
+          const atrPane = chart.addSeries(LineSeries, {
+            color: oscillator.color,
+            lineWidth: 1,
+            priceScaleId: 'atr',
+          });
+          
+          paneCount++;
+          
+          // Set ATR data
+          if (indicatorData['ATR']) atrPane.setData(indicatorData['ATR'] as LineData[]);
+          
+          // Set ATR scale with better spacing
+          chart.priceScale('atr').applyOptions({
+            scaleMargins: {
+              top: 0.9,
+              bottom: 0.05,
+            },
+            visible: true,
+            autoScale: true,
+          });
+          
+          indicatorSeries.current['ATR'] = atrPane;
+        }
       }
     });
     
@@ -1138,7 +1144,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     chartSize, 
     showVolume, 
     symbol, 
-    timeframe
+    timeframe,
+    expandedPanels
   ]);
   
   // Toggle indicator visibility
@@ -1299,27 +1306,42 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
               
               {/* Indicator toggles */}
               <div className="flex flex-col overflow-y-auto max-h-[200px] mb-4">
-                {activeIndicators.map(indicator => (
-                  <div key={indicator.name} className="flex items-center mb-1">
-                    <input
-                      type="checkbox"
-                      id={`indicator-${indicator.name}`}
-                      checked={indicator.enabled}
-                      onChange={() => toggleIndicator(indicator.name)}
-                      className="mr-1"
-                    />
-                    <span 
-                      className="h-2 w-2 rounded-full mr-1" 
-                      style={{ backgroundColor: indicator.color }}
-                    ></span>
-                    <label 
-                      htmlFor={`indicator-${indicator.name}`}
-                      className="text-xs cursor-pointer"
-                    >
-                      {indicator.name}
-                    </label>
-                  </div>
-                ))}
+                {activeIndicators.map(indicator => {
+                  // Determine if this indicator is an oscillator that can be expanded/collapsed
+                  const canExpand = ['RSI', 'MACD', 'Stochastic', 'ADX', 'ATR'].includes(indicator.name);
+                  
+                  return (
+                    <div key={indicator.name} className="flex items-center mb-1">
+                      <input
+                        type="checkbox"
+                        id={`indicator-${indicator.name}`}
+                        checked={indicator.enabled}
+                        onChange={() => toggleIndicator(indicator.name)}
+                        className="mr-1"
+                      />
+                      <span 
+                        className="h-2 w-2 rounded-full mr-1" 
+                        style={{ backgroundColor: indicator.color }}
+                      ></span>
+                      <label 
+                        htmlFor={`indicator-${indicator.name}`}
+                        className="text-xs cursor-pointer"
+                      >
+                        {indicator.name}
+                      </label>
+                      
+                      {canExpand && indicator.enabled && (
+                        <button
+                          className="ml-auto text-xs text-gray-400 hover:text-white px-1"
+                          onClick={() => togglePanelExpansion(indicator.name)}
+                          title={expandedPanels[indicator.name] ? "Collapse" : "Expand"}
+                        >
+                          {expandedPanels[indicator.name] ? "▼" : "▶"}
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
                 
                 <div className="flex items-center mb-1">
                   <input
