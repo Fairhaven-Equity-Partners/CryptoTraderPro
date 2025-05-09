@@ -324,6 +324,15 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   const [visibleTimeframes, setVisibleTimeframes] = useState<TimeFrame[]>(['1h', '4h', '1d', '1w']);
   const [showAllTimeframes, setShowAllTimeframes] = useState(false);
   
+  // State for expanded/collapsed indicator panels
+  const [expandedPanels, setExpandedPanels] = useState<Record<string, boolean>>({
+    'RSI': true,
+    'MACD': true,
+    'Stochastic': true,
+    'ADX': true,
+    'ATR': true
+  });
+  
   // Resize handling with a simple implementation instead of useSize
   const [chartSize, setChartSize] = useState({ width: 0, height: 0 });
   
@@ -745,102 +754,106 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     // Process each oscillator
     oscillators.forEach(oscillator => {
       if (oscillator.name === 'RSI' && indicatorData['RSI']) {
-        // Add RSI pane
-        const rsiPane = chart.addSeries(LineSeries, {
-          color: oscillator.color,
-          lineWidth: 1,
-          priceScaleId: 'rsi',
-        });
-        
-        paneCount++;
-        
-        // Add RSI lines
-        rsiPane.setData(indicatorData['RSI'] as LineData[]);
-        
-        // Add RSI overbought/oversold levels with the correct number values
-        rsiPane.createPriceLine({
-          price: Number(oscillator.settings.overbought), // Ensure it's a number
-          color: 'rgba(232, 65, 66, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2, // Dashed
-          axisLabelVisible: true,
-          title: 'Overbought'
-        });
-        
-        rsiPane.createPriceLine({
-          price: Number(oscillator.settings.oversold), // Ensure it's a number
-          color: 'rgba(14, 203, 129, 0.5)',
-          lineWidth: 1,
-          lineStyle: 2, // Dashed
-          axisLabelVisible: true,
-          title: 'Oversold'
-        });
-        
-        // Set RSI scale with improved spacing
-        chart.priceScale('rsi').applyOptions({
-          scaleMargins: {
-            // Give RSI more vertical space (positioned at the top of the indicator area)
-            top: 0.62,
-            bottom: 0.23,
-          },
-          visible: true,
-          autoScale: true,
-        });
-        
-        indicatorSeries.current['RSI'] = rsiPane;
+        // Add RSI pane only if it's expanded
+        if (expandedPanels['RSI']) {
+          const rsiPane = chart.addSeries(LineSeries, {
+            color: oscillator.color,
+            lineWidth: 1,
+            priceScaleId: 'rsi',
+          });
+          
+          paneCount++;
+          
+          // Add RSI lines
+          rsiPane.setData(indicatorData['RSI'] as LineData[]);
+          
+          // Add RSI overbought/oversold levels with the correct number values
+          rsiPane.createPriceLine({
+            price: Number(oscillator.settings.overbought), // Ensure it's a number
+            color: 'rgba(232, 65, 66, 0.5)',
+            lineWidth: 1,
+            lineStyle: 2, // Dashed
+            axisLabelVisible: true,
+            title: 'Overbought'
+          });
+          
+          rsiPane.createPriceLine({
+            price: Number(oscillator.settings.oversold), // Ensure it's a number
+            color: 'rgba(14, 203, 129, 0.5)',
+            lineWidth: 1,
+            lineStyle: 2, // Dashed
+            axisLabelVisible: true,
+            title: 'Oversold'
+          });
+          
+          // Set RSI scale with improved spacing
+          chart.priceScale('rsi').applyOptions({
+            scaleMargins: {
+              // Give RSI more vertical space (positioned at the top of the indicator area)
+              top: 0.62,
+              bottom: 0.23,
+            },
+            visible: true,
+            autoScale: true,
+          });
+          
+          indicatorSeries.current['RSI'] = rsiPane;
+        }
       }
       
       if (oscillator.name === 'MACD' && 
           indicatorData['MACD-Line'] && 
           indicatorData['MACD-Signal'] &&
           indicatorData['MACD-Histogram']) {
-        // Add MACD pane
-        const macdLinePane = chart.addSeries(LineSeries, {
-          color: oscillator.color,
-          lineWidth: 1,
-          priceScaleId: 'macd',
-        });
-        
-        const macdSignalPane = chart.addSeries(LineSeries, {
-          color: '#E84142',
-          lineWidth: 1,
-          priceScaleId: 'macd',
-        });
-        
-        const macdHistPane = chart.addSeries(HistogramSeries, {
-          color: 'rgba(80, 80, 160, 0.8)',
-          priceScaleId: 'macd',
-        });
-        
-        // Set MACD data
-        macdLinePane.setData(indicatorData['MACD-Line'] as LineData[]);
-        macdSignalPane.setData(indicatorData['MACD-Signal'] as LineData[]);
-        
-        // Set histogram data directly with proper null check
-        // The colors are already set in the indicatorData setup
-        if (indicatorData['MACD-Histogram'] && Array.isArray(indicatorData['MACD-Histogram'])) {
-          macdHistPane.setData(indicatorData['MACD-Histogram'] as any[]);
-        } else {
-          // Fallback - create an empty array if MACD-Histogram doesn't exist
-          macdHistPane.setData([]);
+        // Add MACD pane only if it's expanded
+        if (expandedPanels['MACD']) {
+          const macdLinePane = chart.addSeries(LineSeries, {
+            color: oscillator.color,
+            lineWidth: 1,
+            priceScaleId: 'macd',
+          });
+          
+          const macdSignalPane = chart.addSeries(LineSeries, {
+            color: '#E84142',
+            lineWidth: 1,
+            priceScaleId: 'macd',
+          });
+          
+          const macdHistPane = chart.addSeries(HistogramSeries, {
+            color: 'rgba(80, 80, 160, 0.8)',
+            priceScaleId: 'macd',
+          });
+          
+          // Set MACD data
+          macdLinePane.setData(indicatorData['MACD-Line'] as LineData[]);
+          macdSignalPane.setData(indicatorData['MACD-Signal'] as LineData[]);
+          
+          // Set histogram data directly with proper null check
+          // The colors are already set in the indicatorData setup
+          if (indicatorData['MACD-Histogram'] && Array.isArray(indicatorData['MACD-Histogram'])) {
+            macdHistPane.setData(indicatorData['MACD-Histogram'] as any[]);
+          } else {
+            // Fallback - create an empty array if MACD-Histogram doesn't exist
+            macdHistPane.setData([]);
+          }
+          
+          // Set MACD scale with better spacing
+          chart.priceScale('macd').applyOptions({
+            scaleMargins: {
+              // Position MACD below RSI with good spacing
+              top: 0.80,
+              bottom: 0.12,
+            },
+            visible: true,
+            autoScale: true,
+          });
+          
+          indicatorSeries.current['MACD-Line'] = macdLinePane;
+          indicatorSeries.current['MACD-Signal'] = macdSignalPane;
+          indicatorSeries.current['MACD-Histogram'] = macdHistPane;
+          
+          paneCount++;
         }
-        
-        // Set MACD scale with better spacing
-        chart.priceScale('macd').applyOptions({
-          scaleMargins: {
-            // Position MACD below RSI with good spacing
-            top: 0.80,
-            bottom: 0.12,
-          },
-          visible: true,
-          autoScale: true,
-        });
-        
-        indicatorSeries.current['MACD-Line'] = macdLinePane;
-        indicatorSeries.current['MACD-Signal'] = macdSignalPane;
-        indicatorSeries.current['MACD-Histogram'] = macdHistPane;
-        
-        paneCount++;
       }
       
       if (oscillator.name === 'Stochastic' &&
@@ -1147,6 +1160,14 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   // Toggle all timeframes visibility
   const toggleAllTimeframes = () => {
     setShowAllTimeframes(!showAllTimeframes);
+  };
+  
+  // Toggle panel expansion/collapse
+  const togglePanelExpansion = (panelName: string) => {
+    setExpandedPanels(prev => ({
+      ...prev,
+      [panelName]: !prev[panelName]
+    }));
   };
   
   // Display detected patterns and divergences in a legend
