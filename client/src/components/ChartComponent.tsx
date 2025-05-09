@@ -441,11 +441,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       divergenceLines.current = {};
     }
     
-    // Create a new chart with current dimensions
+    // Create a new chart with current dimensions and improved interactivity
     const chart = createChart(chartContainerRef.current, {
       layout: {
         background: { type: ColorType.Solid, color: '#0F1929' },
         textColor: '#B7BDC6',
+        fontSize: 12, // Slightly larger text for better readability
       },
       grid: {
         vertLines: { color: '#2a2e39' },
@@ -455,19 +456,50 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         borderColor: '#2a2e39',
         scaleMargins: {
           top: 0.1,
-          bottom: showVolume ? 0.2 : 0.05,
+          bottom: showVolume ? 0.15 : 0.05, // Smaller volume area
         },
+        // Make price scale more user-friendly
+        mode: 0, // Normal auto-scale
+        autoScale: true,
+        alignLabels: true,
+        borderVisible: true,
+        entireTextOnly: false,
+        ticksVisible: true,
       },
       timeScale: {
         borderColor: '#2a2e39',
         timeVisible: true,
         secondsVisible: false,
+        // Enhance time scale interactivity
+        rightOffset: 12,
+        barSpacing: 6, // Reasonable default spacing
+        minBarSpacing: 2, // Allow zooming in quite far
+        lockVisibleTimeRangeOnResize: false, // Allow resize to show all available data
+        rightBarStaysOnScroll: true,
+        borderVisible: true,
+        visible: true,
       },
       crosshair: {
         mode: CrosshairMode.Normal,
+        vertLine: {
+          labelBackgroundColor: '#2a2e39',
+        },
+        horzLine: {
+          labelBackgroundColor: '#2a2e39',
+        },
       },
       handleScroll: {
         vertTouchDrag: true,
+        // Better scrolling behavior
+        pressedMouseMove: true,
+      },
+      handleScale: {
+        axisPressedMouseMove: {
+          time: true,
+          price: true,
+        },
+        mouseWheel: true,
+        pinch: true,
       },
     });
     
@@ -509,7 +541,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       }
     }
     
-    // Volume series
+    // Volume series with reduced size
     if (showVolume && indicatorData['Volume']) {
       const volumeSeriesRef = chart.addSeries(HistogramSeries, {
         color: '#26a69a',
@@ -520,6 +552,15 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       });
       volumeSeriesRef.setData(indicatorData['Volume'] as any[]);
       volumeSeries.current = volumeSeriesRef;
+      
+      // Configure the volume scale to be much smaller
+      chart.priceScale('volume').applyOptions({
+        scaleMargins: {
+          top: 0.9,  // This places volume in just the bottom 10% of the chart
+          bottom: 0.05,
+        },
+        visible: true,
+      });
     }
     
     // Overlay indicators
@@ -593,16 +634,15 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
             ];
             
             fibLevels.forEach(fib => {
-              const options: DeepPartial<PriceLineOptions> = {
+              // Use the correct CreatePriceLineOptions type that requires a price field
+              mainSeriesRef.createPriceLine({
                 price: fib.value,
                 color: fib.color,
                 lineWidth: 1,
                 lineStyle: 1, // Solid
                 axisLabelVisible: true,
                 title: `Fib ${fib.level}`,
-              };
-              
-              mainSeriesRef.createPriceLine(options);
+              });
             });
           }
         }
@@ -632,6 +672,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     });
     
     // Adjust the scale of the main chart to make room for indicator panes
+    // Keep the main chart larger with 70% of the total height
     chart.applyOptions({
       layout: {
         background: { type: ColorType.Solid, color: '#0F1929' },
@@ -639,8 +680,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       },
       rightPriceScale: {
         scaleMargins: {
-          top: 0.1,
-          bottom: 0.3, // Leave more room at the bottom for indicator panes
+          top: 0.05, // Almost to the top
+          bottom: 0.25, // Main chart takes 70% of the space
         },
       },
     });
@@ -663,21 +704,23 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Add RSI lines
         rsiPane.setData(indicatorData['RSI'] as LineData[]);
         
-        // Add RSI overbought/oversold levels
+        // Add RSI overbought/oversold levels with the correct number values
         rsiPane.createPriceLine({
-          price: oscillator.settings.overbought,
+          price: Number(oscillator.settings.overbought), // Ensure it's a number
           color: 'rgba(232, 65, 66, 0.5)',
           lineWidth: 1,
           lineStyle: 2, // Dashed
           axisLabelVisible: true,
+          title: 'Overbought'
         });
         
         rsiPane.createPriceLine({
-          price: oscillator.settings.oversold,
+          price: Number(oscillator.settings.oversold), // Ensure it's a number
           color: 'rgba(14, 203, 129, 0.5)',
           lineWidth: 1,
           lineStyle: 2, // Dashed
           axisLabelVisible: true,
+          title: 'Oversold'
         });
         
         // Set RSI scale with improved spacing
@@ -771,6 +814,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           lineWidth: 1,
           lineStyle: 2, // Dashed
           axisLabelVisible: true,
+          title: 'Overbought'
         });
         
         stochKPane.createPriceLine({
@@ -779,6 +823,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           lineWidth: 1,
           lineStyle: 2, // Dashed
           axisLabelVisible: true,
+          title: 'Oversold'
         });
         
         // Set Stochastic scale with better spacing
@@ -789,9 +834,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           },
           visible: true,
           autoScale: false,
-          // Use min/max instead of minimumValue/maximumValue for v5 API
-          minValue: 0,
-          maxValue: 100,
+          // Fixed mode with specific range (0-100 for Stochastic)
+          mode: 2, // PriceScaleMode.Fixed = 2
         });
         
         indicatorSeries.current['Stochastic-K'] = stochKPane;
