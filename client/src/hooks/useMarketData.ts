@@ -79,19 +79,33 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   const [error, setError] = useState<Error | null>(null);
   const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
   
+  // Use a ref to store previous data to avoid showing loading state during transitions
+  const previousDataRef = useRef<{[key: string]: ChartData[]}>({});
+  
   // Reference to track if the component is mounted
   const isMounted = useRef(true);
   
-  // Fetch chart data
+  // Fetch chart data with optimization
   const fetchData = useCallback(async () => {
     try {
-      setIsLoading(true);
+      // Don't show loading state if we have previous data for this symbol
+      const cacheKey = `${symbol}_${timeframe}`;
+      const hasPreviousData = previousDataRef.current[cacheKey]?.length > 0;
+      
+      if (!hasPreviousData) {
+        setIsLoading(true);
+      }
+      
+      // Fetch new data
       const data = await fetchChartData(symbol, timeframe);
       
       if (isMounted.current) {
         setChartData(data);
         setIsLoading(false);
         setError(null);
+        
+        // Store this data for future symbol switches
+        previousDataRef.current[cacheKey] = data;
       }
     } catch (err) {
       if (isMounted.current) {
@@ -103,6 +117,15 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   
   // Initial fetch
   useEffect(() => {
+    // Check cache first to prevent flickering
+    const cacheKey = `${symbol}_${timeframe}`;
+    if (previousDataRef.current[cacheKey]?.length > 0) {
+      // Use cached data immediately to avoid loading state
+      setChartData(previousDataRef.current[cacheKey]);
+      setIsLoading(false);
+    }
+    
+    // Fetch fresh data in any case
     fetchData();
     
     // Register for live updates with optimized error handling
@@ -111,6 +134,7 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
         .then(newData => {
           if (isMounted.current) {
             setChartData(newData);
+            previousDataRef.current[cacheKey] = newData;
             setIsLiveDataConnected(true);
           }
         })
