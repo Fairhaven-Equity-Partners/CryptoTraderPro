@@ -1052,9 +1052,31 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     chartInstance.current = chart;
     mainSeries.current = mainSeriesRef;
     
+    // Add event listeners to track chart state changes when user interacts with the chart
+    chart.timeScale().subscribeVisibleLogicalRangeChange(range => {
+      if (range) {
+        console.log('Chart timeRange changed:', range);
+        chartState.current.timeRange = {
+          from: range.from,
+          to: range.to
+        };
+      }
+    });
+    
+    // Add listener for price scale changes too
+    if (mainSeriesRef) {
+      const priceScale = mainSeriesRef.priceScale();
+      if (priceScale) {
+        // Store options when they change
+        const options = priceScale.options();
+        console.log('Current price scale options:', options);
+      }
+    }
+    
     // Restore the previous view state if available
     if (chartState.current.timeRange) {
       try {
+        console.log('Restoring chart timeRange:', chartState.current.timeRange);
         // Restore time range
         chart.timeScale().setVisibleLogicalRange(chartState.current.timeRange);
       } catch (error) {
@@ -1264,7 +1286,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
                         ? 'bg-gradient-to-r from-[#3772FF] to-[#2359F9] text-white' 
                         : 'bg-[#1E2C3E] text-gray-300 hover:bg-[#2A3A50]'
                     }`}
-                    onClick={() => onChangeTimeframe(tf)}
+                    onClick={() => onChangeTimeframe(tf as TimeFrame)}
                   >
                     {tf}
                   </button>
