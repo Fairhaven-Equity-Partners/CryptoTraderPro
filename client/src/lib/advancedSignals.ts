@@ -327,6 +327,7 @@ export function calculateTimeframeConfidence(
     case '1h': timeEstimate = '6-24 hours'; break;
     case '4h': timeEstimate = '1-3 days'; break;
     case '1d': timeEstimate = '1-2 weeks'; break;
+    case '3d': timeEstimate = '2-4 weeks'; break;
     case '1w': timeEstimate = '1-2 months'; break;
     case '1M': timeEstimate = '3-6 months'; break;
     default: timeEstimate = 'unknown';
@@ -379,6 +380,7 @@ export function generateTradeRecommendation(
     '1h': 1.0,
     '4h': 1.5,
     '1d': 2.0,
+    '3d': 2.3,
     '1w': 2.5,
     '1M': 3.0
   };
@@ -420,7 +422,7 @@ export function generateTradeRecommendation(
   
   // Check timeframe alignment - if higher timeframes contradict lower ones, reduce confidence
   const lowerTimeframes = ['1m', '5m', '15m', '30m', '1h'];
-  const higherTimeframes = ['4h', '1d', '1w', '1M'];
+  const higherTimeframes = ['4h', '1d', '3d', '1w', '1M'];
   
   const lowerSignals = timeframeSignals.filter(s => lowerTimeframes.includes(s.timeframe));
   const higherSignals = timeframeSignals.filter(s => higherTimeframes.includes(s.timeframe));
