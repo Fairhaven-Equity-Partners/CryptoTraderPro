@@ -432,7 +432,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     // Main series for price data
     let mainSeriesRef;
     if (chartType === 'candles') {
-      mainSeriesRef = chart.addSeries('candlestick', {
+      mainSeriesRef = chart.addCandlestickSeries({
         upColor: '#0ECB81',
         downColor: '#E84142',
         borderUpColor: '#0ECB81',
@@ -441,12 +441,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         wickDownColor: '#E84142',
       });
     } else if (chartType === 'line') {
-      mainSeriesRef = chart.addSeries('line', {
+      mainSeriesRef = chart.addLineSeries({
         color: '#0ECB81',
         lineWidth: 2,
       });
     } else {
-      mainSeriesRef = chart.addSeries('area', {
+      mainSeriesRef = chart.addAreaSeries({
         topColor: 'rgba(14, 203, 129, 0.4)',
         bottomColor: 'rgba(14, 203, 129, 0.1)',
         lineColor: '#0ECB81',
