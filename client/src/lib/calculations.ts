@@ -45,8 +45,11 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
   let riskRewardRatio = '0';
   
   if (takeProfit) {
+    // Calculate profit based on percentage change and actual position size
     const profitPercentage = Math.abs((takeProfit - entryPrice) / entryPrice * 100);
-    potentialProfit = (positionSize * (profitPercentage / 100)) * safeLeverage;
+    // Calculate profit based on the actual position size in crypto, not just USDT amount
+    const positionSizeInCrypto = positionSize / entryPrice;
+    potentialProfit = positionSizeInCrypto * (takeProfit - entryPrice) * safeLeverage;
     riskRewardRatio = (potentialProfit / riskAmount).toFixed(2);
   }
   
@@ -73,7 +76,7 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
     entryPrice * (1 + (priceChangePercentage / 100) * 3) : 
     entryPrice * (1 - (priceChangePercentage / 100) * 3);
   
-  // Calculate position size based on risk
+  // Calculate position size based on risk and current price
   const recommendedPositionSize = (riskAmount / (priceChangePercentage / 100)) / entryPrice;
   
   return {
