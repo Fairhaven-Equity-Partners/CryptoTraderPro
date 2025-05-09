@@ -821,7 +821,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           text: pattern.pattern,
         };
         
-        mainSeriesRef.setMarker(marker);
+        // Use createSeries instead of setMarker
+        mainSeriesRef.createMarkerSeries([marker], { disable: false });
       });
     }
     
@@ -850,8 +851,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           text: divergence.divergence,
         };
         
-        mainSeriesRef.setMarker(startMarker);
-        mainSeriesRef.setMarker(endMarker);
+        // Use createSeries instead of setMarker for divergences
+        mainSeriesRef.createMarkerSeries([startMarker], { disable: false });
+        mainSeriesRef.createMarkerSeries([endMarker], { disable: false });
       });
     }
     
