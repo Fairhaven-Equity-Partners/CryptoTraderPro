@@ -586,10 +586,46 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       }
     });
     
-    // Create oscillator panes
-    const oscillators = activeIndicators.filter(i => i.type === 'oscillator' && i.enabled);
+    // Create ALL indicators in their own panes except overlay EMA indicators
+    // Group the indicators by their types for easy management
+    const allActiveIndicators = [...activeIndicators];
+    const overlays = allActiveIndicators.filter(i => i.type === 'overlay' && i.enabled && !i.name.startsWith('EMA'));
+    const emaIndicators = allActiveIndicators.filter(i => i.type === 'overlay' && i.enabled && i.name.startsWith('EMA'));
+    const oscillators = allActiveIndicators.filter(i => i.type === 'oscillator' && i.enabled);
+    const volumeIndicator = allActiveIndicators.find(i => i.name === 'Volume' && i.enabled);
+    
+    // EMA indicators still go on main price pane
+    emaIndicators.forEach(ema => {
+      const key = ema.name;
+      if (indicatorData[key]) {
+        const series = chart.addSeries(LineSeries, {
+          color: ema.color,
+          lineWidth: 1,
+          priceLineVisible: false,
+        });
+        series.setData(indicatorData[key] as LineData[]);
+        indicatorSeries.current[key] = series;
+      }
+    });
+    
+    // Adjust the scale of the main chart to make room for indicator panes
+    chart.applyOptions({
+      layout: {
+        background: { type: ColorType.Solid, color: '#0F1929' },
+        textColor: '#B7BDC6',
+      },
+      rightPriceScale: {
+        scaleMargins: {
+          top: 0.1,
+          bottom: 0.3, // Leave more room at the bottom for indicator panes
+        },
+      },
+    });
+    
     let paneCount = 0;
     
+    // Create separate panes for each indicator
+    // Process each oscillator
     oscillators.forEach(oscillator => {
       if (oscillator.name === 'RSI' && indicatorData['RSI']) {
         // Add RSI pane
@@ -624,7 +660,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Set RSI scale
         chart.priceScale('rsi').applyOptions({
           scaleMargins: {
-            top: 0.1,
+            // Each indicator pane gets its own vertical space segment
+            top: 0.7 + (paneCount - 1) * 0.2,
             bottom: 0.1,
           },
           visible: true,
@@ -632,10 +669,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         });
         
         indicatorSeries.current['RSI'] = rsiPane;
-      } else if (oscillator.name === 'MACD' && 
-                 indicatorData['MACD-Line'] && 
-                 indicatorData['MACD-Signal'] &&
-                 indicatorData['MACD-Histogram']) {
+      }
+      
+      if (oscillator.name === 'MACD' && 
+          indicatorData['MACD-Line'] && 
+          indicatorData['MACD-Signal'] &&
+          indicatorData['MACD-Histogram']) {
         // Add MACD pane
         const macdLinePane = chart.addSeries(LineSeries, {
           color: oscillator.color,
@@ -680,9 +719,11 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         indicatorSeries.current['MACD-Histogram'] = macdHistPane;
         
         paneCount++;
-      } else if (oscillator.name === 'Stochastic' &&
-                indicatorData['Stochastic-K'] &&
-                indicatorData['Stochastic-D']) {
+      }
+      
+      if (oscillator.name === 'Stochastic' &&
+          indicatorData['Stochastic-K'] &&
+          indicatorData['Stochastic-D']) {
         // Add Stochastic pane
         const stochKPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
@@ -733,10 +774,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         indicatorSeries.current['Stochastic-D'] = stochDPane;
         
         paneCount++;
-      } else if (oscillator.name === 'ADX' &&
-                indicatorData['ADX'] &&
-                indicatorData['ADX-DI+'] &&
-                indicatorData['ADX-DI-']) {
+      }
+      
+      if (oscillator.name === 'ADX' &&
+          indicatorData['ADX'] &&
+          indicatorData['ADX-DI+'] &&
+          indicatorData['ADX-DI-']) {
         // Add ADX pane
         const adxPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
@@ -788,7 +831,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         indicatorSeries.current['ADX-DI-'] = diMinusPane;
         
         paneCount++;
-      } else if (oscillator.name === 'ATR' && indicatorData['ATR']) {
+      }
+      
+      if (oscillator.name === 'ATR' && indicatorData['ATR']) {
         // Add ATR pane
         const atrPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
