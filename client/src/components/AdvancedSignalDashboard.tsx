@@ -67,7 +67,7 @@ export default function AdvancedSignalDashboard({
   const [recommendation, setRecommendation] = useState<TradeRecommendation | null>(null);
   const [calculateProgress, setCalculateProgress] = useState<number>(0);
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
-  const [showAdvancedStats, setShowAdvancedStats] = useState(false);
+  const [showAdvancedStats, setShowAdvancedStats] = useState(true);
   
   // Get chart data for all timeframes
   const chartData1m = useChartData(symbol, '1m');
@@ -622,7 +622,7 @@ function DetailedSignalCard({
       </CardContent>
       <CardFooter>
         <Button variant="outline" onClick={toggleAdvanced} className="w-full">
-          {showAdvanced ? 'Hide' : 'Show'} Advanced Analysis
+          {showAdvanced ? 'Hide Detailed Analysis' : 'Show Detailed Analysis'}
         </Button>
       </CardFooter>
     </Card>
