@@ -394,9 +394,13 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       'BB-Upper': times.map((time, i) => ({ time, value: bb?.upper?.[i] })).filter(d => d.value !== undefined),
       'BB-Middle': times.map((time, i) => ({ time, value: bb?.middle?.[i] })).filter(d => d.value !== undefined),
       'BB-Lower': times.map((time, i) => ({ time, value: bb?.lower?.[i] })).filter(d => d.value !== undefined),
-      'MACD-Line': times.map((time, i) => ({ time, value: macd?.macd?.[i] })).filter(d => d.value !== undefined),
-      'MACD-Signal': times.map((time, i) => ({ time, value: macd?.signal?.[i] })).filter(d => d.value !== undefined),
-      'MACD-Histogram': times.map((time, i) => ({ time, value: macd?.histogram?.[i] })).filter(d => d.value !== undefined),
+      'MACD-Line': times.map((time, i) => ({ time, value: macd?.macd?.[i] ?? 0 })),
+      'MACD-Signal': times.map((time, i) => ({ time, value: macd?.signal?.[i] ?? 0 })),
+      'MACD-Histogram': times.map((time, i) => ({ 
+        time, 
+        value: macd?.histogram?.[i] ?? 0,
+        color: macd?.histogram?.[i] && macd.histogram[i] >= 0 ? 'rgba(14, 203, 129, 0.5)' : 'rgba(232, 65, 66, 0.5)'
+      })),
       'Stochastic-K': times.map((time, i) => ({ time, value: stoch?.k?.[i] })).filter(d => d.value !== undefined),
       'Stochastic-D': times.map((time, i) => ({ time, value: stoch?.d?.[i] })).filter(d => d.value !== undefined),
       'ADX': times.map((time, i) => ({ time, value: adx?.adx })).filter(d => d.value !== undefined),
@@ -812,12 +816,14 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         macdLinePane.setData(indicatorData['MACD-Line'] as LineData[]);
         macdSignalPane.setData(indicatorData['MACD-Signal'] as LineData[]);
         
-        // Set histogram colors based on values
-        const histogramData = indicatorData['MACD-Histogram'].map((d: any) => ({
-          ...d,
-          color: d.value >= 0 ? 'rgba(14, 203, 129, 0.5)' : 'rgba(232, 65, 66, 0.5)'
-        }));
-        macdHistPane.setData(histogramData);
+        // Set histogram data directly with proper null check
+        // The colors are already set in the indicatorData setup
+        if (indicatorData['MACD-Histogram'] && Array.isArray(indicatorData['MACD-Histogram'])) {
+          macdHistPane.setData(indicatorData['MACD-Histogram'] as any[]);
+        } else {
+          // Fallback - create an empty array if MACD-Histogram doesn't exist
+          macdHistPane.setData([]);
+        }
         
         // Set MACD scale with better spacing
         chart.priceScale('macd').applyOptions({
