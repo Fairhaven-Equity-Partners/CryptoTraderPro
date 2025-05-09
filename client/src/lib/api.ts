@@ -32,6 +32,15 @@ export let realPriceData: Record<string, {usd: number, usd_24h_change: number}> 
   ripple: { usd: 2.3, usd_24h_change: 4.2 }
 };
 
+// Store last successful price data locally to be used throughout the API calls
+let lastKnownRealPrices: Record<string, {usd: number, usd_24h_change: number}> = {
+  bitcoin: { usd: 102500, usd_24h_change: 3.5 },
+  ethereum: { usd: 2200, usd_24h_change: 5.2 },
+  binancecoin: { usd: 625, usd_24h_change: 2.8 },
+  solana: { usd: 160, usd_24h_change: 7.5 },
+  ripple: { usd: 2.3, usd_24h_change: 4.2 }
+};
+
 // Connect to simulated WebSocket
 export function connectWebSocket(symbols: string[] = []) {
   // Clear any pending reconnect
@@ -332,15 +341,6 @@ export function startRealTimeUpdates() {
   // Register handler for price updates
   registerMessageHandler('priceUpdate', handlePriceUpdate);
   
-    // Store last successful price data locally to be used throughout the API calls
-  let lastKnownRealPrices: Record<string, {usd: number, usd_24h_change: number}> = {
-    bitcoin: { usd: 102500, usd_24h_change: 3.5 },
-    ethereum: { usd: 2200, usd_24h_change: 5.2 },
-    binancecoin: { usd: 625, usd_24h_change: 2.8 },
-    solana: { usd: 160, usd_24h_change: 7.5 },
-    ripple: { usd: 2.3, usd_24h_change: 4.2 }
-  };
-  
   // Try to get real prices initially
   try {
     const initialRequest = fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true')
@@ -354,6 +354,7 @@ export function startRealTimeUpdates() {
         console.log('Initial real prices loaded:', data);
         if (data && data.bitcoin) {
           realPriceData = data;
+          lastKnownRealPrices = data;
         }
       })
       .catch(err => {
@@ -441,6 +442,7 @@ export function startRealTimeUpdates() {
           if (data && data.bitcoin) {
             console.log('Updated real prices from CoinGecko:', data);
             lastKnownRealPrices = data;
+            realPriceData = data; // Update both variables
           }
         })
         .catch(error => {
