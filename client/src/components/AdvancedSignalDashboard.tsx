@@ -50,7 +50,7 @@ export default function AdvancedSignalDashboard({
   onTimeframeSelect 
 }: AdvancedSignalDashboardProps) {
   const isMobile = useIsMobile();
-  const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w'];
+  const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d', '3d', '1w', '1M'];
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
   const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({
     '1m': null,
@@ -60,6 +60,7 @@ export default function AdvancedSignalDashboard({
     '1h': null,
     '4h': null,
     '1d': null,
+    '3d': null,
     '1w': null,
     '1M': null
   });
@@ -76,6 +77,7 @@ export default function AdvancedSignalDashboard({
   const chartData1h = useChartData(symbol, '1h');
   const chartData4h = useChartData(symbol, '4h');
   const chartData1d = useChartData(symbol, '1d');
+  const chartData3d = useChartData(symbol, '3d');
   const chartData1w = useChartData(symbol, '1w');
   const chartData1M = useChartData(symbol, '1M');
   
@@ -87,6 +89,7 @@ export default function AdvancedSignalDashboard({
     '1h': { data: chartData1h.chartData, isLoading: chartData1h.isLoading },
     '4h': { data: chartData4h.chartData, isLoading: chartData4h.isLoading },
     '1d': { data: chartData1d.chartData, isLoading: chartData1d.isLoading },
+    '3d': { data: chartData3d.chartData, isLoading: chartData3d.isLoading },
     '1w': { data: chartData1w.chartData, isLoading: chartData1w.isLoading },
     '1M': { data: chartData1M.chartData, isLoading: chartData1M.isLoading }
   };
