@@ -29,15 +29,18 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
   const [isCalculating, setIsCalculating] = useState(false);
   const [directionType, setDirectionType] = useState<'long' | 'short'>('long');
   
-  // Update entry price when current price changes
+  // Reset calculator when symbol changes
   useEffect(() => {
-    setParams(prev => ({
-      ...prev,
+    setParams({
+      positionSize: 1000,
+      riskPercentage: 2,
       entryPrice: currentPrice,
       stopLoss: directionType === 'long' ? currentPrice * 0.98 : currentPrice * 1.02,
       takeProfit: directionType === 'long' ? currentPrice * 1.04 : currentPrice * 0.96,
-    }));
-  }, [currentPrice, directionType]);
+    });
+    setResult(null);
+    setTimeframeResults({});
+  }, [symbol, currentPrice, directionType]);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

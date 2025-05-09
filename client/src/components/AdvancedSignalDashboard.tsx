@@ -145,6 +145,25 @@ export default function AdvancedSignalDashboard({
     setIsCalculating(false);
   };
   
+  // Reset signals when symbol changes
+  useEffect(() => {
+    setSignals({
+      '1m': null,
+      '5m': null,
+      '15m': null,
+      '30m': null,
+      '1h': null,
+      '4h': null,
+      '1d': null,
+      '3d': null,
+      '1w': null,
+      '1M': null
+    });
+    setRecommendation(null);
+    setCalculateProgress(0);
+    setIsCalculating(false);
+  }, [symbol]);
+
   // Set up automatic calculation of signals
   useEffect(() => {
     // Initial calculation when data is loaded
@@ -162,7 +181,7 @@ export default function AdvancedSignalDashboard({
     
     // Clean up interval on component unmount
     return () => clearInterval(recalculationInterval);
-  }, [isAllDataLoaded]);
+  }, [isAllDataLoaded, symbol]);
   
   // Handle timeframe selection
   const handleTimeframeSelect = (timeframe: TimeFrame) => {

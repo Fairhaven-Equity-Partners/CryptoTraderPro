@@ -17,6 +17,12 @@ export function useAssetPrice(symbol: string) {
   const [realtimePrice, setRealtimePrice] = useState<AssetPrice | null>(null);
   const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
   
+  // Clear realtime price when symbol changes to avoid showing stale data
+  useEffect(() => {
+    setRealtimePrice(null);
+    setIsLiveDataConnected(false);
+  }, [symbol]);
+  
   // Fetch initial price data
   const { data: initialPrice, isLoading, error } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],
@@ -26,6 +32,7 @@ export function useAssetPrice(symbol: string) {
   
   useEffect(() => {
     if (initialPrice) {
+      // Update with fresh data when it arrives
       setRealtimePrice(initialPrice);
     }
   }, [initialPrice]);
@@ -36,7 +43,7 @@ export function useAssetPrice(symbol: string) {
     
     // Register handler for price updates
     const unsubscribe = registerMessageHandler('priceUpdate', (data) => {
-      // Removed console logs for performance
+      // Only update if this update is for our current symbol
       if (data.symbol === symbol) {
         setRealtimePrice(prevPrice => {
           // Merge with previous price data to maintain any fields we still need
