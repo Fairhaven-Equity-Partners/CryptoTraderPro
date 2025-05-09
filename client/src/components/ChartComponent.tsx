@@ -432,7 +432,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     // Main series for price data
     let mainSeriesRef;
     if (chartType === 'candles') {
-      mainSeriesRef = chart.addCandlestickSeries({
+      mainSeriesRef = chart.addSeries('candlestick', {
         upColor: '#0ECB81',
         downColor: '#E84142',
         borderUpColor: '#0ECB81',
@@ -441,12 +441,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         wickDownColor: '#E84142',
       });
     } else if (chartType === 'line') {
-      mainSeriesRef = chart.addLineSeries({
+      mainSeriesRef = chart.addSeries('line', {
         color: '#0ECB81',
         lineWidth: 2,
       });
     } else {
-      mainSeriesRef = chart.addAreaSeries({
+      mainSeriesRef = chart.addSeries('area', {
         topColor: 'rgba(14, 203, 129, 0.4)',
         bottomColor: 'rgba(14, 203, 129, 0.1)',
         lineColor: '#0ECB81',
@@ -469,7 +469,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     
     // Volume series
     if (showVolume && indicatorData['Volume']) {
-      const volumeSeriesRef = chart.addHistogramSeries({
+      const volumeSeriesRef = chart.addSeries('histogram', {
         color: '#26a69a',
         priceFormat: {
           type: 'volume',
@@ -492,20 +492,20 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         if (indicator.name === 'BB') {
           // Bollinger Bands (3 lines)
           if (indicatorData['BB-Upper'] && indicatorData['BB-Middle'] && indicatorData['BB-Lower']) {
-            const upperSeries = chart.addLineSeries({
+            const upperSeries = chart.addSeries('line', {
               color: indicator.color,
               lineWidth: 1,
               priceLineVisible: false,
               lastValueVisible: false,
             });
-            const middleSeries = chart.addLineSeries({
+            const middleSeries = chart.addSeries('line', {
               color: indicator.color,
               lineWidth: 1,
               priceLineVisible: false,
               lastValueVisible: false,
               lineStyle: 2, // Dashed
             });
-            const lowerSeries = chart.addLineSeries({
+            const lowerSeries = chart.addSeries('line', {
               color: indicator.color,
               lineWidth: 1,
               priceLineVisible: false,
@@ -524,7 +524,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           // EMA
           const key = indicator.name;
           if (indicatorData[key]) {
-            const series = chart.addLineSeries({
+            const series = chart.addSeries('line', {
               color: indicator.color,
               lineWidth: 1.5,
               priceLineVisible: false,
@@ -635,7 +635,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           pane: paneCount,
         });
         
-        const macdHistPane = chart.addHistogramSeries({
+        const macdHistPane = chart.addSeries('histogram', {
           color: 'rgba(80, 80, 160, 0.8)',
           priceScaleId: 'macd',
           pane: paneCount,
