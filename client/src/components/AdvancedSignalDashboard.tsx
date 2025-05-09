@@ -67,7 +67,8 @@ export default function AdvancedSignalDashboard({
   const [recommendation, setRecommendation] = useState<TradeRecommendation | null>(null);
   const [calculateProgress, setCalculateProgress] = useState<number>(0);
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
-  const [showAdvancedStats, setShowAdvancedStats] = useState(true);
+  // Always show advanced stats - no toggle
+  const showAdvancedStats = true;
   
   // Get chart data for all timeframes
   const chartData1m = useChartData(symbol, '1m');
