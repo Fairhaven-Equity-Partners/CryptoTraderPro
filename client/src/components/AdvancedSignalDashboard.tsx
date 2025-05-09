@@ -424,10 +424,10 @@ function DetailedSignalCard({
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center">
             {signal.timeframe} Analysis
-            <Badge variant={signal.direction === 'LONG' ? 'success' : 
+            <Badge variant={signal.direction === 'LONG' ? 'outline' : 
                              signal.direction === 'SHORT' ? 'destructive' : 
                              'secondary'} 
-                   className="ml-2">
+                   className={`ml-2 ${signal.direction === 'LONG' ? 'border-green-500 text-green-500' : ''}`}>
               {signal.direction}
             </Badge>
           </div>
@@ -519,7 +519,7 @@ function DetailedSignalCard({
                 
                 let categoryBadge;
                 if (buySignals > sellSignals) {
-                  categoryBadge = <Badge variant="success">Bullish</Badge>;
+                  categoryBadge = <Badge variant="outline" className="border-green-500 text-green-500">Bullish</Badge>;
                 } else if (sellSignals > buySignals) {
                   categoryBadge = <Badge variant="destructive">Bearish</Badge>;
                 } else {
@@ -573,7 +573,8 @@ function DetailedSignalCard({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {signal.supportResistance.slice(0, 4).map((level, i) => (
                   <div key={i} className="flex justify-between items-center p-2 bg-secondary/20 rounded-md">
-                    <Badge variant={level.type === 'support' ? 'success' : 'destructive'}>
+                    <Badge variant={level.type === 'support' ? 'outline' : 'destructive'} 
+                           className={level.type === 'support' ? 'border-green-500 text-green-500' : ''}>
                       {level.type}
                     </Badge>
                     <span className="font-semibold">{formatCurrency(level.price)}</span>
@@ -595,9 +596,10 @@ function DetailedSignalCard({
                   <Alert key={i}>
                     <AlertTitle className="flex justify-between">
                       <span>{pattern.name}</span>
-                      <Badge variant={pattern.direction === 'bullish' ? 'success' : 
+                      <Badge variant={pattern.direction === 'bullish' ? 'outline' : 
                                        pattern.direction === 'bearish' ? 'destructive' : 
-                                       'secondary'}>
+                                       'secondary'}
+                             className={pattern.direction === 'bullish' ? 'border-green-500 text-green-500' : ''}>
                         {pattern.direction}
                       </Badge>
                     </AlertTitle>

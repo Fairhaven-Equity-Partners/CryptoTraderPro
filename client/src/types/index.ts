@@ -1,7 +1,11 @@
 export interface AssetPrice {
   symbol: string;
   price: number;
+  lastPrice?: number;
   change24h: number;
+  name?: string;
+  volume24h?: number;
+  marketCap?: number;
 }
 
 export interface ChartData {
