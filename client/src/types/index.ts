@@ -68,6 +68,13 @@ export interface LeverageResult {
   potentialProfit: string;
   riskRewardRatio: string;
   liquidationPrice: string;
+  takeProfitLevels?: {
+    tp1: string;
+    tp2: string;
+    tp3: string;
+  };
+  recommendedPositionSize?: string;
+  maxPositionSize?: string;
 }
 
 export interface AppTab {

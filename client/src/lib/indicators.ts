@@ -208,6 +208,207 @@ export function calculateSMA(prices: number[], period: number): number[] {
   return sma;
 }
 
+// Calculate Average Directional Index (ADX)
+export function calculateADX(chartData: ChartData[], period = 14): {
+  adx: number;
+  pdi: number;
+  mdi: number;
+} {
+  if (chartData.length < period * 3) {
+    return { adx: 50, pdi: 50, mdi: 50 }; // Not enough data
+  }
+  
+  const highs = chartData.map(candle => candle.high);
+  const lows = chartData.map(candle => candle.low);
+  const closes = chartData.map(candle => candle.close);
+  
+  // Calculate True Range (TR)
+  const trueRanges: number[] = [];
+  for (let i = 1; i < chartData.length; i++) {
+    const hl = highs[i] - lows[i];
+    const hc = Math.abs(highs[i] - closes[i - 1]);
+    const lc = Math.abs(lows[i] - closes[i - 1]);
+    trueRanges.push(Math.max(hl, hc, lc));
+  }
+  
+  // Calculate +DM and -DM
+  const plusDM: number[] = [];
+  const minusDM: number[] = [];
+  
+  for (let i = 1; i < chartData.length; i++) {
+    const upMove = highs[i] - highs[i - 1];
+    const downMove = lows[i - 1] - lows[i];
+    
+    if (upMove > downMove && upMove > 0) {
+      plusDM.push(upMove);
+    } else {
+      plusDM.push(0);
+    }
+    
+    if (downMove > upMove && downMove > 0) {
+      minusDM.push(downMove);
+    } else {
+      minusDM.push(0);
+    }
+  }
+  
+  // Calculate smoothed averages
+  const smoothedTR = calculateSmoothAverage(trueRanges, period);
+  const smoothedPlusDM = calculateSmoothAverage(plusDM, period);
+  const smoothedMinusDM = calculateSmoothAverage(minusDM, period);
+  
+  // Calculate +DI and -DI
+  const plusDI = (smoothedPlusDM / smoothedTR) * 100;
+  const minusDI = (smoothedMinusDM / smoothedTR) * 100;
+  
+  // Calculate DX
+  const dx = (Math.abs(plusDI - minusDI) / (plusDI + minusDI)) * 100;
+  
+  // Calculate ADX (typically a 14-period average of DX)
+  // For simplicity, we're just returning the last DX value as ADX
+  const adx = dx;
+  
+  return { adx, pdi: plusDI, mdi: minusDI };
+}
+
+// Helper function for ADX calculation
+function calculateSmoothAverage(data: number[], period: number): number {
+  let sum = 0;
+  const startIdx = Math.max(0, data.length - period);
+  const actualPeriod = Math.min(period, data.length);
+  
+  for (let i = startIdx; i < data.length; i++) {
+    sum += data[i];
+  }
+  
+  return sum / actualPeriod;
+}
+
+// Calculate Average True Range (ATR)
+export function calculateATR(chartData: ChartData[], period = 14): number {
+  if (chartData.length < period) {
+    return 0; // Not enough data
+  }
+  
+  const trueRanges: number[] = [];
+  
+  // Calculate True Range
+  for (let i = 1; i < chartData.length; i++) {
+    const high = chartData[i].high;
+    const low = chartData[i].low;
+    const prevClose = chartData[i - 1].close;
+    
+    const tr1 = high - low;
+    const tr2 = Math.abs(high - prevClose);
+    const tr3 = Math.abs(low - prevClose);
+    
+    trueRanges.push(Math.max(tr1, tr2, tr3));
+  }
+  
+  // Calculate ATR
+  let atr = 0;
+  if (trueRanges.length >= period) {
+    // First ATR is a simple average
+    let sum = 0;
+    for (let i = 0; i < period; i++) {
+      sum += trueRanges[i];
+    }
+    atr = sum / period;
+    
+    // Subsequent ATRs use smoothing
+    for (let i = period; i < trueRanges.length; i++) {
+      atr = ((period - 1) * atr + trueRanges[i]) / period;
+    }
+  }
+  
+  return atr;
+}
+
+// Calculate On-Balance Volume (OBV)
+export function calculateOBV(chartData: ChartData[]): number {
+  if (chartData.length < 2) {
+    return 0;
+  }
+  
+  let obv = 0;
+  for (let i = 1; i < chartData.length; i++) {
+    if (chartData[i].close > chartData[i - 1].close) {
+      obv += chartData[i].volume;
+    } else if (chartData[i].close < chartData[i - 1].close) {
+      obv -= chartData[i].volume;
+    }
+  }
+  
+  return obv;
+}
+
+// Calculate Fibonacci Retracement Levels
+export function calculateFibonacciLevels(high: number, low: number): {
+  level0: number; // 0%
+  level236: number; // 23.6%
+  level382: number; // 38.2%
+  level500: number; // 50.0%
+  level618: number; // 61.8%
+  level786: number; // 78.6%
+  level1000: number; // 100%
+} {
+  const diff = high - low;
+  
+  return {
+    level0: high,
+    level236: high - 0.236 * diff,
+    level382: high - 0.382 * diff,
+    level500: high - 0.5 * diff,
+    level618: high - 0.618 * diff,
+    level786: high - 0.786 * diff,
+    level1000: low
+  };
+}
+
+// Calculate Money Flow Index (MFI)
+export function calculateMFI(chartData: ChartData[], period = 14): number {
+  if (chartData.length < period) {
+    return 50; // Not enough data
+  }
+  
+  const typicalPrices: number[] = [];
+  const moneyFlow: number[] = [];
+  
+  // Calculate typical price and money flow
+  for (const candle of chartData) {
+    const typicalPrice = (candle.high + candle.low + candle.close) / 3;
+    typicalPrices.push(typicalPrice);
+    moneyFlow.push(typicalPrice * candle.volume);
+  }
+  
+  // Calculate positive and negative money flow
+  let positiveMF = 0;
+  let negativeMF = 0;
+  
+  for (let i = 1; i <= period; i++) {
+    const index = typicalPrices.length - i;
+    const prevIndex = index - 1;
+    
+    if (index > 0) {
+      if (typicalPrices[index] > typicalPrices[prevIndex]) {
+        positiveMF += moneyFlow[index];
+      } else if (typicalPrices[index] < typicalPrices[prevIndex]) {
+        negativeMF += moneyFlow[index];
+      }
+    }
+  }
+  
+  // Calculate money flow ratio and index
+  if (negativeMF === 0) {
+    return 100;
+  }
+  
+  const moneyFlowRatio = positiveMF / negativeMF;
+  const mfi = 100 - (100 / (1 + moneyFlowRatio));
+  
+  return mfi;
+}
+
 // Generate indicators for signal analysis
 export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   if (chartData.length < 50) {
@@ -215,6 +416,8 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   }
   
   const closes = chartData.map(candle => candle.close);
+  const highs = chartData.map(candle => candle.high);
+  const lows = chartData.map(candle => candle.low);
   const volumes = chartData.map(candle => candle.volume);
   
   const indicators: Indicator[] = [];
@@ -225,7 +428,8 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     name: 'RSI',
     category: 'MOMENTUM',
     signal: rsi > 70 ? 'SELL' : rsi < 30 ? 'BUY' : 'NEUTRAL',
-    value: Math.round(rsi)
+    value: Math.round(rsi),
+    strength: rsi > 80 || rsi < 20 ? 'STRONG' : rsi > 70 || rsi < 30 ? 'MODERATE' : 'WEAK'
   });
   
   // MACD
@@ -237,16 +441,25 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     (macd.histogram[lastIndex] > macd.histogram[prevIndex] ? 'BUY' : 'NEUTRAL') : 
     (macd.histogram[lastIndex] < macd.histogram[prevIndex] ? 'SELL' : 'NEUTRAL');
   
+  // Determine the strength of the MACD signal
+  const macdStrength = Math.abs(macd.histogram[lastIndex]) > Math.abs(macd.histogram[prevIndex]) * 1.5 ? 
+    'STRONG' : Math.abs(macd.histogram[lastIndex]) > Math.abs(macd.histogram[prevIndex]) * 1.2 ? 
+    'MODERATE' : 'WEAK';
+  
   indicators.push({
     name: 'MACD',
     category: 'MOMENTUM',
-    signal: macdSignal
+    signal: macdSignal,
+    strength: macdStrength
   });
   
   // Moving Averages
+  const sma20 = calculateSMA(closes, 20);
   const sma50 = calculateSMA(closes, 50);
+  const sma100 = calculateSMA(closes, 100);
   const sma200 = calculateSMA(closes, 200);
   
+  // Golden Cross / Death Cross (MA50 vs MA200)
   let maCrossSignal: IndicatorSignal = 'NEUTRAL';
   if (sma50[sma50.length - 1] > sma200[sma200.length - 1]) {
     maCrossSignal = 'BUY';
@@ -255,28 +468,68 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   }
   
   indicators.push({
-    name: 'MA (50/200)',
+    name: 'MA Cross',
     category: 'TREND',
-    signal: maCrossSignal
+    signal: maCrossSignal,
+    strength: Math.abs(sma50[sma50.length - 1] - sma200[sma200.length - 1]) / sma200[sma200.length - 1] > 0.05 ? 
+      'STRONG' : 'MODERATE',
+    value: `50/200`
+  });
+  
+  // Price relative to key moving averages
+  const lastClose = closes[closes.length - 1];
+  const priceVsMAs = [
+    { ma: sma20[sma20.length - 1], period: 20 },
+    { ma: sma50[sma50.length - 1], period: 50 },
+    { ma: sma100[sma100.length - 1], period: 100 },
+    { ma: sma200[sma200.length - 1], period: 200 }
+  ];
+  
+  let bullishCount = 0;
+  let bearishCount = 0;
+  
+  priceVsMAs.forEach(({ ma }) => {
+    if (lastClose > ma) bullishCount++;
+    else bearishCount++;
+  });
+  
+  indicators.push({
+    name: 'Price vs MAs',
+    category: 'TREND',
+    signal: bullishCount > bearishCount ? 'BUY' : bearishCount > bullishCount ? 'SELL' : 'NEUTRAL',
+    strength: Math.abs(bullishCount - bearishCount) > 2 ? 'STRONG' : 'MODERATE',
+    value: `${bullishCount}/${priceVsMAs.length} bullish`
   });
   
   // Bollinger Bands
   const bb = calculateBollingerBands(closes);
-  const lastClose = closes[closes.length - 1];
-  const lastUpper = bb.upper[bb.upper.length - 1];
-  const lastLower = bb.lower[bb.lower.length - 1];
+  const lastBBUpper = bb.upper[bb.upper.length - 1];
+  const lastBBLower = bb.lower[bb.lower.length - 1];
+  const lastBBMiddle = bb.middle[bb.middle.length - 1];
   
   let bbSignal: IndicatorSignal = 'NEUTRAL';
-  if (lastClose > lastUpper) {
+  let bbStrength: IndicatorStrength = 'MODERATE';
+  
+  // Bollinger Band breakout
+  if (lastClose > lastBBUpper) {
     bbSignal = 'SELL';
-  } else if (lastClose < lastLower) {
+    bbStrength = (lastClose - lastBBUpper) / (lastBBUpper - lastBBMiddle) > 0.5 ? 'STRONG' : 'MODERATE';
+  } else if (lastClose < lastBBLower) {
     bbSignal = 'BUY';
+    bbStrength = (lastBBLower - lastClose) / (lastBBMiddle - lastBBLower) > 0.5 ? 'STRONG' : 'MODERATE';
+  } else if (lastClose > lastBBMiddle) {
+    bbSignal = 'NEUTRAL';
+    bbStrength = 'WEAK';
+  } else {
+    bbSignal = 'NEUTRAL';
+    bbStrength = 'WEAK';
   }
   
   indicators.push({
     name: 'Bollinger',
     category: 'VOLATILITY',
-    signal: bbSignal
+    signal: bbSignal,
+    strength: bbStrength
   });
   
   // Volume trend
@@ -290,67 +543,136 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     strength: lastVolume > avgVolume * 2 ? 'HIGH' : lastVolume > avgVolume * 1.5 ? 'STRONG' : lastVolume < avgVolume * 0.5 ? 'WEAK' : 'MODERATE'
   });
   
-  // Add more indicators for a complete analysis
   // Stochastic
   const stoch = calculateStochastic(chartData);
   const lastK = stoch.k[stoch.k.length - 1];
   const lastD = stoch.d[stoch.d.length - 1];
   
   let stochSignal: IndicatorSignal = 'NEUTRAL';
+  let stochStrength: IndicatorStrength = 'MODERATE';
+  
   if (lastK > 80 && lastD > 80) {
     stochSignal = 'SELL';
+    stochStrength = lastK > 90 && lastD > 90 ? 'STRONG' : 'MODERATE';
   } else if (lastK < 20 && lastD < 20) {
     stochSignal = 'BUY';
+    stochStrength = lastK < 10 && lastD < 10 ? 'STRONG' : 'MODERATE';
+  } else if (lastK > lastD && lastK < 80) {
+    stochSignal = 'BUY';
+    stochStrength = 'WEAK';
+  } else if (lastK < lastD && lastK > 20) {
+    stochSignal = 'SELL';
+    stochStrength = 'WEAK';
   }
   
   indicators.push({
     name: 'Stochastic',
     category: 'MOMENTUM',
-    signal: stochSignal
+    signal: stochSignal,
+    strength: stochStrength,
+    value: `K:${Math.round(lastK)} D:${Math.round(lastD)}`
   });
   
-  // Simple ADX for trend strength
+  // ADX for trend strength
+  const adxResult = calculateADX(chartData);
+  let adxSignal: IndicatorSignal = 'NEUTRAL';
+  
+  if (adxResult.adx > 25) {
+    if (adxResult.pdi > adxResult.mdi) {
+      adxSignal = 'BUY';
+    } else if (adxResult.mdi > adxResult.pdi) {
+      adxSignal = 'SELL';
+    }
+  }
+  
   indicators.push({
     name: 'ADX',
     category: 'TREND',
-    signal: 'NEUTRAL', // ADX doesn't give direction, just strength
-    strength: Math.random() > 0.5 ? 'STRONG' : 'MODERATE' // Simulated value in this example
+    signal: adxSignal,
+    strength: adxResult.adx > 40 ? 'STRONG' : adxResult.adx > 25 ? 'MODERATE' : 'WEAK',
+    value: Math.round(adxResult.adx)
   });
   
   // ATR for volatility
+  const atr = calculateATR(chartData);
+  const atrPercentage = (atr / lastClose) * 100;
+  
   indicators.push({
     name: 'ATR',
     category: 'VOLATILITY',
     signal: 'NEUTRAL', // ATR doesn't give direction, just volatility
-    strength: Math.random() > 0.7 ? 'HIGH' : 'MODERATE' // Simulated value
+    strength: atrPercentage > 5 ? 'HIGH' : atrPercentage > 3 ? 'STRONG' : atrPercentage > 1 ? 'MODERATE' : 'WEAK',
+    value: `${atrPercentage.toFixed(1)}%`
   });
   
-  // Chaikin Oscillator (simplified)
-  indicators.push({
-    name: 'Chaikin',
-    category: 'VOLATILITY',
-    signal: Math.random() > 0.5 ? 'BUY' : 'NEUTRAL' // Simulated value
-  });
+  // On-Balance Volume (OBV)
+  const obv = calculateOBV(chartData);
+  const obvSignal = obv > 0 ? 'BUY' : obv < 0 ? 'SELL' : 'NEUTRAL';
   
-  // On-Balance Volume (simplified)
   indicators.push({
     name: 'OBV',
     category: 'VOLUME',
-    signal: Math.random() > 0.6 ? 'BUY' : 'NEUTRAL' // Simulated value
+    signal: obvSignal,
+    strength: Math.abs(obv) > 10000 ? 'STRONG' : 'MODERATE'
   });
   
-  // Money Flow Index (simplified)
+  // Money Flow Index
+  const mfi = calculateMFI(chartData);
+  
   indicators.push({
     name: 'MFI',
     category: 'VOLUME',
-    signal: Math.random() > 0.5 ? 'BUY' : 'NEUTRAL' // Simulated value
+    signal: mfi > 80 ? 'SELL' : mfi < 20 ? 'BUY' : 'NEUTRAL',
+    strength: mfi > 90 || mfi < 10 ? 'STRONG' : mfi > 80 || mfi < 20 ? 'MODERATE' : 'WEAK',
+    value: Math.round(mfi)
   });
   
-  // Ichimoku Cloud (simplified)
+  // Fibonacci Retracement (simplified)
+  const recentHigh = Math.max(...highs.slice(-50));
+  const recentLow = Math.min(...lows.slice(-50));
+  const fibLevels = calculateFibonacciLevels(recentHigh, recentLow);
+  
+  // Check which level we're at
+  let fibSignal: IndicatorSignal = 'NEUTRAL';
+  if (lastClose <= fibLevels.level382 && lastClose >= fibLevels.level500) {
+    fibSignal = 'BUY'; // 38.2% - 50% retracement is a good buy zone
+  } else if (lastClose <= fibLevels.level618 && lastClose >= fibLevels.level786) {
+    fibSignal = 'BUY'; // 61.8% - 78.6% retracement is a strong buy zone
+  } else if (lastClose >= fibLevels.level236 && lastClose <= fibLevels.level0) {
+    fibSignal = 'SELL'; // Price near the top
+  }
+  
   indicators.push({
-    name: 'Ichimoku',
+    name: 'Fibonacci',
     category: 'TREND',
-    signal: Math.random() > 0.6 ? 'BUY' : 'NEUTRAL' // Simulated value
+    signal: fibSignal,
+    strength: lastClose <= fibLevels.level618 && lastClose >= fibLevels.level786 ? 'STRONG' : 'MODERATE'
+  });
+  
+  // Previous trends continuation
+  const shortTrend = closes[closes.length - 1] > closes[closes.length - 5] ? 'BUY' : 'SELL';
+  const mediumTrend = closes[closes.length - 1] > closes[closes.length - 20] ? 'BUY' : 'SELL';
+  const longTrend = closes[closes.length - 1] > closes[closes.length - 50] ? 'BUY' : 'SELL';
+  
+  let trendContinuationSignal: IndicatorSignal = 'NEUTRAL';
+  let trendContinuationStrength: IndicatorStrength = 'MODERATE';
+  
+  if (shortTrend === mediumTrend && mediumTrend === longTrend) {
+    trendContinuationSignal = shortTrend;
+    trendContinuationStrength = 'STRONG';
+  } else if (shortTrend === mediumTrend) {
+    trendContinuationSignal = shortTrend;
+    trendContinuationStrength = 'MODERATE';
+  } else {
+    trendContinuationSignal = shortTrend;
+    trendContinuationStrength = 'WEAK';
+  }
+  
+  indicators.push({
+    name: 'Trend',
+    category: 'TREND',
+    signal: trendContinuationSignal,
+    strength: trendContinuationStrength
   });
   
   return indicators;
