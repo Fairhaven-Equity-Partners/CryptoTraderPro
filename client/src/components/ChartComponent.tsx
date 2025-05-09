@@ -1,5 +1,24 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickData, LineData, CrosshairMode, SeriesType, PriceScaleMode, UTCTimestamp, AutoscaleInfo, DeepPartial, PriceLineOptions } from 'lightweight-charts';
+import { 
+  createChart, 
+  ColorType, 
+  IChartApi, 
+  ISeriesApi, 
+  CandlestickData, 
+  LineData, 
+  CrosshairMode, 
+  SeriesType, 
+  PriceScaleMode, 
+  UTCTimestamp, 
+  AutoscaleInfo, 
+  DeepPartial, 
+  PriceLineOptions,
+  // Series definitions
+  CandlestickSeries,
+  LineSeries,
+  AreaSeries,
+  HistogramSeries 
+} from 'lightweight-charts';
 import { useChartData } from '../hooks/useMarketData';
 import { TimeFrame, ChartData } from '../types';
 // Using ResizeObserver directly instead of the useSize hook
@@ -432,8 +451,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     // Main series for price data
     let mainSeriesRef;
     if (chartType === 'candles') {
-      // Use the standard series type parameter with string literal
-      mainSeriesRef = chart.addSeries('candlestick', {
+      mainSeriesRef = chart.addSeries(CandlestickSeries, {
         upColor: '#0ECB81',
         downColor: '#E84142',
         borderUpColor: '#0ECB81',
@@ -442,12 +460,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         wickDownColor: '#E84142',
       });
     } else if (chartType === 'line') {
-      mainSeriesRef = chart.addSeries('line', {
+      mainSeriesRef = chart.addSeries(LineSeries, {
         color: '#0ECB81',
         lineWidth: 2,
       });
     } else {
-      mainSeriesRef = chart.addSeries('area', {
+      mainSeriesRef = chart.addSeries(AreaSeries, {
         topColor: 'rgba(14, 203, 129, 0.4)',
         bottomColor: 'rgba(14, 203, 129, 0.1)',
         lineColor: '#0ECB81',
@@ -470,7 +488,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     
     // Volume series
     if (showVolume && indicatorData['Volume']) {
-      const volumeSeriesRef = chart.addSeries('histogram', {
+      const volumeSeriesRef = chart.addSeries(HistogramSeries, {
         color: '#26a69a',
         priceFormat: {
           type: 'volume',
@@ -493,20 +511,20 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         if (indicator.name === 'BB') {
           // Bollinger Bands (3 lines)
           if (indicatorData['BB-Upper'] && indicatorData['BB-Middle'] && indicatorData['BB-Lower']) {
-            const upperSeries = chart.addSeries('line', {
+            const upperSeries = chart.addSeries(LineSeries, {
               color: indicator.color,
               lineWidth: 1,
               priceLineVisible: false,
               lastValueVisible: false,
             });
-            const middleSeries = chart.addSeries('line', {
+            const middleSeries = chart.addSeries(LineSeries, {
               color: indicator.color,
               lineWidth: 1,
               priceLineVisible: false,
               lastValueVisible: false,
               lineStyle: 2, // Dashed
             });
-            const lowerSeries = chart.addSeries('line', {
+            const lowerSeries = chart.addSeries(LineSeries, {
               color: indicator.color,
               lineWidth: 1,
               priceLineVisible: false,
@@ -525,7 +543,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           // EMA
           const key = indicator.name;
           if (indicatorData[key]) {
-            const series = chart.addSeries('line', {
+            const series = chart.addSeries(LineSeries, {
               color: indicator.color,
               lineWidth: 1.5,
               priceLineVisible: false,
@@ -579,7 +597,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     oscillators.forEach(oscillator => {
       if (oscillator.name === 'RSI' && indicatorData['RSI']) {
         // Add RSI pane
-        const rsiPane = chart.addSeries('line', {
+        const rsiPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
           lineWidth: 1.5,
           priceScaleId: 'rsi',
@@ -622,21 +640,21 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
                  indicatorData['MACD-Signal'] &&
                  indicatorData['MACD-Histogram']) {
         // Add MACD pane
-        const macdLinePane = chart.addSeries('line', {
+        const macdLinePane = chart.addSeries(LineSeries, {
           color: oscillator.color,
           lineWidth: 1.5,
           priceScaleId: 'macd',
           pane: paneCount,
         });
         
-        const macdSignalPane = chart.addSeries('line', {
+        const macdSignalPane = chart.addSeries(LineSeries, {
           color: '#E84142',
           lineWidth: 1.5,
           priceScaleId: 'macd',
           pane: paneCount,
         });
         
-        const macdHistPane = chart.addSeries('histogram', {
+        const macdHistPane = chart.addSeries(HistogramSeries, {
           color: 'rgba(80, 80, 160, 0.8)',
           priceScaleId: 'macd',
           pane: paneCount,
@@ -672,14 +690,14 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
                 indicatorData['Stochastic-K'] &&
                 indicatorData['Stochastic-D']) {
         // Add Stochastic pane
-        const stochKPane = chart.addSeries('line', {
+        const stochKPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
           lineWidth: 1.5,
           priceScaleId: 'stoch',
           pane: paneCount,
         });
         
-        const stochDPane = chart.addSeries('line', {
+        const stochDPane = chart.addSeries(LineSeries, {
           color: '#FF9800',
           lineWidth: 1.5,
           priceScaleId: 'stoch',
@@ -728,21 +746,21 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
                 indicatorData['ADX-DI+'] &&
                 indicatorData['ADX-DI-']) {
         // Add ADX pane
-        const adxPane = chart.addSeries('line', {
+        const adxPane = chart.addSeries(LineSeries, {
           color: oscillator.color,
           lineWidth: 1.5,
           priceScaleId: 'adx',
           pane: paneCount,
         });
         
-        const diPlusPane = chart.addSeries('line', {
+        const diPlusPane = chart.addSeries(LineSeries, {
           color: '#0ECB81',
           lineWidth: 1.5,
           priceScaleId: 'adx',
           pane: paneCount,
         });
         
-        const diMinusPane = chart.addSeries('line', {
+        const diMinusPane = chart.addSeries(LineSeries, {
           color: '#E84142',
           lineWidth: 1.5,
           priceScaleId: 'adx',
