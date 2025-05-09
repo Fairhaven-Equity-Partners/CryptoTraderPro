@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -99,7 +99,7 @@ export default function AdvancedSignalDashboard({
   const isAllDataLoaded = !Object.values(chartDataMap).some(chart => chart.isLoading);
   
   // Calculate signals for a specific timeframe
-  const calculateSignalForTimeframe = (timeframe: TimeFrame) => {
+  const calculateSignalForTimeframe = useCallback((timeframe: TimeFrame) => {
     if (chartDataMap[timeframe]?.data?.length) {
       try {
         const signal = calculateTimeframeConfidence(chartDataMap[timeframe].data, timeframe);
@@ -110,10 +110,10 @@ export default function AdvancedSignalDashboard({
       }
     }
     return null;
-  };
+  }, [chartDataMap]);
   
   // Calculate signals for all timeframes
-  const calculateAllSignals = async () => {
+  const calculateAllSignals = useCallback(async () => {
     if (!isAllDataLoaded) return;
     setIsCalculating(true);
     
@@ -143,10 +143,12 @@ export default function AdvancedSignalDashboard({
     
     setCalculateProgress(100);
     setIsCalculating(false);
-  };
+  }, [symbol, isAllDataLoaded, signals, timeframes, calculateSignalForTimeframe]);
   
-  // Reset signals when symbol changes
+  // Reset signals and trigger calculation when symbol changes
   useEffect(() => {
+    console.log("Symbol changed to:", symbol);
+    // Reset all signals
     setSignals({
       '1m': null,
       '5m': null,
@@ -162,16 +164,24 @@ export default function AdvancedSignalDashboard({
     setRecommendation(null);
     setCalculateProgress(0);
     setIsCalculating(false);
-  }, [symbol]);
-
-  // Set up automatic calculation of signals
-  useEffect(() => {
-    // Initial calculation when data is loaded
-    if (isAllDataLoaded && !isCalculating && calculateProgress === 0) {
-      calculateAllSignals();
-    }
     
-    // Set up recurring automatic recalculation (every 30 seconds)
+    // We'll let the calculation effect handle the recalculation
+    // once the data is loaded for the new symbol
+  }, [symbol]);
+  
+  // Effect to watch for all data loaded and trigger calculation
+  useEffect(() => {
+    if (isAllDataLoaded && !isCalculating) {
+      console.log("All data loaded for", symbol, "- calculating signals");
+      // Use setTimeout to ensure UI has time to update
+      setTimeout(() => {
+        calculateAllSignals();
+      }, 100);
+    }
+  }, [isAllDataLoaded, symbol, calculateAllSignals, isCalculating]);
+
+  // Set up automatic recalculation interval
+  useEffect(() => {
     const recalculationInterval = setInterval(() => {
       if (isAllDataLoaded && !isCalculating) {
         console.log("Auto-recalculating signals...");
@@ -181,10 +191,10 @@ export default function AdvancedSignalDashboard({
     
     // Clean up interval on component unmount
     return () => clearInterval(recalculationInterval);
-  }, [isAllDataLoaded, symbol]);
+  }, [isAllDataLoaded, isCalculating, calculateAllSignals]);
   
   // Handle timeframe selection
-  const handleTimeframeSelect = (timeframe: TimeFrame) => {
+  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
     
     // Recalculate signals if specific timeframe is selected and data is available
@@ -198,7 +208,7 @@ export default function AdvancedSignalDashboard({
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  };
+  }, [isAllDataLoaded, isCalculating, chartDataMap, calculateSignalForTimeframe, onTimeframeSelect]);
   
   // Get signal for selected timeframe
   const selectedSignal = signals[selectedTimeframe];
