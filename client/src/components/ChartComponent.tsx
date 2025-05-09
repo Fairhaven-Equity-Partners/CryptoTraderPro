@@ -353,6 +353,33 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     timeRange?: {from: number, to: number},
     priceRange?: {min: number, max: number}
   }>({});
+  
+  // Save the chart state when the chart is updated
+  const saveChartState = useCallback(() => {
+    if (chartInstance.current) {
+      try {
+        const visibleLogicalRange = chartInstance.current.timeScale().getVisibleLogicalRange();
+        if (visibleLogicalRange) {
+          chartState.current.timeRange = {
+            from: visibleLogicalRange.from,
+            to: visibleLogicalRange.to
+          };
+        }
+        
+        if (mainSeries.current) {
+          const priceRange = mainSeries.current.priceScale().getVisiblePriceRange();
+          if (priceRange) {
+            chartState.current.priceRange = {
+              min: priceRange.minValue,
+              max: priceRange.maxValue
+            };
+          }
+        }
+      } catch (error) {
+        console.error('Error saving chart state:', error);
+      }
+    }
+  }, []);
 
   // Convert to lightweight-charts format
   const formattedCandlesticks = useMemo(() => {
@@ -1220,59 +1247,74 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   };
   
   return (
-    <div className="mb-3 bg-secondary rounded-lg p-3 mx-2">
+    <div className="mb-3 bg-[#0F1929] rounded-lg overflow-hidden shadow-lg mx-2">
+      {/* Chart header with DexScreener style */}
       <div className="flex flex-col">
-        <div className="flex justify-between items-center mb-3">
-          <h2 className="text-white text-lg font-medium">{symbol} Chart</h2>
+        <div className="flex justify-between items-center p-3 bg-[#121926] border-b border-[#1E2C3E]">
+          <h2 className="text-white text-base font-medium">{symbol} Chart</h2>
           
-          {/* Chart type selector */}
-          <div className="flex space-x-1 mr-4">
-            <button
-              className={`p-1 text-xs rounded ${chartType === 'candles' ? 'bg-accent text-primary' : 'bg-gray-700 text-neutral'}`}
-              onClick={() => handleChartTypeChange('candles')}
-              title="Candlestick Chart"
-            >
-              <span role="img" aria-label="candlestick">📊</span>
-            </button>
-            <button
-              className={`p-1 text-xs rounded ${chartType === 'line' ? 'bg-accent text-primary' : 'bg-gray-700 text-neutral'}`}
-              onClick={() => handleChartTypeChange('line')}
-              title="Line Chart"
-            >
-              <span role="img" aria-label="line">📈</span>
-            </button>
-            <button
-              className={`p-1 text-xs rounded ${chartType === 'area' ? 'bg-accent text-primary' : 'bg-gray-700 text-neutral'}`}
-              onClick={() => handleChartTypeChange('area')}
-              title="Area Chart"
-            >
-              <span role="img" aria-label="area">📉</span>
-            </button>
-          </div>
-          
-          {/* Timeframe selector */}
-          <div className="flex items-center">
-            <div className="flex space-x-1">
-              {(showAllTimeframes ? timeframes : visibleTimeframes).map(tf => (
-                <button
-                  key={tf}
-                  className={`py-1 px-2 text-xs font-medium rounded ${
-                    tf === timeframe 
-                      ? 'bg-accent text-primary' 
-                      : 'bg-gray-700 text-neutral'
-                  }`}
-                  onClick={() => onChangeTimeframe(tf)}
-                >
-                  {tf}
-                </button>
-              ))}
+          <div className="flex space-x-3">
+            {/* Chart type selector - DexScreener style */}
+            <div className="flex rounded-md bg-[#1E2C3E] p-0.5">
               <button
-                className="py-1 px-2 text-xs font-medium rounded bg-gray-700 text-neutral"
-                onClick={toggleAllTimeframes}
-                title={showAllTimeframes ? "Show fewer timeframes" : "Show all timeframes"}
+                className={`px-3 py-1 text-xs rounded-md ${
+                  chartType === 'candles' 
+                    ? 'bg-gradient-to-r from-[#3772FF] to-[#2359F9] text-white font-medium' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={() => handleChartTypeChange('candles')}
+                title="Candlestick Chart"
               >
-                {showAllTimeframes ? "−" : "+"}
+                Candles
               </button>
+              <button
+                className={`px-3 py-1 text-xs rounded-md ${
+                  chartType === 'line' 
+                    ? 'bg-gradient-to-r from-[#3772FF] to-[#2359F9] text-white font-medium' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={() => handleChartTypeChange('line')}
+                title="Line Chart"
+              >
+                Line
+              </button>
+              <button
+                className={`px-3 py-1 text-xs rounded-md ${
+                  chartType === 'area' 
+                    ? 'bg-gradient-to-r from-[#3772FF] to-[#2359F9] text-white font-medium' 
+                    : 'text-gray-300 hover:text-white'
+                }`}
+                onClick={() => handleChartTypeChange('area')}
+                title="Area Chart"
+              >
+                Area
+              </button>
+            </div>
+            
+            {/* Timeframe selector - DexScreener style */}
+            <div className="flex items-center">
+              <div className="flex space-x-1">
+                {(showAllTimeframes ? TIMEFRAMES : visibleTimeframes).map(tf => (
+                  <button
+                    key={tf}
+                    className={`py-1 px-2 text-xs font-medium rounded-md ${
+                      tf === timeframe 
+                        ? 'bg-gradient-to-r from-[#3772FF] to-[#2359F9] text-white' 
+                        : 'bg-[#1E2C3E] text-gray-300 hover:bg-[#2A3A50]'
+                    }`}
+                    onClick={() => onChangeTimeframe(tf)}
+                  >
+                    {tf}
+                  </button>
+                ))}
+                <button
+                  className="py-1 px-2 text-xs font-medium rounded-md bg-[#1E2C3E] text-gray-300 hover:bg-[#2A3A50]"
+                  onClick={toggleAllTimeframes}
+                  title={showAllTimeframes ? "Show fewer timeframes" : "Show all timeframes"}
+                >
+                  {showAllTimeframes ? "−" : "+"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
