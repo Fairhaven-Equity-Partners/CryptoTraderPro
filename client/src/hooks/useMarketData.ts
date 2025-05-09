@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { 
   fetchAllAssets, 
@@ -6,17 +6,20 @@ import {
   fetchChartData, 
   connectWebSocket, 
   registerMessageHandler, 
-  subscribeToSymbols 
+  subscribeToSymbols,
+  registerChartUpdateListener 
 } from '../lib/api';
 import { AssetPrice, ChartData, TimeFrame } from '../types';
 
 // Hook for getting real-time asset price data
 export function useAssetPrice(symbol: string) {
   const [realtimePrice, setRealtimePrice] = useState<AssetPrice | null>(null);
+  const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
   
   // Fetch initial price data
   const { data: initialPrice, isLoading, error } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],
+    queryFn: () => fetchAssetBySymbol(symbol),
     staleTime: 30000, // 30 seconds
   });
   
@@ -31,9 +34,10 @@ export function useAssetPrice(symbol: string) {
     connectWebSocket([symbol]);
     
     // Register handler for price updates
-    const unsubscribe = registerMessageHandler('price_update', (data) => {
+    const unsubscribe = registerMessageHandler('priceUpdate', (data) => {
       if (data.symbol === symbol) {
         setRealtimePrice(data);
+        setIsLiveDataConnected(true);
       }
     });
     
@@ -49,41 +53,142 @@ export function useAssetPrice(symbol: string) {
   return {
     price: realtimePrice || initialPrice,
     isLoading,
-    error
+    error,
+    isLiveDataConnected
   };
 }
 
-// Hook for getting chart data
+// Hook for getting chart data with live updates
 export function useChartData(symbol: string, timeframe: TimeFrame) {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [`/api/chart/${symbol}/${timeframe}`],
-    queryFn: () => fetchChartData(symbol, timeframe),
-    staleTime: 60000, // 1 minute
-  });
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
   
-  // Auto-refresh data on timeframe change
+  // Reference to track if the component is mounted
+  const isMounted = useRef(true);
+  
+  // Fetch chart data
+  const fetchData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const data = await fetchChartData(symbol, timeframe);
+      
+      if (isMounted.current) {
+        setChartData(data);
+        setIsLoading(false);
+        setError(null);
+      }
+    } catch (err) {
+      if (isMounted.current) {
+        setError(err instanceof Error ? err : new Error('Failed to fetch chart data'));
+        setIsLoading(false);
+      }
+    }
+  }, [symbol, timeframe]);
+  
+  // Initial fetch
   useEffect(() => {
-    refetch();
-  }, [timeframe, refetch]);
+    fetchData();
+    
+    // Register for live updates
+    const unsubscribe = registerChartUpdateListener(symbol, timeframe, () => {
+      fetchChartData(symbol, timeframe)
+        .then(newData => {
+          if (isMounted.current) {
+            setChartData(newData);
+            setIsLiveDataConnected(true);
+          }
+        })
+        .catch(err => {
+          console.error('Error updating chart data:', err);
+        });
+    });
+    
+    // Set up cleanup
+    return () => {
+      isMounted.current = false;
+      unsubscribe();
+    };
+  }, [symbol, timeframe, fetchData]);
+  
+  // Reset mounted flag on cleanup
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  
+  const refetch = useCallback(() => {
+    fetchData();
+  }, [fetchData]);
   
   return {
-    chartData: data || [],
+    chartData,
     isLoading,
     error,
-    refetch
+    refetch,
+    isLiveDataConnected
   };
 }
 
-// Hook for getting asset list
+// Hook for getting asset list with live updates
 export function useAssetList() {
+  const [assets, setAssets] = useState<AssetPrice[]>([]);
+  const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
+  
+  // Fetch asset list
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/crypto'],
+    queryFn: fetchAllAssets,
     staleTime: 60000, // 1 minute
   });
   
+  useEffect(() => {
+    if (data) {
+      setAssets(data);
+    }
+  }, [data]);
+  
+  // Register for live price updates
+  useEffect(() => {
+    if (data && data.length > 0) {
+      // Get all symbols
+      const symbols = data.map(asset => asset.symbol);
+      
+      // Connect to WebSocket for all assets
+      connectWebSocket(symbols);
+      
+      // Register for price updates
+      const unsubscribe = registerMessageHandler('priceUpdate', (updatedAsset) => {
+        setAssets(prevAssets => {
+          return prevAssets.map(asset => {
+            if (asset.symbol === updatedAsset.symbol) {
+              setIsLiveDataConnected(true);
+              return {
+                ...asset,
+                price: updatedAsset.price,
+                change24h: updatedAsset.change24h
+              };
+            }
+            return asset;
+          });
+        });
+      });
+      
+      // Subscribe to updates for all symbols
+      subscribeToSymbols(symbols);
+      
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [data]);
+  
   return {
-    assets: data || [],
+    assets: assets.length > 0 ? assets : (data || []),
     isLoading,
-    error
+    error,
+    isLiveDataConnected
   };
 }

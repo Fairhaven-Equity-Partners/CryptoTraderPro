@@ -70,6 +70,9 @@ export function subscribeToSymbols(symbols: string[]) {
       type: 'subscribe',
       symbols
     }));
+  } else {
+    // If WebSocket not connected, retry connection
+    connectWebSocket(symbols);
   }
 }
 
@@ -102,14 +105,102 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
   return response.json();
 }
 
-// Crypto price chart data (in a real app, this would call to a real data provider)
+// Crypto price chart data with live updates
+let chartDataCache: Record<string, Record<TimeFrame, ChartData[]>> = {};
+let chartUpdateListeners: Record<string, (() => void)[]> = {};
+
+// Flag to track real-time updates
+let realTimeUpdatesActive = false;
+let currentSymbols: string[] = [];
+let currentTimeframe: TimeFrame = '1h';
+
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
-  // Simulate API call
-  // In a real app, this would connect to a data provider like CoinGecko, Binance, etc.
-  return simulateChartData(timeframe);
+  const cacheKey = `${symbol}_${timeframe}`;
+  
+  // If we have cached data, return it immediately
+  if (chartDataCache[symbol] && chartDataCache[symbol][timeframe]) {
+    return [...chartDataCache[symbol][timeframe]];
+  }
+  
+  try {
+    // For a real implementation, this would make an API call to a data provider
+    const data = generateChartData(timeframe, symbol);
+    
+    // Cache the data
+    if (!chartDataCache[symbol]) {
+      chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
+    }
+    chartDataCache[symbol][timeframe] = data;
+    
+    // Start real-time updates if not already running
+    if (!realTimeUpdatesActive) {
+      startRealTimeUpdates();
+    }
+    
+    // Update current symbols and timeframe for real-time updates
+    if (!currentSymbols.includes(symbol)) {
+      currentSymbols.push(symbol);
+      // In a real implementation, we would subscribe to the symbol via WebSocket
+      subscribeToSymbols(currentSymbols);
+    }
+    currentTimeframe = timeframe;
+    
+    return [...data];
+  } catch (error) {
+    console.error('Error fetching chart data:', error);
+    return generateChartData(timeframe, symbol);
+  }
 }
 
-function simulateChartData(timeframe: TimeFrame): ChartData[] {
+// Start real-time updates
+function startRealTimeUpdates() {
+  if (realTimeUpdatesActive) return;
+  
+  realTimeUpdatesActive = true;
+  connectWebSocket(currentSymbols);
+  
+  // Create handler for price updates
+  const handlePriceUpdate = (data: AssetPrice) => {
+    // Update the latest candle for each timeframe
+    if (chartDataCache[data.symbol]) {
+      Object.entries(chartDataCache[data.symbol]).forEach(([timeframe, candles]) => {
+        if (candles.length > 0) {
+          const lastCandle = candles[candles.length - 1];
+          const newPrice = data.price;
+          
+          // Update the last candle
+          lastCandle.close = newPrice;
+          lastCandle.high = Math.max(lastCandle.high, newPrice);
+          lastCandle.low = Math.min(lastCandle.low, newPrice);
+          
+          // Notify listeners
+          if (chartUpdateListeners[`${data.symbol}_${timeframe}`]) {
+            chartUpdateListeners[`${data.symbol}_${timeframe}`].forEach(listener => listener());
+          }
+        }
+      });
+    }
+  };
+  
+  // Register handler for price updates
+  registerMessageHandler('priceUpdate', handlePriceUpdate);
+  
+  // For simulation, update prices every 3 seconds 
+  // In a real app, this would come from the WebSocket
+  setInterval(() => {
+    currentSymbols.forEach(symbol => {
+      const simulatedPrice = getCurrentPrice(symbol) * (1 + (Math.random() - 0.48) * 0.002);
+      handlePriceUpdate({
+        symbol,
+        price: simulatedPrice,
+        change24h: (Math.random() - 0.48) * 5
+      });
+    });
+  }, 3000);
+}
+
+// Generate realistic looking chart data with trend patterns
+function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   const now = Math.floor(Date.now() / 1000);
   const data: ChartData[] = [];
   
@@ -120,23 +211,23 @@ function simulateChartData(timeframe: TimeFrame): ChartData[] {
   switch (timeframe) {
     case '1m':
       timeIncrement = 60;
-      count = 100;
+      count = 200;
       break;
     case '5m':
       timeIncrement = 300;
-      count = 100;
+      count = 200;
       break;
     case '15m':
       timeIncrement = 900;
-      count = 100;
+      count = 160;
       break;
     case '30m':
       timeIncrement = 1800;
-      count = 100;
+      count = 160;
       break;
     case '1h':
       timeIncrement = 3600;
-      count = 100;
+      count = 120;
       break;
     case '4h':
       timeIncrement = 14400;
@@ -159,18 +250,50 @@ function simulateChartData(timeframe: TimeFrame): ChartData[] {
       count = 100;
   }
   
-  let price = 43000 + Math.random() * 1000;
+  // Starting price based on symbol
+  let basePrice = 0;
+  if (symbol.includes('BTC')) {
+    basePrice = 65000 + Math.random() * 2000;
+  } else if (symbol.includes('ETH')) {
+    basePrice = 3500 + Math.random() * 200;
+  } else {
+    basePrice = 100 + Math.random() * 50;
+  }
+  
+  let price = basePrice;
+  
+  // Create some trend cycles to make the data look realistic
+  const trendCycles = [
+    { length: Math.floor(count * 0.2), bias: 0.48 },  // small downtrend
+    { length: Math.floor(count * 0.3), bias: 0.53 },  // stronger uptrend
+    { length: Math.floor(count * 0.2), bias: 0.5 },   // sideways
+    { length: Math.floor(count * 0.3), bias: 0.45 }   // downtrend
+  ];
+  
+  let cycleIndex = 0;
+  let posInCycle = 0;
   
   for (let i = 0; i < count; i++) {
+    // Check if we need to move to the next cycle
+    if (posInCycle >= trendCycles[cycleIndex].length) {
+      cycleIndex = (cycleIndex + 1) % trendCycles.length;
+      posInCycle = 0;
+    }
+    
     const time = now - (count - i) * timeIncrement;
-    const change = (Math.random() - 0.48) * 100; // Slightly bullish bias
+    const currentBias = trendCycles[cycleIndex].bias;
+    
+    // Calculate price change with the current trend bias
+    const change = (Math.random() - currentBias) * (price * 0.01);
     price += change;
     
+    const volatility = getVolatilityForTimeframe(timeframe);
+    
     const open = price;
-    const close = price + (Math.random() - 0.5) * 50;
-    const high = Math.max(open, close) + Math.random() * 30;
-    const low = Math.min(open, close) - Math.random() * 30;
-    const volume = 1000000 + Math.random() * 5000000;
+    const close = price + (Math.random() - 0.5) * (price * volatility);
+    const high = Math.max(open, close) + Math.random() * (price * volatility * 0.5);
+    const low = Math.min(open, close) - Math.random() * (price * volatility * 0.5);
+    const volume = getBaseVolumeForSymbol(symbol) * (0.8 + Math.random() * 0.4);
     
     data.push({
       time,
@@ -182,9 +305,74 @@ function simulateChartData(timeframe: TimeFrame): ChartData[] {
     });
     
     price = close;
+    posInCycle++;
   }
   
   return data;
+}
+
+// Helper function to get volatility based on timeframe
+function getVolatilityForTimeframe(timeframe: TimeFrame): number {
+  switch (timeframe) {
+    case '1m': return 0.004;
+    case '5m': return 0.006;
+    case '15m': return 0.008;
+    case '30m': return 0.01;
+    case '1h': return 0.015;
+    case '4h': return 0.025;
+    case '1d': return 0.04;
+    case '1w': return 0.06;
+    case '1M': return 0.1;
+    default: return 0.01;
+  }
+}
+
+// Helper function to get base volume for a symbol
+function getBaseVolumeForSymbol(symbol: string): number {
+  if (symbol.includes('BTC')) {
+    return 5000000 + Math.random() * 2000000;
+  } else if (symbol.includes('ETH')) {
+    return 3000000 + Math.random() * 1000000;
+  } else {
+    return 500000 + Math.random() * 300000;
+  }
+}
+
+// Get current price for a symbol
+function getCurrentPrice(symbol: string): number {
+  // Try to get from the chart data cache
+  if (chartDataCache[symbol] && Object.keys(chartDataCache[symbol]).length > 0) {
+    const firstTimeframe = Object.keys(chartDataCache[symbol])[0] as TimeFrame;
+    const candles = chartDataCache[symbol][firstTimeframe];
+    if (candles.length > 0) {
+      return candles[candles.length - 1].close;
+    }
+  }
+  
+  // Fallback prices if no cache is available
+  if (symbol.includes('BTC')) {
+    return 65000 + Math.random() * 2000;
+  } else if (symbol.includes('ETH')) {
+    return 3500 + Math.random() * 200;
+  } else {
+    return 100 + Math.random() * 50;
+  }
+}
+
+// Register for chart updates
+export function registerChartUpdateListener(symbol: string, timeframe: TimeFrame, callback: () => void): () => void {
+  const key = `${symbol}_${timeframe}`;
+  
+  if (!chartUpdateListeners[key]) {
+    chartUpdateListeners[key] = [];
+  }
+  
+  chartUpdateListeners[key].push(callback);
+  
+  // Return unsubscribe function
+  return () => {
+    chartUpdateListeners[key] = chartUpdateListeners[key].filter(cb => cb !== callback);
+  };
 }
 
 // Alerts API calls
