@@ -145,16 +145,37 @@ export default function AdvancedSignalDashboard({
     setIsCalculating(false);
   };
   
-  // Auto-calculate when data is loaded
+  // Set up automatic calculation of signals
   useEffect(() => {
+    // Initial calculation when data is loaded
     if (isAllDataLoaded && !isCalculating && calculateProgress === 0) {
       calculateAllSignals();
     }
+    
+    // Set up recurring automatic recalculation (every 30 seconds)
+    const recalculationInterval = setInterval(() => {
+      if (isAllDataLoaded && !isCalculating) {
+        console.log("Auto-recalculating signals...");
+        calculateAllSignals();
+      }
+    }, 30000); // 30 seconds interval
+    
+    // Clean up interval on component unmount
+    return () => clearInterval(recalculationInterval);
   }, [isAllDataLoaded]);
   
   // Handle timeframe selection
   const handleTimeframeSelect = (timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
+    
+    // Recalculate signals if specific timeframe is selected and data is available
+    if (isAllDataLoaded && !isCalculating && chartDataMap[timeframe]?.data?.length) {
+      const signal = calculateSignalForTimeframe(timeframe);
+      if (signal) {
+        setSignals(prev => ({...prev, [timeframe]: signal}));
+      }
+    }
+    
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
@@ -422,17 +443,18 @@ function DetailedSignalCard({
   showAdvanced: boolean,
   toggleAdvanced: () => void
 }) {
-  // State for optimal position calculator
+  // State for optimal position calculator with preset values
   const [positionSettings, setPositionSettings] = useState({
     accountBalance: 10000,
     riskPercent: 2,
     calculatedPosition: 0,
     maxProfit: 0,
-    maxLoss: 0
+    maxLoss: 0,
+    updateInterval: null as NodeJS.Timeout | null
   });
 
-  // Auto-calculate optimal position size whenever signal changes
-  useEffect(() => {
+  // Function to calculate optimal position size
+  const calculateOptimalPosition = () => {
     if (!signal) return;
     
     // Calculate based on risk percentage and account balance
@@ -456,12 +478,28 @@ function DetailedSignalCard({
     const maxProfit = positionWithLeverage * signal.recommendedLeverage * Math.abs(takeProfit - entryPrice);
     const maxLoss = positionWithLeverage * signal.recommendedLeverage * Math.abs(entryPrice - stopLoss);
     
-    setPositionSettings({
-      ...positionSettings,
+    setPositionSettings(prev => ({
+      ...prev,
       calculatedPosition: positionWithLeverage,
       maxProfit,
       maxLoss
-    });
+    }));
+  };
+
+  // Auto-calculate optimal position size initially and on signal change
+  useEffect(() => {
+    calculateOptimalPosition();
+    
+    // Set up interval to recalculate position (every 10 seconds)
+    const interval = setInterval(calculateOptimalPosition, 10000);
+    setPositionSettings(prev => ({ ...prev, updateInterval: interval }));
+    
+    // Clean up interval on unmount or signal change
+    return () => {
+      if (positionSettings.updateInterval) {
+        clearInterval(positionSettings.updateInterval);
+      }
+    };
   }, [signal]);
 
   return (
@@ -695,11 +733,7 @@ function DetailedSignalCard({
           )}
         </div>
       </CardContent>
-      <CardFooter>
-        <Button variant="outline" onClick={toggleAdvanced} className="w-full">
-          {showAdvanced ? 'Hide Detailed Analysis' : 'Show Detailed Analysis'}
-        </Button>
-      </CardFooter>
+      {/* Always showing details - button removed */}
     </Card>
   );
 }
