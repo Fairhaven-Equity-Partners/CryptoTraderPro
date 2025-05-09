@@ -6,12 +6,10 @@ import {
   LeverageParams, 
   LeverageResult 
 } from '../types';
+import { calculateSafeLeverage } from './calculations';
 
 // API Base URL
 const API_BASE_URL = window.location.origin;
-
-// Simulated WebSocket implementation
-// This avoids browser console errors while still providing the functionality we need
 
 // WebSocket message handlers
 const messageHandlers: Record<string, ((data: any) => void)[]> = {};
@@ -19,60 +17,39 @@ const messageHandlers: Record<string, ((data: any) => void)[]> = {};
 // Tracking subscribed symbols
 let subscribedSymbols: string[] = [];
 
-// Simulated WebSocket state
-let simulatedConnected = false;
-let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
+// Chart data cache
+let chartDataCache: Record<string, Record<TimeFrame, ChartData[]>> = {};
+let chartUpdateListeners: Record<string, (() => void)[]> = {};
+
+// Tracking current state for real-time updates
+let realTimeUpdatesActive = false;
+let currentSymbols: string[] = [];
 
 // Connect to simulated WebSocket
 export function connectWebSocket(symbols: string[] = []) {
-  // Clear any pending reconnect
-  if (reconnectTimeout) {
-    clearTimeout(reconnectTimeout);
-    reconnectTimeout = null;
-  }
-  
-  // Log connection
   console.log('Establishing data connection...');
-  
-  // Simulate successful connection after a short delay
   setTimeout(() => {
-    simulatedConnected = true;
     console.log('Data connection established');
-    
-    // Subscribe to symbols
     if (symbols.length > 0) {
       subscribeToSymbols(symbols);
     }
-    
-    // Notify any handlers that might be interested in connection status
     if (messageHandlers['connectionStatus']) {
       messageHandlers['connectionStatus'].forEach(handler => 
         handler({ connected: true })
       );
     }
   }, 300);
-  
   return true;
 }
 
-// Subscribe to symbols on the simulated WebSocket
+// Subscribe to symbols
 export function subscribeToSymbols(symbols: string[]) {
-  if (!simulatedConnected) {
-    // If not connected, connect first
-    connectWebSocket(symbols);
-    return;
-  }
-  
-  // Add symbols to subscription list if not already there
   symbols.forEach(symbol => {
     if (!subscribedSymbols.includes(symbol)) {
       subscribedSymbols.push(symbol);
     }
   });
-  
   console.log(`Subscribed to symbols: ${subscribedSymbols.join(', ')}`);
-  
-  // Notify subscribers that we've subscribed
   if (messageHandlers['subscriptionUpdate']) {
     messageHandlers['subscriptionUpdate'].forEach(handler => 
       handler({ symbols: subscribedSymbols })
@@ -80,226 +57,67 @@ export function subscribeToSymbols(symbols: string[]) {
   }
 }
 
+// Register message handler
 export function registerMessageHandler(type: string, handler: (data: any) => void) {
   if (!messageHandlers[type]) {
     messageHandlers[type] = [];
   }
   messageHandlers[type].push(handler);
-  
-  // Return unsubscribe function
   return () => {
     messageHandlers[type] = messageHandlers[type].filter(h => h !== handler);
   };
 }
 
-// Asset API calls
+// Fetch all assets
 export async function fetchAllAssets(): Promise<AssetPrice[]> {
   try {
-    // First try to get from our server
     const response = await fetch(`${API_BASE_URL}/api/crypto`);
     if (!response.ok) {
       throw new Error('Failed to fetch assets from server');
     }
-    
-    const serverData = await response.json();
-    
-    // Now try to get real data from CoinGecko
-    try {
-      const coinGeckoResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true');
-      if (coinGeckoResponse.ok) {
-        const realData = await coinGeckoResponse.json();
-        
-        console.log('Got real price data from CoinGecko:', realData);
-        
-        // Update our server data with real prices
-        return serverData.map((asset: AssetPrice) => {
-          if (asset.symbol.includes('BTC') && realData.bitcoin) {
-            return { 
-              ...asset, 
-              price: realData.bitcoin.usd,
-              change24h: realData.bitcoin.usd_24h_change || asset.change24h
-            };
-          } else if (asset.symbol.includes('ETH') && realData.ethereum) {
-            return { 
-              ...asset, 
-              price: realData.ethereum.usd,
-              change24h: realData.ethereum.usd_24h_change || asset.change24h
-            };
-          } else if (asset.symbol.includes('BNB') && realData.binancecoin) {
-            return { 
-              ...asset, 
-              price: realData.binancecoin.usd,
-              change24h: realData.binancecoin.usd_24h_change || asset.change24h
-            };
-          } else if (asset.symbol.includes('SOL') && realData.solana) {
-            return { 
-              ...asset, 
-              price: realData.solana.usd,
-              change24h: realData.solana.usd_24h_change || asset.change24h
-            };
-          } else if (asset.symbol.includes('XRP') && realData.ripple) {
-            return { 
-              ...asset, 
-              price: realData.ripple.usd,
-              change24h: realData.ripple.usd_24h_change || asset.change24h
-            };
-          }
-          return asset;
-        });
-      }
-    } catch (coinGeckoError) {
-      console.error('Error fetching real price data:', coinGeckoError);
-    }
-    
-    // Return server data if CoinGecko enhancement fails
-    return serverData;
-  } catch (serverError) {
-    console.error('Error fetching assets from server:', serverError);
-    
-    // If server fails, try to get data directly from CoinGecko
-    try {
-      const coinGeckoResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true');
-      if (coinGeckoResponse.ok) {
-        const realData = await coinGeckoResponse.json();
-        
-        // Format CoinGecko data to match our expected format
-        return [
-          { 
-            symbol: 'BTC/USDT', 
-            price: realData.bitcoin?.usd || 0, 
-            change24h: realData.bitcoin?.usd_24h_change || 0 
-          },
-          { 
-            symbol: 'ETH/USDT', 
-            price: realData.ethereum?.usd || 0, 
-            change24h: realData.ethereum?.usd_24h_change || 0 
-          },
-          { 
-            symbol: 'BNB/USDT', 
-            price: realData.binancecoin?.usd || 0, 
-            change24h: realData.binancecoin?.usd_24h_change || 0 
-          },
-          { 
-            symbol: 'SOL/USDT', 
-            price: realData.solana?.usd || 0, 
-            change24h: realData.solana?.usd_24h_change || 0 
-          },
-          { 
-            symbol: 'XRP/USDT', 
-            price: realData.ripple?.usd || 0, 
-            change24h: realData.ripple?.usd_24h_change || 0 
-          }
-        ];
-      }
-    } catch (coinGeckoError) {
-      console.error('Error fetching from CoinGecko:', coinGeckoError);
-    }
-    
-    // Return basic empty data if all else fails
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching assets:', error);
+    // Return mock data if server fails
     return [
-      { symbol: 'BTC/USDT', price: 0, change24h: 0 },
-      { symbol: 'ETH/USDT', price: 0, change24h: 0 },
-      { symbol: 'BNB/USDT', price: 0, change24h: 0 },
-      { symbol: 'SOL/USDT', price: 0, change24h: 0 },
-      { symbol: 'XRP/USDT', price: 0, change24h: 0 }
+      { symbol: 'BTC/USDT', name: 'Bitcoin', price: 60000 + Math.random() * 5000, change24h: (Math.random() * 5) - 2 },
+      { symbol: 'ETH/USDT', name: 'Ethereum', price: 3000 + Math.random() * 300, change24h: (Math.random() * 8) - 3 },
+      { symbol: 'BNB/USDT', name: 'Binance Coin', price: 600 + Math.random() * 50, change24h: (Math.random() * 6) - 2 },
+      { symbol: 'SOL/USDT', name: 'Solana', price: 150 + Math.random() * 20, change24h: (Math.random() * 10) - 4 },
+      { symbol: 'XRP/USDT', name: 'Ripple', price: 2 + Math.random() * 0.5, change24h: (Math.random() * 7) - 3 }
     ];
   }
 }
 
+// Fetch asset by symbol
 export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
   try {
-    // First try to get from our server
     const response = await fetch(`${API_BASE_URL}/api/crypto/${symbol}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch ${symbol} data from server`);
     }
-    
-    const serverData = await response.json();
-    
-    // Try to enhance with real price data
-    try {
-      let coinId;
-      if (symbol.includes('BTC')) coinId = 'bitcoin';
-      else if (symbol.includes('ETH')) coinId = 'ethereum';
-      else if (symbol.includes('BNB')) coinId = 'binancecoin';
-      else if (symbol.includes('SOL')) coinId = 'solana';
-      else if (symbol.includes('XRP')) coinId = 'ripple';
-      else return serverData;
-      
-      const coinGeckoResponse = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_change=true`);
-      if (coinGeckoResponse.ok) {
-        const realData = await coinGeckoResponse.json();
-        
-        console.log(`Got real price data for ${symbol}:`, realData);
-        
-        if (realData[coinId]) {
-          return {
-            ...serverData,
-            price: realData[coinId].usd,
-            change24h: realData[coinId].usd_24h_change || serverData.change24h
-          };
-        }
-      }
-    } catch (coinGeckoError) {
-      console.error(`Error fetching real ${symbol} data:`, coinGeckoError);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching ${symbol} data:`, error);
+    // Return mock data
+    if (symbol.includes('BTC')) {
+      return { symbol, name: 'Bitcoin', price: 60000 + Math.random() * 5000, change24h: (Math.random() * 5) - 2 };
+    } else if (symbol.includes('ETH')) {
+      return { symbol, name: 'Ethereum', price: 3000 + Math.random() * 300, change24h: (Math.random() * 8) - 3 };
+    } else if (symbol.includes('BNB')) {
+      return { symbol, name: 'Binance Coin', price: 600 + Math.random() * 50, change24h: (Math.random() * 6) - 2 };
+    } else if (symbol.includes('SOL')) {
+      return { symbol, name: 'Solana', price: 150 + Math.random() * 20, change24h: (Math.random() * 10) - 4 };
+    } else if (symbol.includes('XRP')) {
+      return { symbol, name: 'Ripple', price: 2 + Math.random() * 0.5, change24h: (Math.random() * 7) - 3 };
+    } else {
+      return { symbol, name: symbol, price: 100 + Math.random() * 10, change24h: (Math.random() * 5) - 2 };
     }
-    
-    // Return server data if CoinGecko enhancement fails
-    return serverData;
-  } catch (serverError) {
-    console.error(`Error fetching ${symbol} data from server:`, serverError);
-    
-    // Try to get real data directly from CoinGecko if server fails
-    try {
-      let coinId;
-      if (symbol.includes('BTC')) coinId = 'bitcoin';
-      else if (symbol.includes('ETH')) coinId = 'ethereum';
-      else if (symbol.includes('BNB')) coinId = 'binancecoin';
-      else if (symbol.includes('SOL')) coinId = 'solana';
-      else if (symbol.includes('XRP')) coinId = 'ripple';
-      else return { symbol, price: 0, change24h: 0 };
-      
-      const coinGeckoResponse = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_change=true`);
-      if (coinGeckoResponse.ok) {
-        const realData = await coinGeckoResponse.json();
-        
-        if (realData[coinId]) {
-          return {
-            symbol,
-            price: realData[coinId].usd,
-            change24h: realData[coinId].usd_24h_change || 0
-          };
-        }
-      }
-    } catch (coinGeckoError) {
-      console.error(`Error fetching from CoinGecko for ${symbol}:`, coinGeckoError);
-    }
-    
-    // Return empty data if all else fails
-    return { symbol, price: 0, change24h: 0 };
   }
 }
 
-// Crypto price chart data with live updates
-let chartDataCache: Record<string, Record<TimeFrame, ChartData[]>> = {};
-let chartUpdateListeners: Record<string, (() => void)[]> = {};
-
-// Flag to track real-time updates
-let realTimeUpdatesActive = false;
-let currentSymbols: string[] = [];
-let currentTimeframe: TimeFrame = '1h';
-
-// Start the real-time updates immediately
-// This ensures we only need to start it once for the entire app
-setTimeout(() => {
-  if (!realTimeUpdatesActive) {
-    startRealTimeUpdates();
-  }
-}, 1000);
-
+// Fetch chart data
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
-  const cacheKey = `${symbol}_${timeframe}`;
-  
   // If we have cached data, return it immediately
   if (chartDataCache[symbol] && chartDataCache[symbol][timeframe]) {
     console.log(`Loading chart with ${chartDataCache[symbol][timeframe].length} data points for ${symbol} (${timeframe})`);
@@ -307,22 +125,6 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
   }
   
   try {
-    // For implementation with real data, we'd make an API call with error handling
-    // Use a timeout to prevent hanging on API rate limits
-    const fetchWithTimeout = async (url: string, timeout = 5000) => {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), timeout);
-      
-      try {
-        const response = await fetch(url, { signal: controller.signal });
-        clearTimeout(id);
-        return response;
-      } catch (error) {
-        clearTimeout(id);
-        throw error;
-      }
-    };
-    
     // Generate data since we don't have a chart API endpoint
     const data = generateChartData(timeframe, symbol);
     
@@ -337,25 +139,17 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
       startRealTimeUpdates();
     }
     
-    // Update current symbols and timeframe for real-time updates
+    // Track current symbol for updates
     if (!currentSymbols.includes(symbol)) {
       currentSymbols.push(symbol);
-      // Subscribe to the symbol with error handling
-      try {
-        subscribeToSymbols(currentSymbols);
-      } catch (subscribeError) {
-        console.error(`Error subscribing to ${symbol}:`, subscribeError);
-        // Continue anyway since we have generated data
-      }
+      subscribeToSymbols(currentSymbols);
     }
-    currentTimeframe = timeframe;
     
     console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
     return [...data];
   } catch (error) {
     console.error('Error fetching chart data:', error);
-    
-    // Generate fallback data if fetch fails
+    // Generate fallback data
     const fallbackData = generateChartData(timeframe, symbol);
     
     // Still cache this fallback data
@@ -376,7 +170,7 @@ export function startRealTimeUpdates() {
   connectWebSocket(currentSymbols);
   
   // Create handler for price updates
-  const handlePriceUpdate = (data: AssetPrice) => {
+  const handlePriceUpdate = (data: { symbol: string, price: number, change24h: number }) => {
     // Update the latest candle for each timeframe
     if (chartDataCache[data.symbol]) {
       Object.entries(chartDataCache[data.symbol]).forEach(([timeframe, candles]) => {
@@ -401,107 +195,74 @@ export function startRealTimeUpdates() {
   // Register handler for price updates
   registerMessageHandler('priceUpdate', handlePriceUpdate);
   
-  // Update prices every 15 seconds with real data from CoinGecko
-  const updateInterval = setInterval(async () => {
+  // Update prices every 15 seconds with generated data
+  const updateInterval = setInterval(() => {
     try {
-      // Fetch with timeout to prevent hanging on API rate limits
-      const fetchWithTimeout = async (url: string, timeout = 5000) => {
-        const controller = new AbortController();
-        const id = setTimeout(() => controller.abort(), timeout);
-        
-        try {
-          const response = await fetch(url, { signal: controller.signal });
-          clearTimeout(id);
-          return response;
-        } catch (error) {
-          clearTimeout(id);
-          throw error;
+      // Generate random price updates
+      const mockPriceData = {
+        bitcoin: { 
+          usd: 60000 + Math.random() * 5000, 
+          usd_24h_change: (Math.random() * 5) - 2 
+        },
+        ethereum: { 
+          usd: 3000 + Math.random() * 300, 
+          usd_24h_change: (Math.random() * 8) - 3 
+        },
+        binancecoin: { 
+          usd: 600 + Math.random() * 50, 
+          usd_24h_change: (Math.random() * 6) - 2 
+        },
+        solana: { 
+          usd: 150 + Math.random() * 20, 
+          usd_24h_change: (Math.random() * 10) - 4 
+        },
+        ripple: { 
+          usd: 2 + Math.random() * 0.5, 
+          usd_24h_change: (Math.random() * 7) - 3 
         }
       };
       
-      // Fetch all coin prices at once for efficiency
-      const coinIds = ['bitcoin', 'ethereum', 'binancecoin', 'solana', 'ripple'];
-      const response = await fetchWithTimeout(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${coinIds.join(',')}&vs_currencies=usd&include_24hr_change=true`
-      ).catch(error => {
-        console.log('CoinGecko API error, using generated data:', error);
-        return null;
-      });
+      console.log('Generated price update data:', mockPriceData);
       
-      if (response && response.ok) {
-        const data = await response.json();
-        console.log('Real-time price update from CoinGecko:', data);
-        
-        // Update each subscribed symbol
-        currentSymbols.forEach(symbol => {
-          const currentPrice = getCurrentPrice(symbol);
-          let newPrice: number;
-          let change24h: number = 0;
-          
-          // Map symbol to CoinGecko data
-          if (symbol.includes('BTC') && data.bitcoin) {
-            newPrice = data.bitcoin.usd;
-            change24h = data.bitcoin.usd_24h_change;
-          } else if (symbol.includes('ETH') && data.ethereum) {
-            newPrice = data.ethereum.usd;
-            change24h = data.ethereum.usd_24h_change;
-          } else if (symbol.includes('BNB') && data.binancecoin) {
-            newPrice = data.binancecoin.usd;
-            change24h = data.binancecoin.usd_24h_change;
-          } else if (symbol.includes('SOL') && data.solana) {
-            newPrice = data.solana.usd;
-            change24h = data.solana.usd_24h_change;
-          } else if (symbol.includes('XRP') && data.ripple) {
-            newPrice = data.ripple.usd;
-            change24h = data.ripple.usd_24h_change;
-          } else {
-            // For unsupported symbols, just do a small random change
-            const priceChange = (Math.random() - 0.48) * 0.003; 
-            newPrice = currentPrice * (1 + priceChange);
-            change24h = (Math.random() - 0.48) * 5;
-          }
-          
-          // Only log if we have a real price
-          if (newPrice && currentPrice) {
-            console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
-          }
-          
-          // Notify all handlers about the price update
-          const priceData = {
-            symbol,
-            price: newPrice,
-            change24h
-          };
-          
-          // Directly call the price update handler
-          handlePriceUpdate(priceData);
-          
-          // Also broadcast to all message handlers
-          if (messageHandlers['priceUpdate']) {
-            messageHandlers['priceUpdate'].forEach(handler => {
-              handler(priceData);
-            });
-          }
-        });
-      } else {
-        throw new Error('Failed to fetch real-time prices from CoinGecko');
-      }
-    } catch (error) {
-      console.error('Error in real-time price update:', error);
-      
-      // Fallback to simulated data if API request fails
+      // Update each subscribed symbol
       currentSymbols.forEach(symbol => {
         const currentPrice = getCurrentPrice(symbol);
-        const priceChange = (Math.random() - 0.48) * 0.003; // 0.3% max change
-        const simulatedPrice = currentPrice * (1 + priceChange);
+        let newPrice: number;
+        let change24h: number = 0;
         
-        console.log(`Fallback price update for ${symbol}: ${currentPrice.toFixed(2)} → ${simulatedPrice.toFixed(2)}`);
+        // Map symbol to mock data
+        if (symbol.includes('BTC')) {
+          newPrice = mockPriceData.bitcoin.usd;
+          change24h = mockPriceData.bitcoin.usd_24h_change;
+        } else if (symbol.includes('ETH')) {
+          newPrice = mockPriceData.ethereum.usd;
+          change24h = mockPriceData.ethereum.usd_24h_change;
+        } else if (symbol.includes('BNB')) {
+          newPrice = mockPriceData.binancecoin.usd;
+          change24h = mockPriceData.binancecoin.usd_24h_change;
+        } else if (symbol.includes('SOL')) {
+          newPrice = mockPriceData.solana.usd;
+          change24h = mockPriceData.solana.usd_24h_change;
+        } else if (symbol.includes('XRP')) {
+          newPrice = mockPriceData.ripple.usd;
+          change24h = mockPriceData.ripple.usd_24h_change;
+        } else {
+          // For unsupported symbols, just do a small random change
+          const priceChange = (Math.random() - 0.48) * 0.003; 
+          newPrice = currentPrice * (1 + priceChange);
+          change24h = (Math.random() - 0.48) * 5;
+        }
+        
+        // Only log if we have a price
+        if (newPrice && currentPrice) {
+          console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
+        }
         
         // Notify all handlers about the price update
         const priceData = {
           symbol,
-          price: simulatedPrice,
-          change24h: (Math.random() - 0.48) * 5
+          price: newPrice,
+          change24h
         };
         
         // Directly call the price update handler
@@ -514,6 +275,8 @@ export function startRealTimeUpdates() {
           });
         }
       });
+    } catch (error) {
+      console.error('Error in price update:', error);
     }
   }, 15000);
   
@@ -534,39 +297,39 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   switch (timeframe) {
     case '1m':
       timeIncrement = 60;
-      count = 1000; // 5x increase - 1000 minutes (~16.7 hours)
+      count = 1000; // 1000 minutes (~16.7 hours)
       break;
     case '5m':
       timeIncrement = 300;
-      count = 1000; // 5x increase - 5000 minutes (~3.5 days)
+      count = 1000; // 5000 minutes (~3.5 days)
       break;
     case '15m':
       timeIncrement = 900;
-      count = 800; // 5x increase - 12000 minutes (~8.3 days)
+      count = 800; // 12000 minutes (~8.3 days)
       break;
     case '30m':
       timeIncrement = 1800;
-      count = 800; // 5x increase - 24000 minutes (~16.7 days)
+      count = 800; // 24000 minutes (~16.7 days)
       break;
     case '1h':
       timeIncrement = 3600;
-      count = 720; // 6x increase - 720 hours (30 days)
+      count = 720; // 720 hours (30 days)
       break;
     case '4h':
       timeIncrement = 14400;
-      count = 500; // 5x increase - 2000 hours (~83.3 days)
+      count = 500; // 2000 hours (~83.3 days)
       break;
     case '1d':
       timeIncrement = 86400;
-      count = 365; // 3.65x increase - 365 days (1 year)
+      count = 365; // 365 days (1 year)
       break;
     case '1w':
       timeIncrement = 604800;
-      count = 200; // ~4x increase - 200 weeks (~3.8 years)
+      count = 200; // 200 weeks (~3.8 years)
       break;
     case '1M':
       timeIncrement = 2592000;
-      count = 60; // 2.5x increase - 60 months (5 years)
+      count = 60; // 60 months (5 years)
       break;
     default:
       timeIncrement = 3600;
@@ -661,7 +424,7 @@ function getBaseVolumeForSymbol(symbol: string): number {
   }
 }
 
-// Get current price for a symbol - now returns cached values for immediate use
+// Get current price for a symbol
 function getCurrentPrice(symbol: string): number {
   // Try to get from the chart data cache
   if (chartDataCache[symbol] && Object.keys(chartDataCache[symbol]).length > 0) {
@@ -672,8 +435,7 @@ function getCurrentPrice(symbol: string): number {
     }
   }
   
-  // Simple fallback values - in real-time updates we'll be using cached data
-  // This just avoids TypeScript errors
+  // Simple fallback values
   if (symbol.includes('BTC')) {
     return 65000;
   } else if (symbol.includes('ETH')) {
@@ -686,53 +448,6 @@ function getCurrentPrice(symbol: string): number {
     return 0.5;
   } else {
     return 100;
-  }
-}
-
-// This async function is used to get the real current price
-// Will be called periodically to update our cached data
-async function getRealCurrentPrice(symbol: string): Promise<number> {
-  try {
-    let coinId;
-    if (symbol.includes('BTC')) coinId = 'bitcoin';
-    else if (symbol.includes('ETH')) coinId = 'ethereum';
-    else if (symbol.includes('BNB')) coinId = 'binancecoin';
-    else if (symbol.includes('SOL')) coinId = 'solana';
-    else if (symbol.includes('XRP')) coinId = 'ripple';
-    else return getCurrentPrice(symbol); // Fall back to cached price
-    
-    // Use the same fetch with timeout helper
-    const fetchWithTimeout = async (url: string, timeout = 5000) => {
-      const controller = new AbortController();
-      const id = setTimeout(() => controller.abort(), timeout);
-      
-      try {
-        const response = await fetch(url, { signal: controller.signal });
-        clearTimeout(id);
-        return response;
-      } catch (error) {
-        clearTimeout(id);
-        throw error;
-      }
-    };
-    
-    const response = await fetchWithTimeout(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`)
-      .catch(error => {
-        console.error('Error fetching from CoinGecko for ' + symbol + ':', error);
-        return null;
-      });
-      
-    if (response && response.ok) {
-      const data = await response.json();
-      if (data[coinId] && data[coinId].usd) {
-        console.log(`Real price for ${symbol}: ${data[coinId].usd}`);
-        return data[coinId].usd;
-      }
-    }
-    throw new Error('Invalid response or missing data');
-  } catch (error) {
-    console.error(`Error fetching real price for ${symbol}:`, error);
-    return getCurrentPrice(symbol); // Fall back to cached price
   }
 }
 
