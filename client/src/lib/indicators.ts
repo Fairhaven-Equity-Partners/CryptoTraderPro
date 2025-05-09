@@ -762,6 +762,36 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
       patternStrength = 'MODERATE';
       patternName = 'Hammer';
     }
+    // Shooting Star (bearish reversal)
+    else if (current.high > Math.max(current.open, current.close) && 
+             (Math.min(current.open, current.close) - current.low) < 
+             (current.high - Math.max(current.open, current.close)) * 0.5 &&
+             (Math.max(current.open, current.close) - Math.min(current.open, current.close)) < 
+             (current.high - Math.max(current.open, current.close)) * 0.3) {
+      patternSignal = 'SELL';
+      patternStrength = 'MODERATE';
+      patternName = 'Shooting Star';
+    }
+    // Morning Star (bullish reversal) - simplified version
+    else if (lastFive.length >= 3 && 
+             lastFive[lastFive.length - 3].close < lastFive[lastFive.length - 3].open && // First candle is bearish
+             Math.abs(lastFive[lastFive.length - 2].close - lastFive[lastFive.length - 2].open) < Math.abs(lastFive[lastFive.length - 3].close - lastFive[lastFive.length - 3].open) * 0.5 && // Middle candle is small
+             lastFive[lastFive.length - 1].close > lastFive[lastFive.length - 1].open && // Last candle is bullish
+             lastFive[lastFive.length - 1].close > (lastFive[lastFive.length - 3].open + lastFive[lastFive.length - 3].close) / 2) { // Last candle closes above midpoint of first candle
+      patternSignal = 'BUY';
+      patternStrength = 'STRONG';
+      patternName = 'Morning Star';
+    }
+    // Evening Star (bearish reversal) - simplified version
+    else if (lastFive.length >= 3 && 
+             lastFive[lastFive.length - 3].close > lastFive[lastFive.length - 3].open && // First candle is bullish
+             Math.abs(lastFive[lastFive.length - 2].close - lastFive[lastFive.length - 2].open) < Math.abs(lastFive[lastFive.length - 3].close - lastFive[lastFive.length - 3].open) * 0.5 && // Middle candle is small
+             lastFive[lastFive.length - 1].close < lastFive[lastFive.length - 1].open && // Last candle is bearish
+             lastFive[lastFive.length - 1].close < (lastFive[lastFive.length - 3].open + lastFive[lastFive.length - 3].close) / 2) { // Last candle closes below midpoint of first candle
+      patternSignal = 'SELL';
+      patternStrength = 'STRONG';
+      patternName = 'Evening Star';
+    }
   }
   
   indicators.push({

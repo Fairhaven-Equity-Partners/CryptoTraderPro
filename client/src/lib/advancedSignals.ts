@@ -5,10 +5,12 @@ import {
   LeverageResult,
   Indicator,
   IndicatorSignal,
-  IndicatorStrength
+  IndicatorStrength,
+  SignalDirection
 } from '../types';
 import * as indicators from './indicators';
 import { calculateSafeLeverage } from './calculations';
+import { calculateHMA, calculateWMA } from './indicators';
 
 // Advanced signal types
 export interface AdvancedSignal {
@@ -224,7 +226,7 @@ export function calculateTimeframeConfidence(
     momentum: calculatedIndicators.filter(i => i.category === 'MOMENTUM'),
     volatility: calculatedIndicators.filter(i => i.category === 'VOLATILITY'),
     volume: calculatedIndicators.filter(i => i.category === 'VOLUME'),
-    pattern: [] // We don't have pattern as a category type currently
+    pattern: calculatedIndicators.filter(i => i.category === 'PATTERN')
   };
   
   // Calculate category scores

@@ -21,7 +21,7 @@ export type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' 
 
 export type SignalDirection = 'LONG' | 'SHORT' | 'NEUTRAL';
 
-export type IndicatorCategory = 'MOMENTUM' | 'TREND' | 'VOLATILITY' | 'VOLUME';
+export type IndicatorCategory = 'MOMENTUM' | 'TREND' | 'VOLATILITY' | 'VOLUME' | 'PATTERN';
 
 export type IndicatorSignal = 'BUY' | 'SELL' | 'NEUTRAL';
 
