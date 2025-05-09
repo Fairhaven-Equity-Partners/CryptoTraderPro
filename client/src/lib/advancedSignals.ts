@@ -200,6 +200,534 @@ function detectMarketEnvironment(data: ChartData[], timeframe: TimeFrame): Marke
 }
 
 /**
+ * Calculates the score for a category of indicators
+ * @returns {Object} with direction and numerical value
+ */
+function calculateCategoryScore(indicators: Indicator[]): { direction: SignalDirection, value: number } {
+  if (!indicators || indicators.length === 0) {
+    return { direction: 'NEUTRAL', value: 50 };
+  }
+  
+  let buyCount = 0;
+  let sellCount = 0;
+  let totalCount = 0;
+  let strengthSum = 0;
+  
+  // Map strength to numerical values
+  const strengthValues = {
+    'WEAK': 0.5,
+    'MODERATE': 1.0,
+    'STRONG': 1.5,
+    'HIGH': 2.0,
+    'LOW': 0.3,
+    null: 1.0
+  };
+  
+  indicators.forEach(indicator => {
+    const weight = strengthValues[indicator.strength || null];
+    totalCount += weight;
+    
+    if (indicator.signal === 'BUY') {
+      buyCount += weight;
+    } else if (indicator.signal === 'SELL') {
+      sellCount += weight;
+    }
+    
+    // Add to strength sum for average calculation later
+    strengthSum += weight;
+  });
+  
+  // Calculate percentages
+  const buyPercentage = totalCount > 0 ? (buyCount / totalCount) * 100 : 0;
+  const sellPercentage = totalCount > 0 ? (sellCount / totalCount) * 100 : 0;
+  
+  // Determine direction and value
+  let direction: SignalDirection = 'NEUTRAL';
+  let value = 50;
+  
+  if (buyPercentage > sellPercentage + 20) {
+    direction = 'LONG';
+    value = 50 + (buyPercentage / 2);
+  } else if (sellPercentage > buyPercentage + 20) {
+    direction = 'SHORT';
+    value = 50 - (sellPercentage / 2);
+  } else {
+    // Neutral zone with slight bias
+    const bias = buyPercentage - sellPercentage;
+    value = 50 + bias / 2;
+  }
+  
+  // Ensure value is within 0-100 range
+  value = Math.max(0, Math.min(100, value));
+  
+  return { direction, value: Math.round(value) };
+}
+
+/**
+ * Detects support and resistance levels from chart data
+ */
+function detectSupportResistanceLevels(chartData: ChartData[], currentPrice: number): Level[] {
+  if (chartData.length < 30) {
+    return [];
+  }
+  
+  const levels: Level[] = [];
+  const priceMap = new Map<number, { count: number, strength: number }>();
+  const pricePrecision = 2; // Round to this many decimal places to group similar prices
+  
+  // Function to round price to specified precision for grouping
+  const roundPrice = (price: number): number => {
+    const multiplier = Math.pow(10, pricePrecision);
+    return Math.round(price * multiplier) / multiplier;
+  };
+  
+  // Analyze price data to find potential levels
+  chartData.forEach(candle => {
+    // Check highs and lows for resistance and support
+    const highRounded = roundPrice(candle.high);
+    const lowRounded = roundPrice(candle.low);
+    
+    if (!priceMap.has(highRounded)) {
+      priceMap.set(highRounded, { count: 0, strength: 0 });
+    }
+    if (!priceMap.has(lowRounded)) {
+      priceMap.set(lowRounded, { count: 0, strength: 0 });
+    }
+    
+    priceMap.get(highRounded)!.count += 1;
+    priceMap.get(lowRounded)!.count += 1;
+  });
+  
+  // Process map to find significant levels
+  const entries = Array.from(priceMap.entries());
+  const significantLevelThreshold = Math.max(2, Math.floor(chartData.length / 100)); // Adaptive threshold
+  
+  // Sort by price for easier analysis
+  entries.sort((a, b) => a[0] - b[0]);
+  
+  // Find clusters of price levels
+  const significantLevels: { price: number, count: number }[] = [];
+  let currentCluster: { prices: number[], counts: number[] } = { prices: [], counts: [] };
+  
+  // Function to process a completed cluster
+  const processCluster = () => {
+    if (currentCluster.prices.length > 0) {
+      // Calculate weighted average price for the cluster
+      const totalWeight = currentCluster.counts.reduce((sum, count) => sum + count, 0);
+      const weightedSum = currentCluster.prices.reduce((sum, price, index) => 
+        sum + price * currentCluster.counts[index], 0);
+      
+      const avgPrice = weightedSum / totalWeight;
+      const totalCount = currentCluster.counts.reduce((sum, count) => sum + count, 0);
+      
+      // Only include if significant
+      if (totalCount >= significantLevelThreshold) {
+        significantLevels.push({ price: avgPrice, count: totalCount });
+      }
+    }
+  };
+  
+  const clusterThreshold = 0.005; // 0.5% price difference for clustering
+  
+  for (let i = 0; i < entries.length; i++) {
+    const [price, { count }] = entries[i];
+    
+    // Skip if count is too low
+    if (count < significantLevelThreshold / 2) {
+      continue;
+    }
+    
+    // Check if this price should be part of the current cluster
+    if (currentCluster.prices.length === 0 || 
+        Math.abs(price - currentCluster.prices[currentCluster.prices.length - 1]) / price < clusterThreshold) {
+      // Add to current cluster
+      currentCluster.prices.push(price);
+      currentCluster.counts.push(count);
+    } else {
+      // Process previous cluster and start a new one
+      processCluster();
+      currentCluster = { prices: [price], counts: [count] };
+    }
+  }
+  
+  // Process the last cluster
+  processCluster();
+  
+  // Convert significant levels to support/resistance levels
+  significantLevels.forEach(({ price, count }) => {
+    // Calculate strength based on touch count and recency
+    const touchCountMax = Math.max(...significantLevels.map(l => l.count));
+    const strengthBase = Math.min(100, (count / touchCountMax) * 100);
+    
+    // Determine if it's support or resistance based on current price
+    const type = price < currentPrice ? 'support' : 'resistance';
+    
+    // Adjust strength based on proximity to current price
+    const proximityFactor = 1 - Math.min(0.8, Math.abs(price - currentPrice) / currentPrice);
+    const strength = Math.round(strengthBase * proximityFactor);
+    
+    // Add to levels if strength is significant
+    if (strength > 30) {
+      levels.push({
+        type,
+        price,
+        strength,
+        sourceTimeframes: ['1h', '4h', '1d'] // Default timeframes (would be more accurate with actual timeframe data)
+      });
+    }
+  });
+  
+  // Sort by strength, descending
+  return levels.sort((a, b) => b.strength - a.strength).slice(0, 5); // Limit to top 5 levels
+}
+
+/**
+ * Calculate a score based on support/resistance levels
+ */
+function calculateLevelsScore(levels: Level[], currentPrice: number): number {
+  if (levels.length === 0) {
+    return 50; // Neutral score if no levels
+  }
+  
+  // Find nearest support and resistance
+  let nearestSupport: Level | null = null;
+  let nearestResistance: Level | null = null;
+  
+  for (const level of levels) {
+    if (level.type === 'support' && level.price < currentPrice) {
+      if (!nearestSupport || level.price > nearestSupport.price) {
+        nearestSupport = level;
+      }
+    } else if (level.type === 'resistance' && level.price > currentPrice) {
+      if (!nearestResistance || level.price < nearestResistance.price) {
+        nearestResistance = level;
+      }
+    }
+  }
+  
+  // Calculate distances to nearest levels
+  const distToSupport = nearestSupport 
+    ? (currentPrice - nearestSupport.price) / currentPrice 
+    : 1;
+  
+  const distToResistance = nearestResistance 
+    ? (nearestResistance.price - currentPrice) / currentPrice 
+    : 1;
+  
+  // Calculate strength of nearest levels
+  const supportStrength = nearestSupport ? nearestSupport.strength / 100 : 0;
+  const resistanceStrength = nearestResistance ? nearestResistance.strength / 100 : 0;
+  
+  // Score calculation - closer to support = more bullish, closer to resistance = more bearish
+  let score = 50;
+  
+  if (distToSupport < distToResistance) {
+    // Closer to support - bullish signal
+    const ratio = Math.min(1, distToResistance / distToSupport);
+    const bullishness = (1 - (distToSupport * 10)) * supportStrength * ratio;
+    score = 50 + bullishness * 50;
+  } else {
+    // Closer to resistance - bearish signal
+    const ratio = Math.min(1, distToSupport / distToResistance);
+    const bearishness = (1 - (distToResistance * 10)) * resistanceStrength * ratio;
+    score = 50 - bearishness * 50;
+  }
+  
+  // Ensure score is within 0-100 range
+  return Math.max(0, Math.min(100, score));
+}
+
+/**
+ * Detect chart patterns from price data
+ */
+function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
+  if (chartData.length < 30) {
+    return [];
+  }
+  
+  const patterns: PatternFormation[] = [];
+  const lastCandle = chartData[chartData.length - 1];
+  const lastPrice = lastCandle.close;
+  
+  // Look for chart patterns on recent data (last 20 candles)
+  const recentData = chartData.slice(-20);
+  
+  // Head and Shoulders pattern (bearish reversal)
+  const detectHeadAndShoulders = (): PatternFormation | null => {
+    if (recentData.length < 10) return null;
+    
+    // Simplified head and shoulders detection
+    // Find local high points
+    const highPoints: { index: number, price: number }[] = [];
+    
+    for (let i = 1; i < recentData.length - 1; i++) {
+      if (recentData[i].high > recentData[i-1].high && 
+          recentData[i].high > recentData[i+1].high) {
+        highPoints.push({ index: i, price: recentData[i].high });
+      }
+    }
+    
+    // Need at least 3 high points
+    if (highPoints.length < 3) return null;
+    
+    // Look for potential head and shoulders pattern
+    for (let i = 0; i < highPoints.length - 2; i++) {
+      const leftShoulder = highPoints[i];
+      const head = highPoints[i+1];
+      const rightShoulder = highPoints[i+2];
+      
+      // Check if head is higher than both shoulders
+      if (head.price > leftShoulder.price && 
+          head.price > rightShoulder.price &&
+          // Check if shoulders are roughly at the same level (within 5%)
+          Math.abs(leftShoulder.price - rightShoulder.price) / leftShoulder.price < 0.05) {
+        
+        // Check for neckline (support level)
+        const necklinePrice = Math.min(
+          recentData[leftShoulder.index + 1].low, 
+          recentData[head.index + 1].low
+        );
+        
+        // Pattern is valid if current price is near or below neckline
+        if (lastPrice <= necklinePrice * 1.02) {
+          const priceTarget = necklinePrice - (head.price - necklinePrice);
+          return {
+            name: 'Head and Shoulders',
+            reliability: 75,
+            direction: 'bearish',
+            priceTarget: Math.max(0, priceTarget),
+            description: 'Bearish reversal pattern with price target around ' + priceTarget.toFixed(2)
+          };
+        }
+      }
+    }
+    
+    return null;
+  };
+  
+  // Inverse Head and Shoulders pattern (bullish reversal)
+  const detectInverseHeadAndShoulders = (): PatternFormation | null => {
+    if (recentData.length < 10) return null;
+    
+    // Find local low points
+    const lowPoints: { index: number, price: number }[] = [];
+    
+    for (let i = 1; i < recentData.length - 1; i++) {
+      if (recentData[i].low < recentData[i-1].low && 
+          recentData[i].low < recentData[i+1].low) {
+        lowPoints.push({ index: i, price: recentData[i].low });
+      }
+    }
+    
+    // Need at least 3 low points
+    if (lowPoints.length < 3) return null;
+    
+    // Look for potential inverse head and shoulders pattern
+    for (let i = 0; i < lowPoints.length - 2; i++) {
+      const leftShoulder = lowPoints[i];
+      const head = lowPoints[i+1];
+      const rightShoulder = lowPoints[i+2];
+      
+      // Check if head is lower than both shoulders
+      if (head.price < leftShoulder.price && 
+          head.price < rightShoulder.price &&
+          // Check if shoulders are roughly at the same level (within 5%)
+          Math.abs(leftShoulder.price - rightShoulder.price) / leftShoulder.price < 0.05) {
+        
+        // Check for neckline (resistance level)
+        const necklinePrice = Math.max(
+          recentData[leftShoulder.index + 1].high, 
+          recentData[head.index + 1].high
+        );
+        
+        // Pattern is valid if current price is near or above neckline
+        if (lastPrice >= necklinePrice * 0.98) {
+          const priceTarget = necklinePrice + (necklinePrice - head.price);
+          return {
+            name: 'Inverse Head and Shoulders',
+            reliability: 75,
+            direction: 'bullish',
+            priceTarget: priceTarget,
+            description: 'Bullish reversal pattern with price target around ' + priceTarget.toFixed(2)
+          };
+        }
+      }
+    }
+    
+    return null;
+  };
+  
+  // Double Top pattern (bearish reversal)
+  const detectDoubleTop = (): PatternFormation | null => {
+    if (recentData.length < 10) return null;
+    
+    // Find peaks
+    const peaks: { index: number, price: number }[] = [];
+    
+    for (let i = 1; i < recentData.length - 1; i++) {
+      if (recentData[i].high > recentData[i-1].high && 
+          recentData[i].high > recentData[i+1].high) {
+        peaks.push({ index: i, price: recentData[i].high });
+      }
+    }
+    
+    // Check for double top
+    for (let i = 0; i < peaks.length - 1; i++) {
+      const firstPeak = peaks[i];
+      const secondPeak = peaks[i+1];
+      
+      // Check if peaks are at similar levels (within 2%)
+      if (Math.abs(firstPeak.price - secondPeak.price) / firstPeak.price < 0.02 &&
+          // Ensure there's some distance between peaks
+          secondPeak.index - firstPeak.index >= 3) {
+        
+        // Find the lowest point between the peaks
+        let lowestPoint = Infinity;
+        for (let j = firstPeak.index + 1; j < secondPeak.index; j++) {
+          lowestPoint = Math.min(lowestPoint, recentData[j].low);
+        }
+        
+        // Check if current price is below the neckline (lowest point)
+        if (lastPrice < lowestPoint) {
+          const priceTarget = lowestPoint - (firstPeak.price - lowestPoint);
+          return {
+            name: 'Double Top',
+            reliability: 70,
+            direction: 'bearish',
+            priceTarget: Math.max(0, priceTarget),
+            description: 'Bearish reversal pattern with price target around ' + priceTarget.toFixed(2)
+          };
+        }
+      }
+    }
+    
+    return null;
+  };
+  
+  // Double Bottom pattern (bullish reversal)
+  const detectDoubleBottom = (): PatternFormation | null => {
+    if (recentData.length < 10) return null;
+    
+    // Find bottoms
+    const bottoms: { index: number, price: number }[] = [];
+    
+    for (let i = 1; i < recentData.length - 1; i++) {
+      if (recentData[i].low < recentData[i-1].low && 
+          recentData[i].low < recentData[i+1].low) {
+        bottoms.push({ index: i, price: recentData[i].low });
+      }
+    }
+    
+    // Check for double bottom
+    for (let i = 0; i < bottoms.length - 1; i++) {
+      const firstBottom = bottoms[i];
+      const secondBottom = bottoms[i+1];
+      
+      // Check if bottoms are at similar levels (within 2%)
+      if (Math.abs(firstBottom.price - secondBottom.price) / firstBottom.price < 0.02 &&
+          // Ensure there's some distance between bottoms
+          secondBottom.index - firstBottom.index >= 3) {
+        
+        // Find the highest point between the bottoms
+        let highestPoint = -Infinity;
+        for (let j = firstBottom.index + 1; j < secondBottom.index; j++) {
+          highestPoint = Math.max(highestPoint, recentData[j].high);
+        }
+        
+        // Check if current price is above the neckline (highest point)
+        if (lastPrice > highestPoint) {
+          const priceTarget = highestPoint + (highestPoint - firstBottom.price);
+          return {
+            name: 'Double Bottom',
+            reliability: 70,
+            direction: 'bullish',
+            priceTarget: priceTarget,
+            description: 'Bullish reversal pattern with price target around ' + priceTarget.toFixed(2)
+          };
+        }
+      }
+    }
+    
+    return null;
+  };
+  
+  // Detect patterns
+  const headAndShoulders = detectHeadAndShoulders();
+  if (headAndShoulders) patterns.push(headAndShoulders);
+  
+  const inverseHeadAndShoulders = detectInverseHeadAndShoulders();
+  if (inverseHeadAndShoulders) patterns.push(inverseHeadAndShoulders);
+  
+  const doubleTop = detectDoubleTop();
+  if (doubleTop) patterns.push(doubleTop);
+  
+  const doubleBottom = detectDoubleBottom();
+  if (doubleBottom) patterns.push(doubleBottom);
+  
+  return patterns;
+}
+
+/**
+ * Get a score based on market environment
+ */
+function getEnvironmentScore(environment: MarketEnvironment): number {
+  switch (environment) {
+    case MarketEnvironment.TRENDING_BULL:
+      return 75;
+    case MarketEnvironment.TRENDING_BEAR:
+      return 25;
+    case MarketEnvironment.RANGING_HIGH_VOL:
+      return 50;
+    case MarketEnvironment.RANGING_LOW_VOL:
+      return 45;
+    case MarketEnvironment.BREAKOUT:
+      return 80;
+    case MarketEnvironment.BREAKDOWN:
+      return 20;
+    case MarketEnvironment.REVERSING_UP:
+      return 65;
+    case MarketEnvironment.REVERSING_DOWN:
+      return 35;
+    default:
+      return 50;
+  }
+}
+
+/**
+ * Get majority direction from a set of signals
+ */
+function getMajorityDirection(signals: AdvancedSignal[]): SignalDirection {
+  if (signals.length === 0) return 'NEUTRAL';
+  
+  let longCount = 0;
+  let shortCount = 0;
+  
+  signals.forEach(signal => {
+    if (signal.direction === 'LONG') longCount++;
+    else if (signal.direction === 'SHORT') shortCount++;
+  });
+  
+  if (longCount > shortCount) return 'LONG';
+  if (shortCount > longCount) return 'SHORT';
+  return 'NEUTRAL';
+}
+
+/**
+ * Format price with appropriate precision
+ */
+function formatPrice(price: number): string {
+  if (price >= 1000) {
+    return price.toFixed(2);
+  } else if (price >= 100) {
+    return price.toFixed(3);
+  } else if (price >= 1) {
+    return price.toFixed(4);
+  } else {
+    return price.toFixed(8);
+  }
+}
+
+/**
  * Calculate confidence score for a specific timeframe
  */
 export function calculateTimeframeConfidence(
@@ -551,313 +1079,4 @@ export function generateTradeRecommendation(
   };
 }
 
-// HELPER FUNCTIONS
-
-/**
- * Calculate score for a category of indicators
- */
-function calculateCategoryScore(categoryIndicators: Indicator[]): { value: number, direction: 'LONG' | 'SHORT' | 'NEUTRAL' } {
-  if (categoryIndicators.length === 0) {
-    return { value: 50, direction: 'NEUTRAL' };
-  }
-  
-  let longPoints = 0;
-  let shortPoints = 0;
-  let neutralPoints = 0;
-  let totalPoints = 0;
-  
-  categoryIndicators.forEach(indicator => {
-    // Strength coefficient
-    const strengthCoef = indicator.strength === 'STRONG' ? 1.5 : 
-                         indicator.strength === 'MODERATE' ? 1.0 : 0.5;
-                         
-    const points = 10 * strengthCoef;
-    totalPoints += points;
-    
-    if (indicator.signal === 'BUY') {
-      longPoints += points;
-    } else if (indicator.signal === 'SELL') {
-      shortPoints += points;
-    } else {
-      neutralPoints += points;
-    }
-  });
-  
-  // Calculate percentage scores
-  const longScore = (longPoints / totalPoints) * 100;
-  const shortScore = (shortPoints / totalPoints) * 100;
-  
-  // Determine direction
-  let direction: 'LONG' | 'SHORT' | 'NEUTRAL';
-  let value: number;
-  
-  if (Math.abs(longScore - shortScore) < 20) {
-    direction = 'NEUTRAL';
-    value = 50;
-  } else if (longScore > shortScore) {
-    direction = 'LONG';
-    value = Math.round(50 + (longScore - shortScore) / 2);
-  } else {
-    direction = 'SHORT';
-    value = Math.round(50 + (shortScore - longScore) / 2);
-  }
-  
-  return { value, direction };
-}
-
-/**
- * Detect support and resistance levels
- */
-function detectSupportResistanceLevels(data: ChartData[], currentPrice: number): Level[] {
-  const levels: Level[] = [];
-  const priceRange = 0.05; // 5% price range for grouping levels
-  
-  // Find swing highs and lows
-  for (let i = 5; i < data.length - 5; i++) {
-    // Check for swing high (local maximum)
-    if (data[i].high > data[i-1].high && 
-        data[i].high > data[i-2].high && 
-        data[i].high > data[i+1].high && 
-        data[i].high > data[i+2].high) {
-      
-      // Check if this level is near an existing one
-      const price = data[i].high;
-      const existingLevel = levels.find(l => 
-        Math.abs(l.price - price) / price < priceRange && l.type === 'resistance'
-      );
-      
-      if (existingLevel) {
-        // Strengthen existing level
-        existingLevel.strength += 5;
-      } else {
-        // Add new resistance level
-        levels.push({
-          type: 'resistance',
-          price,
-          strength: 60,
-          sourceTimeframes: ['1h']  // Placeholder
-        });
-      }
-    }
-    
-    // Check for swing low (local minimum)
-    if (data[i].low < data[i-1].low && 
-        data[i].low < data[i-2].low && 
-        data[i].low < data[i+1].low && 
-        data[i].low < data[i+2].low) {
-      
-      // Check if this level is near an existing one
-      const price = data[i].low;
-      const existingLevel = levels.find(l => 
-        Math.abs(l.price - price) / price < priceRange && l.type === 'support'
-      );
-      
-      if (existingLevel) {
-        // Strengthen existing level
-        existingLevel.strength += 5;
-      } else {
-        // Add new support level
-        levels.push({
-          type: 'support',
-          price,
-          strength: 60,
-          sourceTimeframes: ['1h']  // Placeholder
-        });
-      }
-    }
-  }
-  
-  // Strengthen levels that have been tested multiple times
-  data.forEach(candle => {
-    levels.forEach(level => {
-      const priceThreshold = level.price * 0.005; // 0.5% threshold
-      
-      if (level.type === 'resistance' && 
-          Math.abs(candle.high - level.price) < priceThreshold) {
-        level.strength += 2;
-      } else if (level.type === 'support' && 
-                Math.abs(candle.low - level.price) < priceThreshold) {
-        level.strength += 2;
-      }
-    });
-  });
-  
-  // Cap strength at 100
-  levels.forEach(level => {
-    level.strength = Math.min(level.strength, 100);
-  });
-  
-  // Sort by strength
-  return levels.sort((a, b) => b.strength - a.strength);
-}
-
-/**
- * Calculate a score based on support/resistance levels
- */
-function calculateLevelsScore(levels: Level[], currentPrice: number): number {
-  if (levels.length === 0) return 50;
-  
-  // Find nearest support and resistance
-  const supports = levels.filter(l => l.type === 'support' && l.price < currentPrice)
-    .sort((a, b) => b.price - a.price);
-    
-  const resistances = levels.filter(l => l.type === 'resistance' && l.price > currentPrice)
-    .sort((a, b) => a.price - b.price);
-  
-  const nearestSupport = supports[0];
-  const nearestResistance = resistances[0];
-  
-  if (!nearestSupport || !nearestResistance) return 50;
-  
-  // Calculate distance to nearest levels as percentage
-  const distToSupport = (currentPrice - nearestSupport.price) / currentPrice;
-  const distToResistance = (nearestResistance.price - currentPrice) / currentPrice;
-  
-  // If very close to resistance, bearish signal
-  if (distToResistance < 0.01 && nearestResistance.strength > 70) {
-    return 30;
-  }
-  
-  // If very close to support, bullish signal
-  if (distToSupport < 0.01 && nearestSupport.strength > 70) {
-    return 70;
-  }
-  
-  // Calculate relative position in range
-  const rangePosition = distToSupport / (distToSupport + distToResistance);
-  
-  // Lower in the range (closer to support) = more bullish
-  return Math.round(50 - (rangePosition - 0.5) * 40);
-}
-
-/**
- * Detect chart patterns
- */
-function detectChartPatterns(data: ChartData[]): PatternFormation[] {
-  // This is a placeholder for more sophisticated pattern recognition
-  // In a real implementation, this would use computer vision or 
-  // mathematical algorithms to detect patterns like head and shoulders,
-  // double tops, etc.
-  const patterns: PatternFormation[] = [];
-  const lastCandle = data[data.length - 1];
-  const lastPrice = lastCandle.close;
-  
-  // Basic trend detection for demonstration
-  const prices = data.map(d => d.close);
-  const sma20 = indicators.calculateSMA(prices, 20);
-  const sma50 = indicators.calculateSMA(prices, 50);
-  
-  const last20Trend = sma20[sma20.length - 1] > sma20[sma20.length - 5];
-  const last50Trend = sma50[sma50.length - 1] > sma50[sma50.length - 10];
-  
-  // Simple crossover detection
-  const currentCrossed = sma20[sma20.length - 1] > sma50[sma50.length - 1];
-  const previousCrossed = sma20[sma20.length - 2] > sma50[sma50.length - 2];
-  
-  if (currentCrossed && !previousCrossed) {
-    patterns.push({
-      name: "Golden Cross",
-      reliability: 75,
-      direction: "bullish",
-      priceTarget: lastPrice * 1.1,
-      description: "SMA20 crossed above SMA50, indicating potential uptrend"
-    });
-  } else if (!currentCrossed && previousCrossed) {
-    patterns.push({
-      name: "Death Cross",
-      reliability: 75,
-      direction: "bearish",
-      priceTarget: lastPrice * 0.9,
-      description: "SMA20 crossed below SMA50, indicating potential downtrend"
-    });
-  }
-  
-  // Detect potential double bottom (very simplified)
-  const recentLows = [];
-  for (let i = 10; i < data.length - 10; i++) {
-    if (data[i].low < data[i-1].low && 
-        data[i].low < data[i-2].low && 
-        data[i].low < data[i+1].low && 
-        data[i].low < data[i+2].low) {
-      recentLows.push({ index: i, price: data[i].low });
-    }
-  }
-  
-  if (recentLows.length >= 2) {
-    const lastTwoLows = recentLows.slice(-2);
-    const priceDiff = Math.abs(lastTwoLows[0].price - lastTwoLows[1].price) / lastTwoLows[0].price;
-    const indexDiff = lastTwoLows[1].index - lastTwoLows[0].index;
-    
-    if (priceDiff < 0.03 && indexDiff > 10 && indexDiff < 30) {
-      patterns.push({
-        name: "Double Bottom",
-        reliability: 70,
-        direction: "bullish",
-        priceTarget: lastPrice * 1.15,
-        description: "Two similar lows indicating potential reversal from downtrend"
-      });
-    }
-  }
-  
-  return patterns;
-}
-
-/**
- * Get score adjustment based on market environment
- */
-function getEnvironmentScore(environment: MarketEnvironment): number {
-  switch (environment) {
-    case MarketEnvironment.TRENDING_BULL:
-      return 70;
-    case MarketEnvironment.TRENDING_BEAR:
-      return 30;
-    case MarketEnvironment.RANGING_HIGH_VOL:
-      return 45;
-    case MarketEnvironment.RANGING_LOW_VOL:
-      return 50;
-    case MarketEnvironment.BREAKOUT:
-      return 75;
-    case MarketEnvironment.BREAKDOWN:
-      return 25;
-    case MarketEnvironment.REVERSING_UP:
-      return 65;
-    case MarketEnvironment.REVERSING_DOWN:
-      return 35;
-    default:
-      return 50;
-  }
-}
-
-/**
- * Get the majority direction from an array of signals
- */
-function getMajorityDirection(signals: AdvancedSignal[]): 'LONG' | 'SHORT' | 'NEUTRAL' {
-  let longCount = 0;
-  let shortCount = 0;
-  let neutralCount = 0;
-  
-  signals.forEach(signal => {
-    if (signal.direction === 'LONG') longCount++;
-    else if (signal.direction === 'SHORT') shortCount++;
-    else neutralCount++;
-  });
-  
-  if (longCount > shortCount && longCount > neutralCount) return 'LONG';
-  if (shortCount > longCount && shortCount > neutralCount) return 'SHORT';
-  return 'NEUTRAL';
-}
-
-/**
- * Format price for display
- */
-function formatPrice(price: number): string {
-  if (price > 1000) {
-    return `$${price.toFixed(0)}`;
-  } else if (price > 100) {
-    return `$${price.toFixed(2)}`;
-  } else if (price > 1) {
-    return `$${price.toFixed(4)}`;
-  } else {
-    return `$${price.toFixed(6)}`;
-  }
-}
+// End of file - All helper functions are already defined above
