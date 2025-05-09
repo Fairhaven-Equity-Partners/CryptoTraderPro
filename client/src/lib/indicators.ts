@@ -419,6 +419,7 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   const highs = chartData.map(candle => candle.high);
   const lows = chartData.map(candle => candle.low);
   const volumes = chartData.map(candle => candle.volume);
+  const opens = chartData.map(candle => candle.open);
   
   const indicators: Indicator[] = [];
   
@@ -459,6 +460,12 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   const sma100 = calculateSMA(closes, 100);
   const sma200 = calculateSMA(closes, 200);
   
+  // Exponential Moving Averages
+  const ema9 = calculateEMA(closes, 9);
+  const ema21 = calculateEMA(closes, 21);
+  const ema55 = calculateEMA(closes, 55);
+  const ema200 = calculateEMA(closes, 200);
+  
   // Golden Cross / Death Cross (MA50 vs MA200)
   let maCrossSignal: IndicatorSignal = 'NEUTRAL';
   if (sma50[sma50.length - 1] > sma200[sma200.length - 1]) {
@@ -474,6 +481,31 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     strength: Math.abs(sma50[sma50.length - 1] - sma200[sma200.length - 1]) / sma200[sma200.length - 1] > 0.05 ? 
       'STRONG' : 'MODERATE',
     value: `50/200`
+  });
+  
+  // EMA Cross (9 vs 21 EMA)
+  let emaCrossSignal: IndicatorSignal = 'NEUTRAL';
+  const lastEMA9 = ema9[ema9.length - 1];
+  const lastEMA21 = ema21[ema21.length - 1];
+  const prevEMA9 = ema9[ema9.length - 2];
+  const prevEMA21 = ema21[ema21.length - 2];
+  
+  if (lastEMA9 > lastEMA21 && prevEMA9 <= prevEMA21) {
+    emaCrossSignal = 'BUY'; // Fresh bullish cross
+  } else if (lastEMA9 < lastEMA21 && prevEMA9 >= prevEMA21) {
+    emaCrossSignal = 'SELL'; // Fresh bearish cross
+  } else if (lastEMA9 > lastEMA21) {
+    emaCrossSignal = 'BUY'; // Already in bullish trend
+  } else if (lastEMA9 < lastEMA21) {
+    emaCrossSignal = 'SELL'; // Already in bearish trend
+  }
+  
+  indicators.push({
+    name: 'EMA Cross',
+    category: 'TREND',
+    signal: emaCrossSignal,
+    strength: Math.abs(lastEMA9 - lastEMA21) / lastEMA21 > 0.02 ? 'STRONG' : 'MODERATE',
+    value: `9/21`
   });
   
   // Price relative to key moving averages
@@ -675,6 +707,90 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     strength: trendContinuationStrength
   });
   
+  // Rate of Change (Momentum)
+  const roc = ((lastClose - closes[closes.length - 21]) / closes[closes.length - 21]) * 100;
+  
+  indicators.push({
+    name: 'Momentum',
+    category: 'MOMENTUM',
+    signal: roc > 5 ? 'BUY' : roc < -5 ? 'SELL' : 'NEUTRAL',
+    strength: Math.abs(roc) > 10 ? 'STRONG' : Math.abs(roc) > 5 ? 'MODERATE' : 'WEAK',
+    value: `${roc.toFixed(1)}%`
+  });
+  
+  // Candle Pattern Detection
+  const lastFive = chartData.slice(-5);
+  let patternSignal: IndicatorSignal = 'NEUTRAL';
+  let patternStrength: IndicatorStrength = 'WEAK';
+  let patternName = 'None';
+  
+  if (lastFive.length >= 2) {
+    const current = lastFive[lastFive.length - 1];
+    const previous = lastFive[lastFive.length - 2];
+    
+    // Bullish Engulfing
+    if (current.close > current.open && // Current is bullish
+        previous.close < previous.open && // Previous is bearish
+        current.open < previous.close && // Opens below previous close
+        current.close > previous.open) { // Closes above previous open
+      patternSignal = 'BUY';
+      patternStrength = 'STRONG';
+      patternName = 'Bullish Engulfing';
+    }
+    // Bearish Engulfing
+    else if (current.close < current.open && // Current is bearish
+             previous.close > previous.open && // Previous is bullish
+             current.open > previous.close && // Opens above previous close
+             current.close < previous.open) { // Closes below previous open
+      patternSignal = 'SELL';
+      patternStrength = 'STRONG';
+      patternName = 'Bearish Engulfing';
+    }
+    // Doji (indecision)
+    else if (Math.abs(current.close - current.open) / (current.high - current.low) < 0.1) {
+      patternSignal = 'NEUTRAL';
+      patternStrength = 'MODERATE';
+      patternName = 'Doji';
+    }
+    // Hammer (bullish reversal)
+    else if (current.low < Math.min(current.open, current.close) && 
+             (current.high - Math.max(current.open, current.close)) < 
+             (Math.min(current.open, current.close) - current.low) * 0.5 &&
+             (Math.max(current.open, current.close) - Math.min(current.open, current.close)) < 
+             (Math.min(current.open, current.close) - current.low) * 0.3) {
+      patternSignal = 'BUY';
+      patternStrength = 'MODERATE';
+      patternName = 'Hammer';
+    }
+  }
+  
+  indicators.push({
+    name: 'Candle Pattern',
+    category: 'PATTERN',
+    signal: patternSignal,
+    strength: patternStrength,
+    value: patternName
+  });
+  
+  // Ichimoku Cloud (simplified)
+  const tenkanSen = (Math.max(...highs.slice(-9)) + Math.min(...lows.slice(-9))) / 2;
+  const kijunSen = (Math.max(...highs.slice(-26)) + Math.min(...lows.slice(-26))) / 2;
+  
+  let ichimokuSignal: IndicatorSignal = 'NEUTRAL';
+  
+  if (lastClose > tenkanSen && tenkanSen > kijunSen) {
+    ichimokuSignal = 'BUY';
+  } else if (lastClose < tenkanSen && tenkanSen < kijunSen) {
+    ichimokuSignal = 'SELL';
+  }
+  
+  indicators.push({
+    name: 'Ichimoku',
+    category: 'TREND',
+    signal: ichimokuSignal,
+    strength: Math.abs(tenkanSen - kijunSen) / kijunSen > 0.02 ? 'STRONG' : 'MODERATE'
+  });
+  
   return indicators;
 }
 
@@ -688,7 +804,8 @@ export function generateSignalSummary(indicators: Indicator[]): {
     'MOMENTUM': [],
     'TREND': [],
     'VOLATILITY': [],
-    'VOLUME': []
+    'VOLUME': [],
+    'PATTERN': []
   };
   
   let buyCount = 0;
@@ -735,8 +852,55 @@ export function generateSignalSummary(indicators: Indicator[]): {
 }
 
 // Generate timeframe signals
+// Helper function for calculating the Hull Moving Average (HMA)
+export function calculateHMA(data: number[], period: number): number[] {
+  // Calculate weighted moving average with period/2
+  const halfPeriod = Math.floor(period / 2);
+  const wma1 = calculateWMA(data, halfPeriod);
+  
+  // Calculate weighted moving average with period
+  const wma2 = calculateWMA(data, period);
+  
+  // Calculate 2*WMA(n/2) - WMA(n)
+  const diff: number[] = [];
+  for (let i = 0; i < wma1.length; i++) {
+    if (i < wma2.length) {
+      diff.push(2 * wma1[i] - wma2[i]);
+    } else {
+      diff.push(2 * wma1[i] - wma2[wma2.length - 1]); // Use last value if arrays are different lengths
+    }
+  }
+  
+  // Calculate WMA with sqrt(n) period
+  const sqrtPeriod = Math.floor(Math.sqrt(period));
+  return calculateWMA(diff, sqrtPeriod);
+}
+
+// Helper function for calculating Weighted Moving Average (WMA)
+export function calculateWMA(data: number[], period: number): number[] {
+  const result: number[] = [];
+  const denominator = (period * (period + 1)) / 2;
+  
+  for (let i = 0; i < data.length; i++) {
+    if (i < period - 1) {
+      result.push(data[i]); // Use the value instead of 0 to keep the array length consistent
+      continue;
+    }
+    
+    let sum = 0;
+    for (let j = 0; j < period; j++) {
+      // Weight increases linearly with index
+      sum += data[i - (period - 1) + j] * (j + 1);
+    }
+    
+    result.push(sum / denominator);
+  }
+  
+  return result;
+}
+
 export function generateTimeframeSignals(): TimeframeSignal[] {
-  const timeframes: TimeFrame[] = ['1m', '15m', '1h', '4h', '1d', '1w'];
+  const timeframes: TimeFrame[] = ['1m', '15m', '1h', '4h', '1d', '3d', '1w', '1M'];
   
   return timeframes.map(timeframe => {
     let direction: SignalDirection;
@@ -770,10 +934,20 @@ export function generateTimeframeSignals(): TimeframeSignal[] {
         strength = 80;
         trend = 'Bullish';
         break;
+      case '3d':
+        direction = 'LONG';
+        strength = 82;
+        trend = 'Bullish';
+        break;
       case '1w':
         direction = 'LONG';
         strength = 85;
         trend = 'Bullish';
+        break;
+      case '1M':
+        direction = 'LONG';
+        strength = 90;
+        trend = 'Strong Bullish';
         break;
       default:
         direction = 'NEUTRAL';

@@ -97,7 +97,7 @@ export const TIMEFRAMES = [
 export const SIGNAL_DIRECTIONS = ["LONG", "SHORT", "NEUTRAL"] as const;
 
 export const INDICATOR_CATEGORIES = [
-  "MOMENTUM", "TREND", "VOLATILITY", "VOLUME"
+  "MOMENTUM", "TREND", "VOLATILITY", "VOLUME", "PATTERN"
 ] as const;
 
 export const TECHNICAL_INDICATORS = [
