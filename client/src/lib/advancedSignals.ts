@@ -130,7 +130,7 @@ function detectMarketEnvironment(data: ChartData[], timeframe: TimeFrame): Marke
   
   // Get ADX to check trend strength
   const adx = indicators.calculateADX(data, 14);
-  const adxValue = adx.adx[lastIndex];
+  const adxValue = Array.isArray(adx.adx) ? adx.adx[lastIndex] : 0;
   
   // Calculate short and long EMAs for trend direction
   const prices = data.map(d => d.close);
@@ -293,12 +293,11 @@ export function calculateTimeframeConfidence(
   
   // Calculate recommended leverage based on volatility and direction strength
   const riskParams: LeverageParams = {
-    price: lastPrice,
-    direction: direction === 'LONG' ? 'long' : 'short',
-    accountSize: 10000, // Assumed account size
-    riskPercent: 1, // Default 1% risk
-    stopLossPercent: Math.abs((stopLoss - lastPrice) / lastPrice) * 100,
-    volatilityFactor: volatility * 100
+    positionSize: 1000, // Default position size
+    riskPercentage: 1, // Default 1% risk
+    entryPrice: lastPrice,
+    stopLoss: stopLoss,
+    takeProfit: takeProfit
   };
   
   const leverageResult = calculateSafeLeverage(riskParams);
@@ -306,7 +305,7 @@ export function calculateTimeframeConfidence(
   // Adjust recommended leverage by confidence level
   let recommendedLeverage = direction === 'NEUTRAL' 
     ? 1 
-    : Math.min(leverageResult.recommendedLeverage, 20); // Cap at 20x
+    : Math.min(parseFloat(leverageResult.recommendedLeverage), 20); // Cap at 20x
   
   // Scale down leverage if confidence is low
   if (confidence < 70) {
