@@ -220,11 +220,11 @@ export function calculateTimeframeConfidence(
   
   // Organize indicators by category
   const categorizedIndicators = {
-    trend: calculatedIndicators.filter(i => i.category === 'trend'),
-    momentum: calculatedIndicators.filter(i => i.category === 'momentum'),
-    volatility: calculatedIndicators.filter(i => i.category === 'volatility'),
-    volume: calculatedIndicators.filter(i => i.category === 'volume'),
-    pattern: calculatedIndicators.filter(i => i.category === 'pattern')
+    trend: calculatedIndicators.filter(i => i.category === 'TREND'),
+    momentum: calculatedIndicators.filter(i => i.category === 'MOMENTUM'),
+    volatility: calculatedIndicators.filter(i => i.category === 'VOLATILITY'),
+    volume: calculatedIndicators.filter(i => i.category === 'VOLUME'),
+    pattern: [] // We don't have pattern as a category type currently
   };
   
   // Calculate category scores

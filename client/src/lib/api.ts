@@ -302,11 +302,28 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
   
   // If we have cached data, return it immediately
   if (chartDataCache[symbol] && chartDataCache[symbol][timeframe]) {
+    console.log(`Loading chart with ${chartDataCache[symbol][timeframe].length} data points for ${symbol} (${timeframe})`);
     return [...chartDataCache[symbol][timeframe]];
   }
   
   try {
-    // For a real implementation, this would make an API call to a data provider
+    // For implementation with real data, we'd make an API call with error handling
+    // Use a timeout to prevent hanging on API rate limits
+    const fetchWithTimeout = async (url: string, timeout = 5000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(id);
+        return response;
+      } catch (error) {
+        clearTimeout(id);
+        throw error;
+      }
+    };
+    
+    // Generate data since we don't have a chart API endpoint
     const data = generateChartData(timeframe, symbol);
     
     // Cache the data
@@ -323,15 +340,31 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     // Update current symbols and timeframe for real-time updates
     if (!currentSymbols.includes(symbol)) {
       currentSymbols.push(symbol);
-      // In a real implementation, we would subscribe to the symbol via WebSocket
-      subscribeToSymbols(currentSymbols);
+      // Subscribe to the symbol with error handling
+      try {
+        subscribeToSymbols(currentSymbols);
+      } catch (subscribeError) {
+        console.error(`Error subscribing to ${symbol}:`, subscribeError);
+        // Continue anyway since we have generated data
+      }
     }
     currentTimeframe = timeframe;
     
+    console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
     return [...data];
   } catch (error) {
     console.error('Error fetching chart data:', error);
-    return generateChartData(timeframe, symbol);
+    
+    // Generate fallback data if fetch fails
+    const fallbackData = generateChartData(timeframe, symbol);
+    
+    // Still cache this fallback data
+    if (!chartDataCache[symbol]) {
+      chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
+    }
+    chartDataCache[symbol][timeframe] = fallbackData;
+    
+    return fallbackData;
   }
 }
 
@@ -371,11 +404,31 @@ export function startRealTimeUpdates() {
   // Update prices every 15 seconds with real data from CoinGecko
   const updateInterval = setInterval(async () => {
     try {
+      // Fetch with timeout to prevent hanging on API rate limits
+      const fetchWithTimeout = async (url: string, timeout = 5000) => {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        
+        try {
+          const response = await fetch(url, { signal: controller.signal });
+          clearTimeout(id);
+          return response;
+        } catch (error) {
+          clearTimeout(id);
+          throw error;
+        }
+      };
+      
       // Fetch all coin prices at once for efficiency
       const coinIds = ['bitcoin', 'ethereum', 'binancecoin', 'solana', 'ripple'];
-      const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinIds.join(',')}&vs_currencies=usd&include_24hr_change=true`);
+      const response = await fetchWithTimeout(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${coinIds.join(',')}&vs_currencies=usd&include_24hr_change=true`
+      ).catch(error => {
+        console.log('CoinGecko API error, using generated data:', error);
+        return null;
+      });
       
-      if (response.ok) {
+      if (response && response.ok) {
         const data = await response.json();
         console.log('Real-time price update from CoinGecko:', data);
         
@@ -648,8 +701,28 @@ async function getRealCurrentPrice(symbol: string): Promise<number> {
     else if (symbol.includes('XRP')) coinId = 'ripple';
     else return getCurrentPrice(symbol); // Fall back to cached price
     
-    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`);
-    if (response.ok) {
+    // Use the same fetch with timeout helper
+    const fetchWithTimeout = async (url: string, timeout = 5000) => {
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      
+      try {
+        const response = await fetch(url, { signal: controller.signal });
+        clearTimeout(id);
+        return response;
+      } catch (error) {
+        clearTimeout(id);
+        throw error;
+      }
+    };
+    
+    const response = await fetchWithTimeout(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd`)
+      .catch(error => {
+        console.error('Error fetching from CoinGecko for ' + symbol + ':', error);
+        return null;
+      });
+      
+    if (response && response.ok) {
       const data = await response.json();
       if (data[coinId] && data[coinId].usd) {
         console.log(`Real price for ${symbol}: ${data[coinId].usd}`);
