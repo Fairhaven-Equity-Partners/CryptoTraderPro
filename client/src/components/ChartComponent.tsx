@@ -478,6 +478,11 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   useEffect(() => {
     if (!chartContainerRef.current) return;
     
+    // Log the number of data points for debugging
+    if (formattedCandlesticks) {
+      console.log(`Loading chart with ${formattedCandlesticks.length} data points for ${symbol} (${timeframe})`);
+    }
+    
     // Save chart view state before removing old chart
     if (chartInstance.current) {
       // Use the saveChartState utility function to save the current state

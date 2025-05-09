@@ -462,46 +462,47 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   let timeIncrement: number;
   let count: number;
   
+  // Significantly increase historical data points for better analysis
   switch (timeframe) {
     case '1m':
       timeIncrement = 60;
-      count = 200;
+      count = 1000; // 5x increase - 1000 minutes (~16.7 hours)
       break;
     case '5m':
       timeIncrement = 300;
-      count = 200;
+      count = 1000; // 5x increase - 5000 minutes (~3.5 days)
       break;
     case '15m':
       timeIncrement = 900;
-      count = 160;
+      count = 800; // 5x increase - 12000 minutes (~8.3 days)
       break;
     case '30m':
       timeIncrement = 1800;
-      count = 160;
+      count = 800; // 5x increase - 24000 minutes (~16.7 days)
       break;
     case '1h':
       timeIncrement = 3600;
-      count = 120;
+      count = 720; // 6x increase - 720 hours (30 days)
       break;
     case '4h':
       timeIncrement = 14400;
-      count = 100;
+      count = 500; // 5x increase - 2000 hours (~83.3 days)
       break;
     case '1d':
       timeIncrement = 86400;
-      count = 100;
+      count = 365; // 3.65x increase - 365 days (1 year)
       break;
     case '1w':
       timeIncrement = 604800;
-      count = 52;
+      count = 200; // ~4x increase - 200 weeks (~3.8 years)
       break;
     case '1M':
       timeIncrement = 2592000;
-      count = 24;
+      count = 60; // 2.5x increase - 60 months (5 years)
       break;
     default:
       timeIncrement = 3600;
-      count = 100;
+      count = 720;
   }
   
   // Starting price based on symbol
