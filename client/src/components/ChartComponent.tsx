@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { 
   createChart, 
   ColorType, 
@@ -13,6 +13,7 @@ import {
   AutoscaleInfo, 
   DeepPartial, 
   PriceLineOptions,
+  TimeScaleOptions,
   // Series definitions
   CandlestickSeries,
   LineSeries,
@@ -337,6 +338,12 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   const indicatorSeries = useRef<{[key: string]: ISeriesApi<'Line' | 'Histogram' | 'Area'>}>({});
   const patternMarkers = useRef<{[key: string]: any}>({});
   const divergenceLines = useRef<{[key: string]: any}>({});
+  
+  // Save chart state (visible range, etc.) to restore when re-creating chart
+  const chartState = useRef<{
+    timeRange?: {from: number, to: number},
+    priceRange?: {min: number, max: number}
+  }>({});
 
   // Convert to lightweight-charts format
   const formattedCandlesticks = useMemo(() => {
@@ -431,8 +438,50 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   useEffect(() => {
     if (!chartContainerRef.current) return;
     
-    // Remove the old chart if it exists
+    // Save chart view state before removing old chart
     if (chartInstance.current) {
+      try {
+        // Save time range
+        const timeScale = chartInstance.current.timeScale();
+        const visibleRange = timeScale.getVisibleLogicalRange();
+        if (visibleRange) {
+          chartState.current.timeRange = {
+            from: visibleRange.from,
+            to: visibleRange.to
+          };
+        }
+        
+        // Save price range if main series exists
+        // Note: Direct access to visible price range is not exposed in the API
+        // We'll use a different approach by saving the current options
+        if (mainSeries.current) {
+          try {
+            // Get visible price range through the price scale
+            const priceScale = mainSeries.current.priceScale();
+            const options = priceScale.options();
+            
+            // Manually record price max and min from the UI
+            // This is an approximation
+            const container = chartContainerRef.current;
+            if (container) {
+              const height = container.clientHeight;
+              const priceDiff = (formattedCandlesticks[formattedCandlesticks.length - 1]?.close || 0) * 0.1;
+              
+              // Estimate visible price range based on current price
+              chartState.current.priceRange = {
+                min: (formattedCandlesticks[formattedCandlesticks.length - 1]?.close || 0) - priceDiff,
+                max: (formattedCandlesticks[formattedCandlesticks.length - 1]?.close || 0) + priceDiff,
+              };
+            }
+          } catch (error) {
+            console.log('Error saving price range:', error);
+          }
+        }
+      } catch (error) {
+        console.log('Error saving chart state:', error);
+      }
+      
+      // Remove the old chart
       chartInstance.current.remove();
       mainSeries.current = null;
       volumeSeries.current = null;
@@ -987,8 +1036,42 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     chartInstance.current = chart;
     mainSeries.current = mainSeriesRef;
     
-    // Fit content to chart
-    chart.timeScale().fitContent();
+    // Restore the previous view state if available
+    if (chartState.current.timeRange) {
+      try {
+        // Restore time range
+        chart.timeScale().setVisibleLogicalRange(chartState.current.timeRange);
+      } catch (error) {
+        console.log('Error restoring time range:', error);
+        // If restoring fails, fit content
+        chart.timeScale().fitContent();
+      }
+    } else {
+      // If no saved state, fit content
+      chart.timeScale().fitContent();
+    }
+    
+    // Restore price range if available
+    if (chartState.current.priceRange && mainSeriesRef) {
+      try {
+        mainSeriesRef.priceScale().applyOptions({
+          autoScale: false
+        });
+        
+        // Wait a bit to let the chart initialize properly
+        setTimeout(() => {
+          if (mainSeries.current && chartState.current.priceRange) {
+            // Set manual price range
+            mainSeries.current.priceScale().setVisibleRange({
+              from: chartState.current.priceRange!.min,
+              to: chartState.current.priceRange!.max
+            });
+          }
+        }, 100);
+      } catch (error) {
+        console.log('Error restoring price range:', error);
+      }
+    }
     
     // Clean up
     return () => {
