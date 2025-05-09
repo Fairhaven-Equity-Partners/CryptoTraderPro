@@ -36,7 +36,7 @@ const GlobalNotifications: React.FC = () => {
   const [newSignals, setNewSignals] = useState<any[]>([]);
   
   useEffect(() => {
-    // Register handler for new signals
+    // Register handler for new signals (only when real signals are detected)
     const unsubscribe = registerMessageHandler('new_signal', (data) => {
       if (data && data.direction) {
         // Create notification for the new signal
@@ -54,24 +54,10 @@ const GlobalNotifications: React.FC = () => {
       }
     });
     
-    // Simulate a notification after 5 seconds
-    const timer = setTimeout(() => {
-      const sampleAlert: Alert = {
-        id: 999,
-        symbol: 'BTC/USDT',
-        direction: 'LONG',
-        description: 'Multiple indicators aligned',
-        targetPrice: 43500,
-        isActive: true,
-        isTriggered: true
-      };
-      
-      showAlertNotification(sampleAlert);
-    }, 5000);
+    // No more automatic sample alerts
     
     return () => {
       unsubscribe();
-      clearTimeout(timer);
     };
   }, [showAlertNotification]);
   

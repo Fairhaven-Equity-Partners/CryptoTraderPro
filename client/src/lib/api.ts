@@ -351,7 +351,7 @@ export function startRealTimeUpdates() {
         throw new Error('Initial price fetch failed');
       })
       .then(data => {
-        console.log('Initial real prices loaded:', data);
+        // Removed console log for performance
         if (data && data.bitcoin) {
           realPriceData = data;
           lastKnownRealPrices = data;
@@ -364,7 +364,7 @@ export function startRealTimeUpdates() {
     console.error('Error setting up initial fetch:', e);
   }
   
-  // Update prices every 30 seconds (decreased frequency to avoid rate limiting)
+  // Update prices less frequently to reduce updates and browser load
   const updateInterval = setInterval(() => {
     currentSymbols.forEach(symbol => {
       // Use the stored prices that we know are good
@@ -403,9 +403,7 @@ export function startRealTimeUpdates() {
       const tinyChange = (Math.random() - 0.5) * 0.0005; // Very small change for animation
       newPrice = newPrice * (1 + tinyChange);
       
-      if (currentPrice) {
-        console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
-      }
+      // Remove console logs to improve performance
       
       // Notify all handlers about the price update
       const priceData = {
@@ -427,7 +425,7 @@ export function startRealTimeUpdates() {
     
     // Every 3 full updates, try to get fresh data from CoinGecko
     // This reduces our API load significantly
-    const shouldFetchReal = Math.floor(Date.now() / 1000) % 90 < 2; // Try every ~90 seconds
+    const shouldFetchReal = Math.floor(Date.now() / 1000) % 180 < 2; // Try every ~3 minutes (increased from 90 seconds)
     
     if (shouldFetchReal) {
       // Try to update our stored real prices in the background
@@ -440,16 +438,16 @@ export function startRealTimeUpdates() {
         })
         .then(data => {
           if (data && data.bitcoin) {
-            console.log('Updated real prices from CoinGecko:', data);
+            // Remove console logs for performance
             lastKnownRealPrices = data;
             realPriceData = data; // Update both variables
           }
         })
         .catch(error => {
-          console.log('Skipping real price update due to API error (will retry later)');
+          // Silent fail to avoid console spam
         });
     }
-  }, 3000); // Update UI every 3 seconds, but fetch real data less frequently
+  }, 6000); // Increased update interval from 3 to 6 seconds for better performance
   
   // Return the interval ID so it can be cleared if needed
   return updateInterval;
