@@ -1054,22 +1054,31 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     // Restore price range if available
     if (chartState.current.priceRange && mainSeriesRef) {
       try {
+        // Use applyOptions to set minimum and maximum visible value
         mainSeriesRef.priceScale().applyOptions({
-          autoScale: false
+          autoScale: false,
+          // Set min and max values for the price scale
+          minimumValue: chartState.current.priceRange.min,
+          maximumValue: chartState.current.priceRange.max
         });
         
-        // Wait a bit to let the chart initialize properly
+        // Wait a bit to let the chart initialize properly then fit content
         setTimeout(() => {
-          if (mainSeries.current && chartState.current.priceRange) {
-            // Set manual price range
-            mainSeries.current.priceScale().setVisibleRange({
-              from: chartState.current.priceRange!.min,
-              to: chartState.current.priceRange!.max
+          // Ensure autoScale is off so our manual range is maintained
+          if (mainSeries.current) {
+            mainSeries.current.priceScale().applyOptions({
+              autoScale: false
             });
           }
         }, 100);
       } catch (error) {
         console.log('Error restoring price range:', error);
+        // If restoring manual price range fails, use auto scale
+        if (mainSeriesRef) {
+          mainSeriesRef.priceScale().applyOptions({
+            autoScale: true
+          });
+        }
       }
     }
     
