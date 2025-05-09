@@ -230,7 +230,11 @@ function detectDivergences(data: ChartData[]): { divergence: string, startIndex:
     }
     
     // RSI highs
-    if (i >= 14 && rsiValues[i] && // Make sure we have RSI values
+    if (i >= 14 && rsiValues[i] !== undefined && // Make sure we have RSI values
+        rsiValues[i-1] !== undefined &&
+        rsiValues[i-2] !== undefined &&
+        rsiValues[i+1] !== undefined &&
+        rsiValues[i+2] !== undefined &&
         rsiValues[i] > rsiValues[i-1] && 
         rsiValues[i] > rsiValues[i-2] && 
         rsiValues[i] > rsiValues[i+1] && 
@@ -239,7 +243,11 @@ function detectDivergences(data: ChartData[]): { divergence: string, startIndex:
     }
     
     // RSI lows
-    if (i >= 14 && rsiValues[i] && // Make sure we have RSI values
+    if (i >= 14 && rsiValues[i] !== undefined && // Make sure we have RSI values
+        rsiValues[i-1] !== undefined &&
+        rsiValues[i-2] !== undefined &&
+        rsiValues[i+1] !== undefined &&
+        rsiValues[i+2] !== undefined &&
         rsiValues[i] < rsiValues[i-1] && 
         rsiValues[i] < rsiValues[i-2] && 
         rsiValues[i] < rsiValues[i+1] && 
@@ -366,6 +374,10 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           };
         }
         
+        // Note: Save price range logic commented out due to API compatibility issues
+        // The getVisiblePriceRange method isn't available in the current version
+        // We'll rely on auto-scaling instead
+        /*
         if (mainSeries.current) {
           const priceRange = mainSeries.current.priceScale().getVisiblePriceRange();
           if (priceRange) {
@@ -375,6 +387,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
             };
           }
         }
+        */
       } catch (error) {
         console.error('Error saving chart state:', error);
       }
