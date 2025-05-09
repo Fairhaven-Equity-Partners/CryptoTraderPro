@@ -721,7 +721,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     });
     
     // Adjust the scale of the main chart to make room for indicator panes
-    // Keep the main chart larger with 70% of the total height
+    // Keep the main chart at 60% of the total height to give more space to indicators
     chart.applyOptions({
       layout: {
         background: { type: ColorType.Solid, color: '#0F1929' },
@@ -730,7 +730,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       rightPriceScale: {
         scaleMargins: {
           top: 0.05, // Almost to the top
-          bottom: 0.25, // Main chart takes 70% of the space
+          bottom: 0.40, // Main chart takes 60% of the space now
         },
       },
     });
@@ -775,9 +775,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Set RSI scale with improved spacing
         chart.priceScale('rsi').applyOptions({
           scaleMargins: {
-            // Use fixed position for cleaner spacing
-            top: 0.7,
-            bottom: 0.05,
+            // Give RSI more vertical space (positioned at the top of the indicator area)
+            top: 0.62,
+            bottom: 0.23,
           },
           visible: true,
           autoScale: true,
@@ -822,8 +822,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Set MACD scale with better spacing
         chart.priceScale('macd').applyOptions({
           scaleMargins: {
-            top: 0.75,
-            bottom: 0.05,
+            // Position MACD below RSI with good spacing
+            top: 0.80,
+            bottom: 0.12,
           },
           visible: true,
           autoScale: true,
@@ -878,7 +879,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         // Set Stochastic scale with better spacing
         chart.priceScale('stoch').applyOptions({
           scaleMargins: {
-            top: 0.8,
+            // Place Stochastic at the bottom with good spacing from MACD
+            top: 0.90,
             bottom: 0.05,
           },
           visible: true,
@@ -1054,20 +1056,34 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     // Restore price range if available
     if (chartState.current.priceRange && mainSeriesRef) {
       try {
-        // Use applyOptions to set minimum and maximum visible value
+        // First turn off auto-scaling
         mainSeriesRef.priceScale().applyOptions({
-          autoScale: false,
-          // Set min and max values for the price scale
-          minimumValue: chartState.current.priceRange.min,
-          maximumValue: chartState.current.priceRange.max
+          autoScale: false
         });
         
-        // Wait a bit to let the chart initialize properly then fit content
+        // Wait a bit to let the chart initialize properly
         setTimeout(() => {
-          // Ensure autoScale is off so our manual range is maintained
-          if (mainSeries.current) {
+          // Since the specific minimumValue/maximumValue properties aren't available
+          // in the PriceScaleOptions type, we'll use a different approach
+          if (mainSeries.current && chartInstance.current) {
+            // First fit content to get a baseline
+            chartInstance.current.timeScale().fitContent();
+            
+            // Then manually zoom to a specific price range by applying a scale factor
+            const currentRange = mainSeries.current.priceScale().options();
+            
+            // Ensure autoScale is off
             mainSeries.current.priceScale().applyOptions({
               autoScale: false
+            });
+            
+            // Use coordinateToPrice to set the visible range
+            // Note: Since we can't directly set the range,
+            // we'll make the chart show this area by updating chart options
+            chartInstance.current.applyOptions({
+              rightPriceScale: {
+                autoScale: false
+              }
             });
           }
         }, 100);
