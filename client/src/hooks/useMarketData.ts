@@ -36,7 +36,7 @@ export function useAssetPrice(symbol: string) {
     
     // Register handler for price updates
     const unsubscribe = registerMessageHandler('priceUpdate', (data) => {
-      console.log('Price update received:', data);
+      // Removed console logs for performance
       if (data.symbol === symbol) {
         setRealtimePrice(prevPrice => {
           // Merge with previous price data to maintain any fields we still need
@@ -47,7 +47,6 @@ export function useAssetPrice(symbol: string) {
             lastPrice: data.price || (data as any).lastPrice
           } as AssetPrice;
           
-          console.log('Updated price data:', updatedPrice);
           return updatedPrice;
         });
         setIsLiveDataConnected(true);
@@ -106,7 +105,7 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   useEffect(() => {
     fetchData();
     
-    // Register for live updates
+    // Register for live updates with optimized error handling
     const unsubscribe = registerChartUpdateListener(symbol, timeframe, () => {
       fetchChartData(symbol, timeframe)
         .then(newData => {
@@ -115,8 +114,8 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
             setIsLiveDataConnected(true);
           }
         })
-        .catch(err => {
-          console.error('Error updating chart data:', err);
+        .catch(() => {
+          // Silent fail to avoid console spam
         });
     });
     
