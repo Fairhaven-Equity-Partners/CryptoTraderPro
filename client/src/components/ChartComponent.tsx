@@ -1171,10 +1171,15 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   
   // Toggle panel expansion/collapse
   const togglePanelExpansion = (panelName: string) => {
-    setExpandedPanels(prev => ({
-      ...prev,
-      [panelName]: !prev[panelName]
-    }));
+    console.log('Toggling panel:', panelName, 'Current state:', expandedPanels[panelName]);
+    setExpandedPanels(prev => {
+      const newState = {
+        ...prev,
+        [panelName]: !prev[panelName]
+      };
+      console.log('New panel state:', newState);
+      return newState;
+    });
   };
   
   // Display detected patterns and divergences in a legend
