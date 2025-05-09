@@ -480,46 +480,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     
     // Save chart view state before removing old chart
     if (chartInstance.current) {
-      try {
-        // Save time range
-        const timeScale = chartInstance.current.timeScale();
-        const visibleRange = timeScale.getVisibleLogicalRange();
-        if (visibleRange) {
-          chartState.current.timeRange = {
-            from: visibleRange.from,
-            to: visibleRange.to
-          };
-        }
-        
-        // Save price range if main series exists
-        // Note: Direct access to visible price range is not exposed in the API
-        // We'll use a different approach by saving the current options
-        if (mainSeries.current) {
-          try {
-            // Get visible price range through the price scale
-            const priceScale = mainSeries.current.priceScale();
-            const options = priceScale.options();
-            
-            // Manually record price max and min from the UI
-            // This is an approximation
-            const container = chartContainerRef.current;
-            if (container) {
-              const height = container.clientHeight;
-              const priceDiff = (formattedCandlesticks[formattedCandlesticks.length - 1]?.close || 0) * 0.1;
-              
-              // Estimate visible price range based on current price
-              chartState.current.priceRange = {
-                min: (formattedCandlesticks[formattedCandlesticks.length - 1]?.close || 0) - priceDiff,
-                max: (formattedCandlesticks[formattedCandlesticks.length - 1]?.close || 0) + priceDiff,
-              };
-            }
-          } catch (error) {
-            console.log('Error saving price range:', error);
-          }
-        }
-      } catch (error) {
-        console.log('Error saving chart state:', error);
-      }
+      // Use the saveChartState utility function to save the current state
+      saveChartState();
       
       // Remove the old chart
       chartInstance.current.remove();
@@ -1294,7 +1256,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
             {/* Timeframe selector - DexScreener style */}
             <div className="flex items-center">
               <div className="flex space-x-1">
-                {(showAllTimeframes ? TIMEFRAMES : visibleTimeframes).map(tf => (
+                {(showAllTimeframes ? timeframes : visibleTimeframes).map((tf: string) => (
                   <button
                     key={tf}
                     className={`py-1 px-2 text-xs font-medium rounded-md ${
@@ -1321,102 +1283,132 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
         
         {/* Chart and legend layout */}
         <div className="flex">
-          {/* Chart container */}
+          {/* Chart container - DexScreener style */}
           <div className="flex-grow">
             <div className="relative">
               {isLoading && (
-                <div className="absolute inset-0 bg-secondary bg-opacity-50 flex items-center justify-center z-10">
-                  <span className="text-white">Loading chart data...</span>
+                <div className="absolute inset-0 bg-[#0F1929] bg-opacity-80 flex items-center justify-center z-10">
+                  <div className="flex items-center space-x-2">
+                    <svg className="animate-spin h-5 w-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span className="text-white font-medium">Loading chart...</span>
+                  </div>
                 </div>
               )}
               
               <div 
                 ref={chartContainerRef}
-                className="w-full h-[500px] relative"
+                className="w-full h-[500px] relative bg-[#0F1929]"
               />
             </div>
           </div>
           
-          {/* Legend and controls */}
+          {/* Legend and controls - DexScreener style */}
           {showLegend && (
-            <div className="w-48 ml-2 flex flex-col bg-gray-800 bg-opacity-50 p-2 rounded">
-              <div className="flex justify-between mb-2">
-                <h3 className="text-sm font-medium text-white">Indicators</h3>
-                <button
-                  className="text-xs text-neutral"
-                  onClick={() => setShowLegend(false)}
-                  title="Hide legend"
-                >
-                  ×
-                </button>
-              </div>
-              
-              {/* Indicator toggles */}
-              <div className="flex flex-col overflow-y-auto max-h-[200px] mb-4">
-                {activeIndicators.map(indicator => {
-                  // Determine if this indicator is an oscillator that can be expanded/collapsed
-                  const canExpand = ['RSI', 'MACD', 'Stochastic', 'ADX', 'ATR'].includes(indicator.name);
+            <div className="w-56 flex flex-col bg-[#121926] border-l border-[#1E2C3E]">
+              <div className="p-3">
+                <div className="flex justify-between items-center mb-3 border-b border-[#1E2C3E] pb-2">
+                  <h3 className="text-[13px] font-medium text-white">Indicator Settings</h3>
+                  <button
+                    className="text-xs text-gray-400 hover:text-white"
+                    onClick={() => setShowLegend(false)}
+                    title="Hide settings"
+                  >
+                    ×
+                  </button>
+                </div>
+                
+                {/* Group indicators by category - DexScreener style */}
+                {Object.values(IndicatorCategory).map(category => {
+                  const categoryIndicators = activeIndicators.filter(i => i.category === category);
+                  if (categoryIndicators.length === 0) return null;
                   
                   return (
-                    <div key={indicator.name} className="flex items-center mb-1">
-                      <input
-                        type="checkbox"
-                        id={`indicator-${indicator.name}`}
-                        checked={indicator.enabled}
-                        onChange={() => toggleIndicator(indicator.name)}
-                        className="mr-1"
-                      />
-                      <span 
-                        className="h-2 w-2 rounded-full mr-1" 
-                        style={{ backgroundColor: indicator.color }}
-                      ></span>
-                      <label 
-                        htmlFor={`indicator-${indicator.name}`}
-                        className="text-xs cursor-pointer"
-                      >
-                        {indicator.name}
-                      </label>
-                      
-                      {canExpand && indicator.enabled && (
-                        <button
-                          className="ml-auto text-xs bg-gray-700 text-white hover:bg-gray-600 px-2 py-0.5 rounded"
-                          onClick={() => togglePanelExpansion(indicator.name)}
-                          title={expandedPanels[indicator.name] ? "Collapse" : "Expand"}
-                        >
-                          {expandedPanels[indicator.name] ? "▼" : "▶"}
-                        </button>
-                      )}
+                    <div key={category} className="mb-4">
+                      <h4 className="text-xs font-medium text-blue-400 mb-2">{category}</h4>
+                      {categoryIndicators.map(indicator => {
+                        const canExpand = ['RSI', 'MACD', 'Stochastic', 'ADX', 'ATR'].includes(indicator.name);
+                        
+                        return (
+                          <div 
+                            key={indicator.name} 
+                            className="flex items-center mb-2 py-1.5 px-2 rounded-md hover:bg-[#1E2C3E]"
+                          >
+                            <input
+                              type="checkbox"
+                              id={`indicator-${indicator.name}`}
+                              checked={indicator.enabled}
+                              onChange={() => toggleIndicator(indicator.name)}
+                              className="mr-2 h-3.5 w-3.5 rounded border-gray-600 text-blue-500 focus:ring-blue-500"
+                            />
+                            <span 
+                              className="h-3 w-3 rounded-full mr-2" 
+                              style={{ backgroundColor: indicator.color }}
+                            ></span>
+                            <label 
+                              htmlFor={`indicator-${indicator.name}`}
+                              className="text-xs text-gray-200 cursor-pointer"
+                            >
+                              {indicator.name}
+                            </label>
+                            
+                            {canExpand && indicator.enabled && (
+                              <button
+                                className="ml-auto flex items-center justify-center w-6 h-6 text-xs bg-[#1E2C3E] text-gray-300 hover:bg-[#2A3A50] rounded-md"
+                                onClick={() => togglePanelExpansion(indicator.name)}
+                                title={expandedPanels[indicator.name] ? "Collapse" : "Expand"}
+                              >
+                                {expandedPanels[indicator.name] ? "▼" : "▶"}
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   );
                 })}
                 
-                <div className="flex items-center mb-1">
-                  <input
-                    type="checkbox"
-                    id="show-volume"
-                    checked={showVolume}
-                    onChange={() => setShowVolume(!showVolume)}
-                    className="mr-1"
-                  />
-                  <span className="h-2 w-2 bg-[#607D8B] rounded-full mr-1"></span>
-                  <label htmlFor="show-volume" className="text-xs cursor-pointer">Volume</label>
+                {/* Volume toggle - DexScreener style */}
+                <div className="py-1.5 px-2 rounded-md hover:bg-[#1E2C3E] mb-4">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="show-volume"
+                      checked={showVolume}
+                      onChange={() => setShowVolume(!showVolume)}
+                      className="mr-2 h-3.5 w-3.5 rounded border-gray-600 text-blue-500 focus:ring-blue-500"
+                    />
+                    <span className="h-3 w-3 bg-[#607D8B] rounded-full mr-2"></span>
+                    <label htmlFor="show-volume" className="text-xs text-gray-200 cursor-pointer">
+                      Volume
+                    </label>
+                  </div>
+                </div>
+                
+                {/* Pattern detection section - DexScreener style */}
+                <div className="border-t border-[#1E2C3E] pt-3 mt-2">
+                  <h3 className="text-[13px] font-medium text-white mb-2">
+                    Detected Patterns
+                  </h3>
+                  {renderPatternLegend()}
                 </div>
               </div>
-              
-              {/* Pattern detection results */}
-              <h3 className="text-sm font-medium text-white mb-2">Detected Patterns</h3>
-              {renderPatternLegend()}
             </div>
           )}
           
-          {/* Show legend button (when hidden) */}
+          {/* Show legend button (when hidden) - DexScreener style */}
           {!showLegend && (
             <button
-              className="w-6 h-6 ml-1 bg-gray-800 rounded flex items-center justify-center text-white"
+              className="w-8 h-8 bg-[#121926] border-l border-[#1E2C3E] flex items-center justify-center text-gray-300 hover:text-white"
               onClick={() => setShowLegend(true)}
-              title="Show legend"
+              title="Show settings"
             >
-              ⚙️
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
             </button>
           )}
         </div>
