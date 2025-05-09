@@ -91,7 +91,7 @@ export type InsertSignalHistory = z.infer<typeof insertSignalHistorySchema>;
 
 // Enums and constants that can be shared
 export const TIMEFRAMES = [
-  "1m", "5m", "15m", "30m", "1h", "4h", "1d", "1w", "1M"
+  "1m", "5m", "15m", "30m", "1h", "4h", "1d", "3d", "1w", "1M"
 ] as const;
 
 export const SIGNAL_DIRECTIONS = ["LONG", "SHORT", "NEUTRAL"] as const;

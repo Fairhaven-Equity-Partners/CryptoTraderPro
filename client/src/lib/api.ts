@@ -323,6 +323,10 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
       timeIncrement = 86400;
       count = 365; // 365 days (1 year)
       break;
+    case '3d':
+      timeIncrement = 259200; // 3 days in seconds
+      count = 150; // 150 3-day periods (~1.2 years)
+      break;
     case '1w':
       timeIncrement = 604800;
       count = 200; // 200 weeks (~3.8 years)
@@ -407,6 +411,7 @@ function getVolatilityForTimeframe(timeframe: TimeFrame): number {
     case '1h': return 0.015;
     case '4h': return 0.025;
     case '1d': return 0.04;
+    case '3d': return 0.05; // 3-day has slightly higher volatility than 1-day
     case '1w': return 0.06;
     case '1M': return 0.1;
     default: return 0.01;
