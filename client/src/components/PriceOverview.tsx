@@ -34,12 +34,15 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   const directionColor = direction === 'LONG' ? 'text-success' : direction === 'SHORT' ? 'text-danger' : 'text-neutral';
   const progressColor = direction === 'LONG' ? 'bg-success' : direction === 'SHORT' ? 'bg-danger' : 'bg-neutral';
   
+  // Get the display price (either price.price or price.lastPrice depending on what's available)
+  const displayPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
+  
   return (
     <div className="px-4 py-3 bg-secondary mb-2 border-b border-gray-700">
       <div className="flex justify-between items-center">
         <div>
           <span className="text-2xl font-semibold text-white">
-            {formatPrice(price.lastPrice, symbol)}
+            {formatPrice(displayPrice, symbol)}
           </span>
           <div className="flex items-center space-x-2 mt-1">
             <span className={`${priceChangeClass} text-sm font-medium`}>

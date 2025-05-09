@@ -157,7 +157,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
 }
 
 // Start real-time updates
-function startRealTimeUpdates() {
+export function startRealTimeUpdates() {
   if (realTimeUpdatesActive) return;
   
   realTimeUpdatesActive = true;
@@ -191,16 +191,35 @@ function startRealTimeUpdates() {
   
   // For simulation, update prices every 3 seconds 
   // In a real app, this would come from the WebSocket
-  setInterval(() => {
+  const updateInterval = setInterval(() => {
     currentSymbols.forEach(symbol => {
-      const simulatedPrice = getCurrentPrice(symbol) * (1 + (Math.random() - 0.48) * 0.002);
-      handlePriceUpdate({
+      const currentPrice = getCurrentPrice(symbol);
+      const priceChange = (Math.random() - 0.48) * 0.003; // 0.3% max change
+      const simulatedPrice = currentPrice * (1 + priceChange);
+      
+      console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${simulatedPrice.toFixed(2)}`);
+      
+      // Notify all handlers about the price update
+      const priceData = {
         symbol,
         price: simulatedPrice,
         change24h: (Math.random() - 0.48) * 5
-      });
+      };
+      
+      // Directly call the price update handler
+      handlePriceUpdate(priceData);
+      
+      // Also broadcast to all message handlers
+      if (messageHandlers['priceUpdate']) {
+        messageHandlers['priceUpdate'].forEach(handler => {
+          handler(priceData);
+        });
+      }
     });
   }, 3000);
+  
+  // Return the interval ID so it can be cleared if needed
+  return updateInterval;
 }
 
 // Generate realistic looking chart data with trend patterns

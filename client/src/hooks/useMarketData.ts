@@ -35,14 +35,31 @@ export function useAssetPrice(symbol: string) {
     
     // Register handler for price updates
     const unsubscribe = registerMessageHandler('priceUpdate', (data) => {
+      console.log('Price update received:', data);
       if (data.symbol === symbol) {
-        setRealtimePrice(data);
+        setRealtimePrice(prevPrice => {
+          // Merge with previous price data to maintain any fields we still need
+          const updatedPrice = { 
+            ...(prevPrice || {}), 
+            ...data,
+            // If this is from an API with lastPrice field, map it accordingly
+            lastPrice: data.price || (data as any).lastPrice
+          } as AssetPrice;
+          
+          console.log('Updated price data:', updatedPrice);
+          return updatedPrice;
+        });
         setIsLiveDataConnected(true);
       }
     });
     
     // Subscribe to updates for this symbol
     subscribeToSymbols([symbol]);
+    
+    // Start real-time updates if not already active
+    if (!isLiveDataConnected) {
+      startRealTimeUpdates();
+    }
     
     return () => {
       // Clean up subscription when component unmounts
