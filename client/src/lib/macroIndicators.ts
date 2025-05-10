@@ -10,6 +10,18 @@
  * For this prototype, we use static data with small variations to simulate real API responses
  */
 
+// Performance optimization: Cache for macro indicators
+const macroCache = {
+  lastFetch: 0,
+  macroData: null as MacroData | null,
+  environmentScore: 0,
+  classification: '',
+  insights: [] as string[]
+};
+
+// Cache expiration time in milliseconds (60 seconds)
+const MACRO_CACHE_EXPIRATION = 60 * 1000;
+
 export interface MacroData {
   // Market sentiment
   fearGreedIndex: number;         // 0-100 scale, <20 extreme fear, >80 extreme greed
@@ -116,21 +128,39 @@ export async function refreshMacroIndicators(): Promise<MacroData> {
 }
 
 /**
- * Get current macro indicators
+ * Get current macro indicators with caching
  */
 export function getMacroIndicators(): MacroData {
+  const now = Date.now();
+  
+  // If we have a valid cached value, return it
+  if (macroCache.macroData && (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
+    return macroCache.macroData;
+  }
+  
   // Attempt to refresh in the background
   refreshMacroIndicators().catch(console.error);
   
-  // Return current data immediately
+  // Cache the current data
+  macroCache.macroData = currentMacroData;
+  macroCache.lastFetch = now;
+  
+  // Return current data
   return currentMacroData;
 }
 
 /**
  * Analyze macro environment and determine if it's supportive for crypto
- * Returns a score from 0-100
+ * Returns a score from 0-100 with caching for performance
  */
 export function analyzeMacroEnvironment(): number {
+  const now = Date.now();
+  
+  // If we have a valid cached value, return it
+  if (macroCache.environmentScore > 0 && (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
+    return macroCache.environmentScore;
+  }
+  
   // Get latest data
   const data = currentMacroData;
   
