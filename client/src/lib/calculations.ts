@@ -50,17 +50,20 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
     const isLong = stopLoss < entryPrice;
     const profitPercentage = Math.abs((takeProfit - entryPrice) / entryPrice * 100);
     
-    // Calculate position size in BTC
-    const positionSizeInCrypto = positionSize / entryPrice;
+    // Calculate position size in crypto units
+    const leveragedPositionValue = positionSize * safeLeverage;
+    const positionSizeInCrypto = leveragedPositionValue / entryPrice;
     
     // Calculate profit based on direction
     if (isLong) {
-      potentialProfit = positionSizeInCrypto * (takeProfit - entryPrice) * safeLeverage;
+      // For long positions, profit = size_in_crypto * (tp - entry)
+      potentialProfit = positionSizeInCrypto * (takeProfit - entryPrice);
     } else {
-      potentialProfit = positionSizeInCrypto * (entryPrice - takeProfit) * safeLeverage;
+      // For short positions, profit = size_in_crypto * (entry - tp)
+      potentialProfit = positionSizeInCrypto * (entryPrice - takeProfit);
     }
     
-    // Ensure positive profit value
+    // Ensure positive profit value for display
     potentialProfit = Math.abs(potentialProfit);
     riskRewardRatio = (potentialProfit / riskAmount).toFixed(2);
   }
@@ -89,7 +92,12 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
     entryPrice * (1 - (priceChangePercentage / 100) * 3);
   
   // Calculate position size based on risk and current price
-  const recommendedPositionSize = (riskAmount / (priceChangePercentage / 100)) / entryPrice;
+  // Risk amount = Max you're willing to lose
+  // We need position size such that: position_size * (stop_loss_percentage) = risk_amount
+  // For high-priced assets like BTC, we need to calculate in terms of the crypto amount
+  const stopLossPercentage = priceChangePercentage / 100;
+  const leveragedPositionValue = riskAmount / stopLossPercentage;
+  const recommendedPositionSize = leveragedPositionValue / safeLeverage / entryPrice;
   
   return {
     recommendedLeverage: safeLeverage.toFixed(1),
@@ -102,8 +110,8 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
       tp2: tp2.toFixed(2),
       tp3: tp3.toFixed(2)
     },
-    recommendedPositionSize: recommendedPositionSize.toFixed(4),
-    maxPositionSize: (recommendedPositionSize * safeLeverage).toFixed(4)
+    recommendedPositionSize: recommendedPositionSize.toFixed(6),
+    maxPositionSize: (leveragedPositionValue / entryPrice).toFixed(6)
   };
 }
 
