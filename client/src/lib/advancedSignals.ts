@@ -564,7 +564,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
           // Measure the percentage drop from head to neckline
           const headToNeckPct = (head.price - necklinePrice) / head.price;
           // Apply same percentage below the neckline (with limits for realism)
-          // Ensure price target is between 85% and 95% of last price for BTC
+          // Ensure price target is between 85% and 95% of last price
           const rawPriceTarget = necklinePrice * (1 - headToNeckPct);
           const priceTarget = Math.max(lastPrice * 0.85, Math.min(necklinePrice * 0.95, rawPriceTarget));
           
@@ -573,7 +573,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
             reliability: 75,
             direction: 'bearish',
             priceTarget: Math.max(lastPrice * 0.85, priceTarget), // Set minimum to 85% of current price
-            description: 'Bearish reversal pattern with price target around ' + formatPrice(priceTarget)
+            description: 'Bearish reversal pattern with price target around ' + formatPrice(priceTarget, symbol)
           };
         }
       }
@@ -677,7 +677,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
           // Measure the percentage drop from peak to lowest point
           const peakToLowPct = (firstPeak.price - lowestPoint) / firstPeak.price;
           // Apply same percentage below the lowest point (with limits for realism)
-          // Ensure price target is between 85% and 95% of last price for BTC
+          // Ensure price target is between 85% and 95% of last price
           const rawPriceTarget = lowestPoint * (1 - peakToLowPct);
           const priceTarget = Math.max(lastPrice * 0.85, Math.min(lastPrice * 0.95, rawPriceTarget));
           
@@ -686,7 +686,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
             reliability: 70,
             direction: 'bearish',
             priceTarget: Math.max(lastPrice * 0.85, priceTarget), // Set minimum to 85% of current price
-            description: 'Bearish reversal pattern with price target around ' + formatPrice(priceTarget)
+            description: 'Bearish reversal pattern with price target around ' + formatPrice(priceTarget, symbol)
           };
         }
       }
@@ -1187,9 +1187,9 @@ export function generateTradeRecommendation(
   summary += `signal on ${symbol} with ${confidence}% confidence. `;
   
   if (direction !== 'NEUTRAL') {
-    summary += `Recommended ${direction.toLowerCase()} entry around ${formatPrice(entryIdeal)}. `;
-    summary += `Set stop loss at ${formatPrice(hourTimeframe.stopLoss)} `;
-    summary += `and take profit targets at ${formatPrice(takeProfitLevels[0])}, ${formatPrice(takeProfitLevels[1])}, and ${formatPrice(takeProfitLevels[2])}. `;
+    summary += `Recommended ${direction.toLowerCase()} entry around ${formatPrice(entryIdeal, symbol)}. `;
+    summary += `Set stop loss at ${formatPrice(hourTimeframe.stopLoss, symbol)} `;
+    summary += `and take profit targets at ${formatPrice(takeProfitLevels[0], symbol)}, ${formatPrice(takeProfitLevels[1], symbol)}, and ${formatPrice(takeProfitLevels[2], symbol)}. `;
     summary += `Consider using ${direction === 'LONG' ? conservativeLeverage : moderateLeverage}x leverage for moderate risk.`;
   } else {
     summary += `Current market conditions suggest waiting for clearer signals before entering a trade.`;
