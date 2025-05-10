@@ -1,55 +1,58 @@
-import { useState, useEffect, useCallback } from 'react';
-import { 
-  getMacroIndicators, 
-  refreshMacroIndicators, 
-  analyzeMacroEnvironment, 
-  getMacroEnvironmentClassification,
-  getMacroInsights,
-  MacroData
-} from '../lib/macroIndicators';
+import { useState, useEffect } from 'react';
+import { MacroData, getMacroIndicators, analyzeMacroEnvironment, getMacroEnvironmentClassification, getMacroInsights } from '../lib/macroIndicators';
 
 export function useMacroIndicators() {
   const [macroData, setMacroData] = useState<MacroData>(getMacroIndicators());
-  const [macroScore, setMacroScore] = useState<number>(analyzeMacroEnvironment());
-  const [macroClassification, setMacroClassification] = useState<string>(getMacroEnvironmentClassification());
-  const [macroInsights, setMacroInsights] = useState<string[]>(getMacroInsights());
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [macroScore, setMacroScore] = useState<number>(0);
+  const [macroClassification, setMacroClassification] = useState<string>('');
+  const [macroInsights, setMacroInsights] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const refreshData = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      
-      // Refresh the macro data
-      const newData = await refreshMacroIndicators();
-      
-      // Update state with new data
-      setMacroData(newData);
-      setMacroScore(analyzeMacroEnvironment());
-      setMacroClassification(getMacroEnvironmentClassification());
-      setMacroInsights(getMacroInsights());
-      
-      setIsLoading(false);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to fetch macro indicators'));
-      setIsLoading(false);
-    }
-  }, []);
-
-  // Fetch data on initial render
   useEffect(() => {
-    refreshData();
+    let isMounted = true;
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Get the current macro data
+        const data = getMacroIndicators();
+        
+        if (isMounted) {
+          setMacroData(data);
+          
+          // Calculate score and classifications
+          const score = analyzeMacroEnvironment();
+          setMacroScore(score);
+          
+          const classification = getMacroEnvironmentClassification();
+          setMacroClassification(classification);
+          
+          const insights = getMacroInsights();
+          setMacroInsights(insights);
+          
+          setIsLoading(false);
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error('Error fetching macro indicators:', err);
+          setError(err as Error);
+          setIsLoading(false);
+        }
+      }
+    };
+
+    fetchData();
     
-    // Set up refresh interval
-    const intervalId = setInterval(() => {
-      refreshData();
-    }, 5 * 60 * 1000); // Refresh every 5 minutes
+    // Refresh data every 5 minutes
+    const intervalId = setInterval(fetchData, 5 * 60 * 1000);
     
     return () => {
+      isMounted = false;
       clearInterval(intervalId);
     };
-  }, [refreshData]);
+  }, []);
 
   return {
     macroData,
@@ -57,7 +60,6 @@ export function useMacroIndicators() {
     macroClassification,
     macroInsights,
     isLoading,
-    error,
-    refreshData
+    error
   };
 }

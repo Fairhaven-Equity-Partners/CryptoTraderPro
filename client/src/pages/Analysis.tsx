@@ -5,6 +5,7 @@ import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
 import ActiveAlerts from '../components/ActiveAlerts';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
+import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
 
@@ -50,11 +51,18 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-        <div className="px-4 py-2">
-          <ActiveAlerts 
-            symbol={currentAsset} 
-            currentPrice={price?.lastPrice || 0}
-          />
+        <div className="px-4 py-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="md:col-span-2">
+            <h2 className="text-xl font-bold mb-4 text-white">Active Alerts</h2>
+            <ActiveAlerts 
+              symbol={currentAsset} 
+              currentPrice={price?.lastPrice || 0}
+            />
+          </div>
+          <div className="md:col-span-1">
+            <h2 className="text-xl font-bold mb-4 text-white">Macro Environment</h2>
+            <MacroIndicatorsPanel symbol={currentAsset} />
+          </div>
         </div>
       </main>
     </div>
