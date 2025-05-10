@@ -28,6 +28,30 @@ const patternCache: Record<string, {
 // Cache expiration time in milliseconds (45 seconds)
 const PATTERN_CACHE_EXPIRATION = 45 * 1000;
 
+// Maximum cache entries to prevent memory leaks
+const MAX_PATTERN_CACHE_ENTRIES = 50;
+
+/**
+ * Clean up old cache entries to prevent memory leaks
+ */
+function cleanupPatternCache() {
+  const cacheKeys = Object.keys(patternCache);
+  
+  // If cache is getting too large, remove oldest entries
+  if (cacheKeys.length > MAX_PATTERN_CACHE_ENTRIES) {
+    // Sort by timestamp (oldest first)
+    const sortedKeys = cacheKeys.sort((a, b) => 
+      patternCache[a].timestamp - patternCache[b].timestamp
+    );
+    
+    // Remove oldest entries to get down to 75% of max
+    const removeCount = Math.floor(MAX_PATTERN_CACHE_ENTRIES * 0.25);
+    for (let i = 0; i < removeCount; i++) {
+      delete patternCache[sortedKeys[i]];
+    }
+  }
+}
+
 // Advanced signal types
 export interface AdvancedSignal {
   timeframe: TimeFrame;
@@ -493,7 +517,7 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
   
   const patterns: PatternFormation[] = [];
   const lastCandle = chartData[chartData.length - 1];
-  // lastPrice is already defined above
+  const lastPrice = currentPrice; // Use the already defined variable
   
   // Look for chart patterns on recent data (last 20 candles)
   const recentData = chartData.slice(-20);
@@ -737,6 +761,15 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
   
   const doubleBottom = detectDoubleBottom();
   if (doubleBottom) patterns.push(doubleBottom);
+  
+  // Store results in cache before returning
+  patternCache[cacheKey] = {
+    timestamp: Date.now(),
+    patterns: [...patterns] // Store a copy to prevent mutation issues
+  };
+  
+  // Cleanup the cache periodically to prevent memory leaks
+  cleanupPatternCache();
   
   return patterns;
 }

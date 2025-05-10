@@ -9,6 +9,30 @@ const calculationCache: Record<string, {
 // Cache expiration time in milliseconds (30 seconds)
 const CACHE_EXPIRATION = 30 * 1000;
 
+// Maximum cache entries to prevent memory leaks
+const MAX_CACHE_ENTRIES = 80;
+
+/**
+ * Clean up old cache entries to prevent memory leaks
+ */
+function cleanupCache() {
+  const cacheKeys = Object.keys(calculationCache);
+  
+  // If cache is getting too large, remove oldest entries
+  if (cacheKeys.length > MAX_CACHE_ENTRIES) {
+    // Sort by timestamp (oldest first)
+    const sortedKeys = cacheKeys.sort((a, b) => 
+      calculationCache[a].timestamp - calculationCache[b].timestamp
+    );
+    
+    // Remove oldest entries to get down to 75% of max
+    const removeCount = Math.floor(MAX_CACHE_ENTRIES * 0.25);
+    for (let i = 0; i < removeCount; i++) {
+      delete calculationCache[sortedKeys[i]];
+    }
+  }
+}
+
 // Helper functions for technical indicators
 export function calculateRSI(prices: number[], period = 14): number {
   if (prices.length < period + 1) {
@@ -850,6 +874,9 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     timestamp: Date.now(),
     result: [...indicators] // Store a copy to prevent mutation issues
   };
+  
+  // Cleanup the cache periodically to prevent memory leaks
+  cleanupCache();
   
   return indicators;
 }
