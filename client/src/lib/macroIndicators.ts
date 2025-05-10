@@ -117,6 +117,12 @@ export async function refreshMacroIndicators(): Promise<MacroData> {
     else if (fearGreedIndex <= 80) currentMacroData.fearGreedClassification = "Greed";
     else currentMacroData.fearGreedClassification = "Extreme Greed";
     
+    // Reset cache to force recalculation of derived values
+    macroCache.environmentScore = 0;
+    macroCache.classification = '';
+    macroCache.insights = [];
+    // The macroData itself will be updated by getMacroIndicators
+    
     return currentMacroData;
   } catch (error) {
     console.error("Error refreshing macro indicators:", error);
@@ -376,5 +382,11 @@ export function getMacroInsights(): string[] {
   }
   
   // Limit to 5 most important insights
-  return insights.slice(0, 5);
+  const limitedInsights = insights.slice(0, 5);
+  
+  // Cache the insights for future use
+  macroCache.insights = limitedInsights;
+  macroCache.lastFetch = Date.now();
+  
+  return limitedInsights;
 }
