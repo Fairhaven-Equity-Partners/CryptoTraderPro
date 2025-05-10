@@ -545,10 +545,32 @@ export default function AdvancedSignalDashboard({
       {/* Recalculate button and auto-update status */}
       {!isCalculating && isAllDataLoaded && (
         <div className="flex flex-col items-center mt-4 space-y-2">
-          <Button onClick={() => calculateAllSignals()}>
-            <LineChart className="mr-2 h-4 w-4" />
-            Recalculate Now
-          </Button>
+          <div className="flex space-x-2 mb-2">
+            <Button onClick={() => calculateAllSignals()}>
+              <LineChart className="mr-2 h-4 w-4" />
+              Recalculate All
+            </Button>
+            <Button variant="outline" onClick={() => {
+              try {
+                console.log(`Manual calculation for ${symbol} (4h)`);
+                if (chartDataMap['4h']?.data?.length) {
+                  console.log(`DATA CHECK: ${chartDataMap['4h'].data.length} data points`);
+                  const signal = calculateTimeframeConfidence(
+                    chartDataMap['4h'].data, 
+                    '4h', 
+                    undefined, 
+                    symbol
+                  );
+                  console.log(`SUCCESS: manual calculation for 4h`, signal);
+                  setSignals(prev => ({...prev, '4h': signal}));
+                }
+              } catch (err) {
+                console.error(`Error in manual calculation:`, err);
+              }
+            }}>
+              Test 4h Timeframe
+            </Button>
+          </div>
           <div className="text-xs text-muted-foreground flex items-center">
             <span className="relative flex h-2 w-2 mr-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
