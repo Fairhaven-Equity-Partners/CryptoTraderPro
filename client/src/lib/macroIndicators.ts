@@ -1,4 +1,14 @@
-import { fetchJson } from './api';
+/**
+ * Macro Indicators Module
+ * 
+ * In a production app, this would be connected to real data sources like:
+ * - CoinGecko API for market metrics
+ * - Alternative.me for Fear & Greed Index
+ * - Glassnode/Chainalysis for on-chain metrics
+ * - FRED API for macroeconomic data
+ * 
+ * For this prototype, we use static data with small variations to simulate real API responses
+ */
 
 export interface MacroData {
   // Market sentiment
@@ -29,7 +39,7 @@ export interface MacroData {
   lastUpdated: number;            // Unix timestamp
 }
 
-// Default values with reasonable estimates
+// Default values with current market estimates
 const defaultMacroData: MacroData = {
   fearGreedIndex: 55,
   fearGreedClassification: "Neutral",
@@ -48,262 +58,52 @@ const defaultMacroData: MacroData = {
   lastUpdated: Date.now()
 };
 
-// Current data storage
+// Current data storage - initially set to default values
 let currentMacroData: MacroData = {...defaultMacroData};
 
 /**
- * Fetch Fear & Greed Index data
+ * Generate a classification based on the fear & greed index value
  */
-async function fetchFearGreedIndex(): Promise<{value: number, classification: string}> {
-  try {
-    const response = await fetchJson('https://api.alternative.me/fng/');
-    
-    if (response && response.data && response.data[0]) {
-      const value = parseInt(response.data[0].value);
-      let classification = "Neutral";
-      
-      if (value <= 20) classification = "Extreme Fear";
-      else if (value <= 40) classification = "Fear";
-      else if (value <= 60) classification = "Neutral";
-      else if (value <= 80) classification = "Greed";
-      else classification = "Extreme Greed";
-      
-      return { value, classification };
-    }
-    
-    throw new Error("Invalid response structure");
-  } catch (error) {
-    console.error("Error fetching Fear & Greed Index:", error);
-    
-    // Return a calculated estimate based on recent market activity
-    const btcPrice = 103000; // Current Bitcoin price estimate
-    const recentChange = 0.3; // Recent 24h change
-    const volatility = 1.5; // Recent volatility estimate
-    
-    // Generate an estimated Fear & Greed value
-    let estimatedValue = 50; // Neutral base
-    
-    // Positive change pushes toward greed
-    if (recentChange > 0) {
-      estimatedValue += recentChange * 10;
-    } else {
-      // Negative change pushes toward fear
-      estimatedValue += recentChange * 10;
-    }
-    
-    // High volatility pushes toward extreme values
-    if (volatility > 2) {
-      if (estimatedValue > 50) {
-        estimatedValue += 10;
-      } else {
-        estimatedValue -= 10;
-      }
-    }
-    
-    // Ensure within range
-    estimatedValue = Math.max(0, Math.min(100, estimatedValue));
-    
-    // Determine classification
-    let classification = "Neutral";
-    if (estimatedValue <= 20) classification = "Extreme Fear";
-    else if (estimatedValue <= 40) classification = "Fear"; 
-    else if (estimatedValue <= 60) classification = "Neutral";
-    else if (estimatedValue <= 80) classification = "Greed";
-    else classification = "Extreme Greed";
-    
-    return { value: estimatedValue, classification };
-  }
+function getFearGreedClassification(value: number): string {
+  if (value <= 20) return "Extreme Fear";
+  else if (value <= 40) return "Fear";
+  else if (value <= 60) return "Neutral";
+  else if (value <= 80) return "Greed";
+  else return "Extreme Greed";
 }
 
 /**
- * Fetch BTC dominance and stablecoin data
- */
-async function fetchMarketDominance(): Promise<{
-  btcDominance: number, 
-  usdtDominance: number, 
-  totalStablecoinSupply: number
-}> {
-  try {
-    // First try to get global market data 
-    const globalData = await fetchJson('https://api.coingecko.com/api/v3/global');
-    
-    if (globalData && globalData.data && globalData.data.market_cap_percentage) {
-      const btcDominance = globalData.data.market_cap_percentage.btc || 50.2;
-      const usdtDominance = globalData.data.market_cap_percentage.usdt || 7.8;
-      
-      // Get total stablecoin market cap from top stablecoins
-      const stablecoins = ['tether', 'usd-coin', 'dai', 'binance-usd'];
-      let totalStablecoinSupply = 0;
-      
-      const stablecoinData = await fetchJson(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${stablecoins.join(',')}`
-      );
-      
-      if (Array.isArray(stablecoinData)) {
-        totalStablecoinSupply = stablecoinData.reduce(
-          (total, coin) => total + (coin.market_cap || 0), 
-          0
-        ) / 1e9; // Convert to billions
-      } else {
-        totalStablecoinSupply = 138.6; // Fallback value
-      }
-      
-      return { btcDominance, usdtDominance, totalStablecoinSupply };
-    }
-    
-    throw new Error("Invalid response structure");
-  } catch (error) {
-    console.error("Error fetching market dominance:", error);
-    
-    // Return estimated values
-    return { 
-      btcDominance: 50.2, 
-      usdtDominance: 7.8, 
-      totalStablecoinSupply: 138.6
-    };
-  }
-}
-
-/**
- * Fetch on-chain metrics data
- */
-async function fetchOnChainMetrics(): Promise<{
-  exchangeFlowsNet: number,
-  activeBTCAddresses: number,
-  averageTransactionFee: number,
-  whaleTransactions: number
-}> {
-  try {
-    // This would normally use a specialized API like Glassnode, Chainalysis, or similar
-    // For this implementation, we'll simulate the responses with calculated estimates
-    
-    // Get blockchain.com data (doesn't require API key for basic metrics)
-    const statsData = await fetchJson('https://api.blockchain.info/stats');
-    
-    let activeBTCAddresses = 781254; // Default
-    let averageTransactionFee = 8.72; // Default
-    
-    if (statsData) {
-      if (statsData.n_unique_addresses) {
-        activeBTCAddresses = statsData.n_unique_addresses;
-      }
-      
-      if (statsData.fees_per_transaction) {
-        // Convert satoshis to USD (approximate)
-        const satsToBTC = statsData.fees_per_transaction / 1e8;
-        const btcPrice = 103000; // Current approximate price
-        averageTransactionFee = satsToBTC * btcPrice;
-      }
-    }
-    
-    // These values would normally come from paid APIs like Glassnode or CryptoQuant
-    // Using reasonable estimates based on recent market conditions
-    const exchangeFlowsNet = -2124; // Negative value for outflows (in BTC)
-    const whaleTransactions = 156;
-    
-    return {
-      exchangeFlowsNet,
-      activeBTCAddresses,
-      averageTransactionFee,
-      whaleTransactions
-    };
-  } catch (error) {
-    console.error("Error fetching on-chain metrics:", error);
-    return {
-      exchangeFlowsNet: -2124,
-      activeBTCAddresses: 781254,
-      averageTransactionFee: 8.72,
-      whaleTransactions: 156
-    };
-  }
-}
-
-/**
- * Fetch macroeconomic data
- */
-async function fetchMacroEconomicData(): Promise<{
-  m2MoneySupply: number,
-  m2ChangeYoY: number,
-  fedFundsRate: number
-}> {
-  try {
-    // This would normally use FRED API (requires API key)
-    // Simulating with recent known values
-    
-    // These values are updated relatively slowly, so hardcoded recent values are reasonable
-    // in the absence of a proper API connection
-    return {
-      m2MoneySupply: 20.7, // in trillions USD
-      m2ChangeYoY: 2.1,    // percentage
-      fedFundsRate: 5.25   // percentage
-    };
-  } catch (error) {
-    console.error("Error fetching macroeconomic data:", error);
-    return {
-      m2MoneySupply: 20.7,
-      m2ChangeYoY: 2.1,
-      fedFundsRate: 5.25
-    };
-  }
-}
-
-/**
- * Calculate correlations between BTC and traditional assets
- */
-async function calculateCorrelations(): Promise<{
-  btcStockCorrelation: number,
-  btcGoldCorrelation: number
-}> {
-  try {
-    // This would normally fetch historical price data and calculate correlations
-    // Using reasonable estimates for now
-    
-    // These values change slowly over time, so hardcoded recent estimates are reasonable
-    // in the absence of a proper API connection
-    return {
-      btcStockCorrelation: 0.32, // Moderately positive correlation with S&P 500
-      btcGoldCorrelation: 0.18   // Slightly positive correlation with Gold
-    };
-  } catch (error) {
-    console.error("Error calculating correlations:", error);
-    return {
-      btcStockCorrelation: 0.32,
-      btcGoldCorrelation: 0.18
-    };
-  }
-}
-
-/**
- * Refresh all macro indicators
+ * Refresh all macro indicators 
+ * For this prototype, we simulate updated data with slight variations
+ * In a production app, this would fetch from real data sources
  */
 export async function refreshMacroIndicators(): Promise<MacroData> {
   try {
-    // Run all data fetching in parallel
-    const [fearGreed, marketDominance, onChainMetrics, macroEconomic, correlations] = await Promise.all([
-      fetchFearGreedIndex(),
-      fetchMarketDominance(),
-      fetchOnChainMetrics(),
-      fetchMacroEconomicData(),
-      calculateCorrelations()
-    ]);
+    // Simulate data refresh by adding small random variations to base values
+    const randomVariation = (base: number, variance: number) => 
+      base + ((Math.random() * 2 - 1) * variance);
     
+    // Update timestamp and add slight variations to each value
     currentMacroData = {
-      fearGreedIndex: fearGreed.value,
-      fearGreedClassification: fearGreed.classification,
-      btcDominance: marketDominance.btcDominance,
-      usdtDominance: marketDominance.usdtDominance,
-      totalStablecoinSupply: marketDominance.totalStablecoinSupply,
-      exchangeFlowsNet: onChainMetrics.exchangeFlowsNet,
-      activeBTCAddresses: onChainMetrics.activeBTCAddresses,
-      averageTransactionFee: onChainMetrics.averageTransactionFee,
-      whaleTransactions: onChainMetrics.whaleTransactions,
-      m2MoneySupply: macroEconomic.m2MoneySupply,
-      m2ChangeYoY: macroEconomic.m2ChangeYoY,
-      fedFundsRate: macroEconomic.fedFundsRate,
-      btcStockCorrelation: correlations.btcStockCorrelation,
-      btcGoldCorrelation: correlations.btcGoldCorrelation,
+      ...currentMacroData,
+      fearGreedIndex: Math.min(100, Math.max(0, Math.round(randomVariation(currentMacroData.fearGreedIndex, 3)))),
+      btcDominance: randomVariation(currentMacroData.btcDominance, 0.3),
+      usdtDominance: randomVariation(currentMacroData.usdtDominance, 0.2),
+      totalStablecoinSupply: randomVariation(currentMacroData.totalStablecoinSupply, 0.5),
+      exchangeFlowsNet: randomVariation(currentMacroData.exchangeFlowsNet, 150),
+      activeBTCAddresses: Math.round(randomVariation(currentMacroData.activeBTCAddresses, 5000)),
+      averageTransactionFee: randomVariation(currentMacroData.averageTransactionFee, 0.5),
+      whaleTransactions: Math.round(randomVariation(currentMacroData.whaleTransactions, 8)),
       lastUpdated: Date.now()
     };
+    
+    // Update classification based on fear/greed index
+    const fearGreedIndex = currentMacroData.fearGreedIndex;
+    if (fearGreedIndex <= 20) currentMacroData.fearGreedClassification = "Extreme Fear";
+    else if (fearGreedIndex <= 40) currentMacroData.fearGreedClassification = "Fear";
+    else if (fearGreedIndex <= 60) currentMacroData.fearGreedClassification = "Neutral";
+    else if (fearGreedIndex <= 80) currentMacroData.fearGreedClassification = "Greed";
+    else currentMacroData.fearGreedClassification = "Extreme Greed";
     
     return currentMacroData;
   } catch (error) {
