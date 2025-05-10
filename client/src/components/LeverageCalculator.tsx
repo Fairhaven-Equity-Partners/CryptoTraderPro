@@ -181,7 +181,7 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
         onClick={handleCalculate}
         disabled={isCalculating}
       >
-        {isCalculating ? 'Calculating...' : 'Calculate Optimal Position'}
+        {isCalculating ? 'Calculating...' : 'Calculate Risk & Leverage'}
       </Button>
       
       {result && Object.keys(timeframeResults).length > 0 && (
@@ -259,18 +259,7 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
                   </div>
                 </div>
                 
-                {tfResult.recommendedPositionSize && tfResult.maxPositionSize && (
-                  <div className="text-xs bg-gray-700 p-2 rounded">
-                    <div className="flex justify-between mb-1">
-                      <span className="text-neutral">Position Size Suggestion:</span>
-                      <span className="text-white">{tfResult.recommendedPositionSize} {symbol.split('/')[0]}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-neutral">Max Size with Leverage:</span>
-                      <span className="text-white">{tfResult.maxPositionSize} {symbol.split('/')[0]}</span>
-                    </div>
-                  </div>
-                )}
+
               </div>
             </TabsContent>
           ))}
