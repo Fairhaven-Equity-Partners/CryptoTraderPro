@@ -1,5 +1,14 @@
 import { ChartData, Indicator, IndicatorCategory, IndicatorSignal, IndicatorStrength, SignalDirection, TimeFrame, TimeframeSignal } from '../types';
 
+// Cache for indicator calculations to improve performance
+const calculationCache: Record<string, {
+  timestamp: number;
+  result: Indicator[];
+}> = {};
+
+// Cache expiration time in milliseconds (30 seconds)
+const CACHE_EXPIRATION = 30 * 1000;
+
 // Helper functions for technical indicators
 export function calculateRSI(prices: number[], period = 14): number {
   if (prices.length < period + 1) {
@@ -409,12 +418,27 @@ export function calculateMFI(chartData: ChartData[], period = 14): number {
   return mfi;
 }
 
-// Generate indicators for signal analysis
+// Generate indicators for signal analysis with performance caching
 export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   if (chartData.length < 50) {
     return []; // Not enough data
   }
   
+  // Create a cache key using the first and last timestamps and last price
+  // This allows us to use cached results when chart data hasn't changed
+  const firstTimestamp = chartData[0].time;
+  const lastTimestamp = chartData[chartData.length - 1].time;
+  const lastPrice = chartData[chartData.length - 1].close;
+  const cacheKey = `${firstTimestamp}-${lastTimestamp}-${lastPrice}`;
+  
+  // Check if we have a valid cached result
+  const now = Date.now();
+  if (calculationCache[cacheKey] && 
+      (now - calculationCache[cacheKey].timestamp < CACHE_EXPIRATION)) {
+    return [...calculationCache[cacheKey].result]; // Return a copy of cached result
+  }
+  
+  // Calculate fresh indicators
   const closes = chartData.map(candle => candle.close);
   const highs = chartData.map(candle => candle.high);
   const lows = chartData.map(candle => candle.low);

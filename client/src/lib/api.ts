@@ -255,38 +255,62 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
   }
 }
 
-// Start real-time updates
+// Track the last time we updated each symbol's price
+const lastUpdateTime: Record<string, number> = {};
+
+// Throttle parameters to prevent excessive updates
+const PRICE_UPDATE_THROTTLE = 5000; // Minimum 5 seconds between updates for same symbol
+const MINOR_CHANGE_THRESHOLD = 0.05; // 0.05% change threshold for minor updates
+
+// Start real-time updates with optimized performance
 export function startRealTimeUpdates() {
   if (realTimeUpdatesActive) return;
   
   realTimeUpdatesActive = true;
   connectWebSocket(currentSymbols);
   
-  // Create handler for price updates
+  // Optimized handler for price updates - only updates when necessary
   const handlePriceUpdate = (data: { symbol: string, price: number, change24h: number }) => {
-    // Update the latest candle for each timeframe
-    if (chartDataCache[data.symbol]) {
-      Object.entries(chartDataCache[data.symbol]).forEach(([timeframe, candles]) => {
+    const now = Date.now();
+    const symbol = data.symbol;
+    const newPrice = data.price;
+    const oldPrice = lastPrices[symbol] || 0;
+    
+    // Skip updates if too frequent and price change is minimal
+    const timeSinceLastUpdate = now - (lastUpdateTime[symbol] || 0);
+    const percentChange = oldPrice > 0 ? Math.abs((newPrice - oldPrice) / oldPrice * 100) : 0;
+    
+    if (timeSinceLastUpdate < PRICE_UPDATE_THROTTLE && percentChange < MINOR_CHANGE_THRESHOLD) {
+      return; // Skip this update - too soon after last one with minimal change
+    }
+    
+    // Update the latest candle for each timeframe - but only the ones currently in use
+    if (chartDataCache[symbol]) {
+      Object.entries(chartDataCache[symbol]).forEach(([timeframe, candles]) => {
         if (candles.length > 0) {
           const lastCandle = candles[candles.length - 1];
-          const newPrice = data.price;
           
-          // Update the last candle
-          lastCandle.close = newPrice;
-          lastCandle.high = Math.max(lastCandle.high, newPrice);
-          lastCandle.low = Math.min(lastCandle.low, newPrice);
-          
-          // Notify listeners
-          if (chartUpdateListeners[`${data.symbol}_${timeframe}`]) {
-            chartUpdateListeners[`${data.symbol}_${timeframe}`].forEach(listener => listener());
+          // Only update the candle if price has actually changed
+          if (lastCandle.close !== newPrice) {
+            // Update the last candle
+            lastCandle.close = newPrice;
+            lastCandle.high = Math.max(lastCandle.high, newPrice);
+            lastCandle.low = Math.min(lastCandle.low, newPrice);
+            
+            // Only notify listeners if we have any registered
+            const listenerKey = `${symbol}_${timeframe}`;
+            if (chartUpdateListeners[listenerKey] && chartUpdateListeners[listenerKey].length > 0) {
+              chartUpdateListeners[listenerKey].forEach(listener => listener());
+            }
           }
         }
       });
     }
     
-    // Store the last price and change percentage
-    lastPrices[data.symbol] = data.price;
-    lastChangePercentages[data.symbol] = data.change24h;
+    // Update tracking data
+    lastPrices[symbol] = newPrice;
+    lastChangePercentages[symbol] = data.change24h;
+    lastUpdateTime[symbol] = now;
   };
   
   // Register handler for price updates
