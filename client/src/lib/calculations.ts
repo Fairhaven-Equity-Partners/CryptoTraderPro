@@ -50,16 +50,18 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
     const isLong = stopLoss < entryPrice;
     const profitPercentage = Math.abs((takeProfit - entryPrice) / entryPrice * 100);
     
-    // Calculate position size in crypto units
-    const leveragedPositionValue = positionSize * safeLeverage;
-    const positionSizeInCrypto = leveragedPositionValue / entryPrice;
+    // For Bitcoin and other high-priced assets, we need to calculate profit properly
     
-    // Calculate profit based on direction
+    // 1. Calculate the actual position size in BTC using the user's position size as margin
+    const leveragedPositionUSD = positionSize * safeLeverage;
+    const positionSizeInCrypto = leveragedPositionUSD / entryPrice;
+    
+    // 2. Calculate profit based on direction and price difference
     if (isLong) {
-      // For long positions, profit = size_in_crypto * (tp - entry)
+      // For long: profit = crypto_amount * (tp_price - entry_price)
       potentialProfit = positionSizeInCrypto * (takeProfit - entryPrice);
     } else {
-      // For short positions, profit = size_in_crypto * (entry - tp)
+      // For short: profit = crypto_amount * (entry_price - tp_price)
       potentialProfit = positionSizeInCrypto * (entryPrice - takeProfit);
     }
     
@@ -91,13 +93,20 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
     entryPrice * (1 + (priceChangePercentage / 100) * 3) : 
     entryPrice * (1 - (priceChangePercentage / 100) * 3);
   
-  // Calculate position size based on risk and current price
-  // Risk amount = Max you're willing to lose
-  // We need position size such that: position_size * (stop_loss_percentage) = risk_amount
-  // For high-priced assets like BTC, we need to calculate in terms of the crypto amount
+  // Calculate position size based on risk parameters
+  // For Bitcoin and other high-priced assets, we need to calculate properly
   const stopLossPercentage = priceChangePercentage / 100;
-  const leveragedPositionValue = riskAmount / stopLossPercentage;
-  const recommendedPositionSize = leveragedPositionValue / safeLeverage / entryPrice;
+  
+  // Calculate full position size in USD (this is the leveraged amount)
+  // For example: if we're willing to risk $100 on a 2% stop loss,
+  // our full position size should be $5000 
+  const fullPositionSizeUSD = riskAmount / stopLossPercentage;
+  
+  // Calculate the margin/collateral needed based on leverage
+  const actualMarginRequired = fullPositionSizeUSD / safeLeverage;
+  
+  // Calculate how much BTC we can trade with this position size
+  const recommendedPositionSize = fullPositionSizeUSD / entryPrice;
   
   return {
     recommendedLeverage: safeLeverage.toFixed(1),
@@ -111,7 +120,7 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
       tp3: tp3.toFixed(2)
     },
     recommendedPositionSize: recommendedPositionSize.toFixed(6),
-    maxPositionSize: (leveragedPositionValue / entryPrice).toFixed(6)
+    maxPositionSize: recommendedPositionSize.toFixed(6) // With leverage already factored in
   };
 }
 

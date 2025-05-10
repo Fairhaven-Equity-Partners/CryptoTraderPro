@@ -16,7 +16,7 @@ const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w
 
 const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, currentPrice }) => {
   const [params, setParams] = useState<LeverageParams>({
-    positionSize: 1000,
+    positionSize: 10000, // Increase default position size for high-priced assets like BTC
     riskPercentage: 2,
     entryPrice: currentPrice,
     stopLoss: currentPrice * 0.98, // 2% below current price
