@@ -34,8 +34,8 @@ import { useIsMobile } from '../hooks/use-mobile';
 import { 
   AdvancedSignal,
   TradeRecommendation,
-  calculateTimeframeConfidence, 
-  generateTradeRecommendation 
+  calculateTimeframeConfidence,
+  generateTradeRecommendation
 } from '../lib/advancedSignals';
 import { useChartData } from '../hooks/useMarketData';
 import { ChartData, TimeFrame } from '../types';
@@ -554,9 +554,23 @@ export default function AdvancedSignalDashboard({
               try {
                 console.log(`Manual calculation for ${symbol} (4h)`);
                 if (chartDataMap['4h']?.data?.length) {
-                  console.log(`DATA CHECK: ${chartDataMap['4h'].data.length} data points`);
+                  const data = chartDataMap['4h'].data;
+                  console.log(`DATA CHECK: ${data.length} data points`);
+                  console.log(`First data point:`, JSON.stringify(data[0]));
+                  console.log(`Last data point:`, JSON.stringify(data[data.length - 1]));
+                  
+                  // Basic validation
+                  if (!Array.isArray(data)) {
+                    throw new Error("Chart data is not an array");
+                  }
+                  
+                  if (data.length < 50) {
+                    console.error(`Insufficient data: ${data.length} points (need 50+)`);
+                  }
+                  
+                  console.log(`Will calculate with symbol=${symbol}`);
                   const signal = calculateTimeframeConfidence(
-                    chartDataMap['4h'].data, 
+                    data, 
                     '4h', 
                     undefined, 
                     symbol
@@ -566,9 +580,10 @@ export default function AdvancedSignalDashboard({
                 }
               } catch (err) {
                 console.error(`Error in manual calculation:`, err);
+                console.error(err instanceof Error ? err.stack : "No stack available");
               }
             }}>
-              Test 4h Timeframe
+              Debug 4h ETH/USDT
             </Button>
           </div>
           <div className="text-xs text-muted-foreground flex items-center">

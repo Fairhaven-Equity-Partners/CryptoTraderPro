@@ -166,7 +166,7 @@ const pendingRequests: Record<string, Record<TimeFrame, Promise<ChartData[]>>> =
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
   try {
     // If there's already a request in progress for this data, return that promise
-    if (pendingRequests[symbol]?.[timeframe]) {
+    if (pendingRequests[symbol] && pendingRequests[symbol][timeframe]) {
       return pendingRequests[symbol][timeframe];
     }
     
