@@ -840,23 +840,51 @@ export function calculateTimeframeConfidence(
   const macroClassification = getMacroEnvironmentClassification();
   const macroInsights = getMacroInsights();
   
-  // Apply macro scores to the overall confidence
-  totalScore += macroScore * weights.macroeconomic;
-  totalWeight += weights.macroeconomic;
+  // We'll apply macro scores later with timeframe-specific weighting
   
   // Get on-chain metrics and whale activity scores
   const macroData = getMacroIndicators();
   
+  // Enhanced exchange flows scoring with timeframe alignment
+  // Adjust the weight based on timeframe - longer timeframes should be more aligned with macro factors
+  const timeframeImportanceForMacro = {
+    '1m': 0.4,   // Very short term, least aligned with macro
+    '5m': 0.5,
+    '15m': 0.6,
+    '30m': 0.7,
+    '1h': 0.8,
+    '4h': 0.9,
+    '1d': 1.0,   // Daily timeframe fully aligned with macro
+    '3d': 1.1,   // Longer timeframes even more aligned with macro
+    '1w': 1.2,
+    '1M': 1.3    // Monthly timeframe most aligned with macro
+  };
+  
+  // Get timeframe-specific multiplier 
+  const macroTimeframeMultiplier = timeframeImportanceForMacro[timeframe] || 0.7;
+  
   // Exchange flows (negative flows = outflows from exchanges, generally bullish)
-  const onChainMetricsScore = macroData.exchangeFlowsNet < 0 ? 75 : 45;
-  totalScore += onChainMetricsScore * weights.onChainMetrics;
-  totalWeight += weights.onChainMetrics;
+  // More impact on longer timeframes, less on shorter timeframes
+  const baseOnChainScore = macroData.exchangeFlowsNet < 0 ? 75 : 45;
+  const adjustedOnChainScore = Math.round(baseOnChainScore * macroTimeframeMultiplier);
+  totalScore += adjustedOnChainScore * weights.onChainMetrics;
+  totalWeight += weights.onChainMetrics * macroTimeframeMultiplier;
   
   // Whale activity (more transactions generally means more interest)
-  const whaleActivityScore = macroData.whaleTransactions > 0 ? 
-    macroData.whaleTransactions > 100 ? 80 : 60 : 40;
-  totalScore += whaleActivityScore * weights.whaleActivity;
-  totalWeight += weights.whaleActivity;
+  // Also adjusted by timeframe importance
+  let baseWhaleScore = 40;
+  if (macroData.whaleTransactions > 0) {
+    baseWhaleScore = macroData.whaleTransactions > 100 ? 80 : 60;
+  }
+  const adjustedWhaleScore = Math.round(baseWhaleScore * macroTimeframeMultiplier);
+  totalScore += adjustedWhaleScore * weights.whaleActivity;
+  totalWeight += weights.whaleActivity * macroTimeframeMultiplier;
+  
+  // Apply macro environment score with timeframe-specific weighting
+  // Macroeconomic factors have increasing importance in longer timeframes
+  const adjustedMacroScore = Math.round(macroScore * macroTimeframeMultiplier);
+  totalScore += adjustedMacroScore * weights.macroeconomic;
+  totalWeight += weights.macroeconomic * macroTimeframeMultiplier;
   
   // Calculate final confidence score
   const confidence = Math.round(totalScore / totalWeight);
