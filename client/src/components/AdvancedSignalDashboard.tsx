@@ -545,64 +545,7 @@ function DetailedSignalCard({
   showAdvanced: boolean,
   toggleAdvanced: () => void
 }) {
-  // State for optimal position calculator with preset values
-  const [positionSettings, setPositionSettings] = useState({
-    accountBalance: 10000,
-    riskPercent: 2,
-    calculatedPosition: 0,
-    maxProfit: 0,
-    maxLoss: 0,
-    updateInterval: null as NodeJS.Timeout | null
-  });
-
-  // Function to calculate optimal position size
-  const calculateOptimalPosition = () => {
-    if (!signal) return;
-    
-    // Calculate based on risk percentage and account balance
-    const accountBalance = positionSettings.accountBalance;
-    const riskPercent = positionSettings.riskPercent;
-    const maxRiskAmount = accountBalance * (riskPercent / 100);
-    
-    // Calculate price distances
-    const entryPrice = signal.entryPrice;
-    const stopLoss = signal.stopLoss;
-    const takeProfit = signal.takeProfit;
-    
-    // Calculate percentage risk
-    const riskPercentage = Math.abs((entryPrice - stopLoss) / entryPrice);
-    
-    // Calculate position size to risk exactly the risk amount
-    const positionNotional = maxRiskAmount / riskPercentage;
-    const positionWithLeverage = positionNotional / signal.recommendedLeverage;
-    
-    // Calculate potential profit and loss
-    const maxProfit = positionWithLeverage * signal.recommendedLeverage * Math.abs(takeProfit - entryPrice);
-    const maxLoss = positionWithLeverage * signal.recommendedLeverage * Math.abs(entryPrice - stopLoss);
-    
-    setPositionSettings(prev => ({
-      ...prev,
-      calculatedPosition: positionWithLeverage,
-      maxProfit,
-      maxLoss
-    }));
-  };
-
-  // Auto-calculate optimal position size initially and on signal change
-  useEffect(() => {
-    calculateOptimalPosition();
-    
-    // Set up interval to recalculate position (every 10 seconds)
-    const interval = setInterval(calculateOptimalPosition, 10000);
-    setPositionSettings(prev => ({ ...prev, updateInterval: interval }));
-    
-    // Clean up interval on unmount or signal change
-    return () => {
-      if (positionSettings.updateInterval) {
-        clearInterval(positionSettings.updateInterval);
-      }
-    };
-  }, [signal]);
+  // Position calculator logic removed as requested
 
   return (
     <Card className={`border-l-4 ${
@@ -657,45 +600,7 @@ function DetailedSignalCard({
               </CardContent>
             </Card>
             
-            {/* Position Calculator */}
-            <Card className="bg-secondary/10">
-              <CardHeader className="p-3 pb-0">
-                <CardTitle className="text-sm">Optimal Position</CardTitle>
-              </CardHeader>
-              <CardContent className="p-3 grid grid-cols-3 gap-2">
-                <div>
-                  <div className="text-xs text-muted-foreground">Leverage</div>
-                  <div className="text-lg font-bold">{signal.recommendedLeverage.toFixed(1)}x</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground flex items-center space-x-1">
-                    <span>Position Size</span>
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                    </span>
-                    <span className="text-xs">(auto-updating)</span>
-                  </div>
-                  <div className="text-lg font-bold">${positionSettings.calculatedPosition.toFixed(2)}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Risk/Reward</div>
-                  <div className="text-lg font-bold">{signal.optimalRiskReward.toFixed(1)}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Max Profit</div>
-                  <div className="text-lg font-bold text-green-500">${positionSettings.maxProfit.toFixed(2)}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Max Loss</div>
-                  <div className="text-lg font-bold text-red-500">${positionSettings.maxLoss.toFixed(2)}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Win Probability</div>
-                  <div className="text-lg font-bold">{signal.confidence}%</div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Position Calculator removed as requested */}
           </div>
 
           <Separator />
