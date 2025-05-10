@@ -216,29 +216,7 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                         </span>
                       </div>
                       
-                      {/* Take profit levels */}
-                      {leverageRecommendations[tf.timeframe].takeProfitLevels && (
-                        <div className="grid grid-cols-3 gap-2 mb-2">
-                          <div className="bg-gray-700 p-1 rounded text-center">
-                            <div className="text-xs text-neutral">TP1</div>
-                            <div className="text-xs text-success">
-                              ${leverageRecommendations[tf.timeframe].takeProfitLevels!.tp1}
-                            </div>
-                          </div>
-                          <div className="bg-gray-700 p-1 rounded text-center">
-                            <div className="text-xs text-neutral">TP2</div>
-                            <div className="text-xs text-success">
-                              ${leverageRecommendations[tf.timeframe].takeProfitLevels!.tp2}
-                            </div>
-                          </div>
-                          <div className="bg-gray-700 p-1 rounded text-center">
-                            <div className="text-xs text-neutral">TP3</div>
-                            <div className="text-xs text-success">
-                              ${leverageRecommendations[tf.timeframe].takeProfitLevels!.tp3}
-                            </div>
-                          </div>
-                        </div>
-                      )}
+                      {/* Take profit levels - kept for reference */}
                       
                       <div className="flex justify-between text-xs">
                         <span className="text-neutral">Stop Loss:</span>
