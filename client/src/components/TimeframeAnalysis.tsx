@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useMultiTimeframeAnalysis } from '../hooks/useSignalAnalysis';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { calculateTimeframeLeverage } from '../lib/calculations';
-import { LeverageParams, LeverageResult, TimeFrame } from '../types';
+import { TimeFrame } from '../types';
 
 interface TimeframeAnalysisProps {
   symbol: string;
