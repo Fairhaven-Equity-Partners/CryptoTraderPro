@@ -835,6 +835,29 @@ export function calculateTimeframeConfidence(
   totalScore += environmentScore * weights.marketCondition;
   totalWeight += weights.marketCondition;
   
+  // Get macro indicators and add their influence
+  const macroScore = analyzeMacroEnvironment();
+  const macroClassification = getMacroEnvironmentClassification();
+  const macroInsights = getMacroInsights();
+  
+  // Apply macro scores to the overall confidence
+  totalScore += macroScore * weights.macroeconomic;
+  totalWeight += weights.macroeconomic;
+  
+  // Get on-chain metrics and whale activity scores
+  const macroData = getMacroIndicators();
+  
+  // Exchange flows (negative flows = outflows from exchanges, generally bullish)
+  const onChainMetricsScore = macroData.exchangeFlowsNet < 0 ? 75 : 45;
+  totalScore += onChainMetricsScore * weights.onChainMetrics;
+  totalWeight += weights.onChainMetrics;
+  
+  // Whale activity (more transactions generally means more interest)
+  const whaleActivityScore = macroData.whaleTransactions > 0 ? 
+    macroData.whaleTransactions > 100 ? 80 : 60 : 40;
+  totalScore += whaleActivityScore * weights.whaleActivity;
+  totalWeight += weights.whaleActivity;
+  
   // Calculate final confidence score
   const confidence = Math.round(totalScore / totalWeight);
   
@@ -921,7 +944,11 @@ export function calculateTimeframeConfidence(
     predictedMovement: {
       percentChange: Math.abs(predictedPercent),
       timeEstimate
-    }
+    },
+    // Add macro indicators
+    macroScore: macroScore,
+    macroClassification: macroClassification,
+    macroInsights: macroInsights
   };
 }
 
