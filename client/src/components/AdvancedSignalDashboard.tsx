@@ -114,35 +114,56 @@ export default function AdvancedSignalDashboard({
   
   // Calculate signals for all timeframes
   const calculateAllSignals = useCallback(async () => {
-    if (!isAllDataLoaded) return;
+    if (!isAllDataLoaded) {
+      console.log("Canceling calculation - data not loaded");
+      return Promise.resolve(); // Return a resolved promise
+    }
+    
+    console.log("Starting calculation process");
     setIsCalculating(true);
     
     const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
     
-    // Calculate signals one by one to not block the UI
-    for (let i = 0; i < timeframes.length; i++) {
-      const tf = timeframes[i];
-      setCalculateProgress(Math.round((i / timeframes.length) * 100));
+    try {
+      // Calculate signals one by one to not block the UI
+      for (let i = 0; i < timeframes.length; i++) {
+        const tf = timeframes[i];
+        setCalculateProgress(Math.round((i / timeframes.length) * 100));
+        
+        // Use setTimeout to give UI time to update
+        await new Promise(resolve => {
+          setTimeout(() => {
+            try {
+              newSignals[tf] = calculateSignalForTimeframe(tf);
+              setSignals(prev => ({ ...prev, [tf]: newSignals[tf] }));
+            } catch (error) {
+              console.error(`Error calculating signal for ${tf}:`, error);
+            }
+            resolve(null);
+          }, 100);
+        });
+      }
       
-      // Use setTimeout to give UI time to update
-      await new Promise(resolve => {
-        setTimeout(() => {
-          newSignals[tf] = calculateSignalForTimeframe(tf);
-          setSignals({ ...newSignals });
-          resolve(null);
-        }, 100);
-      });
+      // Generate overall recommendation
+      const validSignals = Object.values(newSignals).filter(Boolean) as AdvancedSignal[];
+      console.log(`Found ${validSignals.length} valid signals for recommendation`);
+      
+      if (validSignals.length >= 3) {
+        const rec = generateTradeRecommendation(symbol, validSignals);
+        setRecommendation(rec);
+      } else {
+        console.log("Not enough valid signals to generate recommendation");
+      }
+      
+      setCalculateProgress(100);
+    } catch (error) {
+      console.error("Error in calculateAllSignals:", error);
+    } finally {
+      console.log("Calculation process complete");
+      setIsCalculating(false);
     }
     
-    // Generate overall recommendation
-    const validSignals = Object.values(newSignals).filter(Boolean) as AdvancedSignal[];
-    if (validSignals.length >= 3) {
-      const rec = generateTradeRecommendation(symbol, validSignals);
-      setRecommendation(rec);
-    }
-    
-    setCalculateProgress(100);
-    setIsCalculating(false);
+    return Promise.resolve(); // Ensure we always return a promise
   }, [symbol, isAllDataLoaded, signals, timeframes, calculateSignalForTimeframe]);
   
   // Reset signals and trigger calculation when symbol changes
@@ -169,61 +190,87 @@ export default function AdvancedSignalDashboard({
     // once the data is loaded for the new symbol
   }, [symbol]);
   
-  // Effect to watch for all data loaded and trigger calculation
+  // References to track calculation state
   const calculationTriggeredRef = useRef(false);
+  const lastCalculationTimeRef = useRef<number>(0);
+  const calculationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const recalcIntervalRef = useRef<NodeJS.Timeout | null>(null);
   
-  useEffect(() => {
-    if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
-      console.log("All data loaded for", symbol, "- calculating signals");
-      // Mark that we've triggered calculation for this data load cycle
-      calculationTriggeredRef.current = true;
-      
-      // Use setTimeout to ensure UI has time to update
-      setTimeout(() => {
-        calculateAllSignals();
-        // Reset the flag after calculation is complete
-        setTimeout(() => {
-          calculationTriggeredRef.current = false;
-        }, 5000); // Wait 5 seconds before allowing another auto-calculation
-      }, 100);
+  // Function to safely trigger calculation with debouncing
+  const triggerCalculation = useCallback((reason: string) => {
+    const now = Date.now();
+    // Prevent calculation if one is already in progress or happened too recently
+    if (calculationTriggeredRef.current || isCalculating || (now - lastCalculationTimeRef.current < 5000)) {
+      console.log(`Skipping calculation (${reason}): already calculating or too recent`);
+      return;
     }
-  }, [isAllDataLoaded, symbol, calculateAllSignals, isCalculating]);
-
-  // Set up automatic recalculation interval
-  useEffect(() => {
-    const recalculationInterval = setInterval(() => {
-      if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
-        console.log("Auto-recalculating signals...");
-        calculationTriggeredRef.current = true;
-        calculateAllSignals();
-        
+    
+    console.log(`Triggering calculation (${reason})`);
+    calculationTriggeredRef.current = true;
+    
+    // Clear any existing timeout
+    if (calculationTimeoutRef.current) {
+      clearTimeout(calculationTimeoutRef.current);
+    }
+    
+    // Set a new timeout for the calculation
+    calculationTimeoutRef.current = setTimeout(() => {
+      calculateAllSignals().then(() => {
+        // Update the last calculation time
+        lastCalculationTimeRef.current = Date.now();
         // Reset the flag after a delay
         setTimeout(() => {
           calculationTriggeredRef.current = false;
         }, 5000);
+      });
+    }, 300); // Small delay to batch updates
+  }, [calculateAllSignals, isCalculating]);
+  
+  // Effect to watch for data loading completion
+  useEffect(() => {
+    if (isAllDataLoaded && !calculationTriggeredRef.current && !isCalculating) {
+      triggerCalculation('data-loaded');
+    }
+  }, [isAllDataLoaded, triggerCalculation, isCalculating]);
+  
+  // Set up periodic recalculation
+  useEffect(() => {
+    // Clear any existing interval when component updates
+    if (recalcIntervalRef.current) {
+      clearInterval(recalcIntervalRef.current);
+      recalcIntervalRef.current = null;
+    }
+    
+    // Set up a new interval for recalculation
+    recalcIntervalRef.current = setInterval(() => {
+      if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
+        triggerCalculation('auto-interval');
       }
-    }, 30000); // 30 seconds interval
+    }, 60000); // 1 minute interval - increased to reduce server load
     
     // Clean up interval on component unmount
-    return () => clearInterval(recalculationInterval);
-  }, [isAllDataLoaded, isCalculating, calculateAllSignals]);
+    return () => {
+      if (recalcIntervalRef.current) {
+        clearInterval(recalcIntervalRef.current);
+      }
+      
+      if (calculationTimeoutRef.current) {
+        clearTimeout(calculationTimeoutRef.current);
+      }
+    };
+  }, [isAllDataLoaded, triggerCalculation, isCalculating]);
   
   // Handle timeframe selection
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
     
-    // Recalculate signals if specific timeframe is selected and data is available
-    if (isAllDataLoaded && !isCalculating && chartDataMap[timeframe]?.data?.length) {
-      const signal = calculateSignalForTimeframe(timeframe);
-      if (signal) {
-        setSignals(prev => ({...prev, [timeframe]: signal}));
-      }
-    }
+    // No need to recalculate signals on timeframe selection - they should already be
+    // calculated as part of the main calculation process
     
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  }, [isAllDataLoaded, isCalculating, chartDataMap, calculateSignalForTimeframe, onTimeframeSelect]);
+  }, [onTimeframeSelect]);
   
   // Get signal for selected timeframe
   const selectedSignal = signals[selectedTimeframe];
@@ -476,7 +523,7 @@ export default function AdvancedSignalDashboard({
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            Auto-recalculation active (every 30 seconds)
+            Auto-recalculation active (every minute)
           </div>
         </div>
       )}
