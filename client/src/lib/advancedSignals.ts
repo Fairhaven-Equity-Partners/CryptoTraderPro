@@ -214,17 +214,18 @@ function calculateCategoryScore(indicators: Indicator[]): { direction: SignalDir
   let strengthSum = 0;
   
   // Map strength to numerical values
-  const strengthValues = {
+  const strengthValues: Record<string, number> = {
     'WEAK': 0.5,
     'MODERATE': 1.0,
     'STRONG': 1.5,
     'HIGH': 2.0,
     'LOW': 0.3,
-    null: 1.0
+    'null': 1.0
   };
   
   indicators.forEach(indicator => {
-    const weight = strengthValues[indicator.strength || null];
+    const key = indicator.strength || 'null';
+    const weight = strengthValues[key];
     totalCount += weight;
     
     if (indicator.signal === 'BUY') {
