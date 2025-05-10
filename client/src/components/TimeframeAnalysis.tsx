@@ -12,40 +12,7 @@ interface TimeframeAnalysisProps {
 const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
   const { timeframeSignals, dominantDirection, isLoading, error } = useMultiTimeframeAnalysis(symbol);
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1h');
-  const [leverageRecommendations, setLeverageRecommendations] = useState<Record<string, LeverageResult>>({});
-  
-  // Calculate leverage recommendations for each timeframe
-  useEffect(() => {
-    if (timeframeSignals.length > 0) {
-      // Example params - we'd ideally get current market price here
-      const baseParams: LeverageParams = {
-        positionSize: 1000,
-        riskPercentage: 2,
-        entryPrice: 50000, // Example price for BTC
-        stopLoss: 49000,   // 2% below for long position
-        takeProfit: 52000, // 4% above for long position
-      };
-      
-      const recommendations: Record<string, LeverageResult> = {};
-      
-      timeframeSignals.forEach(tf => {
-        // Adjust params based on signal direction
-        const isLong = tf.signal === 'LONG';
-        const modifiedParams = {
-          ...baseParams,
-          // Set stop loss based on direction
-          stopLoss: isLong ? baseParams.entryPrice * 0.98 : baseParams.entryPrice * 1.02,
-          // Set take profit based on direction
-          takeProfit: isLong ? baseParams.entryPrice * 1.04 : baseParams.entryPrice * 0.96,
-        };
-        
-        // Calculate leverage for this timeframe
-        recommendations[tf.timeframe] = calculateTimeframeLeverage(modifiedParams, tf.timeframe);
-      });
-      
-      setLeverageRecommendations(recommendations);
-    }
-  }, [timeframeSignals]);
+  // Removed leverage and position size calculations as requested
   
   // Calculate dominant trend strength
   const dominantStrength = timeframeSignals.reduce((acc, tf) => {
@@ -206,24 +173,7 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                     </div>
                   </div>
                   
-                  {/* Leverage recommendation */}
-                  {leverageRecommendations[tf.timeframe] && (
-                    <div className="mb-3 border-t border-gray-700 pt-2">
-                      <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-neutral">Recommended Leverage</span>
-                        <span className="text-sm font-medium text-white">
-                          {leverageRecommendations[tf.timeframe].recommendedLeverage}x
-                        </span>
-                      </div>
-                      
-                      {/* Take profit levels - kept for reference */}
-                      
-                      <div className="flex justify-between text-xs">
-                        <span className="text-neutral">Stop Loss:</span>
-                        <span className="text-danger">${(parseFloat(leverageRecommendations[tf.timeframe].liquidationPrice) * 1.01).toFixed(2)}</span>
-                      </div>
-                    </div>
-                  )}
+                  {/* No leverage recommendation or position size - removed as requested */}
                   
                   {/* Entry strategy */}
                   <div className="text-xs p-2 bg-gray-700 rounded">
@@ -255,7 +205,6 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                   <th className="py-2 text-center">Signal</th>
                   <th className="py-2 text-center">Strength</th>
                   <th className="py-2 text-center">Trend</th>
-                  <th className="py-2 text-center">Leverage</th>
                 </tr>
               </thead>
               <tbody>
@@ -293,11 +242,6 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                           : 'text-neutral'
                     }`}>
                       {tf.trend}
-                    </td>
-                    <td className="py-2 text-center">
-                      {leverageRecommendations[tf.timeframe] 
-                        ? `${leverageRecommendations[tf.timeframe].recommendedLeverage}x`
-                        : '-'}
                     </td>
                   </tr>
                 ))}
