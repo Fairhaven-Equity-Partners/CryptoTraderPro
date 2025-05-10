@@ -845,6 +845,12 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     strength: Math.abs(tenkanSen - kijunSen) / kijunSen > 0.02 ? 'STRONG' : 'MODERATE'
   });
   
+  // Cache the calculation result before returning
+  calculationCache[cacheKey] = {
+    timestamp: Date.now(),
+    result: [...indicators] // Store a copy to prevent mutation issues
+  };
+  
   return indicators;
 }
 

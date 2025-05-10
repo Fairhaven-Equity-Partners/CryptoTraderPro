@@ -19,6 +19,15 @@ import {
   getMacroInsights
 } from './macroIndicators';
 
+// Performance optimization: Cache for pattern detection
+const patternCache: Record<string, {
+  timestamp: number;
+  patterns: PatternFormation[];
+}> = {};
+
+// Cache expiration time in milliseconds (45 seconds)
+const PATTERN_CACHE_EXPIRATION = 45 * 1000;
+
 // Advanced signal types
 export interface AdvancedSignal {
   timeframe: TimeFrame;
@@ -461,16 +470,30 @@ function calculateLevelsScore(levels: Level[], currentPrice: number): number {
 }
 
 /**
- * Detect chart patterns from price data
+ * Detect chart patterns from price data with performance caching
  */
 function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
   if (chartData.length < 30) {
     return [];
   }
   
+  // Create a cache key using first/last timestamps and last price
+  const firstTimestamp = chartData[0].time;
+  const lastTimestamp = chartData[chartData.length - 1].time;
+  const currentPrice = chartData[chartData.length - 1].close;
+  const cacheKey = `pattern-${firstTimestamp}-${lastTimestamp}-${currentPrice}`;
+  
+  // Check for valid cached result
+  const now = Date.now();
+  if (patternCache[cacheKey] && 
+      (now - patternCache[cacheKey].timestamp < PATTERN_CACHE_EXPIRATION)) {
+    // Return copy of cached patterns to prevent mutation issues
+    return [...patternCache[cacheKey].patterns];
+  }
+  
   const patterns: PatternFormation[] = [];
   const lastCandle = chartData[chartData.length - 1];
-  const lastPrice = lastCandle.close;
+  // lastPrice is already defined above
   
   // Look for chart patterns on recent data (last 20 candles)
   const recentData = chartData.slice(-20);
