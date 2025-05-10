@@ -104,19 +104,23 @@ export default function AdvancedSignalDashboard({
   const calculateSignalForTimeframe = useCallback((timeframe: TimeFrame) => {
     if (chartDataMap[timeframe]?.data?.length) {
       try {
+        console.log(`Attempting to calculate signal for ${symbol} on ${timeframe} timeframe with ${chartDataMap[timeframe]?.data?.length} data points`);
         const signal = calculateTimeframeConfidence(
           chartDataMap[timeframe].data, 
           timeframe,
           undefined, // Use default weights
           symbol     // Pass the actual symbol
         );
+        console.log(`Successfully calculated signal for ${symbol} on ${timeframe} timeframe`);
         return signal;
       } catch (err) {
-        console.error(`Error calculating signal for ${timeframe}:`, err);
+        console.error(`Error calculating signal for ${symbol} on ${timeframe} timeframe:`, err);
         return null;
       }
+    } else {
+      console.log(`No data available for ${symbol} on ${timeframe} timeframe`);
+      return null;
     }
-    return null;
   }, [chartDataMap, symbol]);
   
   // Calculate signals for all timeframes

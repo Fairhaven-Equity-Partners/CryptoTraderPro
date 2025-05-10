@@ -497,7 +497,10 @@ function calculateLevelsScore(levels: Level[], currentPrice: number): number {
  * Detect chart patterns from price data with performance caching
  */
 function detectChartPatterns(chartData: ChartData[], symbol: string): PatternFormation[] {
+  console.log(`detectChartPatterns called with symbol: ${symbol}, data length: ${chartData.length}`);
+  
   if (chartData.length < 30) {
+    console.log(`Insufficient data for pattern detection: ${chartData.length} data points (need at least 30)`);
     return [];
   }
   
@@ -837,8 +840,10 @@ export function calculateTimeframeConfidence(
   weights: SignalWeights = DEFAULT_WEIGHTS,
   symbol: string
 ): AdvancedSignal {
+  console.log(`calculateTimeframeConfidence called with symbol: ${symbol}, timeframe: ${timeframe}, data length: ${chartData.length}`);
+  
   if (chartData.length < 50) {
-    throw new Error('Insufficient data for analysis');
+    throw new Error(`Insufficient data for analysis: ${chartData.length} data points (need at least 50)`);
   }
   
   const lastCandle = chartData[chartData.length - 1];
