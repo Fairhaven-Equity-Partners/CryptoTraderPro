@@ -835,7 +835,7 @@ export function calculateTimeframeConfidence(
   chartData: ChartData[],
   timeframe: TimeFrame,
   weights: SignalWeights = DEFAULT_WEIGHTS,
-  symbol: string = 'BTC/USDT'  // Add symbol parameter with default
+  symbol: string
 ): AdvancedSignal {
   if (chartData.length < 50) {
     throw new Error('Insufficient data for analysis');
