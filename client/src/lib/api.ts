@@ -166,7 +166,7 @@ const pendingRequests: Record<string, Record<TimeFrame, Promise<ChartData[]>>> =
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
   try {
     // If there's already a request in progress for this data, return that promise
-    if (pendingRequests[symbol]?.[timeframe] !== undefined) {
+    if (pendingRequests[symbol] && pendingRequests[symbol][timeframe]) {
       return pendingRequests[symbol][timeframe];
     }
     
@@ -232,8 +232,13 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     console.error('Error fetching chart data:', error);
     
     // Clear pending request on error
-    if (pendingRequests[symbol]?.[timeframe] !== undefined) {
+    if (pendingRequests[symbol]) {
       delete pendingRequests[symbol][timeframe];
+      
+      // If this was the last pending request for this symbol, clean up the object
+      if (Object.keys(pendingRequests[symbol]).length === 0) {
+        delete pendingRequests[symbol];
+      }
     }
     
     // Generate fallback data

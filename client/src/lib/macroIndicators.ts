@@ -129,6 +129,9 @@ export async function refreshMacroIndicators(): Promise<MacroData> {
     
     // If refresh fails, return current data with updated timestamp
     currentMacroData.lastUpdated = Date.now();
+    
+    // Do not reset cache on error - use previous values
+    
     return currentMacroData;
   }
 }
