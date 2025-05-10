@@ -66,7 +66,7 @@ export default function MacroIndicatorsPanel({ symbol }: MacroIndicatorsPanelPro
     return 'text-red-500';
   };
 
-  const getScoreProgressColor = (score: number) => {
+  const getScoreProgressClass = (score: number) => {
     if (score >= 75) return 'bg-green-500';
     if (score >= 60) return 'bg-green-400';
     if (score >= 45) return 'bg-yellow-500';
@@ -102,7 +102,7 @@ export default function MacroIndicatorsPanel({ symbol }: MacroIndicatorsPanelPro
                 {macroScore}/100
               </span>
             </div>
-            <Progress value={macroScore} className="h-2" indicatorClassName={getScoreProgressColor(macroScore)} />
+            <Progress value={macroScore} className={`h-2 ${getScoreProgressClass(macroScore)}`} />
             <div className="mt-1 text-xs text-center font-medium text-muted-foreground">
               Classification: {macroClassification}
             </div>

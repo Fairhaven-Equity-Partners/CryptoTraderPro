@@ -27,7 +27,8 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Target,
-  DollarSign
+  DollarSign,
+  Globe
 } from 'lucide-react';
 import { useIsMobile } from '../hooks/use-mobile';
 import { 
@@ -39,6 +40,7 @@ import {
 import { useChartData } from '../hooks/useMarketData';
 import { ChartData, TimeFrame } from '../types';
 import { formatCurrency, formatPercentage } from '../lib/calculations';
+import MacroIndicatorsPanel from './MacroIndicatorsPanel';
 
 interface AdvancedSignalDashboardProps {
   symbol: string;
