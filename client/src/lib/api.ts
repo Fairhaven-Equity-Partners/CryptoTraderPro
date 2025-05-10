@@ -229,7 +229,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     
     return result;
   } catch (error) {
-    console.error('Error fetching chart data:', error);
+    console.error(`Error fetching ${symbol} data:`, error);
     
     // Clear pending request on error
     if (pendingRequests[symbol]) {
@@ -242,6 +242,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     }
     
     // Generate fallback data
+    console.log(`Generating fallback data for ${symbol} (${timeframe})`);
     const fallbackData = generateChartData(timeframe, symbol);
     
     // Cache the fallback data
@@ -457,6 +458,12 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
     basePrice = 65000 + Math.random() * 2000;
   } else if (symbol.includes('ETH')) {
     basePrice = 3500 + Math.random() * 200;
+  } else if (symbol.includes('BNB')) {
+    basePrice = 550 + Math.random() * 50;
+  } else if (symbol.includes('SOL')) {
+    basePrice = 170 + Math.random() * 20;
+  } else if (symbol.includes('XRP')) {
+    basePrice = 2 + Math.random() * 0.5;
   } else {
     basePrice = 100 + Math.random() * 50;
   }
@@ -512,32 +519,38 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   return data;
 }
 
-// Helper function to get volatility based on timeframe
+// Get volatility for different timeframes
 function getVolatilityForTimeframe(timeframe: TimeFrame): number {
+  // Scale volatility based on timeframe
   switch (timeframe) {
-    case '1m': return 0.004;
-    case '5m': return 0.006;
-    case '15m': return 0.008;
-    case '30m': return 0.01;
-    case '1h': return 0.015;
-    case '4h': return 0.025;
-    case '1d': return 0.04;
-    case '3d': return 0.05; // 3-day has slightly higher volatility than 1-day
-    case '1w': return 0.06;
-    case '1M': return 0.1;
+    case '1m': return 0.003;  // 0.3%
+    case '5m': return 0.0045; // 0.45%
+    case '15m': return 0.006; // 0.6%
+    case '30m': return 0.008; // 0.8%
+    case '1h': return 0.01;   // 1%
+    case '4h': return 0.015;  // 1.5%
+    case '1d': return 0.025;  // 2.5%
+    case '3d': return 0.035;  // 3.5%
+    case '1w': return 0.045;  // 4.5%
+    case '1M': return 0.08;   // 8%
     default: return 0.01;
   }
 }
 
-// Helper function to get base volume for a symbol
+// Scale volume based on symbol
 function getBaseVolumeForSymbol(symbol: string): number {
   if (symbol.includes('BTC')) {
-    return 5000000 + Math.random() * 2000000;
+    return 500 + Math.random() * 200;
   } else if (symbol.includes('ETH')) {
-    return 3000000 + Math.random() * 1000000;
-  } else {
-    return 500000 + Math.random() * 300000;
+    return 1000 + Math.random() * 500;
+  } else if (symbol.includes('BNB')) {
+    return 200 + Math.random() * 100;
+  } else if (symbol.includes('SOL')) {
+    return 800 + Math.random() * 400;
+  } else if (symbol.includes('XRP')) {
+    return 2000 + Math.random() * 1000;
   }
+  return 100 + Math.random() * 50;
 }
 
 // Get current price for a symbol
@@ -559,22 +572,19 @@ function getCurrentPrice(symbol: string): number {
   } else if (symbol.includes('BNB')) {
     return 550;
   } else if (symbol.includes('SOL')) {
-    return 140;
+    return 170;
   } else if (symbol.includes('XRP')) {
-    return 0.5;
-  } else {
-    return 100;
+    return 2;
   }
+  return 100;
 }
 
-// Register for chart updates
+// Register for chart updates - returns an unsubscribe function
 export function registerChartUpdateListener(symbol: string, timeframe: TimeFrame, callback: () => void): () => void {
   const key = `${symbol}_${timeframe}`;
-  
   if (!chartUpdateListeners[key]) {
     chartUpdateListeners[key] = [];
   }
-  
   chartUpdateListeners[key].push(callback);
   
   // Return unsubscribe function
@@ -583,7 +593,7 @@ export function registerChartUpdateListener(symbol: string, timeframe: TimeFrame
   };
 }
 
-// Alerts API calls
+// Fetch alerts
 export async function fetchAlerts(userId?: number): Promise<Alert[]> {
   const url = userId 
     ? `${API_BASE_URL}/api/alerts?userId=${userId}`
