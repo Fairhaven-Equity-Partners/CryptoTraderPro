@@ -12,6 +12,12 @@ import * as indicators from './indicators';
 import { calculateSafeLeverage } from './calculations';
 import { calculateHMA, calculateWMA } from './indicators';
 import { formatPrice as formatPriceUtil } from './calculations';
+import { 
+  getMacroIndicators, 
+  analyzeMacroEnvironment, 
+  getMacroEnvironmentClassification,
+  getMacroInsights
+} from './macroIndicators';
 
 // Advanced signal types
 export interface AdvancedSignal {
@@ -36,6 +42,10 @@ export interface AdvancedSignal {
     percentChange: number;
     timeEstimate: string;
   };
+  // Macro indicators
+  macroScore: number;             // 0-100 score on macro environment
+  macroClassification: string;    // Classification of macro environment
+  macroInsights: string[];        // Key insights from macro analysis
 }
 
 export interface PatternFormation {
@@ -98,18 +108,24 @@ interface SignalWeights {
   timeframeAlignment: number;
   supportResistance: number;
   marketCondition: number;
+  macroeconomic: number;     // New weight for macroeconomic indicators
+  onChainMetrics: number;    // New weight for on-chain metrics
+  whaleActivity: number;     // New weight for whale activity
 }
 
 // Default weights optimized for crypto market
 const DEFAULT_WEIGHTS: SignalWeights = {
-  trend: 25,
-  momentum: 20,
+  trend: 22,                 // Reduced from 25
+  momentum: 18,              // Reduced from 20
   volatility: 10,
-  volume: 15,
-  pattern: 10,
-  timeframeAlignment: 10,
+  volume: 12,                // Reduced from 15
+  pattern: 9,                // Reduced from 10
+  timeframeAlignment: 9,     // Reduced from 10
   supportResistance: 5,
-  marketCondition: 5
+  marketCondition: 5,
+  macroeconomic: 4,          // New weight
+  onChainMetrics: 3,         // New weight
+  whaleActivity: 3           // New weight
 };
 
 /**
