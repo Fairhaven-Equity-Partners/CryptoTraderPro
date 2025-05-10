@@ -496,7 +496,7 @@ function calculateLevelsScore(levels: Level[], currentPrice: number): number {
 /**
  * Detect chart patterns from price data with performance caching
  */
-function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'): PatternFormation[] {
+function detectChartPatterns(chartData: ChartData[], symbol: string): PatternFormation[] {
   if (chartData.length < 30) {
     return [];
   }
@@ -823,7 +823,7 @@ function getMajorityDirection(signals: AdvancedSignal[]): SignalDirection {
  * Format price with appropriate precision
  * Now accepts the symbol parameter to format correctly for any coin
  */
-function formatPrice(price: number, symbol: string = 'BTC/USDT'): string {
+function formatPrice(price: number, symbol: string): string {
   // Use the imported utility function with the provided symbol
   return formatPriceUtil(price, symbol);
 }
