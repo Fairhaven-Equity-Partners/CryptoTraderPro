@@ -114,18 +114,19 @@ interface SignalWeights {
 }
 
 // Default weights optimized for crypto market
+// Optimized weight distribution for better signal accuracy
 const DEFAULT_WEIGHTS: SignalWeights = {
-  trend: 22,                 // Reduced from 25
-  momentum: 18,              // Reduced from 20
-  volatility: 10,
-  volume: 12,                // Reduced from 15
-  pattern: 9,                // Reduced from 10
-  timeframeAlignment: 9,     // Reduced from 10
-  supportResistance: 5,
-  marketCondition: 5,
-  macroeconomic: 4,          // New weight
-  onChainMetrics: 3,         // New weight
-  whaleActivity: 3           // New weight
+  trend: 25,                 // Primary trend indicators have highest weight
+  momentum: 20,              // Secondary importance for momentum
+  volatility: 10,            // Volatility helps measure potential risk
+  volume: 12,                // Volume confirms strength of movements
+  pattern: 8,                // Pattern recognition
+  timeframeAlignment: 8,     // Agreement between timeframes
+  supportResistance: 5,      // Key price levels
+  marketCondition: 5,        // Overall market environment
+  macroeconomic: 10,         // Increased macroeconomic influence
+  onChainMetrics: 5,         // On-chain data (exchange flows, etc)
+  whaleActivity: 2           // Large holder activity
 };
 
 /**

@@ -142,47 +142,114 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
   }
 }
 
-// Fetch chart data
+// Cache expiration times in milliseconds based on timeframe
+const CACHE_EXPIRATION = {
+  '1m': 45 * 1000,        // 45 seconds for 1-minute data
+  '5m': 120 * 1000,       // 2 minutes
+  '15m': 300 * 1000,      // 5 minutes
+  '30m': 600 * 1000,      // 10 minutes
+  '1h': 1800 * 1000,      // 30 minutes
+  '4h': 3600 * 1000,      // 1 hour
+  '1d': 7200 * 1000,      // 2 hours
+  '3d': 14400 * 1000,     // 4 hours
+  '1w': 14400 * 1000,     // 4 hours
+  '1M': 14400 * 1000,     // 4 hours
+};
+
+// Track when data was last fetched
+const cacheTimestamps: Record<string, Record<TimeFrame, number>> = {};
+
+// Track in-flight requests to prevent duplicate calls
+const pendingRequests: Record<string, Record<TimeFrame, Promise<ChartData[]>>> = {};
+
+// Optimized chart data fetching with smart caching
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
-  // If we have cached data, return it immediately
-  if (chartDataCache[symbol] && chartDataCache[symbol][timeframe]) {
-    console.log(`Loading chart with ${chartDataCache[symbol][timeframe].length} data points for ${symbol} (${timeframe})`);
-    return [...chartDataCache[symbol][timeframe]];
-  }
-  
   try {
-    // Generate data since we don't have a chart API endpoint
-    const data = generateChartData(timeframe, symbol);
-    
-    // Cache the data
-    if (!chartDataCache[symbol]) {
-      chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
-    }
-    chartDataCache[symbol][timeframe] = data;
-    
-    // Start real-time updates if not already running
-    if (!realTimeUpdatesActive) {
-      startRealTimeUpdates();
+    // If there's already a request in progress for this data, return that promise
+    if (pendingRequests[symbol]?.[timeframe]) {
+      return pendingRequests[symbol][timeframe];
     }
     
-    // Track current symbol for updates
-    if (!currentSymbols.includes(symbol)) {
-      currentSymbols.push(symbol);
-      subscribeToSymbols(currentSymbols);
+    // Check if cached data is still valid based on timeframe
+    const now = Date.now();
+    const cacheValid = chartDataCache[symbol] && 
+                      chartDataCache[symbol][timeframe] && 
+                      cacheTimestamps[symbol]?.[timeframe] && 
+                      (now - cacheTimestamps[symbol][timeframe] < CACHE_EXPIRATION[timeframe]);
+    
+    if (cacheValid) {
+      console.log(`Loading chart with ${chartDataCache[symbol][timeframe].length} data points for ${symbol} (${timeframe})`);
+      return [...chartDataCache[symbol][timeframe]];
     }
     
-    console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
-    return [...data];
+    // Initialize request tracking
+    if (!pendingRequests[symbol]) {
+      pendingRequests[symbol] = {} as Record<TimeFrame, Promise<ChartData[]>>;
+    }
+    
+    // Create and store the promise
+    pendingRequests[symbol][timeframe] = (async () => {
+      // Generate data since we don't have a chart API endpoint
+      const data = generateChartData(timeframe, symbol);
+      
+      // Cache the data
+      if (!chartDataCache[symbol]) {
+        chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
+      }
+      
+      // Update the cache
+      chartDataCache[symbol][timeframe] = data;
+      
+      // Update timestamp
+      if (!cacheTimestamps[symbol]) {
+        cacheTimestamps[symbol] = {} as Record<TimeFrame, number>;
+      }
+      cacheTimestamps[symbol][timeframe] = now;
+      
+      // Ensure real-time updates are active
+      if (!realTimeUpdatesActive) {
+        startRealTimeUpdates();
+      }
+      
+      // Track current symbol for updates
+      if (!currentSymbols.includes(symbol)) {
+        currentSymbols.push(symbol);
+        subscribeToSymbols(currentSymbols);
+      }
+      
+      console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
+      return [...data];
+    })();
+    
+    // Wait for and return the result
+    const result = await pendingRequests[symbol][timeframe];
+    
+    // Clear the pending request reference
+    delete pendingRequests[symbol][timeframe];
+    
+    return result;
   } catch (error) {
     console.error('Error fetching chart data:', error);
+    
+    // Clear pending request on error
+    if (pendingRequests[symbol]?.[timeframe]) {
+      delete pendingRequests[symbol][timeframe];
+    }
+    
     // Generate fallback data
     const fallbackData = generateChartData(timeframe, symbol);
     
-    // Still cache this fallback data
+    // Cache the fallback data
     if (!chartDataCache[symbol]) {
       chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
     }
     chartDataCache[symbol][timeframe] = fallbackData;
+    
+    // Update timestamp for the fallback data
+    if (!cacheTimestamps[symbol]) {
+      cacheTimestamps[symbol] = {} as Record<TimeFrame, number>;
+    }
+    cacheTimestamps[symbol][timeframe] = Date.now();
     
     return fallbackData;
   }
