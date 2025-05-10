@@ -11,6 +11,7 @@ import {
 import * as indicators from './indicators';
 import { calculateSafeLeverage } from './calculations';
 import { calculateHMA, calculateWMA } from './indicators';
+import { formatPrice as formatPriceUtil } from './calculations';
 
 // Advanced signal types
 export interface AdvancedSignal {

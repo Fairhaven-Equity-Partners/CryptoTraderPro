@@ -29,15 +29,15 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
   const [isCalculating, setIsCalculating] = useState(false);
   const [directionType, setDirectionType] = useState<'long' | 'short'>('long');
   
-  // Reset calculator when symbol changes
+  // Reset calculator when symbol changes (but keep position size)
   useEffect(() => {
-    setParams({
-      positionSize: 1000,
+    setParams(prev => ({
+      positionSize: prev.positionSize, // Keep the user-entered position size
       riskPercentage: 2,
       entryPrice: currentPrice,
       stopLoss: directionType === 'long' ? currentPrice * 0.98 : currentPrice * 1.02,
       takeProfit: directionType === 'long' ? currentPrice * 1.04 : currentPrice * 0.96,
-    });
+    }));
     setResult(null);
     setTimeframeResults({});
   }, [symbol, currentPrice, directionType]);
@@ -160,6 +160,16 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
             type="number"
             name="stopLoss"
             value={params.stopLoss}
+            onChange={handleInputChange}
+            className="w-full bg-gray-800 border border-gray-700 rounded py-2 px-3 text-white text-sm"
+          />
+        </div>
+        <div>
+          <Label className="block text-neutral text-xs mb-1">Take Profit ($)</Label>
+          <Input
+            type="number"
+            name="takeProfit"
+            value={params.takeProfit}
             onChange={handleInputChange}
             className="w-full bg-gray-800 border border-gray-700 rounded py-2 px-3 text-white text-sm"
           />
