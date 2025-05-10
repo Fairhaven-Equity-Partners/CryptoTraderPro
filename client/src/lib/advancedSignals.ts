@@ -623,7 +623,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
           // Measure the percentage rise from head to neckline
           const headToNeckPct = (necklinePrice - head.price) / head.price;
           // Apply same percentage above the neckline (with limits for realism)
-          // Ensure price target is between 105% and 115% of last price for BTC
+          // Ensure price target is between 105% and 115% of last price
           const rawPriceTarget = necklinePrice * (1 + headToNeckPct);
           const priceTarget = Math.max(lastPrice * 1.05, Math.min(necklinePrice * 1.15, rawPriceTarget));
           
@@ -632,7 +632,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
             reliability: 75,
             direction: 'bullish',
             priceTarget: Math.min(lastPrice * 1.15, priceTarget), // Cap to 15% above current price
-            description: 'Bullish reversal pattern with price target around ' + formatPrice(priceTarget)
+            description: 'Bullish reversal pattern with price target around ' + formatPrice(priceTarget, symbol)
           };
         }
       }
@@ -731,7 +731,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
           // Measure the percentage rise from bottom to highest point
           const bottomToHighPct = (highestPoint - firstBottom.price) / firstBottom.price;
           // Apply same percentage above the highest point (with limits for realism)
-          // Ensure price target is between 105% and 115% of last price for BTC
+          // Ensure price target is between 105% and 115% of last price
           const rawPriceTarget = highestPoint * (1 + bottomToHighPct);
           const priceTarget = Math.max(lastPrice * 1.05, Math.min(lastPrice * 1.15, rawPriceTarget));
           
@@ -740,7 +740,7 @@ function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'
             reliability: 70,
             direction: 'bullish',
             priceTarget: Math.min(lastPrice * 1.15, priceTarget), // Cap to 15% above current price
-            description: 'Bullish reversal pattern with price target around ' + formatPrice(priceTarget)
+            description: 'Bullish reversal pattern with price target around ' + formatPrice(priceTarget, symbol)
           };
         }
       }
