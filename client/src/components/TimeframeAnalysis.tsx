@@ -8,10 +8,38 @@ interface TimeframeAnalysisProps {
   symbol: string;
 }
 
+// A component that shows a confidence indicator bar
+function ConfidenceIndicator({ value }: { value: number }) {
+  const getColor = (val: number) => {
+    if (val < 30) return 'bg-danger';
+    if (val < 70) return 'bg-amber-500';
+    return 'bg-success';
+  };
+  
+  return (
+    <div className="w-12 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+      <div className={`h-full ${getColor(value)}`} style={{ width: `${value}%` }}></div>
+    </div>
+  );
+}
+
+// Helper function to get signal class based on signal direction
+function getSignalClass(signal: string) {
+  return signal === 'LONG' ? 'bg-success/20 text-success' : 
+         signal === 'SHORT' ? 'bg-danger/20 text-danger' : 
+         'bg-neutral/20 text-neutral';
+}
+
+// Helper function to get trend class based on trend direction
+function getTrendClass(trend: string) {
+  return trend === 'Bullish' ? 'text-success' : 
+         trend === 'Bearish' ? 'text-danger' : 
+         'text-neutral';
+}
+
 const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
   const { timeframeSignals, dominantDirection, isLoading, error } = useMultiTimeframeAnalysis(symbol);
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1h');
-  // Removed leverage and position size calculations as requested
   
   // Calculate dominant trend strength
   const dominantStrength = timeframeSignals.reduce((acc, tf) => {
@@ -172,8 +200,6 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                     </div>
                   </div>
                   
-                  {/* No leverage recommendation or position size - removed as requested */}
-                  
                   {/* Entry strategy */}
                   <div className="text-xs p-2 bg-gray-700 rounded">
                     <p className="font-medium text-white mb-1">
@@ -208,39 +234,27 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
               </thead>
               <tbody>
                 {timeframeSignals.map((tf) => (
-                  <tr key={tf.timeframe} className="border-b border-gray-800">
-                    <td className="py-2 font-medium">{tf.timeframe}</td>
-                    <td className={`py-2 text-center font-medium ${
-                      tf.signal === 'LONG' 
-                        ? 'text-success' 
-                        : tf.signal === 'SHORT' 
-                          ? 'text-danger' 
-                          : 'text-neutral'
-                    }`}>
-                      {tf.signal}
+                  <tr 
+                    key={tf.timeframe} 
+                    className={`border-b border-gray-700 hover:bg-gray-800 cursor-pointer ${selectedTimeframe === tf.timeframe ? 'bg-gray-800' : ''}`}
+                    onClick={() => setSelectedTimeframe(tf.timeframe)}
+                  >
+                    <td className="py-2.5 px-2">{tf.timeframe}</td>
+                    <td className="py-2.5 text-center">
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getSignalClass(tf.signal)}`}>
+                        {tf.signal}
+                      </span>
                     </td>
-                    <td className="py-2 text-center">
-                      <div className="inline-block w-16 bg-gray-700 h-1.5 rounded-full overflow-hidden">
-                        <div 
-                          className={`h-full rounded-full ${
-                            tf.signal === 'LONG' 
-                              ? 'bg-success' 
-                              : tf.signal === 'SHORT' 
-                                ? 'bg-danger' 
-                                : 'bg-neutral'
-                          }`} 
-                          style={{ width: `${tf.strength}%` }}
-                        ></div>
+                    <td className="py-2.5 text-center">
+                      <div className="flex items-center justify-center">
+                        <ConfidenceIndicator value={tf.strength} />
+                        <span className="ml-2">{tf.strength}</span>
                       </div>
                     </td>
-                    <td className={`py-2 text-center ${
-                      tf.trend === 'Bullish' 
-                        ? 'text-success' 
-                        : tf.trend === 'Bearish' 
-                          ? 'text-danger' 
-                          : 'text-neutral'
-                    }`}>
-                      {tf.trend}
+                    <td className="py-2.5 text-center">
+                      <span className={`${getTrendClass(tf.trend)}`}>
+                        {tf.trend}
+                      </span>
                     </td>
                   </tr>
                 ))}
