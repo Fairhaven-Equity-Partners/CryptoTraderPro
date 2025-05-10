@@ -496,7 +496,7 @@ function calculateLevelsScore(levels: Level[], currentPrice: number): number {
 /**
  * Detect chart patterns from price data with performance caching
  */
-function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
+function detectChartPatterns(chartData: ChartData[], symbol: string = 'BTC/USDT'): PatternFormation[] {
   if (chartData.length < 30) {
     return [];
   }
@@ -821,10 +821,11 @@ function getMajorityDirection(signals: AdvancedSignal[]): SignalDirection {
 
 /**
  * Format price with appropriate precision
+ * Now accepts the symbol parameter to format correctly for any coin
  */
-function formatPrice(price: number): string {
-  // Use the imported utility function
-  return formatPriceUtil(price, 'BTC/USDT');
+function formatPrice(price: number, symbol: string = 'BTC/USDT'): string {
+  // Use the imported utility function with the provided symbol
+  return formatPriceUtil(price, symbol);
 }
 
 /**
@@ -833,7 +834,8 @@ function formatPrice(price: number): string {
 export function calculateTimeframeConfidence(
   chartData: ChartData[],
   timeframe: TimeFrame,
-  weights: SignalWeights = DEFAULT_WEIGHTS
+  weights: SignalWeights = DEFAULT_WEIGHTS,
+  symbol: string = 'BTC/USDT'  // Add symbol parameter with default
 ): AdvancedSignal {
   if (chartData.length < 50) {
     throw new Error('Insufficient data for analysis');
@@ -871,7 +873,7 @@ export function calculateTimeframeConfidence(
   const levelsScore = calculateLevelsScore(levels, lastPrice);
   
   // Detect chart patterns
-  const patterns = detectChartPatterns(chartData);
+  const patterns = detectChartPatterns(chartData, symbol);
   
   // Calculate weighted score and direction
   let totalScore = 0;
