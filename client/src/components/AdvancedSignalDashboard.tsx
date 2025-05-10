@@ -480,6 +480,14 @@ export default function AdvancedSignalDashboard({
         </Card>
       )}
       
+      {/* Macro Indicators Panel - placed between main signal and timeframe analysis */}
+      {!isCalculating && (
+        <div className="mb-4">
+          <h3 className="text-lg font-semibold mb-2">Macro Environment Analysis</h3>
+          <MacroIndicatorsPanel symbol={symbol} />
+        </div>
+      )}
+      
       {/* Timeframe tabs */}
       {!isCalculating && (
         <Tabs value={selectedTimeframe} onValueChange={(v) => handleTimeframeSelect(v as TimeFrame)}>

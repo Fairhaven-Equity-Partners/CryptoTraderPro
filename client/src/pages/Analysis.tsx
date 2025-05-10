@@ -44,11 +44,6 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-        <div className="px-4 py-2">
-          <h2 className="text-xl font-bold mb-4 text-white">Macro Environment</h2>
-          <MacroIndicatorsPanel symbol={currentAsset} />
-        </div>
-        
         <div className="px-4 py-4">
           <LeverageCalculator 
             symbol={currentAsset} 
