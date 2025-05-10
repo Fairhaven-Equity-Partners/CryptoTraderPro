@@ -667,7 +667,7 @@ function DetailedSignalCard({
                     {showAdvanced && (
                       <CardContent className="p-2 pt-0">
                         <div className="text-xs space-y-1">
-                          {indicators.slice(0, 3).map((indicator, i) => (
+                          {indicators.map((indicator, i) => (
                             <div key={i} className="flex justify-between">
                               <span>{indicator.name}</span>
                               <Badge variant={
@@ -682,11 +682,6 @@ function DetailedSignalCard({
                               </Badge>
                             </div>
                           ))}
-                          {indicators.length > 3 && (
-                            <div className="text-muted-foreground text-center">
-                              +{indicators.length - 3} more
-                            </div>
-                          )}
                         </div>
                       </CardContent>
                     )}
@@ -701,7 +696,7 @@ function DetailedSignalCard({
             <div>
               <h3 className="text-sm font-semibold mb-2">Support & Resistance</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {signal.supportResistance.slice(0, 4).map((level, i) => (
+                {signal.supportResistance.map((level, i) => (
                   <div key={i} className="flex justify-between items-center p-2 bg-secondary/20 rounded-md">
                     <Badge variant={level.type === 'support' ? 'outline' : 'destructive'} 
                            className={level.type === 'support' ? 'border-green-500 text-green-500' : ''}>
