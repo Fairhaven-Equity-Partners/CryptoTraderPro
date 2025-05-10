@@ -260,29 +260,57 @@ export function analyzeMacroEnvironment(): number {
     (monetaryScore * weights.monetary) +
     (correlationsScore * weights.correlations);
   
+  // Calculate rounded score
+  const roundedScore = Math.round(finalScore);
+  
+  // Cache the result for future use
+  macroCache.environmentScore = roundedScore;
+  
   // Return rounded score
-  return Math.round(finalScore);
+  return roundedScore;
 }
 
 /**
- * Get macro environment classification
+ * Get macro environment classification with caching for performance
  */
 export function getMacroEnvironmentClassification(): string {
-  const score = analyzeMacroEnvironment();
+  const now = Date.now();
   
-  if (score >= 80) return "Strongly Bullish";
-  if (score >= 65) return "Moderately Bullish";
-  if (score >= 55) return "Slightly Bullish";
-  if (score >= 45) return "Neutral";
-  if (score >= 35) return "Slightly Bearish";
-  if (score >= 20) return "Moderately Bearish";
-  return "Strongly Bearish";
+  // If we have a valid cached value, return it
+  if (macroCache.classification && (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
+    return macroCache.classification;
+  }
+  
+  const score = analyzeMacroEnvironment();
+  let classification: string;
+  
+  if (score >= 80) classification = "Strongly Bullish";
+  else if (score >= 65) classification = "Moderately Bullish";
+  else if (score >= 55) classification = "Slightly Bullish";
+  else if (score >= 45) classification = "Neutral";
+  else if (score >= 35) classification = "Slightly Bearish";
+  else if (score >= 20) classification = "Moderately Bearish";
+  else classification = "Strongly Bearish";
+  
+  // Cache the result for future use
+  macroCache.classification = classification;
+  
+  return classification;
 }
 
 /**
  * Get specific macro insights based on current indicators
+ * With caching for performance
  */
 export function getMacroInsights(): string[] {
+  const now = Date.now();
+  
+  // If we have valid cached insights, return them
+  if (macroCache.insights && macroCache.insights.length > 0 && 
+      (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
+    return macroCache.insights;
+  }
+  
   const data = currentMacroData;
   const insights: string[] = [];
   
