@@ -490,13 +490,18 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Pattern is valid if current price is near or below neckline
         if (lastPrice <= necklinePrice * 1.02) {
-          const priceTarget = necklinePrice - (head.price - necklinePrice);
+          // Calculate a more reasonable price target considering current price levels
+          // Use percentage-based targets - measure percent from head to neckline
+          const headToNeckPct = (head.price - necklinePrice) / head.price;
+          // Apply same percentage below the neckline to get target
+          const priceTarget = necklinePrice * (1 - headToNeckPct);
+          
           return {
             name: 'Head and Shoulders',
             reliability: 75,
             direction: 'bearish',
-            priceTarget: Math.max(0, priceTarget),
-            description: 'Bearish reversal pattern with price target around ' + priceTarget.toFixed(2)
+            priceTarget: Math.max(lastPrice * 0.85, priceTarget), // Set minimum to 85% of current price
+            description: 'Bearish reversal pattern with price target around ' + formatPrice(priceTarget)
           };
         }
       }
@@ -542,13 +547,18 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Pattern is valid if current price is near or above neckline
         if (lastPrice >= necklinePrice * 0.98) {
-          const priceTarget = necklinePrice + (necklinePrice - head.price);
+          // Calculate a more reasonable price target considering current price levels
+          // Use percentage-based targets - measure percent from head to neckline
+          const headToNeckPct = (necklinePrice - head.price) / head.price;
+          // Apply same percentage above the neckline to get target
+          const priceTarget = necklinePrice * (1 + headToNeckPct);
+          
           return {
             name: 'Inverse Head and Shoulders',
             reliability: 75,
             direction: 'bullish',
-            priceTarget: priceTarget,
-            description: 'Bullish reversal pattern with price target around ' + priceTarget.toFixed(2)
+            priceTarget: Math.min(lastPrice * 1.15, priceTarget), // Cap to 15% above current price
+            description: 'Bullish reversal pattern with price target around ' + formatPrice(priceTarget)
           };
         }
       }
@@ -589,13 +599,18 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Check if current price is below the neckline (lowest point)
         if (lastPrice < lowestPoint) {
-          const priceTarget = lowestPoint - (firstPeak.price - lowestPoint);
+          // Calculate a more reasonable price target considering current price levels
+          // Use percentage-based targets - measure percent from peak to lowest point
+          const peakToLowPct = (firstPeak.price - lowestPoint) / firstPeak.price;
+          // Apply same percentage below the lowest point to get target
+          const priceTarget = lowestPoint * (1 - peakToLowPct);
+          
           return {
             name: 'Double Top',
             reliability: 70,
             direction: 'bearish',
-            priceTarget: Math.max(0, priceTarget),
-            description: 'Bearish reversal pattern with price target around ' + priceTarget.toFixed(2)
+            priceTarget: Math.max(lastPrice * 0.85, priceTarget), // Set minimum to 85% of current price
+            description: 'Bearish reversal pattern with price target around ' + formatPrice(priceTarget)
           };
         }
       }
@@ -636,13 +651,18 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Check if current price is above the neckline (highest point)
         if (lastPrice > highestPoint) {
-          const priceTarget = highestPoint + (highestPoint - firstBottom.price);
+          // Calculate a more reasonable price target considering current price levels
+          // Use percentage-based targets - measure percent from bottom to highest point
+          const bottomToHighPct = (highestPoint - firstBottom.price) / firstBottom.price;
+          // Apply same percentage above the highest point to get target
+          const priceTarget = highestPoint * (1 + bottomToHighPct);
+          
           return {
             name: 'Double Bottom',
             reliability: 70,
             direction: 'bullish',
-            priceTarget: priceTarget,
-            description: 'Bullish reversal pattern with price target around ' + priceTarget.toFixed(2)
+            priceTarget: Math.min(lastPrice * 1.15, priceTarget), // Cap to 15% above current price
+            description: 'Bullish reversal pattern with price target around ' + formatPrice(priceTarget)
           };
         }
       }
