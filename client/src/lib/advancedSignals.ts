@@ -112,6 +112,10 @@ const DEFAULT_WEIGHTS: SignalWeights = {
   marketCondition: 5
 };
 
+/**
+ * Format price with appropriate precision - uses imported utility function
+ */
+
 // Market condition/environment assessment
 enum MarketEnvironment {
   TRENDING_BULL = 'TRENDING_BULL',
@@ -492,11 +496,13 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Pattern is valid if current price is near or below neckline
         if (lastPrice <= necklinePrice * 1.02) {
-          // Calculate a more reasonable price target considering current price levels
-          // Use percentage-based targets - measure percent from head to neckline
+          // Calculate a more reasonable price target using percentage-based approach
+          // Measure the percentage drop from head to neckline
           const headToNeckPct = (head.price - necklinePrice) / head.price;
-          // Apply same percentage below the neckline to get target
-          const priceTarget = necklinePrice * (1 - headToNeckPct);
+          // Apply same percentage below the neckline (with limits for realism)
+          // Ensure price target is between 85% and 95% of last price for BTC
+          const rawPriceTarget = necklinePrice * (1 - headToNeckPct);
+          const priceTarget = Math.max(lastPrice * 0.85, Math.min(necklinePrice * 0.95, rawPriceTarget));
           
           return {
             name: 'Head and Shoulders',
@@ -549,11 +555,13 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Pattern is valid if current price is near or above neckline
         if (lastPrice >= necklinePrice * 0.98) {
-          // Calculate a more reasonable price target considering current price levels
-          // Use percentage-based targets - measure percent from head to neckline
+          // Calculate a more reasonable price target using percentage-based approach
+          // Measure the percentage rise from head to neckline
           const headToNeckPct = (necklinePrice - head.price) / head.price;
-          // Apply same percentage above the neckline to get target
-          const priceTarget = necklinePrice * (1 + headToNeckPct);
+          // Apply same percentage above the neckline (with limits for realism)
+          // Ensure price target is between 105% and 115% of last price for BTC
+          const rawPriceTarget = necklinePrice * (1 + headToNeckPct);
+          const priceTarget = Math.max(lastPrice * 1.05, Math.min(necklinePrice * 1.15, rawPriceTarget));
           
           return {
             name: 'Inverse Head and Shoulders',
@@ -601,11 +609,13 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Check if current price is below the neckline (lowest point)
         if (lastPrice < lowestPoint) {
-          // Calculate a more reasonable price target considering current price levels
-          // Use percentage-based targets - measure percent from peak to lowest point
+          // Calculate a more reasonable price target using percentage-based approach
+          // Measure the percentage drop from peak to lowest point
           const peakToLowPct = (firstPeak.price - lowestPoint) / firstPeak.price;
-          // Apply same percentage below the lowest point to get target
-          const priceTarget = lowestPoint * (1 - peakToLowPct);
+          // Apply same percentage below the lowest point (with limits for realism)
+          // Ensure price target is between 85% and 95% of last price for BTC
+          const rawPriceTarget = lowestPoint * (1 - peakToLowPct);
+          const priceTarget = Math.max(lastPrice * 0.85, Math.min(lastPrice * 0.95, rawPriceTarget));
           
           return {
             name: 'Double Top',
@@ -653,11 +663,13 @@ function detectChartPatterns(chartData: ChartData[]): PatternFormation[] {
         
         // Check if current price is above the neckline (highest point)
         if (lastPrice > highestPoint) {
-          // Calculate a more reasonable price target considering current price levels
-          // Use percentage-based targets - measure percent from bottom to highest point
+          // Calculate a more reasonable price target using percentage-based approach
+          // Measure the percentage rise from bottom to highest point
           const bottomToHighPct = (highestPoint - firstBottom.price) / firstBottom.price;
-          // Apply same percentage above the highest point to get target
-          const priceTarget = highestPoint * (1 + bottomToHighPct);
+          // Apply same percentage above the highest point (with limits for realism)
+          // Ensure price target is between 105% and 115% of last price for BTC
+          const rawPriceTarget = highestPoint * (1 + bottomToHighPct);
+          const priceTarget = Math.max(lastPrice * 1.05, Math.min(lastPrice * 1.15, rawPriceTarget));
           
           return {
             name: 'Double Bottom',
@@ -738,15 +750,8 @@ function getMajorityDirection(signals: AdvancedSignal[]): SignalDirection {
  * Format price with appropriate precision
  */
 function formatPrice(price: number): string {
-  if (price >= 1000) {
-    return price.toFixed(2);
-  } else if (price >= 100) {
-    return price.toFixed(3);
-  } else if (price >= 1) {
-    return price.toFixed(4);
-  } else {
-    return price.toFixed(8);
-  }
+  // Use the imported utility function
+  return formatPriceUtil(price, 'BTC/USDT');
 }
 
 /**
