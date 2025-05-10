@@ -6,6 +6,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LeverageParams, LeverageResult, TimeFrame } from '../types';
 import { calculateSafeLeverage, calculateTimeframeLeverage } from '../lib/calculations';
 import { calculateLeverage } from '../lib/api';
+import { 
+  getMacroIndicators, 
+  analyzeMacroEnvironment,
+  getMacroEnvironmentClassification 
+} from '../lib/macroIndicators';
 
 interface LeverageCalculatorProps {
   symbol: string;
@@ -28,6 +33,8 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1h');
   const [isCalculating, setIsCalculating] = useState(false);
   const [directionType, setDirectionType] = useState<'long' | 'short'>('long');
+  const [macroScore, setMacroScore] = useState<number>(50);
+  const [macroClassification, setMacroClassification] = useState<string>("Neutral");
   
   // Reset calculator when symbol changes (but keep position size)
   useEffect(() => {
