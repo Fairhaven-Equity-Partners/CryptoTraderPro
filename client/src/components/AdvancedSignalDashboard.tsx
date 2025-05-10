@@ -330,6 +330,7 @@ export default function AdvancedSignalDashboard({
               <div>
                 {symbol} Trading Signal 
                 {renderDirectionBadge(recommendation.direction)}
+                <Badge variant="outline" className="ml-2 text-xs">Multi-Timeframe</Badge>
               </div>
               <div className="flex items-center">
                 <span className="mr-2">Confidence:</span>
@@ -346,6 +347,7 @@ export default function AdvancedSignalDashboard({
                 <h3 className="text-sm font-semibold flex items-center">
                   <Target className="mr-2 h-4 w-4" />
                   Entry Strategy
+                  <Badge variant="outline" className="ml-2 text-xs">1H Timeframe</Badge>
                 </h3>
                 <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
                   <div className="flex justify-between">
@@ -363,6 +365,7 @@ export default function AdvancedSignalDashboard({
                 <h3 className="text-sm font-semibold flex items-center">
                   <DollarSign className="mr-2 h-4 w-4" />
                   Exit Strategy
+                  <Badge variant="outline" className="ml-2 text-xs">1H Timeframe</Badge>
                 </h3>
                 <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
                   <div className="flex justify-between">
@@ -388,6 +391,7 @@ export default function AdvancedSignalDashboard({
                 <h3 className="text-sm font-semibold flex items-center">
                   <Percent className="mr-2 h-4 w-4" />
                   Risk Management
+                  <Badge variant="outline" className="ml-2 text-xs">1H Timeframe</Badge>
                 </h3>
                 <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
                   <div className="flex justify-between">
