@@ -102,23 +102,31 @@ export default function AdvancedSignalDashboard({
   
   // Calculate signals for a specific timeframe
   const calculateSignalForTimeframe = useCallback((timeframe: TimeFrame) => {
+    console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
+    
     if (chartDataMap[timeframe]?.data?.length) {
       try {
-        console.log(`Attempting to calculate signal for ${symbol} on ${timeframe} timeframe with ${chartDataMap[timeframe]?.data?.length} data points`);
+        console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${chartDataMap[timeframe]?.data?.length} data points.`);
+        console.log(`First data point:`, JSON.stringify(chartDataMap[timeframe]?.data[0]));
+        console.log(`Last data point:`, JSON.stringify(chartDataMap[timeframe]?.data[chartDataMap[timeframe]?.data.length - 1]));
+        
         const signal = calculateTimeframeConfidence(
           chartDataMap[timeframe].data, 
           timeframe,
           undefined, // Use default weights
           symbol     // Pass the actual symbol
         );
-        console.log(`Successfully calculated signal for ${symbol} on ${timeframe} timeframe`);
+        
+        console.log(`SUCCESS: Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
+          `Direction: ${signal.direction}, Confidence: ${signal.confidence}%`);
         return signal;
       } catch (err) {
-        console.error(`Error calculating signal for ${symbol} on ${timeframe} timeframe:`, err);
+        console.error(`ERROR DETAILS for ${symbol} (${timeframe}):`, err);
+        console.error(`Error stack:`, err instanceof Error ? err.stack : "No stack available");
         return null;
       }
     } else {
-      console.log(`No data available for ${symbol} on ${timeframe} timeframe`);
+      console.log(`WARNING: No data available for ${symbol} on ${timeframe} timeframe`);
       return null;
     }
   }, [chartDataMap, symbol]);

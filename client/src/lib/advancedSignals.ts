@@ -497,7 +497,18 @@ function calculateLevelsScore(levels: Level[], currentPrice: number): number {
  * Detect chart patterns from price data with performance caching
  */
 function detectChartPatterns(chartData: ChartData[], symbol: string): PatternFormation[] {
-  console.log(`detectChartPatterns called with symbol: ${symbol}, data length: ${chartData.length}`);
+  console.log(`[DETAIL] detectChartPatterns called with symbol: ${symbol}, data length: ${chartData.length}`);
+  
+  // Validate input
+  if (!Array.isArray(chartData)) {
+    console.error(`[ERROR] Invalid chart data (not an array) for pattern detection: ${symbol}`);
+    return []; // Return empty array instead of throwing
+  }
+  
+  if (!symbol) {
+    console.error(`[ERROR] Missing symbol parameter in detectChartPatterns`);
+    return []; // Return empty array instead of throwing
+  }
   
   if (chartData.length < 30) {
     console.log(`Insufficient data for pattern detection: ${chartData.length} data points (need at least 30)`);
@@ -840,7 +851,23 @@ export function calculateTimeframeConfidence(
   weights: SignalWeights = DEFAULT_WEIGHTS,
   symbol: string
 ): AdvancedSignal {
-  console.log(`calculateTimeframeConfidence called with symbol: ${symbol}, timeframe: ${timeframe}, data length: ${chartData.length}`);
+  console.log(`[DETAIL] calculateTimeframeConfidence called with symbol: ${symbol}, timeframe: ${timeframe}, data length: ${chartData.length}`);
+  
+  // Validate input data
+  if (!Array.isArray(chartData)) {
+    console.error(`[ERROR] chartData is not an array for ${symbol} (${timeframe})`);
+    throw new Error(`Invalid chart data: not an array`);
+  }
+  
+  if (!symbol) {
+    console.error(`[ERROR] symbol is missing for timeframe ${timeframe}`);
+    throw new Error(`Missing symbol parameter`);
+  }
+  
+  // Log first data point
+  if (chartData.length > 0) {
+    console.log(`[DETAIL] First data point for ${symbol} (${timeframe}):`, JSON.stringify(chartData[0]));
+  }
   
   if (chartData.length < 50) {
     throw new Error(`Insufficient data for analysis: ${chartData.length} data points (need at least 50)`);
