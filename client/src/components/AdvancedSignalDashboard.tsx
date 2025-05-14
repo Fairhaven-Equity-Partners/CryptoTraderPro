@@ -28,275 +28,190 @@ import {
   ArrowDownRight,
   Target,
   DollarSign,
-  Globe
-} from 'lucide-react';
-import { useIsMobile } from '../hooks/use-mobile';
-import { 
-  AdvancedSignal,
-  TradeRecommendation,
-  calculateTimeframeConfidence,
-  generateTradeRecommendation
-} from '../lib/advancedSignals';
-import { useChartData } from '../hooks/useMarketData';
-import { ChartData, TimeFrame } from '../types';
-import { formatCurrency, formatPercentage } from '../lib/calculations';
-import MacroIndicatorsPanel from './MacroIndicatorsPanel';
+  RefreshCcw,
+  Clock
+} from "lucide-react";
+import { AdvancedSignal } from '@/lib/advancedSignals';
+import { TimeFrame } from '@/types';
+import { formatCurrency, formatPercentage } from '@/lib/calculations';
+import { useToast } from '@/hooks/use-toast';
+import { useMarketData } from '@/hooks/useMarketData';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { queryClient } from '@/lib/queryClient';
 
+// List of timeframes to display
+const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d', '3d', '1w', '1M'];
+
+// Define the props for the component
 interface AdvancedSignalDashboardProps {
   symbol: string;
   onTimeframeSelect?: (timeframe: TimeFrame) => void;
 }
 
+// Main component
 export default function AdvancedSignalDashboard({ 
   symbol, 
   onTimeframeSelect 
 }: AdvancedSignalDashboardProps) {
-  const isMobile = useIsMobile();
-  const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d', '3d', '1w', '1M'];
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
-  const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({
-    '1m': null,
-    '5m': null,
-    '15m': null,
-    '30m': null,
-    '1h': null,
-    '4h': null,
-    '1d': null,
-    '3d': null,
-    '1w': null,
-    '1M': null
-  });
-  const [recommendation, setRecommendation] = useState<TradeRecommendation | null>(null);
-  const [calculateProgress, setCalculateProgress] = useState<number>(0);
-  const [isCalculating, setIsCalculating] = useState<boolean>(false);
-  // Always show advanced stats - no toggle functionality
-  const showAdvancedStats = true;
+  // State for the selected timeframe
+  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({} as any);
+  const [recommendation, setRecommendation] = useState<any | null>(null);
   
-  // References to track calculation state
+  // Refs for managing calculation state
   const calculationTriggeredRef = useRef(false);
-  const lastCalculationTimeRef = useRef<number>(0);
-  const calculationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastCalculationTimeRef = useRef(0);
   const recalcIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const calculationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Get chart data for all timeframes
-  const chartData1m = useChartData(symbol, '1m');
-  const chartData5m = useChartData(symbol, '5m');
-  const chartData15m = useChartData(symbol, '15m');
-  const chartData30m = useChartData(symbol, '30m');
-  const chartData1h = useChartData(symbol, '1h');
-  const chartData4h = useChartData(symbol, '4h');
-  const chartData1d = useChartData(symbol, '1d');
-  const chartData3d = useChartData(symbol, '3d');
-  const chartData1w = useChartData(symbol, '1w');
-  const chartData1M = useChartData(symbol, '1M');
+  // Get toast for notifications
+  const { toast } = useToast();
   
-  const chartDataMap: Record<TimeFrame, { data: ChartData[], isLoading: boolean }> = {
-    '1m': { data: chartData1m.chartData, isLoading: chartData1m.isLoading },
-    '5m': { data: chartData5m.chartData, isLoading: chartData5m.isLoading },
-    '15m': { data: chartData15m.chartData, isLoading: chartData15m.isLoading },
-    '30m': { data: chartData30m.chartData, isLoading: chartData30m.isLoading },
-    '1h': { data: chartData1h.chartData, isLoading: chartData1h.isLoading },
-    '4h': { data: chartData4h.chartData, isLoading: chartData4h.isLoading },
-    '1d': { data: chartData1d.chartData, isLoading: chartData1d.isLoading },
-    '3d': { data: chartData3d.chartData, isLoading: chartData3d.isLoading },
-    '1w': { data: chartData1w.chartData, isLoading: chartData1w.isLoading },
-    '1M': { data: chartData1M.chartData, isLoading: chartData1M.isLoading }
-  };
-  
-  // Check if all required timeframes (those we actually use) are loaded and have data
-  const isRequiredDataLoaded = timeframes.every(tf => 
-    !chartDataMap[tf].isLoading && chartDataMap[tf].data && chartDataMap[tf].data.length > 0
-  );
-  
-  // Check if all data is loaded
-  const isAllDataLoaded = isRequiredDataLoaded;
-  
-  // Calculate signals for a specific timeframe
-  const calculateSignalForTimeframe = useCallback((timeframe: TimeFrame) => {
-    console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
+  // Get market data
+  const { chartData, isAllDataLoaded } = useMarketData(symbol);
+
+  // Function to trigger calculation
+  const triggerCalculation = useCallback((trigger: string) => {
+    const now = Date.now() / 1000;
+    const timeSinceLastCalc = now - lastCalculationTimeRef.current;
     
-    if (!chartDataMap[timeframe]?.data?.length) {
-      console.log(`No data available for ${symbol} on ${timeframe} timeframe`);
-      return null;
-    }
-    
-    try {
-      console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${chartDataMap[timeframe]?.data?.length} data points.`);
-      
-      const signal = calculateTimeframeConfidence(
-        chartDataMap[timeframe].data, 
-        timeframe, 
-        undefined, // Use default weights
-        symbol     // Pass symbol
-      );
-      
-      console.log(`SUCCESS: Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
-          `Direction: ${signal.direction}, Confidence: ${signal.confidence}%`);
-      return signal;
-    } catch (err) {
-      console.error(`Error calculating signal for ${symbol} (${timeframe}):`, err);
-      return null;
-    }
-  }, [chartDataMap, symbol]);
-  
-  // Calculate signals for all timeframes
-  const calculateAllSignals = useCallback(async () => {
-    if (!isAllDataLoaded) {
-      console.log("Canceling calculation - data not loaded");
-      return Promise.resolve(); // Return a resolved promise
-    }
-    
-    // Prevent calculation if we're already calculating
-    if (isCalculating) {
-      console.log("Canceling calculation - already in progress");
-      return Promise.resolve();
-    }
-    
-    console.log(`Starting calculation process for ${symbol}`);
-    setIsCalculating(true);
-    
-    // Create a copy of the current signals to avoid state mutation issues
-    const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
-    
-    try {
-      // Calculate signals one by one to not block the UI
-      for (let i = 0; i < timeframes.length; i++) {
-        const tf = timeframes[i];
-        setCalculateProgress(Math.round((i / timeframes.length) * 100));
-        
-        // Use setTimeout to give UI time to update
-        await new Promise(resolve => {
-          setTimeout(() => {
-            try {
-              console.log(`Calculating signal for ${symbol} on ${tf} timeframe`);
-              newSignals[tf] = calculateSignalForTimeframe(tf);
-              setSignals(prev => ({ ...prev, [tf]: newSignals[tf] }));
-            } catch (error) {
-              console.error(`Error calculating signal for ${tf}:`, error);
-            }
-            resolve(null);
-          }, 100);
-        });
-      }
-      
-      // Generate overall recommendation
-      const validSignals = Object.values(newSignals).filter(Boolean) as AdvancedSignal[];
-      console.log(`Found ${validSignals.length} valid signals for recommendation for ${symbol}`);
-      
-      if (validSignals.length >= 3) {
-        const rec = generateTradeRecommendation(symbol, validSignals);
-        setRecommendation(rec);
-      } else {
-        console.log(`Not enough valid signals (${validSignals.length}) to generate recommendation for ${symbol}`);
-      }
-      
-      setCalculateProgress(100);
-    } catch (error) {
-      console.error(`Error in calculateAllSignals for ${symbol}:`, error);
-    } finally {
-      console.log(`Calculation process complete for ${symbol}`);
-      setIsCalculating(false);
-    }
-    
-    return Promise.resolve(); // Ensure we always return a promise
-  }, [symbol, isAllDataLoaded, signals, timeframes, calculateSignalForTimeframe, isCalculating]);
-  
-  // Function to safely trigger calculation with debouncing
-  const triggerCalculation = useCallback((reason: string) => {
-    const now = Date.now();
-    
-    // Add more detailed logging to debug issues
-    console.log(`Attempt to trigger calculation (${reason}) for ${symbol}:
+    console.log(`Attempt to trigger calculation (${trigger}) for ${symbol}:
       - Already triggered: ${calculationTriggeredRef.current}
       - Currently calculating: ${isCalculating}
-      - Last calculation: ${(now - lastCalculationTimeRef.current) / 1000}s ago
+      - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
       - All data loaded: ${isAllDataLoaded}`);
     
-    // Prevent calculation if one is already in progress or happened too recently
-    if (calculationTriggeredRef.current || isCalculating) {
-      console.log(`Skipping calculation (${reason}): already calculating or triggered`);
+    // Don't calculate if already calculating, trigger already set, 
+    // or calculated recently (except for manual refresh)
+    if (
+      calculationTriggeredRef.current || 
+      isCalculating || 
+      (timeSinceLastCalc < 30 && trigger !== 'manual') || 
+      !isAllDataLoaded
+    ) {
       return;
     }
     
-    if (now - lastCalculationTimeRef.current < 5000) {
-      console.log(`Skipping calculation (${reason}): too soon after last calculation (${(now - lastCalculationTimeRef.current) / 1000}s)`);
-      return;
-    }
+    console.log(`Triggering calculation (${trigger}) for ${symbol}`);
     
-    if (!isAllDataLoaded) {
-      console.log(`Skipping calculation (${reason}): data not fully loaded`);
-      return;
-    }
-    
-    console.log(`Triggering calculation (${reason}) for ${symbol}`);
+    // Set the trigger flag
     calculationTriggeredRef.current = true;
     
-    // Clear any existing timeout
+    // Use a timeout to debounce calculation
     if (calculationTimeoutRef.current) {
       clearTimeout(calculationTimeoutRef.current);
-      calculationTimeoutRef.current = null;
     }
     
-    // Set a new timeout for the calculation
+    // Wait a second to allow any other trigger events to settle
     calculationTimeoutRef.current = setTimeout(() => {
-      console.log(`Executing calculation for ${symbol} after delay`);
-      calculateAllSignals().then(() => {
-        // Update the last calculation time
-        lastCalculationTimeRef.current = Date.now();
-        // Reset the flag after a delay
-        setTimeout(() => {
-          calculationTriggeredRef.current = false;
-          console.log(`Reset calculation trigger for ${symbol}`);
-        }, 5000);
+      calculateAllSignals();
+    }, 1000);
+    
+  }, [symbol, isCalculating, isAllDataLoaded]);
+  
+  // Calculate signals for all timeframes
+  const calculateAllSignals = async () => {
+    if (!isAllDataLoaded || isCalculating) return;
+    
+    console.log(`Executing calculation for ${symbol} after delay`);
+    setIsCalculating(true);
+    
+    try {
+      console.log(`Starting calculation process for ${symbol}`);
+      
+      // Create a new signals object to store results
+      const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
+      
+      // Calculate for each timeframe in sequence
+      for (const timeframe of timeframes) {
+        console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
+        
+        try {
+          const timeframeData = chartData[timeframe] || [];
+          console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
+          console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${timeframeData.length} data points.`);
+          
+          // Only calculate if we have enough data
+          if (timeframeData.length > 0) {
+            // Actually calculate the signal
+            const result = await fetch('/api/signals', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                symbol, 
+                timeframe,
+                chartData: timeframeData
+              })
+            }).then(r => r.json());
+            
+            if (result) {
+              newSignals[timeframe] = result;
+              console.log(`Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
+                `Direction: ${result.direction}, Confidence: ${result.confidence}%, RecLeverage: ${result.recommendedLeverage}x`);
+              console.log(`SUCCESS: Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
+                `Direction: ${result.direction}, Confidence: ${result.confidence}%`);
+            }
+          } else {
+            console.log(`SKIPPED: Not enough data for ${symbol} on ${timeframe} timeframe`);
+            newSignals[timeframe] = null;
+          }
+        } catch (error) {
+          console.error(`Error calculating signal for ${timeframe}:`, error);
+          newSignals[timeframe] = null;
+        }
+        
+        // Update the signals state incrementally so UI can update
+        setSignals({ ...newSignals });
+      }
+      
+      // Filter out valid signals for recommendation
+      const validSignals = Object.values(newSignals).filter(s => s !== null) as AdvancedSignal[];
+      console.log(`Found ${validSignals.length} valid signals for recommendation for ${symbol}`);
+      
+      if (validSignals.length > 0) {
+        try {
+          const recommendationResult = await fetch('/api/signals/' + symbol).then(r => r.json());
+          setRecommendation(recommendationResult);
+        } catch (error) {
+          console.error('Error generating recommendation:', error);
+        }
+      }
+      
+      // Update calculation tracking variables
+      lastCalculationTimeRef.current = Date.now() / 1000;
+      console.log(`Calculation process complete for ${symbol}`);
+      
+      // Reset trigger flag after slight delay to prevent rapid re-triggering
+      setTimeout(() => {
+        calculationTriggeredRef.current = false;
+      }, 2000);
+      
+    } catch (error) {
+      console.error('Error in calculation process:', error);
+      toast({
+        title: 'Calculation Error',
+        description: 'Failed to calculate signals. Please try again.',
+        variant: 'destructive'
       });
-    }, 300); // Small delay to batch updates
-  }, [calculateAllSignals, isCalculating, isAllDataLoaded, symbol]);
+    } finally {
+      setIsCalculating(false);
+    }
+  };
   
-  // Reset signals and trigger calculation when symbol changes
+  // Auto-trigger calculation when data loads
   useEffect(() => {
-    console.log("Symbol changed to:", symbol);
-    
-    // Reset all signals
-    setSignals({
-      '1m': null,
-      '5m': null,
-      '15m': null,
-      '30m': null,
-      '1h': null,
-      '4h': null,
-      '1d': null,
-      '3d': null,
-      '1w': null,
-      '1M': null
-    });
-    setRecommendation(null);
-    setCalculateProgress(0);
-    setIsCalculating(false);
-    
-    // Reset calculation triggers to ensure recalculation happens for the new symbol
-    calculationTriggeredRef.current = false;
-    lastCalculationTimeRef.current = 0;
-  }, [symbol]); // Only depend on symbol changes, not isAllDataLoaded or triggerCalculation
-  
-  // Effect to watch for data loading completion
-  useEffect(() => {
-    console.log(`Data loading status changed: isAllDataLoaded=${isAllDataLoaded}, isCalculating=${isCalculating}, triggered=${calculationTriggeredRef.current}`);
-    
-    // Only trigger if we have data, aren't already calculating, and haven't already triggered
     if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
       console.log(`Auto-triggering calculation for ${symbol} because data is now loaded`);
-      
-      // Small delay to ensure component state is stable
-      const timer = setTimeout(() => {
-        triggerCalculation('data-loaded');
-      }, 500);
-      
-      return () => clearTimeout(timer);
+      triggerCalculation('data-loaded');
     }
-  }, [isAllDataLoaded, isCalculating, symbol, triggerCalculation]);
+  }, [isAllDataLoaded, triggerCalculation, isCalculating, symbol]);
   
-  // Set up periodic recalculation
+  // Set up recalculation interval
   useEffect(() => {
+    // Data loading status checks for debug
+    console.log(`Data loading status changed: isAllDataLoaded=${isAllDataLoaded}, isCalculating=${isCalculating}, triggered=${calculationTriggeredRef.current}`);
+    
     // Clear any existing interval when component updates
     if (recalcIntervalRef.current) {
       clearInterval(recalcIntervalRef.current);
@@ -398,155 +313,45 @@ export default function AdvancedSignalDashboard({
           <CardContent className="pt-6">
             <div className="flex flex-col items-center space-y-4">
               <AlertTriangle className="h-10 w-10 text-yellow-500" />
-              <div className="text-center">
-                <h3 className="font-semibold text-lg">Analysis Not Available</h3>
-                <p className="text-sm text-gray-400 mb-4">
-                  The signal calculation hasn't run automatically.
-                </p>
-              </div>
-              <Button 
-                onClick={forceCalculate} 
-                className="bg-yellow-600 hover:bg-yellow-700"
-              >
-                Run Analysis Now
+              <h3 className="text-lg font-medium">Signal calculation required</h3>
+              <p className="text-muted-foreground text-sm text-center">
+                Initial signal calculation needed for {symbol}.
+              </p>
+              <Button onClick={forceCalculate} className="mt-2 bg-yellow-600 hover:bg-yellow-700">
+                <RefreshCcw className="mr-2 h-4 w-4" />
+                Calculate Signals
               </Button>
             </div>
           </CardContent>
         </Card>
       )}
-  
-      {/* Main recommendation card */}
-      {recommendation && (
-        <Card className={`border-2 ${
-          recommendation.direction === 'LONG' ? 'border-green-500' :
-          recommendation.direction === 'SHORT' ? 'border-red-500' :
-          'border-gray-500'
-        } shadow-lg`}>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <div>
-                {symbol} Trading Signal 
-                {renderDirectionBadge(recommendation.direction)}
-                <Badge variant="outline" className="ml-2 text-xs">Multi-Timeframe</Badge>
-              </div>
-              <div className="flex items-center">
-                <span className="mr-2">Confidence:</span>
-                {renderScoreBadge(recommendation.confidence)}
-              </div>
-            </CardTitle>
-            <CardDescription className="text-base">
-              {recommendation.summary}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <h3 className="text-sm font-semibold flex items-center">
-                  <Target className="mr-2 h-4 w-4" />
-                  Entry Strategy
-                  <Badge variant="outline" className="ml-2 text-xs">1H Timeframe</Badge>
-                </h3>
-                <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
-                  <div className="flex justify-between">
-                    <span>Ideal Entry:</span>
-                    <span className="font-semibold">{formatCurrency(recommendation.entry.ideal)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Entry Range:</span>
-                    <span>{formatCurrency(recommendation.entry.range[0])} - {formatCurrency(recommendation.entry.range[1])}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <h3 className="text-sm font-semibold flex items-center">
-                  <DollarSign className="mr-2 h-4 w-4" />
-                  Exit Strategy
-                  <Badge variant="outline" className="ml-2 text-xs">1H Timeframe</Badge>
-                </h3>
-                <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
-                  <div className="flex justify-between">
-                    <span>Stop Loss:</span>
-                    <span className="text-red-500">{formatCurrency(recommendation.exit.stopLoss)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Take Profits:</span>
-                    <span className="text-green-500">
-                      {recommendation.exit.takeProfit.map((tp, i) => 
-                        <span key={i} className="mr-1">{formatCurrency(tp)}{i < recommendation.exit.takeProfit.length - 1 ? ',' : ''}</span>
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Trailing Stop:</span>
-                    <span>{formatPercentage(recommendation.exit.trailingStopPercent)}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <h3 className="text-sm font-semibold flex items-center">
-                  <Percent className="mr-2 h-4 w-4" />
-                  Risk Management
-                  <Badge variant="outline" className="ml-2 text-xs">Win Rate: {formatPercentage(recommendation.riskManagement.winProbability)}</Badge>
-                </h3>
-                <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
-                  <div className="flex justify-between">
-                    <span>Risk/Reward:</span>
-                    <span>{recommendation.riskManagement.potentialRiskReward.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Leverage:</span>
-                    <span className="font-semibold">{recommendation.leverage.recommendation}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Max Risk %:</span>
-                    <span>{formatPercentage(recommendation.riskManagement.maxRiskPercentage)}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="mt-4">
-              <h3 className="text-sm font-semibold mb-2">Key Indicators</h3>
-              <div className="flex flex-wrap gap-2">
-                {recommendation.keyIndicators.map((indicator, i) => (
-                  <Badge key={i} variant="secondary" className="text-xs">
-                    {indicator}
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
       
-      {/* Show calculation progress */}
-      {isCalculating && (
-        <div className="space-y-2">
-          <div className="flex justify-between items-center">
-            <span className="text-sm">Calculating signals...</span>
-            <span className="text-sm">{calculateProgress}%</span>
+      {/* Signal refresh button */}
+      {(recommendation || isCalculating) && (
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center">
+            <h3 className="text-lg font-semibold">
+              {symbol} Analysis
+            </h3>
+            {isCalculating && (
+              <Badge variant="outline" className="ml-2">
+                <Clock className="animate-spin h-3 w-3 mr-1" />
+                Calculating...
+              </Badge>
+            )}
           </div>
-          <Progress value={calculateProgress} />
+          <Button onClick={() => triggerCalculation('manual')} 
+                  disabled={isCalculating} 
+                  variant="outline" 
+                  size="sm"
+                  className="text-xs">
+            <RefreshCcw className={`mr-1 h-3 w-3 ${isCalculating ? 'animate-spin' : ''}`} />
+            Refresh Analysis
+          </Button>
         </div>
       )}
       
-      {/* Timeframe signals */}
       <Card>
-        <CardHeader>
-          <CardTitle className="flex justify-between items-center">
-            <span>Signal Analysis by Timeframe</span>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => triggerCalculation('manual')}
-              disabled={isCalculating}
-            >
-              Refresh Analysis
-            </Button>
-          </CardTitle>
-        </CardHeader>
         <CardContent>
           <Tabs defaultValue={selectedTimeframe} onValueChange={(val) => handleTimeframeSelect(val as TimeFrame)}>
             <TabsList className="grid grid-cols-7 mb-4">
@@ -611,62 +416,70 @@ export default function AdvancedSignalDashboard({
                           <CardTitle className="text-sm font-medium">Advanced Analysis</CardTitle>
                         </CardHeader>
                         <CardContent className="py-2">
-                          <div className="space-y-2">
-                            <div className="flex justify-between">
-                              <span>Trend Strength:</span>
-                              <Badge variant={
-                                calculateCategoryScore(signals[tf]!.indicators.trend) > 70 ? "outline" : 
-                                calculateCategoryScore(signals[tf]!.indicators.trend) > 40 ? "secondary" : "destructive"
-                              } className="text-xs">
-                                {calculateCategoryScore(signals[tf]!.indicators.trend)}/100
-                              </Badge>
+                          {signals[tf]?.indicators ? (
+                            <div className="space-y-2">
+                              <div className="flex justify-between">
+                                <span>Trend Strength:</span>
+                                <Badge variant={
+                                  calculateCategoryScore(signals[tf]?.indicators?.trend || []) > 70 ? "outline" : 
+                                  calculateCategoryScore(signals[tf]?.indicators?.trend || []) > 40 ? "secondary" : "destructive"
+                                } className="text-xs">
+                                  {calculateCategoryScore(signals[tf]?.indicators?.trend || [])}/100
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Momentum:</span>
+                                <Badge variant={
+                                  calculateCategoryScore(signals[tf]?.indicators?.momentum || []) > 70 ? "outline" : 
+                                  calculateCategoryScore(signals[tf]?.indicators?.momentum || []) > 40 ? "secondary" : "destructive"
+                                } className="text-xs">
+                                  {calculateCategoryScore(signals[tf]?.indicators?.momentum || [])}/100
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Volatility:</span>
+                                <Badge variant={
+                                  calculateCategoryScore(signals[tf]?.indicators?.volatility || []) > 70 ? "outline" : 
+                                  calculateCategoryScore(signals[tf]?.indicators?.volatility || []) > 40 ? "secondary" : "destructive"
+                                } className="text-xs">
+                                  {calculateCategoryScore(signals[tf]?.indicators?.volatility || [])}/100
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Volume Profile:</span>
+                                <Badge variant={
+                                  calculateCategoryScore(signals[tf]?.indicators?.volume || []) > 70 ? "outline" : 
+                                  calculateCategoryScore(signals[tf]?.indicators?.volume || []) > 40 ? "secondary" : "destructive"
+                                } className="text-xs">
+                                  {calculateCategoryScore(signals[tf]?.indicators?.volume || [])}/100
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Pattern Recognition:</span>
+                                <Badge variant={
+                                  calculateCategoryScore(signals[tf]?.indicators?.pattern || []) > 70 ? "outline" : 
+                                  calculateCategoryScore(signals[tf]?.indicators?.pattern || []) > 40 ? "secondary" : "destructive"
+                                } className="text-xs">
+                                  {calculateCategoryScore(signals[tf]?.indicators?.pattern || [])}/100
+                                </Badge>
+                              </div>
+                              {signals[tf]?.macroScore !== undefined && (
+                                <div className="flex justify-between">
+                                  <span>Macro Environment:</span>
+                                  <Badge variant={
+                                    signals[tf]!.macroScore > 70 ? "outline" : 
+                                    signals[tf]!.macroScore > 40 ? "secondary" : "destructive"
+                                  } className="text-xs">
+                                    {signals[tf]!.macroScore}/100
+                                  </Badge>
+                                </div>
+                              )}
                             </div>
-                            <div className="flex justify-between">
-                              <span>Momentum:</span>
-                              <Badge variant={
-                                calculateCategoryScore(signals[tf]!.indicators.momentum) > 70 ? "outline" : 
-                                calculateCategoryScore(signals[tf]!.indicators.momentum) > 40 ? "secondary" : "destructive"
-                              } className="text-xs">
-                                {calculateCategoryScore(signals[tf]!.indicators.momentum)}/100
-                              </Badge>
+                          ) : (
+                            <div className="text-center py-2 text-muted-foreground text-sm">
+                              Analysis data not available for this timeframe.
                             </div>
-                            <div className="flex justify-between">
-                              <span>Volatility:</span>
-                              <Badge variant={
-                                calculateCategoryScore(signals[tf]!.indicators.volatility) > 70 ? "outline" : 
-                                calculateCategoryScore(signals[tf]!.indicators.volatility) > 40 ? "secondary" : "destructive"
-                              } className="text-xs">
-                                {calculateCategoryScore(signals[tf]!.indicators.volatility)}/100
-                              </Badge>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Volume Profile:</span>
-                              <Badge variant={
-                                calculateCategoryScore(signals[tf]!.indicators.volume) > 70 ? "outline" : 
-                                calculateCategoryScore(signals[tf]!.indicators.volume) > 40 ? "secondary" : "destructive"
-                              } className="text-xs">
-                                {calculateCategoryScore(signals[tf]!.indicators.volume)}/100
-                              </Badge>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Pattern Recognition:</span>
-                              <Badge variant={
-                                calculateCategoryScore(signals[tf]!.indicators.pattern) > 70 ? "outline" : 
-                                calculateCategoryScore(signals[tf]!.indicators.pattern) > 40 ? "secondary" : "destructive"
-                              } className="text-xs">
-                                {calculateCategoryScore(signals[tf]!.indicators.pattern)}/100
-                              </Badge>
-                            </div>
-                            <div className="flex justify-between">
-                              <span>Macro Environment:</span>
-                              <Badge variant={
-                                signals[tf]!.macroScore > 70 ? "outline" : 
-                                signals[tf]!.macroScore > 40 ? "secondary" : "destructive"
-                              } className="text-xs">
-                                {signals[tf]!.macroScore}/100
-                              </Badge>
-                            </div>
-                          </div>
+                          )}
                         </CardContent>
                       </Card>
                     </div>
@@ -679,18 +492,19 @@ export default function AdvancedSignalDashboard({
                         </CardHeader>
                         <CardContent className="py-2">
                           <div className="space-y-2">
-                            {signals[tf]!.supportResistance.map((level, i) => (
-                              <div key={i} className="flex justify-between">
-                                <span className={level.type === 'support' ? 'text-green-500' : 'text-red-500'}>
-                                  {level.type === 'support' ? 'Support' : 'Resistance'} 
-                                  <span className="text-xs text-gray-400 ml-1">
-                                    ({level.strength}/100)
+                            {signals[tf]?.supportResistance && signals[tf]!.supportResistance.length > 0 ? (
+                              signals[tf]!.supportResistance.map((level, i) => (
+                                <div key={i} className="flex justify-between">
+                                  <span className={level.type === 'support' ? 'text-green-500' : 'text-red-500'}>
+                                    {level.type === 'support' ? 'Support' : 'Resistance'} 
+                                    <span className="text-xs text-gray-400 ml-1">
+                                      ({level.strength}/100)
+                                    </span>
                                   </span>
-                                </span>
-                                <span className="font-medium">{formatCurrency(level.price)}</span>
-                              </div>
-                            ))}
-                            {signals[tf]!.supportResistance.length === 0 && (
+                                  <span className="font-medium">{formatCurrency(level.price)}</span>
+                                </div>
+                              ))
+                            ) : (
                               <div className="text-sm text-gray-400">No significant levels detected</div>
                             )}
                           </div>
@@ -704,69 +518,31 @@ export default function AdvancedSignalDashboard({
                         </CardHeader>
                         <CardContent className="py-2">
                           <div className="space-y-2">
-                            {signals[tf]!.patternFormations.map((pattern, i) => (
-                              <div key={i} className="flex flex-col space-y-1 border-b border-gray-800 pb-2 last:border-0">
-                                <div className="flex justify-between">
-                                  <span className="font-medium">{pattern.name}</span>
-                                  <Badge variant={
-                                    pattern.direction === 'bullish' ? "outline" : 
-                                    pattern.direction === 'bearish' ? "destructive" : "secondary"
-                                  } className="text-xs">
-                                    {pattern.direction}
-                                  </Badge>
+                            {signals[tf]?.patternFormations && signals[tf]!.patternFormations.length > 0 ? (
+                              signals[tf]!.patternFormations.map((pattern, i) => (
+                                <div key={i} className="flex flex-col space-y-1 border-b border-gray-800 pb-2 last:border-0">
+                                  <div className="flex justify-between">
+                                    <span className="font-medium">{pattern.name}</span>
+                                    <Badge variant={
+                                      pattern.direction === 'bullish' ? "outline" : 
+                                      pattern.direction === 'bearish' ? "destructive" : "secondary"
+                                    } className="text-xs">
+                                      {pattern.direction.toUpperCase()}
+                                    </Badge>
+                                  </div>
+                                  <div className="flex justify-between text-xs">
+                                    <span>Target: {formatCurrency(pattern.priceTarget)}</span>
+                                    <span>Reliability: {pattern.reliability}%</span>
+                                  </div>
                                 </div>
-                                <div className="flex justify-between text-xs">
-                                  <span>Target: {formatCurrency(pattern.priceTarget)}</span>
-                                  <span>Reliability: {pattern.reliability}%</span>
-                                </div>
-                              </div>
-                            ))}
-                            {signals[tf]!.patternFormations.length === 0 && (
-                              <div className="text-sm text-gray-400">No significant patterns detected</div>
+                              ))
+                            ) : (
+                              <div className="text-sm text-gray-400">No chart patterns detected</div>
                             )}
                           </div>
                         </CardContent>
                       </Card>
                     </div>
-                    
-                    {/* Macro Insights and Prediction */}
-                    <Card className="border border-gray-800">
-                      <CardHeader className="py-3">
-                        <CardTitle className="text-sm font-medium flex items-center">
-                          <Globe className="mr-2 h-4 w-4" />
-                          Macro Environment & Forecast
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="py-2">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <h4 className="text-sm font-medium mb-2">Macro Classification</h4>
-                            <Badge variant="secondary" className="mb-2">{signals[tf]!.macroClassification}</Badge>
-                            <ul className="list-disc pl-5 space-y-1 text-sm">
-                              {signals[tf]!.macroInsights.map((insight, i) => (
-                                <li key={i}>{insight}</li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-medium mb-2">Price Prediction</h4>
-                            <div className="bg-secondary/20 p-3 rounded-md">
-                              <div className="flex justify-between mb-2">
-                                <span>Expected Movement:</span>
-                                <span className={signals[tf]!.predictedMovement.percentChange >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                  {signals[tf]!.predictedMovement.percentChange >= 0 ? '+' : ''}
-                                  {formatPercentage(signals[tf]!.predictedMovement.percentChange)}
-                                </span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span>Timeframe:</span>
-                                <span>{signals[tf]!.predictedMovement.timeEstimate}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-8">
@@ -792,6 +568,28 @@ export default function AdvancedSignalDashboard({
 function calculateCategoryScore(indicators: any[]) {
   if (!indicators || indicators.length === 0) return 0;
   
-  const total = indicators.reduce((sum, ind) => sum + ind.score, 0);
-  return Math.round(total / indicators.length);
+  // Count the number of bullish and bearish signals
+  let bullishCount = 0;
+  let bearishCount = 0;
+  
+  indicators.forEach(ind => {
+    if (ind.signal === 'BUY') bullishCount++;
+    else if (ind.signal === 'SELL') bearishCount++;
+  });
+  
+  // Calculate a score based on the proportion of bullish vs bearish indicators
+  const totalCount = indicators.length;
+  
+  // Base score is 50 (neutral)
+  let score = 50;
+  
+  // Adjust score based on the difference between bullish and bearish counts
+  if (totalCount > 0) {
+    // Range is -1 to 1, then scale to -50 to 50
+    const bullishBearishRatio = (bullishCount - bearishCount) / totalCount;
+    score += bullishBearishRatio * 50;
+  }
+  
+  // Ensure score is between 0 and 100
+  return Math.round(Math.max(0, Math.min(100, score)));
 }

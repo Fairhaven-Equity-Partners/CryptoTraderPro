@@ -12,6 +12,105 @@ import {
 } from '../lib/api';
 import { AssetPrice, ChartData, TimeFrame } from '../types';
 
+// Combined hook for market data
+export function useMarketData(symbol: string) {
+  const [chartData, setChartData] = useState<Record<TimeFrame, ChartData[]>>({} as any);
+  const [isAllDataLoaded, setIsAllDataLoaded] = useState(false);
+  const loadedTimeframes = useRef<Set<TimeFrame>>(new Set());
+  
+  // Load chart data for all timeframes
+  useEffect(() => {
+    console.log(`Loading chart with data points for ${symbol} (4h)`);
+    fetchChartData(symbol, '4h').then(data => {
+      setChartData(prev => ({ ...prev, '4h': data }));
+      loadedTimeframes.current.add('4h');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 4h data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (1m)`);
+    fetchChartData(symbol, '1m').then(data => {
+      setChartData(prev => ({ ...prev, '1m': data }));
+      loadedTimeframes.current.add('1m');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 1m data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (5m)`);
+    fetchChartData(symbol, '5m').then(data => {
+      setChartData(prev => ({ ...prev, '5m': data }));
+      loadedTimeframes.current.add('5m');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 5m data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (15m)`);
+    fetchChartData(symbol, '15m').then(data => {
+      setChartData(prev => ({ ...prev, '15m': data }));
+      loadedTimeframes.current.add('15m');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 15m data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (30m)`);
+    fetchChartData(symbol, '30m').then(data => {
+      setChartData(prev => ({ ...prev, '30m': data }));
+      loadedTimeframes.current.add('30m');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 30m data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (1h)`);
+    fetchChartData(symbol, '1h').then(data => {
+      setChartData(prev => ({ ...prev, '1h': data }));
+      loadedTimeframes.current.add('1h');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 1h data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (1d)`);
+    fetchChartData(symbol, '1d').then(data => {
+      setChartData(prev => ({ ...prev, '1d': data }));
+      loadedTimeframes.current.add('1d');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 1d data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (3d)`);
+    fetchChartData(symbol, '3d').then(data => {
+      setChartData(prev => ({ ...prev, '3d': data }));
+      loadedTimeframes.current.add('3d');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 3d data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (1w)`);
+    fetchChartData(symbol, '1w').then(data => {
+      setChartData(prev => ({ ...prev, '1w': data }));
+      loadedTimeframes.current.add('1w');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 1w data:", err));
+    
+    console.log(`Loading chart with data points for ${symbol} (1M)`);
+    fetchChartData(symbol, '1M').then(data => {
+      setChartData(prev => ({ ...prev, '1M': data }));
+      loadedTimeframes.current.add('1M');
+      checkAllLoaded();
+    }).catch(err => console.error("Error loading 1M data:", err));
+    
+    // Reset all loaded state when symbol changes
+    return () => {
+      loadedTimeframes.current.clear();
+      setIsAllDataLoaded(false);
+    };
+    
+  }, [symbol]);
+  
+  // Check if all timeframes are loaded
+  const checkAllLoaded = useCallback(() => {
+    const allTimeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+    const allLoaded = allTimeframes.every(tf => loadedTimeframes.current.has(tf));
+    
+    if (allLoaded && !isAllDataLoaded) {
+      setIsAllDataLoaded(true);
+    }
+  }, [isAllDataLoaded]);
+  
+  return { chartData, isAllDataLoaded };
+}
+
 // Hook for getting real-time asset price data
 export function useAssetPrice(symbol: string) {
   const [realtimePrice, setRealtimePrice] = useState<AssetPrice | null>(null);
