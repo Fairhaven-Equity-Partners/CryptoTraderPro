@@ -570,12 +570,13 @@ export default function AdvancedSignalDashboard({
         </div>
       </div>
       
-      <Tabs value={selectedTimeframe} onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}>
+      <Tabs defaultValue={selectedTimeframe}>
         <TabsList className="flex flex-wrap h-auto justify-start space-x-1 mb-4">
           {timeframes.map((tf) => (
             <TabsTrigger
               key={tf}
               value={tf}
+              onClick={() => handleTimeframeSelect(tf)}
               className="relative"
             >
               {tf}
