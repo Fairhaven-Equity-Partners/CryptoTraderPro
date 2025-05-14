@@ -371,7 +371,7 @@ export default function AdvancedSignalDashboard({
         toast({
           title: "No Signals Generated",
           description: `Unable to calculate signals for ${symbol}. Try selecting another cryptocurrency.`,
-          variant: "warning"
+          variant: "destructive"
         });
       } else {
         // Mark calculation as complete
@@ -508,6 +508,72 @@ export default function AdvancedSignalDashboard({
   
   // Current signal based on selected timeframe
   const currentSignal = getCurrentSignal();
+  
+  // Update recommendation when timeframe changes
+  useEffect(() => {
+    // If we have signals, try to create a new recommendation focused on the selected timeframe
+    if (Object.keys(signals).length > 0 && signals[selectedTimeframe]) {
+      console.log(`Updating trade recommendation for ${selectedTimeframe} timeframe`);
+      
+      // Get all valid signals
+      const validSignals = Object.values(signals).filter(Boolean) as AdvancedSignal[];
+      
+      // Make selected timeframe the primary focus
+      const primarySignal = signals[selectedTimeframe];
+      
+      if (primarySignal && validSignals.length > 0) {
+        // Create a custom recommendation that prioritizes the selected timeframe
+        const customRecommendation = {
+          symbol: symbol,
+          direction: primarySignal.direction,
+          confidence: primarySignal.confidence, 
+          timeframeSummary: validSignals.map(s => ({
+            timeframe: s.timeframe,
+            confidence: s.confidence,
+            direction: s.direction
+          })),
+          entry: {
+            ideal: primarySignal.entryPrice,
+            range: [primarySignal.entryPrice * 0.98, primarySignal.entryPrice * 1.02]
+          },
+          exit: {
+            takeProfit: [
+              primarySignal.takeProfit,
+              primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.05 : 0.95),
+              primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.1 : 0.9)
+            ],
+            stopLoss: primarySignal.stopLoss,
+            trailingStopActivation: primarySignal.direction === 'LONG' ? 
+              primarySignal.entryPrice * 1.03 : 
+              primarySignal.entryPrice * 0.97,
+            trailingStopPercent: 2
+          },
+          leverage: {
+            conservative: Math.max(1, primarySignal.recommendedLeverage - 1),
+            moderate: primarySignal.recommendedLeverage,
+            aggressive: Math.min(10, primarySignal.recommendedLeverage + 2),
+            recommendation: `Use ${primarySignal.recommendedLeverage}x leverage based on the ${selectedTimeframe} timeframe.`
+          },
+          riskManagement: {
+            positionSizeRecommendation: "Risk no more than 1-2% of your account per trade.",
+            maxRiskPercentage: 2,
+            potentialRiskReward: primarySignal.optimalRiskReward,
+            winProbability: primarySignal.confidence / 100
+          },
+          keyIndicators: [
+            `${selectedTimeframe} Trend: ${primarySignal.direction}`,
+            `${selectedTimeframe} Confidence: ${primarySignal.confidence}%`,
+            `Recommended Leverage: ${primarySignal.recommendedLeverage}x`,
+            `Risk/Reward: ${primarySignal.optimalRiskReward.toFixed(2)}`,
+            `Macro Score: ${primarySignal.macroScore}%`
+          ],
+          summary: `${selectedTimeframe} timeframe shows a ${primarySignal.direction} signal with ${primarySignal.confidence}% confidence.`
+        };
+        
+        setRecommendation(customRecommendation);
+      }
+    }
+  }, [selectedTimeframe, signals, symbol]);
   
   return (
     <div className="space-y-4">
@@ -786,11 +852,11 @@ export default function AdvancedSignalDashboard({
       <Card className="mt-4">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <span>Trade Recommendation</span>
+            <span>Trade Recommendation ({selectedTimeframe})</span>
             <BarChart2 className="h-5 w-5 text-primary/70" />
           </CardTitle>
           <CardDescription>
-            Comprehensive analysis across all timeframes for {symbol}
+            Analysis focused on the {selectedTimeframe} timeframe for {symbol}
           </CardDescription>
         </CardHeader>
         <CardContent>
