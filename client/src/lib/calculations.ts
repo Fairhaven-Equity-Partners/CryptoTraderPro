@@ -146,35 +146,41 @@ export function calculateTimeframeLeverage(
   
   // Adjust risk parameters based on timeframe volatility
   if (volatilityAdjustment) {
+    // Default risk percentage if none is provided
+    const defaultRisk = 2;
+    // Make sure we're working with a number 
+    const riskPercentage = typeof params.riskPercentage === 'number' ? params.riskPercentage : defaultRisk;
+    
     switch (timeframe) {
       case '1m':
         // Scalping timeframe - highest volatility, lowest leverage
-        params.riskPercentage = Math.min(params.riskPercentage, 0.5);
+        params.riskPercentage = Math.min(riskPercentage, 0.5);
         break;
       case '5m':
-        params.riskPercentage = Math.min(params.riskPercentage, 0.75);
+        params.riskPercentage = Math.min(riskPercentage, 0.75);
         break;
       case '15m':
-        params.riskPercentage = Math.min(params.riskPercentage, 1);
+        params.riskPercentage = Math.min(riskPercentage, 1);
         break;
       case '30m':
-        params.riskPercentage = Math.min(params.riskPercentage, 1.25);
+        params.riskPercentage = Math.min(riskPercentage, 1.25);
         break;
       case '1h':
-        params.riskPercentage = Math.min(params.riskPercentage, 1.5);
+        params.riskPercentage = Math.min(riskPercentage, 1.5);
         break;
       case '4h':
-        params.riskPercentage = Math.min(params.riskPercentage, 2);
+        params.riskPercentage = Math.min(riskPercentage, 2);
         break;
       case '1d':
         // Daily timeframe - lower volatility, can use higher leverage
-        params.riskPercentage = Math.min(params.riskPercentage, 3);
+        params.riskPercentage = Math.min(riskPercentage, 3);
         break;
       case '1w':
-        params.riskPercentage = Math.min(params.riskPercentage, 5);
+        params.riskPercentage = Math.min(riskPercentage, 5);
         break;
       default:
-        // No adjustment
+        // Default risk percentage
+        params.riskPercentage = riskPercentage;
         break;
     }
   }
