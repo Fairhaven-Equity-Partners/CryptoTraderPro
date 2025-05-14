@@ -404,106 +404,17 @@ export default function AdvancedSignalDashboard({
         if (validSignals.length > 0) {
           console.log(`Found ${validSignals.length} valid signals for recommendation for ${symbol}`);
           
-          // Create a custom recommendation focused on the selected timeframe
+          // Set signals to state
+          setSignals(newSignals);
+          
+          // Update recommendation using the selected timeframe 
+          // (not necessarily the one that just finished calculating)
           if (newSignals[selectedTimeframe]) {
-            console.log(`Updating trade recommendation for ${selectedTimeframe} timeframe`);
-            
-            // Get the primary signal for the selected timeframe
-            const primarySignal = newSignals[selectedTimeframe];
-            
-            if (primarySignal) {
-              // Create a recommendation that prioritizes the selected timeframe
-              const customRecommendation = {
-                symbol: symbol,
-                direction: primarySignal.direction,
-                confidence: primarySignal.confidence, 
-                timeframeSummary: validSignals.map(s => ({
-                  timeframe: s.timeframe,
-                  confidence: s.confidence,
-                  direction: s.direction
-                })),
-                entry: {
-                  ideal: primarySignal.entryPrice,
-                  range: [primarySignal.entryPrice * 0.98, primarySignal.entryPrice * 1.02]
-                },
-                exit: {
-                  takeProfit: [
-                    primarySignal.takeProfit,
-                    primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.05 : 0.95),
-                    primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.1 : 0.9)
-                  ],
-                  stopLoss: primarySignal.stopLoss,
-                  trailingStopActivation: primarySignal.entryPrice * (primarySignal.direction === 'LONG' ? 1.03 : 0.97),
-                  trailingStopPercent: 2
-                },
-                leverage: {
-                  conservative: Math.max(1, Math.floor(primarySignal.recommendedLeverage * 0.5)),
-                  moderate: primarySignal.recommendedLeverage,
-                  aggressive: Math.floor(primarySignal.recommendedLeverage * 2),
-                  recommendation: `Recommended leverage: ${primarySignal.recommendedLeverage}x based on current market conditions.`
-                },
-                riskManagement: {
-                  positionSizeRecommendation: "Risk no more than 1-2% of your account per trade.",
-                  maxRiskPercentage: 2,
-                  potentialRiskReward: primarySignal.optimalRiskReward,
-                  winProbability: primarySignal.confidence / 100
-                },
-                keyIndicators: [
-                  `${primarySignal.direction === 'LONG' ? 'Support' : 'Resistance'} at ${formatCurrency(primarySignal.stopLoss)}`,
-                  `${primarySignal.macroClassification} macro trend`,
-                  `${primarySignal.confidence}% confidence level`,
-                ],
-                summary: `${primarySignal.direction} signal with ${primarySignal.confidence}% confidence. Entry near ${formatCurrency(primarySignal.entryPrice)}, stop loss at ${formatCurrency(primarySignal.stopLoss)}.`
-              };
-              
-              setRecommendation(customRecommendation);
-            }
-          } else {
-            // Default recommendation based on all timeframes if selected one isn't available
-            const recommendationResult = {
-              symbol: symbol,
-              direction: validSignals[0].direction,
-              confidence: validSignals[0].confidence,
-              timeframeSummary: validSignals.map(s => ({
-                timeframe: s.timeframe,
-                confidence: s.confidence,
-                direction: s.direction
-              })),
-              entry: {
-                ideal: validSignals[0].entryPrice,
-                range: [validSignals[0].entryPrice * 0.98, validSignals[0].entryPrice * 1.02]
-              },
-              exit: {
-                takeProfit: [
-                  validSignals[0].entryPrice * 1.05,
-                  validSignals[0].entryPrice * 1.1,
-                  validSignals[0].entryPrice * 1.2
-                ],
-                stopLoss: validSignals[0].stopLoss,
-                trailingStopActivation: validSignals[0].entryPrice * 1.03,
-                trailingStopPercent: 2
-              },
-              leverage: {
-                conservative: Math.max(1, Math.floor(validSignals[0].recommendedLeverage * 0.5)),
-                moderate: validSignals[0].recommendedLeverage,
-                aggressive: Math.min(10, Math.floor(validSignals[0].recommendedLeverage * 2)),
-                recommendation: `Recommended leverage: ${validSignals[0].recommendedLeverage}x based on current volatility.`
-              },
-              riskManagement: {
-                positionSizeRecommendation: "Risk no more than 1-2% of your account per trade.",
-                maxRiskPercentage: 2,
-                potentialRiskReward: validSignals[0].optimalRiskReward,
-                winProbability: validSignals[0].confidence / 100
-              },
-              keyIndicators: [
-                `${validSignals[0].direction === 'LONG' ? 'Support' : 'Resistance'} at ${formatCurrency(validSignals[0].stopLoss)}`,
-                `${validSignals[0].macroClassification} macro trend`,
-                `${validSignals[0].confidence}% confidence level`,
-              ],
-              summary: `${validSignals[0].direction} signal with ${validSignals[0].confidence}% confidence on ${validSignals[0].timeframe} timeframe.`
-            };
-            
-            setRecommendation(recommendationResult);
+            updateRecommendationForTimeframe(selectedTimeframe);
+          } else if (validSignals.length > 0) {
+            // Fall back to the first available timeframe
+            const firstAvailableTimeframe = validSignals[0].timeframe;
+            updateRecommendationForTimeframe(firstAvailableTimeframe);
           }
         }
       } catch (error) {
@@ -550,9 +461,15 @@ export default function AdvancedSignalDashboard({
     }
     
     // Update the trade recommendation for the new timeframe
+    updateRecommendationForTimeframe(timeframe);
+  };
+  
+  // Update recommendation when changing timeframes
+  const updateRecommendationForTimeframe = (timeframe: TimeFrame) => {
     if (signals[timeframe]) {
       console.log(`Updating trade recommendation for ${timeframe} timeframe`);
-      // This will trigger a recalculation of the recommendation
+      
+      // Get valid signals for the summary 
       const validSignals = Object.values(signals).filter(Boolean) as AdvancedSignal[];
       
       if (validSignals.length > 0 && signals[timeframe]) {
