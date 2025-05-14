@@ -112,7 +112,17 @@ export default function AdvancedSignalDashboard({
   
   // Calculate signals for all timeframes
   const calculateAllSignals = async () => {
-    if (!isAllDataLoaded || isCalculating) return;
+    if (!isAllDataLoaded || isCalculating) {
+      console.log(`Calculation skipped - Data loaded: ${isAllDataLoaded}, Currently calculating: ${isCalculating}`);
+      return;
+    }
+    
+    // Check if we have any data in chartData
+    const hasAnyData = Object.keys(chartData).length > 0;
+    if (!hasAnyData) {
+      console.log(`No chart data available for ${symbol}, skipping calculation`);
+      return;
+    }
     
     console.log(`Executing calculation for ${symbol} after delay`);
     setIsCalculating(true);
@@ -133,7 +143,7 @@ export default function AdvancedSignalDashboard({
           console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${timeframeData.length} data points.`);
           
           // Only calculate if we have enough data
-          if (timeframeData.length > 0) {
+          if (timeframeData && timeframeData.length > 0) {
             // Create default signal data with valid values since the API is having issues
             const result = {
               timeframe: timeframe,
