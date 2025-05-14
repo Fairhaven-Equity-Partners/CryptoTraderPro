@@ -31,13 +31,13 @@ import {
   RefreshCcw,
   Clock
 } from "lucide-react";
-import { AdvancedSignal } from '@/lib/advancedSignals';
-import { TimeFrame } from '@/types';
-import { formatCurrency, formatPercentage } from '@/lib/calculations';
-import { useToast } from '@/hooks/use-toast';
-import { useMarketData } from '@/hooks/useMarketData';
+import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
+import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
+import { formatCurrency, formatPercentage } from '../lib/calculations';
+import { useToast } from '../hooks/use-toast';
+import { useMarketData } from '../hooks/useMarketData';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { queryClient } from '@/lib/queryClient';
+import { queryClient } from '../lib/queryClient';
 
 // List of timeframes to display
 const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d', '3d', '1w', '1M'];
