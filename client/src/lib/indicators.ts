@@ -317,6 +317,70 @@ function calculateSmoothAverage(data: number[], period: number): number {
   return sum / actualPeriod;
 }
 
+// Create default indicators for UI consistency when real data can't be calculated
+function createDefaultIndicators(lastPrice: number): Indicator[] {
+  const defaultIndicators: Indicator[] = [];
+  
+  // Create default set of indicators with neutral signals
+  defaultIndicators.push({
+    name: 'RSI',
+    category: 'MOMENTUM',
+    signal: 'NEUTRAL',
+    value: 50,
+    strength: 'WEAK'
+  });
+  
+  defaultIndicators.push({
+    name: 'MACD',
+    category: 'TREND',
+    signal: 'NEUTRAL',
+    value: 0,
+    strength: 'WEAK'
+  });
+  
+  defaultIndicators.push({
+    name: 'Moving Average (50)',
+    category: 'TREND',
+    signal: 'NEUTRAL',
+    value: lastPrice,
+    strength: 'WEAK'
+  });
+  
+  defaultIndicators.push({
+    name: 'Bollinger Bands',
+    category: 'VOLATILITY',
+    signal: 'NEUTRAL',
+    value: lastPrice,
+    strength: 'WEAK'
+  });
+  
+  defaultIndicators.push({
+    name: 'ATR',
+    category: 'VOLATILITY',
+    signal: 'NEUTRAL',
+    value: lastPrice * 0.02, // 2% of price as ATR
+    strength: 'WEAK'
+  });
+  
+  defaultIndicators.push({
+    name: 'OBV',
+    category: 'VOLUME',
+    signal: 'NEUTRAL',
+    value: 1000000,
+    strength: 'WEAK'
+  });
+  
+  defaultIndicators.push({
+    name: 'Stochastic',
+    category: 'MOMENTUM',
+    signal: 'NEUTRAL',
+    value: 50,
+    strength: 'WEAK'
+  });
+  
+  return defaultIndicators;
+}
+
 // Calculate Average True Range (ATR)
 export function calculateATR(chartData: ChartData[], period = 14): number {
   if (chartData.length < period) {

@@ -326,7 +326,7 @@ export function calculateTimeframeConfidence(
     const riskParams: LeverageParams = {
       entryPrice: lastPrice,
       stopLoss: stopLoss,
-      portfolioValue: 10000, // Standard portfolio size
+      accountBalance: 10000, // Standard portfolio size
       maxLossPercentage: 5,  // Standard risk - 5% max loss
       positionValue: 0       // Will be calculated inside the function
     };
