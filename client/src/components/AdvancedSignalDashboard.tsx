@@ -72,6 +72,12 @@ export default function AdvancedSignalDashboard({
   // Always show advanced stats - no toggle functionality
   const showAdvancedStats = true;
   
+  // References to track calculation state
+  const calculationTriggeredRef = useRef(false);
+  const lastCalculationTimeRef = useRef<number>(0);
+  const calculationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const recalcIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  
   // Get chart data for all timeframes
   const chartData1m = useChartData(symbol, '1m');
   const chartData5m = useChartData(symbol, '5m');
@@ -182,9 +188,41 @@ export default function AdvancedSignalDashboard({
     return Promise.resolve(); // Ensure we always return a promise
   }, [symbol, isAllDataLoaded, signals, timeframes, calculateSignalForTimeframe]);
   
+  // Function to safely trigger calculation with debouncing
+  const triggerCalculation = useCallback((reason: string) => {
+    const now = Date.now();
+    // Prevent calculation if one is already in progress or happened too recently
+    if (calculationTriggeredRef.current || isCalculating || (now - lastCalculationTimeRef.current < 5000)) {
+      console.log(`Skipping calculation (${reason}): already calculating or too recent`);
+      return;
+    }
+    
+    console.log(`Triggering calculation (${reason})`);
+    calculationTriggeredRef.current = true;
+    
+    // Clear any existing timeout
+    if (calculationTimeoutRef.current) {
+      clearTimeout(calculationTimeoutRef.current);
+      calculationTimeoutRef.current = null;
+    }
+    
+    // Set a new timeout for the calculation
+    calculationTimeoutRef.current = setTimeout(() => {
+      calculateAllSignals().then(() => {
+        // Update the last calculation time
+        lastCalculationTimeRef.current = Date.now();
+        // Reset the flag after a delay
+        setTimeout(() => {
+          calculationTriggeredRef.current = false;
+        }, 5000);
+      });
+    }, 300); // Small delay to batch updates
+  }, [calculateAllSignals, isCalculating]);
+  
   // Reset signals and trigger calculation when symbol changes
   useEffect(() => {
     console.log("Symbol changed to:", symbol);
+    
     // Reset all signals
     setSignals({
       '1m': null,
@@ -202,45 +240,18 @@ export default function AdvancedSignalDashboard({
     setCalculateProgress(0);
     setIsCalculating(false);
     
-    // We'll let the calculation effect handle the recalculation
-    // once the data is loaded for the new symbol
-  }, [symbol]);
-  
-  // References to track calculation state
-  const calculationTriggeredRef = useRef(false);
-  const lastCalculationTimeRef = useRef<number>(0);
-  const calculationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const recalcIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  
-  // Function to safely trigger calculation with debouncing
-  const triggerCalculation = useCallback((reason: string) => {
-    const now = Date.now();
-    // Prevent calculation if one is already in progress or happened too recently
-    if (calculationTriggeredRef.current || isCalculating || (now - lastCalculationTimeRef.current < 5000)) {
-      console.log(`Skipping calculation (${reason}): already calculating or too recent`);
-      return;
-    }
+    // Reset calculation triggers to ensure recalculation happens for the new symbol
+    calculationTriggeredRef.current = false;
+    lastCalculationTimeRef.current = 0;
     
-    console.log(`Triggering calculation (${reason})`);
-    calculationTriggeredRef.current = true;
-    
-    // Clear any existing timeout
-    if (calculationTimeoutRef.current) {
-      clearTimeout(calculationTimeoutRef.current);
-    }
-    
-    // Set a new timeout for the calculation
-    calculationTimeoutRef.current = setTimeout(() => {
-      calculateAllSignals().then(() => {
-        // Update the last calculation time
-        lastCalculationTimeRef.current = Date.now();
-        // Reset the flag after a delay
-        setTimeout(() => {
-          calculationTriggeredRef.current = false;
-        }, 5000);
-      });
-    }, 300); // Small delay to batch updates
-  }, [calculateAllSignals, isCalculating]);
+    // Force trigger calculation once data loads, with a delay to ensure data is ready
+    setTimeout(() => {
+      if (isAllDataLoaded) {
+        console.log(`Forcing calculation for new symbol: ${symbol}`);
+        triggerCalculation('symbol-changed');
+      }
+    }, 2000);
+  }, [symbol, isAllDataLoaded, triggerCalculation]);
   
   // Effect to watch for data loading completion
   useEffect(() => {
@@ -386,19 +397,19 @@ export default function AdvancedSignalDashboard({
                 <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
                   <div className="flex justify-between">
                     <span>Stop Loss:</span>
-                    <span className="font-semibold text-destructive">{formatCurrency(recommendation.exit.stopLoss)}</span>
+                    <span className="text-red-500">{formatCurrency(recommendation.exit.stopLoss)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Take Profit 1:</span>
-                    <span className="font-semibold text-success">{formatCurrency(recommendation.exit.takeProfit[0])}</span>
+                    <span>Take Profits:</span>
+                    <span className="text-green-500">
+                      {recommendation.exit.takeProfit.map((tp, i) => 
+                        <span key={i} className="mr-1">{formatCurrency(tp)}{i < recommendation.exit.takeProfit.length - 1 ? ',' : ''}</span>
+                      )}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Take Profit 2:</span>
-                    <span className="font-semibold text-success">{formatCurrency(recommendation.exit.takeProfit[1])}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Take Profit 3:</span>
-                    <span className="font-semibold text-success">{formatCurrency(recommendation.exit.takeProfit[2])}</span>
+                    <span>Trailing Stop:</span>
+                    <span>{formatPercentage(recommendation.exit.trailingStopPercent)}</span>
                   </div>
                 </div>
               </div>
@@ -407,70 +418,32 @@ export default function AdvancedSignalDashboard({
                 <h3 className="text-sm font-semibold flex items-center">
                   <Percent className="mr-2 h-4 w-4" />
                   Risk Management
-                  <Badge variant="outline" className="ml-2 text-xs">1H Timeframe</Badge>
+                  <Badge variant="outline" className="ml-2 text-xs">Win Rate: {formatPercentage(recommendation.riskManagement.winProbability)}</Badge>
                 </h3>
                 <div className="flex flex-col space-y-1 bg-secondary/20 p-2 rounded-md">
+                  <div className="flex justify-between">
+                    <span>Risk/Reward:</span>
+                    <span>{recommendation.riskManagement.potentialRiskReward.toFixed(2)}</span>
+                  </div>
                   <div className="flex justify-between">
                     <span>Leverage:</span>
                     <span className="font-semibold">{recommendation.leverage.recommendation}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Position Size:</span>
-                    <span>{recommendation.riskManagement.positionSizeRecommendation}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Risk/Reward:</span>
-                    <span>{recommendation.riskManagement.potentialRiskReward.toFixed(1)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Win Probability:</span>
-                    <span>{Math.round(recommendation.riskManagement.winProbability)}%</span>
+                    <span>Max Risk %:</span>
+                    <span>{formatPercentage(recommendation.riskManagement.maxRiskPercentage)}</span>
                   </div>
                 </div>
               </div>
             </div>
             
-            {/* Key indicators */}
-            {recommendation.keyIndicators.length > 0 && (
-              <div className="mt-4">
-                <h3 className="text-sm font-semibold mb-2">Key Indicators</h3>
-                <div className="flex flex-wrap gap-2">
-                  {recommendation.keyIndicators.map((indicator, i) => (
-                    <Badge key={i} variant="outline" className="bg-primary/10">
-                      {indicator}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Timeframe summary */}
             <div className="mt-4">
-              <h3 className="text-sm font-semibold mb-2">Timeframe Analysis</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                {recommendation.timeframeSummary.map((tf) => (
-                  <Button
-                    key={tf.timeframe}
-                    variant="outline"
-                    className={`flex justify-between items-center ${
-                      tf.direction === 'LONG' ? 'border-green-500' :
-                      tf.direction === 'SHORT' ? 'border-red-500' :
-                      'border-gray-500'
-                    }`}
-                    onClick={() => handleTimeframeSelect(tf.timeframe)}
-                  >
-                    <span>{tf.timeframe}</span>
-                    <div className="flex items-center">
-                      {tf.direction === 'LONG' ? (
-                        <ArrowUpRight className="h-4 w-4 text-green-500" />
-                      ) : tf.direction === 'SHORT' ? (
-                        <ArrowDownRight className="h-4 w-4 text-red-500" />
-                      ) : (
-                        <Minus className="h-4 w-4" />
-                      )}
-                      <span className="ml-1">{tf.confidence}%</span>
-                    </div>
-                  </Button>
+              <h3 className="text-sm font-semibold mb-2">Key Indicators</h3>
+              <div className="flex flex-wrap gap-2">
+                {recommendation.keyIndicators.map((indicator, i) => (
+                  <Badge key={i} variant="secondary" className="text-xs">
+                    {indicator}
+                  </Badge>
                 ))}
               </div>
             </div>
@@ -478,332 +451,277 @@ export default function AdvancedSignalDashboard({
         </Card>
       )}
       
-      {/* Loading progress */}
+      {/* Show calculation progress */}
       {isCalculating && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Analyzing market data...</CardTitle>
-            <CardDescription>
-              Calculating signals across all timeframes and indicators
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Progress value={calculateProgress} className="h-2" />
-            <p className="text-center mt-2">{calculateProgress}% complete</p>
-          </CardContent>
-        </Card>
-      )}
-      
-      {/* Macro Indicators Panel - placed between main signal and timeframe analysis */}
-      {!isCalculating && (
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">Macro Environment Analysis</h3>
-          <MacroIndicatorsPanel symbol={symbol} />
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm">Calculating signals...</span>
+            <span className="text-sm">{calculateProgress}%</span>
+          </div>
+          <Progress value={calculateProgress} />
         </div>
       )}
       
-      {/* Timeframe tabs */}
-      {!isCalculating && (
-        <Tabs value={selectedTimeframe} onValueChange={(v) => handleTimeframeSelect(v as TimeFrame)}>
-          <TabsList className="grid grid-cols-8 mb-4">
-            {timeframes.map((tf) => (
-              <TabsTrigger key={tf} value={tf} disabled={!signals[tf]}>
-                {tf}
-                {signals[tf]?.direction === 'LONG' && (
-                  <ChevronUp className="ml-1 h-3 w-3 text-green-500" />
+      {/* Timeframe signals */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex justify-between items-center">
+            <span>Signal Analysis by Timeframe</span>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => triggerCalculation('manual')}
+              disabled={isCalculating}
+            >
+              Refresh Analysis
+            </Button>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue={selectedTimeframe} onValueChange={(val) => handleTimeframeSelect(val as TimeFrame)}>
+            <TabsList className="grid grid-cols-7 mb-4">
+              {timeframes.map(tf => (
+                <TabsTrigger key={tf} value={tf} className="text-xs sm:text-sm">{tf}</TabsTrigger>
+              ))}
+            </TabsList>
+            
+            {timeframes.map(tf => (
+              <TabsContent key={tf} value={tf} className="space-y-4">
+                {signals[tf] ? (
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center">
+                        <span className="text-lg font-semibold mr-2">
+                          {symbol} ({tf})
+                        </span>
+                        {renderDirectionBadge(signals[tf]!.direction)}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="mr-2">Confidence:</span>
+                        {renderScoreBadge(signals[tf]!.confidence)}
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <Card className="border border-gray-800">
+                        <CardHeader className="py-3">
+                          <CardTitle className="text-sm font-medium">Entry & Exit Strategy</CardTitle>
+                        </CardHeader>
+                        <CardContent className="py-2">
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <span>Entry Price:</span>
+                              <span className="font-semibold">{formatCurrency(signals[tf]!.entryPrice)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Stop Loss:</span>
+                              <span className="text-red-500">{formatCurrency(signals[tf]!.stopLoss)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Take Profit:</span>
+                              <span className="text-green-500">{formatCurrency(signals[tf]!.takeProfit)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Risk/Reward:</span>
+                              <span>{signals[tf]!.optimalRiskReward.toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Recommended Leverage:</span>
+                              <span className={signals[tf]!.recommendedLeverage > 3 ? "text-red-500 font-semibold" : "font-semibold"}>
+                                {signals[tf]!.recommendedLeverage}x
+                              </span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      {/* Advanced Stats Panel - always visible */}
+                      <Card className="border border-gray-800">
+                        <CardHeader className="py-3">
+                          <CardTitle className="text-sm font-medium">Advanced Analysis</CardTitle>
+                        </CardHeader>
+                        <CardContent className="py-2">
+                          <div className="space-y-2">
+                            <div className="flex justify-between">
+                              <span>Trend Strength:</span>
+                              <Badge variant={
+                                calculateCategoryScore(signals[tf]!.indicators.trend) > 70 ? "outline" : 
+                                calculateCategoryScore(signals[tf]!.indicators.trend) > 40 ? "secondary" : "destructive"
+                              } className="text-xs">
+                                {calculateCategoryScore(signals[tf]!.indicators.trend)}/100
+                              </Badge>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Momentum:</span>
+                              <Badge variant={
+                                calculateCategoryScore(signals[tf]!.indicators.momentum) > 70 ? "outline" : 
+                                calculateCategoryScore(signals[tf]!.indicators.momentum) > 40 ? "secondary" : "destructive"
+                              } className="text-xs">
+                                {calculateCategoryScore(signals[tf]!.indicators.momentum)}/100
+                              </Badge>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Volatility:</span>
+                              <Badge variant={
+                                calculateCategoryScore(signals[tf]!.indicators.volatility) > 70 ? "outline" : 
+                                calculateCategoryScore(signals[tf]!.indicators.volatility) > 40 ? "secondary" : "destructive"
+                              } className="text-xs">
+                                {calculateCategoryScore(signals[tf]!.indicators.volatility)}/100
+                              </Badge>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Volume Profile:</span>
+                              <Badge variant={
+                                calculateCategoryScore(signals[tf]!.indicators.volume) > 70 ? "outline" : 
+                                calculateCategoryScore(signals[tf]!.indicators.volume) > 40 ? "secondary" : "destructive"
+                              } className="text-xs">
+                                {calculateCategoryScore(signals[tf]!.indicators.volume)}/100
+                              </Badge>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Pattern Recognition:</span>
+                              <Badge variant={
+                                calculateCategoryScore(signals[tf]!.indicators.pattern) > 70 ? "outline" : 
+                                calculateCategoryScore(signals[tf]!.indicators.pattern) > 40 ? "secondary" : "destructive"
+                              } className="text-xs">
+                                {calculateCategoryScore(signals[tf]!.indicators.pattern)}/100
+                              </Badge>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Macro Environment:</span>
+                              <Badge variant={
+                                signals[tf]!.macroScore > 70 ? "outline" : 
+                                signals[tf]!.macroScore > 40 ? "secondary" : "destructive"
+                              } className="text-xs">
+                                {signals[tf]!.macroScore}/100
+                              </Badge>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {/* Support & Resistance Levels */}
+                      <Card className="border border-gray-800">
+                        <CardHeader className="py-3">
+                          <CardTitle className="text-sm font-medium">Support & Resistance Levels</CardTitle>
+                        </CardHeader>
+                        <CardContent className="py-2">
+                          <div className="space-y-2">
+                            {signals[tf]!.supportResistance.map((level, i) => (
+                              <div key={i} className="flex justify-between">
+                                <span className={level.type === 'support' ? 'text-green-500' : 'text-red-500'}>
+                                  {level.type === 'support' ? 'Support' : 'Resistance'} 
+                                  <span className="text-xs text-gray-400 ml-1">
+                                    ({level.strength}/100)
+                                  </span>
+                                </span>
+                                <span className="font-medium">{formatCurrency(level.price)}</span>
+                              </div>
+                            ))}
+                            {signals[tf]!.supportResistance.length === 0 && (
+                              <div className="text-sm text-gray-400">No significant levels detected</div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      {/* Pattern Formations */}
+                      <Card className="border border-gray-800">
+                        <CardHeader className="py-3">
+                          <CardTitle className="text-sm font-medium">Chart Patterns</CardTitle>
+                        </CardHeader>
+                        <CardContent className="py-2">
+                          <div className="space-y-2">
+                            {signals[tf]!.patternFormations.map((pattern, i) => (
+                              <div key={i} className="flex flex-col space-y-1 border-b border-gray-800 pb-2 last:border-0">
+                                <div className="flex justify-between">
+                                  <span className="font-medium">{pattern.name}</span>
+                                  <Badge variant={
+                                    pattern.direction === 'bullish' ? "outline" : 
+                                    pattern.direction === 'bearish' ? "destructive" : "secondary"
+                                  } className="text-xs">
+                                    {pattern.direction}
+                                  </Badge>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                  <span>Target: {formatCurrency(pattern.priceTarget)}</span>
+                                  <span>Reliability: {pattern.reliability}%</span>
+                                </div>
+                              </div>
+                            ))}
+                            {signals[tf]!.patternFormations.length === 0 && (
+                              <div className="text-sm text-gray-400">No significant patterns detected</div>
+                            )}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                    
+                    {/* Macro Insights and Prediction */}
+                    <Card className="border border-gray-800">
+                      <CardHeader className="py-3">
+                        <CardTitle className="text-sm font-medium flex items-center">
+                          <Globe className="mr-2 h-4 w-4" />
+                          Macro Environment & Forecast
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="py-2">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <h4 className="text-sm font-medium mb-2">Macro Classification</h4>
+                            <Badge variant="secondary" className="mb-2">{signals[tf]!.macroClassification}</Badge>
+                            <ul className="list-disc pl-5 space-y-1 text-sm">
+                              {signals[tf]!.macroInsights.map((insight, i) => (
+                                <li key={i}>{insight}</li>
+                              ))}
+                            </ul>
+                          </div>
+                          <div>
+                            <h4 className="text-sm font-medium mb-2">Price Prediction</h4>
+                            <div className="bg-secondary/20 p-3 rounded-md">
+                              <div className="flex justify-between mb-2">
+                                <span>Expected Movement:</span>
+                                <span className={signals[tf]!.predictedMovement.percentChange >= 0 ? 'text-green-500' : 'text-red-500'}>
+                                  {signals[tf]!.predictedMovement.percentChange >= 0 ? '+' : ''}
+                                  {formatPercentage(signals[tf]!.predictedMovement.percentChange)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Timeframe:</span>
+                                <span>{signals[tf]!.predictedMovement.timeEstimate}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-8">
+                    <AlertTriangle className="h-10 w-10 text-yellow-500 mb-2" />
+                    <p className="text-lg font-semibold">Signal not available</p>
+                    <p className="text-gray-400 text-center max-w-md">
+                      {isCalculating
+                        ? "Calculation in progress..."
+                        : "Signal calculation not available for this timeframe yet. Click 'Refresh Analysis' to calculate."}
+                    </p>
+                  </div>
                 )}
-                {signals[tf]?.direction === 'SHORT' && (
-                  <ChevronDown className="ml-1 h-3 w-3 text-red-500" />
-                )}
-              </TabsTrigger>
+              </TabsContent>
             ))}
-          </TabsList>
-          
-          {timeframes.map((tf) => (
-            <TabsContent key={tf} value={tf}>
-              {signals[tf] ? (
-                <DetailedSignalCard 
-                  signal={signals[tf]!} 
-                  showAdvanced={showAdvancedStats}
-                  toggleAdvanced={() => {}}
-                />
-              ) : (
-                <Card>
-                  <CardContent className="pt-6">
-                    <p>No analysis available for {tf} timeframe</p>
-                  </CardContent>
-                </Card>
-              )}
-            </TabsContent>
-          ))}
-        </Tabs>
-      )}
-      
-      {/* Recalculate button and auto-update status */}
-      {!isCalculating && isAllDataLoaded && (
-        <div className="flex flex-col items-center mt-4 space-y-2">
-          <div className="flex space-x-2 mb-2">
-            <Button onClick={() => calculateAllSignals()}>
-              <LineChart className="mr-2 h-4 w-4" />
-              Recalculate All
-            </Button>
-            <Button variant="outline" onClick={() => {
-              try {
-                console.log(`Manual calculation for ${symbol} (4h)`);
-                if (chartDataMap['4h']?.data?.length) {
-                  const data = chartDataMap['4h'].data;
-                  console.log(`DATA CHECK: ${data.length} data points`);
-                  console.log(`First data point:`, JSON.stringify(data[0]));
-                  console.log(`Last data point:`, JSON.stringify(data[data.length - 1]));
-                  
-                  // Basic validation
-                  if (!Array.isArray(data)) {
-                    throw new Error("Chart data is not an array");
-                  }
-                  
-                  if (data.length < 50) {
-                    console.error(`Insufficient data: ${data.length} points (need 50+)`);
-                  }
-                  
-                  console.log(`Will calculate with symbol=${symbol}`);
-                  const signal = calculateTimeframeConfidence(
-                    data, 
-                    '4h', 
-                    undefined, 
-                    symbol
-                  );
-                  console.log(`SUCCESS: manual calculation for 4h`, signal);
-                  setSignals(prev => ({...prev, '4h': signal}));
-                }
-              } catch (err) {
-                console.error(`Error in manual calculation:`, err);
-                console.error(err instanceof Error ? err.stack : "No stack available");
-              }
-            }}>
-              Debug 4h ETH/USDT
-            </Button>
-          </div>
-          <div className="text-xs text-muted-foreground flex items-center">
-            <span className="relative flex h-2 w-2 mr-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-            </span>
-            Auto-recalculation active (every minute)
-          </div>
-        </div>
-      )}
+          </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 }
 
-// Detailed signal card component with integrated position calculator
-function DetailedSignalCard({ 
-  signal, 
-  showAdvanced,
-  toggleAdvanced
-}: { 
-  signal: AdvancedSignal, 
-  showAdvanced: boolean,
-  toggleAdvanced: () => void
-}) {
-  // Position calculator logic removed as requested
-
-  return (
-    <Card className={`border-l-4 ${
-      signal.direction === 'LONG' ? 'border-l-green-500' : 
-      signal.direction === 'SHORT' ? 'border-l-red-500' : 
-      'border-l-gray-400'
-    }`}>
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <div className="flex items-center">
-            {signal.timeframe} Analysis
-            <Badge variant={signal.direction === 'LONG' ? 'outline' : 
-                             signal.direction === 'SHORT' ? 'destructive' : 
-                             'secondary'} 
-                   className={`ml-2 ${signal.direction === 'LONG' ? 'border-green-500 text-green-500' : ''}`}>
-              {signal.direction}
-            </Badge>
-          </div>
-          <Badge variant="outline" className="text-lg">
-            {signal.confidence}/100
-          </Badge>
-        </CardTitle>
-        <CardDescription>
-          {signal.direction === 'LONG' ? 'Bullish' : 
-           signal.direction === 'SHORT' ? 'Bearish' : 'Neutral'} signal with {signal.confidence}% confidence
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {/* Combined Trading Strategy Panel */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Entry/Exit Strategy */}
-            <Card className="bg-secondary/10">
-              <CardHeader className="p-3 pb-0">
-                <CardTitle className="text-sm">Entry & Exit Strategy</CardTitle>
-              </CardHeader>
-              <CardContent className="p-3 grid grid-cols-3 gap-2">
-                <div>
-                  <div className="text-xs text-muted-foreground">Entry Price</div>
-                  <div className="text-lg font-bold">{formatCurrency(signal.entryPrice)}</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Stop Loss</div>
-                  <div className="text-lg font-bold text-red-500">{formatCurrency(signal.stopLoss)}</div>
-                  <div className="text-xs">{formatPercentage(Math.abs((signal.stopLoss - signal.entryPrice) / signal.entryPrice))} risk</div>
-                </div>
-                <div>
-                  <div className="text-xs text-muted-foreground">Take Profit</div>
-                  <div className="text-lg font-bold text-green-500">{formatCurrency(signal.takeProfit)}</div>
-                  <div className="text-xs">{formatPercentage(Math.abs((signal.takeProfit - signal.entryPrice) / signal.entryPrice))} target</div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            {/* Position Calculator removed as requested */}
-          </div>
-
-          <Separator />
-          
-          {/* Market Prediction */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Target Move</h3>
-              <div className="text-xl font-bold">
-                {formatPercentage(signal.predictedMovement.percentChange)}
-              </div>
-            </div>
-            
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Time Estimate</h3>
-              <div className="text-xl font-bold">
-                {signal.predictedMovement.timeEstimate}
-              </div>
-            </div>
-            
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Direction</h3>
-              <div className="text-xl font-bold">
-                {signal.direction}
-              </div>
-            </div>
-            
-            <div className="space-y-1">
-              <h3 className="text-sm font-semibold">Confidence</h3>
-              <div className="text-xl font-bold">
-                {signal.confidence}%
-              </div>
-            </div>
-          </div>
-          
-          {/* Indicator breakdown */}
-          <div>
-            <h3 className="text-sm font-semibold mb-2">Key Indicators</h3>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
-              {Object.entries(signal.indicators).map(([category, indicators]) => {
-                if (indicators.length === 0) return null;
-                
-                const buySignals = indicators.filter(i => i.signal === 'BUY').length;
-                const sellSignals = indicators.filter(i => i.signal === 'SELL').length;
-                const neutralSignals = indicators.filter(i => i.signal === 'NEUTRAL').length;
-                
-                let categoryBadge;
-                if (buySignals > sellSignals) {
-                  categoryBadge = <Badge variant="outline" className="border-green-500 text-green-500">Bullish</Badge>;
-                } else if (sellSignals > buySignals) {
-                  categoryBadge = <Badge variant="destructive">Bearish</Badge>;
-                } else {
-                  categoryBadge = <Badge variant="secondary">Neutral</Badge>;
-                }
-                
-                return (
-                  <Card key={category} className="overflow-hidden">
-                    <CardHeader className="p-2">
-                      <CardTitle className="text-sm flex justify-between items-center">
-                        <span className="capitalize">{category}</span>
-                        {categoryBadge}
-                      </CardTitle>
-                    </CardHeader>
-                    {showAdvanced && (
-                      <CardContent className="p-2 pt-0">
-                        <div className="text-xs space-y-1">
-                          {indicators.map((indicator, i) => (
-                            <div key={i} className="flex justify-between">
-                              <span>{indicator.name}</span>
-                              <Badge variant={
-                                indicator.signal === 'BUY' ? 'outline' : 
-                                indicator.signal === 'SELL' ? 'outline' : 'outline'
-                              } className={
-                                indicator.signal === 'BUY' ? 'border-green-500 text-green-500' :
-                                indicator.signal === 'SELL' ? 'border-red-500 text-red-500' :
-                                'border-gray-500'
-                              }>
-                                {indicator.signal}
-                              </Badge>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    )}
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-          
-          {/* Support/Resistance */}
-          {signal.supportResistance.length > 0 && showAdvanced && (
-            <div>
-              <h3 className="text-sm font-semibold mb-2">Support & Resistance</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {signal.supportResistance.map((level, i) => (
-                  <div key={i} className="flex justify-between items-center p-2 bg-secondary/20 rounded-md">
-                    <Badge variant={level.type === 'support' ? 'outline' : 'destructive'} 
-                           className={level.type === 'support' ? 'border-green-500 text-green-500' : ''}>
-                      {level.type}
-                    </Badge>
-                    <span className="font-semibold">{formatCurrency(level.price)}</span>
-                    <Badge variant="outline">
-                      Strength: {level.strength}%
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          
-          {/* Chart patterns */}
-          {signal.patternFormations.length > 0 && showAdvanced && (
-            <div>
-              <h3 className="text-sm font-semibold mb-2">Chart Patterns</h3>
-              <div className="space-y-2">
-                {signal.patternFormations.map((pattern, i) => (
-                  <Alert key={i}>
-                    <AlertTitle className="flex justify-between">
-                      <span>{pattern.name}</span>
-                      <Badge variant={pattern.direction === 'bullish' ? 'outline' : 
-                                       pattern.direction === 'bearish' ? 'destructive' : 
-                                       'secondary'}
-                             className={pattern.direction === 'bullish' ? 'border-green-500 text-green-500' : ''}>
-                        {pattern.direction}
-                      </Badge>
-                    </AlertTitle>
-                    <AlertDescription className="text-sm">
-                      <div className="flex justify-between">
-                        <span>Target: {formatCurrency(pattern.priceTarget)}</span>
-                        <span>Reliability: {pattern.reliability}%</span>
-                      </div>
-                      <p className="mt-1">{pattern.description}</p>
-                    </AlertDescription>
-                  </Alert>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </CardContent>
-      {/* Always showing details - button removed */}
-    </Card>
-  );
+// Helper function to calculate category score
+function calculateCategoryScore(indicators: any[]) {
+  if (!indicators || indicators.length === 0) return 0;
+  
+  const total = indicators.reduce((sum, ind) => sum + ind.score, 0);
+  return Math.round(total / indicators.length);
 }
