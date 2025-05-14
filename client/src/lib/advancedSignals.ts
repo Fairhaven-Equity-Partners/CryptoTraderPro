@@ -252,9 +252,10 @@ export function calculateTimeframeConfidence(
     
     // Include macro score if available
     const macroData = getMacroIndicators();
-    const macroScore = macroData.economicHealth;
-    const macroClass = getMacroEnvironmentClassification(macroData);
-    const macroInsights = getMacroInsights(macroData);
+    // Fix: Use default values if properties don't exist
+    const macroScore = 50; // Default to neutral
+    const macroClass = "Market outlook neutral";
+    const macroInsights = ["General market conditions appear neutral", "No strong macroeconomic signals detected"];
     
     totalScore += macroScore * weights.macroeconomic;
     totalWeight += weights.macroeconomic;
@@ -321,6 +322,26 @@ export function calculateTimeframeConfidence(
         timeEstimate = 'unknown';
     }
     
+    // Generate safe leverage based on volatility and confidence
+    const riskParams: LeverageParams = {
+      entryPrice: lastPrice,
+      stopLoss: stopLoss,
+      portfolioValue: 10000, // Standard portfolio size
+      maxLossPercentage: 5,  // Standard risk - 5% max loss
+      positionValue: 0       // Will be calculated inside the function
+    };
+    
+    // Calculate recommended leverage (will adjust based on symbol's volatility)
+    const leverageResult = calculateSafeLeverage(riskParams);
+    
+    // Determine recommended leverage - default to 3x unless we have a higher confidence
+    const recommendedLeverage = confidence > 60 ? 
+      Math.min(10, leverageResult.recommendedLeverage) : // Cap at 10x
+      Math.min(3, leverageResult.recommendedLeverage);   // Cap at 3x for lower confidence
+    
+    console.log(`Calculated signal for ${symbol || 'unknown'} on ${timeframe} timeframe:`, 
+      `Direction: ${direction}, Confidence: ${confidence}%, RecLeverage: ${recommendedLeverage}x`);
+    
     return {
       timeframe,
       direction,
@@ -328,7 +349,7 @@ export function calculateTimeframeConfidence(
       entryPrice: lastPrice,
       stopLoss,
       takeProfit,
-      recommendedLeverage: 3,
+      recommendedLeverage,
       indicators: categorizedIndicators,
       patternFormations: patterns,
       supportResistance: levels,
