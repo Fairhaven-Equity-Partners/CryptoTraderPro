@@ -80,7 +80,19 @@ export default function AdvancedSignalDashboard({
   // State for the selected timeframe
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
   const [isCalculating, setIsCalculating] = useState(false);
-  const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({} as any);
+  // Initialize signals with empty state for each timeframe
+  const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({
+    '1m': null,
+    '5m': null,
+    '15m': null,
+    '30m': null,
+    '1h': null,
+    '4h': null,
+    '1d': null,
+    '3d': null,
+    '1w': null,
+    '1M': null
+  });
   const [recommendation, setRecommendation] = useState<any | null>(null);
   const [nextRefreshIn, setNextRefreshIn] = useState<number>(300);
   
@@ -214,7 +226,13 @@ export default function AdvancedSignalDashboard({
   }, [isCalculating, triggerCalculation]);
 
   // Store persistent signals across refreshes
-  const persistentSignalsRef = useRef<Record<string, Record<TimeFrame, AdvancedSignal | null>>>({});
+  const persistentSignalsRef = useRef<Record<string, Record<TimeFrame, AdvancedSignal | null>>>({
+    'BTC/USDT': {} as Record<TimeFrame, AdvancedSignal | null>,
+    'ETH/USDT': {} as Record<TimeFrame, AdvancedSignal | null>,
+    'BNB/USDT': {} as Record<TimeFrame, AdvancedSignal | null>,
+    'SOL/USDT': {} as Record<TimeFrame, AdvancedSignal | null>,
+    'XRP/USDT': {} as Record<TimeFrame, AdvancedSignal | null>
+  });
   
   // Convert technical analysis signal to AdvancedSignal format
   const createAdvancedSignalFromTechnical = (
@@ -502,7 +520,20 @@ export default function AdvancedSignalDashboard({
       
       // Initialize persistent signals for this symbol if it doesn't exist
       if (!persistentSignalsRef.current[symbol]) {
-        persistentSignalsRef.current[symbol] = {};
+        // Create an empty record with all timeframes set to null
+        const emptySignals: Record<TimeFrame, AdvancedSignal | null> = {
+          '1m': null,
+          '5m': null,
+          '15m': null,
+          '30m': null,
+          '1h': null,
+          '4h': null,
+          '1d': null,
+          '3d': null,
+          '1w': null,
+          '1M': null
+        };
+        persistentSignalsRef.current[symbol] = emptySignals;
       }
       
       // Create a new signals object to store results
