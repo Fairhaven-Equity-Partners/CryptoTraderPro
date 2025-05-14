@@ -386,25 +386,29 @@ export default function AdvancedSignalDashboard({
                           <div className="space-y-2">
                             <div className="flex justify-between">
                               <span>Entry Price:</span>
-                              <span className="font-semibold">{formatCurrency(signals[tf]!.entryPrice)}</span>
+                              <span className="font-semibold">{signals[tf]?.entryPrice ? formatCurrency(signals[tf]!.entryPrice) : "N/A"}</span>
                             </div>
                             <div className="flex justify-between">
                               <span>Stop Loss:</span>
-                              <span className="text-red-500">{formatCurrency(signals[tf]!.stopLoss)}</span>
+                              <span className="text-red-500">{signals[tf]?.stopLoss ? formatCurrency(signals[tf]!.stopLoss) : "N/A"}</span>
                             </div>
                             <div className="flex justify-between">
                               <span>Take Profit:</span>
-                              <span className="text-green-500">{formatCurrency(signals[tf]!.takeProfit)}</span>
+                              <span className="text-green-500">{signals[tf]?.takeProfit ? formatCurrency(signals[tf]!.takeProfit) : "N/A"}</span>
                             </div>
                             <div className="flex justify-between">
                               <span>Risk/Reward:</span>
-                              <span>{signals[tf]!.optimalRiskReward.toFixed(2)}</span>
+                              <span>{signals[tf]?.optimalRiskReward ? signals[tf]!.optimalRiskReward.toFixed(2) : "N/A"}</span>
                             </div>
                             <div className="flex justify-between">
                               <span>Recommended Leverage:</span>
-                              <span className={signals[tf]!.recommendedLeverage > 3 ? "text-red-500 font-semibold" : "font-semibold"}>
-                                {signals[tf]!.recommendedLeverage}x
-                              </span>
+                              {signals[tf]?.recommendedLeverage ? (
+                                <span className={signals[tf]!.recommendedLeverage > 3 ? "text-red-500 font-semibold" : "font-semibold"}>
+                                  {signals[tf]!.recommendedLeverage}x
+                                </span>
+                              ) : (
+                                <span>N/A</span>
+                              )}
                             </div>
                           </div>
                         </CardContent>
