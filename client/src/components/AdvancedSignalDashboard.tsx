@@ -80,12 +80,26 @@ export default function AdvancedSignalDashboard({
       - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
       - All data loaded: ${isAllDataLoaded}`);
     
-    // Don't calculate if already calculating, trigger already set, 
-    // or calculated recently (except for manual refresh)
+    // Always allow manual triggers to recalculate
+    if (trigger === 'manual') {
+      console.log(`Manual calculation requested for ${symbol}`);
+      calculationTriggeredRef.current = true;
+      
+      // Clear any pending calculation
+      if (calculationTimeoutRef.current) {
+        clearTimeout(calculationTimeoutRef.current);
+      }
+      
+      // Force a direct calculation
+      calculateAllSignals();
+      return;
+    }
+    
+    // For automated triggers, enforce throttling rules
     if (
       calculationTriggeredRef.current || 
       isCalculating || 
-      (timeSinceLastCalc < 30 && trigger !== 'manual') || 
+      (timeSinceLastCalc < 30) || 
       !isAllDataLoaded
     ) {
       return;
@@ -140,8 +154,12 @@ export default function AdvancedSignalDashboard({
   
   // Calculate signals for all timeframes
   const calculateAllSignals = async () => {
-    if (!isAllDataLoaded || isCalculating) {
-      console.log(`Calculation skipped - Data loaded: ${isAllDataLoaded}, Currently calculating: ${isCalculating}`);
+    // Force clear any current signals when recalculating
+    setSignals({} as any);
+    
+    // Skip if calculation is already in progress
+    if (isCalculating) {
+      console.log(`Calculation skipped - Currently calculating: ${isCalculating}`);
       return;
     }
     
@@ -149,10 +167,17 @@ export default function AdvancedSignalDashboard({
     const hasAnyData = Object.keys(chartData).length > 0;
     if (!hasAnyData) {
       console.log(`No chart data available for ${symbol}, skipping calculation`);
+      // Set an empty message for the user
+      toast({
+        title: `No data for ${symbol}`,
+        description: "Unable to calculate signals without chart data.",
+        variant: "destructive"
+      });
       return;
     }
     
-    console.log(`Executing calculation for ${symbol} after delay`);
+    // Start calculating
+    console.log(`Executing calculation for ${symbol}`);
     setIsCalculating(true);
     
     try {
@@ -338,8 +363,26 @@ export default function AdvancedSignalDashboard({
         console.error("Error generating recommendation:", error);
       }
       
-      // Mark calculation as complete
-      console.log(`Calculation process complete for ${symbol}`);
+      // Verify we have valid signals to display
+      const validSignalCount = Object.values(newSignals).filter(Boolean).length;
+      
+      if (validSignalCount === 0) {
+        console.log(`No valid signals calculated for ${symbol}`);
+        toast({
+          title: "No Signals Generated",
+          description: `Unable to calculate signals for ${symbol}. Try selecting another cryptocurrency.`,
+          variant: "warning"
+        });
+      } else {
+        // Mark calculation as complete
+        console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
+        toast({
+          title: "Analysis Complete",
+          description: `Generated signals for ${symbol} across ${validSignalCount} timeframes.`,
+          variant: "default"
+        });
+      }
+      
       lastCalculationRef.current = Date.now();
       lastCalculationTimeRef.current = Date.now() / 1000;
       
