@@ -5,7 +5,14 @@ import { LeverageParams, LeverageResult } from '../types';
  * position sizing recommendations with take profit and stop loss levels
  */
 export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
-  const { positionSize, riskPercentage, entryPrice, stopLoss, takeProfit } = params;
+  // Set default values for optional parameters
+  const defaultRiskPercentage = 2;
+  const defaultPositionSize = 10000;
+  
+  const positionSize = params.positionSize || defaultPositionSize;
+  const riskPercentage = params.riskPercentage || defaultRiskPercentage;
+  const { entryPrice, stopLoss } = params;
+  const takeProfit = params.takeProfit || (entryPrice * 1.1); // Default 10% profit target
   
   // Calculate price change percentage to stop loss
   const priceChangePercentage = Math.abs((stopLoss - entryPrice) / entryPrice * 100);
@@ -109,7 +116,7 @@ export function calculateSafeLeverage(params: LeverageParams): LeverageResult {
   const recommendedPositionSize = fullPositionSizeUSD / entryPrice;
   
   return {
-    recommendedLeverage: safeLeverage.toFixed(1),
+    recommendedLeverage: safeLeverage, // Return as a number, not string
     maxLoss: riskAmount.toFixed(2),
     potentialProfit: potentialProfit.toFixed(2),
     riskRewardRatio,

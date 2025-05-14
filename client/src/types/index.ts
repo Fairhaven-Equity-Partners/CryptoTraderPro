@@ -59,15 +59,18 @@ export interface Alert {
 }
 
 export interface LeverageParams {
-  positionSize: number;
-  riskPercentage: number;
   entryPrice: number;
   stopLoss: number;
-  takeProfit: number;
+  accountBalance?: number;
+  maxLossPercentage?: number;
+  positionValue?: number;
+  takeProfit?: number;
+  riskPercentage?: number;
+  positionSize?: number;
 }
 
 export interface LeverageResult {
-  recommendedLeverage: string;
+  recommendedLeverage: number;
   maxLoss: string;
   potentialProfit: string;
   riskRewardRatio: string;

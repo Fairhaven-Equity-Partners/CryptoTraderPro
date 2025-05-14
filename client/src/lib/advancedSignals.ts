@@ -338,7 +338,7 @@ export function calculateTimeframeConfidence(
       const leverageResult = calculateSafeLeverage(riskParams);
       
       // Only use calculated leverage if it's a valid number
-      if (leverageResult && !isNaN(leverageResult.recommendedLeverage)) {
+      if (leverageResult && typeof leverageResult.recommendedLeverage === 'number' && !isNaN(leverageResult.recommendedLeverage)) {
         // Determine recommended leverage - default to 3x unless we have a higher confidence
         recommendedLeverage = confidence > 60 ? 
           Math.min(10, leverageResult.recommendedLeverage) : // Cap at 10x
