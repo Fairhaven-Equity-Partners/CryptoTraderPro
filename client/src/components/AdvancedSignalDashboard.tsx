@@ -401,17 +401,32 @@ export default function AdvancedSignalDashboard({
   
   // Set up automatic recalculation
   useEffect(() => {
+    // Auto-refresh interval (5 minutes = 300,000 ms)
+    const autoRefreshInterval = 300000;
+    
     // Clear any existing interval when component mounts or deps change
     if (recalcIntervalRef.current) {
       clearInterval(recalcIntervalRef.current);
     }
     
+    // Log setup of auto-refresh for user awareness
+    console.log(`Setting up auto-refresh for ${symbol} every ${autoRefreshInterval/60000} minutes`);
+    
     // Set up a new interval for recalculation
     recalcIntervalRef.current = setInterval(() => {
       if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
+        console.log(`Auto-refresh triggered for ${symbol}`);
+        
+        // Show toast notification to inform user of auto-refresh
+        toast({
+          title: "Auto-Refresh",
+          description: `Automatically refreshing signals for ${symbol}`,
+          variant: "default"
+        });
+        
         triggerCalculation('auto-interval');
       }
-    }, 60000); // 1 minute interval - increased to reduce server load
+    }, autoRefreshInterval); // 5 minute interval to reduce server load
     
     // Clean up interval on component unmount
     return () => {
@@ -505,6 +520,29 @@ export default function AdvancedSignalDashboard({
     if (score > 20) return 'text-orange-400';
     return 'text-rose-400';
   }, []);
+  
+  // Track time until next auto-refresh
+  const [nextRefreshIn, setNextRefreshIn] = useState<number>(300);
+  
+  // Update timer for next refresh
+  useEffect(() => {
+    // Reset timer when a calculation completes
+    if (!isCalculating) {
+      setNextRefreshIn(300); // Reset to 5 minutes (300 seconds)
+    }
+    
+    // Set up countdown timer
+    const timerInterval = setInterval(() => {
+      setNextRefreshIn(prevTime => {
+        if (prevTime <= 0) {
+          return 300; // Reset to 5 minutes when time is up
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+    
+    return () => clearInterval(timerInterval);
+  }, [isCalculating]);
   
   // Current signal based on selected timeframe
   const currentSignal = getCurrentSignal();
@@ -603,6 +641,10 @@ export default function AdvancedSignalDashboard({
             </>
           )}
         </Button>
+        
+        <div className="text-xs text-muted-foreground ml-2 mt-1">
+          Auto-refresh in: {Math.floor(nextRefreshIn / 60)}:{(nextRefreshIn % 60).toString().padStart(2, '0')}
+        </div>
       </div>
       
       <Tabs value={selectedTimeframe} onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}>
