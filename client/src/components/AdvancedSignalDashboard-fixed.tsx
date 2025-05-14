@@ -54,6 +54,7 @@ export default function AdvancedSignalDashboard({
   const [isCalculating, setIsCalculating] = useState(false);
   const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({} as any);
   const [recommendation, setRecommendation] = useState<any | null>(null);
+  const [nextRefreshIn, setNextRefreshIn] = useState<number>(300);
   
   // Refs to track calculation status
   const lastSymbolRef = useRef<string>(symbol);
@@ -80,12 +81,35 @@ export default function AdvancedSignalDashboard({
       - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
       - All data loaded: ${isAllDataLoaded}`);
     
-    // Don't calculate if already calculating, trigger already set, 
-    // or calculated recently (except for manual refresh)
+    // Always allow manual triggers to recalculate
+    if (trigger === 'manual' || trigger === 'timer') {
+      console.log(`${trigger} calculation requested for ${symbol}`);
+      calculationTriggeredRef.current = true;
+      
+      // Show toast for automatic refresh
+      if (trigger === 'timer') {
+        toast({
+          title: "Auto-Refresh",
+          description: `Automatically refreshing signals for ${symbol}`,
+          variant: "default"
+        });
+      }
+      
+      // Clear any pending calculation
+      if (calculationTimeoutRef.current) {
+        clearTimeout(calculationTimeoutRef.current);
+      }
+      
+      // Force a direct calculation
+      calculateAllSignals();
+      return;
+    }
+    
+    // For automated triggers, enforce throttling rules
     if (
       calculationTriggeredRef.current || 
       isCalculating || 
-      (timeSinceLastCalc < 30 && trigger !== 'manual') || 
+      (timeSinceLastCalc < 30) || 
       !isAllDataLoaded
     ) {
       return;
@@ -104,7 +128,7 @@ export default function AdvancedSignalDashboard({
       calculateAllSignals();
     }, 1000);
     
-  }, [symbol, isCalculating, isAllDataLoaded]);
+  }, [symbol, isCalculating, isAllDataLoaded, toast]);
 
   // Each time data is loaded or symbol changes, trigger calculation if not already done
   useEffect(() => {
@@ -138,10 +162,37 @@ export default function AdvancedSignalDashboard({
     }
   }, [symbol, isAllDataLoaded, isCalculating, chartData, triggerCalculation]);
   
+  // Update timer for next refresh
+  useEffect(() => {
+    // Reset timer when a calculation completes
+    if (!isCalculating) {
+      setNextRefreshIn(300); // Reset to 5 minutes (300 seconds)
+    }
+    
+    // Set up countdown timer
+    const timerInterval = setInterval(() => {
+      setNextRefreshIn(prevTime => {
+        if (prevTime <= 0) {
+          // Actually trigger the refresh when countdown reaches zero
+          console.log("Refresh timer reached zero, triggering calculation");
+          triggerCalculation('timer');
+          return 300; // Reset to 5 minutes when time is up
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+    
+    return () => clearInterval(timerInterval);
+  }, [isCalculating, triggerCalculation]);
+
   // Calculate signals for all timeframes
   const calculateAllSignals = async () => {
-    if (!isAllDataLoaded || isCalculating) {
-      console.log(`Calculation skipped - Data loaded: ${isAllDataLoaded}, Currently calculating: ${isCalculating}`);
+    // Force clear any current signals when recalculating
+    setSignals({} as any);
+    
+    // Skip if calculation is already in progress
+    if (isCalculating) {
+      console.log(`Calculation skipped - Currently calculating: ${isCalculating}`);
       return;
     }
     
@@ -149,10 +200,17 @@ export default function AdvancedSignalDashboard({
     const hasAnyData = Object.keys(chartData).length > 0;
     if (!hasAnyData) {
       console.log(`No chart data available for ${symbol}, skipping calculation`);
+      // Set an empty message for the user
+      toast({
+        title: `No data for ${symbol}`,
+        description: "Unable to calculate signals without chart data.",
+        variant: "destructive"
+      });
       return;
     }
     
-    console.log(`Executing calculation for ${symbol} after delay`);
+    // Start calculating
+    console.log(`Executing calculation for ${symbol}`);
     setIsCalculating(true);
     
     try {
@@ -338,8 +396,26 @@ export default function AdvancedSignalDashboard({
         console.error("Error generating recommendation:", error);
       }
       
-      // Mark calculation as complete
-      console.log(`Calculation process complete for ${symbol}`);
+      // Verify we have valid signals to display
+      const validSignalCount = Object.values(newSignals).filter(Boolean).length;
+      
+      if (validSignalCount === 0) {
+        console.log(`No valid signals calculated for ${symbol}`);
+        toast({
+          title: "No Signals Generated",
+          description: `Unable to calculate signals for ${symbol}. Try selecting another cryptocurrency.`,
+          variant: "destructive"
+        });
+      } else {
+        // Mark calculation as complete
+        console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
+        toast({
+          title: "Analysis Complete",
+          description: `Generated signals for ${symbol} across ${validSignalCount} timeframes.`,
+          variant: "default"
+        });
+      }
+      
       lastCalculationRef.current = Date.now();
       lastCalculationTimeRef.current = Date.now() / 1000;
       
@@ -356,109 +432,102 @@ export default function AdvancedSignalDashboard({
     }
   };
   
-  // Set up automatic recalculation
-  useEffect(() => {
-    // Clear any existing interval when component mounts or deps change
-    if (recalcIntervalRef.current) {
-      clearInterval(recalcIntervalRef.current);
-    }
-    
-    // Set up a new interval for recalculation
-    recalcIntervalRef.current = setInterval(() => {
-      if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
-        triggerCalculation('auto-interval');
-      }
-    }, 60000); // 1 minute interval - increased to reduce server load
-    
-    // Clean up interval on component unmount
-    return () => {
-      if (recalcIntervalRef.current) {
-        clearInterval(recalcIntervalRef.current);
-      }
-      
-      if (calculationTimeoutRef.current) {
-        clearTimeout(calculationTimeoutRef.current);
-      }
-    };
-  }, [isAllDataLoaded, triggerCalculation, isCalculating]);
-  
   // Handle timeframe selection
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
     
-    // No need to recalculate signals on timeframe selection - they should already be
-    // calculated as part of the main calculation process
-    
+    // If the outer component wants to be notified of selection changes
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
   }, [onTimeframeSelect]);
   
-  // Function to get a signal for the current timeframe
+  // Get the current signal based on selected timeframe
   const getCurrentSignal = useCallback(() => {
-    return signals[selectedTimeframe] || null;
+    if (signals && selectedTimeframe && signals[selectedTimeframe]) {
+      return signals[selectedTimeframe];
+    }
+    return null;
   }, [signals, selectedTimeframe]);
   
-  // Get the background color for the signal card based on direction
-  const getSignalBgClass = useCallback((direction: 'LONG' | 'SHORT' | 'NEUTRAL') => {
-    switch (direction) {
-      case 'LONG':
-        return 'bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20';
-      case 'SHORT':
-        return 'bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/20 dark:to-rose-800/20';
-      default:
-        return 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900/20 dark:to-gray-800/20';
+  // Update recommendation when timeframe changes
+  useEffect(() => {
+    // If we have signals, try to create a new recommendation focused on the selected timeframe
+    if (Object.keys(signals).length > 0 && signals[selectedTimeframe]) {
+      console.log(`Updating trade recommendation for ${selectedTimeframe} timeframe`);
+      
+      // Get all valid signals
+      const validSignals = Object.values(signals).filter(Boolean) as AdvancedSignal[];
+      
+      // Make selected timeframe the primary focus
+      const primarySignal = signals[selectedTimeframe];
+      
+      if (primarySignal && validSignals.length > 0) {
+        // Create a custom recommendation that prioritizes the selected timeframe
+        const customRecommendation = {
+          symbol: symbol,
+          direction: primarySignal.direction,
+          confidence: primarySignal.confidence, 
+          timeframeSummary: validSignals.map(s => ({
+            timeframe: s.timeframe,
+            confidence: s.confidence,
+            direction: s.direction
+          })),
+          entry: {
+            ideal: primarySignal.entryPrice,
+            range: [primarySignal.entryPrice * 0.98, primarySignal.entryPrice * 1.02]
+          },
+          exit: {
+            takeProfit: [
+              primarySignal.takeProfit,
+              primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.05 : 0.95),
+              primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.1 : 0.9)
+            ],
+            stopLoss: primarySignal.stopLoss,
+            trailingStopActivation: primarySignal.direction === 'LONG' ? 
+              primarySignal.entryPrice * 1.03 : 
+              primarySignal.entryPrice * 0.97,
+            trailingStopPercent: 2
+          },
+          leverage: {
+            conservative: Math.max(1, primarySignal.recommendedLeverage - 1),
+            moderate: primarySignal.recommendedLeverage,
+            aggressive: Math.min(10, primarySignal.recommendedLeverage + 2),
+            recommendation: `Use ${primarySignal.recommendedLeverage}x leverage based on the ${selectedTimeframe} timeframe.`
+          },
+          riskManagement: {
+            positionSizeRecommendation: "Risk no more than 1-2% of your account per trade.",
+            maxRiskPercentage: 2,
+            potentialRiskReward: primarySignal.optimalRiskReward,
+            winProbability: primarySignal.confidence / 100
+          },
+          keyIndicators: [
+            `${selectedTimeframe} Trend: ${primarySignal.direction}`,
+            `${selectedTimeframe} Confidence: ${primarySignal.confidence}%`,
+            `Recommended Leverage: ${primarySignal.recommendedLeverage}x`,
+            `Risk/Reward: ${primarySignal.optimalRiskReward.toFixed(2)}`,
+            `Macro Score: ${primarySignal.macroScore}%`
+          ],
+          summary: `${selectedTimeframe} timeframe shows a ${primarySignal.direction} signal with ${primarySignal.confidence}% confidence.`
+        };
+        
+        setRecommendation(customRecommendation);
+      }
     }
+  }, [selectedTimeframe, signals, symbol]);
+  
+  // Function to get the background color for the signal card
+  const getSignalBgClass = useCallback((direction: string) => {
+    if (direction === 'LONG') return 'bg-emerald-500/5 border-emerald-500/20';
+    if (direction === 'SHORT') return 'bg-rose-500/5 border-rose-500/20';
+    return 'bg-slate-500/5 border-slate-500/20';
   }, []);
   
-  // Get the direction icon
-  const getDirectionIcon = useCallback((direction: 'LONG' | 'SHORT' | 'NEUTRAL') => {
-    switch (direction) {
-      case 'LONG':
-        return <ArrowUpRight className="h-5 w-5 text-emerald-500" />;
-      case 'SHORT':
-        return <ArrowDownRight className="h-5 w-5 text-rose-500" />;
-      default:
-        return <Minus className="h-5 w-5 text-gray-500" />;
-    }
-  }, []);
-  
-  // Get confidence level display
-  const getConfidenceBadge = useCallback((confidence: number, direction: 'LONG' | 'SHORT' | 'NEUTRAL') => {
-    let colorClass = 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100';
-    
-    if (confidence > 80) {
-      colorClass = direction === 'LONG' 
-        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-800 dark:text-emerald-100'
-        : direction === 'SHORT'
-          ? 'bg-rose-100 text-rose-800 dark:bg-rose-800 dark:text-rose-100'
-          : colorClass;
-    } else if (confidence > 60) {
-      colorClass = direction === 'LONG' 
-        ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-200'
-        : direction === 'SHORT'
-          ? 'bg-rose-50 text-rose-700 dark:bg-rose-900 dark:text-rose-200'
-          : colorClass;
-    } else if (confidence > 40) {
-      colorClass = direction === 'LONG' 
-        ? 'bg-blue-50 text-blue-700 dark:bg-blue-900 dark:text-blue-200'
-        : direction === 'SHORT'
-          ? 'bg-orange-50 text-orange-700 dark:bg-orange-900 dark:text-orange-200'
-          : colorClass;
-    }
-    
-    return (
-      <Badge variant="outline" className={`ml-2 ${colorClass}`}>
-        {confidence}% {direction}
-      </Badge>
-    );
-  }, []);
-  
-  // Get a color class for a category score
-  const getCategoryScoreClass = useCallback((score: number) => {
-    if (score > 80) return 'text-emerald-500';
-    if (score > 60) return 'text-emerald-400';
-    if (score > 40) return 'text-blue-400';
+  // Function to get the color for the confidence score
+  const getConfidenceColor = useCallback((score: number) => {
+    if (score > 80) return 'text-emerald-400';
+    if (score > 60) return 'text-lime-400';
+    if (score > 40) return 'text-amber-400';
     if (score > 20) return 'text-orange-400';
     return 'text-rose-400';
   }, []);
@@ -494,32 +563,36 @@ export default function AdvancedSignalDashboard({
             </>
           )}
         </Button>
+        
+        <div className="text-xs text-muted-foreground ml-2 mt-1">
+          Auto-refresh in: {Math.floor(nextRefreshIn / 60)}:{(nextRefreshIn % 60).toString().padStart(2, '0')}
+        </div>
       </div>
       
-      <TabsList className="flex flex-wrap h-auto justify-start space-x-1 mb-4">
-        {timeframes.map((tf) => (
-          <TabsTrigger
-            key={tf}
-            value={tf}
-            onClick={() => handleTimeframeSelect(tf)}
-            className={`${selectedTimeframe === tf ? 'font-bold' : ''} relative`}
-            data-selected={selectedTimeframe === tf}
-          >
-            {tf}
-            {signals[tf] && (
-              <span 
-                className={`absolute -top-1 -right-1 w-2 h-2 rounded-full ${
-                  signals[tf]?.direction === 'LONG' 
-                    ? 'bg-emerald-500' 
-                    : signals[tf]?.direction === 'SHORT' 
-                      ? 'bg-rose-500' 
-                      : 'bg-gray-400'
-                }`}
-              />
-            )}
-          </TabsTrigger>
-        ))}
-      </TabsList>
+      <Tabs value={selectedTimeframe} onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}>
+        <TabsList className="flex flex-wrap h-auto justify-start space-x-1 mb-4">
+          {timeframes.map((tf) => (
+            <TabsTrigger
+              key={tf}
+              value={tf}
+              className="relative"
+            >
+              {tf}
+              {signals[tf] && (
+                <span 
+                  className={`absolute -top-1 -right-1 w-2 h-2 rounded-full ${
+                    signals[tf]?.direction === 'LONG' 
+                      ? 'bg-emerald-500' 
+                      : signals[tf]?.direction === 'SHORT' 
+                        ? 'bg-rose-500' 
+                        : 'bg-gray-400'
+                  }`}
+                />
+              )}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Signal Card */}
@@ -527,103 +600,99 @@ export default function AdvancedSignalDashboard({
           <CardHeader>
             <CardTitle className="flex justify-between items-center">
               <span>{selectedTimeframe} Signal</span>
-              {currentSignal && getDirectionIcon(currentSignal.direction)}
+              {currentSignal && (
+                currentSignal.direction === 'LONG' ? <TrendingUp className="h-5 w-5 text-emerald-500" /> : 
+                currentSignal.direction === 'SHORT' ? <TrendingDown className="h-5 w-5 text-rose-500" /> :
+                <Minus className="h-5 w-5 text-slate-500" />
+              )}
             </CardTitle>
             <CardDescription>
               Technical analysis for {symbol} on {selectedTimeframe} timeframe
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {isCalculating ? (
-              <div className="flex items-center justify-center h-32">
-                <div className="text-center">
-                  <RefreshCcw className="h-8 w-8 mx-auto mb-2 animate-spin text-primary/70" />
-                  <p>Calculating signals...</p>
+          <CardContent>
+            {currentSignal ? (
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="text-sm font-medium">Direction</div>
+                    <div className={`text-lg font-bold ${
+                      currentSignal.direction === 'LONG' ? 'text-emerald-500' : 
+                      currentSignal.direction === 'SHORT' ? 'text-rose-500' : 
+                      'text-slate-500'
+                    }`}>
+                      {currentSignal.direction}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium">Confidence</div>
+                    <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.confidence)}`}>
+                      {currentSignal.confidence}%
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <div className="text-sm font-medium">Macro Score</div>
+                    <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.macroScore)}`}>
+                      {currentSignal.macroScore}%
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Entry Price</span>
+                    <span className="font-medium">{formatCurrency(currentSignal.entryPrice)}</span>
+                  </div>
+                  
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Take Profit</span>
+                    <span className="font-medium text-emerald-500">{formatCurrency(currentSignal.takeProfit)}</span>
+                  </div>
+                  
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Stop Loss</span>
+                    <span className="font-medium text-rose-500">{formatCurrency(currentSignal.stopLoss)}</span>
+                  </div>
+                  
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Risk/Reward</span>
+                    <span className="font-medium">{currentSignal.optimalRiskReward.toFixed(2)}</span>
+                  </div>
+                  
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Recommended Leverage</span>
+                    <span className="font-medium">{currentSignal.recommendedLeverage}x</span>
+                  </div>
+                </div>
+                
+                <div className="pt-2">
+                  <div className="text-sm font-medium mb-1">Key Indicators</div>
+                  <div className="flex flex-wrap gap-1">
+                    {Object.entries(currentSignal.indicators).flatMap(([category, items]) => 
+                      items.map((indicator: any, i: number) => (
+                        <Badge 
+                          key={`${category}-${i}`} 
+                          variant="outline" 
+                          className={`
+                            ${indicator.signal === 'BUY' ? 'text-emerald-500 border-emerald-500/20' : 
+                              indicator.signal === 'SELL' ? 'text-rose-500 border-rose-500/20' : 
+                                'text-slate-500 border-slate-500/20'}
+                            ${indicator.strength === 'STRONG' ? 'font-medium' : 'font-normal'}
+                          `}
+                        >
+                          {indicator.signal}
+                        </Badge>
+                      ))
+                    )}
+                  </div>
                 </div>
               </div>
-            ) : currentSignal ? (
-              <>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Signal Direction:</span>
-                    <span className="flex items-center">
-                      {currentSignal.direction}
-                      {getConfidenceBadge(currentSignal.confidence, currentSignal.direction)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Entry Price:</span>
-                    <span>{formatCurrency(currentSignal.entryPrice)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Stop Loss:</span>
-                    <span>{formatCurrency(currentSignal.stopLoss)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Take Profit:</span>
-                    <span>{formatCurrency(currentSignal.takeProfit)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Rec. Leverage:</span>
-                    <span>{currentSignal.recommendedLeverage}x</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Risk/Reward:</span>
-                    <span>{currentSignal.optimalRiskReward.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="font-semibold">Macro Score:</span>
-                    <span>{currentSignal.macroScore}%</span>
-                  </div>
-                </div>
-                
-                <Separator />
-                
-                <div>
-                  <h4 className="font-semibold mb-2">Indicator Categories</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between items-center">
-                      <span>Trend</span>
-                      <span className={getCategoryScoreClass(Math.random() * 100)}>
-                        {Math.floor(Math.random() * 100)}%
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Momentum</span>
-                      <span className={getCategoryScoreClass(Math.random() * 100)}>
-                        {Math.floor(Math.random() * 100)}%
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Volatility</span>
-                      <span className={getCategoryScoreClass(Math.random() * 100)}>
-                        {Math.floor(Math.random() * 100)}%
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Volume</span>
-                      <span className={getCategoryScoreClass(Math.random() * 100)}>
-                        {Math.floor(Math.random() * 100)}%
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span>Pattern</span>
-                      <span className={getCategoryScoreClass(Math.random() * 100)}>
-                        {Math.floor(Math.random() * 100)}%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </>
             ) : (
-              <div className="flex items-center justify-center h-32">
-                <div className="text-center">
-                  <AlertTriangle className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                  <p>No signal data available for {selectedTimeframe}</p>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Try selecting a different timeframe or refresh
-                  </p>
-                </div>
+              <div className="h-32 flex flex-col items-center justify-center text-muted-foreground text-center">
+                <span>No signal data available for {selectedTimeframe}</span>
+                <span className="text-sm mt-2">Try selecting a different timeframe or refresh</span>
               </div>
             )}
           </CardContent>
@@ -634,47 +703,45 @@ export default function AdvancedSignalDashboard({
           <CardHeader>
             <CardTitle className="flex justify-between items-center">
               <span>Pattern Formations</span>
-              <Target className="h-5 w-5 text-primary/70" />
+              <Info className="h-5 w-5 text-primary/70" />
             </CardTitle>
             <CardDescription>
               Chart patterns identified in the {selectedTimeframe} timeframe
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {isCalculating ? (
-              <div className="flex items-center justify-center h-32">
-                <RefreshCcw className="h-8 w-8 animate-spin text-primary/70" />
-              </div>
-            ) : currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
-              <>
-                {currentSignal.patternFormations.map((pattern, index) => (
-                  <div key={index} className="space-y-2 p-3 rounded-md bg-slate-50 dark:bg-slate-900">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold">{pattern.name}</span>
-                      <Badge variant={pattern.direction === 'bullish' ? 'default' : 'destructive'}>
+          <CardContent>
+            {currentSignal && currentSignal.patternFormations && currentSignal.patternFormations.length > 0 ? (
+              <div className="space-y-3">
+                {currentSignal.patternFormations.map((pattern, i) => (
+                  <div key={i} className="space-y-1">
+                    <div className="flex justify-between">
+                      <span className="font-medium">{pattern.name}</span>
+                      <Badge 
+                        variant="outline"
+                        className={`
+                          ${pattern.direction === 'bullish' ? 'text-emerald-500 border-emerald-500/20' : 
+                            pattern.direction === 'bearish' ? 'text-rose-500 border-rose-500/20' : 
+                              'text-slate-500 border-slate-500/20'}
+                        `}
+                      >
                         {pattern.direction}
                       </Badge>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Reliability:</span>
+                      <span className="text-muted-foreground">Reliability</span>
                       <span>{pattern.reliability}%</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Target Price:</span>
+                      <span className="text-muted-foreground">Target</span>
                       <span>{formatCurrency(pattern.priceTarget)}</span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {pattern.description}
-                    </p>
+                    <div className="text-sm text-muted-foreground mt-1">{pattern.description}</div>
                   </div>
                 ))}
-              </>
+              </div>
             ) : (
-              <div className="flex items-center justify-center h-32">
-                <div className="text-center">
-                  <Info className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                  <p>No pattern formations detected</p>
-                </div>
+              <div className="h-32 flex items-center justify-center text-muted-foreground">
+                No pattern formations detected
               </div>
             )}
           </CardContent>
@@ -691,48 +758,35 @@ export default function AdvancedSignalDashboard({
               Key price levels for {symbol}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {isCalculating ? (
-              <div className="flex items-center justify-center h-32">
-                <RefreshCcw className="h-8 w-8 animate-spin text-primary/70" />
-              </div>
-            ) : currentSignal?.supportResistance && currentSignal.supportResistance.length > 0 ? (
-              <>
-                {currentSignal.supportResistance
-                  .sort((a, b) => b.price - a.price) // Sort by price descending
-                  .map((level, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <div className="flex items-center">
-                        <Badge 
-                          variant="outline" 
-                          className={level.type === 'resistance' ? 
-                            'bg-rose-50 text-rose-700 dark:bg-rose-900/30 dark:text-rose-200' : 
-                            'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-200'
-                          }
-                        >
-                          {level.type}
-                        </Badge>
-                        <div className="ml-2 w-16 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full ${
-                              level.type === 'resistance' ? 'bg-rose-400' : 'bg-emerald-400'
-                            }`}
-                            style={{ width: `${level.strength}%` }}
-                          />
-                        </div>
+          <CardContent>
+            {currentSignal && currentSignal.supportResistance && currentSignal.supportResistance.length > 0 ? (
+              <div className="space-y-3">
+                {currentSignal.supportResistance.map((level, i) => (
+                  <div key={i} className="flex justify-between items-center">
+                    <div>
+                      <Badge 
+                        variant="outline"
+                        className={level.type === 'support' ? 
+                          'text-emerald-500 border-emerald-500/20' : 
+                          'text-rose-500 border-rose-500/20'
+                        }
+                      >
+                        {level.type}
+                      </Badge>
+                      <div className="text-sm mt-1">
+                        <span className="text-muted-foreground mr-2">Strength:</span>
+                        <span>{level.strength}%</span>
                       </div>
-                      <span className="font-mono">
-                        {formatCurrency(level.price)}
-                      </span>
                     </div>
+                    <div className="text-lg font-bold">
+                      {formatCurrency(level.price)}
+                    </div>
+                  </div>
                 ))}
-              </>
+              </div>
             ) : (
-              <div className="flex items-center justify-center h-32">
-                <div className="text-center">
-                  <Info className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                  <p>No key levels detected</p>
-                </div>
+              <div className="h-32 flex items-center justify-center text-muted-foreground">
+                No key levels detected
               </div>
             )}
           </CardContent>
@@ -743,11 +797,11 @@ export default function AdvancedSignalDashboard({
       <Card className="mt-4">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <span>Trade Recommendation</span>
+            <span>Trade Recommendation ({selectedTimeframe})</span>
             <BarChart2 className="h-5 w-5 text-primary/70" />
           </CardTitle>
           <CardDescription>
-            Comprehensive analysis across all timeframes for {symbol}
+            Analysis focused on the {selectedTimeframe} timeframe for {symbol}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -756,119 +810,112 @@ export default function AdvancedSignalDashboard({
               <RefreshCcw className="h-8 w-8 animate-spin text-primary/70" />
             </div>
           ) : recommendation ? (
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                <div>
-                  <h3 className="text-lg font-semibold flex items-center">
-                    {recommendation.direction} Position
-                    {getConfidenceBadge(recommendation.confidence, recommendation.direction)}
-                  </h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {recommendation.summary}
-                  </p>
+            <div className="space-y-5">
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Direction</div>
+                  <div className={`text-lg font-bold ${
+                    recommendation.direction === 'LONG' ? 'text-emerald-500' : 
+                    recommendation.direction === 'SHORT' ? 'text-rose-500' : 
+                    'text-slate-500'
+                  }`}>
+                    {recommendation.direction}
+                  </div>
                 </div>
                 
-                <div className="flex space-x-2">
-                  {recommendation.keyIndicators.slice(0, 3).map((indicator, i) => (
-                    <Badge key={i} variant="outline">
-                      {indicator}
-                    </Badge>
-                  ))}
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Confidence</div>
+                  <div className={`text-lg font-bold ${getConfidenceColor(recommendation.confidence)}`}>
+                    {recommendation.confidence}%
+                  </div>
+                </div>
+                
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Risk/Reward</div>
+                  <div className="text-lg font-bold">
+                    {recommendation.riskManagement.potentialRiskReward.toFixed(2)}
+                  </div>
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-sm">Entry Strategy</h4>
-                  <div className="space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span>Ideal Entry:</span>
-                      <span className="font-mono">{formatCurrency(recommendation.entry.ideal)}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Entry Strategy</h4>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Ideal Entry</span>
+                      <span className="font-medium">{formatCurrency(recommendation.entry.ideal)}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Entry Range:</span>
-                      <span className="font-mono">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Entry Range</span>
+                      <span className="font-medium">
                         {formatCurrency(recommendation.entry.range[0])} - {formatCurrency(recommendation.entry.range[1])}
                       </span>
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-sm">Exit Strategy</h4>
-                  <div className="space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span>Stop Loss:</span>
-                      <span className="font-mono">{formatCurrency(recommendation.exit.stopLoss)}</span>
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Exit Strategy</h4>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Take Profit Levels</span>
+                      <div className="text-right">
+                        {recommendation.exit.takeProfit.map((tp: number, i: number) => (
+                          <div key={i} className="font-medium text-emerald-500">
+                            TP{i+1}: {formatCurrency(tp)}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Take Profit 1:</span>
-                      <span className="font-mono">{formatCurrency(recommendation.exit.takeProfit[0])}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Take Profit 2:</span>
-                      <span className="font-mono">{formatCurrency(recommendation.exit.takeProfit[1])}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Take Profit 3:</span>
-                      <span className="font-mono">{formatCurrency(recommendation.exit.takeProfit[2])}</span>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-sm">Risk Management</h4>
-                  <div className="space-y-1 text-sm">
-                    <div className="flex justify-between">
-                      <span>Conservative Leverage:</span>
-                      <span>{recommendation.leverage.conservative}x</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Moderate Leverage:</span>
-                      <span>{recommendation.leverage.moderate}x</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Aggressive Leverage:</span>
-                      <span>{recommendation.leverage.aggressive}x</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Risk/Reward Ratio:</span>
-                      <span>{recommendation.riskManagement.potentialRiskReward.toFixed(1)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Win Probability:</span>
-                      <span>{Math.round(recommendation.riskManagement.winProbability * 100)}%</span>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Stop Loss</span>
+                      <span className="font-medium text-rose-500">{formatCurrency(recommendation.exit.stopLoss)}</span>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div className="mt-4 text-sm bg-slate-50 dark:bg-slate-900 p-3 rounded-md">
-                <h4 className="font-semibold mb-2">Timeframe Analysis</h4>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-2">
-                  {recommendation.timeframeSummary.map((tf, i) => (
-                    <div key={i} className="flex justify-between items-center">
-                      <span>{tf.timeframe}:</span>
-                      <span className={
-                        tf.direction === 'LONG' ? 'text-emerald-500' : 
-                        tf.direction === 'SHORT' ? 'text-rose-500' : 'text-gray-500'
-                      }>
-                        {tf.direction} {tf.confidence}%
-                      </span>
+              <div>
+                <h4 className="text-sm font-medium mb-2">Leverage Recommendation</h4>
+                <div className="grid grid-cols-3 gap-2 mb-1">
+                  <div className="text-center p-1 bg-slate-100 dark:bg-slate-800 rounded">
+                    <div className="text-xs text-muted-foreground">Conservative</div>
+                    <div className="font-medium">{recommendation.leverage.conservative}x</div>
+                  </div>
+                  <div className="text-center p-1 bg-primary/10 rounded border border-primary/20">
+                    <div className="text-xs text-muted-foreground">Recommended</div>
+                    <div className="font-medium">{recommendation.leverage.moderate}x</div>
+                  </div>
+                  <div className="text-center p-1 bg-slate-100 dark:bg-slate-800 rounded">
+                    <div className="text-xs text-muted-foreground">Aggressive</div>
+                    <div className="font-medium">{recommendation.leverage.aggressive}x</div>
+                  </div>
+                </div>
+                <div className="text-sm text-muted-foreground">{recommendation.leverage.recommendation}</div>
+              </div>
+              
+              <div>
+                <h4 className="text-sm font-medium mb-2">Key Indicators</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+                  {recommendation.keyIndicators.map((indicator: string, i: number) => (
+                    <div key={i} className="flex items-center">
+                      <Target className="h-3 w-3 mr-2 text-primary/70" />
+                      <span className="text-sm">{indicator}</span>
                     </div>
                   ))}
                 </div>
               </div>
+              
+              <div>
+                <h4 className="text-sm font-medium mb-1">Summary</h4>
+                <p className="text-sm text-muted-foreground">{recommendation.summary}</p>
+              </div>
             </div>
           ) : (
-            <div className="flex items-center justify-center h-32">
-              <div className="text-center">
-                <AlertTriangle className="h-8 w-8 mx-auto mb-2 text-gray-400" />
-                <p>No trade recommendation available</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Waiting for signal analysis to complete
-                </p>
-              </div>
+            <div className="h-32 flex flex-col items-center justify-center text-muted-foreground text-center">
+              <span>No trade recommendation available</span>
+              <span className="text-sm mt-1">Waiting for signal analysis to complete</span>
             </div>
           )}
         </CardContent>
