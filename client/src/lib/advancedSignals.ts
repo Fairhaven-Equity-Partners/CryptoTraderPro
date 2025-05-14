@@ -133,7 +133,7 @@ function formatPrice(price: number, symbol: string): string {
   return formatPriceUtil(price, symbol);
 }
 
-// Helper functions that might be needed by the simplified version
+// Helper functions
 function detectMarketEnvironment(chartData: ChartData[], timeframe: TimeFrame) {
   return {
     volatility: 'medium',
@@ -175,86 +175,11 @@ function getEnvironmentScore(environment: any): number {
   return 50;
 }
 
-// Generate a trade recommendation based on signals from multiple timeframes
-export function generateTradeRecommendation(
-  symbol: string,
-  signals: AdvancedSignal[]
-): TradeRecommendation {
-  // Basic validation
-  if (!signals || signals.length === 0) {
-    throw new Error('No signals provided for recommendation');
-  }
-  
-  console.log(`Generating trade recommendation for ${symbol} with ${signals.length} signals`);
-  
-  // Calculate overall direction and confidence
-  let longCount = 0;
-  let shortCount = 0;
-  let totalConfidence = 0;
-  
-  // Get the last signal for entry price
-  const lastSignal = signals[signals.length - 1];
-  const entryPrice = lastSignal.entryPrice;
-  
-  signals.forEach(signal => {
-    if (signal.direction === 'LONG') longCount++;
-    if (signal.direction === 'SHORT') shortCount++;
-    totalConfidence += signal.confidence;
-  });
-  
-  const avgConfidence = totalConfidence / signals.length;
-  
-  let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
-  if (longCount > shortCount) {
-    direction = 'LONG';
-  } else if (shortCount > longCount) {
-    direction = 'SHORT';
-  }
-  
-  // Calculate risk range
-  const atr = lastSignal.stopLoss ? Math.abs(lastSignal.entryPrice - lastSignal.stopLoss) : entryPrice * 0.02;
-  
-  // Generate the recommendation
-  return {
-    symbol,
-    direction,
-    confidence: avgConfidence,
-    timeframeSummary: signals.map(s => ({
-      timeframe: s.timeframe,
-      confidence: s.confidence,
-      direction: s.direction
-    })),
-    entry: {
-      ideal: entryPrice,
-      range: [entryPrice * 0.98, entryPrice * 1.02] // 2% range
-    },
-    exit: {
-      takeProfit: [
-        direction === 'LONG' ? entryPrice * 1.05 : entryPrice * 0.95,
-        direction === 'LONG' ? entryPrice * 1.1 : entryPrice * 0.9
-      ],
-      stopLoss: direction === 'LONG' ? entryPrice * 0.97 : entryPrice * 1.03,
-      trailingStopActivation: direction === 'LONG' ? entryPrice * 1.03 : entryPrice * 0.97,
-      trailingStopPercent: 1.5
-    },
-    leverage: {
-      conservative: 2,
-      moderate: 5,
-      aggressive: 10,
-      recommendation: 'Start with conservative leverage for better risk management.'
-    },
-    riskManagement: {
-      positionSizeRecommendation: '1-2% of total capital',
-      maxRiskPercentage: 1,
-      potentialRiskReward: 2.5,
-      winProbability: avgConfidence / 100
-    },
-    keyIndicators: ['Simplified trade recommendation for debugging'],
-    summary: `${direction} signal with ${avgConfidence.toFixed(1)}% confidence across ${signals.length} timeframes.`
-  };
+function detectChartPatterns(chartData: ChartData[], symbol: string): PatternFormation[] {
+  return [];
 }
 
-// A very simplified version of the calculate function for debugging
+// Calculate confidence score for a specific timeframe
 export function calculateTimeframeConfidence(
   chartData: ChartData[],
   timeframe: TimeFrame,
@@ -276,6 +201,9 @@ export function calculateTimeframeConfidence(
     // Basic calculations
     const lastCandle = chartData[chartData.length - 1];
     const lastPrice = lastCandle.close;
+    
+    // Environment and indicators
+    const environment = detectMarketEnvironment(chartData, timeframe);
     const calculatedIndicators = indicators.analyzeIndicators(chartData);
     
     // Get categories
@@ -287,25 +215,64 @@ export function calculateTimeframeConfidence(
       pattern: calculatedIndicators.filter(i => i.category === 'PATTERN')
     };
     
-    // Simple direction calculation
-    let buys = 0;
-    let sells = 0;
+    // Calculate category scores
+    const scores = {
+      trend: calculateCategoryScore(categorizedIndicators.trend),
+      momentum: calculateCategoryScore(categorizedIndicators.momentum),
+      volatility: calculateCategoryScore(categorizedIndicators.volatility),
+      volume: calculateCategoryScore(categorizedIndicators.volume),
+      pattern: calculateCategoryScore(categorizedIndicators.pattern)
+    };
     
-    calculatedIndicators.forEach(indicator => {
-      if (indicator.signal === 'BUY') buys++;
-      if (indicator.signal === 'SELL') sells++;
-    });
+    // Detect support and resistance levels
+    const levels = detectSupportResistanceLevels(chartData, lastPrice);
+    const levelsScore = calculateLevelsScore(levels, lastPrice);
     
-    let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
-    let confidence = 50;
+    // Detect chart patterns
+    const patterns = detectChartPatterns(chartData, symbol);
     
-    if (buys > sells && buys > calculatedIndicators.length / 3) {
-      direction = 'LONG';
-      confidence = Math.min(100, 50 + buys * 5);
-    } else if (sells > buys && sells > calculatedIndicators.length / 3) {
-      direction = 'SHORT';
-      confidence = Math.min(100, 50 + sells * 5);
+    // Calculate weighted score and direction
+    let totalScore = 0;
+    let totalWeight = 0;
+    
+    for (const [category, score] of Object.entries(scores)) {
+      const weight = weights[category as keyof SignalWeights] || 0;
+      totalScore += score.value * weight;
+      totalWeight += weight;
     }
+    
+    // Add environment score
+    const environmentScore = getEnvironmentScore(environment);
+    totalScore += environmentScore * weights.marketCondition;
+    totalWeight += weights.marketCondition;
+    
+    // Add levels score
+    totalScore += levelsScore * weights.supportResistance;
+    totalWeight += weights.supportResistance;
+    
+    // Include macro score if available
+    const macroData = getMacroIndicators();
+    const macroScore = macroData.economicHealth;
+    const macroClass = getMacroEnvironmentClassification(macroData);
+    const macroInsights = getMacroInsights(macroData);
+    
+    totalScore += macroScore * weights.macroeconomic;
+    totalWeight += weights.macroeconomic;
+    
+    // Calculate final normalized score (0-100)
+    const finalScore = totalWeight > 0 ? totalScore / totalWeight : 50;
+    
+    // Determine direction
+    let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
+    
+    if (finalScore >= 60) {
+      direction = 'LONG';
+    } else if (finalScore <= 40) {
+      direction = 'SHORT';
+    }
+    
+    // Set confidence based on distance from neutral
+    const confidence = Math.round(Math.abs(finalScore - 50) * 2);
     
     // Simple price levels
     const atr = indicators.calculateATR(chartData, 14);
@@ -318,6 +285,42 @@ export function calculateTimeframeConfidence(
       lastPrice + (atr * 3) :
       lastPrice - (atr * 3);
     
+    // Calculate predicted movement
+    const volatility = atr / lastPrice * 100;
+    const predictedPercent = direction === 'NEUTRAL' ? 
+      volatility * 0.5 : 
+      volatility * (confidence / 50);
+    
+    // Estimate time based on timeframe
+    let timeEstimate: string;
+    
+    switch(timeframe) {
+      case '1m':
+      case '5m':
+      case '15m':
+        timeEstimate = '1-4 hours';
+        break;
+      case '30m':
+      case '1h':
+        timeEstimate = '1-2 days';
+        break;
+      case '4h':
+        timeEstimate = '3-7 days';
+        break;
+      case '1d':
+        timeEstimate = '1-3 weeks';
+        break;
+      case '3d':
+      case '1w':
+        timeEstimate = '1-2 months';
+        break;
+      case '1M':
+        timeEstimate = '3-6 months';
+        break;
+      default: 
+        timeEstimate = 'unknown';
+    }
+    
     return {
       timeframe,
       direction,
@@ -325,18 +328,18 @@ export function calculateTimeframeConfidence(
       entryPrice: lastPrice,
       stopLoss,
       takeProfit,
-      recommendedLeverage: 2,
+      recommendedLeverage: 3,
       indicators: categorizedIndicators,
-      patternFormations: [],
-      supportResistance: [],
-      optimalRiskReward: 1.5,
+      patternFormations: patterns,
+      supportResistance: levels,
+      optimalRiskReward: direction === 'NEUTRAL' ? 1 : Math.abs((takeProfit - lastPrice) / (lastPrice - stopLoss)),
       predictedMovement: {
-        percentChange: 5,
-        timeEstimate: '1-7 days'
+        percentChange: Math.abs(predictedPercent),
+        timeEstimate
       },
-      macroScore: 50,
-      macroClassification: 'Neutral',
-      macroInsights: ['Simplified calculation for debugging']
+      macroScore,
+      macroClassification: macroClass,
+      macroInsights
     };
   } catch (error) {
     console.error(`Error calculating signals for ${symbol} (${timeframe}):`, error);
@@ -367,6 +370,174 @@ export function calculateTimeframeConfidence(
       macroScore: 50,
       macroClassification: `Error: ${error instanceof Error ? error.message : 'Unknown error'}`,
       macroInsights: [`Error occurred during calculation`]
+    };
+  }
+}
+
+// Generate a trade recommendation based on multi-timeframe analysis
+export function generateTradeRecommendation(
+  symbol: string,
+  timeframeSignals: AdvancedSignal[]
+): TradeRecommendation {
+  try {
+    // At least 3 timeframes are required for a reliable recommendation
+    if (timeframeSignals.length < 3) {
+      throw new Error('At least 3 timeframes are required for trade recommendation');
+    }
+    
+    // Group signals by direction
+    const directionGroups = {
+      LONG: timeframeSignals.filter(signal => signal.direction === 'LONG'),
+      SHORT: timeframeSignals.filter(signal => signal.direction === 'SHORT'),
+      NEUTRAL: timeframeSignals.filter(signal => signal.direction === 'NEUTRAL')
+    };
+    
+    // Determine overall direction based on majority
+    let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
+    let dominantGroup = directionGroups.NEUTRAL;
+    
+    if (directionGroups.LONG.length > directionGroups.SHORT.length && 
+        directionGroups.LONG.length > directionGroups.NEUTRAL.length) {
+      direction = 'LONG';
+      dominantGroup = directionGroups.LONG;
+    } else if (directionGroups.SHORT.length > directionGroups.LONG.length && 
+               directionGroups.SHORT.length > directionGroups.NEUTRAL.length) {
+      direction = 'SHORT';
+      dominantGroup = directionGroups.SHORT;
+    }
+    
+    // Calculate average confidence
+    const totalConfidence = timeframeSignals.reduce((sum, signal) => sum + signal.confidence, 0);
+    const averageConfidence = Math.round(totalConfidence / timeframeSignals.length);
+    
+    // Use the most recent timeframe signal for price levels
+    const mostRecentSignal = timeframeSignals.sort((a, b) => {
+      const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+      return timeframes.indexOf(a.timeframe) - timeframes.indexOf(b.timeframe);
+    })[0];
+    
+    const entryPrice = mostRecentSignal.entryPrice;
+    
+    // Calculate take profit levels
+    const baseTP = direction === 'LONG' ? 
+      mostRecentSignal.takeProfit : 
+      mostRecentSignal.stopLoss;
+    
+    const takeProfitLevels = [
+      direction === 'LONG' ? 
+        entryPrice * 1.02 : 
+        entryPrice * 0.98,
+      direction === 'LONG' ? 
+        entryPrice * 1.05 : 
+        entryPrice * 0.95,
+      baseTP
+    ];
+    
+    // Calculate stop loss
+    const stopLoss = mostRecentSignal.stopLoss;
+    
+    // Calculate risk reward ratio
+    const risk = Math.abs(entryPrice - stopLoss);
+    const reward = Math.abs(takeProfitLevels[1] - entryPrice);
+    const riskRewardRatio = risk > 0 ? reward / risk : 1;
+    
+    // Determine appropriate leverage based on volatility and confidence
+    const leverageMultiplier = (averageConfidence / 100) * 2;
+    
+    // Simple winrate probability based on confidence and agreement
+    const winProbability = Math.min(0.85, (averageConfidence / 100) + 
+                                    (dominantGroup.length / timeframeSignals.length) * 0.3);
+    
+    return {
+      symbol,
+      direction,
+      confidence: averageConfidence,
+      timeframeSummary: timeframeSignals.map(signal => ({
+        timeframe: signal.timeframe,
+        confidence: signal.confidence,
+        direction: signal.direction
+      })),
+      entry: {
+        ideal: entryPrice,
+        range: [
+          direction === 'LONG' ? entryPrice * 0.995 : entryPrice * 1.005,
+          direction === 'LONG' ? entryPrice * 1.005 : entryPrice * 0.995
+        ]
+      },
+      exit: {
+        takeProfit: takeProfitLevels,
+        stopLoss,
+        trailingStopActivation: direction === 'LONG' ? 
+          entryPrice * 1.01 : 
+          entryPrice * 0.99,
+        trailingStopPercent: 0.5
+      },
+      leverage: {
+        conservative: Math.max(1, Math.round(leverageMultiplier * 2)),
+        moderate: Math.max(2, Math.round(leverageMultiplier * 5)),
+        aggressive: Math.max(5, Math.round(leverageMultiplier * 10)),
+        recommendation: averageConfidence > 75 ? 
+          'Moderate leverage recommended due to strong signal' : 
+          'Conservative leverage recommended for risk management'
+      },
+      riskManagement: {
+        positionSizeRecommendation: `${Math.max(1, Math.min(5, Math.round(averageConfidence / 20)))}% of capital`,
+        maxRiskPercentage: Math.max(0.5, Math.min(2, averageConfidence / 50)),
+        potentialRiskReward: riskRewardRatio,
+        winProbability
+      },
+      keyIndicators: [
+        // Extract key indicators that influenced the signal
+        ...dominantGroup.flatMap(signal => 
+          signal.indicators.trend
+            .filter(ind => ind.signal === (direction === 'LONG' ? 'BUY' : 'SELL'))
+            .map(ind => ind.name)
+        ).slice(0, 3),
+        // Add macro indicator if relevant
+        mostRecentSignal.macroScore > 70 ? 'Favorable macro environment' :
+        mostRecentSignal.macroScore < 30 ? 'Challenging macro environment' : ''
+      ].filter(Boolean),
+      summary: `${direction} signal with ${averageConfidence}% confidence across ${timeframeSignals.length} timeframes. ${
+        direction === 'LONG' ? 
+          'Bullish momentum detected' : 
+          direction === 'SHORT' ? 
+            'Bearish pressure identified' : 
+            'Mixed signals suggest caution'
+      }.`
+    };
+  } catch (error) {
+    console.error('Error generating trade recommendation:', error);
+    
+    // Return a default recommendation in case of error
+    return {
+      symbol,
+      direction: 'NEUTRAL',
+      confidence: 0,
+      timeframeSummary: [],
+      entry: {
+        ideal: 0,
+        range: [0, 0]
+      },
+      exit: {
+        takeProfit: [0],
+        stopLoss: 0,
+        trailingStopActivation: 0,
+        trailingStopPercent: 0
+      },
+      leverage: {
+        conservative: 1,
+        moderate: 1,
+        aggressive: 2,
+        recommendation: 'Error generating recommendation'
+      },
+      riskManagement: {
+        positionSizeRecommendation: 'Unable to determine',
+        maxRiskPercentage: 0.5,
+        potentialRiskReward: 1,
+        winProbability: 0.5
+      },
+      keyIndicators: ['Error in calculation'],
+      summary: `Error: ${error instanceof Error ? error.message : 'Unknown error generating recommendation'}`
     };
   }
 }

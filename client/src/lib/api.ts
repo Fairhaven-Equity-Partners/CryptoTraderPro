@@ -165,26 +165,27 @@ const pendingRequests: Record<string, Record<TimeFrame, Promise<ChartData[]>>> =
 // Optimized chart data fetching with smart caching
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
   try {
+    // Initialize cache structures if they don't exist
+    pendingRequests[symbol] = pendingRequests[symbol] || {};
+    chartDataCache[symbol] = chartDataCache[symbol] || {};
+    cacheTimestamps[symbol] = cacheTimestamps[symbol] || {};
+    
     // If there's already a request in progress for this data, return that promise
-    if (pendingRequests[symbol] && pendingRequests[symbol][timeframe]) {
+    if (pendingRequests[symbol][timeframe]) {
       return pendingRequests[symbol][timeframe];
     }
     
     // Check if cached data is still valid based on timeframe
     const now = Date.now();
-    const cacheValid = chartDataCache[symbol] && 
-                      chartDataCache[symbol][timeframe] && 
-                      cacheTimestamps[symbol]?.[timeframe] && 
-                      (now - cacheTimestamps[symbol][timeframe] < CACHE_EXPIRATION[timeframe]);
+    const cachedData = chartDataCache[symbol][timeframe];
+    const lastFetchTime = cacheTimestamps[symbol][timeframe] || 0;
+    const isCacheValid = cachedData && 
+                         lastFetchTime && 
+                         (now - lastFetchTime < CACHE_EXPIRATION[timeframe]);
     
-    if (cacheValid) {
-      console.log(`Loading chart with ${chartDataCache[symbol][timeframe].length} data points for ${symbol} (${timeframe})`);
-      return [...chartDataCache[symbol][timeframe]];
-    }
-    
-    // Initialize request tracking
-    if (!pendingRequests[symbol]) {
-      pendingRequests[symbol] = {} as Record<TimeFrame, Promise<ChartData[]>>;
+    if (isCacheValid) {
+      console.log(`Loading chart with ${cachedData.length} data points for ${symbol} (${timeframe})`);
+      return [...cachedData];
     }
     
     // Create and store the promise
@@ -192,18 +193,8 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
       // Generate data since we don't have a chart API endpoint
       const data = generateChartData(timeframe, symbol);
       
-      // Cache the data
-      if (!chartDataCache[symbol]) {
-        chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
-      }
-      
       // Update the cache
       chartDataCache[symbol][timeframe] = data;
-      
-      // Update timestamp
-      if (!cacheTimestamps[symbol]) {
-        cacheTimestamps[symbol] = {} as Record<TimeFrame, number>;
-      }
       cacheTimestamps[symbol][timeframe] = now;
       
       // Ensure real-time updates are active
