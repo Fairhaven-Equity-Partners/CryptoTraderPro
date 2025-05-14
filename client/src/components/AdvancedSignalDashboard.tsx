@@ -488,10 +488,14 @@ export default function AdvancedSignalDashboard({
                         <span className="text-lg font-semibold mr-2">
                           {symbol} ({tf})
                         </span>
-                        {renderDirectionBadge(signals[tf]!.direction)}
                       </div>
                       <div className="flex items-center">
-                        <span className="mr-2">Confidence:</span>
+                        <span className="mr-2">Recommendation:</span>
+                        <span className={`font-bold ${signals[tf]!.direction === 'LONG' ? 'text-green-500' : signals[tf]!.direction === 'SHORT' ? 'text-red-500' : 'text-yellow-500'}`}>
+                          {signals[tf]!.direction}
+                        </span>
+                        <span className="mx-2">•</span>
+                        <span>Confidence:</span>
                         {renderScoreBadge(signals[tf]!.confidence)}
                       </div>
                     </div>
