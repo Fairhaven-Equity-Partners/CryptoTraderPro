@@ -445,7 +445,7 @@ export function calculateMFI(chartData: ChartData[], period = 14): number {
 // Generate indicators for signal analysis with performance caching
 export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   if (chartData.length < 50) {
-    return []; // Not enough data
+    return createDefaultIndicators(chartData[chartData.length - 1]?.close || 0);
   }
   
   // Create a cache key using the first and last timestamps and last price
@@ -470,6 +470,12 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   const opens = chartData.map(candle => candle.open);
   
   const indicators: Indicator[] = [];
+  
+  // If for some reason we can't calculate actual indicators,
+  // fall back to default values to ensure UI still works
+  if (closes.length < 20) {
+    return createDefaultIndicators(lastPrice);
+  }
   
   // RSI
   const rsi = calculateRSI(closes);

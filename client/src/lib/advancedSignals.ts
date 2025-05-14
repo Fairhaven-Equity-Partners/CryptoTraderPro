@@ -331,13 +331,22 @@ export function calculateTimeframeConfidence(
       positionValue: 0       // Will be calculated inside the function
     };
     
-    // Calculate recommended leverage (will adjust based on symbol's volatility)
-    const leverageResult = calculateSafeLeverage(riskParams);
+    // Calculate recommended leverage (with error handling)
+    let recommendedLeverage = 3; // Default value
     
-    // Determine recommended leverage - default to 3x unless we have a higher confidence
-    const recommendedLeverage = confidence > 60 ? 
-      Math.min(10, leverageResult.recommendedLeverage) : // Cap at 10x
-      Math.min(3, leverageResult.recommendedLeverage);   // Cap at 3x for lower confidence
+    try {
+      const leverageResult = calculateSafeLeverage(riskParams);
+      
+      // Only use calculated leverage if it's a valid number
+      if (leverageResult && !isNaN(leverageResult.recommendedLeverage)) {
+        // Determine recommended leverage - default to 3x unless we have a higher confidence
+        recommendedLeverage = confidence > 60 ? 
+          Math.min(10, leverageResult.recommendedLeverage) : // Cap at 10x
+          Math.min(3, leverageResult.recommendedLeverage);   // Cap at 3x for lower confidence
+      }
+    } catch (err) {
+      console.warn("Error calculating leverage, using default value:", err);
+    }
     
     console.log(`Calculated signal for ${symbol || 'unknown'} on ${timeframe} timeframe:`, 
       `Direction: ${direction}, Confidence: ${confidence}%, RecLeverage: ${recommendedLeverage}x`);
