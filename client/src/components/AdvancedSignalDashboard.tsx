@@ -184,29 +184,6 @@ export default function AdvancedSignalDashboard({
     
     return () => clearInterval(timerInterval);
   }, [isCalculating, triggerCalculation]);
-  
-  // Update timer for next refresh
-  useEffect(() => {
-    // Reset timer when a calculation completes
-    if (!isCalculating) {
-      setNextRefreshIn(300); // Reset to 5 minutes (300 seconds)
-    }
-    
-    // Set up countdown timer
-    const timerInterval = setInterval(() => {
-      setNextRefreshIn(prevTime => {
-        if (prevTime <= 0) {
-          // Actually trigger the refresh when countdown reaches zero
-          console.log("Refresh timer reached zero, triggering calculation");
-          triggerCalculation('timer');
-          return 300; // Reset to 5 minutes when time is up
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
-    
-    return () => clearInterval(timerInterval);
-  }, [isCalculating, triggerCalculation]);
 
   // Calculate signals for all timeframes
   const calculateAllSignals = async () => {
