@@ -175,19 +175,42 @@ export default function AdvancedSignalDashboard({
                   strength: Math.random() > 0.5 ? 'STRONG' : 'MODERATE' as IndicatorStrength
                 }))
               },
-              patternFormations: Array(2).fill(null).map(() => ({
-                name: Math.random() > 0.5 ? 'Double Top' : 'Bull Flag',
-                reliability: Math.floor(Math.random() * 100),
-                direction: Math.random() > 0.5 ? 'bullish' : 'bearish', 
-                priceTarget: timeframeData[timeframeData.length - 1].close * (Math.random() > 0.5 ? 1.1 : 0.9),
-                description: 'Pattern formation description'
-              })),
-              supportResistance: Array(3).fill(null).map(() => ({
-                type: Math.random() > 0.5 ? 'support' : 'resistance',
-                price: timeframeData[timeframeData.length - 1].close * (Math.random() > 0.5 ? (0.9 + Math.random() * 0.1) : (1 + Math.random() * 0.1)),
-                strength: Math.floor(Math.random() * 100),
-                sourceTimeframes: [timeframe] as TimeFrame[]
-              })),
+              patternFormations: [
+                {
+                  name: 'Double Top',
+                  reliability: 75,
+                  direction: 'bearish' as 'bullish' | 'bearish' | 'neutral',
+                  priceTarget: timeframeData[timeframeData.length - 1].close * 0.95,
+                  description: 'Reversal pattern indicating potential downward movement'
+                },
+                {
+                  name: 'Bull Flag',
+                  reliability: 82,
+                  direction: 'bullish' as 'bullish' | 'bearish' | 'neutral',
+                  priceTarget: timeframeData[timeframeData.length - 1].close * 1.08,
+                  description: 'Continuation pattern suggesting upward momentum'
+                }
+              ],
+              supportResistance: [
+                {
+                  type: 'support' as 'support' | 'resistance',
+                  price: timeframeData[timeframeData.length - 1].close * 0.96,
+                  strength: 87,
+                  sourceTimeframes: [timeframe]
+                },
+                {
+                  type: 'resistance' as 'support' | 'resistance',
+                  price: timeframeData[timeframeData.length - 1].close * 1.05,
+                  strength: 75,
+                  sourceTimeframes: [timeframe]
+                },
+                {
+                  type: 'support' as 'support' | 'resistance',
+                  price: timeframeData[timeframeData.length - 1].close * 0.92,
+                  strength: 65,
+                  sourceTimeframes: [timeframe]
+                }
+              ],
               optimalRiskReward: Math.random() * 3 + 1,
               predictedMovement: {
                 percentChange: Math.random() * 10,
