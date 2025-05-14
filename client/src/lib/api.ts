@@ -445,18 +445,27 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   
   // Starting price based on symbol
   let basePrice = 0;
-  if (symbol.includes('BTC')) {
-    basePrice = 65000 + Math.random() * 2000;
-  } else if (symbol.includes('ETH')) {
-    basePrice = 3500 + Math.random() * 200;
-  } else if (symbol.includes('BNB')) {
-    basePrice = 550 + Math.random() * 50;
-  } else if (symbol.includes('SOL')) {
+  // Extract the base asset from pairs like "BTC/USDT"
+  const baseAsset = symbol.split('/')[0];
+  
+  if (baseAsset === 'BTC') {
+    basePrice = 103000 + Math.random() * 2000;
+  } else if (baseAsset === 'ETH') {
+    basePrice = 2500 + Math.random() * 200;
+  } else if (baseAsset === 'BNB') {
+    basePrice = 650 + Math.random() * 50;
+  } else if (baseAsset === 'SOL') {
     basePrice = 170 + Math.random() * 20;
-  } else if (symbol.includes('XRP')) {
+  } else if (baseAsset === 'XRP') {
     basePrice = 2 + Math.random() * 0.5;
   } else {
     basePrice = 100 + Math.random() * 50;
+  }
+  
+  // Use current price from CoinGecko if available
+  const realPrice = getCurrentPrice(symbol);
+  if (realPrice > 0) {
+    basePrice = realPrice;
   }
   
   let price = basePrice;
