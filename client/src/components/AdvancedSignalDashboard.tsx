@@ -103,8 +103,13 @@ export default function AdvancedSignalDashboard({
     '1M': { data: chartData1M.chartData, isLoading: chartData1M.isLoading }
   };
   
+  // Check if all required timeframes (those we actually use) are loaded and have data
+  const isRequiredDataLoaded = timeframes.every(tf => 
+    !chartDataMap[tf].isLoading && chartDataMap[tf].data && chartDataMap[tf].data.length > 0
+  );
+  
   // Check if all data is loaded
-  const isAllDataLoaded = !Object.values(chartDataMap).some(chart => chart.isLoading);
+  const isAllDataLoaded = isRequiredDataLoaded;
   
   // Calculate signals for a specific timeframe
   const calculateSignalForTimeframe = useCallback((timeframe: TimeFrame) => {
@@ -141,9 +146,16 @@ export default function AdvancedSignalDashboard({
       return Promise.resolve(); // Return a resolved promise
     }
     
-    console.log("Starting calculation process");
+    // Prevent calculation if we're already calculating
+    if (isCalculating) {
+      console.log("Canceling calculation - already in progress");
+      return Promise.resolve();
+    }
+    
+    console.log(`Starting calculation process for ${symbol}`);
     setIsCalculating(true);
     
+    // Create a copy of the current signals to avoid state mutation issues
     const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
     
     try {
@@ -156,6 +168,7 @@ export default function AdvancedSignalDashboard({
         await new Promise(resolve => {
           setTimeout(() => {
             try {
+              console.log(`Calculating signal for ${symbol} on ${tf} timeframe`);
               newSignals[tf] = calculateSignalForTimeframe(tf);
               setSignals(prev => ({ ...prev, [tf]: newSignals[tf] }));
             } catch (error) {
@@ -168,36 +181,54 @@ export default function AdvancedSignalDashboard({
       
       // Generate overall recommendation
       const validSignals = Object.values(newSignals).filter(Boolean) as AdvancedSignal[];
-      console.log(`Found ${validSignals.length} valid signals for recommendation`);
+      console.log(`Found ${validSignals.length} valid signals for recommendation for ${symbol}`);
       
       if (validSignals.length >= 3) {
         const rec = generateTradeRecommendation(symbol, validSignals);
         setRecommendation(rec);
       } else {
-        console.log("Not enough valid signals to generate recommendation");
+        console.log(`Not enough valid signals (${validSignals.length}) to generate recommendation for ${symbol}`);
       }
       
       setCalculateProgress(100);
     } catch (error) {
-      console.error("Error in calculateAllSignals:", error);
+      console.error(`Error in calculateAllSignals for ${symbol}:`, error);
     } finally {
-      console.log("Calculation process complete");
+      console.log(`Calculation process complete for ${symbol}`);
       setIsCalculating(false);
     }
     
     return Promise.resolve(); // Ensure we always return a promise
-  }, [symbol, isAllDataLoaded, signals, timeframes, calculateSignalForTimeframe]);
+  }, [symbol, isAllDataLoaded, signals, timeframes, calculateSignalForTimeframe, isCalculating]);
   
   // Function to safely trigger calculation with debouncing
   const triggerCalculation = useCallback((reason: string) => {
     const now = Date.now();
+    
+    // Add more detailed logging to debug issues
+    console.log(`Attempt to trigger calculation (${reason}) for ${symbol}:
+      - Already triggered: ${calculationTriggeredRef.current}
+      - Currently calculating: ${isCalculating}
+      - Last calculation: ${(now - lastCalculationTimeRef.current) / 1000}s ago
+      - All data loaded: ${isAllDataLoaded}`);
+    
     // Prevent calculation if one is already in progress or happened too recently
-    if (calculationTriggeredRef.current || isCalculating || (now - lastCalculationTimeRef.current < 5000)) {
-      console.log(`Skipping calculation (${reason}): already calculating or too recent`);
+    if (calculationTriggeredRef.current || isCalculating) {
+      console.log(`Skipping calculation (${reason}): already calculating or triggered`);
       return;
     }
     
-    console.log(`Triggering calculation (${reason})`);
+    if (now - lastCalculationTimeRef.current < 5000) {
+      console.log(`Skipping calculation (${reason}): too soon after last calculation (${(now - lastCalculationTimeRef.current) / 1000}s)`);
+      return;
+    }
+    
+    if (!isAllDataLoaded) {
+      console.log(`Skipping calculation (${reason}): data not fully loaded`);
+      return;
+    }
+    
+    console.log(`Triggering calculation (${reason}) for ${symbol}`);
     calculationTriggeredRef.current = true;
     
     // Clear any existing timeout
@@ -208,16 +239,18 @@ export default function AdvancedSignalDashboard({
     
     // Set a new timeout for the calculation
     calculationTimeoutRef.current = setTimeout(() => {
+      console.log(`Executing calculation for ${symbol} after delay`);
       calculateAllSignals().then(() => {
         // Update the last calculation time
         lastCalculationTimeRef.current = Date.now();
         // Reset the flag after a delay
         setTimeout(() => {
           calculationTriggeredRef.current = false;
+          console.log(`Reset calculation trigger for ${symbol}`);
         }, 5000);
       });
     }, 300); // Small delay to batch updates
-  }, [calculateAllSignals, isCalculating]);
+  }, [calculateAllSignals, isCalculating, isAllDataLoaded, symbol]);
   
   // Reset signals and trigger calculation when symbol changes
   useEffect(() => {
@@ -243,22 +276,24 @@ export default function AdvancedSignalDashboard({
     // Reset calculation triggers to ensure recalculation happens for the new symbol
     calculationTriggeredRef.current = false;
     lastCalculationTimeRef.current = 0;
-    
-    // Force trigger calculation once data loads, with a delay to ensure data is ready
-    setTimeout(() => {
-      if (isAllDataLoaded) {
-        console.log(`Forcing calculation for new symbol: ${symbol}`);
-        triggerCalculation('symbol-changed');
-      }
-    }, 2000);
-  }, [symbol, isAllDataLoaded, triggerCalculation]);
+  }, [symbol]); // Only depend on symbol changes, not isAllDataLoaded or triggerCalculation
   
   // Effect to watch for data loading completion
   useEffect(() => {
-    if (isAllDataLoaded && !calculationTriggeredRef.current && !isCalculating) {
-      triggerCalculation('data-loaded');
+    console.log(`Data loading status changed: isAllDataLoaded=${isAllDataLoaded}, isCalculating=${isCalculating}, triggered=${calculationTriggeredRef.current}`);
+    
+    // Only trigger if we have data, aren't already calculating, and haven't already triggered
+    if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
+      console.log(`Auto-triggering calculation for ${symbol} because data is now loaded`);
+      
+      // Small delay to ensure component state is stable
+      const timer = setTimeout(() => {
+        triggerCalculation('data-loaded');
+      }, 500);
+      
+      return () => clearTimeout(timer);
     }
-  }, [isAllDataLoaded, triggerCalculation, isCalculating]);
+  }, [isAllDataLoaded, isCalculating, symbol, triggerCalculation]);
   
   // Set up periodic recalculation
   useEffect(() => {
@@ -343,8 +378,43 @@ export default function AdvancedSignalDashboard({
     }
   };
   
+  // Force direct calculation without any checks
+  const forceCalculate = () => {
+    console.log("Forcing direct calculation for all timeframes...");
+    // Reset flags to ensure calculation runs
+    calculationTriggeredRef.current = false;
+    lastCalculationTimeRef.current = 0;
+    setIsCalculating(false);
+    
+    // Run calculation directly without debounce
+    calculateAllSignals();
+  };
+
   return (
     <div className="space-y-4">
+      {/* Emergency calculation button */}
+      {!recommendation && !isCalculating && (
+        <Card className="border border-yellow-600">
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center space-y-4">
+              <AlertTriangle className="h-10 w-10 text-yellow-500" />
+              <div className="text-center">
+                <h3 className="font-semibold text-lg">Analysis Not Available</h3>
+                <p className="text-sm text-gray-400 mb-4">
+                  The signal calculation hasn't run automatically.
+                </p>
+              </div>
+              <Button 
+                onClick={forceCalculate} 
+                className="bg-yellow-600 hover:bg-yellow-700"
+              >
+                Run Analysis Now
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+  
       {/* Main recommendation card */}
       {recommendation && (
         <Card className={`border-2 ${
