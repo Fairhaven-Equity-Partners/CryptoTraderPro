@@ -126,13 +126,16 @@ export default function AdvancedSignalDashboard({
       console.log(`${trigger} calculation requested for ${symbol}`);
       calculationTriggeredRef.current = true;
       
-      // Show toast for automatic refresh
+      // For timer-triggered refreshes, use a delayed toast to avoid React warning
       if (trigger === 'timer') {
-        toast({
-          title: "Auto-Refresh",
-          description: `Automatically refreshing signals for ${symbol}`,
-          variant: "default"
-        });
+        // Use setTimeout to defer the toast until after the component finishes rendering
+        setTimeout(() => {
+          toast({
+            title: "Auto-Refresh",
+            description: `Automatically refreshing signals for ${symbol}`,
+            variant: "default"
+          });
+        }, 100);
       }
       
       // Clear any pending calculation
@@ -204,6 +207,11 @@ export default function AdvancedSignalDashboard({
   
   // Update timer for next refresh
   useEffect(() => {
+    // Clear any existing timers first to prevent duplicates
+    if (recalcIntervalRef.current) {
+      clearInterval(recalcIntervalRef.current);
+    }
+    
     // Reset timer when a calculation completes
     if (!isCalculating) {
       setNextRefreshIn(300); // Reset to 5 minutes (300 seconds)
@@ -212,17 +220,26 @@ export default function AdvancedSignalDashboard({
     // Set up countdown timer
     const timerInterval = setInterval(() => {
       setNextRefreshIn(prevTime => {
+        // When timer reaches zero, trigger refresh
         if (prevTime <= 0) {
-          // Actually trigger the refresh when countdown reaches zero
           console.log("Refresh timer reached zero, triggering calculation");
-          triggerCalculation('timer');
-          return 300; // Reset to 5 minutes when time is up
+          // Add a slight delay to ensure state updates have completed
+          setTimeout(() => triggerCalculation('timer'), 100);
+          return 300; // Reset to 5 minutes
         }
         return prevTime - 1;
       });
     }, 1000);
     
-    return () => clearInterval(timerInterval);
+    // Save interval reference for cleanup
+    recalcIntervalRef.current = timerInterval;
+    
+    // Cleanup function
+    return () => {
+      if (recalcIntervalRef.current) {
+        clearInterval(recalcIntervalRef.current);
+      }
+    };
   }, [isCalculating, triggerCalculation]);
 
   // Store persistent signals across refreshes
@@ -1017,14 +1034,14 @@ export default function AdvancedSignalDashboard({
                   <div>
                     <div className="text-sm font-medium">Confidence</div>
                     <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.confidence)}`}>
-                      {currentSignal.confidence}%
+                      {Math.round(currentSignal.confidence)}%
                     </div>
                   </div>
                   
                   <div>
                     <div className="text-sm font-medium">Macro Score</div>
                     <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.macroScore)}`}>
-                      {currentSignal.macroScore}%
+                      {Math.round(currentSignal.macroScore)}%
                     </div>
                   </div>
                 </div>
@@ -1047,7 +1064,7 @@ export default function AdvancedSignalDashboard({
                   
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Risk/Reward</span>
-                    <span className="font-medium">{currentSignal.optimalRiskReward.toFixed(2)}</span>
+                    <span className="font-medium">{Math.round(currentSignal.optimalRiskReward * 100) / 100}</span>
                   </div>
                   
                   <div className="flex justify-between text-sm">
@@ -1288,7 +1305,7 @@ export default function AdvancedSignalDashboard({
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <div className="text-sm text-muted-foreground">Risk/Reward</div>
-                        <div className="text-lg font-bold">{recommendation.riskManagement.potentialRiskReward.toFixed(2)}</div>
+                        <div className="text-lg font-bold">{Math.round(recommendation.riskManagement.potentialRiskReward * 100) / 100}</div>
                       </div>
                       <div>
                         <div className="text-sm text-muted-foreground">Win Probability</div>
