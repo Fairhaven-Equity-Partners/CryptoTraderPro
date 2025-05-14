@@ -496,30 +496,30 @@ export default function AdvancedSignalDashboard({
         </Button>
       </div>
       
-      <TabsList className="flex flex-wrap h-auto justify-start space-x-1 mb-4">
-        {timeframes.map((tf) => (
-          <TabsTrigger
-            key={tf}
-            value={tf}
-            onClick={() => handleTimeframeSelect(tf)}
-            className={`${selectedTimeframe === tf ? 'font-bold' : ''} relative`}
-            data-selected={selectedTimeframe === tf}
-          >
-            {tf}
-            {signals[tf] && (
-              <span 
-                className={`absolute -top-1 -right-1 w-2 h-2 rounded-full ${
-                  signals[tf]?.direction === 'LONG' 
-                    ? 'bg-emerald-500' 
-                    : signals[tf]?.direction === 'SHORT' 
-                      ? 'bg-rose-500' 
-                      : 'bg-gray-400'
-                }`}
-              />
-            )}
-          </TabsTrigger>
-        ))}
-      </TabsList>
+      <Tabs value={selectedTimeframe} onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}>
+        <TabsList className="flex flex-wrap h-auto justify-start space-x-1 mb-4">
+          {timeframes.map((tf) => (
+            <TabsTrigger
+              key={tf}
+              value={tf}
+              className="relative"
+            >
+              {tf}
+              {signals[tf] && (
+                <span 
+                  className={`absolute -top-1 -right-1 w-2 h-2 rounded-full ${
+                    signals[tf]?.direction === 'LONG' 
+                      ? 'bg-emerald-500' 
+                      : signals[tf]?.direction === 'SHORT' 
+                        ? 'bg-rose-500' 
+                        : 'bg-gray-400'
+                  }`}
+                />
+              )}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Signal Card */}
