@@ -593,27 +593,27 @@ export default function AdvancedSignalDashboard({
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {/* Signal Card */}
-        <Card className={`${currentSignal ? getSignalBgClass(currentSignal.direction) : ''} border-2`}>
-          <CardHeader className="p-4 pb-0">
-            <CardTitle className="flex justify-between items-center text-xl">
+        <Card className={currentSignal ? getSignalBgClass(currentSignal.direction) : ''}>
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
               <span>{selectedTimeframe} Signal</span>
               {currentSignal && (
-                currentSignal.direction === 'LONG' ? <TrendingUp className="h-6 w-6 text-emerald-500" /> : 
-                currentSignal.direction === 'SHORT' ? <TrendingDown className="h-6 w-6 text-rose-500" /> :
-                <Minus className="h-6 w-6 text-slate-500" />
+                currentSignal.direction === 'LONG' ? <TrendingUp className="h-5 w-5 text-emerald-500" /> : 
+                currentSignal.direction === 'SHORT' ? <TrendingDown className="h-5 w-5 text-rose-500" /> :
+                <Minus className="h-5 w-5 text-slate-500" />
               )}
             </CardTitle>
-            <CardDescription className="text-xs">
+            <CardDescription>
               Technical analysis for {symbol} on {selectedTimeframe} timeframe
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-4 pt-3">
+          <CardContent>
             {currentSignal ? (
-              <div className="space-y-5">
-                <div className="grid grid-cols-3 gap-x-2 gap-y-1 border-b border-border pb-3">
-                  <div className="text-center">
-                    <div className="text-xs text-muted-foreground mb-1">Direction</div>
-                    <div className={`text-base font-bold ${
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="text-sm font-medium">Direction</div>
+                    <div className={`text-lg font-bold ${
                       currentSignal.direction === 'LONG' ? 'text-emerald-500' : 
                       currentSignal.direction === 'SHORT' ? 'text-rose-500' : 
                       'text-slate-500'
@@ -622,50 +622,50 @@ export default function AdvancedSignalDashboard({
                     </div>
                   </div>
                   
-                  <div className="text-center">
-                    <div className="text-xs text-muted-foreground mb-1">Confidence</div>
-                    <div className={`text-base font-bold ${getConfidenceColor(currentSignal.confidence)}`}>
+                  <div>
+                    <div className="text-sm font-medium">Confidence</div>
+                    <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.confidence)}`}>
                       {currentSignal.confidence}%
                     </div>
                   </div>
                   
-                  <div className="text-center">
-                    <div className="text-xs text-muted-foreground mb-1">Macro Score</div>
-                    <div className={`text-base font-bold ${getConfidenceColor(currentSignal.macroScore)}`}>
+                  <div>
+                    <div className="text-sm font-medium">Macro Score</div>
+                    <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.macroScore)}`}>
                       {currentSignal.macroScore}%
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2 border-b border-border pb-3">
+                <div className="space-y-2">
                   <div className="flex justify-between text-sm">
-                    <span className="text-xs text-muted-foreground">Entry Price</span>
-                    <span className="text-sm font-medium">{formatCurrency(currentSignal.entryPrice)}</span>
+                    <span className="text-muted-foreground">Entry Price</span>
+                    <span className="font-medium">{formatCurrency(currentSignal.entryPrice)}</span>
                   </div>
                   
                   <div className="flex justify-between text-sm">
-                    <span className="text-xs text-muted-foreground">Take Profit</span>
-                    <span className="text-sm font-medium text-emerald-500">{formatCurrency(currentSignal.takeProfit)}</span>
+                    <span className="text-muted-foreground">Take Profit</span>
+                    <span className="font-medium text-emerald-500">{formatCurrency(currentSignal.takeProfit)}</span>
                   </div>
                   
                   <div className="flex justify-between text-sm">
-                    <span className="text-xs text-muted-foreground">Stop Loss</span>
-                    <span className="text-sm font-medium text-rose-500">{formatCurrency(currentSignal.stopLoss)}</span>
+                    <span className="text-muted-foreground">Stop Loss</span>
+                    <span className="font-medium text-rose-500">{formatCurrency(currentSignal.stopLoss)}</span>
                   </div>
                   
                   <div className="flex justify-between text-sm">
-                    <span className="text-xs text-muted-foreground">Risk/Reward</span>
-                    <span className="text-sm font-medium">{currentSignal.optimalRiskReward.toFixed(2)}</span>
+                    <span className="text-muted-foreground">Risk/Reward</span>
+                    <span className="font-medium">{currentSignal.optimalRiskReward.toFixed(2)}</span>
                   </div>
                   
                   <div className="flex justify-between text-sm">
-                    <span className="text-xs text-muted-foreground">Recommended Leverage</span>
-                    <span className="text-sm font-medium">{currentSignal.recommendedLeverage}x</span>
+                    <span className="text-muted-foreground">Recommended Leverage</span>
+                    <span className="font-medium">{currentSignal.recommendedLeverage}x</span>
                   </div>
                 </div>
                 
-                <div>
-                  <div className="text-xs text-muted-foreground mb-2">Key Indicators</div>
+                <div className="pt-2">
+                  <div className="text-sm font-medium mb-1">Key Indicators</div>
                   <div className="flex flex-wrap gap-1">
                     {Object.entries(currentSignal.indicators).flatMap(([category, items]) => 
                       items.map((indicator: Indicator, i: number) => (
@@ -673,7 +673,6 @@ export default function AdvancedSignalDashboard({
                           key={`${category}-${i}`} 
                           variant="outline" 
                           className={`
-                            text-xs px-2 py-0
                             ${indicator.signal === 'BUY' ? 'text-emerald-500 border-emerald-500/20' : 
                               indicator.signal === 'SELL' ? 'text-rose-500 border-rose-500/20' : 
                                 'text-slate-500 border-slate-500/20'}
@@ -697,27 +696,26 @@ export default function AdvancedSignalDashboard({
         </Card>
         
         {/* Pattern Formations */}
-        <Card className="border-2">
-          <CardHeader className="p-4 pb-0">
-            <CardTitle className="flex justify-between items-center text-xl">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
               <span>Pattern Formations</span>
-              <Info className="h-6 w-6 text-primary/70" />
+              <Info className="h-5 w-5 text-primary/70" />
             </CardTitle>
-            <CardDescription className="text-xs">
+            <CardDescription>
               Chart patterns identified in the {selectedTimeframe} timeframe
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-4 pt-3">
+          <CardContent>
             {currentSignal && currentSignal.patternFormations && currentSignal.patternFormations.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {currentSignal.patternFormations.map((pattern, i) => (
-                  <div key={i} className="space-y-2 border-b border-border pb-3 last:border-0 last:pb-0">
+                  <div key={i} className="space-y-1">
                     <div className="flex justify-between">
                       <span className="font-medium">{pattern.name}</span>
                       <Badge 
                         variant="outline"
                         className={`
-                          text-xs px-2 py-0
                           ${pattern.direction === 'bullish' ? 'text-emerald-500 border-emerald-500/20' : 
                             pattern.direction === 'bearish' ? 'text-rose-500 border-rose-500/20' : 
                               'text-slate-500 border-slate-500/20'}
@@ -727,14 +725,14 @@ export default function AdvancedSignalDashboard({
                       </Badge>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-xs text-muted-foreground">Reliability</span>
-                      <span className="text-sm">{pattern.reliability}%</span>
+                      <span className="text-muted-foreground">Reliability</span>
+                      <span>{pattern.reliability}%</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-xs text-muted-foreground">Target</span>
-                      <span className="text-sm">{formatCurrency(pattern.priceTarget)}</span>
+                      <span className="text-muted-foreground">Target</span>
+                      <span>{formatCurrency(pattern.priceTarget)}</span>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">{pattern.description}</div>
+                    <div className="text-sm text-muted-foreground mt-1">{pattern.description}</div>
                   </div>
                 ))}
               </div>
@@ -747,40 +745,37 @@ export default function AdvancedSignalDashboard({
         </Card>
         
         {/* Support & Resistance */}
-        <Card className="border-2">
-          <CardHeader className="p-4 pb-0">
-            <CardTitle className="flex justify-between items-center text-xl">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
               <span>Support & Resistance</span>
-              <Scale className="h-6 w-6 text-primary/70" />
+              <Scale className="h-5 w-5 text-primary/70" />
             </CardTitle>
-            <CardDescription className="text-xs">
+            <CardDescription>
               Key price levels for {symbol}
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-4 pt-3">
+          <CardContent>
             {currentSignal && currentSignal.supportResistance && currentSignal.supportResistance.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {currentSignal.supportResistance.map((level, i) => (
-                  <div key={i} className="flex justify-between items-center border-b border-border pb-3 last:border-0 last:pb-0">
+                  <div key={i} className="flex justify-between items-center">
                     <div>
                       <Badge 
                         variant="outline"
-                        className={`
-                          text-xs px-2 py-0
-                          ${level.type === 'support' ? 
-                            'text-emerald-500 border-emerald-500/20' : 
-                            'text-rose-500 border-rose-500/20'
-                          }
-                        `}
+                        className={level.type === 'support' ? 
+                          'text-emerald-500 border-emerald-500/20' : 
+                          'text-rose-500 border-rose-500/20'
+                        }
                       >
                         {level.type}
                       </Badge>
                       <div className="text-sm mt-1">
-                        <span className="text-xs text-muted-foreground mr-2">Strength:</span>
-                        <span className="text-sm">{level.strength}%</span>
+                        <span className="text-muted-foreground mr-2">Strength:</span>
+                        <span>{level.strength}%</span>
                       </div>
                     </div>
-                    <div className="text-base font-bold">
+                    <div className="text-lg font-bold">
                       {formatCurrency(level.price)}
                     </div>
                   </div>
@@ -796,27 +791,27 @@ export default function AdvancedSignalDashboard({
       </div>
       
       {/* Trade Recommendation */}
-      <Card className="mt-4 border-2">
-        <CardHeader className="p-4 pb-0">
-          <CardTitle className="flex justify-between items-center text-xl">
+      <Card className="mt-4">
+        <CardHeader>
+          <CardTitle className="flex justify-between items-center">
             <span>Trade Recommendation ({selectedTimeframe})</span>
-            <BarChart2 className="h-6 w-6 text-primary/70" />
+            <BarChart2 className="h-5 w-5 text-primary/70" />
           </CardTitle>
-          <CardDescription className="text-xs">
+          <CardDescription>
             Analysis focused on the {selectedTimeframe} timeframe for {symbol}
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-4 pt-3">
+        <CardContent>
           {isCalculating ? (
             <div className="flex items-center justify-center h-32">
               <RefreshCcw className="h-8 w-8 animate-spin text-primary/70" />
             </div>
           ) : recommendation ? (
             <div className="space-y-5">
-              <div className="grid grid-cols-3 gap-4 border-b border-border pb-4">
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground mb-1">Direction</div>
-                  <div className={`text-base font-bold ${
+              <div className="grid grid-cols-3 gap-4">
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Direction</div>
+                  <div className={`text-lg font-bold ${
                     recommendation.direction === 'LONG' ? 'text-emerald-500' : 
                     recommendation.direction === 'SHORT' ? 'text-rose-500' : 
                     'text-slate-500'
@@ -825,32 +820,32 @@ export default function AdvancedSignalDashboard({
                   </div>
                 </div>
                 
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground mb-1">Confidence</div>
-                  <div className={`text-base font-bold ${getConfidenceColor(recommendation.confidence)}`}>
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Confidence</div>
+                  <div className={`text-lg font-bold ${getConfidenceColor(recommendation.confidence)}`}>
                     {recommendation.confidence}%
                   </div>
                 </div>
                 
-                <div className="text-center">
-                  <div className="text-xs text-muted-foreground mb-1">Risk/Reward</div>
-                  <div className="text-base font-bold">
+                <div className="space-y-1">
+                  <div className="text-sm text-muted-foreground">Risk/Reward</div>
+                  <div className="text-lg font-bold">
                     {recommendation.riskManagement.potentialRiskReward.toFixed(2)}
                   </div>
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-border pb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h4 className="text-xs text-muted-foreground mb-2">Entry Strategy</h4>
+                  <h4 className="text-sm font-medium mb-2">Entry Strategy</h4>
                   <div className="space-y-1">
-                    <div className="flex justify-between">
-                      <span className="text-xs text-muted-foreground">Ideal Entry</span>
-                      <span className="text-sm font-medium">{formatCurrency(recommendation.entry.ideal)}</span>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Ideal Entry</span>
+                      <span className="font-medium">{formatCurrency(recommendation.entry.ideal)}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-xs text-muted-foreground">Entry Range</span>
-                      <span className="text-sm font-medium">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Entry Range</span>
+                      <span className="font-medium">
                         {formatCurrency(recommendation.entry.range[0])} - {formatCurrency(recommendation.entry.range[1])}
                       </span>
                     </div>
@@ -858,60 +853,60 @@ export default function AdvancedSignalDashboard({
                 </div>
                 
                 <div>
-                  <h4 className="text-xs text-muted-foreground mb-2">Exit Strategy</h4>
+                  <h4 className="text-sm font-medium mb-2">Exit Strategy</h4>
                   <div className="space-y-1">
-                    <div className="flex justify-between">
-                      <span className="text-xs text-muted-foreground">Take Profit Levels</span>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Take Profit Levels</span>
                       <div className="text-right">
                         {recommendation.exit.takeProfit.map((tp: number, i: number) => (
-                          <div key={i} className="text-sm font-medium text-emerald-500">
+                          <div key={i} className="font-medium text-emerald-500">
                             TP{i+1}: {formatCurrency(tp)}
                           </div>
                         ))}
                       </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-xs text-muted-foreground">Stop Loss</span>
-                      <span className="text-sm font-medium text-rose-500">{formatCurrency(recommendation.exit.stopLoss)}</span>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Stop Loss</span>
+                      <span className="font-medium text-rose-500">{formatCurrency(recommendation.exit.stopLoss)}</span>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div className="border-b border-border pb-4">
-                <h4 className="text-xs text-muted-foreground mb-2">Leverage Recommendation</h4>
+              <div>
+                <h4 className="text-sm font-medium mb-2">Leverage Recommendation</h4>
                 <div className="grid grid-cols-3 gap-2 mb-1">
                   <div className="text-center p-1 bg-slate-100 dark:bg-slate-800 rounded">
                     <div className="text-xs text-muted-foreground">Conservative</div>
-                    <div className="text-sm font-medium">{recommendation.leverage.conservative}x</div>
+                    <div className="font-medium">{recommendation.leverage.conservative}x</div>
                   </div>
                   <div className="text-center p-1 bg-primary/10 rounded border border-primary/20">
                     <div className="text-xs text-muted-foreground">Recommended</div>
-                    <div className="text-sm font-medium">{recommendation.leverage.moderate}x</div>
+                    <div className="font-medium">{recommendation.leverage.moderate}x</div>
                   </div>
                   <div className="text-center p-1 bg-slate-100 dark:bg-slate-800 rounded">
                     <div className="text-xs text-muted-foreground">Aggressive</div>
-                    <div className="text-sm font-medium">{recommendation.leverage.aggressive}x</div>
+                    <div className="font-medium">{recommendation.leverage.aggressive}x</div>
                   </div>
                 </div>
-                <div className="text-xs text-muted-foreground mt-1">{recommendation.leverage.recommendation}</div>
+                <div className="text-sm text-muted-foreground">{recommendation.leverage.recommendation}</div>
               </div>
               
-              <div className="border-b border-border pb-4">
-                <h4 className="text-xs text-muted-foreground mb-2">Key Indicators</h4>
+              <div>
+                <h4 className="text-sm font-medium mb-2">Key Indicators</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
                   {recommendation.keyIndicators.map((indicator: string, i: number) => (
                     <div key={i} className="flex items-center">
                       <Target className="h-3 w-3 mr-2 text-primary/70" />
-                      <span className="text-xs">{indicator}</span>
+                      <span className="text-sm">{indicator}</span>
                     </div>
                   ))}
                 </div>
               </div>
               
               <div>
-                <h4 className="text-xs text-muted-foreground mb-1">Summary</h4>
-                <p className="text-xs text-muted-foreground">{recommendation.summary}</p>
+                <h4 className="text-sm font-medium mb-1">Summary</h4>
+                <p className="text-sm text-muted-foreground">{recommendation.summary}</p>
               </div>
             </div>
           ) : (
