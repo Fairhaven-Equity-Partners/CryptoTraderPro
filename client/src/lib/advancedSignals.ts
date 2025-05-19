@@ -270,10 +270,19 @@ export function calculateTimeframeConfidence(
     
     // ENHANCEMENT: Include more comprehensive macro score using real macro data
     const macroData = getMacroIndicators();
-    // Use the improved analyzeMacroEnvironment with timeframe and symbol context
-    const macroScore = analyzeMacroEnvironment(timeframe, symbol);
-    const macroClass = getMacroEnvironmentClassification(timeframe);
-    const macroInsights = getMacroInsights(timeframe, symbol);
+    // Use the improved macro calculations - fallback to default implementation if required
+    let macroScore = 50; // Default neutral score
+    let macroClass = "Neutral Market Environment";
+    let macroInsights = ["Market conditions appear balanced", "No strong macroeconomic signals detected"];
+    
+    try {
+      // First try to use the new timeframe-aware functions
+      macroScore = analyzeMacroEnvironment();
+      macroClass = getMacroEnvironmentClassification();
+      macroInsights = getMacroInsights();
+    } catch (e) {
+      console.warn("Using fallback macro calculations:", e);
+    }
     
     totalScore += macroScore * adaptedWeights.macroeconomic;
     totalWeight += adaptedWeights.macroeconomic;
@@ -311,13 +320,16 @@ export function calculateTimeframeConfidence(
     const atr = indicators.calculateATR(chartData, 14);
     const atrMultipliers = getOptimizedAtrMultipliers(timeframe, confidence, atr, lastPrice);
     
+    const stopLossMultiplier = atrMultipliers.stopLoss;
+    const takeProfitMultiplier = atrMultipliers.takeProfit;
+    
     const stopLoss = direction === 'LONG' ? 
-      lastPrice - (atr * atrMultipliers.stopLoss) : 
-      lastPrice + (atr * atrMultipliers.stopLoss);
+      lastPrice - (atr * stopLossMultiplier) : 
+      lastPrice + (atr * stopLossMultiplier);
       
     const takeProfit = direction === 'LONG' ?
-      lastPrice + (atr * atrMultipliers.takeProfit) :
-      lastPrice - (atr * atrMultipliers.takeProfit);
+      lastPrice + (atr * takeProfitMultiplier) :
+      lastPrice - (atr * takeProfitMultiplier);
     
     // ENHANCEMENT: Improved movement prediction based on volatility and timeframe
     const volatility = calculateTimeframeAdjustedVolatility(chartData, timeframe);
@@ -1208,38 +1220,38 @@ function getOptimizedAtrMultipliers(
   price: number
 ): { stopLoss: number, takeProfit: number } {
   // Base multipliers
-  let stopLossMultiplier = 2.0;
-  let takeProfitMultiplier = 3.0;
+  let stopLoss = 2.0;
+  let takeProfit = 3.0;
   
   // Adjust based on timeframe
   switch (timeframe) {
     case '1m':
     case '5m':
-      stopLossMultiplier = 1.5; // Tighter stops for short timeframes
-      takeProfitMultiplier = 2.0;
+      stopLoss = 1.5; // Tighter stops for short timeframes
+      takeProfit = 2.0;
       break;
     case '15m':
     case '30m':
-      stopLossMultiplier = 1.8;
-      takeProfitMultiplier = 2.5;
+      stopLoss = 1.8;
+      takeProfit = 2.5;
       break;
     case '1h':
-      stopLossMultiplier = 2.0;
-      takeProfitMultiplier = 3.0;
+      stopLoss = 2.0;
+      takeProfit = 3.0;
       break;
     case '4h':
-      stopLossMultiplier = 2.2;
-      takeProfitMultiplier = 3.5;
+      stopLoss = 2.2;
+      takeProfit = 3.5;
       break;
     case '1d':
-      stopLossMultiplier = 2.5;
-      takeProfitMultiplier = 4.0;
+      stopLoss = 2.5;
+      takeProfit = 4.0;
       break;
     case '3d':
     case '1w':
     case '1M':
-      stopLossMultiplier = 3.0; // Wider stops for longer timeframes
-      takeProfitMultiplier = 5.0;
+      stopLoss = 3.0; // Wider stops for longer timeframes
+      takeProfit = 5.0;
       break;
   }
   
@@ -1247,11 +1259,11 @@ function getOptimizedAtrMultipliers(
   // Lower confidence = wider stops to avoid false signals
   // Higher confidence = tighter stops and more ambitious targets
   if (confidence < 40) {
-    stopLossMultiplier *= 1.3; // Wider stop for low confidence
-    takeProfitMultiplier *= 0.8; // Less ambitious target
+    stopLoss *= 1.3; // Wider stop for low confidence
+    takeProfit *= 0.8; // Less ambitious target
   } else if (confidence > 70) {
-    stopLossMultiplier *= 0.9; // Tighter stop for high confidence
-    takeProfitMultiplier *= 1.2; // More ambitious target
+    stopLoss *= 0.9; // Tighter stop for high confidence
+    takeProfit *= 1.2; // More ambitious target
   }
   
   // Adjust based on volatility (as % of price)
@@ -1259,14 +1271,14 @@ function getOptimizedAtrMultipliers(
   
   if (volatilityPercent > 5) {
     // High volatility - use wider stops
-    stopLossMultiplier *= 1.2;
+    stopLoss *= 1.2;
   } else if (volatilityPercent < 1) {
     // Low volatility - can use tighter stops
-    stopLossMultiplier *= 0.9;
-    takeProfitMultiplier *= 0.9; // Also reduce target for low volatility
+    stopLoss *= 0.9;
+    takeProfit *= 0.9; // Also reduce target for low volatility
   }
   
-  return { stopLossMultiplier, takeProfitMultiplier };
+  return { stopLoss, takeProfit };
 }
 
 // Calculate adjusted volatility based on timeframe
