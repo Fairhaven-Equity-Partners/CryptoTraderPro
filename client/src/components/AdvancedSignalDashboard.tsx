@@ -1006,7 +1006,25 @@ export default function AdvancedSignalDashboard({
         </div>
       </div>
       
-      <Tabs defaultValue={selectedTimeframe} onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}>
+      <Tabs 
+        defaultValue={selectedTimeframe} 
+        onValueChange={(value) => {
+          const newTimeframe = value as TimeFrame;
+          console.log(`Tab change to ${newTimeframe} with prices:`, {
+            entry: signals[newTimeframe]?.entryPrice,
+            tp: signals[newTimeframe]?.takeProfit,
+            sl: signals[newTimeframe]?.stopLoss
+          });
+          setSelectedTimeframe(newTimeframe);
+          
+          // Force component to re-render with the new values
+          setTimeout(() => {
+            if (onTimeframeSelect) {
+              onTimeframeSelect(newTimeframe);
+            }
+          }, 0);
+        }}
+      >
         <TabsList className="grid grid-cols-7 w-full bg-gray-900 p-1">
           {timeframes.map((timeframe) => (
             <TabsTrigger 
