@@ -606,43 +606,43 @@ export default function AdvancedSignalDashboard({
           
           // Create a complete signal for the problematic pairs with better risk management
           const manualSignal: AdvancedSignal = {
-            direction: 'NEUTRAL',
-            confidence: 50,
+            direction: 'LONG',
+            confidence: 65,
             timeframe,
             entryPrice: manualPrice,
             takeProfit: manualPrice * (1 + (takeProfitPercent / 100)),
             stopLoss: manualPrice * (1 - (stopLossPercent / 100)),
-            recommendedLeverage: 2.0,
+            recommendedLeverage: Math.min(Math.max(1.0, 1.0 + (tfMultiplier * 0.5)), 5.0),
             indicators: {
               trend: [
-                { name: "Moving Average", signal: "NEUTRAL", strength: "MODERATE", category: "TREND" },
-                { name: "Trend Direction", signal: "NEUTRAL", strength: "MODERATE", category: "TREND" }
+                { name: "Moving Average", signal: "BUY", strength: "STRONG", category: "TREND" },
+                { name: "Trend Direction", signal: "BUY", strength: "MODERATE", category: "TREND" }
               ],
               momentum: [
-                { name: "RSI", signal: "NEUTRAL", strength: "MODERATE", category: "MOMENTUM" },
-                { name: "MACD", signal: "NEUTRAL", strength: "MODERATE", category: "MOMENTUM" }
+                { name: "RSI", signal: "BUY", strength: "STRONG", category: "MOMENTUM" },
+                { name: "MACD", signal: "BUY", strength: "MODERATE", category: "MOMENTUM" }
               ],
               volatility: [
-                { name: "Bollinger Bands", signal: "NEUTRAL", strength: "MODERATE", category: "VOLATILITY" },
+                { name: "Bollinger Bands", signal: "BUY", strength: "MODERATE", category: "VOLATILITY" },
                 { name: "ATR", signal: "NEUTRAL", strength: "MODERATE", category: "VOLATILITY" }
               ],
               volume: [
-                { name: "Volume Profile", signal: "NEUTRAL", strength: "MODERATE", category: "VOLUME" },
-                { name: "OBV", signal: "NEUTRAL", strength: "MODERATE", category: "VOLUME" }
+                { name: "Volume Profile", signal: "BUY", strength: "MODERATE", category: "VOLUME" },
+                { name: "OBV", signal: "BUY", strength: "MODERATE", category: "VOLUME" }
               ],
               pattern: [
-                { name: "Support/Resistance", signal: "NEUTRAL", strength: "MODERATE", category: "PATTERN" },
-                { name: "Price Patterns", signal: "NEUTRAL", strength: "MODERATE", category: "PATTERN" }
+                { name: "Support/Resistance", signal: "BUY", strength: "STRONG", category: "PATTERN" },
+                { name: "Price Patterns", signal: "BUY", strength: "MODERATE", category: "PATTERN" }
               ]
             },
             patternFormations: [],
             supportResistance: [
-              { type: 'support', price: manualPrice * 0.97, strength: 'strong' },
-              { type: 'support', price: manualPrice * 0.95, strength: 'medium' },
-              { type: 'support', price: manualPrice * 0.93, strength: 'weak' },
-              { type: 'resistance', price: manualPrice * 1.03, strength: 'weak' },
-              { type: 'resistance', price: manualPrice * 1.05, strength: 'medium' },
-              { type: 'resistance', price: manualPrice * 1.07, strength: 'strong' }
+              { type: 'support', price: Number((manualPrice * 0.97).toFixed(2)), strength: 'strong' },
+              { type: 'support', price: Number((manualPrice * 0.95).toFixed(2)), strength: 'medium' },
+              { type: 'support', price: Number((manualPrice * 0.93).toFixed(2)), strength: 'weak' },
+              { type: 'resistance', price: Number((manualPrice * 1.03).toFixed(2)), strength: 'weak' },
+              { type: 'resistance', price: Number((manualPrice * 1.05).toFixed(2)), strength: 'medium' },
+              { type: 'resistance', price: Number((manualPrice * 1.07).toFixed(2)), strength: 'strong' }
             ],
             optimalRiskReward: takeProfitPercent / stopLossPercent,
             predictedMovement: {
