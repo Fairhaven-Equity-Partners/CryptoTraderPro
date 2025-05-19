@@ -670,22 +670,26 @@ export default function AdvancedSignalDashboard({
                 <div className="pt-2">
                   <div className="text-sm font-medium mb-1">Key Indicators</div>
                   <div className="flex flex-wrap gap-1">
-                    {Object.entries(currentSignal.indicators).flatMap(([category, items]) => 
-                      items.map((indicator: any, i: number) => (
-                        <Badge 
-                          key={`${category}-${i}`} 
-                          variant="outline" 
-                          className={`
-                            ${indicator.signal === 'BUY' ? 'text-emerald-500 border-emerald-500/20' : 
-                              indicator.signal === 'SELL' ? 'text-rose-500 border-rose-500/20' : 
-                                'text-slate-500 border-slate-500/20'}
-                            ${indicator.strength === 'STRONG' ? 'font-medium' : 'font-normal'}
-                          `}
-                        >
-                          {indicator.signal}
-                        </Badge>
-                      ))
-                    )}
+                    {Object.entries(currentSignal.indicators).flatMap(([category, items]) => {
+                      // Check if items is an array before mapping
+                      if (Array.isArray(items)) {
+                        return items.map((indicator: any, i: number) => (
+                          <Badge 
+                            key={`${category}-${i}`} 
+                            variant="outline" 
+                            className={`
+                              ${indicator.signal === 'BUY' ? 'text-emerald-500 border-emerald-500/20' : 
+                                indicator.signal === 'SELL' ? 'text-rose-500 border-rose-500/20' : 
+                                  'text-slate-500 border-slate-500/20'}
+                              ${indicator.strength === 'STRONG' ? 'font-medium' : 'font-normal'}
+                            `}
+                          >
+                            {indicator.signal}
+                          </Badge>
+                        ));
+                      }
+                      return [];
+                    })}
                   </div>
                 </div>
               </div>
