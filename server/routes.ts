@@ -116,7 +116,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const symbol = req.params.symbol;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
       
-      const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+      // Get existing signals, or create placeholder/default signals if none exist
+      let signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+      
+      // If no signals exist for this symbol, create some default placeholders
+      // This ensures all cryptocurrency pairs can work, including SOL/USDT and XRP/USDT
+      if (signals.length === 0) {
+        // Generate a default signal for the symbol
+        const defaultSignal: InsertSignalHistory = {
+          symbol,
+          direction: "NEUTRAL",
+          confidence: 50,
+          timeframe: "1d",
+          entryPrice: 0, // Will be updated by frontend with real-time price
+          takeProfit: 0, // Will be updated by frontend with real-time price
+          stopLoss: 0,   // Will be updated by frontend with real-time price
+          indicators: JSON.stringify({
+            trend: [],
+            momentum: [],
+            volatility: [],
+            volume: [],
+            pattern: []
+          })
+        };
+        
+        // Record the default signal
+        await storage.recordSignal(defaultSignal);
+        
+        // Get signals again to include the newly added default
+        signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+      }
+      
       res.json(signals);
     } catch (error) {
       res.status(500).json({ message: 'Failed to fetch signal history' });
