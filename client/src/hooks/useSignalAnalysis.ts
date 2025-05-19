@@ -76,44 +76,37 @@ export function useMultiTimeframeAnalysis(symbol: string) {
       // Fetch chart data for this timeframe
       const chartData = await fetchChartData(symbol, tf);
       
-      // Special handling for SOL cryptocurrency which may have data structure issues
+      // Basic validation for all cryptocurrencies
+      if (!chartData || chartData.length === 0 || !Array.isArray(chartData)) {
+        console.log(`No valid chart data for ${symbol} on ${tf} timeframe`);
+        return {
+          timeframe: tf,
+          signal: 'NEUTRAL',
+          strength: 50,
+          trend: 'No Data'
+        };
+      }
+      
+      // Extra validation specifically for SOL/USDT which has known calculation issues
       if (symbol.includes('SOL')) {
-        // Additional validation for SOL data
-        if (!chartData || chartData.length === 0 || !Array.isArray(chartData)) {
-          console.log(`No valid chart data for ${symbol} on ${tf} timeframe`);
-          return {
-            timeframe: tf,
-            signal: 'NEUTRAL',
-            strength: 50,
-            trend: 'No Data'
-          };
-        }
-        
-        // Extra validation for SOL data structure
+        // Ensure we have valid price data structure
         const validData = chartData.every(candle => 
           candle && 
           typeof candle.close === 'number' && 
-          !isNaN(candle.close)
+          !isNaN(candle.close) &&
+          typeof candle.high === 'number' && 
+          !isNaN(candle.high) &&
+          typeof candle.low === 'number' && 
+          !isNaN(candle.low)
         );
         
         if (!validData) {
-          console.error(`Invalid price structure in ${symbol} data for ${tf} timeframe`);
+          console.error(`Special handling: Invalid price structure in ${symbol} data for ${tf}`);
           return {
             timeframe: tf,
             signal: 'NEUTRAL',
             strength: 50,
             trend: 'Data Error'
-          };
-        }
-      } else {
-        // Standard validation for other cryptocurrencies
-        if (!chartData || chartData.length === 0 || !Array.isArray(chartData)) {
-          console.log(`No valid chart data for ${symbol} on ${tf} timeframe`);
-          return {
-            timeframe: tf,
-            signal: 'NEUTRAL',
-            strength: 50,
-            trend: 'No Data'
           };
         }
       }
