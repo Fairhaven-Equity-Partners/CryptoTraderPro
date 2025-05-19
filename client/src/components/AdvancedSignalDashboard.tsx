@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -40,6 +40,29 @@ import {
   alignSignalsWithTimeframeHierarchy,
   calculateSupportResistance
 } from '../lib/technicalIndicators';
+
+// This component ensures React re-renders price values when timeframe changes
+interface PriceLevelDisplayProps {
+  label: string;
+  value: number | undefined;
+  timeframe: TimeFrame;
+  colorClass: string;
+}
+
+// Use memo to prevent unnecessary re-renders
+const PriceLevelDisplay = memo(({ label, value, timeframe, colorClass }: PriceLevelDisplayProps) => {
+  // Log for debugging
+  console.log(`Rendering ${label} for ${timeframe}: ${value}`);
+  
+  return (
+    <div className="flex justify-between items-center text-sm">
+      <span className="text-white font-semibold">{label}</span>
+      <span className={`font-bold ${colorClass} px-3 py-1 rounded border`}>
+        {formatCurrency(value || 0)}
+      </span>
+    </div>
+  );
+});
 
 // List of timeframes to display
 const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d', '3d', '1w', '1M'];
@@ -1080,21 +1103,21 @@ export default function AdvancedSignalDashboard({
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
-                        <span key={`entry-${selectedTimeframe}`} className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
+                        <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
                           {formatCurrency(signals[selectedTimeframe]?.entryPrice || 0)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
-                        <span key={`tp-${selectedTimeframe}`} className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
+                        <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
                           {formatCurrency(signals[selectedTimeframe]?.takeProfit || 0)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
-                        <span key={`sl-${selectedTimeframe}`} className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
+                        <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
                           {formatCurrency(signals[selectedTimeframe]?.stopLoss || 0)}
                         </span>
                       </div>
