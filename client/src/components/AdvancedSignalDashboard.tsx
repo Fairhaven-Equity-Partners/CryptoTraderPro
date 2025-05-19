@@ -640,32 +640,61 @@ export default function AdvancedSignalDashboard({
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Entry Price</span>
-                    <span className="font-medium">{formatCurrency(currentSignal.entryPrice)}</span>
-                  </div>
+                {/* Trade recommendation section - integrated directly in signal card */}
+                {recommendation && (
+                  <>
+                    <div className="pt-3 pb-1">
+                      <div className="text-sm font-medium mb-1">Trade Recommendation</div>
+                    </div>
                   
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Take Profit</span>
-                    <span className="font-medium text-emerald-500">{formatCurrency(currentSignal.takeProfit)}</span>
-                  </div>
-                  
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Stop Loss</span>
-                    <span className="font-medium text-rose-500">{formatCurrency(currentSignal.stopLoss)}</span>
-                  </div>
-                  
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Risk/Reward</span>
-                    <span className="font-medium">{currentSignal.optimalRiskReward.toFixed(2)}</span>
-                  </div>
-                  
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Recommended Leverage</span>
-                    <span className="font-medium">{currentSignal.recommendedLeverage}x</span>
-                  </div>
-                </div>
+                    <div className="space-y-2">
+                      <div className="grid grid-cols-3 gap-2">
+                        <div>
+                          <div className="text-xs text-muted-foreground">Entry Price</div>
+                          <div className="text-sm font-medium">{formatCurrency(recommendation.entryPrice)}</div>
+                        </div>
+                        
+                        <div>
+                          <div className="text-xs text-muted-foreground">Take Profit</div>
+                          <div className="text-sm font-medium text-emerald-500">{formatCurrency(recommendation.takeProfit)}</div>
+                        </div>
+                        
+                        <div>
+                          <div className="text-xs text-muted-foreground">Stop Loss</div>
+                          <div className="text-sm font-medium text-rose-500">{formatCurrency(recommendation.stopLoss)}</div>
+                        </div>
+                      </div>
+                      
+                      <div className="grid grid-cols-3 gap-2">
+                        <div>
+                          <div className="text-xs text-muted-foreground">Leverage</div>
+                          <div className="text-sm font-medium">{recommendation.recommendedLeverage}x</div>
+                        </div>
+                        
+                        <div>
+                          <div className="text-xs text-muted-foreground">Potential Profit</div>
+                          <div className="text-sm font-medium text-emerald-500">
+                            {recommendation.direction === 'LONG' ? '+' : '-'}{recommendation.potentialProfitPercentage.toFixed(2)}%
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <div className="text-xs text-muted-foreground">Max Loss</div>
+                          <div className="text-sm font-medium text-rose-500">
+                            {recommendation.direction === 'LONG' ? '-' : '+'}{recommendation.maxLossPercentage.toFixed(2)}%
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="pt-1">
+                        <div className="text-xs text-muted-foreground mb-1">Risk Analysis</div>
+                        <div className="text-xs text-muted-foreground">
+                          {recommendation.riskAnalysis}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
                 
                 <div className="pt-2">
                   <div className="text-sm font-medium mb-1">Key Indicators</div>
