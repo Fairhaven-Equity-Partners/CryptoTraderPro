@@ -30,7 +30,8 @@ import {
 } from "lucide-react";
 import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
 import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
-import { formatCurrency, formatPercentage } from '../lib/calculations';
+import { formatPercentage } from '../lib/calculations';
+import { getTimeframeMultiplier } from '../lib/technicalIndicators';
 import { useToast } from '../hooks/use-toast';
 import { useMarketData } from '../hooks/useMarketData';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -1119,24 +1120,24 @@ export default function AdvancedSignalDashboard({
                     <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
                       <h3 className="text-white font-bold text-sm">Trade Levels</h3>
                       
-                      <div className="flex justify-between items-center text-sm">
+                      <div key={`entry-price-${selectedTimeframe}`} className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
                         <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
-                          {formatCurrency(signals[selectedTimeframe]?.entryPrice || 0)}
+                          {formatCurrency(getCurrentPriceValues().entry)}
                         </span>
                       </div>
                       
-                      <div className="flex justify-between items-center text-sm">
+                      <div key={`take-profit-${selectedTimeframe}`} className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
                         <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                          {formatCurrency(signals[selectedTimeframe]?.takeProfit || 0)}
+                          {formatCurrency(getCurrentPriceValues().takeProfit)}
                         </span>
                       </div>
                       
-                      <div className="flex justify-between items-center text-sm">
+                      <div key={`stop-loss-${selectedTimeframe}`} className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
                         <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                          {formatCurrency(signals[selectedTimeframe]?.stopLoss || 0)}
+                          {formatCurrency(getCurrentPriceValues().stopLoss)}
                         </span>
                       </div>
                     </div>
