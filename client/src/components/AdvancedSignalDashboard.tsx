@@ -1081,21 +1081,21 @@ export default function AdvancedSignalDashboard({
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
                         <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
-                          {formatCurrency(currentSignal.entryPrice)}
+                          {formatCurrency(signals[selectedTimeframe]?.entryPrice || 0)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
                         <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                          {formatCurrency(currentSignal.takeProfit)}
+                          {formatCurrency(signals[selectedTimeframe]?.takeProfit || 0)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
                         <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                          {formatCurrency(currentSignal.stopLoss)}
+                          {formatCurrency(signals[selectedTimeframe]?.stopLoss || 0)}
                         </span>
                       </div>
                     </div>
