@@ -794,7 +794,29 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     // Make sure we have enough data
     if (!data || data.length < 50) { // Reduced minimum data points for better compatibility
       console.log(`Not enough data points for ${timeframe}, using simplified analysis`);
-      return generateSimplifiedSignal(data, timeframe);
+      
+      // Generate basic signal
+      const simplifiedSignal = generateSimplifiedSignal(data, timeframe);
+      
+      // Enhance with better support/resistance levels
+      if (data && data.length > 0) {
+        const currentPrice = data[data.length - 1].close;
+        
+        // More realistic percentages based on actual volatility in crypto markets
+        simplifiedSignal.indicators.supports = [
+          currentPrice * 0.99,  // Close support (1% below)
+          currentPrice * 0.975, // Medium support (2.5% below)
+          currentPrice * 0.95   // Strong support (5% below)
+        ];
+        
+        simplifiedSignal.indicators.resistances = [
+          currentPrice * 1.01,  // Close resistance (1% above)
+          currentPrice * 1.025, // Medium resistance (2.5% above)
+          currentPrice * 1.05   // Strong resistance (5% above)
+        ];
+      }
+      
+      return simplifiedSignal;
     }
     
     // Calculate technical indicators
@@ -964,6 +986,100 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
       const stopDistance = direction === 'LONG' ? -volatility / 100 : volatility / 100;
       const tpDistance = direction === 'LONG' ? volatility * 2 / 100 : -volatility * 2 / 100;
       
+      // Calculate more realistic support and resistance levels
+      const resistanceLevels = [];
+      const supportLevels = [];
+      
+      // Get recent significant price levels
+      try {
+        // Calculate significant swing highs and lows over the last 50 candles
+        const lookbackPeriod = Math.min(50, data.length - 1);
+        
+        // Find local highs and lows
+        for (let i = 5; i < lookbackPeriod - 5; i++) {
+          // Check for local high (higher than 5 candles before and after)
+          let isHigh = true;
+          for (let j = i-5; j < i; j++) {
+            if (data[j].high > data[i].high) {
+              isHigh = false;
+              break;
+            }
+          }
+          for (let j = i+1; j <= i+5 && j < data.length; j++) {
+            if (data[j].high > data[i].high) {
+              isHigh = false;
+              break;
+            }
+          }
+          
+          if (isHigh) {
+            resistanceLevels.push(data[i].high);
+          }
+          
+          // Check for local low
+          let isLow = true;
+          for (let j = i-5; j < i; j++) {
+            if (data[j].low < data[i].low) {
+              isLow = false;
+              break;
+            }
+          }
+          for (let j = i+1; j <= i+5 && j < data.length; j++) {
+            if (data[j].low < data[i].low) {
+              isLow = false;
+              break;
+            }
+          }
+          
+          if (isLow) {
+            supportLevels.push(data[i].low);
+          }
+        }
+        
+        // Add recent highs and lows if we need more levels
+        if (resistanceLevels.length < 2) {
+          // Get the highest high of the last 20 periods
+          let highestHigh = -Infinity;
+          for (let i = data.length - 20; i < data.length; i++) {
+            if (i >= 0 && data[i].high > highestHigh) {
+              highestHigh = data[i].high;
+            }
+          }
+          resistanceLevels.push(highestHigh);
+        }
+        
+        if (supportLevels.length < 2) {
+          // Get the lowest low of the last 20 periods
+          let lowestLow = Infinity;
+          for (let i = data.length - 20; i < data.length; i++) {
+            if (i >= 0 && data[i].low < lowestLow) {
+              lowestLow = data[i].low;
+            }
+          }
+          supportLevels.push(lowestLow);
+        }
+      } catch (err) {
+        console.error("Error calculating support/resistance:", err);
+      }
+      
+      // Ensure we have at least basic levels if calculation failed
+      if (resistanceLevels.length === 0) {
+        resistanceLevels.push(currentPrice * 1.02, currentPrice * 1.05);
+      }
+      
+      if (supportLevels.length === 0) {
+        supportLevels.push(currentPrice * 0.98, currentPrice * 0.95);
+      }
+      
+      // Sort and remove duplicates
+      const uniqueResistances = [...new Set(resistanceLevels)]
+        .sort((a, b) => a - b)
+        .filter(level => level > currentPrice); // Only keep resistances above current price
+        
+      const uniqueSupports = [...new Set(supportLevels)]
+        .sort((a, b) => b - a)
+        .filter(level => level < currentPrice); // Only keep supports below current price
+      
       return {
         direction,
         confidence,
@@ -977,8 +1093,8 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
           stochastic: { k: 50, d: 50 },
           adx: { value: 20, pdi: 20, ndi: 20 },
           bb: { middle: currentPrice, upper: currentPrice * 1.02, lower: currentPrice * 0.98, width: 0.04, percentB: 50 },
-          supports: [currentPrice * 0.95, currentPrice * 0.9],
-          resistances: [currentPrice * 1.05, currentPrice * 1.1],
+          supports: uniqueSupports.length > 0 ? uniqueSupports : [currentPrice * 0.98, currentPrice * 0.95],
+          resistances: uniqueResistances.length > 0 ? uniqueResistances : [currentPrice * 1.02, currentPrice * 1.05],
           atr: currentPrice * 0.01,
           volatility: volatility
         },
