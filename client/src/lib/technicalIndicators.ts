@@ -797,7 +797,9 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
 } {
   try {
     // Make sure we have enough data
-    if (!data || data.length < 50) { // Reduced minimum data points for better compatibility
+    // Monthly timeframe requires fewer data points than other timeframes
+    const minRequiredPoints = timeframe === '1M' ? 30 : 50;
+    if (!data || data.length < minRequiredPoints) {
       console.log(`Not enough data points for ${timeframe}, using simplified analysis`);
       
       // Generate basic signal
