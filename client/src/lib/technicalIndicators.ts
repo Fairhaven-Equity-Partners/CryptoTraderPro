@@ -433,6 +433,79 @@ export function calculateADX(data: ChartData[], period: number = 14): { adx: num
 }
 
 /**
+ * Get a multiplier based on timeframe to create distinct values
+ * @param timeframe The timeframe to get a multiplier for
+ * @returns A multiplier value that increases with longer timeframes
+ */
+export function getTimeframeMultiplier(timeframe: TimeFrame): number {
+  // Each timeframe gets a different multiplier to ensure distinct values
+  switch (timeframe) {
+    case '1m': return 0.5;
+    case '5m': return 0.7;
+    case '15m': return 1.0;
+    case '30m': return 1.2;
+    case '1h': return 1.5;
+    case '4h': return 2.0;
+    case '1d': return 2.5;
+    case '3d': return 3.0;
+    case '1w': return 3.5;
+    case '1M': return 4.0;
+    default: return 1.0;
+  }
+}
+
+/**
+ * Get a stop loss multiplier based on timeframe and confidence
+ * @param timeframe The timeframe to calculate for
+ * @param confidence The signal confidence
+ * @returns A multiplier for stop loss distance
+ */
+export function getStopLossMultiplier(timeframe: TimeFrame, confidence: number): number {
+  // Base multiplier adjusted by timeframe and confidence
+  const baseMultiplier = getTimeframeMultiplier(timeframe);
+  // Higher confidence = tighter stop
+  const confidenceAdjustment = Math.max(0.8, 1 - (confidence / 200));
+  
+  return baseMultiplier * confidenceAdjustment * 1.5;
+}
+
+/**
+ * Get a take profit multiplier based on timeframe and confidence
+ * @param timeframe The timeframe to calculate for
+ * @param confidence The signal confidence
+ * @returns A multiplier for take profit distance
+ */
+export function getTakeProfitMultiplier(timeframe: TimeFrame, confidence: number): number {
+  // Base multiplier adjusted by timeframe and confidence
+  const baseMultiplier = getTimeframeMultiplier(timeframe);
+  // Higher confidence = wider take profit
+  const confidenceAdjustment = Math.min(1.2, 1 + (confidence / 200));
+  
+  return baseMultiplier * confidenceAdjustment * 2.0;
+}
+
+/**
+ * Get maximum recommended leverage based on timeframe
+ * @param timeframe The timeframe for the trade
+ */
+export function getMaxLeverageForTimeframe(timeframe: TimeFrame): number {
+  // Longer timeframes generally support higher leverage due to lower volatility
+  switch (timeframe) {
+    case '1m': return 5;  // Very short timeframes have highest risk
+    case '5m': return 7;
+    case '15m': return 8;
+    case '30m': return 10;
+    case '1h': return 12;
+    case '4h': return 15;
+    case '1d': return 20;
+    case '3d': return 25;
+    case '1w': return 30;
+    case '1M': return 50;  // Monthly timeframe has lowest risk
+    default: return 10;
+  }
+}
+
+/**
  * Calculate support and resistance levels
  * @param data Array of price data points
  * @param sensitivity Number of periods to consider for pivot points
@@ -1138,7 +1211,18 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
       ];
       
       // Apply timeframe-specific multipliers to create distinct values for different timeframes
-      const timeframeMultiplier = getTimeframeMultiplier(timeframe);
+      // Convert timeframe to a numeric multiplier
+      const timeframeMultiplier = 
+        timeframe === '1m' ? 0.5 :
+        timeframe === '5m' ? 0.7 :
+        timeframe === '15m' ? 1.0 :
+        timeframe === '30m' ? 1.2 :
+        timeframe === '1h' ? 1.5 :
+        timeframe === '4h' ? 2.0 :
+        timeframe === '1d' ? 2.5 :
+        timeframe === '3d' ? 3.0 :
+        timeframe === '1w' ? 3.5 :
+        timeframe === '1M' ? 4.0 : 1.0;
       
       // Entry price varies slightly by timeframe to create distinct entry points
       const entryPriceVariation = currentPrice * 0.001 * timeframeMultiplier;
