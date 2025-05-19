@@ -585,7 +585,7 @@ export default function AdvancedSignalDashboard({
           const manualPrice = symbol === 'XRP/USDT' ? 
             2.37 : // Hardcoded XRP price as fallback
             symbol === 'SOL/USDT' ?
-            165.75 : // Hardcoded SOL price as fallback
+            165.7 : // Hardcoded SOL price to match latest value
             (asset?.lastPrice || 100);
           
           // Apply timeframe-specific multipliers for more realistic price values
