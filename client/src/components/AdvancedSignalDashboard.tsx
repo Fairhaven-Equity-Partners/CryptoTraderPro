@@ -1013,8 +1013,8 @@ export default function AdvancedSignalDashboard({
         </TabsList>
       </Tabs>
       
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Integrated Signal & Trade Recommendation Card */}
+      <div className="grid grid-cols-1 gap-6">
+        {/* Fully Integrated Signal Analysis Card */}
         <Card className={currentSignal ? 'border-gray-700 bg-secondary' : ''}>
           <CardHeader className="pb-2">
             <CardTitle className="flex justify-between items-center text-white">
@@ -1070,129 +1070,272 @@ export default function AdvancedSignalDashboard({
                   </div>
                 </div>
                 
-                {/* Entry/Exit Strategy Section */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Price Levels */}
-                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
-                    <h3 className="text-white font-bold text-sm">Trade Levels</h3>
-                    
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-white font-semibold">Entry Price</span>
-                      <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
-                        {formatCurrency(currentSignal.entryPrice)}
-                      </span>
+                {/* Main Trading Information (3 columns) */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  {/* Price & Risk Levels */}
+                  <div className="space-y-4">
+                    {/* Price Levels */}
+                    <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
+                      <h3 className="text-white font-bold text-sm">Trade Levels</h3>
+                      
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-semibold">Entry Price</span>
+                        <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
+                          {formatCurrency(currentSignal.entryPrice)}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-semibold">Take Profit</span>
+                        <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
+                          {formatCurrency(currentSignal.takeProfit)}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-semibold">Stop Loss</span>
+                        <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
+                          {formatCurrency(currentSignal.stopLoss)}
+                        </span>
+                      </div>
                     </div>
                     
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-white font-semibold">Take Profit</span>
-                      <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                        {formatCurrency(currentSignal.takeProfit)}
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-white font-semibold">Stop Loss</span>
-                      <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                        {formatCurrency(currentSignal.stopLoss)}
-                      </span>
+                    {/* Risk Management */}
+                    <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
+                      <h3 className="text-white font-bold text-sm">Risk Management</h3>
+                      
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-semibold">Risk/Reward</span>
+                        <span className="font-bold text-blue-400 bg-blue-900/30 px-3 py-1 rounded border border-blue-800">
+                          {Math.round(currentSignal.optimalRiskReward * 100) / 100}
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-semibold">Recommended Leverage</span>
+                        <span className="font-bold text-purple-400 bg-purple-900/30 px-3 py-1 rounded border border-purple-800">
+                          {currentSignal.recommendedLeverage}x
+                        </span>
+                      </div>
+                      
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-semibold">Position Sizing</span>
+                        <span className="font-bold text-cyan-400 bg-cyan-900/30 px-3 py-1 rounded border border-cyan-800">
+                          Conservative
+                        </span>
+                      </div>
                     </div>
                   </div>
                   
-                  {/* Risk Management */}
-                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
-                    <h3 className="text-white font-bold text-sm">Risk Management</h3>
-                    
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-white font-semibold">Risk/Reward</span>
-                      <span className="font-bold text-blue-400 bg-blue-900/30 px-3 py-1 rounded border border-blue-800">
-                        {Math.round(currentSignal.optimalRiskReward * 100) / 100}
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-white font-semibold">Recommended Leverage</span>
-                      <span className="font-bold text-purple-400 bg-purple-900/30 px-3 py-1 rounded border border-purple-800">
-                        {currentSignal.recommendedLeverage}x
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-white font-semibold">Position Sizing</span>
-                      <span className="font-bold text-cyan-400 bg-cyan-900/30 px-3 py-1 rounded border border-cyan-800">
-                        Conservative
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Indicators and Volatility Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Technical Indicators */}
-                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                    <h3 className="text-white font-bold text-sm mb-2">Technical Indicators</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {Object.entries(currentSignal.indicators)
-                        .filter(([category]) => !['supports', 'resistances'].includes(category) && Array.isArray(currentSignal.indicators[category]))
-                        .slice(0, 3) // Only show first three indicator categories
-                        .flatMap(([category, items]) => 
-                          Array.isArray(items) ? 
-                            items.slice(0, 2).map((indicator: any, i: number) => (
-                              <Badge 
-                                key={`${category}-${i}`} 
-                                variant="outline" 
-                                className={`
-                                  ${indicator.signal === 'BUY' 
-                                    ? 'text-green-400 border-green-500 bg-green-900/30' : 
-                                  indicator.signal === 'SELL' 
-                                    ? 'text-red-400 border-red-500 bg-red-900/30' : 
-                                    'text-yellow-400 border-yellow-500 bg-yellow-900/30'}
-                                  ${indicator.strength === 'STRONG' ? 'font-bold' : 'font-medium'}
-                                  px-2 py-1 text-xs
-                                `}
-                              >
-                                {indicator.signal}
-                              </Badge>
-                            )) : []
+                  {/* Pattern Formations & Indicators */}
+                  <div className="space-y-4">
+                    {/* Pattern Formations */}
+                    <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                      <h3 className="text-white font-bold text-sm mb-2">Pattern Formations</h3>
+                      
+                      {currentSignal.patternFormations && currentSignal.patternFormations.length > 0 ? (
+                        <div className="space-y-3">
+                          {currentSignal.patternFormations.slice(0, 2).map((pattern, i) => (
+                            <div key={i} className="space-y-1">
+                              <div className="flex justify-between">
+                                <span className="font-medium text-white">{pattern.name}</span>
+                                <Badge 
+                                  variant="outline"
+                                  className={`
+                                    ${pattern.direction === 'bullish' ? 'text-emerald-500 border-emerald-500 bg-emerald-900/20' : 
+                                      pattern.direction === 'bearish' ? 'text-rose-500 border-rose-500 bg-rose-900/20' : 
+                                        'text-slate-400 border-slate-500 bg-slate-900/20'}
+                                  `}
+                                >
+                                  {pattern.direction}
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between text-sm">
+                                <span className="text-gray-400">Reliability</span>
+                                <span className="text-white">{pattern.reliability}%</span>
+                              </div>
+                              <div className="flex justify-between text-sm">
+                                <span className="text-gray-400">Target</span>
+                                <span className="text-white">{formatCurrency(pattern.priceTarget)}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="p-2 text-sm text-gray-400 text-center">
+                          No patterns detected
+                        </div>
                       )}
                     </div>
-                  </div>
-                  
-                  {/* Volatility */}
-                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                    <h3 className="text-white font-bold text-sm mb-2">Volatility</h3>
-                    <Badge variant="outline" className="bg-indigo-900/30 text-indigo-400 border-indigo-500 px-2 py-1 font-medium">
-                      {(() => {
-                        // Safe volatility extraction that handles all possible types
-                        let volatilityValue = 0;
-                        
-                        try {
-                          if (currentSignal.indicators.volatility !== undefined) {
-                            if (Array.isArray(currentSignal.indicators.volatility)) {
-                              // Handle array type with validation
-                              const vol = currentSignal.indicators.volatility;
-                              if (vol.length > 0 && vol[0] && typeof vol[0].value === 'number') {
-                                volatilityValue = vol[0].value;
+                    
+                    {/* Technical Indicators */}
+                    <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                      <h3 className="text-white font-bold text-sm mb-2">Technical Indicators</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(currentSignal.indicators)
+                          .filter(([category]) => !['supports', 'resistances'].includes(category) && Array.isArray(currentSignal.indicators[category]))
+                          .slice(0, 3) // Only show first three indicator categories
+                          .flatMap(([category, items]) => 
+                            Array.isArray(items) ? 
+                              items.slice(0, 2).map((indicator: any, i: number) => (
+                                <Badge 
+                                  key={`${category}-${i}`} 
+                                  variant="outline" 
+                                  className={`
+                                    ${indicator.signal === 'BUY' 
+                                      ? 'text-green-400 border-green-500 bg-green-900/30' : 
+                                    indicator.signal === 'SELL' 
+                                      ? 'text-red-400 border-red-500 bg-red-900/30' : 
+                                      'text-yellow-400 border-yellow-500 bg-yellow-900/30'}
+                                    ${indicator.strength === 'STRONG' ? 'font-bold' : 'font-medium'}
+                                    px-2 py-1 text-xs
+                                  `}
+                                >
+                                  {indicator.signal}
+                                </Badge>
+                              )) : []
+                        )}
+                      </div>
+                      
+                      <div className="mt-3 flex justify-between">
+                        <span className="text-white font-semibold text-sm">Market Condition:</span>
+                        <Badge variant="outline" className="bg-teal-900/30 text-teal-400 border-teal-500 px-2 py-1 font-medium">
+                          {currentSignal.macroClassification || "Neutral"}
+                        </Badge>
+                      </div>
+                      
+                      <div className="mt-2 flex justify-between">
+                        <span className="text-white font-semibold text-sm">Volatility:</span>
+                        <Badge variant="outline" className="bg-indigo-900/30 text-indigo-400 border-indigo-500 px-2 py-1 font-medium">
+                          {(() => {
+                            // Safe volatility extraction that handles all possible types
+                            let volatilityValue = 0;
+                            
+                            try {
+                              if (currentSignal.indicators.volatility !== undefined) {
+                                if (Array.isArray(currentSignal.indicators.volatility)) {
+                                  // Handle array type with validation
+                                  const vol = currentSignal.indicators.volatility;
+                                  if (vol.length > 0 && vol[0] && typeof vol[0].value === 'number') {
+                                    volatilityValue = vol[0].value;
+                                  }
+                                } else if (typeof currentSignal.indicators.volatility === 'number') {
+                                  // Handle direct number value
+                                  volatilityValue = currentSignal.indicators.volatility;
+                                }
                               }
-                            } else if (typeof currentSignal.indicators.volatility === 'number') {
-                              // Handle direct number value
-                              volatilityValue = currentSignal.indicators.volatility;
+                            } catch (e) {
+                              console.log("Error displaying volatility:", e);
                             }
-                          }
-                        } catch (e) {
-                          console.log("Error displaying volatility:", e);
-                        }
-                        
-                        return Math.round(volatilityValue);
-                      })()}%
-                    </Badge>
+                            
+                            return Math.round(volatilityValue);
+                          })()}%
+                        </Badge>
+                      </div>
+                    </div>
                   </div>
                   
-                  {/* Market Condition */}
+                  {/* Support & Resistance Levels */}
                   <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                    <h3 className="text-white font-bold text-sm mb-2">Market Condition</h3>
-                    <Badge variant="outline" className="bg-teal-900/30 text-teal-400 border-teal-500 px-2 py-1 font-medium">
-                      {currentSignal.macroClassification || "Neutral"}
-                    </Badge>
+                    <h3 className="text-white font-bold text-sm mb-3">Support & Resistance Levels</h3>
+                    
+                    <div className="space-y-4">
+                      {/* Resistance Levels - Always exactly 3 */}
+                      <div>
+                        <h4 className="font-medium text-rose-500 mb-2 text-sm">Resistance Levels</h4>
+                        <div className="space-y-2">
+                          {(() => {
+                            // Generate resistance levels either from data or defaults
+                            const price = currentSignal.entryPrice;
+                            let resistances: number[] = [price * 1.01, price * 1.03, price * 1.05];
+                            
+                            // Use actual indicators if available and valid
+                            if (currentSignal.indicators?.resistances && 
+                                Array.isArray(currentSignal.indicators.resistances) &&
+                                currentSignal.indicators.resistances.length > 0) {
+                              // Take exactly 3 (or pad with defaults if fewer)
+                              const availableResistances = currentSignal.indicators.resistances.slice(0, 3);
+                              if (availableResistances.length === 3) {
+                                resistances = availableResistances;
+                              } else {
+                                // Pad with calculated defaults
+                                while (availableResistances.length < 3) {
+                                  const lastIdx = availableResistances.length;
+                                  availableResistances.push(price * (1.01 + (lastIdx * 0.02)));
+                                }
+                                resistances = availableResistances;
+                              }
+                            }
+                            
+                            // Always render exactly 3 resistance levels
+                            return resistances.map((level, i) => (
+                              <div key={`resistance-${i}`} className="flex justify-between items-center border-b border-gray-700 pb-1">
+                                <div>
+                                  <Badge 
+                                    variant="outline"
+                                    className="text-rose-500 border-rose-500 bg-rose-900/20 text-xs"
+                                  >
+                                    {i === 0 ? "Weak" : i === 1 ? "Medium" : "Strong"}
+                                  </Badge>
+                                </div>
+                                <div className="text-base font-semibold text-white">
+                                  {formatCurrency(level)}
+                                </div>
+                              </div>
+                            ));
+                          })()}
+                        </div>
+                      </div>
+                      
+                      <Separator className="bg-gray-700" />
+                      
+                      {/* Support Levels - Always exactly 3 */}
+                      <div>
+                        <h4 className="font-medium text-emerald-500 mb-2 text-sm">Support Levels</h4>
+                        <div className="space-y-2">
+                          {(() => {
+                            // Generate support levels either from data or defaults
+                            const price = currentSignal.entryPrice;
+                            let supports: number[] = [price * 0.99, price * 0.97, price * 0.95];
+                            
+                            // Use actual indicators if available and valid
+                            if (currentSignal.indicators?.supports && 
+                                Array.isArray(currentSignal.indicators.supports) &&
+                                currentSignal.indicators.supports.length > 0) {
+                              // Take exactly 3 (or pad with defaults if fewer)
+                              const availableSupports = currentSignal.indicators.supports.slice(0, 3);
+                              if (availableSupports.length === 3) {
+                                supports = availableSupports;
+                              } else {
+                                // Pad with calculated defaults
+                                while (availableSupports.length < 3) {
+                                  const lastIdx = availableSupports.length;
+                                  availableSupports.push(price * (0.99 - (lastIdx * 0.02)));
+                                }
+                                supports = availableSupports;
+                              }
+                            }
+                            
+                            // Always render exactly 3 support levels
+                            return supports.map((level, i) => (
+                              <div key={`support-${i}`} className="flex justify-between items-center border-b border-gray-700 pb-1">
+                                <div>
+                                  <Badge 
+                                    variant="outline"
+                                    className="text-emerald-500 border-emerald-500 bg-emerald-900/20 text-xs"
+                                  >
+                                    {i === 0 ? "Strong" : i === 1 ? "Medium" : "Weak"}
+                                  </Badge>
+                                </div>
+                                <div className="text-base font-semibold text-white">
+                                  {formatCurrency(level)}
+                                </div>
+                              </div>
+                            ));
+                          })()}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1200,171 +1343,6 @@ export default function AdvancedSignalDashboard({
               <div className="h-48 flex flex-col items-center justify-center text-center bg-gray-900 rounded-lg p-4 border border-gray-700">
                 <span className="text-white font-medium">No signal data available for {selectedTimeframe}</span>
                 <span className="text-gray-300 text-sm mt-2">Try selecting a different timeframe or refresh</span>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-        
-        {/* Pattern Formations */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              <span>Pattern Formations</span>
-              <Info className="h-5 w-5 text-primary/70" />
-            </CardTitle>
-            <CardDescription>
-              Chart patterns identified in the {selectedTimeframe} timeframe
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {currentSignal && currentSignal.patternFormations && currentSignal.patternFormations.length > 0 ? (
-              <div className="space-y-3">
-                {currentSignal.patternFormations.map((pattern, i) => (
-                  <div key={i} className="space-y-1">
-                    <div className="flex justify-between">
-                      <span className="font-medium">{pattern.name}</span>
-                      <Badge 
-                        variant="outline"
-                        className={`
-                          ${pattern.direction === 'bullish' ? 'text-emerald-500 border-emerald-500/20' : 
-                            pattern.direction === 'bearish' ? 'text-rose-500 border-rose-500/20' : 
-                              'text-slate-500 border-slate-500/20'}
-                        `}
-                      >
-                        {pattern.direction}
-                      </Badge>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Reliability</span>
-                      <span>{pattern.reliability}%</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Target</span>
-                      <span>{formatCurrency(pattern.priceTarget)}</span>
-                    </div>
-                    <div className="text-sm text-muted-foreground mt-1">{pattern.description}</div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="h-32 flex items-center justify-center text-muted-foreground">
-                No patterns detected for this timeframe
-              </div>
-            )}
-          </CardContent>
-        </Card>
-        
-        {/* Support & Resistance */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              <span>Support & Resistance</span>
-              <Scale className="h-5 w-5 text-primary/70" />
-            </CardTitle>
-            <CardDescription>
-              Key price levels for {symbol} on {selectedTimeframe} timeframe
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {currentSignal && currentSignal.supportResistance ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* Support Levels - Always exactly 3 */}
-                <div>
-                  <h3 className="font-medium text-emerald-500 mb-2">Support Levels</h3>
-                  <div className="space-y-2">
-                    {(() => {
-                      // Generate support levels either from data or defaults
-                      const price = currentSignal.entryPrice;
-                      let supports: number[] = [price * 0.99, price * 0.97, price * 0.95];
-                      
-                      // Use actual indicators if available and valid
-                      if (currentSignal.indicators?.supports && 
-                          Array.isArray(currentSignal.indicators.supports) &&
-                          currentSignal.indicators.supports.length > 0) {
-                        // Take exactly 3 (or pad with defaults if fewer)
-                        const availableSupports = currentSignal.indicators.supports.slice(0, 3);
-                        if (availableSupports.length === 3) {
-                          supports = availableSupports;
-                        } else {
-                          // Pad with calculated defaults
-                          while (availableSupports.length < 3) {
-                            const lastIdx = availableSupports.length;
-                            availableSupports.push(price * (0.99 - (lastIdx * 0.02)));
-                          }
-                          supports = availableSupports;
-                        }
-                      }
-                      
-                      // Always render exactly 3 support levels
-                      return supports.map((level, i) => (
-                        <div key={`support-${i}`} className="flex justify-between items-center border-b pb-1">
-                          <div>
-                            <Badge 
-                              variant="outline"
-                              className="text-emerald-500 border-emerald-500/20"
-                            >
-                              {i === 0 ? "Strong" : i === 1 ? "Medium" : "Weak"}
-                            </Badge>
-                          </div>
-                          <div className="text-lg font-semibold">
-                            {formatCurrency(level)}
-                          </div>
-                        </div>
-                      ));
-                    })()}
-                  </div>
-                </div>
-                
-                {/* Resistance Levels - Always exactly 3 */}
-                <div>
-                  <h3 className="font-medium text-rose-500 mb-2">Resistance Levels</h3>
-                  <div className="space-y-2">
-                    {(() => {
-                      // Generate resistance levels either from data or defaults
-                      const price = currentSignal.entryPrice;
-                      let resistances: number[] = [price * 1.01, price * 1.03, price * 1.05];
-                      
-                      // Use actual indicators if available and valid
-                      if (currentSignal.indicators?.resistances && 
-                          Array.isArray(currentSignal.indicators.resistances) &&
-                          currentSignal.indicators.resistances.length > 0) {
-                        // Take exactly 3 (or pad with defaults if fewer)
-                        const availableResistances = currentSignal.indicators.resistances.slice(0, 3);
-                        if (availableResistances.length === 3) {
-                          resistances = availableResistances;
-                        } else {
-                          // Pad with calculated defaults
-                          while (availableResistances.length < 3) {
-                            const lastIdx = availableResistances.length;
-                            availableResistances.push(price * (1.01 + (lastIdx * 0.02)));
-                          }
-                          resistances = availableResistances;
-                        }
-                      }
-                      
-                      // Always render exactly 3 resistance levels
-                      return resistances.map((level, i) => (
-                        <div key={`resistance-${i}`} className="flex justify-between items-center border-b pb-1">
-                          <div>
-                            <Badge 
-                              variant="outline"
-                              className="text-rose-500 border-rose-500/20"
-                            >
-                              {i === 0 ? "Weak" : i === 1 ? "Medium" : "Strong"}
-                            </Badge>
-                          </div>
-                          <div className="text-lg font-semibold">
-                            {formatCurrency(level)}
-                          </div>
-                        </div>
-                      ));
-                    })()}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="h-32 flex items-center justify-center text-muted-foreground">
-                No key levels detected
               </div>
             )}
           </CardContent>
