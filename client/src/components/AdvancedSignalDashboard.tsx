@@ -1107,7 +1107,23 @@ export default function AdvancedSignalDashboard({
                     <div>
                       <div className="text-xs text-muted-foreground mb-1">Volatility</div>
                       <Badge variant="outline" className="bg-primary/5">
-                        {Math.round(currentSignal.indicators.volatility || 0)}%
+                        {(() => {
+                          // Safe volatility extraction that handles all possible types
+                          let volatilityValue = 0;
+                          const volatility = currentSignal.indicators.volatility;
+                          
+                          if (volatility) {
+                            if (Array.isArray(volatility)) {
+                              volatilityValue = volatility.length > 0 && volatility[0].value 
+                                ? Number(volatility[0].value) 
+                                : 0;
+                            } else if (typeof volatility === 'number') {
+                              volatilityValue = volatility;
+                            }
+                          }
+                          
+                          return Math.round(volatilityValue);
+                        })()}%
                       </Badge>
                     </div>
                   </div>
@@ -1183,29 +1199,65 @@ export default function AdvancedSignalDashboard({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {currentSignal && currentSignal.supportResistance && currentSignal.supportResistance.length > 0 ? (
-              <div className="space-y-3">
-                {currentSignal.supportResistance.map((level, i) => (
-                  <div key={i} className="flex justify-between items-center">
-                    <div>
-                      <Badge 
-                        variant="outline"
-                        className={level.type === 'support' ? 
-                          'text-emerald-500 border-emerald-500/20' : 
-                          'text-rose-500 border-rose-500/20'
-                        }
-                      >
-                        {level.type}
-                      </Badge>
-                      <div className="mt-1 text-sm text-muted-foreground">
-                        Strength: {level.strength}%
+            {currentSignal && currentSignal.indicators ? (
+              <div className="space-y-6">
+                {/* Support Levels - Limited to 3 */}
+                <div>
+                  <h3 className="font-medium text-emerald-500 mb-2">Support Levels</h3>
+                  <div className="space-y-2">
+                    {currentSignal.indicators.supports && Array.isArray(currentSignal.indicators.supports) && 
+                     currentSignal.indicators.supports.slice(0, 3).map((level, i) => (
+                      <div key={`support-${i}`} className="flex justify-between items-center border-b pb-1">
+                        <div>
+                          <Badge 
+                            variant="outline"
+                            className="text-emerald-500 border-emerald-500/20"
+                          >
+                            {i === 0 ? "Strong" : i === 1 ? "Medium" : "Weak"}
+                          </Badge>
+                        </div>
+                        <div className="text-lg font-semibold">
+                          {formatCurrency(level)}
+                        </div>
                       </div>
-                    </div>
-                    <div className="text-lg font-semibold">
-                      {formatCurrency(level.price)}
-                    </div>
+                    ))}
+                    {(!currentSignal.indicators.supports || !Array.isArray(currentSignal.indicators.supports) || 
+                      currentSignal.indicators.supports.length === 0) && (
+                      <div className="text-sm text-muted-foreground text-center">
+                        No support levels detected
+                      </div>
+                    )}
                   </div>
-                ))}
+                </div>
+                
+                {/* Resistance Levels - Limited to 3 */}
+                <div>
+                  <h3 className="font-medium text-rose-500 mb-2">Resistance Levels</h3>
+                  <div className="space-y-2">
+                    {currentSignal.indicators.resistances && Array.isArray(currentSignal.indicators.resistances) && 
+                     currentSignal.indicators.resistances.slice(0, 3).map((level, i) => (
+                      <div key={`resistance-${i}`} className="flex justify-between items-center border-b pb-1">
+                        <div>
+                          <Badge 
+                            variant="outline"
+                            className="text-rose-500 border-rose-500/20"
+                          >
+                            {i === 0 ? "Weak" : i === 1 ? "Medium" : "Strong"}
+                          </Badge>
+                        </div>
+                        <div className="text-lg font-semibold">
+                          {formatCurrency(level)}
+                        </div>
+                      </div>
+                    ))}
+                    {(!currentSignal.indicators.resistances || !Array.isArray(currentSignal.indicators.resistances) || 
+                      currentSignal.indicators.resistances.length === 0) && (
+                      <div className="text-sm text-muted-foreground text-center">
+                        No resistance levels detected
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="h-32 flex items-center justify-center text-muted-foreground">

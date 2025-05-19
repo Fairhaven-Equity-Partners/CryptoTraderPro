@@ -1117,6 +1117,19 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
       const limitedResistances = uniqueResistances.slice(0, 3);
       const limitedSupports = uniqueSupports.slice(0, 3);
       
+      // Create exactly 3 support and 3 resistance levels
+      const finalSupports = limitedSupports.length === 3 ? limitedSupports : [
+        currentPrice * 0.99, 
+        currentPrice * 0.97, 
+        currentPrice * 0.95
+      ];
+      
+      const finalResistances = limitedResistances.length === 3 ? limitedResistances : [
+        currentPrice * 1.01, 
+        currentPrice * 1.03, 
+        currentPrice * 1.05
+      ];
+      
       return {
         direction,
         confidence,
@@ -1130,8 +1143,8 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
           stochastic: { k: 50, d: 50 },
           adx: { value: 20, pdi: 20, ndi: 20 },
           bb: { middle: currentPrice, upper: currentPrice * 1.02, lower: currentPrice * 0.98, width: 0.04, percentB: 50 },
-          supports: limitedSupports.length > 0 ? limitedSupports : [currentPrice * 0.99, currentPrice * 0.97, currentPrice * 0.95],
-          resistances: limitedResistances.length > 0 ? limitedResistances : [currentPrice * 1.01, currentPrice * 1.03, currentPrice * 1.05],
+          supports: finalSupports,
+          resistances: finalResistances,
           atr: currentPrice * 0.01,
           volatility: volatility
         },

@@ -34,6 +34,14 @@ export interface AdvancedSignal {
     volatility: Indicator[];
     volume: Indicator[];
     pattern: Indicator[];
+    supports?: number[];
+    resistances?: number[];
+    rsi?: number;
+    macd?: { value: number, signal: number, histogram: number };
+    stochastic?: { k: number, d: number };
+    adx?: { value: number, pdi: number, ndi: number };
+    bb?: { middle: number, upper: number, lower: number, width: number, percentB: number };
+    atr?: number;
   };
   patternFormations: PatternFormation[];
   supportResistance: Level[];
