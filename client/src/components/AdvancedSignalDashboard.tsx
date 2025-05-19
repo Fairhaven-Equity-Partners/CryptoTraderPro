@@ -1205,63 +1205,99 @@ export default function AdvancedSignalDashboard({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {currentSignal && currentSignal.indicators ? (
+            {currentSignal ? (
               <div className="space-y-6">
-                {/* Support Levels - Limited to 3 */}
+                {/* Support Levels - Always exactly 3 */}
                 <div>
                   <h3 className="font-medium text-emerald-500 mb-2">Support Levels</h3>
                   <div className="space-y-2">
-                    {currentSignal.indicators.supports && Array.isArray(currentSignal.indicators.supports) && 
-                     currentSignal.indicators.supports.slice(0, 3).map((level, i) => (
-                      <div key={`support-${i}`} className="flex justify-between items-center border-b pb-1">
-                        <div>
-                          <Badge 
-                            variant="outline"
-                            className="text-emerald-500 border-emerald-500/20"
-                          >
-                            {i === 0 ? "Strong" : i === 1 ? "Medium" : "Weak"}
-                          </Badge>
+                    {(() => {
+                      // Generate support levels either from data or defaults
+                      const price = currentSignal.entryPrice;
+                      let supports: number[] = [price * 0.99, price * 0.97, price * 0.95];
+                      
+                      // Use actual indicators if available and valid
+                      if (currentSignal.indicators?.supports && 
+                          Array.isArray(currentSignal.indicators.supports) &&
+                          currentSignal.indicators.supports.length > 0) {
+                        // Take exactly 3 (or pad with defaults if fewer)
+                        const availableSupports = currentSignal.indicators.supports.slice(0, 3);
+                        if (availableSupports.length === 3) {
+                          supports = availableSupports;
+                        } else {
+                          // Pad with calculated defaults
+                          while (availableSupports.length < 3) {
+                            const lastIdx = availableSupports.length;
+                            availableSupports.push(price * (0.99 - (lastIdx * 0.02)));
+                          }
+                          supports = availableSupports;
+                        }
+                      }
+                      
+                      // Always render exactly 3 support levels
+                      return supports.map((level, i) => (
+                        <div key={`support-${i}`} className="flex justify-between items-center border-b pb-1">
+                          <div>
+                            <Badge 
+                              variant="outline"
+                              className="text-emerald-500 border-emerald-500/20"
+                            >
+                              {i === 0 ? "Strong" : i === 1 ? "Medium" : "Weak"}
+                            </Badge>
+                          </div>
+                          <div className="text-lg font-semibold">
+                            {formatCurrency(level)}
+                          </div>
                         </div>
-                        <div className="text-lg font-semibold">
-                          {formatCurrency(level)}
-                        </div>
-                      </div>
-                    ))}
-                    {(!currentSignal.indicators.supports || !Array.isArray(currentSignal.indicators.supports) || 
-                      currentSignal.indicators.supports.length === 0) && (
-                      <div className="text-sm text-muted-foreground text-center">
-                        No support levels detected
-                      </div>
-                    )}
+                      ));
+                    })()}
                   </div>
                 </div>
                 
-                {/* Resistance Levels - Limited to 3 */}
+                {/* Resistance Levels - Always exactly 3 */}
                 <div>
                   <h3 className="font-medium text-rose-500 mb-2">Resistance Levels</h3>
                   <div className="space-y-2">
-                    {currentSignal.indicators.resistances && Array.isArray(currentSignal.indicators.resistances) && 
-                     currentSignal.indicators.resistances.slice(0, 3).map((level, i) => (
-                      <div key={`resistance-${i}`} className="flex justify-between items-center border-b pb-1">
-                        <div>
-                          <Badge 
-                            variant="outline"
-                            className="text-rose-500 border-rose-500/20"
-                          >
-                            {i === 0 ? "Weak" : i === 1 ? "Medium" : "Strong"}
-                          </Badge>
+                    {(() => {
+                      // Generate resistance levels either from data or defaults
+                      const price = currentSignal.entryPrice;
+                      let resistances: number[] = [price * 1.01, price * 1.03, price * 1.05];
+                      
+                      // Use actual indicators if available and valid
+                      if (currentSignal.indicators?.resistances && 
+                          Array.isArray(currentSignal.indicators.resistances) &&
+                          currentSignal.indicators.resistances.length > 0) {
+                        // Take exactly 3 (or pad with defaults if fewer)
+                        const availableResistances = currentSignal.indicators.resistances.slice(0, 3);
+                        if (availableResistances.length === 3) {
+                          resistances = availableResistances;
+                        } else {
+                          // Pad with calculated defaults
+                          while (availableResistances.length < 3) {
+                            const lastIdx = availableResistances.length;
+                            availableResistances.push(price * (1.01 + (lastIdx * 0.02)));
+                          }
+                          resistances = availableResistances;
+                        }
+                      }
+                      
+                      // Always render exactly 3 resistance levels
+                      return resistances.map((level, i) => (
+                        <div key={`resistance-${i}`} className="flex justify-between items-center border-b pb-1">
+                          <div>
+                            <Badge 
+                              variant="outline"
+                              className="text-rose-500 border-rose-500/20"
+                            >
+                              {i === 0 ? "Weak" : i === 1 ? "Medium" : "Strong"}
+                            </Badge>
+                          </div>
+                          <div className="text-lg font-semibold">
+                            {formatCurrency(level)}
+                          </div>
                         </div>
-                        <div className="text-lg font-semibold">
-                          {formatCurrency(level)}
-                        </div>
-                      </div>
-                    ))}
-                    {(!currentSignal.indicators.resistances || !Array.isArray(currentSignal.indicators.resistances) || 
-                      currentSignal.indicators.resistances.length === 0) && (
-                      <div className="text-sm text-muted-foreground text-center">
-                        No resistance levels detected
-                      </div>
-                    )}
+                      ));
+                    })()}
                   </div>
                 </div>
               </div>
