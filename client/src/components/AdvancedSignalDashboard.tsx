@@ -612,6 +612,7 @@ export default function AdvancedSignalDashboard({
             entryPrice: manualPrice,
             takeProfit: manualPrice * (1 + (takeProfitPercent / 100)),
             stopLoss: manualPrice * (1 - (stopLossPercent / 100)),
+            recommendedLeverage: 2.0,
             indicators: {
               trend: [
                 { name: "Moving Average", signal: "NEUTRAL", strength: "MODERATE", category: "TREND" },
@@ -634,11 +635,39 @@ export default function AdvancedSignalDashboard({
                 { name: "Price Patterns", signal: "NEUTRAL", strength: "MODERATE", category: "PATTERN" }
               ]
             },
+            patternFormations: [],
+            supportResistance: [
+              { type: 'support', price: manualPrice * 0.97, strength: 'strong' },
+              { type: 'support', price: manualPrice * 0.95, strength: 'medium' },
+              { type: 'support', price: manualPrice * 0.93, strength: 'weak' },
+              { type: 'resistance', price: manualPrice * 1.03, strength: 'weak' },
+              { type: 'resistance', price: manualPrice * 1.05, strength: 'medium' },
+              { type: 'resistance', price: manualPrice * 1.07, strength: 'strong' }
+            ],
+            optimalRiskReward: takeProfitPercent / stopLossPercent,
+            predictedMovement: {
+              percentChange: takeProfitPercent,
+              timeEstimate: timeframe === '15m' ? '4-6 hours' :
+                            timeframe === '1h' ? '1-2 days' : 
+                            timeframe === '4h' ? '3-5 days' : 
+                            timeframe === '1d' ? '1-2 weeks' : 
+                            timeframe === '3d' ? '2-3 weeks' : 
+                            timeframe === '1w' ? '4-6 weeks' : 
+                            '3-6 months'
+            },
+            macroScore: 50,
+            macroClassification: 'Sideways Consolidation',
+            macroInsights: [
+              'Market sentiment is mixed with limited directional bias',
+              'Institutional flows show balanced activity at these levels',
+              'Correlation with broader market remains neutral'
+            ],
             environment: {
               trend: 'NEUTRAL',
               volatility: 'MODERATE',
               momentum: 'NEUTRAL'
-            }
+            },
+            lastUpdated: Date.now()
           };
           
           // Store and use this manual signal
