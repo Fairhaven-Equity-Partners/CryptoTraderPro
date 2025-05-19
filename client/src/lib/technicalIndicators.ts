@@ -859,49 +859,6 @@ export function determineMarketEnvironment(indicators: any): {
  * @param data Price data
  * @param timeframe The timeframe of the data
  */
-/**
- * Generate fallback signal when data is invalid or unavailable
- * @param timeframe The timeframe to generate a fallback signal for
- */
-function generateFallbackSignal(timeframe: TimeFrame): {
-  direction: 'LONG' | 'SHORT' | 'NEUTRAL',
-  confidence: number,
-  entryPrice: number,
-  stopLoss: number,
-  takeProfit: number,
-  indicators: any,
-  environment: any
-} {
-  // Create a safe default signal
-  const defaultPrice = 100; // Safe fallback price
-  
-  return {
-    direction: 'NEUTRAL',
-    confidence: 50,
-    entryPrice: defaultPrice,
-    stopLoss: defaultPrice * 0.95,
-    takeProfit: defaultPrice * 1.05,
-    indicators: {
-      rsi: 50,
-      macd: { value: 0, signal: 0, histogram: 0 },
-      ema: { short: defaultPrice, medium: defaultPrice, long: defaultPrice },
-      stochastic: { k: 50, d: 50 },
-      adx: { value: 20, pdi: 20, ndi: 20 },
-      bb: { middle: defaultPrice, upper: defaultPrice * 1.02, lower: defaultPrice * 0.98, width: 0.04, percentB: 50 },
-      supports: [defaultPrice * 0.99, defaultPrice * 0.97, defaultPrice * 0.95],
-      resistances: [defaultPrice * 1.01, defaultPrice * 1.03, defaultPrice * 1.05],
-      atr: defaultPrice * 0.01,
-      volatility: 3
-    },
-    environment: {
-      trend: 'NEUTRAL',
-      volatility: 'MODERATE',
-      momentum: 'NEUTRAL'
-    }
-  };
-}
-
-// Improved generateSignal with better error handling and fallback values
 export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
@@ -912,80 +869,56 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
   environment: any
 } {
   try {
-    // Perform additional error checking for malformed data
-    if (!data || !Array.isArray(data)) {
-      console.error(`Invalid data for ${timeframe} - data is ${data ? 'not an array' : 'null/undefined'}`);
-      return generateFallbackSignal(timeframe);
-    }
-    
-    // Check if we have any data points
-    if (data.length === 0) {
-      console.error(`Empty data array for ${timeframe}`);
-      return generateFallbackSignal(timeframe);
-    }
-    
-    // Validate that we have valid price data
-    if (!data[0]?.close || !data[data.length - 1]?.close || isNaN(data[data.length - 1]?.close)) {
-      console.error(`Invalid price data for ${timeframe} - missing or NaN close prices`);
-      return generateFallbackSignal(timeframe);
-    }
-    
     // Make sure we have enough data
     // Monthly timeframe requires fewer data points than other timeframes
     const minRequiredPoints = timeframe === '1M' ? 30 : 50;
-    
-    if (data.length < minRequiredPoints) {
+    if (!data || data.length < minRequiredPoints) {
       console.log(`Not enough data points for ${timeframe}, using simplified analysis`);
       
-      // Generate basic signal with enhanced error handling
-      try {
-        const simplifiedSignal = generateSimplifiedSignal(data, timeframe);
+      // Generate basic signal
+      const simplifiedSignal = generateSimplifiedSignal(data, timeframe);
+      
+      // Use Bollinger Bands as support and resistance levels
+      if (data && data.length > 20) {
+        const currentPrice = data[data.length - 1].close;
         
-        // Use Bollinger Bands as support and resistance levels
-        if (data && data.length > 20) {
-          const currentPrice = data[data.length - 1].close;
-          
-          // Calculate simple moving average for the last 20 periods
-          let sum = 0;
-          for (let i = data.length - 20; i < data.length; i++) {
-            sum += data[i].close;
-          }
-          const sma = sum / 20;
-          
-          // Calculate standard deviation
-          let sumSquaredDiff = 0;
-          for (let i = data.length - 20; i < data.length; i++) {
-            sumSquaredDiff += Math.pow(data[i].close - sma, 2);
-          }
-          const stdDev = Math.sqrt(sumSquaredDiff / 20);
-          
-          // Calculate Bollinger Bands with 2 standard deviations
-          const upperBand = sma + (2 * stdDev);
-          const lowerBand = sma - (2 * stdDev);
-          
-          // Calculate middle bands for more support/resistance levels
-          const middleUpper = sma + stdDev;
-          const middleLower = sma - stdDev;
-          
-          // Use Bollinger Bands as our support and resistance levels
-          simplifiedSignal.indicators.supports = [
-            middleLower,  // Medium support (1 stdDev below SMA)
-            lowerBand,    // Strong support (2 stdDev below SMA)
-            sma * 0.95    // Very strong support (safety level)
-          ];
-          
-          simplifiedSignal.indicators.resistances = [
-            middleUpper,  // Medium resistance (1 stdDev above SMA)
-            upperBand,    // Strong resistance (2 stdDev above SMA)
-            sma * 1.05    // Very strong resistance (safety level)
-          ];
+        // Calculate simple moving average for the last 20 periods
+        let sum = 0;
+        for (let i = data.length - 20; i < data.length; i++) {
+          sum += data[i].close;
         }
+        const sma = sum / 20;
         
-        return simplifiedSignal;
-      } catch (err) {
-        console.error(`Error generating simplified signal for ${timeframe}:`, err);
-        return generateFallbackSignal(timeframe);
+        // Calculate standard deviation
+        let sumSquaredDiff = 0;
+        for (let i = data.length - 20; i < data.length; i++) {
+          sumSquaredDiff += Math.pow(data[i].close - sma, 2);
+        }
+        const stdDev = Math.sqrt(sumSquaredDiff / 20);
+        
+        // Calculate Bollinger Bands with 2 standard deviations
+        const upperBand = sma + (2 * stdDev);
+        const lowerBand = sma - (2 * stdDev);
+        
+        // Calculate middle bands for more support/resistance levels
+        const middleUpper = sma + stdDev;
+        const middleLower = sma - stdDev;
+        
+        // Use Bollinger Bands as our support and resistance levels
+        simplifiedSignal.indicators.supports = [
+          middleLower,  // Medium support (1 stdDev below SMA)
+          lowerBand,    // Strong support (2 stdDev below SMA)
+          sma * 0.95    // Very strong support (safety level)
+        ];
+        
+        simplifiedSignal.indicators.resistances = [
+          middleUpper,  // Medium resistance (1 stdDev above SMA)
+          upperBand,    // Strong resistance (2 stdDev above SMA)
+          sma * 1.05    // Very strong resistance (safety level)
+        ];
       }
+      
+      return simplifiedSignal;
     }
     
     // Calculate technical indicators
