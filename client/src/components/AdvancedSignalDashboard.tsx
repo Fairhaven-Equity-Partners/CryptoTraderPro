@@ -1019,9 +1019,9 @@ export default function AdvancedSignalDashboard({
           <CardHeader className="pb-2">
             <CardTitle className="flex justify-between items-center text-white">
               <span>{selectedTimeframe} Signal Analysis</span>
-              {currentSignal && (
-                currentSignal.direction === 'LONG' ? <TrendingUp className="h-5 w-5 text-green-400" /> : 
-                currentSignal.direction === 'SHORT' ? <TrendingDown className="h-5 w-5 text-red-400" /> :
+              {signals[selectedTimeframe] && (
+                signals[selectedTimeframe]?.direction === 'LONG' ? <TrendingUp className="h-5 w-5 text-green-400" /> : 
+                signals[selectedTimeframe]?.direction === 'SHORT' ? <TrendingDown className="h-5 w-5 text-red-400" /> :
                 <Minus className="h-5 w-5 text-yellow-400" />
               )}
             </CardTitle>
@@ -1030,42 +1030,42 @@ export default function AdvancedSignalDashboard({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {currentSignal ? (
+            {signals[selectedTimeframe] ? (
               <div className="space-y-5">
                 {/* Direction and Confidence Section - More Compact */}
                 <div className="flex justify-between items-center bg-gray-900 rounded-lg p-4 border border-gray-700">
                   <div className="text-center flex-1">
                     <div className="text-sm font-semibold text-white mb-2">Direction</div>
                     <div className={`text-lg font-extrabold px-3 py-1.5 rounded-md ${
-                      currentSignal.direction === 'LONG' 
+                      signals[selectedTimeframe]?.direction === 'LONG' 
                         ? 'bg-green-900/40 text-green-400 border border-green-700' : 
-                      currentSignal.direction === 'SHORT' 
+                      signals[selectedTimeframe]?.direction === 'SHORT' 
                         ? 'bg-red-900/40 text-red-400 border border-red-700' : 
                         'bg-yellow-900/40 text-yellow-400 border border-yellow-700'
                     }`}>
-                      {currentSignal.direction}
+                      {signals[selectedTimeframe]?.direction}
                     </div>
                   </div>
                   
                   <div className="text-center flex-1 mx-2">
                     <div className="text-sm font-semibold text-white mb-2">Confidence</div>
                     <div className={`text-lg font-extrabold px-3 py-1.5 rounded-md ${
-                      currentSignal.confidence > 70 ? 'bg-green-900/40 text-green-400 border border-green-700' :
-                      currentSignal.confidence > 50 ? 'bg-yellow-900/40 text-yellow-400 border border-yellow-700' :
+                      (signals[selectedTimeframe]?.confidence || 0) > 70 ? 'bg-green-900/40 text-green-400 border border-green-700' :
+                      (signals[selectedTimeframe]?.confidence || 0) > 50 ? 'bg-yellow-900/40 text-yellow-400 border border-yellow-700' :
                       'bg-red-900/40 text-red-400 border border-red-700'
                     }`}>
-                      {Math.round(currentSignal.confidence)}%
+                      {Math.round(signals[selectedTimeframe]?.confidence || 0)}%
                     </div>
                   </div>
                   
                   <div className="text-center flex-1">
                     <div className="text-sm font-semibold text-white mb-2">Macro Score</div>
                     <div className={`text-lg font-extrabold px-3 py-1.5 rounded-md ${
-                      currentSignal.macroScore > 70 ? 'bg-green-900/40 text-green-400 border border-green-700' :
-                      currentSignal.macroScore > 50 ? 'bg-yellow-900/40 text-yellow-400 border border-yellow-700' :
+                      (signals[selectedTimeframe]?.macroScore || 0) > 70 ? 'bg-green-900/40 text-green-400 border border-green-700' :
+                      (signals[selectedTimeframe]?.macroScore || 0) > 50 ? 'bg-yellow-900/40 text-yellow-400 border border-yellow-700' :
                       'bg-red-900/40 text-red-400 border border-red-700'
                     }`}>
-                      {Math.round(currentSignal.macroScore)}%
+                      {Math.round(signals[selectedTimeframe]?.macroScore || 0)}%
                     </div>
                   </div>
                 </div>
@@ -1080,21 +1080,21 @@ export default function AdvancedSignalDashboard({
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
-                        <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
+                        <span key={`entry-${selectedTimeframe}`} className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
                           {formatCurrency(signals[selectedTimeframe]?.entryPrice || 0)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
-                        <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
+                        <span key={`tp-${selectedTimeframe}`} className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
                           {formatCurrency(signals[selectedTimeframe]?.takeProfit || 0)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
-                        <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
+                        <span key={`sl-${selectedTimeframe}`} className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
                           {formatCurrency(signals[selectedTimeframe]?.stopLoss || 0)}
                         </span>
                       </div>
