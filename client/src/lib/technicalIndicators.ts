@@ -1137,12 +1137,28 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
         currentPrice * 1.05
       ];
       
+      // Apply timeframe-specific multipliers to create distinct values for different timeframes
+      const timeframeMultiplier = getTimeframeMultiplier(timeframe);
+      
+      // Entry price varies slightly by timeframe to create distinct entry points
+      const entryPriceVariation = currentPrice * 0.001 * timeframeMultiplier;
+      const entryPrice = direction === 'LONG' 
+        ? currentPrice - entryPriceVariation 
+        : direction === 'SHORT' 
+          ? currentPrice + entryPriceVariation 
+          : currentPrice;
+        
+      // Adjust stop distance and take profit distance based on timeframe
+      // Longer timeframes should have wider stops and targets
+      const adjustedStopDistance = stopDistance * (1 + (timeframeMultiplier * 0.2));
+      const adjustedTpDistance = tpDistance * (1 + (timeframeMultiplier * 0.3));
+      
       return {
         direction,
         confidence,
-        entryPrice: currentPrice,
-        stopLoss: currentPrice * (1 + stopDistance),
-        takeProfit: currentPrice * (1 + tpDistance),
+        entryPrice: entryPrice,
+        stopLoss: entryPrice * (1 + adjustedStopDistance),
+        takeProfit: entryPrice * (1 + adjustedTpDistance),
         indicators: {
           rsi: 50,
           macd: { value: 0, signal: 0, histogram: 0 },
@@ -1152,7 +1168,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
           bb: { middle: currentPrice, upper: currentPrice * 1.02, lower: currentPrice * 0.98, width: 0.04, percentB: 50 },
           supports: finalSupports,
           resistances: finalResistances,
-          atr: currentPrice * 0.01,
+          atr: currentPrice * 0.01 * timeframeMultiplier,
           volatility: volatility
         },
         environment: {
