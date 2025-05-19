@@ -204,11 +204,18 @@ const Alerts: React.FC = () => {
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
-                      <span className={`flex items-center ${getDirectionClass(alert.direction)} font-medium mr-2`}>
+                      <span className={`
+                        flex items-center px-2 py-0.5 rounded font-bold text-sm mr-2
+                        ${alert.direction === 'LONG' 
+                          ? 'bg-green-900/30 text-green-500' 
+                          : alert.direction === 'SHORT' 
+                            ? 'bg-red-900/30 text-red-500' 
+                            : 'bg-yellow-900/30 text-yellow-500'}`
+                      }>
                         {getDirectionIcon(alert.direction)}
                         <span className="ml-1">{alert.direction}</span>
                       </span>
-                      <CardTitle className="text-white text-lg">{alert.symbol}</CardTitle>
+                      <CardTitle className="text-white text-lg font-bold">{alert.symbol}</CardTitle>
                     </div>
                     <Button 
                       variant="ghost" 
@@ -222,21 +229,27 @@ const Alerts: React.FC = () => {
                 </CardHeader>
                 <CardContent className="pb-2">
                   <div className="flex flex-col">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Target Price:</span>
-                      <span className="text-white font-medium">
-                        {formatPrice(alert.targetPrice, alert.symbol)}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-center mt-1">
-                      <span className="text-gray-300">Description:</span>
-                      <span className="text-white">{alert.description}</span>
-                    </div>
-                    <div className="flex justify-between items-center mt-1">
-                      <span className="text-gray-300">Status:</span>
-                      <span className={alert.isActive ? 'text-green-400' : 'text-gray-300'}>
-                        {alert.isActive ? 'Active' : 'Inactive'}
-                      </span>
+                    <div className="bg-gray-900/50 rounded-md p-2 mt-1">
+                      <div className="flex justify-between items-center">
+                        <span className="text-white font-semibold">Target Price:</span>
+                        <span className="text-amber-400 font-bold">
+                          {formatPrice(alert.targetPrice, alert.symbol)}
+                        </span>
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-white font-semibold">Description:</span>
+                        <span className="text-white">{alert.description}</span>
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-white font-semibold">Status:</span>
+                        <span className={`px-2 py-0.5 rounded font-medium ${
+                          alert.isActive 
+                            ? 'bg-green-900/30 text-green-400' 
+                            : 'bg-gray-700 text-gray-300'
+                        }`}>
+                          {alert.isActive ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </CardContent>

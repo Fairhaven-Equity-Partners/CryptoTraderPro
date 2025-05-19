@@ -166,7 +166,7 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
         </div>
       ) : alerts.length === 0 ? (
         <div className="bg-gray-800 rounded-lg p-4 text-center">
-          <p className="text-gray-300">No active alerts. Create one to get started.</p>
+          <p className="text-white text-sm font-medium">No active alerts. Create one to get started.</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -176,23 +176,27 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
                 <div className="flex items-center">
                   <span className={`${
                     alert.direction === 'LONG' 
-                      ? 'text-success' 
+                      ? 'text-green-500 bg-green-900/30' 
                       : alert.direction === 'SHORT' 
-                        ? 'text-danger' 
-                        : 'text-neutral'
-                  } text-xs font-medium mr-2`}>
+                        ? 'text-red-500 bg-red-900/30' 
+                        : 'text-yellow-500 bg-yellow-900/30'
+                  } text-xs font-bold px-2 py-0.5 rounded mr-2`}>
                     {alert.direction}
                   </span>
-                  <span className="text-white text-sm">{alert.symbol}</span>
+                  <span className="text-white text-sm font-medium">{alert.symbol}</span>
                 </div>
-                <div className="text-gray-300 text-xs mt-0.5">{alert.description}</div>
+                <div className="text-white text-xs mt-0.5">{alert.description}</div>
               </div>
               <div className="flex items-center space-x-3">
                 <div className="text-white text-right">
-                  <div className="text-xs font-medium">
+                  <div className="text-xs font-bold bg-gray-700 px-2 py-1 rounded mb-1">
                     {alert.direction === 'LONG' ? '≥' : '≤'} {formatPrice(alert.targetPrice, alert.symbol)}
                   </div>
-                  <div className={`${alert.isActive ? 'text-green-400' : 'text-gray-300'} text-xs`}>
+                  <div className={`${
+                    alert.isActive 
+                      ? 'text-green-400 bg-green-900/30' 
+                      : 'text-amber-400 bg-amber-900/30'
+                    } text-xs font-medium px-2 py-0.5 rounded`}>
                     {alert.isActive ? 'Active' : 'Waiting'}
                   </div>
                 </div>
