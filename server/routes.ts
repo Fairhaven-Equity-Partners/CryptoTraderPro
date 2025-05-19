@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { 
   insertAlertSchema, 
   insertSignalHistorySchema,
+  type InsertSignalHistory
 } from "@shared/schema";
 import { z } from "zod";
 
