@@ -3,7 +3,6 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
-import ActiveAlerts from '../components/ActiveAlerts';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -51,13 +50,7 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-        <div className="px-4 py-2">
-          <h2 className="text-xl font-bold mb-4 text-white">Active Alerts</h2>
-          <ActiveAlerts 
-            symbol={currentAsset} 
-            currentPrice={price?.lastPrice || 0}
-          />
-        </div>
+
       </main>
     </div>
   );
