@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import StatusBar from '../components/StatusBar';
 import { useAlerts } from '../hooks/useAlerts';
+import ActiveAlerts from '../components/ActiveAlerts';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,10 +15,13 @@ import {
 } from '@/components/ui/dialog';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { formatPrice } from '../lib/calculations';
-import { Alert, TIMEFRAMES } from '../types';
+import { Alert, TimeFrame } from '../types';
 import { ArrowDown, ArrowUp, Bell, Plus, Trash2, X } from 'lucide-react';
+import { useAssetPrice } from '../hooks/useMarketData';
 
 const Alerts: React.FC = () => {
+  const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
+  const { price } = useAssetPrice(currentAsset);
   const { 
     alerts, 
     isLoading, 
@@ -162,6 +166,15 @@ const Alerts: React.FC = () => {
       </header>
       
       <main className="flex-1 overflow-y-auto p-4 pb-16">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold mb-4 text-white">Active Alerts</h2>
+          <ActiveAlerts 
+            symbol={currentAsset} 
+            currentPrice={price?.lastPrice || 0}
+          />
+        </div>
+        
+        <h2 className="text-xl font-bold mb-4 text-white">All Alerts</h2>
         {isLoading ? (
           <div className="space-y-4">
             {[1, 2, 3].map(i => (
