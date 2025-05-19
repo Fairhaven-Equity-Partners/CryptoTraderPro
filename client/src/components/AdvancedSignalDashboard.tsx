@@ -1075,23 +1075,41 @@ export default function AdvancedSignalDashboard({
                 
                 <div className="pt-2">
                   <div className="text-sm font-medium mb-1">Key Indicators</div>
-                  <div className="flex flex-wrap gap-1">
-                    {Object.entries(currentSignal.indicators).flatMap(([category, items]) => 
-                      items.map((indicator: any, i: number) => (
-                        <Badge 
-                          key={`${category}-${i}`} 
-                          variant="outline" 
-                          className={`
-                            ${indicator.signal === 'BUY' ? 'text-emerald-500 border-emerald-500/20' : 
-                              indicator.signal === 'SELL' ? 'text-rose-500 border-rose-500/20' : 
-                                'text-slate-500 border-slate-500/20'}
-                            ${indicator.strength === 'STRONG' ? 'font-medium' : 'font-normal'}
-                          `}
-                        >
-                          {indicator.signal}
-                        </Badge>
-                      ))
-                    )}
+                  <div className="grid grid-cols-2 gap-2">
+                    {/* Display only technical indicators */}
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-1">Indicators</div>
+                      <div className="flex flex-wrap gap-1">
+                        {Object.entries(currentSignal.indicators)
+                          .filter(([category]) => !['supports', 'resistances'].includes(category))
+                          .slice(0, 3) // Only show first three indicator categories
+                          .flatMap(([category, items]) => 
+                            Array.isArray(items) ? 
+                              items.slice(0, 2).map((indicator: any, i: number) => (
+                                <Badge 
+                                  key={`${category}-${i}`} 
+                                  variant="outline" 
+                                  className={`
+                                    ${indicator.signal === 'BUY' ? 'text-emerald-500 border-emerald-500/20' : 
+                                      indicator.signal === 'SELL' ? 'text-rose-500 border-rose-500/20' : 
+                                        'text-slate-500 border-slate-500/20'}
+                                    ${indicator.strength === 'STRONG' ? 'font-medium' : 'font-normal'}
+                                  `}
+                                >
+                                  {indicator.signal}
+                                </Badge>
+                              )) : []
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Volatility info */}
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-1">Volatility</div>
+                      <Badge variant="outline" className="bg-primary/5">
+                        {Math.round(currentSignal.indicators.volatility || 0)}%
+                      </Badge>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1093,9 +1093,9 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
         supportLevels.push(currentPrice * 0.98, currentPrice * 0.95);
       }
       
-      // Manually remove duplicates and sort
-      const uniqueResistances = [];
-      const uniqueSupports = [];
+      // Manually remove duplicates and sort - with explicit typing
+      const uniqueResistances: number[] = [];
+      const uniqueSupports: number[] = [];
       
       // Process resistance levels
       for (const level of resistanceLevels) {
@@ -1113,6 +1113,10 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
       }
       uniqueSupports.sort((a, b) => b - a);
       
+      // Limit to 3 key levels maximum for better usability
+      const limitedResistances = uniqueResistances.slice(0, 3);
+      const limitedSupports = uniqueSupports.slice(0, 3);
+      
       return {
         direction,
         confidence,
@@ -1126,8 +1130,8 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
           stochastic: { k: 50, d: 50 },
           adx: { value: 20, pdi: 20, ndi: 20 },
           bb: { middle: currentPrice, upper: currentPrice * 1.02, lower: currentPrice * 0.98, width: 0.04, percentB: 50 },
-          supports: uniqueSupports.length > 0 ? uniqueSupports : [currentPrice * 0.98, currentPrice * 0.95],
-          resistances: uniqueResistances.length > 0 ? uniqueResistances : [currentPrice * 1.02, currentPrice * 1.05],
+          supports: limitedSupports.length > 0 ? limitedSupports : [currentPrice * 0.99, currentPrice * 0.97, currentPrice * 0.95],
+          resistances: limitedResistances.length > 0 ? limitedResistances : [currentPrice * 1.01, currentPrice * 1.03, currentPrice * 1.05],
           atr: currentPrice * 0.01,
           volatility: volatility
         },
