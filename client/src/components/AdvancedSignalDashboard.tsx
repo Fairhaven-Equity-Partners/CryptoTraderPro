@@ -1132,7 +1132,7 @@ export default function AdvancedSignalDashboard({
                     <h3 className="text-white font-bold text-sm mb-2">Technical Indicators</h3>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(currentSignal.indicators)
-                        .filter(([category]) => !['supports', 'resistances'].includes(category))
+                        .filter(([category]) => !['supports', 'resistances'].includes(category) && Array.isArray(currentSignal.indicators[category]))
                         .slice(0, 3) // Only show first three indicator categories
                         .flatMap(([category, items]) => 
                           Array.isArray(items) ? 
