@@ -1170,67 +1170,78 @@ export default function AdvancedSignalDashboard({
                     
                     {/* Technical Indicators */}
                     <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
-                      <h3 className="text-white font-bold text-sm mb-2">Technical Indicators</h3>
-                      <div className="flex flex-wrap gap-2">
+                      <h3 className="text-white font-bold text-sm mb-3">Technical Indicators</h3>
+                      
+                      {/* Key Indicators Table */}
+                      <div className="space-y-2">
                         {Object.entries(currentSignal.indicators)
                           .filter(([category]) => !['supports', 'resistances'].includes(category) && Array.isArray(currentSignal.indicators[category]))
                           .slice(0, 3) // Only show first three indicator categories
                           .flatMap(([category, items]) => 
                             Array.isArray(items) ? 
-                              items.slice(0, 2).map((indicator: any, i: number) => (
-                                <Badge 
+                              items.slice(0, 3).map((indicator: any, i: number) => (
+                                <div 
                                   key={`${category}-${i}`} 
-                                  variant="outline" 
-                                  className={`
-                                    ${indicator.signal === 'BUY' 
-                                      ? 'text-green-400 border-green-500 bg-green-900/30' : 
-                                    indicator.signal === 'SELL' 
-                                      ? 'text-red-400 border-red-500 bg-red-900/30' : 
-                                      'text-yellow-400 border-yellow-500 bg-yellow-900/30'}
-                                    ${indicator.strength === 'STRONG' ? 'font-bold' : 'font-medium'}
-                                    px-2 py-1 text-xs
-                                  `}
+                                  className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1"
                                 >
-                                  {indicator.signal}
-                                </Badge>
+                                  <span className="text-gray-300 font-medium">
+                                    {indicator.name || `${category.charAt(0).toUpperCase() + category.slice(1)} ${i+1}`}
+                                  </span>
+                                  <Badge 
+                                    variant="outline" 
+                                    className={`
+                                      ${indicator.signal === 'BUY' 
+                                        ? 'text-green-400 border-green-500 bg-green-900/30' : 
+                                      indicator.signal === 'SELL' 
+                                        ? 'text-red-400 border-red-500 bg-red-900/30' : 
+                                        'text-yellow-400 border-yellow-500 bg-yellow-900/30'}
+                                      ${indicator.strength === 'STRONG' ? 'font-bold' : 'font-medium'}
+                                      px-2 py-1 text-xs
+                                    `}
+                                  >
+                                    {indicator.signal} {indicator.strength && `(${indicator.strength.charAt(0)})`}
+                                  </Badge>
+                                </div>
                               )) : []
                         )}
                       </div>
                       
-                      <div className="mt-3 flex justify-between">
-                        <span className="text-white font-semibold text-sm">Market Condition:</span>
-                        <Badge variant="outline" className="bg-teal-900/30 text-teal-400 border-teal-500 px-2 py-1 font-medium">
-                          {currentSignal.macroClassification || "Neutral"}
-                        </Badge>
-                      </div>
-                      
-                      <div className="mt-2 flex justify-between">
-                        <span className="text-white font-semibold text-sm">Volatility:</span>
-                        <Badge variant="outline" className="bg-indigo-900/30 text-indigo-400 border-indigo-500 px-2 py-1 font-medium">
-                          {(() => {
-                            // Safe volatility extraction that handles all possible types
-                            let volatilityValue = 0;
-                            
-                            try {
-                              if (currentSignal.indicators.volatility !== undefined) {
-                                if (Array.isArray(currentSignal.indicators.volatility)) {
-                                  // Handle array type with validation
-                                  const vol = currentSignal.indicators.volatility;
-                                  if (vol.length > 0 && vol[0] && typeof vol[0].value === 'number') {
-                                    volatilityValue = vol[0].value;
+                      <div className="mt-3 grid grid-cols-2 gap-2">
+                        <div className="flex flex-col space-y-1">
+                          <span className="text-white font-semibold text-xs">Market Condition:</span>
+                          <Badge variant="outline" className="bg-teal-900/30 text-teal-400 border-teal-500 px-2 py-1 font-medium text-xs w-fit">
+                            {currentSignal.macroClassification || "Neutral"}
+                          </Badge>
+                        </div>
+                        
+                        <div className="flex flex-col space-y-1">
+                          <span className="text-white font-semibold text-xs">Volatility:</span>
+                          <Badge variant="outline" className="bg-indigo-900/30 text-indigo-400 border-indigo-500 px-2 py-1 font-medium text-xs w-fit">
+                            {(() => {
+                              // Safe volatility extraction that handles all possible types
+                              let volatilityValue = 0;
+                              
+                              try {
+                                if (currentSignal.indicators.volatility !== undefined) {
+                                  if (Array.isArray(currentSignal.indicators.volatility)) {
+                                    // Handle array type with validation
+                                    const vol = currentSignal.indicators.volatility;
+                                    if (vol.length > 0 && vol[0] && typeof vol[0].value === 'number') {
+                                      volatilityValue = vol[0].value;
+                                    }
+                                  } else if (typeof currentSignal.indicators.volatility === 'number') {
+                                    // Handle direct number value
+                                    volatilityValue = currentSignal.indicators.volatility;
                                   }
-                                } else if (typeof currentSignal.indicators.volatility === 'number') {
-                                  // Handle direct number value
-                                  volatilityValue = currentSignal.indicators.volatility;
                                 }
+                              } catch (e) {
+                                console.log("Error displaying volatility:", e);
                               }
-                            } catch (e) {
-                              console.log("Error displaying volatility:", e);
-                            }
-                            
-                            return Math.round(volatilityValue);
-                          })()}%
-                        </Badge>
+                              
+                              return Math.round(volatilityValue);
+                            })()}%
+                          </Badge>
+                        </div>
                       </div>
                     </div>
                   </div>
