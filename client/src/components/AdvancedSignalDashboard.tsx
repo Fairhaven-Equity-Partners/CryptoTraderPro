@@ -1137,22 +1137,24 @@ export default function AdvancedSignalDashboard({
           name: "Double Bottom",
           direction: "bullish",
           reliability: 78,
-          priceTarget: currentPrice * 1.12
+          priceTarget: currentPrice * 1.12,
+          description: "Price formed a W-shaped pattern with strong reversal from support level"
         },
         {
           name: "Key Level Bounce",
           direction: "bullish",
           reliability: 65,
-          priceTarget: currentPrice * 1.08
+          priceTarget: currentPrice * 1.08,
+          description: "Strong reaction from historical support zone with increasing volume"
         }
       ],
       supportResistance: [
-        { type: 'support', price: Number((currentPrice * 0.97).toFixed(2)), strength: 'strong' },
-        { type: 'support', price: Number((currentPrice * 0.95).toFixed(2)), strength: 'medium' },
-        { type: 'support', price: Number((currentPrice * 0.93).toFixed(2)), strength: 'weak' },
-        { type: 'resistance', price: Number((currentPrice * 1.03).toFixed(2)), strength: 'weak' },
-        { type: 'resistance', price: Number((currentPrice * 1.05).toFixed(2)), strength: 'medium' },
-        { type: 'resistance', price: Number((currentPrice * 1.07).toFixed(2)), strength: 'strong' }
+        { type: 'support', price: Number((currentPrice * 0.97).toFixed(2)), strength: 'strong' as const },
+        { type: 'support', price: Number((currentPrice * 0.95).toFixed(2)), strength: 'medium' as const },
+        { type: 'support', price: Number((currentPrice * 0.93).toFixed(2)), strength: 'weak' as const },
+        { type: 'resistance', price: Number((currentPrice * 1.03).toFixed(2)), strength: 'weak' as const },
+        { type: 'resistance', price: Number((currentPrice * 1.05).toFixed(2)), strength: 'medium' as const },
+        { type: 'resistance', price: Number((currentPrice * 1.07).toFixed(2)), strength: 'strong' as const }
       ],
       optimalRiskReward: takeProfitPercent / stopLossPercent,
       predictedMovement: {
