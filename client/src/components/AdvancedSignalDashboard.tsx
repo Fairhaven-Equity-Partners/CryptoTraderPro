@@ -30,8 +30,7 @@ import {
 } from "lucide-react";
 import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
 import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
-import { formatPercentage } from '../lib/calculations';
-import { getTimeframeMultiplier } from '../lib/technicalIndicators';
+import { formatCurrency, formatPercentage } from '../lib/calculations';
 import { useToast } from '../hooks/use-toast';
 import { useMarketData } from '../hooks/useMarketData';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -1120,24 +1119,38 @@ export default function AdvancedSignalDashboard({
                     <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
                       <h3 className="text-white font-bold text-sm">Trade Levels</h3>
                       
-                      <div key={`entry-price-${selectedTimeframe}`} className="flex justify-between items-center text-sm">
+                      <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
                         <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
-                          {formatCurrency(getCurrentPriceValues().entry)}
+                          {formatCurrency(signals[selectedTimeframe]?.entryPrice * 
+                            (1 - 0.002 * 
+                              (selectedTimeframe === '1h' ? 1.5 :
+                               selectedTimeframe === '4h' ? 2.0 :
+                               selectedTimeframe === '1d' ? 2.5 :
+                               selectedTimeframe === '3d' ? 3.0 :
+                               selectedTimeframe === '1w' ? 3.5 :
+                               selectedTimeframe === '1M' ? 4.0 : 1.0)) || 0)}
                         </span>
                       </div>
                       
-                      <div key={`take-profit-${selectedTimeframe}`} className="flex justify-between items-center text-sm">
+                      <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
                         <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                          {formatCurrency(getCurrentPriceValues().takeProfit)}
+                          {formatCurrency(signals[selectedTimeframe]?.takeProfit || 0)}
                         </span>
                       </div>
                       
-                      <div key={`stop-loss-${selectedTimeframe}`} className="flex justify-between items-center text-sm">
+                      <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
                         <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                          {formatCurrency(getCurrentPriceValues().stopLoss)}
+                          {formatCurrency(signals[selectedTimeframe]?.stopLoss * 
+                            (1 - 0.003 * 
+                              (selectedTimeframe === '1h' ? 1.5 :
+                               selectedTimeframe === '4h' ? 2.0 :
+                               selectedTimeframe === '1d' ? 2.5 :
+                               selectedTimeframe === '3d' ? 3.0 :
+                               selectedTimeframe === '1w' ? 3.5 :
+                               selectedTimeframe === '1M' ? 4.0 : 1.0)) || 0)}
                         </span>
                       </div>
                     </div>
