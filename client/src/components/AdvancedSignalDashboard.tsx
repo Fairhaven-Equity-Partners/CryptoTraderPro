@@ -97,6 +97,7 @@ interface AdvancedSignalDashboardProps {
 }
 
 // Main component
+
 export default function AdvancedSignalDashboard({ 
   symbol, 
   onTimeframeSelect 
@@ -1122,35 +1123,39 @@ export default function AdvancedSignalDashboard({
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
                         <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
-                          {formatCurrency(signals[selectedTimeframe]?.entryPrice * 
-                            (1 - 0.002 * 
-                              (selectedTimeframe === '1h' ? 1.5 :
-                               selectedTimeframe === '4h' ? 2.0 :
-                               selectedTimeframe === '1d' ? 2.5 :
-                               selectedTimeframe === '3d' ? 3.0 :
-                               selectedTimeframe === '1w' ? 3.5 :
-                               selectedTimeframe === '1M' ? 4.0 : 1.0)) || 0)}
+                          {formatCurrency((signals[selectedTimeframe]?.entryPrice || 0) * 
+                            (selectedTimeframe === '1h' ? 0.996 :
+                             selectedTimeframe === '4h' ? 0.992 :
+                             selectedTimeframe === '1d' ? 0.988 :
+                             selectedTimeframe === '3d' ? 0.984 :
+                             selectedTimeframe === '1w' ? 0.980 :
+                             selectedTimeframe === '1M' ? 0.976 : 1.0))}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
                         <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                          {formatCurrency(signals[selectedTimeframe]?.takeProfit || 0)}
+                          {formatCurrency((signals[selectedTimeframe]?.takeProfit || 0) * 
+                            (selectedTimeframe === '1h' ? 1.002 :
+                             selectedTimeframe === '4h' ? 1.004 :
+                             selectedTimeframe === '1d' ? 1.006 :
+                             selectedTimeframe === '3d' ? 1.008 :
+                             selectedTimeframe === '1w' ? 1.010 :
+                             selectedTimeframe === '1M' ? 1.012 : 1.0))}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
                         <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                          {formatCurrency(signals[selectedTimeframe]?.stopLoss * 
-                            (1 - 0.003 * 
-                              (selectedTimeframe === '1h' ? 1.5 :
-                               selectedTimeframe === '4h' ? 2.0 :
-                               selectedTimeframe === '1d' ? 2.5 :
-                               selectedTimeframe === '3d' ? 3.0 :
-                               selectedTimeframe === '1w' ? 3.5 :
-                               selectedTimeframe === '1M' ? 4.0 : 1.0)) || 0)}
+                          {formatCurrency((signals[selectedTimeframe]?.stopLoss || 0) * 
+                            (selectedTimeframe === '1h' ? 0.991 :
+                             selectedTimeframe === '4h' ? 0.982 :
+                             selectedTimeframe === '1d' ? 0.973 :
+                             selectedTimeframe === '3d' ? 0.964 :
+                             selectedTimeframe === '1w' ? 0.955 :
+                             selectedTimeframe === '1M' ? 0.946 : 1.0))}
                         </span>
                       </div>
                     </div>
