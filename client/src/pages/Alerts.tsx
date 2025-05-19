@@ -187,9 +187,9 @@ const Alerts: React.FC = () => {
           </div>
         ) : alerts.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full">
-            <Bell className="h-12 w-12 text-neutral mb-4" />
+            <Bell className="h-12 w-12 text-gray-400 mb-4" />
             <h2 className="text-white text-xl font-medium mb-2">No Alerts</h2>
-            <p className="text-neutral text-center mb-4">Create price alerts to be notified when cryptocurrencies hit your target prices</p>
+            <p className="text-gray-300 text-center mb-4">Create price alerts to be notified when cryptocurrencies hit your target prices</p>
             <Button 
               className="bg-accent text-primary hover:bg-amber-500"
               onClick={() => setIsAddDialogOpen(true)}
@@ -223,18 +223,18 @@ const Alerts: React.FC = () => {
                 <CardContent className="pb-2">
                   <div className="flex flex-col">
                     <div className="flex justify-between items-center">
-                      <span className="text-neutral">Target Price:</span>
+                      <span className="text-gray-300">Target Price:</span>
                       <span className="text-white font-medium">
                         {formatPrice(alert.targetPrice, alert.symbol)}
                       </span>
                     </div>
                     <div className="flex justify-between items-center mt-1">
-                      <span className="text-neutral">Description:</span>
+                      <span className="text-gray-300">Description:</span>
                       <span className="text-white">{alert.description}</span>
                     </div>
                     <div className="flex justify-between items-center mt-1">
-                      <span className="text-neutral">Status:</span>
-                      <span className={alert.isActive ? 'text-success' : 'text-neutral'}>
+                      <span className="text-gray-300">Status:</span>
+                      <span className={alert.isActive ? 'text-green-400' : 'text-gray-300'}>
                         {alert.isActive ? 'Active' : 'Inactive'}
                       </span>
                     </div>

@@ -78,7 +78,7 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
         <h2 className="text-white text-lg font-medium">Active Alerts</h2>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="link" className="text-accent text-sm font-medium">
+            <Button variant="link" className="text-amber-400 hover:text-amber-300 text-sm font-medium">
               <Plus className="h-4 w-4 mr-1" /> Add New
             </Button>
           </DialogTrigger>
@@ -166,7 +166,7 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
         </div>
       ) : alerts.length === 0 ? (
         <div className="bg-gray-800 rounded-lg p-4 text-center">
-          <p className="text-neutral">No active alerts. Create one to get started.</p>
+          <p className="text-gray-300">No active alerts. Create one to get started.</p>
         </div>
       ) : (
         <div className="space-y-2">
@@ -185,20 +185,20 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
                   </span>
                   <span className="text-white text-sm">{alert.symbol}</span>
                 </div>
-                <div className="text-neutral text-xs mt-0.5">{alert.description}</div>
+                <div className="text-gray-300 text-xs mt-0.5">{alert.description}</div>
               </div>
               <div className="flex items-center space-x-3">
                 <div className="text-white text-right">
                   <div className="text-xs font-medium">
                     {alert.direction === 'LONG' ? '≥' : '≤'} {formatPrice(alert.targetPrice, alert.symbol)}
                   </div>
-                  <div className={`${alert.isActive ? 'text-success' : 'text-neutral'} text-xs`}>
+                  <div className={`${alert.isActive ? 'text-green-400' : 'text-gray-300'} text-xs`}>
                     {alert.isActive ? 'Active' : 'Waiting'}
                   </div>
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="text-neutral hover:text-white">
+                    <button className="text-gray-400 hover:text-white">
                       <MoreVertical className="h-5 w-5" />
                     </button>
                   </DropdownMenuTrigger>
@@ -210,7 +210,7 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
                       {alert.isActive ? 'Deactivate' : 'Activate'}
                     </DropdownMenuItem>
                     <DropdownMenuItem 
-                      className="text-danger hover:bg-gray-700"
+                      className="text-red-400 hover:bg-gray-700"
                       onClick={() => handleDeleteAlert(alert.id)}
                     >
                       Delete
