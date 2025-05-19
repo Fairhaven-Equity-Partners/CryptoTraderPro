@@ -76,58 +76,98 @@ export function useMultiTimeframeAnalysis(symbol: string) {
       // Fetch chart data for this timeframe
       const chartData = await fetchChartData(symbol, tf);
       
-      if (chartData.length === 0) {
+      // Enhanced validation for empty or invalid data
+      if (!chartData || chartData.length === 0 || !Array.isArray(chartData)) {
+        console.log(`No valid chart data for ${symbol} on ${tf} timeframe`);
         return {
           timeframe: tf,
           signal: 'NEUTRAL',
           strength: 50,
-          trend: 'Sideways'
+          trend: 'No Data'
         };
       }
       
-      // Analyze indicators
-      const indicators = analyzeIndicators(chartData);
-      
-      // Generate signal summary
-      const { direction, strength } = generateSignalSummary(indicators);
-      
-      // Calculate trend characteristic based on indicators
-      const adxResult = calculateADX(chartData);
-      const mfi = calculateMFI(chartData);
-      
-      let trend = 'Sideways';
-      if (direction === 'LONG') {
-        if (adxResult.adx > 30) {
-          trend = 'Strong Bullish';
-        } else if (adxResult.adx > 20) {
-          trend = 'Bullish';
-        } else {
-          trend = 'Weak Bullish';
-        }
-      } else if (direction === 'SHORT') {
-        if (adxResult.adx > 30) {
-          trend = 'Strong Bearish';
-        } else if (adxResult.adx > 20) {
-          trend = 'Bearish';
-        } else {
-          trend = 'Weak Bearish';
-        }
-      } else {
-        if (mfi > 60) {
-          trend = 'Overbought Range';
-        } else if (mfi < 40) {
-          trend = 'Oversold Range';
-        } else {
-          trend = 'Sideways';
-        }
+      // Verify data has proper structure to prevent calculation errors
+      let hasValidStructure = true;
+      try {
+        hasValidStructure = chartData.every(candle => 
+          candle && 
+          typeof candle.close === 'number' && 
+          typeof candle.high === 'number' && 
+          typeof candle.low === 'number' &&
+          !isNaN(candle.close) && 
+          !isNaN(candle.high) && 
+          !isNaN(candle.low)
+        );
+      } catch (structureError) {
+        console.error(`Error validating data structure: ${structureError}`);
+        hasValidStructure = false;
       }
       
-      return {
-        timeframe: tf,
-        signal: direction,
-        strength,
-        trend
-      };
+      if (!hasValidStructure) {
+        console.error(`Invalid data structure for ${symbol} on ${tf} timeframe`);
+        return {
+          timeframe: tf,
+          signal: 'NEUTRAL',
+          strength: 50,
+          trend: 'Data Error'
+        };
+      }
+      
+      // Calculate technical indicators with error handling
+      try {
+        // Analyze indicators
+        const indicators = analyzeIndicators(chartData);
+        
+        // Generate signal summary
+        const { direction, strength } = generateSignalSummary(indicators);
+        
+        // Calculate trend characteristic based on indicators
+        const adxResult = calculateADX(chartData);
+        const mfi = calculateMFI(chartData);
+      
+        let trend = 'Sideways';
+        if (direction === 'LONG') {
+          if (adxResult.adx > 30) {
+            trend = 'Strong Bullish';
+          } else if (adxResult.adx > 20) {
+            trend = 'Bullish';
+          } else {
+            trend = 'Weak Bullish';
+          }
+        } else if (direction === 'SHORT') {
+          if (adxResult.adx > 30) {
+            trend = 'Strong Bearish';
+          } else if (adxResult.adx > 20) {
+            trend = 'Bearish';
+          } else {
+            trend = 'Weak Bearish';
+          }
+        } else {
+          if (mfi > 60) {
+            trend = 'Overbought Range';
+          } else if (mfi < 40) {
+            trend = 'Oversold Range';
+          } else {
+            trend = 'Sideways';
+          }
+        }
+        
+        return {
+          timeframe: tf,
+          signal: direction,
+          strength,
+          trend
+        };
+      } catch (indicatorError) {
+        console.error(`Error calculating indicators for ${symbol} on ${tf}: ${indicatorError}`);
+        return {
+          timeframe: tf,
+          signal: 'NEUTRAL',
+          strength: 50,
+          trend: 'Calculation Error'
+        };
+      }
     } catch (err) {
       console.error(`Error analyzing timeframe ${tf}:`, err);
       return {
