@@ -76,15 +76,46 @@ export function useMultiTimeframeAnalysis(symbol: string) {
       // Fetch chart data for this timeframe
       const chartData = await fetchChartData(symbol, tf);
       
-      // Enhanced validation for empty or invalid data
-      if (!chartData || chartData.length === 0 || !Array.isArray(chartData)) {
-        console.log(`No valid chart data for ${symbol} on ${tf} timeframe`);
-        return {
-          timeframe: tf,
-          signal: 'NEUTRAL',
-          strength: 50,
-          trend: 'No Data'
-        };
+      // Special handling for SOL cryptocurrency which may have data structure issues
+      if (symbol.includes('SOL')) {
+        // Additional validation for SOL data
+        if (!chartData || chartData.length === 0 || !Array.isArray(chartData)) {
+          console.log(`No valid chart data for ${symbol} on ${tf} timeframe`);
+          return {
+            timeframe: tf,
+            signal: 'NEUTRAL',
+            strength: 50,
+            trend: 'No Data'
+          };
+        }
+        
+        // Extra validation for SOL data structure
+        const validData = chartData.every(candle => 
+          candle && 
+          typeof candle.close === 'number' && 
+          !isNaN(candle.close)
+        );
+        
+        if (!validData) {
+          console.error(`Invalid price structure in ${symbol} data for ${tf} timeframe`);
+          return {
+            timeframe: tf,
+            signal: 'NEUTRAL',
+            strength: 50,
+            trend: 'Data Error'
+          };
+        }
+      } else {
+        // Standard validation for other cryptocurrencies
+        if (!chartData || chartData.length === 0 || !Array.isArray(chartData)) {
+          console.log(`No valid chart data for ${symbol} on ${tf} timeframe`);
+          return {
+            timeframe: tf,
+            signal: 'NEUTRAL',
+            strength: 50,
+            trend: 'No Data'
+          };
+        }
       }
       
       // Verify data has proper structure to prevent calculation errors

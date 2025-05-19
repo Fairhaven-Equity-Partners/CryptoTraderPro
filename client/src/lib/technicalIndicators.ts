@@ -14,6 +14,11 @@ import { ChartData, TimeFrame } from '../types';
  * @param priceKey Which price point to use (default: 'close')
  */
 export function calculateSMA(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
+  // Additional error checking for SOL/USDT and other prone-to-error calculations
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    console.error('Invalid data array in calculateSMA');
+    return [];
+  }
   const result: number[] = [];
   
   if (data.length < period) {
