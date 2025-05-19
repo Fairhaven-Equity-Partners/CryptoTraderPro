@@ -1000,166 +1000,191 @@ export default function AdvancedSignalDashboard({
         </TabsList>
       </Tabs>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Signal Card */}
-        <Card className={currentSignal ? getSignalBgClass(currentSignal.direction) : ''}>
-          <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              <span>{selectedTimeframe} Signal</span>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Integrated Signal & Trade Recommendation Card */}
+        <Card className={currentSignal ? 'border-gray-700 bg-secondary' : ''}>
+          <CardHeader className="pb-2">
+            <CardTitle className="flex justify-between items-center text-white">
+              <span>{selectedTimeframe} Signal Analysis</span>
               {currentSignal && (
-                currentSignal.direction === 'LONG' ? <TrendingUp className="h-5 w-5 text-emerald-500" /> : 
-                currentSignal.direction === 'SHORT' ? <TrendingDown className="h-5 w-5 text-rose-500" /> :
-                <Minus className="h-5 w-5 text-slate-500" />
+                currentSignal.direction === 'LONG' ? <TrendingUp className="h-5 w-5 text-green-400" /> : 
+                currentSignal.direction === 'SHORT' ? <TrendingDown className="h-5 w-5 text-red-400" /> :
+                <Minus className="h-5 w-5 text-yellow-400" />
               )}
             </CardTitle>
             <CardDescription className="text-white text-sm font-medium">
-              Technical analysis for {symbol} on {selectedTimeframe} timeframe
+              Comprehensive technical analysis for {symbol} on {selectedTimeframe} timeframe
             </CardDescription>
           </CardHeader>
           <CardContent>
             {currentSignal ? (
-              <div className="space-y-4">
-                <div className="flex justify-between items-center bg-gray-900 rounded-lg p-3">
+              <div className="space-y-5">
+                {/* Direction and Confidence Section */}
+                <div className="flex justify-between items-center bg-gray-900 rounded-lg p-4 border border-gray-700">
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-white mb-1">Direction</div>
-                    <div className={`text-lg font-extrabold px-3 py-1 rounded-md ${
+                    <div className="text-sm font-semibold text-white mb-2">Direction</div>
+                    <div className={`text-lg font-extrabold px-4 py-2 rounded-md ${
                       currentSignal.direction === 'LONG' 
-                        ? 'bg-green-900/40 text-green-400' : 
+                        ? 'bg-green-900/40 text-green-400 border border-green-700' : 
                       currentSignal.direction === 'SHORT' 
-                        ? 'bg-red-900/40 text-red-400' : 
-                        'bg-yellow-900/40 text-yellow-400'
+                        ? 'bg-red-900/40 text-red-400 border border-red-700' : 
+                        'bg-yellow-900/40 text-yellow-400 border border-yellow-700'
                     }`}>
                       {currentSignal.direction}
                     </div>
                   </div>
                   
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-white mb-1">Confidence</div>
-                    <div className={`text-lg font-extrabold px-3 py-1 rounded-md ${
-                      currentSignal.confidence > 70 ? 'bg-green-900/40 text-green-400' :
-                      currentSignal.confidence > 50 ? 'bg-yellow-900/40 text-yellow-400' :
-                      'bg-red-900/40 text-red-400'
+                    <div className="text-sm font-semibold text-white mb-2">Confidence</div>
+                    <div className={`text-lg font-extrabold px-4 py-2 rounded-md ${
+                      currentSignal.confidence > 70 ? 'bg-green-900/40 text-green-400 border border-green-700' :
+                      currentSignal.confidence > 50 ? 'bg-yellow-900/40 text-yellow-400 border border-yellow-700' :
+                      'bg-red-900/40 text-red-400 border border-red-700'
                     }`}>
                       {Math.round(currentSignal.confidence)}%
                     </div>
                   </div>
                   
                   <div className="text-center">
-                    <div className="text-sm font-semibold text-white mb-1">Macro Score</div>
-                    <div className={`text-lg font-extrabold px-3 py-1 rounded-md ${
-                      currentSignal.macroScore > 70 ? 'bg-green-900/40 text-green-400' :
-                      currentSignal.macroScore > 50 ? 'bg-yellow-900/40 text-yellow-400' :
-                      'bg-red-900/40 text-red-400'
+                    <div className="text-sm font-semibold text-white mb-2">Macro Score</div>
+                    <div className={`text-lg font-extrabold px-4 py-2 rounded-md ${
+                      currentSignal.macroScore > 70 ? 'bg-green-900/40 text-green-400 border border-green-700' :
+                      currentSignal.macroScore > 50 ? 'bg-yellow-900/40 text-yellow-400 border border-yellow-700' :
+                      'bg-red-900/40 text-red-400 border border-red-700'
                     }`}>
                       {Math.round(currentSignal.macroScore)}%
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-gray-900 rounded-lg p-3 space-y-3">
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-white font-semibold">Entry Price</span>
-                    <span className="font-bold text-amber-400 bg-amber-900/30 px-2 py-1 rounded">
-                      {formatCurrency(currentSignal.entryPrice)}
-                    </span>
+                {/* Entry/Exit Strategy Section */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Price Levels */}
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
+                    <h3 className="text-white font-bold text-sm">Trade Levels</h3>
+                    
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white font-semibold">Entry Price</span>
+                      <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
+                        {formatCurrency(currentSignal.entryPrice)}
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white font-semibold">Take Profit</span>
+                      <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
+                        {formatCurrency(currentSignal.takeProfit)}
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white font-semibold">Stop Loss</span>
+                      <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
+                        {formatCurrency(currentSignal.stopLoss)}
+                      </span>
+                    </div>
                   </div>
                   
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-white font-semibold">Take Profit</span>
-                    <span className="font-bold text-green-400 bg-green-900/30 px-2 py-1 rounded">
-                      {formatCurrency(currentSignal.takeProfit)}
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-white font-semibold">Stop Loss</span>
-                    <span className="font-bold text-red-400 bg-red-900/30 px-2 py-1 rounded">
-                      {formatCurrency(currentSignal.stopLoss)}
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-white font-semibold">Risk/Reward</span>
-                    <span className="font-bold text-blue-400 bg-blue-900/30 px-2 py-1 rounded">
-                      {Math.round(currentSignal.optimalRiskReward * 100) / 100}
-                    </span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-white font-semibold">Recommended Leverage</span>
-                    <span className="font-bold text-purple-400 bg-purple-900/30 px-2 py-1 rounded">
-                      {currentSignal.recommendedLeverage}x
-                    </span>
+                  {/* Risk Management */}
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700 space-y-3">
+                    <h3 className="text-white font-bold text-sm">Risk Management</h3>
+                    
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white font-semibold">Risk/Reward</span>
+                      <span className="font-bold text-blue-400 bg-blue-900/30 px-3 py-1 rounded border border-blue-800">
+                        {Math.round(currentSignal.optimalRiskReward * 100) / 100}
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white font-semibold">Recommended Leverage</span>
+                      <span className="font-bold text-purple-400 bg-purple-900/30 px-3 py-1 rounded border border-purple-800">
+                        {currentSignal.recommendedLeverage}x
+                      </span>
+                    </div>
+                    
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-white font-semibold">Position Sizing</span>
+                      <span className="font-bold text-cyan-400 bg-cyan-900/30 px-3 py-1 rounded border border-cyan-800">
+                        Conservative
+                      </span>
+                    </div>
                   </div>
                 </div>
                 
-                <div className="pt-2">
-                  <div className="text-sm font-bold text-white mb-2">Key Indicators</div>
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Display only technical indicators */}
-                    <div className="bg-gray-900 rounded-lg p-3">
-                      <div className="text-xs font-semibold text-white mb-2">Indicators</div>
-                      <div className="flex flex-wrap gap-2">
-                        {Object.entries(currentSignal.indicators)
-                          .filter(([category]) => !['supports', 'resistances'].includes(category))
-                          .slice(0, 3) // Only show first three indicator categories
-                          .flatMap(([category, items]) => 
-                            Array.isArray(items) ? 
-                              items.slice(0, 2).map((indicator: any, i: number) => (
-                                <Badge 
-                                  key={`${category}-${i}`} 
-                                  variant="outline" 
-                                  className={`
-                                    ${indicator.signal === 'BUY' 
-                                      ? 'text-green-400 border-green-500 bg-green-900/30' : 
-                                    indicator.signal === 'SELL' 
-                                      ? 'text-red-400 border-red-500 bg-red-900/30' : 
-                                      'text-yellow-400 border-yellow-500 bg-yellow-900/30'}
-                                    ${indicator.strength === 'STRONG' ? 'font-bold' : 'font-medium'}
-                                    px-2 py-1 text-xs
-                                  `}
-                                >
-                                  {indicator.signal}
-                                </Badge>
-                              )) : []
-                        )}
-                      </div>
+                {/* Indicators and Volatility Section */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Technical Indicators */}
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                    <h3 className="text-white font-bold text-sm mb-2">Technical Indicators</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {Object.entries(currentSignal.indicators)
+                        .filter(([category]) => !['supports', 'resistances'].includes(category))
+                        .slice(0, 3) // Only show first three indicator categories
+                        .flatMap(([category, items]) => 
+                          Array.isArray(items) ? 
+                            items.slice(0, 2).map((indicator: any, i: number) => (
+                              <Badge 
+                                key={`${category}-${i}`} 
+                                variant="outline" 
+                                className={`
+                                  ${indicator.signal === 'BUY' 
+                                    ? 'text-green-400 border-green-500 bg-green-900/30' : 
+                                  indicator.signal === 'SELL' 
+                                    ? 'text-red-400 border-red-500 bg-red-900/30' : 
+                                    'text-yellow-400 border-yellow-500 bg-yellow-900/30'}
+                                  ${indicator.strength === 'STRONG' ? 'font-bold' : 'font-medium'}
+                                  px-2 py-1 text-xs
+                                `}
+                              >
+                                {indicator.signal}
+                              </Badge>
+                            )) : []
+                      )}
                     </div>
-                    
-                    {/* Volatility info */}
-                    <div className="bg-gray-900 rounded-lg p-3">
-                      <div className="text-xs font-semibold text-white mb-2">Volatility</div>
-                      <Badge variant="outline" className="bg-indigo-900/30 text-indigo-400 border-indigo-500 px-2 py-1 font-medium">
-                        {(() => {
-                          // Safe volatility extraction that handles all possible types
-                          let volatilityValue = 0;
-                          
-                          try {
-                            if (currentSignal.indicators.volatility !== undefined) {
-                              if (Array.isArray(currentSignal.indicators.volatility)) {
-                                // Handle array type with validation
-                                const vol = currentSignal.indicators.volatility;
-                                if (vol.length > 0 && vol[0] && typeof vol[0].value === 'number') {
-                                  volatilityValue = vol[0].value;
-                                }
-                              } else if (typeof currentSignal.indicators.volatility === 'number') {
-                                // Handle direct number value
-                                volatilityValue = currentSignal.indicators.volatility;
+                  </div>
+                  
+                  {/* Volatility */}
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                    <h3 className="text-white font-bold text-sm mb-2">Volatility</h3>
+                    <Badge variant="outline" className="bg-indigo-900/30 text-indigo-400 border-indigo-500 px-2 py-1 font-medium">
+                      {(() => {
+                        // Safe volatility extraction that handles all possible types
+                        let volatilityValue = 0;
+                        
+                        try {
+                          if (currentSignal.indicators.volatility !== undefined) {
+                            if (Array.isArray(currentSignal.indicators.volatility)) {
+                              // Handle array type with validation
+                              const vol = currentSignal.indicators.volatility;
+                              if (vol.length > 0 && vol[0] && typeof vol[0].value === 'number') {
+                                volatilityValue = vol[0].value;
                               }
+                            } else if (typeof currentSignal.indicators.volatility === 'number') {
+                              // Handle direct number value
+                              volatilityValue = currentSignal.indicators.volatility;
                             }
-                          } catch (e) {
-                            console.log("Error displaying volatility:", e);
                           }
-                          
-                          return Math.round(volatilityValue);
-                        })()}%
-                      </Badge>
-                    </div>
+                        } catch (e) {
+                          console.log("Error displaying volatility:", e);
+                        }
+                        
+                        return Math.round(volatilityValue);
+                      })()}%
+                    </Badge>
+                  </div>
+                  
+                  {/* Market Condition */}
+                  <div className="bg-gray-900 rounded-lg p-4 border border-gray-700">
+                    <h3 className="text-white font-bold text-sm mb-2">Market Condition</h3>
+                    <Badge variant="outline" className="bg-teal-900/30 text-teal-400 border-teal-500 px-2 py-1 font-medium">
+                      {currentSignal.macroClassification || "Neutral"}
+                    </Badge>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="h-32 flex flex-col items-center justify-center text-center bg-gray-900 rounded-lg p-4">
+              <div className="h-48 flex flex-col items-center justify-center text-center bg-gray-900 rounded-lg p-4 border border-gray-700">
                 <span className="text-white font-medium">No signal data available for {selectedTimeframe}</span>
                 <span className="text-gray-300 text-sm mt-2">Try selecting a different timeframe or refresh</span>
               </div>
