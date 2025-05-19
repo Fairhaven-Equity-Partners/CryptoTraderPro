@@ -1094,12 +1094,12 @@ export default function AdvancedSignalDashboard({
                 </div>
                 
                 <div className="pt-2">
-                  <div className="text-sm font-medium mb-1">Key Indicators</div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="text-sm font-bold text-white mb-2">Key Indicators</div>
+                  <div className="grid grid-cols-2 gap-3">
                     {/* Display only technical indicators */}
-                    <div>
-                      <div className="text-xs text-muted-foreground mb-1">Indicators</div>
-                      <div className="flex flex-wrap gap-1">
+                    <div className="bg-gray-900 rounded-lg p-3">
+                      <div className="text-xs font-semibold text-white mb-2">Indicators</div>
+                      <div className="flex flex-wrap gap-2">
                         {Object.entries(currentSignal.indicators)
                           .filter(([category]) => !['supports', 'resistances'].includes(category))
                           .slice(0, 3) // Only show first three indicator categories
@@ -1110,10 +1110,13 @@ export default function AdvancedSignalDashboard({
                                   key={`${category}-${i}`} 
                                   variant="outline" 
                                   className={`
-                                    ${indicator.signal === 'BUY' ? 'text-emerald-500 border-emerald-500/20' : 
-                                      indicator.signal === 'SELL' ? 'text-rose-500 border-rose-500/20' : 
-                                        'text-slate-500 border-slate-500/20'}
-                                    ${indicator.strength === 'STRONG' ? 'font-medium' : 'font-normal'}
+                                    ${indicator.signal === 'BUY' 
+                                      ? 'text-green-400 border-green-500 bg-green-900/30' : 
+                                    indicator.signal === 'SELL' 
+                                      ? 'text-red-400 border-red-500 bg-red-900/30' : 
+                                      'text-yellow-400 border-yellow-500 bg-yellow-900/30'}
+                                    ${indicator.strength === 'STRONG' ? 'font-bold' : 'font-medium'}
+                                    px-2 py-1 text-xs
                                   `}
                                 >
                                   {indicator.signal}
@@ -1124,9 +1127,9 @@ export default function AdvancedSignalDashboard({
                     </div>
                     
                     {/* Volatility info */}
-                    <div>
-                      <div className="text-xs text-muted-foreground mb-1">Volatility</div>
-                      <Badge variant="outline" className="bg-primary/5">
+                    <div className="bg-gray-900 rounded-lg p-3">
+                      <div className="text-xs font-semibold text-white mb-2">Volatility</div>
+                      <Badge variant="outline" className="bg-indigo-900/30 text-indigo-400 border-indigo-500 px-2 py-1 font-medium">
                         {(() => {
                           // Safe volatility extraction that handles all possible types
                           let volatilityValue = 0;
@@ -1156,9 +1159,9 @@ export default function AdvancedSignalDashboard({
                 </div>
               </div>
             ) : (
-              <div className="h-32 flex flex-col items-center justify-center text-muted-foreground text-center">
-                <span>No signal data available for {selectedTimeframe}</span>
-                <span className="text-sm mt-2">Try selecting a different timeframe or refresh</span>
+              <div className="h-32 flex flex-col items-center justify-center text-center bg-gray-900 rounded-lg p-4">
+                <span className="text-white font-medium">No signal data available for {selectedTimeframe}</span>
+                <span className="text-gray-300 text-sm mt-2">Try selecting a different timeframe or refresh</span>
               </div>
             )}
           </CardContent>
