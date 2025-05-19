@@ -798,21 +798,43 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       // Generate basic signal
       const simplifiedSignal = generateSimplifiedSignal(data, timeframe);
       
-      // Enhance with better support/resistance levels
-      if (data && data.length > 0) {
+      // Use Bollinger Bands as support and resistance levels
+      if (data && data.length > 20) {
         const currentPrice = data[data.length - 1].close;
         
-        // More realistic percentages based on actual volatility in crypto markets
+        // Calculate simple moving average for the last 20 periods
+        let sum = 0;
+        for (let i = data.length - 20; i < data.length; i++) {
+          sum += data[i].close;
+        }
+        const sma = sum / 20;
+        
+        // Calculate standard deviation
+        let sumSquaredDiff = 0;
+        for (let i = data.length - 20; i < data.length; i++) {
+          sumSquaredDiff += Math.pow(data[i].close - sma, 2);
+        }
+        const stdDev = Math.sqrt(sumSquaredDiff / 20);
+        
+        // Calculate Bollinger Bands with 2 standard deviations
+        const upperBand = sma + (2 * stdDev);
+        const lowerBand = sma - (2 * stdDev);
+        
+        // Calculate middle bands for more support/resistance levels
+        const middleUpper = sma + stdDev;
+        const middleLower = sma - stdDev;
+        
+        // Use Bollinger Bands as our support and resistance levels
         simplifiedSignal.indicators.supports = [
-          currentPrice * 0.99,  // Close support (1% below)
-          currentPrice * 0.975, // Medium support (2.5% below)
-          currentPrice * 0.95   // Strong support (5% below)
+          middleLower,  // Medium support (1 stdDev below SMA)
+          lowerBand,    // Strong support (2 stdDev below SMA)
+          sma * 0.95    // Very strong support (safety level)
         ];
         
         simplifiedSignal.indicators.resistances = [
-          currentPrice * 1.01,  // Close resistance (1% above)
-          currentPrice * 1.025, // Medium resistance (2.5% above)
-          currentPrice * 1.05   // Strong resistance (5% above)
+          middleUpper,  // Medium resistance (1 stdDev above SMA)
+          upperBand,    // Strong resistance (2 stdDev above SMA)
+          sma * 1.05    // Very strong resistance (safety level)
         ];
       }
       
@@ -1071,14 +1093,25 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
         supportLevels.push(currentPrice * 0.98, currentPrice * 0.95);
       }
       
-      // Sort and remove duplicates
-      const uniqueResistances = [...new Set(resistanceLevels)]
-        .sort((a, b) => a - b)
-        .filter(level => level > currentPrice); // Only keep resistances above current price
-        
-      const uniqueSupports = [...new Set(supportLevels)]
-        .sort((a, b) => b - a)
-        .filter(level => level < currentPrice); // Only keep supports below current price
+      // Manually remove duplicates and sort
+      const uniqueResistances = [];
+      const uniqueSupports = [];
+      
+      // Process resistance levels
+      for (const level of resistanceLevels) {
+        if (level > currentPrice && !uniqueResistances.includes(level)) {
+          uniqueResistances.push(level);
+        }
+      }
+      uniqueResistances.sort((a, b) => a - b);
+      
+      // Process support levels
+      for (const level of supportLevels) {
+        if (level < currentPrice && !uniqueSupports.includes(level)) {
+          uniqueSupports.push(level);
+        }
+      }
+      uniqueSupports.sort((a, b) => b - a);
       
       return {
         direction,
