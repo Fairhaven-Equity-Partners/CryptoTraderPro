@@ -25,8 +25,7 @@ import {
   Target, 
   DollarSign,
   RefreshCcw,
-  Clock,
-  CheckCircle2,
+  Clock
 } from "lucide-react";
 import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
 import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
@@ -436,11 +435,37 @@ export default function AdvancedSignalDashboard({
         
         return {
           ...level,
-          strength: Math.min(100, Math.max(0, level.strength + strengthAdjustment))
+          strength: Math.min(95, Math.max(50, level.strength + strengthAdjustment))
         };
       });
     }
     
+    // Get risk/reward ratio based on stop loss and take profit
+    const riskAmount = direction === 'LONG' 
+      ? (entryPrice - stopLoss) / entryPrice 
+      : (stopLoss - entryPrice) / entryPrice;
+    
+    const rewardAmount = direction === 'LONG'
+      ? (takeProfit - entryPrice) / entryPrice
+      : (entryPrice - takeProfit) / entryPrice;
+    
+    const optimalRiskReward = riskAmount > 0 ? rewardAmount / riskAmount : 1;
+    
+    // Generate predicted movement timeframe based on the timeframe we're analyzing
+    let timeEstimate = '2-3 days';
+    if (timeframe === '15m' || timeframe === '1h') {
+      timeEstimate = '4-8 hours';
+    } else if (timeframe === '4h') {
+      timeEstimate = '1-2 days';
+    } else if (timeframe === '1d') {
+      timeEstimate = '1-2 weeks';
+    } else if (timeframe === '3d' || timeframe === '1w') {
+      timeEstimate = '2-4 weeks';
+    } else if (timeframe === '1M') {
+      timeEstimate = '1-3 months';
+    }
+    
+    // Create the Advanced Signal object
     const advancedSignal: AdvancedSignal = {
       timeframe,
       direction,
@@ -450,505 +475,470 @@ export default function AdvancedSignalDashboard({
       takeProfit,
       recommendedLeverage,
       indicators: {
-        trend: generateIndicators('trend', 4),
+        trend: generateIndicators('trend', 5),
         momentum: generateIndicators('momentum', 3),
         volatility: generateIndicators('volatility', 2),
         volume: generateIndicators('volume', 2),
-        pattern: generateIndicators('pattern', 1),
-        supports: indicators.supports,
-        resistances: indicators.resistances,
-        // Generate other indicator data
-        rsi: Math.round(Math.random() * 30) + (direction === 'LONG' ? 50 : 20),
-        macd: {
-          value: (Math.random() * 2 - 1) * (direction === 'LONG' ? 1 : -1),
-          signal: (Math.random() * 1.5 - 0.75) * (direction === 'LONG' ? 1 : -1),
-          histogram: (Math.random() * 0.5) * (direction === 'LONG' ? 1 : -1)
-        },
-        stochastic: {
-          k: Math.round(Math.random() * 30) + (direction === 'LONG' ? 50 : 20),
-          d: Math.round(Math.random() * 20) + (direction === 'LONG' ? 45 : 25)
-        },
-        adx: {
-          value: Math.round(Math.random() * 20) + 25,
-          pdi: Math.round(Math.random() * 20) + (direction === 'LONG' ? 20 : 10),
-          ndi: Math.round(Math.random() * 20) + (direction === 'SHORT' ? 20 : 10)
-        },
-        bb: {
-          middle: currentPrice,
-          upper: currentPrice * (1 + (Math.random() * 0.05 + 0.02)),
-          lower: currentPrice * (1 - (Math.random() * 0.05 + 0.02)),
-          width: Math.random() * 4 + 2,
-          percentB: direction === 'LONG' ? Math.random() * 0.3 + 0.7 : Math.random() * 0.3
-        },
-        atr: currentPrice * (Math.random() * 0.02 + 0.01)
+        pattern: generateIndicators('pattern', 2)
       },
       patternFormations: generatePatternFormations(),
       supportResistance,
-      optimalRiskReward: (takeProfit - entryPrice) / (entryPrice - stopLoss),
+      optimalRiskReward,
       predictedMovement: {
-        percentChange: ((takeProfit - entryPrice) / entryPrice) * 100,
-        timeEstimate: timeframe === '15m' ? '4-6 hours' :
-                      timeframe === '1h' ? '1-2 days' : 
-                      timeframe === '4h' ? '3-5 days' : 
-                      timeframe === '1d' ? '1-2 weeks' : 
-                      timeframe === '3d' ? '2-3 weeks' : 
-                      timeframe === '1w' ? '4-6 weeks' : 
-                      '3-6 months'
+        percentChange: direction === 'LONG' 
+          ? confidence * 0.2 // Higher confidence = higher predicted change
+          : direction === 'SHORT' 
+            ? -confidence * 0.2
+            : Math.random() * 4 - 2, // +/- 2% for neutral signals
+        timeEstimate
       },
-      macroScore: Math.round(Math.random() * 30) + 45, // 45-75 range
-      macroClassification: direction === 'LONG' ? 'Bullish Momentum' :
-                         direction === 'SHORT' ? 'Bearish Correction' : 'Sideways Consolidation',
+      macroScore: previousSignal 
+        ? Math.min(100, Math.max(0, previousSignal.macroScore + (Math.random() * 6 - 3) * 0.1))
+        : 40 + Math.floor(Math.random() * 30), // 40-70 range
+      macroClassification: environment.trend.includes('UPTREND') ? 'Bullish' : 
+                          environment.trend.includes('DOWNTREND') ? 'Bearish' : 'Neutral',
       macroInsights: [
-        'Overall market sentiment is mixed with retail traders slightly bearish',
-        'Institutional flows show accumulation in higher timeframes',
-        'Correlation with S&P 500 remains moderate at 0.65'
+        `Market volatility is ${environment.volatility.toLowerCase().replace('_', ' ')}`,
+        `${environment.momentum} momentum detected`,
+        `${environment.trend.toLowerCase().replace('_', ' ')} identified`
       ]
     };
     
     return advancedSignal;
   };
   
-  // Function to calculate signals and generate a recommendation
-  const calculateAllSignals = useCallback(async () => {
+  // Calculate signals for all timeframes
+  const calculateAllSignals = async () => {
+    // Skip if calculation is already in progress
     if (isCalculating) {
-      console.log(`Already calculating signals for ${symbol}, skipping duplicate calculation`);
+      console.log(`Calculation skipped - Currently calculating: ${isCalculating}`);
       return;
     }
     
-    // Mark as calculating to prevent duplicate calculations
-    calculationTriggeredRef.current = true;
+    // Check if we have any data in chartData
+    const hasAnyData = Object.keys(chartData).length > 0;
+    if (!hasAnyData) {
+      console.log(`No chart data available for ${symbol}, skipping calculation`);
+      // Set an empty message for the user
+      toast({
+        title: `No data for ${symbol}`,
+        description: "Unable to calculate signals without chart data.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Start calculating
+    console.log(`Executing calculation for ${symbol}`);
     setIsCalculating(true);
     
-    const persistentSymbolSignals = persistentSignalsRef.current[symbol] || {};
-    let updatedSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
-    let newSignals = 0;
-    
     try {
-      // Calculate signals for each timeframe
+      console.log(`Starting calculation process for ${symbol}`);
+      
+      // Initialize persistent signals for this symbol if it doesn't exist
+      if (!persistentSignalsRef.current[symbol]) {
+        // Create an empty record with all timeframes set to null
+        const emptySignals: Record<TimeFrame, AdvancedSignal | null> = {
+          '1m': null,
+          '5m': null,
+          '15m': null,
+          '30m': null,
+          '1h': null,
+          '4h': null,
+          '1d': null,
+          '3d': null,
+          '1w': null,
+          '1M': null
+        };
+        persistentSignalsRef.current[symbol] = emptySignals;
+      }
+      
+      // Create a new signals object to store results
+      const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
+      
+      // Calculate for each timeframe in sequence
       for (const timeframe of timeframes) {
         console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
         
-        // Skip if chart data isn't available
-        if (!chartData[timeframe] || chartData[timeframe].length < 10) {
-          console.log(`Not enough data for ${symbol} on ${timeframe}, skipping...`);
-          continue;
-        }
-        
-        console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
-        console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${chartData[timeframe].length} data points.`);
-        
-        // Generate technical signal
-        const { direction, confidence, levels, environment } = generateSignal(chartData[timeframe], timeframe, symbol);
-        
-        // Extract current price from latest candle
-        const currentPrice = chartData[timeframe][chartData[timeframe].length - 1].close;
-        
-        // Calculate entry, stop loss, and take profit levels
-        const entryPrice = currentPrice;
-        
-        // For bearish signals, stop loss above entry, take profit below
-        // For bullish signals, stop loss below entry, take profit above
-        let stopLoss: number;
-        let takeProfit: number;
-        
-        if (direction === 'LONG') {
-          // For bullish, use a tighter stop on higher confidence trades
-          const stopMultiplier = confidence > 70 ? 0.02 : confidence > 50 ? 0.03 : 0.04;
-          stopLoss = entryPrice * (1 - stopMultiplier);
+        try {
+          const timeframeData = chartData[timeframe] || [];
+          console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
+          console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${timeframeData.length} data points.`);
           
-          // Take profit based on confidence
-          const tpMultiplier = confidence > 70 ? 0.05 : confidence > 50 ? 0.04 : 0.03;
-          takeProfit = entryPrice * (1 + tpMultiplier);
-        } else if (direction === 'SHORT') {
-          // For bearish, use a tighter stop on higher confidence trades
-          const stopMultiplier = confidence > 70 ? 0.02 : confidence > 50 ? 0.03 : 0.04;
-          stopLoss = entryPrice * (1 + stopMultiplier);
-          
-          // Take profit based on confidence
-          const tpMultiplier = confidence > 70 ? 0.05 : confidence > 50 ? 0.04 : 0.03;
-          takeProfit = entryPrice * (1 - tpMultiplier);
-        } else {
-          // For neutral, use wider range
-          stopLoss = entryPrice * 0.97;
-          takeProfit = entryPrice * 1.03;
-        }
-        
-        // Use support/resistance from technical analysis
-        const { supportLevels, resistanceLevels } = calculateSupportResistance(chartData[timeframe], currentPrice);
-        
-        // Create signal data with indicators
-        const technicalSignal = {
-          direction,
-          confidence,
-          entryPrice: currentPrice,
-          stopLoss,
-          takeProfit,
-          indicators: {
-            // Key technical indicator data
-            supports: supportLevels.slice(0, 3), // Take top 3 support levels
-            resistances: resistanceLevels.slice(0, 3), // Take top 3 resistance levels
-          },
-          environment: {
-            volatility: environment.volatility,
-            trend: environment.trend,
-            momentum: environment.momentum
+          // Only calculate if we have enough data
+          if (timeframeData && timeframeData.length > 0) {
+            // Get previous signal if it exists for this symbol and timeframe
+            const previousSignal = persistentSignalsRef.current[symbol][timeframe];
+            
+            // Timeframe stability weights - lower values = more stable
+            const getTimeframeStability = (tf: TimeFrame): number => {
+              switch(tf) {
+                case '15m': return 0.8;  // Very volatile, changes often
+                case '1h': return 0.6;   // Fairly volatile
+                case '4h': return 0.4;   // Moderately stable
+                case '1d': return 0.2;   // Stable
+                case '3d': return 0.1;   // Very stable
+                case '1w': return 0.05;  // Extremely stable
+                case '1M': return 0.02;  // Almost never changes
+                default: return 0.9;     // Default for other timeframes (5m, 1m, etc.)
+              }
+            };
+            
+            // Get stability for current timeframe
+            const stability = getTimeframeStability(timeframe);
+            
+            // Generate a new signal based on technical analysis
+            let signalResult;
+            
+            try {
+              // Only generate a new signal if we don't have a previous one 
+              // or if we pass the stability check (higher timeframes change less frequently)
+              const shouldCalculateNewSignal = !previousSignal || Math.random() < stability;
+              
+              if (shouldCalculateNewSignal) {
+                // For a completely new technical analysis, use our advanced technicalIndicators library
+                signalResult = generateSignal(timeframeData, timeframe);
+                console.log(`Generated new technical signal for ${timeframe}: ${signalResult.direction} with ${signalResult.confidence}% confidence`);
+              } else {
+                // For stability, use previous signal but allow some small variations
+                // This prevents signals from changing too drastically without reason
+                console.log(`Using previous signal for ${timeframe} with stability adjustments`);
+                
+                // Allow small fluctuations in confidence
+                const confidenceAdjustment = (Math.random() * 6 - 3) * stability;
+                const newConfidence = Math.min(100, Math.max(0, previousSignal.confidence + confidenceAdjustment));
+                
+                // Very rarely change direction on higher timeframes
+                const directionChangeThreshold = stability * 0.5; // Much lower than normal stability
+                const shouldChangeDirection = Math.random() < directionChangeThreshold;
+                
+                let newDirection = previousSignal.direction;
+                if (shouldChangeDirection) {
+                  // When changing direction, pick a new one different from current
+                  const possibleDirections: Array<'LONG' | 'SHORT' | 'NEUTRAL'> = 
+                    ['LONG', 'SHORT', 'NEUTRAL'].filter(d => d !== previousSignal.direction) as any;
+                  newDirection = possibleDirections[Math.floor(Math.random() * possibleDirections.length)];
+                  console.log(`Changing ${timeframe} direction from ${previousSignal.direction} to ${newDirection}`);
+                }
+                
+                // Use current price for entry
+                const currentPrice = timeframeData[timeframeData.length - 1].close;
+                
+                // Create a synthetic signal that matches our expected format
+                signalResult = {
+                  direction: newDirection,
+                  confidence: Math.round(newConfidence),
+                  entryPrice: currentPrice,
+                  stopLoss: previousSignal.stopLoss,
+                  takeProfit: previousSignal.takeProfit,
+                  indicators: {}, // Will be filled in createAdvancedSignalFromTechnical
+                  environment: {
+                    trend: newDirection === 'LONG' ? 'UPTREND' : 
+                           newDirection === 'SHORT' ? 'DOWNTREND' : 'NEUTRAL',
+                    volatility: 'MODERATE',
+                    momentum: newDirection === 'LONG' ? 'BULLISH' : 
+                              newDirection === 'SHORT' ? 'BEARISH' : 'NEUTRAL'
+                  }
+                };
+              }
+              
+              // Transform the technical signal into our AdvancedSignal format
+              const result = createAdvancedSignalFromTechnical(timeframe, signalResult, previousSignal);
+              
+              if (result) {
+                // Save to the persistent signals for future reference
+                persistentSignalsRef.current[symbol][timeframe] = result;
+                
+                // Update the current signals state
+                newSignals[timeframe] = result;
+                
+                console.log(`Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
+                  `Direction: ${result.direction}, Confidence: ${result.confidence}%, RecLeverage: ${result.recommendedLeverage}x`);
+                console.log(`SUCCESS: Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
+                  `Direction: ${result.direction}, Confidence: ${result.confidence}%`);
+              }
+            } catch (error) {
+              console.error(`Error in technical signal generation for ${timeframe}:`, error);
+              
+              // If there's an error but we have a previous signal, use that
+              if (previousSignal) {
+                newSignals[timeframe] = previousSignal;
+                console.log(`Using previous signal for ${timeframe} due to calculation error`);
+              } else {
+                newSignals[timeframe] = null;
+              }
+            }
+          } else {
+            console.log(`SKIPPED: Not enough data for ${symbol} on ${timeframe} timeframe`);
+            newSignals[timeframe] = null;
           }
-        };
-        
-        console.log(`Generated new technical signal for ${timeframe}: ${direction} with ${confidence}% confidence`);
-        
-        // Convert to Advanced Signal format with previous signals if available
-        const previousSignal = persistentSymbolSignals[timeframe] || null;
-        const advancedSignal = createAdvancedSignalFromTechnical(timeframe, technicalSignal, previousSignal);
-        
-        // Store the new signal
-        updatedSignals[timeframe] = advancedSignal;
-        persistentSymbolSignals[timeframe] = advancedSignal;
-        newSignals++;
-        
-        console.log(`Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
-                    `Direction: ${advancedSignal.direction}, Confidence: ${advancedSignal.confidence}%, RecLeverage: ${advancedSignal.recommendedLeverage}x`);
-        console.log(`SUCCESS: Calculated signal for ${symbol} on ${timeframe} timeframe:`, 
-                    `Direction: ${advancedSignal.direction}, Confidence: ${advancedSignal.confidence}%`);
+        } catch (error) {
+          console.error(`Error calculating signal for ${timeframe}:`, error);
+          newSignals[timeframe] = null;
+        }
       }
       
-      // Update persistent signals for this symbol
-      persistentSignalsRef.current[symbol] = persistentSymbolSignals;
+      // After calculating all individual timeframe signals, align them hierarchically
+      // Higher timeframes influence lower timeframes
+      const alignedSignals = alignSignalsWithTimeframeHierarchy(
+        newSignals as Record<TimeFrame, any>,
+        timeframeWeights
+      );
       
-      // Update signals in state
-      setSignals(updatedSignals);
+      // Set the aligned signals to state
+      setSignals(alignedSignals as Record<TimeFrame, AdvancedSignal | null>);
       
       // Generate a recommendation based on all timeframe signals
-      // Choose the daily timeframe for the primary recommendation if available
-      console.log(`Found ${newSignals} valid signals for recommendation for ${symbol}`);
-      
-      if (newSignals > 0) {
-        console.log(`Updating trade recommendation for ${selectedTimeframe} timeframe`);
-        updateRecommendationForTimeframe(selectedTimeframe);
+      try {
+        const validSignals = Object.values(alignedSignals).filter(Boolean) as AdvancedSignal[];
+        
+        if (validSignals.length > 0) {
+          console.log(`Found ${validSignals.length} valid signals for recommendation for ${symbol}`);
+          
+          // Update recommendation using the selected timeframe
+          if (alignedSignals[selectedTimeframe]) {
+            console.log(`Updating trade recommendation for ${selectedTimeframe} timeframe`);
+            
+            // Get the primary signal for the selected timeframe
+            const primarySignal = alignedSignals[selectedTimeframe];
+            
+            if (primarySignal) {
+              // Create a recommendation that prioritizes the selected timeframe
+              const customRecommendation = {
+                symbol: symbol,
+                direction: primarySignal.direction,
+                confidence: primarySignal.confidence, 
+                timeframeSummary: validSignals.map(s => ({
+                  timeframe: s.timeframe,
+                  confidence: s.confidence,
+                  direction: s.direction
+                })),
+                entry: {
+                  ideal: primarySignal.entryPrice,
+                  range: [primarySignal.entryPrice * 0.98, primarySignal.entryPrice * 1.02]
+                },
+                exit: {
+                  takeProfit: [
+                    primarySignal.takeProfit,
+                    primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.05 : 0.95),
+                    primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.1 : 0.9)
+                  ],
+                  stopLoss: primarySignal.stopLoss,
+                  trailingStopActivation: primarySignal.entryPrice * (primarySignal.direction === 'LONG' ? 1.03 : 0.97),
+                  trailingStopPercent: 2
+                },
+                leverage: {
+                  conservative: Math.max(1, Math.floor(primarySignal.recommendedLeverage * 0.5)),
+                  moderate: primarySignal.recommendedLeverage,
+                  aggressive: Math.floor(primarySignal.recommendedLeverage * 2),
+                  recommendation: `Recommended leverage: ${primarySignal.recommendedLeverage}x based on current market conditions.`
+                },
+                riskManagement: {
+                  positionSizeRecommendation: "Risk no more than 1-2% of your account per trade.",
+                  maxRiskPercentage: 2,
+                  potentialRiskReward: primarySignal.optimalRiskReward,
+                  winProbability: primarySignal.confidence / 100
+                },
+                keyIndicators: [
+                  `${primarySignal.direction === 'LONG' ? 'Support' : 'Resistance'} at ${formatCurrency(primarySignal.stopLoss)}`,
+                  `${primarySignal.macroClassification} macro trend`,
+                  `${primarySignal.confidence}% confidence level`,
+                ],
+                summary: `${primarySignal.direction} signal with ${primarySignal.confidence}% confidence. Entry near ${formatCurrency(primarySignal.entryPrice)}, stop loss at ${formatCurrency(primarySignal.stopLoss)}.`
+              };
+              
+              setRecommendation(customRecommendation);
+            }
+          } else if (validSignals.length > 0) {
+            // Fall back to the first available timeframe
+            const firstAvailableTimeframe = validSignals[0].timeframe;
+            const primarySignal = alignedSignals[firstAvailableTimeframe];
+            
+            if (primarySignal) {
+              // Use the first available signal as a fallback
+              console.log(`Using fallback signal from ${firstAvailableTimeframe} timeframe`);
+              const recommendationResult = {
+                symbol: symbol,
+                direction: primarySignal.direction,
+                confidence: primarySignal.confidence,
+                timeframeSummary: validSignals.map(s => ({
+                  timeframe: s.timeframe,
+                  confidence: s.confidence,
+                  direction: s.direction
+                })),
+                entry: {
+                  ideal: primarySignal.entryPrice,
+                  range: [primarySignal.entryPrice * 0.98, primarySignal.entryPrice * 1.02]
+                },
+                exit: {
+                  takeProfit: [
+                    primarySignal.takeProfit,
+                    primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.05 : 0.95),
+                    primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.1 : 0.9)
+                  ],
+                  stopLoss: primarySignal.stopLoss,
+                  trailingStopActivation: primarySignal.entryPrice * (primarySignal.direction === 'LONG' ? 1.03 : 0.97),
+                  trailingStopPercent: 2
+                },
+                leverage: {
+                  conservative: Math.max(1, Math.floor(primarySignal.recommendedLeverage * 0.5)),
+                  moderate: primarySignal.recommendedLeverage,
+                  aggressive: Math.min(10, Math.floor(primarySignal.recommendedLeverage * 2)),
+                  recommendation: `Recommended leverage: ${primarySignal.recommendedLeverage}x based on current volatility.`
+                },
+                riskManagement: {
+                  positionSizeRecommendation: "Risk no more than 1-2% of your account per trade.",
+                  maxRiskPercentage: 2,
+                  potentialRiskReward: primarySignal.optimalRiskReward,
+                  winProbability: primarySignal.confidence / 100
+                },
+                keyIndicators: [
+                  `${primarySignal.direction === 'LONG' ? 'Support' : 'Resistance'} at ${formatCurrency(primarySignal.stopLoss)}`,
+                  `${primarySignal.macroClassification} macro trend`,
+                  `${primarySignal.confidence}% confidence level`,
+                ],
+                summary: `${primarySignal.direction} signal with ${primarySignal.confidence}% confidence on ${primarySignal.timeframe} timeframe.`
+              };
+              
+              setRecommendation(recommendationResult);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error generating recommendation:", error);
       }
       
-      // Mark calculation as complete and update timestamp
-      console.log(`Calculation process complete for ${symbol} - ${newSignals} signals generated`);
+      // Verify we have valid signals to display
+      const validSignalCount = Object.values(alignedSignals).filter(Boolean).length;
       
+      if (validSignalCount === 0) {
+        console.log(`No valid signals calculated for ${symbol}`);
+        toast({
+          title: "No Signals Generated",
+          description: `Unable to calculate signals for ${symbol}. Try selecting another cryptocurrency.`,
+          variant: "destructive"
+        });
+      } else {
+        console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
+      }
+      
+      // Update the last calculation time
+      lastCalculationTimeRef.current = Date.now() / 1000;
+      lastCalculationRef.current = Date.now();
+      calculationTriggeredRef.current = false;
     } catch (error) {
-      console.error(`Error calculating signals for ${symbol}:`, error);
+      console.error("Error during calculation:", error);
       toast({
         title: "Calculation Error",
-        description: `Failed to calculate signals for ${symbol}. Try refreshing.`,
+        description: `An error occurred while calculating signals for ${symbol}.`,
         variant: "destructive"
       });
     } finally {
       setIsCalculating(false);
-      calculationTriggeredRef.current = false;
-      lastCalculationRef.current = Date.now();
-      lastCalculationTimeRef.current = Date.now() / 1000;
     }
-  }, [symbol, chartData, signals, isCalculating, toast]);
+  };
   
-  // Calculate a recommendation from the signals
-  const generateTradeRecommendation = useCallback((timeframe: TimeFrame) => {
-    // Return early if we don't have signals or the specific timeframe signal
-    if (!signals || !signals[timeframe]) {
-      return null;
-    }
+  // Helper function to update recommendation for a specific timeframe
+  const updateRecommendationForTimeframe = (timeframe: TimeFrame) => {
+    console.log(`Attempting to update recommendation for ${timeframe} timeframe`);
     
-    const primarySignal = signals[timeframe];
-    if (!primarySignal) return null;
-    
-    // Get a combined influence from all timeframe signals
-    const hasHigherTimeframeSignals = timeframes
-      .filter(tf => timeframeWeights[tf] > timeframeWeights[timeframe])
-      .some(tf => signals[tf] !== null);
+    // Make sure we have signals for this timeframe
+    if (signals[timeframe]) {
+      console.log(`Found signal data for ${timeframe}, updating recommendation`);
       
-    const hasLowerTimeframeSignals = timeframes
-      .filter(tf => timeframeWeights[tf] < timeframeWeights[timeframe])
-      .some(tf => signals[tf] !== null);
-    
-    // Calculate a consensus direction and confidence across timeframes
-    // Higher timeframes have more influence
-    const timeframeSignals = timeframes
-      .filter(tf => signals[tf] !== null)
-      .map(tf => ({
-        timeframe: tf,
-        signal: signals[tf],
-        weight: timeframeWeights[tf]
-      }));
-    
-    let bullishScore = 0;
-    let bearishScore = 0;
-    let totalWeight = 0;
-    
-    timeframeSignals.forEach(({ signal, weight }) => {
-      if (!signal) return;
+      // Get all valid signals for the summary
+      const validSignals = Object.values(signals).filter(Boolean) as AdvancedSignal[];
       
-      const effectiveWeight = weight;
-      totalWeight += effectiveWeight;
+      // Get the primary signal for the selected timeframe
+      const primarySignal = signals[timeframe];
       
-      if (signal.direction === 'LONG') {
-        bullishScore += (signal.confidence / 100) * effectiveWeight;
-      } else if (signal.direction === 'SHORT') {
-        bearishScore += (signal.confidence / 100) * effectiveWeight;
-      }
-    });
-    
-    // Normalize scores
-    if (totalWeight > 0) {
-      bullishScore = (bullishScore / totalWeight) * 100;
-      bearishScore = (bearishScore / totalWeight) * 100;
-    }
-    
-    // Determine consensus direction and confidence
-    let consensusDirection: 'LONG' | 'SHORT' | 'NEUTRAL';
-    let consensusConfidence: number;
-    
-    if (bullishScore > bearishScore && bullishScore > 40) {
-      consensusDirection = 'LONG';
-      consensusConfidence = bullishScore;
-    } else if (bearishScore > bullishScore && bearishScore > 40) {
-      consensusDirection = 'SHORT';
-      consensusConfidence = bearishScore;
-    } else {
-      consensusDirection = 'NEUTRAL';
-      consensusConfidence = 40; // Base confidence for neutral
-    }
-    
-    // Get the current price from the primary signal
-    const currentPrice = primarySignal.entryPrice;
-    
-    // Create entry range (slightly wider than the exact entry price)
-    const entryAdjustment = currentPrice * 0.005; // 0.5% range
-    const entryRange: [number, number] = 
-      consensusDirection === 'LONG' 
-        ? [currentPrice - entryAdjustment, currentPrice] 
-        : consensusDirection === 'SHORT'
-          ? [currentPrice, currentPrice + entryAdjustment]
-          : [currentPrice - entryAdjustment, currentPrice + entryAdjustment];
-          
-    // Create multiple take profit levels
-    const tpAdjustment1 = currentPrice * (consensusConfidence / 200); // First TP at half of confidence percentage
-    const tpAdjustment2 = currentPrice * (consensusConfidence / 100);  // Second TP at full confidence percentage
-    
-    const takeProfitLevels = 
-      consensusDirection === 'LONG'
-        ? [currentPrice + tpAdjustment1, currentPrice + tpAdjustment2]
-        : consensusDirection === 'SHORT'
-          ? [currentPrice - tpAdjustment1, currentPrice - tpAdjustment2]
-          : [currentPrice * 1.02, currentPrice * 1.05]; // Neutral case
-          
-    // Create stop loss level
-    const slAdjustment = currentPrice * 0.02; // Base 2% stop loss
-    const stopLoss = 
-      consensusDirection === 'LONG'
-        ? currentPrice - slAdjustment
-        : consensusDirection === 'SHORT'
-          ? currentPrice + slAdjustment
-          : consensusDirection === 'NEUTRAL' && bullishScore > bearishScore
-            ? currentPrice - slAdjustment * 1.5 // Wider stop for neutral-bullish
-            : currentPrice + slAdjustment * 1.5; // Wider stop for neutral-bearish
-            
-    // Calculate leverage recommendations based on volatility and consensus
-    let leverageBase = consensusConfidence > 70 ? 3 : 
-                   consensusConfidence > 60 ? 2.5 :
-                   consensusConfidence > 50 ? 2 : 1.5;
-                   
-    // Adjust for timeframe (lower on higher timeframes)
-    const timeframeMultiplier = 
-      timeframe === '15m' ? 1.2 :
-      timeframe === '1h' ? 1.1 :
-      timeframe === '4h' ? 1.0 :
-      timeframe === '1d' ? 0.9 :
-      timeframe === '3d' ? 0.8 :
-      timeframe === '1w' ? 0.7 : 0.6;
-      
-    leverageBase *= timeframeMultiplier;
-    
-    // Calculate different leverage options
-    const conservativeLeverage = Math.max(1, Math.floor(leverageBase * 0.7));
-    const moderateLeverage = Math.max(1, Math.floor(leverageBase));
-    const aggressiveLeverage = Math.max(1, Math.floor(leverageBase * 1.3));
-    
-    // Determine the recommended leverage based on the signal strength
-    const leverageRecommendation = 
-      consensusConfidence > 70 ? 'Moderate' :
-      consensusConfidence > 50 ? 'Conservative' : 'Very Conservative';
-      
-    // Create a nicely formatted summary text
-    const timeframeText = 
-      timeframe === '15m' ? '15-minute' :
-      timeframe === '1h' ? '1-hour' :
-      timeframe === '4h' ? '4-hour' :
-      timeframe === '1d' ? 'daily' :
-      timeframe === '3d' ? '3-day' :
-      timeframe === '1w' ? 'weekly' : 'monthly';
-      
-    const directionText =
-      consensusDirection === 'LONG' ? 'bullish' :
-      consensusDirection === 'SHORT' ? 'bearish' : 'neutral';
-      
-    const confidenceText =
-      consensusConfidence > 75 ? 'very strong' :
-      consensusConfidence > 65 ? 'strong' :
-      consensusConfidence > 55 ? 'moderate' :
-      consensusConfidence > 45 ? 'tentative' : 'weak';
-      
-    const summary = `Technical analysis on the ${timeframeText} timeframe indicates a ${confidenceText} ${directionText} bias for ${symbol}. ${
-      consensusDirection !== 'NEUTRAL' 
-        ? `Consider a ${leverageRecommendation.toLowerCase()} ${consensusDirection.toLowerCase()} position with defined risk management.` 
-        : 'The market lacks clear direction; considering waiting for stronger signals before entering a position.'
-    }`;
-    
-    // Extract key indicators that influenced this recommendation
-    const findInfluentialIndicators = (primarySignal: AdvancedSignal): string[] => {
-      const results: string[] = [];
-      
-      // Look through all indicator categories
-      for (const category of ['trend', 'momentum', 'volatility', 'volume']) {
-        const indicators = primarySignal.indicators[category as keyof typeof primarySignal.indicators];
-        if (Array.isArray(indicators)) {
-          // Find strong signals that match the overall direction
-          const matchingIndicators = indicators.filter(ind => 
-            (consensusDirection === 'LONG' && ind.signal === 'BUY' && ind.strength === 'STRONG') ||
-            (consensusDirection === 'SHORT' && ind.signal === 'SELL' && ind.strength === 'STRONG')
-          );
-          
-          // Add up to 2 indicators from each category
-          matchingIndicators.slice(0, 2).forEach(ind => {
-            results.push(`${ind.name} shows ${consensusDirection === 'LONG' ? 'bullish' : 'bearish'} momentum`);
-          });
-        }
-      }
-      
-      // Add support/resistance indicators
-      if (primarySignal.supportResistance.length > 0) {
-        const supports = primarySignal.supportResistance.filter(level => level.type === 'support');
-        const resistances = primarySignal.supportResistance.filter(level => level.type === 'resistance');
+      if (primarySignal) {
+        console.log(`Creating recommendation from ${timeframe} signal: ${primarySignal.direction} with ${primarySignal.confidence}% confidence`);
         
-        if (consensusDirection === 'LONG' && supports.length > 0) {
-          results.push(`Strong support at ${formatCurrency(supports[0].price)}`);
-        } else if (consensusDirection === 'SHORT' && resistances.length > 0) {
-          results.push(`Strong resistance at ${formatCurrency(resistances[0].price)}`);
-        }
-      }
-      
-      // Add pattern formations if they match the direction
-      if (primarySignal.patternFormations.length > 0) {
-        const matchingPatterns = primarySignal.patternFormations.filter(pattern => 
-          (consensusDirection === 'LONG' && pattern.direction === 'bullish') ||
-          (consensusDirection === 'SHORT' && pattern.direction === 'bearish')
-        );
+        // Create a recommendation that prioritizes the selected timeframe
+        const customRecommendation = {
+          symbol: symbol,
+          direction: primarySignal.direction,
+          confidence: primarySignal.confidence, 
+          timeframeSummary: validSignals.map(s => ({
+            timeframe: s.timeframe,
+            confidence: s.confidence,
+            direction: s.direction
+          })),
+          entry: {
+            ideal: primarySignal.entryPrice,
+            range: [primarySignal.entryPrice * 0.98, primarySignal.entryPrice * 1.02]
+          },
+          exit: {
+            takeProfit: [
+              primarySignal.takeProfit,
+              primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.05 : 0.95),
+              primarySignal.takeProfit * (primarySignal.direction === 'LONG' ? 1.1 : 0.9)
+            ],
+            stopLoss: primarySignal.stopLoss,
+            trailingStopActivation: primarySignal.entryPrice * (primarySignal.direction === 'LONG' ? 1.03 : 0.97),
+            trailingStopPercent: 2
+          },
+          leverage: {
+            conservative: Math.max(1, Math.floor(primarySignal.recommendedLeverage * 0.5)),
+            moderate: primarySignal.recommendedLeverage,
+            aggressive: Math.floor(primarySignal.recommendedLeverage * 2),
+            recommendation: `Recommended leverage: ${primarySignal.recommendedLeverage}x based on current market conditions.`
+          },
+          riskManagement: {
+            positionSizeRecommendation: "Risk no more than 1-2% of your account per trade.",
+            maxRiskPercentage: 2,
+            potentialRiskReward: primarySignal.optimalRiskReward,
+            winProbability: primarySignal.confidence / 100
+          },
+          keyIndicators: [
+            `${primarySignal.direction === 'LONG' ? 'Support' : 'Resistance'} at ${formatCurrency(primarySignal.stopLoss)}`,
+            `${primarySignal.macroClassification} macro trend`,
+            `${primarySignal.confidence}% confidence level`,
+          ],
+          summary: `${primarySignal.direction} signal with ${primarySignal.confidence}% confidence. Entry near ${formatCurrency(primarySignal.entryPrice)}, stop loss at ${formatCurrency(primarySignal.stopLoss)}.`
+        };
         
-        if (matchingPatterns.length > 0) {
-          results.push(`${matchingPatterns[0].name} pattern identified`);
-        }
+        setRecommendation(customRecommendation);
       }
-      
-      // Add timeframe alignment indicator if we have multiple timeframe signals
-      if (hasHigherTimeframeSignals && hasLowerTimeframeSignals) {
-        results.push('Multiple timeframe alignment confirms the trend');
-      }
-      
-      // If we don't have enough indicators, add some general ones
-      if (results.length < 3) {
-        results.push('Price action shows clear direction');
-        
-        if (results.length < 3 && consensusDirection === 'LONG') {
-          results.push('Higher lows forming on the chart');
-        } else if (results.length < 3 && consensusDirection === 'SHORT') {
-          results.push('Lower highs forming on the chart');
-        }
-      }
-      
-      return results;
-    };
-    
-    // Create the trade recommendation
-    const recommendation: TradeRecommendation = {
-      symbol,
-      direction: consensusDirection,
-      confidence: Math.round(consensusConfidence),
-      timeframeSummary: timeframeSignals
-        .filter(({ signal }) => signal !== null)
-        .map(({ timeframe, signal }) => ({
-          timeframe,
-          confidence: signal ? Math.round(signal.confidence) : 0,
-          direction: signal ? signal.direction : 'NEUTRAL'
-        })),
-      entry: {
-        ideal: currentPrice,
-        range: entryRange,
-      },
-      exit: {
-        takeProfit: takeProfitLevels,
-        stopLoss,
-        trailingStopActivation: consensusDirection === 'LONG'
-          ? takeProfitLevels[0] // Activate at first TP for long
-          : takeProfitLevels[0], // Activate at first TP for short
-        trailingStopPercent: 1.0, // 1% trailing stop
-      },
-      leverage: {
-        conservative: conservativeLeverage,
-        moderate: moderateLeverage,
-        aggressive: aggressiveLeverage,
-        recommendation: leverageRecommendation,
-      },
-      riskManagement: {
-        positionSizeRecommendation: consensusConfidence > 70 ? 'Up to 5% of portfolio' : 
-                                 consensusConfidence > 50 ? 'Up to 3% of portfolio' : 
-                                 'Up to 1% of portfolio',
-        maxRiskPercentage: consensusConfidence > 70 ? 2 : 
-                        consensusConfidence > 50 ? 1.5 : 1,
-        potentialRiskReward: consensusDirection === 'NEUTRAL' ? 1 :
-                          Math.abs((takeProfitLevels[1] - currentPrice) / (stopLoss - currentPrice)),
-        winProbability: consensusConfidence / 100,
-      },
-      keyIndicators: findInfluentialIndicators(primarySignal),
-      summary,
-    };
-    
-    return recommendation;
-  }, [signals, timeframes]);
+    }
+  };
   
-  // Function to update the recommendation when a timeframe is selected
-  const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {
-    const newRecommendation = generateTradeRecommendation(timeframe);
-    setRecommendation(newRecommendation);
-  }, [generateTradeRecommendation]);
-  
-  // Handler for timeframe selection
-  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
+  // Helper functions for the UI
+  const handleTimeframeSelect = (timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
-    updateRecommendationForTimeframe(timeframe);
     
-    // Inform parent component if callback provided
+    // Call the parent's onTimeframeSelect if provided
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  }, [updateRecommendationForTimeframe, onTimeframeSelect]);
+    
+    // Update the trade recommendation for the new timeframe
+    updateRecommendationForTimeframe(timeframe);
+  };
   
-  // Get the current signal for the selected timeframe
-  const currentSignal = signals[selectedTimeframe];
+  // Get the signal for the currently selected timeframe
+  const getCurrentSignal = () => {
+    return signals[selectedTimeframe] || null;
+  };
   
-  // Helper function to format a price as a currency
-  function formatCurrency(price: number): string {
-    if (price >= 10000) {
-      return `$${price.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
-    } else if (price >= 100) {
-      return `$${price.toLocaleString('en-US', { maximumFractionDigits: 2 })}`;
-    } else if (price >= 1) {
-      return `$${price.toLocaleString('en-US', { maximumFractionDigits: 3 })}`;
-    } else {
-      return `$${price.toLocaleString('en-US', { maximumFractionDigits: 6 })}`;
-    }
-  }
+  // Format confidence display class
+  const getConfidenceColor = (confidence: number) => {
+    if (confidence >= 70) return 'text-emerald-500';
+    if (confidence >= 40) return 'text-amber-500';
+    return 'text-rose-500';
+  };
   
-  // Helper function to get signal background color
-  function getSignalBgClass(direction: string): string {
-    if (direction === 'LONG') return 'bg-emerald-900/10';
-    if (direction === 'SHORT') return 'bg-rose-900/10';
-    return 'bg-gray-800/50';
-  }
+  // Format signal card background
+  const getSignalBgClass = (direction: string) => {
+    if (direction === 'LONG') return 'bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-900';
+    if (direction === 'SHORT') return 'bg-rose-50 dark:bg-rose-950/20 border-rose-200 dark:border-rose-900';
+    return '';
+  };
   
-  // Render the component
+  // Current signal based on selected timeframe
+  const currentSignal = getCurrentSignal();
+  
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
@@ -962,40 +952,48 @@ export default function AdvancedSignalDashboard({
           <div className="text-xs text-white font-medium bg-gray-800 px-2 py-1 rounded-md">
             Auto-refresh in: {Math.floor(nextRefreshIn / 60)}:{(nextRefreshIn % 60).toString().padStart(2, '0')}
           </div>
-          <Button variant="outline" size="sm" className="gap-1" 
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="shrink-0" 
             onClick={() => triggerCalculation('manual')}
             disabled={isCalculating}
           >
-            <RefreshCcw className={`h-4 w-4 ${isCalculating ? 'animate-spin' : ''}`} />
-            Refresh
+            {isCalculating ? (
+              <>
+                <Clock className="mr-2 h-4 w-4 animate-spin" />
+                Analyzing...
+              </>
+            ) : (
+              <>
+                <RefreshCcw className="mr-2 h-4 w-4" />
+                Refresh
+              </>
+            )}
           </Button>
         </div>
       </div>
       
-      <Tabs defaultValue={selectedTimeframe} onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}>
-        <TabsList className="grid grid-cols-7 w-full bg-gray-900 p-1">
-          {timeframes.map((timeframe) => (
-            <TabsTrigger 
-              key={timeframe} 
-              value={timeframe}
-              className={`${
-                signals[timeframe]?.direction === 'LONG' 
-                  ? 'data-[state=active]:text-green-400 data-[state=active]:shadow-[0_0_10px_theme(colors.green.900)]' : 
-                signals[timeframe]?.direction === 'SHORT' 
-                  ? 'data-[state=active]:text-red-400 data-[state=active]:shadow-[0_0_10px_theme(colors.red.900)]' : 
-                  ''
-              }`}
+      <Tabs defaultValue={selectedTimeframe}>
+        <TabsList className="flex flex-wrap h-auto justify-start space-x-1 mb-4">
+          {timeframes.map((tf) => (
+            <TabsTrigger
+              key={tf}
+              value={tf}
+              onClick={() => handleTimeframeSelect(tf)}
+              className="relative"
             >
-              {timeframe}
-              {signals[timeframe] && (
-                <span className={`ml-1 w-1.5 h-1.5 rounded-full ${
-                  signals[timeframe]?.direction === 'LONG' 
-                    ? 'bg-green-400' : 
-                  signals[timeframe]?.direction === 'SHORT' 
-                    ? 'bg-red-400' : 
-                    'bg-gray-400'
-                }`}>
-                </span>
+              {tf}
+              {signals[tf] && (
+                <span 
+                  className={`absolute -top-1 -right-1 w-2 h-2 rounded-full ${
+                    signals[tf]?.direction === 'LONG' 
+                      ? 'bg-emerald-500' 
+                      : signals[tf]?.direction === 'SHORT' 
+                        ? 'bg-rose-500' 
+                        : 'bg-gray-400'
+                  }`}
+                />
               )}
             </TabsTrigger>
           ))}
@@ -1237,7 +1235,7 @@ export default function AdvancedSignalDashboard({
               </div>
             ) : (
               <div className="h-32 flex items-center justify-center text-muted-foreground">
-                No patterns detected for this timeframe
+                No pattern formations detected
               </div>
             )}
           </CardContent>
@@ -1251,12 +1249,12 @@ export default function AdvancedSignalDashboard({
               <Scale className="h-5 w-5 text-primary/70" />
             </CardTitle>
             <CardDescription>
-              Key price levels for {symbol} on {selectedTimeframe} timeframe
+              Key price levels for {symbol}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {currentSignal && currentSignal.supportResistance ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {currentSignal ? (
+              <div className="space-y-6">
                 {/* Support Levels - Always exactly 3 */}
                 <div>
                   <h3 className="font-medium text-emerald-500 mb-2">Support Levels</h3>
@@ -1354,6 +1352,155 @@ export default function AdvancedSignalDashboard({
             ) : (
               <div className="h-32 flex items-center justify-center text-muted-foreground">
                 No key levels detected
+              </div>
+            )}
+          </CardContent>
+        </Card>
+        
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
+              <span>Trade Recommendation ({selectedTimeframe})</span>
+              <BarChart2 className="h-5 w-5 text-primary/70" />
+            </CardTitle>
+            <CardDescription>
+              Analysis focused on the {selectedTimeframe} timeframe for {symbol}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {isCalculating ? (
+              <div className="flex items-center justify-center h-32">
+                <RefreshCcw className="h-8 w-8 animate-spin text-primary/70" />
+              </div>
+            ) : recommendation ? (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Direction & Confidence */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">Direction</h4>
+                    <div className="flex items-center space-x-2">
+                      {recommendation.direction === 'LONG' && <ArrowUpRight className="h-5 w-5 text-emerald-500" />}
+                      {recommendation.direction === 'SHORT' && <ArrowDownRight className="h-5 w-5 text-rose-500" />}
+                      {recommendation.direction === 'NEUTRAL' && <Minus className="h-5 w-5 text-slate-500" />}
+                      <span className={`text-xl font-bold ${
+                        recommendation.direction === 'LONG' ? 'text-emerald-500' : 
+                        recommendation.direction === 'SHORT' ? 'text-rose-500' : 
+                        'text-slate-500'
+                      }`}>
+                        {recommendation.direction}
+                      </span>
+                    </div>
+                    <Progress 
+                      value={recommendation.confidence} 
+                      className={`h-2 ${
+                        recommendation.confidence >= 70 ? 'bg-emerald-100' : 
+                        recommendation.confidence >= 40 ? 'bg-amber-100' : 
+                        'bg-rose-100'
+                      }`}
+                    />
+                    <p className="text-sm text-muted-foreground">
+                      {recommendation.confidence}% confidence
+                    </p>
+                  </div>
+                  
+                  {/* Entry */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">Entry Points</h4>
+                    <div className="text-xl font-bold">
+                      {formatCurrency(recommendation.entry.ideal)}
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Range: {formatCurrency(recommendation.entry.range[0])} - {formatCurrency(recommendation.entry.range[1])}
+                    </p>
+                    <div className="flex items-center text-sm">
+                      <Target className="h-4 w-4 mr-1 text-primary/70" />
+                      <span>Calculated based on current price action</span>
+                    </div>
+                  </div>
+                  
+                  {/* Take Profit / Stop Loss */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">Exit Strategy</h4>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Take Profit 1:</span>
+                      <span className="font-medium text-emerald-500">{formatCurrency(recommendation.exit.takeProfit[0])}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Take Profit 2:</span>
+                      <span className="font-medium text-emerald-500">{formatCurrency(recommendation.exit.takeProfit[1])}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">Stop Loss:</span>
+                      <span className="font-medium text-rose-500">{formatCurrency(recommendation.exit.stopLoss)}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <Separator />
+                
+                {/* Leverage & Risk Management */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-medium">Leverage Recommendations</h4>
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="rounded-md border p-2 text-center">
+                        <div className="text-xs text-muted-foreground">Conservative</div>
+                        <div className="text-lg font-bold">{recommendation.leverage.conservative}x</div>
+                      </div>
+                      <div className="rounded-md border bg-primary/5 border-primary/20 p-2 text-center">
+                        <div className="text-xs text-muted-foreground">Moderate</div>
+                        <div className="text-lg font-bold">{recommendation.leverage.moderate}x</div>
+                      </div>
+                      <div className="rounded-md border p-2 text-center">
+                        <div className="text-xs text-muted-foreground">Aggressive</div>
+                        <div className="text-lg font-bold">{recommendation.leverage.aggressive}x</div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{recommendation.leverage.recommendation}</p>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-medium">Risk Management</h4>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-sm text-muted-foreground">Risk/Reward</div>
+                        <div className="text-lg font-bold">{Math.round(recommendation.riskManagement.potentialRiskReward * 100) / 100}</div>
+                      </div>
+                      <div>
+                        <div className="text-sm text-muted-foreground">Win Probability</div>
+                        <div className="text-lg font-bold">{Math.round(recommendation.riskManagement.winProbability * 100)}%</div>
+                      </div>
+                    </div>
+                    <p className="text-sm font-medium">{recommendation.riskManagement.positionSizeRecommendation}</p>
+                  </div>
+                </div>
+                
+                <Separator />
+                
+                {/* Key Insights */}
+                <div className="space-y-2">
+                  <h4 className="text-sm font-medium">Key Insights</h4>
+                  <ul className="space-y-1">
+                    {recommendation.keyIndicators.map((indicator: string, i: number) => (
+                      <li key={i} className="text-sm flex items-start">
+                        <AlertTriangle className="h-4 w-4 mr-2 shrink-0 text-amber-500" />
+                        {indicator}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                
+                {/* Summary */}
+                <div className="bg-primary/5 p-4 rounded-md">
+                  <h4 className="text-sm font-medium mb-2">Summary</h4>
+                  <p className="text-sm">
+                    {recommendation.summary}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-32 text-muted-foreground text-center">
+                <span>No recommendation available</span>
+                <span className="text-sm mt-2">Select a timeframe and wait for signal analysis to complete</span>
               </div>
             )}
           </CardContent>
