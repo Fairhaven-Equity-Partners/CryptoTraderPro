@@ -621,9 +621,14 @@ export function calculateIndicatorsForTimeframe(data: ChartData[]): {
   atr: number,
   volatility: number
 } {
-  if (!data || data.length < 100) {
+  // Handle different minimum data requirements based on what's available
+  if (!data || data.length < 30) {
+    // Absolute minimum data points required for any calculation
     throw new Error("Insufficient data for indicator calculation");
   }
+  
+  // Flag for limited data mode - will use simpler calculations when data is limited
+  const limitedDataMode = data.length < 100;
   
   // Calculate RSI
   const rsiValues = calculateRSI(data, 14);

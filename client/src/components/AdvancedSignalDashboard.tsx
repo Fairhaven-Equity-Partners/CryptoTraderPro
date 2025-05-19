@@ -1110,16 +1110,22 @@ export default function AdvancedSignalDashboard({
                         {(() => {
                           // Safe volatility extraction that handles all possible types
                           let volatilityValue = 0;
-                          const volatility = currentSignal.indicators.volatility;
                           
-                          if (volatility) {
-                            if (Array.isArray(volatility)) {
-                              volatilityValue = volatility.length > 0 && volatility[0].value 
-                                ? Number(volatility[0].value) 
-                                : 0;
-                            } else if (typeof volatility === 'number') {
-                              volatilityValue = volatility;
+                          try {
+                            if (currentSignal.indicators.volatility !== undefined) {
+                              if (Array.isArray(currentSignal.indicators.volatility)) {
+                                // Handle array type with validation
+                                const vol = currentSignal.indicators.volatility;
+                                if (vol.length > 0 && vol[0] && typeof vol[0].value === 'number') {
+                                  volatilityValue = vol[0].value;
+                                }
+                              } else if (typeof currentSignal.indicators.volatility === 'number') {
+                                // Handle direct number value
+                                volatilityValue = currentSignal.indicators.volatility;
+                              }
                             }
+                          } catch (e) {
+                            console.log("Error displaying volatility:", e);
                           }
                           
                           return Math.round(volatilityValue);
