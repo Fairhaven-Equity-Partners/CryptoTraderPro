@@ -949,7 +949,7 @@ export default function AdvancedSignalDashboard({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <div className="text-xs text-muted-foreground">
+          <div className="text-xs text-white font-medium bg-gray-800 px-2 py-1 rounded-md">
             Auto-refresh in: {Math.floor(nextRefreshIn / 60)}:{(nextRefreshIn % 60).toString().padStart(2, '0')}
           </div>
           <Button 
@@ -1012,64 +1012,84 @@ export default function AdvancedSignalDashboard({
                 <Minus className="h-5 w-5 text-slate-500" />
               )}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-white text-sm font-medium">
               Technical analysis for {symbol} on {selectedTimeframe} timeframe
             </CardDescription>
           </CardHeader>
           <CardContent>
             {currentSignal ? (
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="text-sm font-medium">Direction</div>
-                    <div className={`text-lg font-bold ${
-                      currentSignal.direction === 'LONG' ? 'text-emerald-500' : 
-                      currentSignal.direction === 'SHORT' ? 'text-rose-500' : 
-                      'text-slate-500'
+                <div className="flex justify-between items-center bg-gray-900 rounded-lg p-3">
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-white mb-1">Direction</div>
+                    <div className={`text-lg font-extrabold px-3 py-1 rounded-md ${
+                      currentSignal.direction === 'LONG' 
+                        ? 'bg-green-900/40 text-green-400' : 
+                      currentSignal.direction === 'SHORT' 
+                        ? 'bg-red-900/40 text-red-400' : 
+                        'bg-yellow-900/40 text-yellow-400'
                     }`}>
                       {currentSignal.direction}
                     </div>
                   </div>
                   
-                  <div>
-                    <div className="text-sm font-medium">Confidence</div>
-                    <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.confidence)}`}>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-white mb-1">Confidence</div>
+                    <div className={`text-lg font-extrabold px-3 py-1 rounded-md ${
+                      currentSignal.confidence > 70 ? 'bg-green-900/40 text-green-400' :
+                      currentSignal.confidence > 50 ? 'bg-yellow-900/40 text-yellow-400' :
+                      'bg-red-900/40 text-red-400'
+                    }`}>
                       {Math.round(currentSignal.confidence)}%
                     </div>
                   </div>
                   
-                  <div>
-                    <div className="text-sm font-medium">Macro Score</div>
-                    <div className={`text-lg font-bold ${getConfidenceColor(currentSignal.macroScore)}`}>
+                  <div className="text-center">
+                    <div className="text-sm font-semibold text-white mb-1">Macro Score</div>
+                    <div className={`text-lg font-extrabold px-3 py-1 rounded-md ${
+                      currentSignal.macroScore > 70 ? 'bg-green-900/40 text-green-400' :
+                      currentSignal.macroScore > 50 ? 'bg-yellow-900/40 text-yellow-400' :
+                      'bg-red-900/40 text-red-400'
+                    }`}>
                       {Math.round(currentSignal.macroScore)}%
                     </div>
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Entry Price</span>
-                    <span className="font-medium">{formatCurrency(currentSignal.entryPrice)}</span>
+                <div className="bg-gray-900 rounded-lg p-3 space-y-3">
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white font-semibold">Entry Price</span>
+                    <span className="font-bold text-amber-400 bg-amber-900/30 px-2 py-1 rounded">
+                      {formatCurrency(currentSignal.entryPrice)}
+                    </span>
                   </div>
                   
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Take Profit</span>
-                    <span className="font-medium text-emerald-500">{formatCurrency(currentSignal.takeProfit)}</span>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white font-semibold">Take Profit</span>
+                    <span className="font-bold text-green-400 bg-green-900/30 px-2 py-1 rounded">
+                      {formatCurrency(currentSignal.takeProfit)}
+                    </span>
                   </div>
                   
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Stop Loss</span>
-                    <span className="font-medium text-rose-500">{formatCurrency(currentSignal.stopLoss)}</span>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white font-semibold">Stop Loss</span>
+                    <span className="font-bold text-red-400 bg-red-900/30 px-2 py-1 rounded">
+                      {formatCurrency(currentSignal.stopLoss)}
+                    </span>
                   </div>
                   
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Risk/Reward</span>
-                    <span className="font-medium">{Math.round(currentSignal.optimalRiskReward * 100) / 100}</span>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white font-semibold">Risk/Reward</span>
+                    <span className="font-bold text-blue-400 bg-blue-900/30 px-2 py-1 rounded">
+                      {Math.round(currentSignal.optimalRiskReward * 100) / 100}
+                    </span>
                   </div>
                   
-                  <div className="flex justify-between text-sm">
-                    <span className="text-muted-foreground">Recommended Leverage</span>
-                    <span className="font-medium">{currentSignal.recommendedLeverage}x</span>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-white font-semibold">Recommended Leverage</span>
+                    <span className="font-bold text-purple-400 bg-purple-900/30 px-2 py-1 rounded">
+                      {currentSignal.recommendedLeverage}x
+                    </span>
                   </div>
                 </div>
                 
