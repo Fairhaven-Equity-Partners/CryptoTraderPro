@@ -180,7 +180,18 @@ export default function AdvancedSignalDashboard({
     if (lastSymbolRef.current !== symbol) {
       console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
       calculationTriggeredRef.current = false;
-      setSignals({} as any); // Clear existing signals
+      setSignals({
+        '1m': null,
+        '5m': null,
+        '15m': null,
+        '30m': null,
+        '1h': null,
+        '4h': null,
+        '1d': null,
+        '3d': null,
+        '1w': null,
+        '1M': null
+      }); // Clear existing signals with proper typing
       lastSymbolRef.current = symbol;
       lastCalculationRef.current = 0; // Reset last calculation time
     }
@@ -538,7 +549,7 @@ export default function AdvancedSignalDashboard({
         console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${chartData[timeframe].length} data points.`);
         
         // Generate technical signal
-        const { direction, confidence, levels, environment } = generateSignal(chartData[timeframe], timeframe, symbol);
+        const { direction, confidence, environment } = generateSignal(chartData[timeframe], timeframe);
         
         // Extract current price from latest candle
         const currentPrice = chartData[timeframe][chartData[timeframe].length - 1].close;
@@ -574,7 +585,7 @@ export default function AdvancedSignalDashboard({
         }
         
         // Use support/resistance from technical analysis
-        const { supportLevels, resistanceLevels } = calculateSupportResistance(chartData[timeframe], currentPrice);
+        const { supports, resistances } = calculateSupportResistance(chartData[timeframe], currentPrice);
         
         // Create signal data with indicators
         const technicalSignal = {
@@ -585,8 +596,8 @@ export default function AdvancedSignalDashboard({
           takeProfit,
           indicators: {
             // Key technical indicator data
-            supports: supportLevels.slice(0, 3), // Take top 3 support levels
-            resistances: resistanceLevels.slice(0, 3), // Take top 3 resistance levels
+            supports: supports.slice(0, 3), // Take top 3 support levels
+            resistances: resistances.slice(0, 3), // Take top 3 resistance levels
           },
           environment: {
             volatility: environment.volatility,
@@ -671,7 +682,7 @@ export default function AdvancedSignalDashboard({
       .map(tf => ({
         timeframe: tf,
         signal: signals[tf],
-        weight: timeframeWeights[tf]
+        weight: timeframeWeights[tf] || 1 // Ensure we always have a default weight
       }));
     
     let bullishScore = 0;
