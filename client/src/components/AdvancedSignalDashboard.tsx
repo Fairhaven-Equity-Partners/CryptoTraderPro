@@ -943,8 +943,8 @@ export default function AdvancedSignalDashboard({
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Signal Analysis</h2>
-          <p className="text-sm text-muted-foreground">
+          <h2 className="text-2xl font-bold tracking-tight text-white">Signal Analysis</h2>
+          <p className="text-sm text-gray-300">
             Advanced technical analysis across multiple timeframes
           </p>
         </div>
