@@ -131,27 +131,23 @@ export default function AdvancedSignalDashboard({
   // Get toast for notifications
   const { toast } = useToast();
   
-  // Get market data and crypto asset price
-  const { chartData, isAllDataLoaded } = useMarketData(symbol);
+  // Get market data and crypto asset price with live data readiness
+  const { chartData, isAllDataLoaded, isLiveDataReady, liveDataTimestamp } = useMarketData(symbol);
   const { data: asset } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],
     enabled: !!symbol
   });
   const currentAssetPrice = asset?.lastPrice || 0;
-
-  // Track price updates to trigger calculations at the right time
-  const [priceUpdated, setPriceUpdated] = useState(false);
-  const previousPrice = useRef<number>(0);
   
-  // Watch for price updates
+  // Debug live data status
   useEffect(() => {
-    // Check if price has actually changed
-    if (currentAssetPrice > 0 && currentAssetPrice !== previousPrice.current) {
-      console.log(`Price update detected for ${symbol}: ${previousPrice.current} → ${currentAssetPrice}`);
-      previousPrice.current = currentAssetPrice;
-      setPriceUpdated(true);
+    if (isLiveDataReady) {
+      console.log(`Live data is ready for ${symbol} at ${new Date(liveDataTimestamp).toISOString()}`);
     }
-  }, [currentAssetPrice, symbol]);
+  }, [isLiveDataReady, liveDataTimestamp, symbol]);
+
+  // This hook block was moved to maintain the correct hook order
+  // No price tracking here anymore, we'll use the isLiveDataReady flag from useMarketData
   
   // Function to trigger calculation
   const triggerCalculation = useCallback((trigger: string) => {
@@ -163,7 +159,7 @@ export default function AdvancedSignalDashboard({
       - Currently calculating: ${isCalculating}
       - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
       - All data loaded: ${isAllDataLoaded}
-      - Price updated: ${priceUpdated}`);
+      - Live data ready: ${isLiveDataReady}`);
     
     // Always allow manual triggers to recalculate
     if (trigger === 'manual' || trigger === 'timer') {
@@ -260,17 +256,14 @@ export default function AdvancedSignalDashboard({
       console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
     }
     
-    // Wait for both data to be loaded AND price to be updated before calculating
-    // This ensures we don't calculate too early with incomplete data
-    if (isAllDataLoaded && priceUpdated && currentAssetPrice > 0) {
-      console.log(`Auto-triggering calculation for ${symbol} - data and price are both ready`);
+    // Wait for both historical data to be loaded AND live price data to be ready before calculating
+    // This ensures we calculate with the most up-to-date data
+    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0) {
+      console.log(`Auto-triggering calculation for ${symbol} - historical and live data are both ready`);
       
       // Only calculate if we haven't recently calculated
       const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
       if (timeSinceLastCalc > 2000) { // 2 second debounce
-        // Reset price updated flag to prevent multiple calculations
-        setPriceUpdated(false);
-        
         // Force calculation with proper data
         console.log(`Initiating calculation with live data for ${symbol} at price ${currentAssetPrice}`);
         

@@ -16,7 +16,9 @@ import { AssetPrice, ChartData, TimeFrame } from '../types';
 export function useMarketData(symbol: string) {
   const [chartData, setChartData] = useState<Record<TimeFrame, ChartData[]>>({} as any);
   const [isAllDataLoaded, setIsAllDataLoaded] = useState(false);
+  const [isLiveDataReady, setIsLiveDataReady] = useState(false);
   const loadedTimeframes = useRef<Set<TimeFrame>>(new Set());
+  const liveDataTimestamp = useRef<number>(0);
   
   // Load chart data for all timeframes
   useEffect(() => {
@@ -24,6 +26,8 @@ export function useMarketData(symbol: string) {
     setChartData({} as any);
     loadedTimeframes.current.clear();
     setIsAllDataLoaded(false);
+    setIsLiveDataReady(false);
+    liveDataTimestamp.current = 0;
     
     // Define all timeframes we want to load
     const timeframesNeeded: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
@@ -49,10 +53,30 @@ export function useMarketData(symbol: string) {
       loadTimeframeData(tf);
     }
     
+    // Listen for realtime data updates - this is critical for triggering calculations
+    const onPriceUpdate = (updatedSymbol: string, price: number) => {
+      // Only respond to updates for our specific symbol
+      if (updatedSymbol === symbol) {
+        console.log(`Live data update received for ${updatedSymbol}: ${price}`);
+        // Set timestamp of latest live data
+        liveDataTimestamp.current = Date.now();
+        setIsLiveDataReady(true);
+      }
+    };
+    
+    // Register our price update listener
+    registerMessageHandler((data: any) => {
+      if (data && data.symbol === symbol && data.price) {
+        onPriceUpdate(data.symbol, data.price);
+      }
+    });
+    
     // Cleanup function
     return () => {
       loadedTimeframes.current.clear();
       setIsAllDataLoaded(false);
+      setIsLiveDataReady(false);
+      liveDataTimestamp.current = 0;
     };
   }, [symbol]);
   
@@ -62,11 +86,12 @@ export function useMarketData(symbol: string) {
     const allLoaded = allTimeframes.every(tf => loadedTimeframes.current.has(tf));
     
     if (allLoaded && !isAllDataLoaded) {
+      console.log(`All timeframe data loaded for ${symbol}`);
       setIsAllDataLoaded(true);
     }
-  }, [isAllDataLoaded]);
+  }, [isAllDataLoaded, symbol]);
   
-  return { chartData, isAllDataLoaded };
+  return { chartData, isAllDataLoaded, isLiveDataReady, liveDataTimestamp: liveDataTimestamp.current };
 }
 
 // Hook for getting real-time asset price data
