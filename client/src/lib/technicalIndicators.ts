@@ -1321,10 +1321,9 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
           supports: finalSupports,
           resistances: finalResistances,
           atr: currentPrice * 0.01 * timeframeMultiplier,
-          volatility: volatility,
+          price_volatility: volatility,
           trend: [],
           momentum: [],
-          volatility: [],
           volume: [],
           pattern: []
         },
