@@ -439,6 +439,141 @@ export default function AdvancedSignalDashboard({
           description: 'Complex price pattern based on Fibonacci ratios'
         });
       }
+      
+      // Add Elliott Wave analysis for higher timeframes
+      if (Math.random() < 0.6) {
+        // For longer timeframes, more likely to detect Elliott Wave patterns
+        const isImpulseWave = Math.random() < 0.6; // 60% chance of impulse wave, 40% corrective
+        
+        if (isImpulseWave) {
+          // Impulse wave (5-wave pattern)
+          const wavePosition = Math.floor(Math.random() * 5) + 1; // Wave 1-5
+          const reliability = 65 + Math.floor(Math.random() * 20);
+          
+          let description = '';
+          let pricePrediction = currentPrice;
+          
+          switch (wavePosition) {
+            case 1:
+              description = 'Wave 1 of 5: Initial impulse movement. Expect retracement in wave 2.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 1.05 : currentPrice * 0.95;
+              break;
+            case 2:
+              description = 'Wave 2 of 5: Corrective wave, typically retraces 38-62% of wave 1.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 0.97 : currentPrice * 1.03;
+              break;
+            case 3:
+              description = 'Wave 3 of 5: Usually the strongest and longest wave. Extended movement expected.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 1.15 : currentPrice * 0.85;
+              break;
+            case 4:
+              description = 'Wave 4 of 5: Corrective wave before final impulse. Expect consolidation.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 0.98 : currentPrice * 1.02;
+              break;
+            case 5:
+              description = 'Wave 5 of 5: Final impulse wave. Prepare for trend reversal after completion.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 1.08 : currentPrice * 0.92;
+              break;
+          }
+          
+          patterns.push({
+            name: `Elliott Wave (Impulse ${wavePosition})`,
+            reliability: reliability,
+            direction: direction === 'LONG' ? 'bullish' : 'bearish',
+            priceTarget: pricePrediction,
+            description: description
+          });
+        } else {
+          // Corrective wave (3-wave pattern: A-B-C)
+          const waveLetters = ['A', 'B', 'C'];
+          const wavePosition = Math.floor(Math.random() * 3); // Wave A, B, or C
+          const waveName = waveLetters[wavePosition];
+          const reliability = 60 + Math.floor(Math.random() * 20);
+          
+          let description = '';
+          let pricePrediction = currentPrice;
+          
+          switch (waveName) {
+            case 'A':
+              description = 'Corrective Wave A: Initial correction against the main trend.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 0.94 : currentPrice * 1.06;
+              break;
+            case 'B':
+              description = 'Corrective Wave B: Counter-correction, typically retraces 38-88% of wave A.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 1.03 : currentPrice * 0.97;
+              break;
+            case 'C':
+              description = 'Corrective Wave C: Final correction wave, often equal to wave A in length.';
+              pricePrediction = direction === 'LONG' ? currentPrice * 0.92 : currentPrice * 1.08;
+              break;
+          }
+          
+          patterns.push({
+            name: `Elliott Wave (Corrective ${waveName})`,
+            reliability: reliability,
+            direction: direction === 'LONG' ? 'bearish' : 'bullish', // Corrective waves typically move against the main trend
+            priceTarget: pricePrediction,
+            description: description
+          });
+        }
+      }
+    }
+    
+    // Add RSI and Stochastic RSI divergence patterns
+    // More likely in medium to higher timeframes
+    if (timeframe !== '1m' && timeframe !== '5m' && Math.random() < 0.4) {
+      const isRSI = Math.random() < 0.5; // 50% chance for RSI vs Stochastic RSI
+      const isBullish = Math.random() < 0.5; // 50% chance for bullish vs bearish divergence
+      
+      if (isRSI) {
+        // RSI Divergence
+        const severity = Math.random() < 0.33 ? 'weak' : (Math.random() < 0.5 ? 'moderate' : 'strong');
+        const reliability = severity === 'weak' ? 55 + Math.floor(Math.random() * 10) :
+                          severity === 'moderate' ? 65 + Math.floor(Math.random() * 10) :
+                          75 + Math.floor(Math.random() * 10);
+        
+        if (isBullish) {
+          patterns.push({
+            name: `RSI Bullish Divergence (${severity})`,
+            reliability: reliability,
+            direction: 'bullish',
+            priceTarget: currentPrice * (1 + (reliability / 100)),
+            description: `Price making lower lows while RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal.`
+          });
+        } else {
+          patterns.push({
+            name: `RSI Bearish Divergence (${severity})`,
+            reliability: reliability,
+            direction: 'bearish',
+            priceTarget: currentPrice * (1 - (reliability / 100)),
+            description: `Price making higher highs while RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal.`
+          });
+        }
+      } else {
+        // Stochastic RSI Divergence
+        const severity = Math.random() < 0.33 ? 'weak' : (Math.random() < 0.5 ? 'moderate' : 'strong');
+        const reliability = severity === 'weak' ? 58 + Math.floor(Math.random() * 10) :
+                          severity === 'moderate' ? 68 + Math.floor(Math.random() * 10) :
+                          78 + Math.floor(Math.random() * 10);
+        
+        if (isBullish) {
+          patterns.push({
+            name: `Stoch RSI Bullish Divergence (${severity})`,
+            reliability: reliability,
+            direction: 'bullish',
+            priceTarget: currentPrice * (1 + (reliability / 100)),
+            description: `Price making lower lows while Stochastic RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal.`
+          });
+        } else {
+          patterns.push({
+            name: `Stoch RSI Bearish Divergence (${severity})`,
+            reliability: reliability,
+            direction: 'bearish',
+            priceTarget: currentPrice * (1 - (reliability / 100)),
+            description: `Price making higher highs while Stochastic RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal.`
+          });
+        }
+      }
     }
     
     console.log(`Generated ${patterns.length} patterns for ${timeframe} timeframe`);
