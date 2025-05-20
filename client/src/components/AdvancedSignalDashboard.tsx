@@ -728,7 +728,7 @@ export default function AdvancedSignalDashboard({
                         {/* Pattern Formations */}
                         <div className="space-y-2">
                           <h3 className="text-white font-bold text-sm">Pattern Formations</h3>
-                          {currentSignal.patternFormations.length > 0 ? (
+                          {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
                             currentSignal.patternFormations.map((pattern, i) => (
                               <div key={i} className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
                                 <div>
@@ -757,10 +757,10 @@ export default function AdvancedSignalDashboard({
                           <div>
                             <div className="text-gray-300 text-xs font-semibold mb-1">Resistance Levels</div>
                             <div className="space-y-1">
-                              {currentSignal.supportResistance
-                                .filter(level => level.type === 'resistance')
-                                .sort((a, b) => a.price - b.price) // Sort by price
-                                .slice(0, 3) // Take top 3
+                              {currentSignal?.supportResistance
+                                ?.filter(level => level.type === 'resistance')
+                                ?.sort((a, b) => a.price - b.price) // Sort by price
+                                ?.slice(0, 3) // Take top 3
                                 .map((level, i) => (
                                   <div key={`res-${i}`} className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">
@@ -773,24 +773,24 @@ export default function AdvancedSignalDashboard({
                                 ))}
                               
                               {/* If no levels found, show empty placeholders */}
-                              {currentSignal.supportResistance.filter(level => level.type === 'resistance').length === 0 && (
+                              {(!currentSignal?.supportResistance || currentSignal.supportResistance.filter(level => level.type === 'resistance').length === 0) && (
                                 <>
                                   <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Weak</span>
                                     <span className="text-red-400 font-medium">
-                                      {formatCurrency(currentSignal.entryPrice * 1.03)}
+                                      {formatCurrency((currentSignal?.entryPrice || 0) * 1.03)}
                                     </span>
                                   </div>
                                   <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Medium</span>
                                     <span className="text-red-400 font-medium">
-                                      {formatCurrency(currentSignal.entryPrice * 1.05)}
+                                      {formatCurrency((currentSignal?.entryPrice || 0) * 1.05)}
                                     </span>
                                   </div>
                                   <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Strong</span>
                                     <span className="text-red-400 font-medium">
-                                      {formatCurrency(currentSignal.entryPrice * 1.08)}
+                                      {formatCurrency((currentSignal?.entryPrice || 0) * 1.08)}
                                     </span>
                                   </div>
                                 </>
@@ -802,11 +802,11 @@ export default function AdvancedSignalDashboard({
                           <div className="mt-2">
                             <div className="text-gray-300 text-xs font-semibold mb-1">Support Levels</div>
                             <div className="space-y-1">
-                              {currentSignal.supportResistance
-                                .filter(level => level.type === 'support')
-                                .sort((a, b) => b.price - a.price) // Sort by price descending
-                                .slice(0, 3) // Take top 3
-                                .map((level, i) => (
+                              {currentSignal?.supportResistance
+                                ?.filter(level => level.type === 'support')
+                                ?.sort((a, b) => b.price - a.price) // Sort by price descending
+                                ?.slice(0, 3) // Take top 3
+                                ?.map((level, i) => (
                                   <div key={`supp-${i}`} className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">
                                       {i === 0 ? 'Strong' : i === 1 ? 'Medium' : 'Weak'}
@@ -818,24 +818,24 @@ export default function AdvancedSignalDashboard({
                                 ))}
                               
                               {/* If no levels found, show empty placeholders */}
-                              {currentSignal.supportResistance.filter(level => level.type === 'support').length === 0 && (
+                              {(!currentSignal?.supportResistance || currentSignal.supportResistance.filter(level => level.type === 'support').length === 0) && (
                                 <>
                                   <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Strong</span>
                                     <span className="text-green-400 font-medium">
-                                      {formatCurrency(currentSignal.entryPrice * 0.95)}
+                                      {formatCurrency((currentSignal?.entryPrice || 0) * 0.95)}
                                     </span>
                                   </div>
                                   <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Medium</span>
                                     <span className="text-green-400 font-medium">
-                                      {formatCurrency(currentSignal.entryPrice * 0.97)}
+                                      {formatCurrency((currentSignal?.entryPrice || 0) * 0.97)}
                                     </span>
                                   </div>
                                   <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Weak</span>
                                     <span className="text-green-400 font-medium">
-                                      {formatCurrency(currentSignal.entryPrice * 0.98)}
+                                      {formatCurrency((currentSignal?.entryPrice || 0) * 0.98)}
                                     </span>
                                   </div>
                                 </>
@@ -982,9 +982,11 @@ export default function AdvancedSignalDashboard({
                         <div className="space-y-2">
                           <h3 className="text-white font-bold text-sm">Macro Insights</h3>
                           <ul className="text-gray-300 text-sm list-disc list-inside">
-                            {currentSignal.macroInsights.map((insight, i) => (
+                            {currentSignal?.macroInsights?.map((insight, i) => (
                               <li key={i} className="text-gray-300 text-sm">{insight}</li>
-                            ))}
+                            )) || (
+                              <li className="text-gray-300 text-sm">Waiting for market insight data...</li>
+                            )}
                           </ul>
                         </div>
                       </div>
