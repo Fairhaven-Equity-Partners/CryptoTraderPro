@@ -1187,10 +1187,8 @@ export default function AdvancedSignalDashboard({
     // Update signal object with complete data that will display properly
     currentSignal = fullSignal;
     
-    // Also update in the signals object to ensure consistent state
-    const updatedSignals = {...signals};
-    updatedSignals[selectedTimeframe] = fullSignal;
-    setSignals(updatedSignals);
+    // We don't need to update the signals state directly here
+    // as it would cause an infinite render loop
   }
   
   // Helper function to format a price as a currency
