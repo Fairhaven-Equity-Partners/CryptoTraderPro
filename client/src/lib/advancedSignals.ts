@@ -316,10 +316,18 @@ export function calculateTimeframeConfidence(
       console.warn("Using fallback macro calculations:", e);
     }
     
-    // Make sure we store the macro data correctly
-    result.macroScore = macroScore;
-    result.macroClass = macroClass;
-    result.macroInsights = macroInsights;
+    // Store macro data in the correct object
+    let targetObj = advancedSignal || result;
+    
+    // Make sure we store the macro data correctly, trying different object references
+    if (typeof targetObj === 'object') {
+      targetObj.macroScore = macroScore;
+      targetObj.macroClass = macroClass;
+      targetObj.macroInsights = macroInsights;
+      
+      // Debug output to verify
+      console.log("Applied macro score:", macroScore, "to signal object");
+    }
     
     totalScore += macroScore * adaptedWeights.macroeconomic;
     totalWeight += adaptedWeights.macroeconomic;

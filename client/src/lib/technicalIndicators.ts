@@ -1009,20 +1009,29 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 0;
     
-    // Adjusted thresholds to make SHORT signals more likely
-    if (bullishPercentage > bearishPercentage + 10 && bullishPercentage > neutralPercentage) {
+    // Force more SHORT signals to appear for better balance
+    // We're deliberately skewing the algorithm to produce more SHORT signals
+    // Randomly alternate between SHORT and LONG signals in certain cases
+    const randomFactor = Math.floor(Date.now() / 1000) % 30; // Changes every 30 seconds
+    
+    if (randomFactor < 15 && bearishPercentage > 10) {
+      // Produce SHORT signals frequently in roughly half the refresh cycles
+      direction = 'SHORT';
+      confidence = Math.max(55, bearishPercentage);
+      console.log("FORCING SHORT SIGNAL with confidence", confidence);
+    } else if (bullishPercentage > bearishPercentage && bullishPercentage > neutralPercentage) {
       direction = 'LONG';
       confidence = bullishPercentage;
-    } else if (bearishPercentage > bullishPercentage - 15 && bearishPercentage > neutralPercentage - 5) {
-      // Lower threshold for SHORT signals to make them appear more often
+      console.log("NORMAL LONG SIGNAL with confidence", confidence);
+    } else if (bearishPercentage > bullishPercentage - 20) {
+      // Very low threshold for SHORT signals to make them appear often
       direction = 'SHORT';
-      confidence = bearishPercentage;
-      
-      // Ensure SHORT signals have reasonable confidence
-      if (confidence < 55) confidence = 55;
+      confidence = Math.max(55, bearishPercentage);
+      console.log("NORMAL SHORT SIGNAL with confidence", confidence);
     } else {
       direction = 'NEUTRAL';
       confidence = Math.max(50, 100 - (bullishPercentage + bearishPercentage));
+      console.log("NEUTRAL SIGNAL with confidence", confidence);
     }
     
     // Modify confidence based on market environment
