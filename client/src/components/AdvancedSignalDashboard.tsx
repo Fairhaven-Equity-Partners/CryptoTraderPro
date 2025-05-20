@@ -233,14 +233,22 @@ export default function AdvancedSignalDashboard({
     }
     
     // Trigger calculation when data is loaded and we're not already calculating
-    if (isAllDataLoaded && !isCalculating && !calculationTriggeredRef.current) {
+    if (isAllDataLoaded && !isCalculating) {
       console.log(`Auto-triggering calculation for ${symbol} because data is now loaded`);
       
-      // Debounce the calculation to prevent multiple triggers
-      if (Date.now() - lastCalculationRef.current > 10000) { // 10 seconds min between calcs
+      // Always calculate immediately when new data is loaded, with minimal debounce
+      const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
+      if (timeSinceLastCalc > 2000) { // 2 seconds min between calcs for improved responsiveness
         calculationTriggeredRef.current = true;
         console.log(`Triggering calculation (data-loaded) for ${symbol}`);
         triggerCalculation('data-loaded');
+        
+        // Show a confirmation toast that calculation is happening automatically
+        toast({
+          title: "Auto-Calculation",
+          description: `Automatically analyzing ${symbol} market data`,
+          variant: "default"
+        });
       }
     }
   }, [symbol, isAllDataLoaded, isCalculating, chartData, triggerCalculation]);
@@ -562,16 +570,17 @@ export default function AdvancedSignalDashboard({
         <div className="flex justify-end items-center space-x-2">
           <div className="flex items-center space-x-2 px-3 py-1 rounded-md bg-gray-800/50">
             <Clock className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-300 text-sm">Auto-refresh in {Math.floor(nextRefreshIn / 60)}:{(nextRefreshIn % 60).toString().padStart(2, '0')}</span>
+            <span className="text-gray-300 text-sm">Next refresh in {Math.floor(nextRefreshIn / 60)}:{(nextRefreshIn % 60).toString().padStart(2, '0')}</span>
           </div>
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={() => triggerCalculation('manual')}
-            disabled={isCalculating}
-          >
-            <RefreshCcw className="h-4 w-4 mr-1" /> Refresh
-          </Button>
+          {isCalculating ? (
+            <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800 px-3 py-1">
+              Calculating...
+            </Badge>
+          ) : (
+            <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
+              Auto-updating
+            </Badge>
+          )}
         </div>
       </div>
       
