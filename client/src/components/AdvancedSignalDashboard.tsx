@@ -177,7 +177,20 @@ export default function AdvancedSignalDashboard({
       return;
     }
     
-    // For automated triggers, enforce throttling rules
+    // For data-loaded triggers, we want to be less restrictive
+    if (trigger === 'data-loaded') {
+      if (isCalculating) {
+        console.log(`Already calculating for ${symbol}, will retry when complete`);
+        return;
+      }
+      
+      // Proceed with calculation regardless of other conditions
+      calculationTriggeredRef.current = true;
+      calculateAllSignals();
+      return;
+    }
+    
+    // For other automated triggers, enforce throttling rules
     if (
       calculationTriggeredRef.current || 
       isCalculating || 
@@ -232,23 +245,32 @@ export default function AdvancedSignalDashboard({
       console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
     }
     
-    // Trigger calculation when data is loaded and we're not already calculating
-    if (isAllDataLoaded && !isCalculating) {
+    // Force calculation whenever data is loaded - this is the most important trigger
+    if (isAllDataLoaded) {
       console.log(`Auto-triggering calculation for ${symbol} because data is now loaded`);
       
-      // Always calculate immediately when new data is loaded, with minimal debounce
+      // Minimal debounce to prevent too many calculations
       const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-      if (timeSinceLastCalc > 2000) { // 2 seconds min between calcs for improved responsiveness
-        calculationTriggeredRef.current = true;
+      if (timeSinceLastCalc > 1000) { // Only 1 second debounce for faster response
+        // Force calculation regardless of other conditions
         console.log(`Triggering calculation (data-loaded) for ${symbol}`);
-        triggerCalculation('data-loaded');
         
-        // Show a confirmation toast that calculation is happening automatically
-        toast({
-          title: "Auto-Calculation",
-          description: `Automatically analyzing ${symbol} market data`,
-          variant: "default"
-        });
+        // Directly call calculate instead of going through the trigger function
+        setIsCalculating(true);
+        lastCalculationRef.current = Date.now();
+        lastCalculationTimeRef.current = Date.now() / 1000;
+        
+        // Call the calculation method
+        setTimeout(() => {
+          calculateAllSignals();
+          
+          // Show a confirmation toast that calculation is happening automatically
+          toast({
+            title: "Auto-Calculation",
+            description: `Automatically analyzing ${symbol} market data`,
+            variant: "default"
+          });
+        }, 100);
       }
     }
   }, [symbol, isAllDataLoaded, isCalculating, chartData, triggerCalculation]);
