@@ -1584,28 +1584,47 @@ export default function AdvancedSignalDashboard({
                       <div className="space-y-2">
                         {(symbol === 'SOL/USDT' || symbol === 'XRP/USDT') ? (
                           <>
+                            {/* Dynamic indicators that change based on timeframe */}
                             <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
                               <span className="text-gray-300 font-medium">Moving Average</span>
-                              <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-bold px-2 py-1 text-xs">
-                                BUY (S)
+                              <Badge variant="outline" className={`${
+                                (selectedTimeframe === '15m' || selectedTimeframe === '1h')
+                                  ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
+                                  : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
+                              } px-2 py-1 text-xs`}>
+                                {(selectedTimeframe === '15m' || selectedTimeframe === '1h') ? 'BUY (M)' : 'BUY (S)'}
                               </Badge>
                             </div>
                             <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
                               <span className="text-gray-300 font-medium">RSI</span>
-                              <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-bold px-2 py-1 text-xs">
-                                BUY (S)
+                              <Badge variant="outline" className={`${
+                                (selectedTimeframe === '15m')
+                                  ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
+                                  : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
+                              } px-2 py-1 text-xs`}>
+                                {selectedTimeframe === '15m' ? 'NEUTRAL (M)' : 'BUY (S)'}
                               </Badge>
                             </div>
                             <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
                               <span className="text-gray-300 font-medium">MACD</span>
-                              <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-medium px-2 py-1 text-xs">
-                                BUY (M)
+                              <Badge variant="outline" className={`${
+                                (selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h')
+                                  ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
+                                  : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
+                              } px-2 py-1 text-xs`}>
+                                {(selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h') 
+                                  ? 'BUY (M)' : 'BUY (S)'}
                               </Badge>
                             </div>
                             <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
                               <span className="text-gray-300 font-medium">Bollinger Bands</span>
-                              <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-medium px-2 py-1 text-xs">
-                                BUY (M)
+                              <Badge variant="outline" className={`${
+                                (selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M')
+                                  ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
+                                  : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
+                              } px-2 py-1 text-xs`}>
+                                {(selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M') 
+                                  ? 'BUY (S)' : 'BUY (M)'}
                               </Badge>
                             </div>
                             <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
