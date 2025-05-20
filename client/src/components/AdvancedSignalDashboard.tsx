@@ -690,9 +690,9 @@ export default function AdvancedSignalDashboard({
                       <div className="space-y-4">
                         {/* Confidence Score Visual */}
                         {/* Current Price Display */}
-                        <div className="space-y-1 mb-2">
+                        <div className="space-y-1 mb-3">
                           <h3 className="text-white font-bold text-sm">Current Price</h3>
-                          <div className="text-2xl font-bold text-white">
+                          <div className="text-2xl font-bold text-cyan-300">
                             {formatCurrency(currentSignal?.entryPrice || 0)}
                           </div>
                         </div>
@@ -991,16 +991,16 @@ export default function AdvancedSignalDashboard({
                         {/* Macro Insights */}
                         <div className="space-y-2">
                           <h3 className="text-white font-bold text-sm">Macro Insights</h3>
-                          <ul className="text-gray-300 text-sm list-disc list-inside">
+                          <ul className="text-gray-100 text-sm list-disc list-inside">
                             {currentSignal?.macroInsights && currentSignal.macroInsights.length > 0 ? (
                               currentSignal.macroInsights.map((insight, i) => (
-                                <li key={i} className="text-gray-300 text-sm">{insight}</li>
+                                <li key={i} className="text-gray-100 text-sm">{insight}</li>
                               ))
                             ) : (
                               <>
-                                <li className="text-gray-300 text-sm">Current market sentiment is {currentSignal?.direction === 'LONG' ? 'bullish' : currentSignal?.direction === 'SHORT' ? 'bearish' : 'neutral'}.</li>
-                                <li className="text-gray-300 text-sm">Volume profile suggests {currentSignal?.confidence > 65 ? 'strong' : currentSignal?.confidence > 45 ? 'moderate' : 'weak'} directional pressure.</li>
-                                <li className="text-gray-300 text-sm">Recommended position sizing at {Math.min(5, Math.max(1, Math.floor((currentSignal?.confidence || 50) / 20)))}% of portfolio.</li>
+                                <li className="text-gray-100 text-sm">Current market sentiment is {currentSignal?.direction === 'LONG' ? 'bullish' : currentSignal?.direction === 'SHORT' ? 'bearish' : 'neutral'}.</li>
+                                <li className="text-gray-100 text-sm">Volume profile suggests {currentSignal?.confidence > 65 ? 'strong' : currentSignal?.confidence > 45 ? 'moderate' : 'weak'} directional pressure.</li>
+                                <li className="text-gray-100 text-sm">Recommended position sizing at {Math.min(5, Math.max(1, Math.floor((currentSignal?.confidence || 50) / 20)))}% of portfolio.</li>
                               </>
                             )}
                           </ul>
