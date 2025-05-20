@@ -907,21 +907,15 @@ export default function AdvancedSignalDashboard({
                           
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Risk/Reward</span>
-                            <span className="font-bold text-blue-400 bg-blue-900/30 px-3 py-1 rounded border border-blue-800">
+                            <span className="font-bold text-blue-300 bg-blue-900/50 px-3 py-1 rounded border border-blue-700">
                               {Math.round((currentSignal?.optimalRiskReward || 1.5) * 10) / 10}
                             </span>
                           </div>
                           
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Recommended Leverage</span>
-                            <span className="font-bold text-purple-400 bg-purple-900/30 px-3 py-1 rounded border border-purple-800">
-                              {(currentSignal?.recommendedLeverage || 
-                                (selectedTimeframe === '1M' ? 2 :
-                                 selectedTimeframe === '1w' ? 3 :
-                                 selectedTimeframe === '3d' ? 5 :
-                                 selectedTimeframe === '1d' ? 8 :
-                                 selectedTimeframe === '4h' ? 10 :
-                                 selectedTimeframe === '1h' ? 15 : 20))}x
+                            <span className="font-bold text-purple-300 bg-purple-900/50 px-3 py-1 rounded border border-purple-700">
+                              {Math.max(1, Math.min(10, Math.floor((currentSignal?.confidence || 50) / 10)))}x
                             </span>
                           </div>
                           
