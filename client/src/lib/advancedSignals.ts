@@ -312,8 +312,42 @@ export function calculateTimeframeConfidence(
     // ENHANCEMENT: Improved confidence calculation based on signal strength and consistency
     // This adjusts the raw score based on indicator agreement and strength
     const confidenceAdjustment = calculateConfidenceAdjustment(scores, timeframe);
-    const confidence = Math.round(Math.min(100, Math.max(0, 
-      Math.abs(finalScore - 50) * 2 * confidenceAdjustment)));
+    
+    // Apply timeframe-specific confidence adjustments to create distinct confidence levels
+    // Higher timeframes get higher confidence, lower timeframes get lower
+    const timeframeConfidenceMultiplier = 
+      timeframe === '1M' ? 1.25 :  // Monthly charts get highest confidence
+      timeframe === '1w' ? 1.20 :  // Weekly charts get very high confidence
+      timeframe === '3d' ? 1.15 :  // 3-day charts get high confidence
+      timeframe === '1d' ? 1.10 :  // Daily charts get above-standard confidence
+      timeframe === '4h' ? 1.05 :  // 4h charts get slightly above-standard confidence
+      timeframe === '1h' ? 1.00 :  // 1h charts get standard confidence (reference point)
+      timeframe === '30m' ? 0.90 : // 30m charts get reduced confidence
+      timeframe === '15m' ? 0.80 : // 15m charts get significantly reduced confidence
+      timeframe === '5m' ? 0.70 :  // 5m charts get very low confidence
+      0.60;                        // 1m charts get lowest confidence
+    
+    // Start with base confidence calculation
+    let confidence = Math.abs(finalScore - 50) * 2 * confidenceAdjustment;
+    
+    // Apply the timeframe multiplier
+    confidence = confidence * timeframeConfidenceMultiplier;
+    
+    // Cap the max confidence by timeframe to ensure differentiation
+    const maxConfidenceByTimeframe = 
+      timeframe === '1M' ? 97 :  // Monthly can reach highest confidence 
+      timeframe === '1w' ? 94 :  // Weekly slight step down
+      timeframe === '3d' ? 91 :  // 3-day another step down
+      timeframe === '1d' ? 88 :  // Daily another step down
+      timeframe === '4h' ? 85 :  // 4h another step down
+      timeframe === '1h' ? 83 :  // 1h another step down
+      timeframe === '30m' ? 80 : // 30m another step down
+      timeframe === '15m' ? 77 : // 15m another step down
+      timeframe === '5m' ? 73 :  // 5m another step down
+      70;                        // 1m lowest max confidence
+    
+    // Apply the final confidence with timeframe-specific caps and floor
+    confidence = Math.round(Math.min(maxConfidenceByTimeframe, Math.max(20, confidence)));
     
     // ENHANCEMENT: Calculate improved price levels based on technical analysis
     // Uses optimized ATR multipliers based on volatility and timeframe
