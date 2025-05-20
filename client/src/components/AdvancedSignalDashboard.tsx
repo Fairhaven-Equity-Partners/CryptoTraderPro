@@ -933,7 +933,7 @@ export default function AdvancedSignalDashboard({
                           
                           {/* Dynamic indicators that change based on timeframe */}
                           <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
-                            <span className="text-gray-300 font-medium">Moving Average</span>
+                            <span className="text-gray-100 font-medium">Moving Average</span>
                             <Badge variant="outline" className={`${
                               (selectedTimeframe === '15m' || selectedTimeframe === '1h')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
@@ -943,7 +943,7 @@ export default function AdvancedSignalDashboard({
                             </Badge>
                           </div>
                           <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
-                            <span className="text-gray-300 font-medium">RSI</span>
+                            <span className="text-gray-100 font-medium">RSI</span>
                             <Badge variant="outline" className={`${
                               (selectedTimeframe === '15m')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
@@ -964,7 +964,7 @@ export default function AdvancedSignalDashboard({
                             </Badge>
                           </div>
                           <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
-                            <span className="text-gray-300 font-medium">Bollinger Bands</span>
+                            <span className="text-gray-100 font-medium">Bollinger Bands</span>
                             <Badge variant="outline" className={`${
                               (selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M')
                                 ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
@@ -975,7 +975,7 @@ export default function AdvancedSignalDashboard({
                             </Badge>
                           </div>
                           <div className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
-                            <span className="text-gray-300 font-medium">Support/Resistance</span>
+                            <span className="text-gray-100 font-medium">Support/Resistance</span>
                             <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-bold px-2 py-1 text-xs">
                               BUY (S)
                             </Badge>
