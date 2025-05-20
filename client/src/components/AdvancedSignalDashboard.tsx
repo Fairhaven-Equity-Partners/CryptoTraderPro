@@ -1085,11 +1085,7 @@ export default function AdvancedSignalDashboard({
   // Get the current signal for the selected timeframe using live data for all pairs
   let currentSignal = signals[selectedTimeframe];
   
-  // For SOL/USDT and XRP/USDT, we'll provide custom functions to get calculated values
-  // and also create a complete signal object to ensure all display elements work correctly
-  
-  // Function to create mock signal data for SOL/USDT and XRP/USDT
-  function createMockSignalData(symbol: string, timeframe: TimeFrame): any {
+  // All pairs use live data for analysis
     if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
       const basePrice = symbol === 'XRP/USDT' ? 2.33 : 165.62;
       const tfMultiplier = 
