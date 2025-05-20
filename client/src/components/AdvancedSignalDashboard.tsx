@@ -629,10 +629,6 @@ export default function AdvancedSignalDashboard({
           <p className="text-slate-400 text-sm">Comprehensive technical analysis for {symbol}</p>
         </div>
         <div className="flex justify-end items-center space-x-2">
-          <div className="flex items-center space-x-2 px-3 py-1 rounded-md bg-gray-800/50">
-            <Clock className="h-4 w-4 text-gray-400" />
-            <span className="text-gray-300 text-sm">Next refresh in {Math.floor(nextRefreshIn / 60)}:{(nextRefreshIn % 60).toString().padStart(2, '0')}</span>
-          </div>
           {isCalculating ? (
             <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800 px-3 py-1">
               Calculating...
