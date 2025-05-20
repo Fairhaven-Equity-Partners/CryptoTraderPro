@@ -139,6 +139,20 @@ export default function AdvancedSignalDashboard({
   });
   const currentAssetPrice = asset?.lastPrice || 0;
 
+  // Track price updates to trigger calculations at the right time
+  const [priceUpdated, setPriceUpdated] = useState(false);
+  const previousPrice = useRef<number>(0);
+  
+  // Watch for price updates
+  useEffect(() => {
+    // Check if price has actually changed
+    if (currentAssetPrice > 0 && currentAssetPrice !== previousPrice.current) {
+      console.log(`Price update detected for ${symbol}: ${previousPrice.current} → ${currentAssetPrice}`);
+      previousPrice.current = currentAssetPrice;
+      setPriceUpdated(true);
+    }
+  }, [currentAssetPrice, symbol]);
+  
   // Function to trigger calculation
   const triggerCalculation = useCallback((trigger: string) => {
     const now = Date.now() / 1000;
@@ -148,7 +162,8 @@ export default function AdvancedSignalDashboard({
       - Already triggered: ${calculationTriggeredRef.current}
       - Currently calculating: ${isCalculating}
       - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
-      - All data loaded: ${isAllDataLoaded}`);
+      - All data loaded: ${isAllDataLoaded}
+      - Price updated: ${priceUpdated}`);
     
     // Always allow manual triggers to recalculate
     if (trigger === 'manual' || trigger === 'timer') {
@@ -245,32 +260,36 @@ export default function AdvancedSignalDashboard({
       console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
     }
     
-    // Force calculation whenever data is loaded - this is the most important trigger
-    if (isAllDataLoaded) {
-      console.log(`Auto-triggering calculation for ${symbol} because data is now loaded`);
+    // Wait for both data to be loaded AND price to be updated before calculating
+    // This ensures we don't calculate too early with incomplete data
+    if (isAllDataLoaded && priceUpdated && currentAssetPrice > 0) {
+      console.log(`Auto-triggering calculation for ${symbol} - data and price are both ready`);
       
-      // Minimal debounce to prevent too many calculations
+      // Only calculate if we haven't recently calculated
       const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-      if (timeSinceLastCalc > 1000) { // Only 1 second debounce for faster response
-        // Force calculation regardless of other conditions
-        console.log(`Triggering calculation (data-loaded) for ${symbol}`);
+      if (timeSinceLastCalc > 2000) { // 2 second debounce
+        // Reset price updated flag to prevent multiple calculations
+        setPriceUpdated(false);
+        
+        // Force calculation with proper data
+        console.log(`Initiating calculation with live data for ${symbol} at price ${currentAssetPrice}`);
         
         // Directly call calculate instead of going through the trigger function
         setIsCalculating(true);
         lastCalculationRef.current = Date.now();
         lastCalculationTimeRef.current = Date.now() / 1000;
         
-        // Call the calculation method
+        // Call the calculation method with a slight delay to ensure all UI updates are processed
         setTimeout(() => {
           calculateAllSignals();
           
           // Show a confirmation toast that calculation is happening automatically
           toast({
-            title: "Auto-Calculation",
-            description: `Automatically analyzing ${symbol} market data`,
+            title: "Live Data Analysis",
+            description: `Analyzing ${symbol} with current price data`,
             variant: "default"
           });
-        }, 100);
+        }, 500);
       }
     }
   }, [symbol, isAllDataLoaded, isCalculating, chartData, triggerCalculation]);
