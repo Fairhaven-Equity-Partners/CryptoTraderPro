@@ -333,63 +333,114 @@ export function calculateTimeframeConfidence(
     // Apply the timeframe multiplier with more dramatic effect
     confidence = confidence * timeframeConfidenceMultiplier;
     
-    // Patterns should have stronger influence on confidence scores
-    // Add a pattern-based bonus that varies by timeframe
+    // Patterns should have stronger influence on confidence scores with more efficient calculation
+    // Add a pattern-based bonus that varies by timeframe - optimized for performance
     let patternBonus = 0;
     if (patterns && patterns.length > 0) {
-      // Calculate pattern reliability and count effects
+      // Calculate pattern reliability and count effects in a single pass
+      let totalReliability = 0;
       const patternCount = patterns.length;
-      const avgPatternReliability = patterns.reduce((sum, p) => sum + p.reliability, 0) / patterns.length;
       
-      // Bonus increases with pattern count and reliability
-      patternBonus = (patternCount * 2.5) + (avgPatternReliability / 10);
+      // Use for loop instead of reduce for better performance
+      for (let i = 0; i < patternCount; i++) {
+        totalReliability += patterns[i].reliability;
+      }
+      const avgPatternReliability = totalReliability / patternCount;
       
-      // Scale the pattern bonus by timeframe to create even more separation
-      patternBonus = patternBonus * (
-        timeframe === '1M' ? 1.4 :
-        timeframe === '1w' ? 1.3 :
-        timeframe === '3d' ? 1.2 :
-        timeframe === '1d' ? 1.1 :
-        timeframe === '4h' ? 1.0 :
-        timeframe === '1h' ? 0.9 :
-        timeframe === '30m' ? 0.8 :
-        timeframe === '15m' ? 0.7 :
-        timeframe === '5m' ? 0.6 : 0.5
-      );
+      // Calculate pattern counts by type for more accurate signal weighting
+      const patternTypeWeights = {
+        market_structure: 1.3,  // Strong weighting for market structure
+        wyckoff: 1.3,           // Strong weighting for institutional methods
+        elliott_wave: 1.25,     // High weighting for wave patterns
+        volume_profile: 1.2,    // High weighting for volume
+        liquidity: 1.15,        // Above average for liquidity
+        intermarket: 1.1,       // Above average for intermarket
+        order_flow: 1.1,        // Above average for order flow
+        ichimoku: 1.05,         // Slightly above average
+        divergence: 1.05,       // Slightly above average
+        default: 1.0            // Default weighting
+      };
+      
+      // Calculate weighted pattern score based on types
+      let patternTypeMultiplier = 1.0;
+      
+      // Look for high-value pattern types
+      for (let i = 0; i < patternCount; i++) {
+        const patternName = patterns[i].name.toLowerCase();
+        if (patternName.includes('market structure')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.market_structure);
+        } else if (patternName.includes('wyckoff')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.wyckoff);
+        } else if (patternName.includes('elliott wave')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.elliott_wave);
+        } else if (patternName.includes('volume profile')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.volume_profile);
+        } else if (patternName.includes('liquidity')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.liquidity);
+        } else if (patternName.includes('intermarket')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.intermarket);
+        } else if (patternName.includes('order flow')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.order_flow);
+        } else if (patternName.includes('ichimoku')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.ichimoku);
+        } else if (patternName.includes('divergence')) {
+          patternTypeMultiplier = Math.max(patternTypeMultiplier, patternTypeWeights.divergence);
+        }
+      }
+      
+      // Enhanced pattern bonus calculation with diminishing returns
+      // Each additional pattern adds less to prevent unrealistically high values
+      patternBonus = (Math.min(5, patternCount) * 2.5) + 
+                     (Math.max(0, patternCount - 5) * 1.2) + 
+                     (avgPatternReliability / 10);
+      
+      // Apply pattern type multiplier
+      patternBonus *= patternTypeMultiplier;
+      
+      // Predefined timeframe multipliers (cached for better performance)
+      const timeframeMultipliers = {
+        '1M': 1.5,    // Monthly - highest priority
+        '1w': 1.4,    // Weekly - very high priority
+        '3d': 1.3,    // 3-day - high priority
+        '1d': 1.2,    // Daily - above average priority
+        '4h': 1.1,    // 4-hour - slightly higher priority
+        '1h': 1.0,    // 1-hour - baseline
+        '30m': 0.85,  // 30-minute - reduced priority
+        '15m': 0.7,   // 15-minute - low priority
+        '5m': 0.55,   // 5-minute - very low priority
+        '1m': 0.4     // 1-minute - lowest priority
+      };
+      
+      // Apply timeframe multiplier (using lookup instead of conditionals)
+      patternBonus *= (timeframeMultipliers[timeframe] || 1.0);
     }
     
     // Apply pattern bonus (can add up to 25-30 points for higher timeframes with many patterns)
     confidence += patternBonus;
     
-    // Set base starting values by timeframe (creates guaranteed minimum separation)
-    // This ensures even with similar signal strength, timeframes will show different values
-    const baseConfidenceByTimeframe = 
-      timeframe === '1M' ? 65 :   // Monthly starts at 65
-      timeframe === '1w' ? 60 :   // Weekly starts at 60
-      timeframe === '3d' ? 55 :   // 3-day starts at 55
-      timeframe === '1d' ? 50 :   // Daily starts at 50
-      timeframe === '4h' ? 45 :   // 4h starts at 45
-      timeframe === '1h' ? 40 :   // 1h starts at 40
-      timeframe === '30m' ? 35 :  // 30m starts at 35
-      timeframe === '15m' ? 30 :  // 15m starts at 30
-      timeframe === '5m' ? 25 :   // 5m starts at 25
-      20;                         // 1m starts at 20
+    // Use lookup tables for better performance
+    // Base and max confidence values by timeframe
+    const confidenceRanges = {
+      '1M':  { base: 65, max: 98 },  // Monthly
+      '1w':  { base: 60, max: 92 },  // Weekly
+      '3d':  { base: 55, max: 86 },  // 3-day
+      '1d':  { base: 50, max: 80 },  // Daily
+      '4h':  { base: 45, max: 74 },  // 4-hour
+      '1h':  { base: 40, max: 68 },  // 1-hour
+      '30m': { base: 35, max: 62 },  // 30-minute
+      '15m': { base: 30, max: 56 },  // 15-minute
+      '5m':  { base: 25, max: 50 },  // 5-minute
+      '1m':  { base: 20, max: 44 }   // 1-minute
+    };
+    
+    // Get timeframe-specific values (with fallbacks)
+    const tfRanges = confidenceRanges[timeframe] || { base: 40, max: 70 };
     
     // Use max of calculated confidence or base confidence
-    confidence = Math.max(confidence, baseConfidenceByTimeframe);
+    confidence = Math.max(confidence, tfRanges.base);
     
-    // Cap the max confidence by timeframe with wider gaps to ensure clear differentiation
-    const maxConfidenceByTimeframe = 
-      timeframe === '1M' ? 98 :   // Monthly max at 98
-      timeframe === '1w' ? 92 :   // Weekly max at 92
-      timeframe === '3d' ? 86 :   // 3-day max at 86
-      timeframe === '1d' ? 80 :   // Daily max at 80
-      timeframe === '4h' ? 74 :   // 4h max at 74
-      timeframe === '1h' ? 68 :   // 1h max at 68
-      timeframe === '30m' ? 62 :  // 30m max at 62
-      timeframe === '15m' ? 56 :  // 15m max at 56
-      timeframe === '5m' ? 50 :   // 5m max at 50
-      44;                         // 1m max at 44
+    // Apply max cap for this timeframe
+    const maxConfidenceByTimeframe = tfRanges.max;
     
     // Apply the final confidence with timeframe-specific caps and floor
     confidence = Math.round(Math.min(maxConfidenceByTimeframe, Math.max(20, confidence)));
