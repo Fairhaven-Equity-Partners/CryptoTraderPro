@@ -1476,6 +1476,45 @@ export default function AdvancedSignalDashboard({
                               {Math.min(Math.max(Math.round(currentSignal?.confidence / 20), 1), 5)}% of capital
                             </span>
                           </div>
+                          
+                          <div className="border-t border-gray-700 pt-2 mt-1"></div>
+                          
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-white font-semibold">Success Probability</span>
+                            <span className={`font-bold px-3 py-1 rounded border ${
+                              currentSignal.confidence > 80 ? 'text-green-300 bg-green-900/50 border-green-700' :
+                              currentSignal.confidence > 65 ? 'text-emerald-300 bg-emerald-900/50 border-emerald-700' :
+                              currentSignal.confidence > 50 ? 'text-blue-300 bg-blue-900/50 border-blue-700' :
+                              'text-amber-300 bg-amber-900/50 border-amber-700'
+                            }`}>
+                              {selectedTimeframe === '1M' && Math.min(98, Math.max(85, currentSignal.confidence))}
+                              {selectedTimeframe === '1w' && Math.min(92, Math.max(78, currentSignal.confidence))}
+                              {selectedTimeframe === '3d' && Math.min(86, Math.max(72, currentSignal.confidence))}
+                              {selectedTimeframe === '1d' && Math.min(80, Math.max(65, currentSignal.confidence))}
+                              {selectedTimeframe === '4h' && Math.min(74, Math.max(58, currentSignal.confidence))}
+                              {selectedTimeframe === '1h' && Math.min(68, Math.max(50, currentSignal.confidence))}
+                              {selectedTimeframe === '30m' && Math.min(62, Math.max(42, currentSignal.confidence))}
+                              {selectedTimeframe === '15m' && Math.min(56, Math.max(35, currentSignal.confidence))}
+                              {selectedTimeframe === '5m' && Math.min(50, Math.max(30, currentSignal.confidence))}
+                              {selectedTimeframe === '1m' && Math.min(44, Math.max(22, currentSignal.confidence))}%
+                            </span>
+                          </div>
+                          
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-white font-semibold">Expected Duration</span>
+                            <span className="font-bold text-amber-300 bg-amber-900/50 px-3 py-1 rounded border border-amber-700">
+                              {selectedTimeframe === '1M' && '3-12 months'}
+                              {selectedTimeframe === '1w' && '1-3 months'}
+                              {selectedTimeframe === '3d' && '2-8 weeks'}
+                              {selectedTimeframe === '1d' && '1-4 weeks'}
+                              {selectedTimeframe === '4h' && '3-10 days'}
+                              {selectedTimeframe === '1h' && '1-3 days'}
+                              {selectedTimeframe === '30m' && '6-24 hours'}
+                              {selectedTimeframe === '15m' && '3-12 hours'}
+                              {selectedTimeframe === '5m' && '1-4 hours'}
+                              {selectedTimeframe === '1m' && '10-30 minutes'}
+                            </span>
+                          </div>
                         </div>
                         
                         {/* Key Indicators Table */}
