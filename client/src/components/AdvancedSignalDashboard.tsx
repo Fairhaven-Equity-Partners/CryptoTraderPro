@@ -693,7 +693,7 @@ export default function AdvancedSignalDashboard({
                         <div className="space-y-1 mb-2">
                           <h3 className="text-white font-bold text-sm">Current Price</h3>
                           <div className="text-2xl font-bold text-white">
-                            {formatCurrency(assetPrice || 0)}
+                            {formatCurrency(currentSignal?.entryPrice || 0)}
                           </div>
                         </div>
                         
