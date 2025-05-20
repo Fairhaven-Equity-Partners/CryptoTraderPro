@@ -1247,10 +1247,10 @@ export default function AdvancedSignalDashboard({
                           <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
                             <div 
                               className={`h-4 rounded-full ${
-                                currentSignal.macroScore >= 70 ? 'bg-green-600' : 
-                                currentSignal.macroScore >= 45 ? 'bg-yellow-600' : 'bg-red-600'
+                                (currentSignal.macroScore || 50) >= 70 ? 'bg-green-600' : 
+                                (currentSignal.macroScore || 50) >= 45 ? 'bg-yellow-600' : 'bg-red-600'
                               }`}
-                              style={{ width: `${currentSignal.macroScore}%` }}
+                              style={{ width: `${currentSignal.macroScore || 50}%` }}
                             />
                           </div>
                           <div className="flex justify-between items-center">
@@ -1463,28 +1463,24 @@ export default function AdvancedSignalDashboard({
                               currentSignal.confidence > 50 ? 'text-blue-300 bg-blue-900/50 border-blue-700' :
                               'text-amber-300 bg-amber-900/50 border-amber-700'
                             }`}>
-                              {currentSignal.direction === 'NEUTRAL' ? 'N/A' : (
-                                <>
-                                  {/* Simplify calculation to ensure it always displays */}
-                                  {(() => {
-                                    let confidenceValue = currentSignal.confidence;
-                                    
-                                    // Adjust based on timeframe
-                                    if (selectedTimeframe === '1M') confidenceValue = Math.min(98, Math.max(85, confidenceValue));
-                                    else if (selectedTimeframe === '1w') confidenceValue = Math.min(92, Math.max(78, confidenceValue));
-                                    else if (selectedTimeframe === '3d') confidenceValue = Math.min(86, Math.max(72, confidenceValue));
-                                    else if (selectedTimeframe === '1d') confidenceValue = Math.min(80, Math.max(65, confidenceValue));
-                                    else if (selectedTimeframe === '4h') confidenceValue = Math.min(74, Math.max(58, confidenceValue));
-                                    else if (selectedTimeframe === '1h') confidenceValue = Math.min(68, Math.max(50, confidenceValue));
-                                    else if (selectedTimeframe === '30m') confidenceValue = Math.min(62, Math.max(42, confidenceValue));
-                                    else if (selectedTimeframe === '15m') confidenceValue = Math.min(56, Math.max(35, confidenceValue));
-                                    else if (selectedTimeframe === '5m') confidenceValue = Math.min(50, Math.max(30, confidenceValue));
-                                    else if (selectedTimeframe === '1m') confidenceValue = Math.min(44, Math.max(22, confidenceValue));
-                                    
-                                    return `${confidenceValue}%`;
-                                  })()}
-                                </>
-                              )}
+                              {(() => {
+                                let confidenceValue = currentSignal.confidence;
+                                
+                                // Always show a value regardless of direction (neutral, long, short)
+                                // Adjust based on timeframe
+                                if (selectedTimeframe === '1M') confidenceValue = Math.min(98, Math.max(85, confidenceValue));
+                                else if (selectedTimeframe === '1w') confidenceValue = Math.min(92, Math.max(78, confidenceValue));
+                                else if (selectedTimeframe === '3d') confidenceValue = Math.min(86, Math.max(72, confidenceValue));
+                                else if (selectedTimeframe === '1d') confidenceValue = Math.min(80, Math.max(65, confidenceValue));
+                                else if (selectedTimeframe === '4h') confidenceValue = Math.min(74, Math.max(58, confidenceValue));
+                                else if (selectedTimeframe === '1h') confidenceValue = Math.min(68, Math.max(50, confidenceValue));
+                                else if (selectedTimeframe === '30m') confidenceValue = Math.min(62, Math.max(42, confidenceValue));
+                                else if (selectedTimeframe === '15m') confidenceValue = Math.min(56, Math.max(35, confidenceValue));
+                                else if (selectedTimeframe === '5m') confidenceValue = Math.min(50, Math.max(30, confidenceValue));
+                                else if (selectedTimeframe === '1m') confidenceValue = Math.min(44, Math.max(22, confidenceValue));
+                                
+                                return currentSignal.direction === 'NEUTRAL' ? 'N/A' : `${confidenceValue}%`;
+                              })()}
                             </span>
                           </div>
                           
