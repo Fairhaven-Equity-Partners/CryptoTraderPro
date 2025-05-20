@@ -1457,21 +1457,26 @@ export default function AdvancedSignalDashboard({
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Success Probability</span>
                             <span className={`font-bold px-3 py-1 rounded border ${
+                              currentSignal.direction === 'NEUTRAL' ? 'text-gray-300 bg-gray-900/50 border-gray-700' :
                               currentSignal.confidence > 80 ? 'text-green-300 bg-green-900/50 border-green-700' :
                               currentSignal.confidence > 65 ? 'text-emerald-300 bg-emerald-900/50 border-emerald-700' :
                               currentSignal.confidence > 50 ? 'text-blue-300 bg-blue-900/50 border-blue-700' :
                               'text-amber-300 bg-amber-900/50 border-amber-700'
                             }`}>
-                              {selectedTimeframe === '1M' && Math.min(98, Math.max(85, currentSignal.confidence))}
-                              {selectedTimeframe === '1w' && Math.min(92, Math.max(78, currentSignal.confidence))}
-                              {selectedTimeframe === '3d' && Math.min(86, Math.max(72, currentSignal.confidence))}
-                              {selectedTimeframe === '1d' && Math.min(80, Math.max(65, currentSignal.confidence))}
-                              {selectedTimeframe === '4h' && Math.min(74, Math.max(58, currentSignal.confidence))}
-                              {selectedTimeframe === '1h' && Math.min(68, Math.max(50, currentSignal.confidence))}
-                              {selectedTimeframe === '30m' && Math.min(62, Math.max(42, currentSignal.confidence))}
-                              {selectedTimeframe === '15m' && Math.min(56, Math.max(35, currentSignal.confidence))}
-                              {selectedTimeframe === '5m' && Math.min(50, Math.max(30, currentSignal.confidence))}
-                              {selectedTimeframe === '1m' && Math.min(44, Math.max(22, currentSignal.confidence))}%
+                              {currentSignal.direction === 'NEUTRAL' ? 'N/A' : (
+                                <>
+                                  {selectedTimeframe === '1M' && Math.min(98, Math.max(85, currentSignal.confidence))}
+                                  {selectedTimeframe === '1w' && Math.min(92, Math.max(78, currentSignal.confidence))}
+                                  {selectedTimeframe === '3d' && Math.min(86, Math.max(72, currentSignal.confidence))}
+                                  {selectedTimeframe === '1d' && Math.min(80, Math.max(65, currentSignal.confidence))}
+                                  {selectedTimeframe === '4h' && Math.min(74, Math.max(58, currentSignal.confidence))}
+                                  {selectedTimeframe === '1h' && Math.min(68, Math.max(50, currentSignal.confidence))}
+                                  {selectedTimeframe === '30m' && Math.min(62, Math.max(42, currentSignal.confidence))}
+                                  {selectedTimeframe === '15m' && Math.min(56, Math.max(35, currentSignal.confidence))}
+                                  {selectedTimeframe === '5m' && Math.min(50, Math.max(30, currentSignal.confidence))}
+                                  {selectedTimeframe === '1m' && Math.min(44, Math.max(22, currentSignal.confidence))}%
+                                </>
+                              )}
                             </span>
                           </div>
                           
