@@ -139,33 +139,43 @@ export default function AdvancedSignalDashboard({
   });
   const currentAssetPrice = asset?.lastPrice || 0;
   
-  // Auto-calculate signals when live data is ready
+  // Listen directly for the live price update custom event
   useEffect(() => {
-    if (isLiveDataReady && isAllDataLoaded && currentAssetPrice > 0) {
-      console.log(`Live data detected for ${symbol} - price: ${currentAssetPrice}, timestamp: ${new Date(liveDataTimestamp).toISOString()}`);
-      
-      // Force calculation
-      const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-      if (timeSinceLastCalc > 2000) { // 2 second debounce
-        console.log(`FORCED CALCULATION TRIGGERED for ${symbol} with live data`);
+    // Create a specific handler for the live price update event
+    const handleLivePriceUpdate = (event: CustomEvent) => {
+      if (event.detail.symbol === symbol) {
+        console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${event.detail.price}`);
         
-        // Set calculation state
-        setIsCalculating(true);
-        lastCalculationRef.current = Date.now();
-        lastCalculationTimeRef.current = Date.now() / 1000;
-        
-        // Directly calculate with a short delay
-        setTimeout(() => {
-          calculateAllSignals();
-          toast({
-            title: "Auto-Calculation",
-            description: `Analyzing ${symbol} with latest price data`,
-            variant: "default"
-          });
-        }, 200);
+        // Only proceed if we have historical data loaded and are not currently calculating
+        if (isAllDataLoaded && !isCalculating) {
+          console.log(`💯 IMMEDIATE CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
+          
+          // Set calculation state
+          setIsCalculating(true);
+          lastCalculationRef.current = Date.now();
+          lastCalculationTimeRef.current = Date.now() / 1000;
+          
+          // Directly calculate with a short delay
+          setTimeout(() => {
+            calculateAllSignals();
+            toast({
+              title: "Live Market Analysis",
+              description: `Auto-analyzing ${symbol} with current price data`,
+              variant: "default"
+            });
+          }, 100);
+        }
       }
-    }
-  }, [isLiveDataReady, liveDataTimestamp, isAllDataLoaded, currentAssetPrice, symbol]);
+    };
+    
+    // Add the event listener
+    document.addEventListener('live-price-update', handleLivePriceUpdate as EventListener);
+    
+    // Return cleanup function
+    return () => {
+      document.removeEventListener('live-price-update', handleLivePriceUpdate as EventListener);
+    };
+  }, [symbol, isAllDataLoaded, isCalculating]);
 
   // This hook block was moved to maintain the correct hook order
   // No price tracking here anymore, we'll use the isLiveDataReady flag from useMarketData

@@ -53,23 +53,29 @@ export function useMarketData(symbol: string) {
       loadTimeframeData(tf);
     }
     
-    // Listen for realtime data updates - this is critical for triggering calculations
-    const onPriceUpdate = (updatedSymbol: string, price: number) => {
+    // We MUST create a direct way to detect price updates and trigger calculations
+
+    // Function to directly handle the price update events that come from the server
+    function handlePriceUpdate(data: any) {
       // Only respond to updates for our specific symbol
-      if (updatedSymbol === symbol) {
-        console.log(`Live data update received for ${updatedSymbol}: ${price}`);
-        // Set timestamp of latest live data
-        liveDataTimestamp.current = Date.now();
-        setIsLiveDataReady(true);
-      }
-    };
-    
-    // Register our price update listener
-    registerMessageHandler((data: any) => {
       if (data && data.symbol === symbol && data.price) {
-        onPriceUpdate(data.symbol, data.price);
+        console.log(`✅ LIVE PRICE RECEIVED for ${symbol}: ${data.price}`);
+        
+        // Update timestamp and set the flag to trigger calculations
+        liveDataTimestamp.current = Date.now();
+        
+        // We need to force this to be true to trigger calculations
+        setIsLiveDataReady(true);
+        
+        // Publish an event to notify the dashboard that new live data is ready
+        document.dispatchEvent(new CustomEvent('live-price-update', { 
+          detail: { symbol, price: data.price, timestamp: Date.now() }
+        }));
       }
-    });
+    }
+    
+    // Register our price update listener - we'll subscribe to ALL messages and filter for price updates
+    registerMessageHandler((data: any) => handlePriceUpdate(data));
     
     // Cleanup function
     return () => {

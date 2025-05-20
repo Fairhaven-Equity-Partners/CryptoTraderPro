@@ -355,6 +355,11 @@ export function startRealTimeUpdates() {
             // Only log if we have a price
             if (newPrice && currentPrice) {
               console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
+              
+              // DIRECT TRIGGER: Dispatch a custom event to initiate calculations immediately
+              document.dispatchEvent(new CustomEvent('live-price-update', { 
+                detail: { symbol, price: newPrice, timestamp: Date.now() }
+              }));
             }
             
             // Notify all handlers about the price update
