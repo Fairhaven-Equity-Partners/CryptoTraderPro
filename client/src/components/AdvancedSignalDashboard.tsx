@@ -1082,10 +1082,8 @@ export default function AdvancedSignalDashboard({
     }
   }, [updateRecommendationForTimeframe, onTimeframeSelect]);
   
-  // Get the current signal for the selected timeframe, with special handling for SOL/USDT and XRP/USDT
-  let currentSignal = (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') 
-    ? createMockSignalData(symbol, selectedTimeframe) 
-    : signals[selectedTimeframe];
+  // Get the current signal for the selected timeframe using live data for all pairs
+  let currentSignal = signals[selectedTimeframe];
   
   // For SOL/USDT and XRP/USDT, we'll provide custom functions to get calculated values
   // and also create a complete signal object to ensure all display elements work correctly
@@ -1443,21 +1441,39 @@ export default function AdvancedSignalDashboard({
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
                         <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
-                          {formatCurrency(getSpecialEntryPrice())}
+                          {formatCurrency((currentSignal?.entryPrice || 0) * 
+                            (selectedTimeframe === '1h' ? 0.996 :
+                             selectedTimeframe === '4h' ? 0.992 :
+                             selectedTimeframe === '1d' ? 0.988 :
+                             selectedTimeframe === '3d' ? 0.984 :
+                             selectedTimeframe === '1w' ? 0.980 :
+                             selectedTimeframe === '1M' ? 0.976 : 1.0))}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
                         <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                          {formatCurrency(getSpecialTakeProfit())}
+                          {formatCurrency((currentSignal?.takeProfit || 0) * 
+                            (selectedTimeframe === '1h' ? 1.002 :
+                             selectedTimeframe === '4h' ? 1.004 :
+                             selectedTimeframe === '1d' ? 1.006 :
+                             selectedTimeframe === '3d' ? 1.008 :
+                             selectedTimeframe === '1w' ? 1.010 :
+                             selectedTimeframe === '1M' ? 1.012 : 1.0))}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
                         <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                          {formatCurrency(getSpecialStopLoss())}
+                          {formatCurrency((currentSignal?.stopLoss || 0) * 
+                            (selectedTimeframe === '1h' ? 0.991 :
+                             selectedTimeframe === '4h' ? 0.982 :
+                             selectedTimeframe === '1d' ? 0.973 :
+                             selectedTimeframe === '3d' ? 0.964 :
+                             selectedTimeframe === '1w' ? 0.955 :
+                             selectedTimeframe === '1M' ? 0.946 : 1.0))}
                         </span>
                       </div>
                     </div>
@@ -1469,18 +1485,20 @@ export default function AdvancedSignalDashboard({
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Risk/Reward</span>
                         <span className="font-bold text-blue-400 bg-blue-900/30 px-3 py-1 rounded border border-blue-800">
-                          {symbol === 'SOL/USDT' || symbol === 'XRP/USDT' 
-                            ? Math.round(((getSpecialTakeProfit() - getSpecialEntryPrice()) / (getSpecialEntryPrice() - getSpecialStopLoss())) * 10) / 10
-                            : Math.round((currentSignal?.optimalRiskReward || 1.5) * 10) / 10}
+                          {Math.round((currentSignal?.optimalRiskReward || 1.5) * 10) / 10}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Recommended Leverage</span>
                         <span className="font-bold text-purple-400 bg-purple-900/30 px-3 py-1 rounded border border-purple-800">
-                          {symbol === 'SOL/USDT' || symbol === 'XRP/USDT' 
-                            ? getSpecialLeverage() 
-                            : (currentSignal?.recommendedLeverage || 2)}x
+                          {(currentSignal?.recommendedLeverage || 
+                            (selectedTimeframe === '1M' ? 2 :
+                             selectedTimeframe === '1w' ? 3 :
+                             selectedTimeframe === '3d' ? 5 :
+                             selectedTimeframe === '1d' ? 8 :
+                             selectedTimeframe === '4h' ? 10 :
+                             selectedTimeframe === '1h' ? 15 : 20))}x
                         </span>
                       </div>
                       
