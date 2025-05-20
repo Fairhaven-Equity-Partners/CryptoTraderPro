@@ -139,12 +139,33 @@ export default function AdvancedSignalDashboard({
   });
   const currentAssetPrice = asset?.lastPrice || 0;
   
-  // Debug live data status
+  // Auto-calculate signals when live data is ready
   useEffect(() => {
-    if (isLiveDataReady) {
-      console.log(`Live data is ready for ${symbol} at ${new Date(liveDataTimestamp).toISOString()}`);
+    if (isLiveDataReady && isAllDataLoaded && currentAssetPrice > 0) {
+      console.log(`Live data detected for ${symbol} - price: ${currentAssetPrice}, timestamp: ${new Date(liveDataTimestamp).toISOString()}`);
+      
+      // Force calculation
+      const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
+      if (timeSinceLastCalc > 2000) { // 2 second debounce
+        console.log(`FORCED CALCULATION TRIGGERED for ${symbol} with live data`);
+        
+        // Set calculation state
+        setIsCalculating(true);
+        lastCalculationRef.current = Date.now();
+        lastCalculationTimeRef.current = Date.now() / 1000;
+        
+        // Directly calculate with a short delay
+        setTimeout(() => {
+          calculateAllSignals();
+          toast({
+            title: "Auto-Calculation",
+            description: `Analyzing ${symbol} with latest price data`,
+            variant: "default"
+          });
+        }, 200);
+      }
     }
-  }, [isLiveDataReady, liveDataTimestamp, symbol]);
+  }, [isLiveDataReady, liveDataTimestamp, isAllDataLoaded, currentAssetPrice, symbol]);
 
   // This hook block was moved to maintain the correct hook order
   // No price tracking here anymore, we'll use the isLiveDataReady flag from useMarketData
