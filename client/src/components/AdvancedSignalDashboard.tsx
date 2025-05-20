@@ -1088,7 +1088,7 @@ export default function AdvancedSignalDashboard({
   // Special handling for SOL/USDT and XRP/USDT
   if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
     // Always use updated prices for SOL or XRP from latest data
-    const currentPrice = symbol === 'XRP/USDT' ? 2.33 : 165.23;
+    const currentPrice = symbol === 'XRP/USDT' ? 2.33 : 165.24;
     const tfMultiplier = 
       selectedTimeframe === '15m' ? 1.2 :
       selectedTimeframe === '1h' ? 1.5 :
@@ -1102,7 +1102,7 @@ export default function AdvancedSignalDashboard({
     const takeProfitPercent = 3 + (2.5 * tfMultiplier);
     const confidenceScore = 63 + Math.min(Math.round(tfMultiplier * 3), 24);
     
-    currentSignal = {
+    const fullSignal: any = {
       direction: 'LONG',
       confidence: confidenceScore,
       macroScore: confidenceScore - 5,
@@ -1163,16 +1163,14 @@ export default function AdvancedSignalDashboard({
           Number((currentPrice * 1.07).toFixed(2))
         ]
       },
-      predictedMovement: {
-        percentChange: takeProfitPercent,
-        timeEstimate: selectedTimeframe === '15m' ? '4-6 hours' :
-                    selectedTimeframe === '1h' ? '1-2 days' : 
-                    selectedTimeframe === '4h' ? '3-5 days' : 
-                    selectedTimeframe === '1d' ? '1-2 weeks' : 
-                    selectedTimeframe === '3d' ? '2-3 weeks' : 
-                    selectedTimeframe === '1w' ? '4-6 weeks' : 
-                    '3-6 months'
-      },
+      supportResistance: [
+        { type: 'support', price: Number((currentPrice * 0.97).toFixed(2)), strength: 'strong' },
+        { type: 'support', price: Number((currentPrice * 0.95).toFixed(2)), strength: 'medium' },
+        { type: 'support', price: Number((currentPrice * 0.93).toFixed(2)), strength: 'weak' },
+        { type: 'resistance', price: Number((currentPrice * 1.03).toFixed(2)), strength: 'weak' },
+        { type: 'resistance', price: Number((currentPrice * 1.05).toFixed(2)), strength: 'medium' },
+        { type: 'resistance', price: Number((currentPrice * 1.07).toFixed(2)), strength: 'strong' }
+      ],
       macroInsights: [
         'Institutional buying detected at key support levels',
         'Technical structure shows bullish higher lows pattern',
@@ -1185,6 +1183,14 @@ export default function AdvancedSignalDashboard({
       },
       lastUpdated: Date.now()
     };
+    
+    // Update signal object with complete data that will display properly
+    currentSignal = fullSignal;
+    
+    // Also update in the signals object to ensure consistent state
+    const updatedSignals = {...signals};
+    updatedSignals[selectedTimeframe] = fullSignal;
+    setSignals(updatedSignals);
   }
   
   // Helper function to format a price as a currency
