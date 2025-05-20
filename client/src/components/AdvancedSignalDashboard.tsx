@@ -155,14 +155,10 @@ export default function AdvancedSignalDashboard({
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           
-          // Directly calculate with a short delay
+          // Directly calculate with a short delay, but without showing alerts
           setTimeout(() => {
             calculateAllSignals();
-            toast({
-              title: "Live Market Analysis",
-              description: `Auto-analyzing ${symbol} with current price data`,
-              variant: "default"
-            });
+            // Toast notification removed as requested
           }, 100);
         }
       }
