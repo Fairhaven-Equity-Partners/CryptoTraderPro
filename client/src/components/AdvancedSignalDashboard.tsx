@@ -921,8 +921,8 @@ export default function AdvancedSignalDashboard({
                           
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Position Size</span>
-                            <span className="font-bold text-teal-400 bg-teal-900/30 px-3 py-1 rounded border border-teal-800">
-                              {Math.min(Math.max(Math.round(currentSignal?.confidence / 20), 1), 10)}% of capital
+                            <span className="font-bold text-teal-300 bg-teal-900/50 px-3 py-1 rounded border border-teal-700">
+                              {Math.min(Math.max(Math.round(currentSignal?.confidence / 20), 1), 5)}% of capital
                             </span>
                           </div>
                         </div>
