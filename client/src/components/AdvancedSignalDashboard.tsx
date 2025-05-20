@@ -1178,8 +1178,28 @@ export default function AdvancedSignalDashboard({
                       </div>
                       
                       <div className="text-right">
-                        <div className="text-xl font-bold text-white">{currentSignal.confidence}%</div>
-                        <div className="text-sm text-gray-300">Confidence</div>
+                        <div className={`text-xl font-bold ${
+                          currentSignal.confidence > 85 ? 'text-green-400' :
+                          currentSignal.confidence > 75 ? 'text-emerald-400' :
+                          currentSignal.confidence > 65 ? 'text-teal-400' :
+                          currentSignal.confidence > 55 ? 'text-cyan-400' :
+                          currentSignal.confidence > 45 ? 'text-blue-400' :
+                          currentSignal.confidence > 35 ? 'text-indigo-400' :
+                          currentSignal.confidence > 25 ? 'text-purple-400' :
+                          'text-gray-400'
+                        }`}>
+                          {selectedTimeframe === '1M' && `${currentSignal.confidence}% (Monthly)`}
+                          {selectedTimeframe === '1w' && `${currentSignal.confidence}% (Weekly)`}
+                          {selectedTimeframe === '3d' && `${currentSignal.confidence}% (3-Day)`}
+                          {selectedTimeframe === '1d' && `${currentSignal.confidence}% (Daily)`}
+                          {selectedTimeframe === '4h' && `${currentSignal.confidence}% (4-Hour)`}
+                          {selectedTimeframe === '1h' && `${currentSignal.confidence}% (Hourly)`}
+                          {selectedTimeframe === '30m' && `${currentSignal.confidence}% (30-Min)`}
+                          {selectedTimeframe === '15m' && `${currentSignal.confidence}% (15-Min)`}
+                          {selectedTimeframe === '5m' && `${currentSignal.confidence}% (5-Min)`}
+                          {selectedTimeframe === '1m' && `${currentSignal.confidence}% (1-Min)`}
+                        </div>
+                        <div className="text-sm text-gray-300">Signal Confidence</div>
                       </div>
                     </div>
                     
