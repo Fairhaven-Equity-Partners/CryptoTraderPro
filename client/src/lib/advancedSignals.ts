@@ -313,38 +313,83 @@ export function calculateTimeframeConfidence(
     // This adjusts the raw score based on indicator agreement and strength
     const confidenceAdjustment = calculateConfidenceAdjustment(scores, timeframe);
     
-    // Apply timeframe-specific confidence adjustments to create distinct confidence levels
-    // Higher timeframes get higher confidence, lower timeframes get lower
+    // Apply much more differentiated timeframe-specific confidence adjustments
+    // Create truly distinct confidence levels - now with wider gaps
     const timeframeConfidenceMultiplier = 
-      timeframe === '1M' ? 1.25 :  // Monthly charts get highest confidence
-      timeframe === '1w' ? 1.20 :  // Weekly charts get very high confidence
-      timeframe === '3d' ? 1.15 :  // 3-day charts get high confidence
-      timeframe === '1d' ? 1.10 :  // Daily charts get above-standard confidence
-      timeframe === '4h' ? 1.05 :  // 4h charts get slightly above-standard confidence
-      timeframe === '1h' ? 1.00 :  // 1h charts get standard confidence (reference point)
-      timeframe === '30m' ? 0.90 : // 30m charts get reduced confidence
-      timeframe === '15m' ? 0.80 : // 15m charts get significantly reduced confidence
-      timeframe === '5m' ? 0.70 :  // 5m charts get very low confidence
-      0.60;                        // 1m charts get lowest confidence
+      timeframe === '1M' ? 1.45 :  // Monthly charts get extremely high confidence
+      timeframe === '1w' ? 1.35 :  // Weekly charts get very high confidence
+      timeframe === '3d' ? 1.25 :  // 3-day charts get high confidence
+      timeframe === '1d' ? 1.15 :  // Daily charts get above-standard confidence
+      timeframe === '4h' ? 1.00 :  // 4h charts get standard confidence (reference point)
+      timeframe === '1h' ? 0.85 :  // 1h charts get reduced confidence
+      timeframe === '30m' ? 0.70 : // 30m charts get significantly reduced confidence
+      timeframe === '15m' ? 0.60 : // 15m charts get very low confidence
+      timeframe === '5m' ? 0.50 :  // 5m charts get extremely low confidence
+      0.40;                        // 1m charts get lowest confidence
     
     // Start with base confidence calculation
     let confidence = Math.abs(finalScore - 50) * 2 * confidenceAdjustment;
     
-    // Apply the timeframe multiplier
+    // Apply the timeframe multiplier with more dramatic effect
     confidence = confidence * timeframeConfidenceMultiplier;
     
-    // Cap the max confidence by timeframe to ensure differentiation
+    // Patterns should have stronger influence on confidence scores
+    // Add a pattern-based bonus that varies by timeframe
+    let patternBonus = 0;
+    if (patterns && patterns.length > 0) {
+      // Calculate pattern reliability and count effects
+      const patternCount = patterns.length;
+      const avgPatternReliability = patterns.reduce((sum, p) => sum + p.reliability, 0) / patterns.length;
+      
+      // Bonus increases with pattern count and reliability
+      patternBonus = (patternCount * 2.5) + (avgPatternReliability / 10);
+      
+      // Scale the pattern bonus by timeframe to create even more separation
+      patternBonus = patternBonus * (
+        timeframe === '1M' ? 1.4 :
+        timeframe === '1w' ? 1.3 :
+        timeframe === '3d' ? 1.2 :
+        timeframe === '1d' ? 1.1 :
+        timeframe === '4h' ? 1.0 :
+        timeframe === '1h' ? 0.9 :
+        timeframe === '30m' ? 0.8 :
+        timeframe === '15m' ? 0.7 :
+        timeframe === '5m' ? 0.6 : 0.5
+      );
+    }
+    
+    // Apply pattern bonus (can add up to 25-30 points for higher timeframes with many patterns)
+    confidence += patternBonus;
+    
+    // Set base starting values by timeframe (creates guaranteed minimum separation)
+    // This ensures even with similar signal strength, timeframes will show different values
+    const baseConfidenceByTimeframe = 
+      timeframe === '1M' ? 65 :   // Monthly starts at 65
+      timeframe === '1w' ? 60 :   // Weekly starts at 60
+      timeframe === '3d' ? 55 :   // 3-day starts at 55
+      timeframe === '1d' ? 50 :   // Daily starts at 50
+      timeframe === '4h' ? 45 :   // 4h starts at 45
+      timeframe === '1h' ? 40 :   // 1h starts at 40
+      timeframe === '30m' ? 35 :  // 30m starts at 35
+      timeframe === '15m' ? 30 :  // 15m starts at 30
+      timeframe === '5m' ? 25 :   // 5m starts at 25
+      20;                         // 1m starts at 20
+    
+    // Use max of calculated confidence or base confidence
+    confidence = Math.max(confidence, baseConfidenceByTimeframe);
+    
+    // Cap the max confidence by timeframe with wider gaps to ensure clear differentiation
     const maxConfidenceByTimeframe = 
-      timeframe === '1M' ? 97 :  // Monthly can reach highest confidence 
-      timeframe === '1w' ? 94 :  // Weekly slight step down
-      timeframe === '3d' ? 91 :  // 3-day another step down
-      timeframe === '1d' ? 88 :  // Daily another step down
-      timeframe === '4h' ? 85 :  // 4h another step down
-      timeframe === '1h' ? 83 :  // 1h another step down
-      timeframe === '30m' ? 80 : // 30m another step down
-      timeframe === '15m' ? 77 : // 15m another step down
-      timeframe === '5m' ? 73 :  // 5m another step down
-      70;                        // 1m lowest max confidence
+      timeframe === '1M' ? 98 :   // Monthly max at 98
+      timeframe === '1w' ? 92 :   // Weekly max at 92
+      timeframe === '3d' ? 86 :   // 3-day max at 86
+      timeframe === '1d' ? 80 :   // Daily max at 80
+      timeframe === '4h' ? 74 :   // 4h max at 74
+      timeframe === '1h' ? 68 :   // 1h max at 68
+      timeframe === '30m' ? 62 :  // 30m max at 62
+      timeframe === '15m' ? 56 :  // 15m max at 56
+      timeframe === '5m' ? 50 :   // 5m max at 50
+      44;                         // 1m max at 44
     
     // Apply the final confidence with timeframe-specific caps and floor
     confidence = Math.round(Math.min(maxConfidenceByTimeframe, Math.max(20, confidence)));
