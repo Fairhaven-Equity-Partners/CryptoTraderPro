@@ -1027,10 +1027,23 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     
     // Price levels for the signal
     const currentPrice = data[data.length - 1].close;
-    const atrMultiplier = direction === 'LONG' ? -1 : 1;
-    const stopLoss = currentPrice + (atrMultiplier * indicators.atr * 1.5);
-    const tpAtrMultiplier = direction === 'LONG' ? 2 : -2;
-    const takeProfit = currentPrice + (tpAtrMultiplier * indicators.atr);
+    
+    // Calculate stop loss and take profit based on direction
+    let stopLoss, takeProfit;
+    
+    if (direction === 'LONG') {
+      // For LONG positions: Stop loss below current price, take profit above
+      stopLoss = currentPrice - (indicators.atr * 1.5);
+      takeProfit = currentPrice + (indicators.atr * 2.5);
+    } else if (direction === 'SHORT') {
+      // For SHORT positions: Stop loss above current price, take profit below
+      stopLoss = currentPrice + (indicators.atr * 1.5);
+      takeProfit = currentPrice - (indicators.atr * 2.5);
+    } else {
+      // For NEUTRAL positions: Symmetric levels
+      stopLoss = currentPrice - (indicators.atr * 1.5);
+      takeProfit = currentPrice + (indicators.atr * 1.5);
+    }
     
     return {
       direction,
