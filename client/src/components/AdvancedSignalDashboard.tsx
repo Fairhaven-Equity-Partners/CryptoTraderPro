@@ -434,9 +434,11 @@ export default function AdvancedSignalDashboard({
                              signal.confidence >= 50 ? 'Moderate' : 'Weak';
       
       if (signal.direction === 'LONG') {
-        return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${signal.optimalRiskReward.toFixed(1)}.`;
+        const riskReward = signal.optimalRiskReward ? signal.optimalRiskReward.toFixed(1) : '1.5';
+        return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else if (signal.direction === 'SHORT') {
-        return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${signal.optimalRiskReward.toFixed(1)}.`;
+        const riskReward = signal.optimalRiskReward ? signal.optimalRiskReward.toFixed(1) : '1.5';
+        return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else {
         return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals.`;
       }
@@ -488,7 +490,7 @@ export default function AdvancedSignalDashboard({
       riskManagement: {
         positionSizeRecommendation: `${Math.min(5, Math.max(1, Math.floor(signal.confidence / 20)))}% of portfolio`,
         maxRiskPercentage: Math.min(5, Math.max(1, Math.floor(signal.confidence / 20))),
-        potentialRiskReward: signal.optimalRiskReward,
+        potentialRiskReward: signal.optimalRiskReward || 1.5,
         winProbability: signal.confidence / 100
       },
       keyIndicators: findInfluentialIndicators(signal),
