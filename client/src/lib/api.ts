@@ -313,8 +313,10 @@ export function startRealTimeUpdates() {
   // Register handler for price updates
   registerMessageHandler('priceUpdate', handlePriceUpdate);
   
-  // Update prices every 15 seconds with real data from CoinGecko
+  // Update prices every 90 seconds with real data from CoinGecko
   const updateInterval = setInterval(() => {
+    // Log for debugging - you'll see this every 90 seconds
+    console.log(`Scheduled price update check (90-second interval) at ${new Date().toLocaleTimeString()}`);
     try {
       // Fetch real-time price data from CoinGecko
       fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true')
