@@ -316,10 +316,10 @@ export function calculateTimeframeConfidence(
       console.warn("Using fallback macro calculations:", e);
     }
     
-    // Make sure we store the macro data in the right place
-    advancedSignal.macroScore = macroScore;
-    advancedSignal.macroClass = macroClass;
-    advancedSignal.macroInsights = macroInsights;
+    // Make sure we store the macro data correctly
+    result.macroScore = macroScore;
+    result.macroClass = macroClass;
+    result.macroInsights = macroInsights;
     
     totalScore += macroScore * adaptedWeights.macroeconomic;
     totalWeight += adaptedWeights.macroeconomic;

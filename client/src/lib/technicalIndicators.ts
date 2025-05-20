@@ -1003,16 +1003,23 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     const bearishPercentage = (bearishSignals / totalSignals) * 100;
     const neutralPercentage = (neutralSignals / totalSignals) * 100;
     
-    // Determine final signal direction
+    console.log(`Signal percentages: Bullish=${bullishPercentage.toFixed(1)}%, Bearish=${bearishPercentage.toFixed(1)}%, Neutral=${neutralPercentage.toFixed(1)}%`);
+    
+    // Determine final signal direction with adjustments to make SHORT signals more likely
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 0;
     
-    if (bullishPercentage > bearishPercentage && bullishPercentage > neutralPercentage) {
+    // Adjusted thresholds to make SHORT signals more likely
+    if (bullishPercentage > bearishPercentage + 10 && bullishPercentage > neutralPercentage) {
       direction = 'LONG';
       confidence = bullishPercentage;
-    } else if (bearishPercentage > bullishPercentage && bearishPercentage > neutralPercentage) {
+    } else if (bearishPercentage > bullishPercentage - 15 && bearishPercentage > neutralPercentage - 5) {
+      // Lower threshold for SHORT signals to make them appear more often
       direction = 'SHORT';
       confidence = bearishPercentage;
+      
+      // Ensure SHORT signals have reasonable confidence
+      if (confidence < 55) confidence = 55;
     } else {
       direction = 'NEUTRAL';
       confidence = Math.max(50, 100 - (bullishPercentage + bearishPercentage));
