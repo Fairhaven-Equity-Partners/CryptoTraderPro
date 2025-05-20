@@ -36,7 +36,6 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <h2 className="text-xl font-bold mb-4 text-white">Advanced Signal Analysis</h2>
           <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
