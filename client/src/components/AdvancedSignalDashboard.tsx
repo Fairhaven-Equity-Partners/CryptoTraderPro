@@ -672,7 +672,6 @@ export default function AdvancedSignalDashboard({
                           )}
                         </h3>
                         <div className="flex items-center space-x-2">
-                          <p className="text-white font-semibold">Current Price: {formatCurrency(currentAssetPrice)}</p>
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
                             {timeframe}
                           </Badge>
