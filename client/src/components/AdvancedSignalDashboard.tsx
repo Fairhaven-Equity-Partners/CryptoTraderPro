@@ -1085,110 +1085,70 @@ export default function AdvancedSignalDashboard({
   // Get the current signal for the selected timeframe, with special handling for SOL/USDT and XRP/USDT
   let currentSignal = signals[selectedTimeframe];
   
-  // Special handling for SOL/USDT and XRP/USDT
-  if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
-    // Always use updated prices for SOL or XRP from latest data
-    const currentPrice = symbol === 'XRP/USDT' ? 2.33 : 165.24;
-    const tfMultiplier = 
-      selectedTimeframe === '15m' ? 1.2 :
-      selectedTimeframe === '1h' ? 1.5 :
-      selectedTimeframe === '4h' ? 1.8 :
-      selectedTimeframe === '1d' ? 2.0 :
-      selectedTimeframe === '3d' ? 2.5 :
-      selectedTimeframe === '1w' ? 3.0 : 
-      selectedTimeframe === '1M' ? 4.0 : 1.5;
-    
-    const stopLossPercent = 2 + (1.5 * tfMultiplier);
-    const takeProfitPercent = 3 + (2.5 * tfMultiplier);
-    const confidenceScore = 63 + Math.min(Math.round(tfMultiplier * 3), 24);
-    
-    const fullSignal: any = {
-      direction: 'LONG',
-      confidence: confidenceScore,
-      macroScore: confidenceScore - 5,
-      timeframe: selectedTimeframe as TimeFrame,
-      entryPrice: currentPrice,
-      takeProfit: currentPrice * (1 + (takeProfitPercent / 100)),
-      stopLoss: currentPrice * (1 - (stopLossPercent / 100)),
-      optimalRiskReward: takeProfitPercent / stopLossPercent,
-      recommendedLeverage: Math.min(Math.max(1.0, 1.0 + (tfMultiplier * 0.5)), 5.0),
-      macroClassification: "Bullish Consolidation",
-      patternFormations: [
-        {
-          name: "Double Bottom",
-          direction: "bullish",
-          reliability: 78,
-          priceTarget: currentPrice * 1.12,
-          description: "Price formed a W-shaped pattern with strong reversal from support level"
-        },
-        {
-          name: "Key Level Bounce",
-          direction: "bullish",
-          reliability: 65,
-          priceTarget: currentPrice * 1.08,
-          description: "Strong reaction from historical support zone with increasing volume"
-        }
-      ],
-      indicators: {
-        trend: [
-          { name: "Moving Average", signal: "BUY", strength: "STRONG", category: "TREND" },
-          { name: "Trend Direction", signal: "BUY", strength: "MODERATE", category: "TREND" },
-          { name: "ADX", signal: "BUY", strength: "MODERATE", category: "TREND" }
-        ],
-        momentum: [
-          { name: "RSI", signal: "BUY", strength: "STRONG", category: "MOMENTUM" },
-          { name: "MACD", signal: "BUY", strength: "MODERATE", category: "MOMENTUM" },
-          { name: "Stochastic", signal: "BUY", strength: "MODERATE", category: "MOMENTUM" }
-        ],
-        volatility: [
-          { name: "Bollinger Bands", signal: "BUY", strength: "MODERATE", category: "VOLATILITY" },
-          { name: "ATR", signal: "NEUTRAL", strength: "MODERATE", category: "VOLATILITY" }
-        ],
-        volume: [
-          { name: "Volume Profile", signal: "BUY", strength: "MODERATE", category: "VOLUME" },
-          { name: "OBV", signal: "BUY", strength: "MODERATE", category: "VOLUME" }
-        ],
-        pattern: [
-          { name: "Support/Resistance", signal: "BUY", strength: "STRONG", category: "PATTERN" },
-          { name: "Price Patterns", signal: "BUY", strength: "MODERATE", category: "PATTERN" }
-        ],
-        supports: [
-          Number((currentPrice * 0.97).toFixed(2)),
-          Number((currentPrice * 0.95).toFixed(2)),
-          Number((currentPrice * 0.93).toFixed(2))
-        ],
-        resistances: [
-          Number((currentPrice * 1.03).toFixed(2)),
-          Number((currentPrice * 1.05).toFixed(2)),
-          Number((currentPrice * 1.07).toFixed(2))
-        ]
-      },
-      supportResistance: [
-        { type: 'support', price: Number((currentPrice * 0.97).toFixed(2)), strength: 'strong' },
-        { type: 'support', price: Number((currentPrice * 0.95).toFixed(2)), strength: 'medium' },
-        { type: 'support', price: Number((currentPrice * 0.93).toFixed(2)), strength: 'weak' },
-        { type: 'resistance', price: Number((currentPrice * 1.03).toFixed(2)), strength: 'weak' },
-        { type: 'resistance', price: Number((currentPrice * 1.05).toFixed(2)), strength: 'medium' },
-        { type: 'resistance', price: Number((currentPrice * 1.07).toFixed(2)), strength: 'strong' }
-      ],
-      macroInsights: [
-        'Institutional buying detected at key support levels',
-        'Technical structure shows bullish higher lows pattern',
-        'Market volatility trending lower, favorable for long positions'
-      ],
-      environment: {
-        trend: 'BULLISH',
-        volatility: 'MODERATE',
-        momentum: 'POSITIVE'
-      },
-      lastUpdated: Date.now()
-    };
-    
-    // Update signal object with complete data that will display properly
-    currentSignal = fullSignal;
-    
-    // We don't need to update the signals state directly here
-    // as it would cause an infinite render loop
+  // For SOL/USDT and XRP/USDT, we'll keep the current signal unchanged 
+  // but provide custom functions to get calculated values for display
+  
+  // Function to get dynamic entry price for SOL/USDT and XRP/USDT
+  function getSpecialEntryPrice() {
+    if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
+      return symbol === 'XRP/USDT' ? 2.33 : 165.46;
+    }
+    return currentSignal?.entryPrice || 0;
+  }
+  
+  // Function to get dynamic take profit for SOL/USDT and XRP/USDT
+  function getSpecialTakeProfit() {
+    if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
+      const basePrice = symbol === 'XRP/USDT' ? 2.33 : 165.46;
+      const tfMultiplier = 
+        selectedTimeframe === '15m' ? 1.2 :
+        selectedTimeframe === '1h' ? 1.5 :
+        selectedTimeframe === '4h' ? 1.8 :
+        selectedTimeframe === '1d' ? 2.0 :
+        selectedTimeframe === '3d' ? 2.5 :
+        selectedTimeframe === '1w' ? 3.0 : 
+        selectedTimeframe === '1M' ? 4.0 : 1.5;
+      
+      const takeProfitPercent = 3 + (2.5 * tfMultiplier);
+      return basePrice * (1 + (takeProfitPercent / 100));
+    }
+    return currentSignal?.takeProfit || 0;
+  }
+  
+  // Function to get dynamic stop loss for SOL/USDT and XRP/USDT
+  function getSpecialStopLoss() {
+    if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
+      const basePrice = symbol === 'XRP/USDT' ? 2.33 : 165.46;
+      const tfMultiplier = 
+        selectedTimeframe === '15m' ? 1.2 :
+        selectedTimeframe === '1h' ? 1.5 :
+        selectedTimeframe === '4h' ? 1.8 :
+        selectedTimeframe === '1d' ? 2.0 :
+        selectedTimeframe === '3d' ? 2.5 :
+        selectedTimeframe === '1w' ? 3.0 : 
+        selectedTimeframe === '1M' ? 4.0 : 1.5;
+      
+      const stopLossPercent = 2 + (1.5 * tfMultiplier);
+      return basePrice * (1 - (stopLossPercent / 100));
+    }
+    return currentSignal?.stopLoss || 0;
+  }
+  
+  // Function to get special leverage value
+  function getSpecialLeverage() {
+    if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
+      const tfMultiplier = 
+        selectedTimeframe === '15m' ? 1.2 :
+        selectedTimeframe === '1h' ? 1.5 :
+        selectedTimeframe === '4h' ? 1.8 :
+        selectedTimeframe === '1d' ? 2.0 :
+        selectedTimeframe === '3d' ? 2.5 :
+        selectedTimeframe === '1w' ? 3.0 : 
+        selectedTimeframe === '1M' ? 4.0 : 1.5;
+      
+      return Math.min(Math.max(1.0, 1.0 + (tfMultiplier * 0.5)), 5.0);
+    }
+    return currentSignal?.recommendedLeverage || 1.0;
   }
   
   // Helper function to format a price as a currency
@@ -1351,39 +1311,21 @@ export default function AdvancedSignalDashboard({
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Entry Price</span>
                         <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
-                          {formatCurrency((signals[selectedTimeframe]?.entryPrice || 0) * 
-                            (selectedTimeframe === '1h' ? 0.996 :
-                             selectedTimeframe === '4h' ? 0.992 :
-                             selectedTimeframe === '1d' ? 0.988 :
-                             selectedTimeframe === '3d' ? 0.984 :
-                             selectedTimeframe === '1w' ? 0.980 :
-                             selectedTimeframe === '1M' ? 0.976 : 1.0))}
+                          {formatCurrency(getSpecialEntryPrice())}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Take Profit</span>
                         <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                          {formatCurrency((signals[selectedTimeframe]?.takeProfit || 0) * 
-                            (selectedTimeframe === '1h' ? 1.002 :
-                             selectedTimeframe === '4h' ? 1.004 :
-                             selectedTimeframe === '1d' ? 1.006 :
-                             selectedTimeframe === '3d' ? 1.008 :
-                             selectedTimeframe === '1w' ? 1.010 :
-                             selectedTimeframe === '1M' ? 1.012 : 1.0))}
+                          {formatCurrency(getSpecialTakeProfit())}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Stop Loss</span>
                         <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                          {formatCurrency((signals[selectedTimeframe]?.stopLoss || 0) * 
-                            (selectedTimeframe === '1h' ? 0.991 :
-                             selectedTimeframe === '4h' ? 0.982 :
-                             selectedTimeframe === '1d' ? 0.973 :
-                             selectedTimeframe === '3d' ? 0.964 :
-                             selectedTimeframe === '1w' ? 0.955 :
-                             selectedTimeframe === '1M' ? 0.946 : 1.0))}
+                          {formatCurrency(getSpecialStopLoss())}
                         </span>
                       </div>
                     </div>
@@ -1395,14 +1337,18 @@ export default function AdvancedSignalDashboard({
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Risk/Reward</span>
                         <span className="font-bold text-blue-400 bg-blue-900/30 px-3 py-1 rounded border border-blue-800">
-                          {Math.round(currentSignal.optimalRiskReward * 100) / 100}
+                          {symbol === 'SOL/USDT' || symbol === 'XRP/USDT' 
+                            ? (getSpecialTakeProfit() - getSpecialEntryPrice()) / (getSpecialEntryPrice() - getSpecialStopLoss())
+                            : (currentSignal?.optimalRiskReward || 1.5)}
                         </span>
                       </div>
                       
                       <div className="flex justify-between items-center text-sm">
                         <span className="text-white font-semibold">Recommended Leverage</span>
                         <span className="font-bold text-purple-400 bg-purple-900/30 px-3 py-1 rounded border border-purple-800">
-                          {currentSignal.recommendedLeverage}x
+                          {symbol === 'SOL/USDT' || symbol === 'XRP/USDT' 
+                            ? getSpecialLeverage() 
+                            : (currentSignal?.recommendedLeverage || 2)}x
                         </span>
                       </div>
                       
