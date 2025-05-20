@@ -1465,16 +1465,24 @@ export default function AdvancedSignalDashboard({
                             }`}>
                               {currentSignal.direction === 'NEUTRAL' ? 'N/A' : (
                                 <>
-                                  {selectedTimeframe === '1M' && Math.min(98, Math.max(85, currentSignal.confidence))}
-                                  {selectedTimeframe === '1w' && Math.min(92, Math.max(78, currentSignal.confidence))}
-                                  {selectedTimeframe === '3d' && Math.min(86, Math.max(72, currentSignal.confidence))}
-                                  {selectedTimeframe === '1d' && Math.min(80, Math.max(65, currentSignal.confidence))}
-                                  {selectedTimeframe === '4h' && Math.min(74, Math.max(58, currentSignal.confidence))}
-                                  {selectedTimeframe === '1h' && Math.min(68, Math.max(50, currentSignal.confidence))}
-                                  {selectedTimeframe === '30m' && Math.min(62, Math.max(42, currentSignal.confidence))}
-                                  {selectedTimeframe === '15m' && Math.min(56, Math.max(35, currentSignal.confidence))}
-                                  {selectedTimeframe === '5m' && Math.min(50, Math.max(30, currentSignal.confidence))}
-                                  {selectedTimeframe === '1m' && Math.min(44, Math.max(22, currentSignal.confidence))}%
+                                  {/* Simplify calculation to ensure it always displays */}
+                                  {(() => {
+                                    let confidenceValue = currentSignal.confidence;
+                                    
+                                    // Adjust based on timeframe
+                                    if (selectedTimeframe === '1M') confidenceValue = Math.min(98, Math.max(85, confidenceValue));
+                                    else if (selectedTimeframe === '1w') confidenceValue = Math.min(92, Math.max(78, confidenceValue));
+                                    else if (selectedTimeframe === '3d') confidenceValue = Math.min(86, Math.max(72, confidenceValue));
+                                    else if (selectedTimeframe === '1d') confidenceValue = Math.min(80, Math.max(65, confidenceValue));
+                                    else if (selectedTimeframe === '4h') confidenceValue = Math.min(74, Math.max(58, confidenceValue));
+                                    else if (selectedTimeframe === '1h') confidenceValue = Math.min(68, Math.max(50, confidenceValue));
+                                    else if (selectedTimeframe === '30m') confidenceValue = Math.min(62, Math.max(42, confidenceValue));
+                                    else if (selectedTimeframe === '15m') confidenceValue = Math.min(56, Math.max(35, confidenceValue));
+                                    else if (selectedTimeframe === '5m') confidenceValue = Math.min(50, Math.max(30, confidenceValue));
+                                    else if (selectedTimeframe === '1m') confidenceValue = Math.min(44, Math.max(22, confidenceValue));
+                                    
+                                    return `${confidenceValue}%`;
+                                  })()}
                                 </>
                               )}
                             </span>
