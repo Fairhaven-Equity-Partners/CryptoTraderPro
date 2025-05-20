@@ -285,7 +285,7 @@ export default function AdvancedSignalDashboard({
         }, 500);
       }
     }
-  }, [symbol, isAllDataLoaded, isCalculating, chartData, triggerCalculation]);
+  }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
   // Update timer for next refresh
   useEffect(() => {
