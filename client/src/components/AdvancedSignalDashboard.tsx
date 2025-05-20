@@ -1178,46 +1178,21 @@ export default function AdvancedSignalDashboard({
                       </div>
                       
                       <div className="text-right">
-                        <div className={`text-xl font-bold flex flex-col ${
-                          currentSignal.confidence > 85 ? 'text-green-400' :
-                          currentSignal.confidence > 75 ? 'text-emerald-400' :
-                          currentSignal.confidence > 65 ? 'text-teal-400' :
-                          currentSignal.confidence > 55 ? 'text-cyan-400' :
-                          currentSignal.confidence > 45 ? 'text-blue-400' :
-                          currentSignal.confidence > 35 ? 'text-indigo-400' :
-                          currentSignal.confidence > 25 ? 'text-purple-400' :
-                          'text-gray-400'
-                        }`}>
-                          <span>
-                            {/* Force different confidence ranges based on timeframe */}
-                            {selectedTimeframe === '1M' && Math.min(98, Math.max(85, currentSignal.confidence))}
-                            {selectedTimeframe === '1w' && Math.min(92, Math.max(78, currentSignal.confidence))}
-                            {selectedTimeframe === '3d' && Math.min(86, Math.max(72, currentSignal.confidence))}
-                            {selectedTimeframe === '1d' && Math.min(80, Math.max(65, currentSignal.confidence))}
-                            {selectedTimeframe === '4h' && Math.min(74, Math.max(58, currentSignal.confidence))}
-                            {selectedTimeframe === '1h' && Math.min(68, Math.max(50, currentSignal.confidence))}
-                            {selectedTimeframe === '30m' && Math.min(62, Math.max(42, currentSignal.confidence))}
-                            {selectedTimeframe === '15m' && Math.min(56, Math.max(35, currentSignal.confidence))}
-                            {selectedTimeframe === '5m' && Math.min(50, Math.max(30, currentSignal.confidence))}
-                            {selectedTimeframe === '1m' && Math.min(44, Math.max(22, currentSignal.confidence))}
-                            %
-                          </span>
-                          <span className="text-base font-normal opacity-80">
-                            {selectedTimeframe === '1M' && '(Monthly)'}
-                            {selectedTimeframe === '1w' && '(Weekly)'}
-                            {selectedTimeframe === '3d' && '(3-Day)'}
-                            {selectedTimeframe === '1d' && '(Daily)'}
-                            {selectedTimeframe === '4h' && '(4-Hour)'}
-                            {selectedTimeframe === '1h' && '(Hourly)'}
-                            {selectedTimeframe === '30m' && '(30-Min)'}
-                            {selectedTimeframe === '15m' && '(15-Min)'}
-                            {selectedTimeframe === '5m' && '(5-Min)'}
-                            {selectedTimeframe === '1m' && '(1-Min)'}
-                          </span>
+                        <div className="text-sm text-gray-400 mb-1 mt-2">
+                          {selectedTimeframe === '1M' && 'Monthly Timeframe Analysis'}
+                          {selectedTimeframe === '1w' && 'Weekly Timeframe Analysis'}
+                          {selectedTimeframe === '3d' && '3-Day Timeframe Analysis'}
+                          {selectedTimeframe === '1d' && 'Daily Timeframe Analysis'}
+                          {selectedTimeframe === '4h' && '4-Hour Timeframe Analysis'}
+                          {selectedTimeframe === '1h' && 'Hourly Timeframe Analysis'}
+                          {selectedTimeframe === '30m' && '30-Min Timeframe Analysis'}
+                          {selectedTimeframe === '15m' && '15-Min Timeframe Analysis'}
+                          {selectedTimeframe === '5m' && '5-Min Timeframe Analysis'}
+                          {selectedTimeframe === '1m' && '1-Min Timeframe Analysis'}
                         </div>
                         
-                        {/* Add a visual indicator of timeframe importance */}
-                        <div className="w-full h-2 rounded-full bg-gray-800 mt-1 mb-1">
+                        {/* Visual indicator of timeframe importance */}
+                        <div className="w-full h-2 rounded-full bg-gray-800 mt-3 mb-1">
                           <div 
                             className={`h-2 rounded-full ${
                               selectedTimeframe === '1M' ? 'bg-green-500 w-full' :
@@ -1233,7 +1208,7 @@ export default function AdvancedSignalDashboard({
                             }`}
                           />
                         </div>
-                        <div className="text-sm text-gray-300">Signal Confidence</div>
+                        <div className="text-sm text-gray-300">Timeframe Reliability</div>
                       </div>
                     </div>
                     
