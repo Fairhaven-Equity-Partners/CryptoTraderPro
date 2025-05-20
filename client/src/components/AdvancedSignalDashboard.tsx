@@ -577,7 +577,7 @@ export default function AdvancedSignalDashboard({
       
       <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-bold flex items-center">
+          <CardTitle className="text-xl font-bold text-white flex items-center">
             Market Analysis
             {isCalculating && (
               <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
@@ -585,7 +585,7 @@ export default function AdvancedSignalDashboard({
               </Badge>
             )}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-100">
             Timeframe-specific signals and trading opportunities
           </CardDescription>
         </CardHeader>
@@ -688,12 +688,11 @@ export default function AdvancedSignalDashboard({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Left column with signals and indicators */}
                       <div className="space-y-4">
-                        {/* Confidence Score Visual */}
-                        {/* Current Price Display */}
+                        {/* Current Price Display - Using real-time price */}
                         <div className="space-y-1 mb-3">
                           <h3 className="text-white font-bold text-sm">Current Price</h3>
                           <div className="text-2xl font-bold text-cyan-300">
-                            {formatCurrency(currentSignal?.entryPrice || 0)}
+                            {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
                           </div>
                         </div>
                         
