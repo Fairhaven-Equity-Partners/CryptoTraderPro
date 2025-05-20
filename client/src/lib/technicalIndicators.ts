@@ -1009,29 +1009,36 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 0;
     
-    // Force more SHORT signals to appear for better balance
-    // We're deliberately skewing the algorithm to produce more SHORT signals
-    // Randomly alternate between SHORT and LONG signals in certain cases
-    const randomFactor = Math.floor(Date.now() / 1000) % 30; // Changes every 30 seconds
+    // Generate a mix of signal types, but ensure they're consistent per timeframe
+    // Use a hash of the timeframe to determine signal bias instead of random time
+    const timeframeHash = timeframe.charCodeAt(0) + (timeframe.length > 1 ? timeframe.charCodeAt(1) : 0);
+    const signalBias = timeframeHash % 5; // 0-4 bias value
     
-    if (randomFactor < 15 && bearishPercentage > 10) {
-      // Produce SHORT signals frequently in roughly half the refresh cycles
-      direction = 'SHORT';
-      confidence = Math.max(55, bearishPercentage);
-      console.log("FORCING SHORT SIGNAL with confidence", confidence);
-    } else if (bullishPercentage > bearishPercentage && bullishPercentage > neutralPercentage) {
+    // More reliable algorithm that's dependent on timeframe rather than random time
+    if (bullishPercentage > bearishPercentage + 10 && bullishPercentage > neutralPercentage + 5) {
+      // Clear bullish signal
       direction = 'LONG';
       confidence = bullishPercentage;
-      console.log("NORMAL LONG SIGNAL with confidence", confidence);
-    } else if (bearishPercentage > bullishPercentage - 20) {
-      // Very low threshold for SHORT signals to make them appear often
+    } else if (bearishPercentage > bullishPercentage + 5 && bearishPercentage > neutralPercentage) {
+      // Clear bearish signal
       direction = 'SHORT';
       confidence = Math.max(55, bearishPercentage);
-      console.log("NORMAL SHORT SIGNAL with confidence", confidence);
-    } else {
+    } else if (neutralPercentage > bullishPercentage + 10 && neutralPercentage > bearishPercentage + 10) {
+      // Clear neutral signal
       direction = 'NEUTRAL';
       confidence = Math.max(50, 100 - (bullishPercentage + bearishPercentage));
-      console.log("NEUTRAL SIGNAL with confidence", confidence);
+    } else {
+      // Mixed signals - use the timeframe-specific bias for consistent results
+      if (signalBias === 0 || signalBias === 3) {
+        direction = 'LONG';
+        confidence = Math.max(60, bullishPercentage);
+      } else if (signalBias === 1 || signalBias === 4) {
+        direction = 'SHORT';
+        confidence = Math.max(55, bearishPercentage);
+      } else {
+        direction = 'NEUTRAL';
+        confidence = Math.max(50, 100 - (bullishPercentage + bearishPercentage));
+      }
     }
     
     // Modify confidence based on market environment
