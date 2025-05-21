@@ -1040,7 +1040,8 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       
       // This creates a semi-stable hash based on the current month and asset
       // so the signals stay very consistent during each month
-      const stabilityFactor = (symbol.charCodeAt(0) + monthKey) % 100;
+      const assetSymbol = symbol.split('/')[0]; // Get BTC from BTC/USDT
+      const stabilityFactor = (assetSymbol.charCodeAt(0) + monthKey) % 100;
       const shouldChangeSignal = isStrongTrend && stabilityFactor > 75;
       
       if (!shouldChangeSignal) {
@@ -1120,7 +1121,8 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       const weekNumber = Math.floor(dayOfYear / 7);
       
       // This creates a stability factor that changes only once per week per symbol
-      const weeklyStabilityFactor = (symbol.charCodeAt(0) + weekNumber) % 100;
+      const assetSymbol = symbol.split('/')[0]; // Get BTC from BTC/USDT
+      const weeklyStabilityFactor = (assetSymbol.charCodeAt(0) + weekNumber) % 100;
       const shouldUseCalculatedSignal = isSignificantMove && weeklyStabilityFactor > 80;
       
       if (!shouldUseCalculatedSignal) {
@@ -1129,7 +1131,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
         
         // Stable confidence levels - consistent per week so they don't keep changing
         // But still different for each cryptocurrency
-        const symbolSeed = symbol.charCodeAt(0) % 5;
+        const symbolSeed = assetSymbol.charCodeAt(0) % 5;
         confidence = mediumTermTrend === 'LONG' ? 
           86 + symbolSeed : // 86-90% confidence for longs 
           83 + symbolSeed;  // 83-87% confidence for shorts
