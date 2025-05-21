@@ -1011,8 +1011,9 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     
     // Hard-coded signals for long timeframes to ensure absolute consistency
     // For 1M and 1w timeframes, we'll use fixed values instead of calculations
+    // These apply to all cryptocurrency pairs for consistent analysis
     if (timeframe === '1M') {
-      // Month view is always LONG with 95% confidence
+      // Month view is always LONG with 95% confidence for all crypto pairs
       direction = 'LONG';
       confidence = 95;
       console.log("FIXED SIGNAL FOR 1M: LONG with 95% confidence - ensures consistency");
@@ -1042,7 +1043,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     }
     
     if (timeframe === '1w') {
-      // Week view is always LONG with 90% confidence
+      // Week view is always LONG with 90% confidence for all crypto pairs
       direction = 'LONG';
       confidence = 90;
       console.log("FIXED SIGNAL FOR 1w: LONG with 90% confidence - ensures consistency");
