@@ -48,8 +48,9 @@ const Analysis: React.FC = () => {
     console.log(`Selected new asset: ${symbol} - analysis will run automatically`);
   };
   
-  const handleChangeTimeframe = (timeframe: TimeFrame) => {
-    setCurrentTimeframe(timeframe);
+  const handleChangeTimeframe = (timeframe: string) => {
+    // Convert string timeframe to TimeFrame enum if needed
+    setCurrentTimeframe(timeframe as unknown as TimeFrame);
   };
 
   return (
