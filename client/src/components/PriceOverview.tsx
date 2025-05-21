@@ -17,9 +17,9 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   const { price, isLoading } = useAssetPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
   
-  // State to track previous price for animation and comparison
+  // Track only the fetched price and previous price for flash animation
   const [priceState, setPriceState] = useState({
-    currentPrice: 0,
+    price: 0,
     previousPrice: 0,
     flash: false,
     lastUpdate: new Date()
@@ -28,34 +28,18 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   // Ref to store interval
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Listen for real-time price updates
-  useEffect(() => {
-    // Setup listener for price updates from our centralized source
-    const unsubscribe = onPriceUpdate((updatedSymbol, updatedPrice) => {
-      if (updatedSymbol === symbol && updatedPrice > 0) {
-        setPriceState(prev => ({
-          previousPrice: prev.currentPrice,
-          currentPrice: updatedPrice,
-          flash: true,
-          lastUpdate: new Date()
-        }));
-      }
-    });
-    
-    return () => unsubscribe();
-  }, [symbol]);
-  
-  // Handle initial price and regular API updates
+  // Handle updates from API and listen for price changes
   useEffect(() => {
     if (!price) return;
     
-    // Get the real-time price and allow updates
-    const displayPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
+    // Get the price from the API - single source of truth
+    const apiPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
     
-    if (displayPrice > 0 && displayPrice !== priceState.currentPrice) {
+    // Only update if we have a valid new price
+    if (apiPrice > 0 && apiPrice !== priceState.price) {
       setPriceState(prev => ({
-        previousPrice: prev.currentPrice,
-        currentPrice: displayPrice,
+        previousPrice: prev.price,
+        price: apiPrice,
         flash: true,
         lastUpdate: new Date()
       }));
@@ -105,13 +89,13 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   
   // Get flash animation class
   const flashClass = priceState.flash ? 
-    (priceState.currentPrice > priceState.previousPrice ? 'text-green-500' : 'text-red-500') : '';
+    (priceState.price > priceState.previousPrice ? 'text-green-500' : 'text-red-500') : '';
   
   // Calculate time since last update
   const timeSinceUpdate = Math.floor((new Date().getTime() - priceState.lastUpdate.getTime()) / 1000);
   
   // Price direction indicator
-  const priceDirection = priceState.currentPrice > priceState.previousPrice ? 
+  const priceDirection = priceState.price > priceState.previousPrice ? 
     <ArrowUp className="h-4 w-4 text-green-500" /> : 
     <ArrowDown className="h-4 w-4 text-red-500" />;
   
@@ -121,7 +105,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
         <div>
           <div className="flex items-center">
             <span className={`text-2xl font-semibold text-white transition-colors duration-300 ${flashClass}`}>
-              {formatPrice(priceState.currentPrice, symbol)}
+              {formatPrice(priceState.price, symbol)}
             </span>
             {priceState.flash && priceDirection}
             <Badge variant="outline" className="ml-2 text-xs">
