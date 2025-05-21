@@ -4,13 +4,22 @@ import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
+import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
+import { 
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger 
+} from "@/components/ui/collapsible";
+import { Button } from '@/components/ui/button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const Analysis: React.FC = () => {
   const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
+  const [isHeatMapOpen, setIsHeatMapOpen] = useState(true);
   const { price } = useAssetPrice(currentAsset);
   
   const handleChangeAsset = (symbol: string) => {
@@ -49,7 +58,27 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-
+        {/* Heat Map Section */}
+        <div className="px-4 py-4">
+          <Collapsible open={isHeatMapOpen} onOpenChange={setIsHeatMapOpen}>
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xl font-bold text-white">Market-Wide Signal Analysis</h2>
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="sm" className="w-9 p-0">
+                  {isHeatMapOpen ? (
+                    <ChevronUp className="h-4 w-4" />
+                  ) : (
+                    <ChevronDown className="h-4 w-4" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+            </div>
+            
+            <CollapsibleContent>
+              <SignalHeatMap />
+            </CollapsibleContent>
+          </Collapsible>
+        </div>
       </main>
     </div>
   );
