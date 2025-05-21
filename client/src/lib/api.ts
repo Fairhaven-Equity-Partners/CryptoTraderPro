@@ -139,19 +139,11 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
   }
 }
 
-// Cache expiration times in milliseconds based on timeframe
-const CACHE_EXPIRATION = {
-  '1m': 45 * 1000,        // 45 seconds for 1-minute data
-  '5m': 120 * 1000,       // 2 minutes
-  '15m': 300 * 1000,      // 5 minutes
-  '30m': 600 * 1000,      // 10 minutes
-  '1h': 1800 * 1000,      // 30 minutes
-  '4h': 3600 * 1000,      // 1 hour
-  '1d': 7200 * 1000,      // 2 hours
-  '3d': 14400 * 1000,     // 4 hours
-  '1w': 14400 * 1000,     // 4 hours
-  '1M': 14400 * 1000,     // 4 hours
-};
+// Import optimized refresh intervals from our scheduler
+import { CACHE_VALIDITY, REFRESH_INTERVALS, PRICE_REFRESH_INTERVAL } from './refreshScheduler';
+
+// Use the optimized cache expiration times from refreshScheduler
+const CACHE_EXPIRATION = CACHE_VALIDITY;
 
 // Track when data was last fetched
 const cacheTimestamps: Record<string, Record<TimeFrame, number>> = {};
@@ -310,10 +302,10 @@ export function startRealTimeUpdates() {
   // Register handler for price updates
   registerMessageHandler('priceUpdate', handlePriceUpdate);
   
-  // Update prices every 90 seconds with real data from CoinGecko
+  // Update prices at the optimal frequency specified in the scheduler
   const updateInterval = setInterval(() => {
-    // Log for debugging - you'll see this every 90 seconds
-    console.log(`Scheduled price update check (90-second interval) at ${new Date().toLocaleTimeString()}`);
+    // Log for debugging
+    console.log(`Scheduled price update check (${PRICE_REFRESH_INTERVAL/1000}-second interval) at ${new Date().toLocaleTimeString()}`);
     try {
       // Fetch real-time price data from CoinGecko
       fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true')
@@ -385,7 +377,7 @@ export function startRealTimeUpdates() {
     } catch (error) {
       console.error('Error in price update:', error);
     }
-  }, 15000);
+  }, PRICE_REFRESH_INTERVAL);
   
   // Return the interval ID so it can be cleared if needed
   return updateInterval;
