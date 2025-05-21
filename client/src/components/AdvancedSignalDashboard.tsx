@@ -148,9 +148,9 @@ export default function AdvancedSignalDashboard({
   // Reference to track price consistently
   const priceRef = useRef<number>(getPrice(symbol));
   
-  // SYNCHRONIZED PRICE SYSTEM: Same price for both current and fetched display
-  // This ensures both values are identical at all times
-  const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(
+  // STABLE PRICE SYSTEM: Single source of truth (updates every 3 minutes)
+  // No separate current/fetched price concept anymore
+  const [assetPrice, setAssetPrice] = useState<number>(
     symbol === 'BTC/USDT' ? 108918 : 
     symbol === 'ETH/USDT' ? 2559 : 
     symbol === 'SOL/USDT' ? 171 : 0
@@ -169,7 +169,7 @@ export default function AdvancedSignalDashboard({
       const unsubscribe = subscribeToPriceUpdates(symbol, (price) => {
         if (price > 0) {
           console.log(`[StablePrice] Price update received for ${symbol}: ${price}`);
-          setCurrentAssetPrice(price);
+          setAssetPrice(price);
           
           // Also update our price reference
           priceRef.current = price;
@@ -183,7 +183,7 @@ export default function AdvancedSignalDashboard({
       getCurrentPrice(symbol).then(price => {
         if (price > 0) {
           console.log(`[StablePrice] Initial price for ${symbol}: ${price}`);
-          setCurrentAssetPrice(price);
+          setAssetPrice(price);
           priceRef.current = price;
           applyPriceAndCalculate(price);
         }
@@ -231,21 +231,13 @@ export default function AdvancedSignalDashboard({
     console.log(`[StablePrice] Using synchronized price for ${symbol}: ${price}`);
     
     // Update both local state and global reference
-    setCurrentAssetPrice(price);
+    setAssetPrice(price);
     priceRef.current = price;
     
     // Update global registries to ensure all components see the same price
     if (typeof window !== 'undefined') {
-      // Original global registries
-      if (!window.cryptoPrices) window.cryptoPrices = {};
-      if (!window.latestPrices) window.latestPrices = {};
-      
-      window.cryptoPrices[symbol] = price;
-      window.latestPrices[symbol] = price;
-      
-      if (symbol === 'BTC/USDT') {
-        window.currentPrice = price;
-      }
+      // No global price registries - use only the stable price system
+      // This ensures a single source of truth for price data
       
       // We don't dispatch additional price-update events here since
       // stablePriceSync.ts already handles broadcasting
@@ -279,10 +271,10 @@ export default function AdvancedSignalDashboard({
   
   // Ensure consistent price is used throughout component
   useEffect(() => {
-    if (currentAssetPrice > 0) {
-      priceRef.current = currentAssetPrice;
+    if (assetPrice > 0) {
+      priceRef.current = assetPrice;
     }
-  }, [currentAssetPrice]);
+  }, [assetPrice]);
   
   // Listen directly for the live price update custom event
   useEffect(() => {
@@ -448,14 +440,14 @@ export default function AdvancedSignalDashboard({
     
     // Wait for both historical data to be loaded AND live price data to be ready before calculating
     // This ensures we calculate with the most up-to-date data
-    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0) {
+    if (isAllDataLoaded && isLiveDataReady && assetPrice > 0) {
       console.log(`Auto-triggering calculation for ${symbol} - historical and live data are both ready`);
       
       // Only calculate if we haven't recently calculated
       const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
       if (timeSinceLastCalc > 2000) { // 2 second debounce
         // Force calculation with proper data
-        console.log(`Initiating calculation with live data for ${symbol} at price ${currentAssetPrice}`);
+        console.log(`Initiating calculation with live data for ${symbol} at price ${assetPrice}`);
         
         // Directly call calculate instead of going through the trigger function
         setIsCalculating(true);
@@ -475,7 +467,7 @@ export default function AdvancedSignalDashboard({
         }, 500);
       }
     }
-  }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
+  }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, assetPrice, triggerCalculation]);
   
   // Update timer for next refresh
   useEffect(() => {
