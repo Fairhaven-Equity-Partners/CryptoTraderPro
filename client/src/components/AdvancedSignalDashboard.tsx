@@ -192,8 +192,8 @@ export default function AdvancedSignalDashboard({
       - All data loaded: ${isAllDataLoaded}
       - Live data ready: ${isLiveDataReady}`);
     
-    // Always allow manual triggers to recalculate
-    if (trigger === 'manual' || trigger === 'timer') {
+    // Always allow manual triggers and heat-map selections to recalculate
+    if (trigger === 'manual' || trigger === 'timer' || trigger === 'heat-map-selection') {
       console.log(`${trigger} calculation requested for ${symbol}`);
       calculationTriggeredRef.current = true;
       
@@ -280,18 +280,21 @@ export default function AdvancedSignalDashboard({
     }
     
     // Auto-run analysis when triggered by autoRun prop (when user selects from heat map)
-    if (autoRun && isAllDataLoaded && !isCalculating) {
+    if (autoRun && !isCalculating) {
       console.log(`Auto-running analysis for ${symbol} based on user selection from heat map`);
       
-      // Wait briefly for data to fully load
-      setTimeout(() => {
-        triggerCalculation();
+      // Wait a bit longer for data to fully load before triggering calculation
+      const timer = setTimeout(() => {
+        console.log(`Triggering calculation for ${symbol} after waiting for data to load`);
+        triggerCalculation('heat-map-selection');
         
         // Notify parent that analysis is complete
         if (onAnalysisComplete) {
           onAnalysisComplete();
         }
-      }, 800);
+      }, 2500);
+      
+      return () => clearTimeout(timer);
     }
     
     // Log data status for debugging

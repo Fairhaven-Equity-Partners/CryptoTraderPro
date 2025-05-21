@@ -41,7 +41,9 @@ const Analysis: React.FC = () => {
   
   const handleChangeAsset = (symbol: string) => {
     setCurrentAsset(symbol);
+    setShouldRunAnalysis(true); // Directly set to run analysis
     setAssetChangeCounter(prev => prev + 1);
+    console.log(`Selected new asset: ${symbol} - analysis will run automatically`);
   };
   
   const handleChangeTimeframe = (timeframe: TimeFrame) => {
