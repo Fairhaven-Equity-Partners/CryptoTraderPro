@@ -408,8 +408,19 @@ export default function AdvancedSignalDashboard({
     'XRP/USDT': {} as Record<TimeFrame, AdvancedSignal | null>
   });
   
-  // Get the current signal for the selected timeframe using live data for all pairs
-  let currentSignal = signals[selectedTimeframe];
+  // Create a state for the current signal shown to the user
+  const [displayedSignal, setDisplayedSignal] = useState<AdvancedSignal | null>(null);
+  
+  // Update displayed signal when signals or selected timeframe changes
+  useEffect(() => {
+    if (signals && signals[selectedTimeframe]) {
+      console.log(`Updating displayed signal for ${selectedTimeframe}:`, signals[selectedTimeframe]);
+      setDisplayedSignal(signals[selectedTimeframe]);
+    }
+  }, [signals, selectedTimeframe]);
+  
+  // Use the displayed signal state instead of directly accessing signals object
+  const currentSignal = displayedSignal;
   
   // All pairs use live data for analysis
   
