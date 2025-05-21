@@ -473,29 +473,42 @@ export default function AdvancedSignalDashboard({
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, assetPrice, triggerCalculation]);
   
-  // Update timer for next refresh
+  // Update timer for next refresh - synchronized with the price update system
   useEffect(() => {
     // Clear any existing timers first to prevent duplicates
     if (recalcIntervalRef.current) {
       clearInterval(recalcIntervalRef.current);
     }
     
-    // Reset timer when a calculation completes
-    if (!isCalculating) {
-      setNextRefreshIn(180); // Reset to 3 minutes (180 seconds)
-    }
+    // Initialize the timer to 3 minutes
+    setNextRefreshIn(180); // 3 minutes (180 seconds)
     
-    // Set up countdown timer
+    // Create a price update handler - This is the ONLY place recalculations should be triggered
+    const handlePriceUpdate = (event: Event) => {
+      const detail = (event as CustomEvent).detail;
+      if (detail && detail.symbol === symbol) {
+        console.log(`[StablePrice] Price update received for ${symbol}, triggering recalculation`);
+        // Only trigger if we're not already calculating and enough time has passed
+        const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
+        const THREE_MINUTES = 180000; // 3 minutes in milliseconds
+        
+        if (!isCalculating && (timeSinceLastCalc > THREE_MINUTES - 5000 || lastCalculationRef.current === 0)) {
+          // Set a small delay to allow state updates
+          setTimeout(() => triggerCalculation('price-update'), 100);
+        } else {
+          console.log(`[StablePrice] Skipping recalculation - Last calc was ${Math.floor(timeSinceLastCalc/1000)}s ago`);
+        }
+      }
+    };
+    
+    // Listen for price updates from the central price system - this is the trigger for recalculation
+    window.addEventListener('price-update', handlePriceUpdate);
+    
+    // Set up display-only countdown timer that stays in sync with PriceOverview
     const timerInterval = setInterval(() => {
       setNextRefreshIn(prevTime => {
-        // When timer reaches zero, trigger refresh
-        if (prevTime <= 0) {
-          console.log("[StablePrice] 3-minute refresh timer reached zero, triggering calculation");
-          // Add a slight delay to ensure state updates have completed
-          setTimeout(() => triggerCalculation('timer'), 100);
-          return 180; // Reset to 3 minutes
-        }
-        return prevTime - 1;
+        // Just count down - actual recalculation will be triggered by price update event
+        return prevTime > 0 ? prevTime - 1 : 0;
       });
     }, 1000);
     
@@ -507,8 +520,9 @@ export default function AdvancedSignalDashboard({
       if (recalcIntervalRef.current) {
         clearInterval(recalcIntervalRef.current);
       }
+      window.removeEventListener('price-update', handlePriceUpdate);
     };
-  }, [isCalculating, triggerCalculation]);
+  }, [symbol, isCalculating, triggerCalculation]);
 
   // Store persistent signals across refreshes
   const persistentSignalsRef = useRef<Record<string, Record<TimeFrame, AdvancedSignal | null>>>({

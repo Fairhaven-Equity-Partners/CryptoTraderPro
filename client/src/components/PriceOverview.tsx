@@ -31,13 +31,25 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   // Ref to store interval
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Setup countdown timer for 3-minute updates
+  // Setup countdown timer for 3-minute updates and trigger price fetch
   useEffect(() => {
+    const fetchPrice = async () => {
+      console.log(`Price countdown reached 0 - Fetching new price for ${symbol}`);
+      try {
+        // Import directly here to avoid circular dependencies
+        const { getCurrentPrice } = await import('../lib/stablePriceSync');
+        getCurrentPrice(symbol);
+      } catch (error) {
+        console.error("Error fetching price at countdown end:", error);
+      }
+    };
+    
     // Countdown timer
     const timer = setInterval(() => {
       setNextRefreshIn(prev => {
-        if (prev <= 0) {
-          return 180; // Reset to 3 minutes when it reaches zero
+        if (prev <= 1) { // At 0 seconds, fetch and reset
+          fetchPrice(); // Actually trigger a fetch when countdown ends
+          return 180; // Reset to 3 minutes
         }
         return prev - 1;
       });
@@ -45,6 +57,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     
     // Listen for price updates to reset the countdown
     const resetTimer = () => {
+      console.log(`Price update received - Resetting countdown to 180s`);
       setNextRefreshIn(180); // Reset to 3 minutes on price update
     };
     
@@ -54,7 +67,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
       clearInterval(timer);
       window.removeEventListener('price-update', resetTimer);
     };
-  }, []);
+  }, [symbol]);
 
   // Handle updates from API and listen for price changes
   useEffect(() => {
