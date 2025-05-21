@@ -6,10 +6,12 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown } from 'lucide-react';
 import { 
-  startPricePolling, 
+  startTracking, 
+  stopTracking,
   subscribeToPriceUpdates, 
-  getSecondsUntilNextRefresh 
-} from '../lib/fixedPriceSystem';
+  getSecondsUntilNextRefresh,
+  getFormattedCountdown
+} from '../lib/finalPriceSystem';
 
 interface PriceOverviewProps {
   symbol: string;
@@ -35,41 +37,43 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   // Ref for flash animation timer
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Set up the price display countdown timer
+  // Setup a strict countdown timer that updates every second
   useEffect(() => {
-    // Start with the current remaining time
-    setNextRefreshIn(getSecondsUntilNextRefresh());
-    
-    // Update the countdown every second 
-    const countdownTimer = setInterval(() => {
+    // Update the timer immediately and then every second
+    const updateCountdown = () => {
       setNextRefreshIn(getSecondsUntilNextRefresh());
-    }, 1000);
-    
-    // Listen for price-timer-reset events
-    const handleTimerReset = () => {
-      console.log('Price timer reset event received');
-      setNextRefreshIn(180); // Reset to 3 minutes
     };
     
-    // Register for timer reset events
-    window.addEventListener('price-timer-reset', handleTimerReset);
+    // Update now
+    updateCountdown();
+    
+    // And update every second
+    const countdownTimer = setInterval(updateCountdown, 1000);
     
     return () => {
       clearInterval(countdownTimer);
-      window.removeEventListener('price-timer-reset', handleTimerReset);
     };
   }, []);
   
-  // Start price polling and subscribe to updates
+  // Connect to our final price system
   useEffect(() => {
-    console.log(`Setting up price updates for ${symbol}`);
+    console.log(`[PriceOverview] Setting up price updates for ${symbol}`);
     
-    // Start the 3-minute price polling system
-    const stopPolling = startPricePolling(symbol);
+    // Start tracking this symbol
+    startTracking(symbol).then((initialPrice) => {
+      if (initialPrice > 0) {
+        setPriceState({
+          price: initialPrice,
+          previousPrice: 0,
+          flash: false,
+          lastUpdate: new Date()
+        });
+      }
+    });
     
-    // Subscribe to price updates from our unified system
+    // Subscribe to price updates
     const unsubscribe = subscribeToPriceUpdates(symbol, (newPrice) => {
-      console.log(`Price update received: ${newPrice}`);
+      console.log(`[PriceOverview] Price update received: ${newPrice}`);
       
       // Update the price state with animation
       setPriceState(prev => ({
@@ -99,7 +103,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
         clearTimeout(flashTimerRef.current);
       }
       unsubscribe();
-      stopPolling();
+      stopTracking(symbol);
     };
   }, [symbol]);
   

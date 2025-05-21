@@ -159,57 +159,68 @@ export default function AdvancedSignalDashboard({
   // Track last calculation time to prevent excessive recalculations
   const [lastCalcTime, setLastCalcTime] = useState<number>(Date.now());
   
-  // FIXED STRICT PRICE SYNCHRONIZATION SYSTEM - Fetches every exactly 3 minutes
+  // FINAL STRICT PRICE SYNCHRONIZATION SYSTEM - Guarantees exactly 3-minute intervals
   useEffect(() => {
-    // Import and use our strict fixed price system with proper ES module syntax
-    import('../lib/fixedPriceSystem').then(module => {
-      console.log(`[MarketAnalysis] Setting up fixed 3-minute price polling for ${symbol}`);
+    console.log(`[MarketAnalysis] Setting up final price system for ${symbol}`);
+    
+    // Import our completely overhauled price system
+    import('../lib/finalPriceSystem').then(module => {
+      // Centralized flag to track if we're allowed to calculate now
+      let calculationAllowed = true;
       
-      // Start regular price polling (exactly every 3 minutes)
-      const stopPolling = module.startPricePolling(symbol);
-      
-      // Subscribe to price updates
-      const unsubscribe = module.subscribeToPriceUpdates(symbol, (price: number) => {
-        if (price > 0) {
-          console.log(`[MarketAnalysis] Price update received for ${symbol}: ${price}`);
-          setAssetPrice(price);
+      // Start tracking the symbol for price updates
+      module.startTracking(symbol).then((initialPrice) => {
+        if (initialPrice > 0) {
+          console.log(`[MarketAnalysis] Initial price for ${symbol}: ${initialPrice}`);
+          setAssetPrice(initialPrice);
+          priceRef.current = initialPrice;
           
-          // Also update our price reference
-          priceRef.current = price;
+          // Always do the initial calculation
+          applyPriceAndCalculate(initialPrice);
+          setLastCalcTime(Date.now());
           
-          // Apply the new price to all systems - but ONLY if 3 minutes have passed since last calculation
-          const now = Date.now();
-          if (now - lastCalcTime >= 180000) { // 3 minutes
-            console.log(`[MarketAnalysis] Triggering recalculation after 3-minute interval`);
-            applyPriceAndCalculate(price);
-            setLastCalcTime(now);
-          } else {
-            console.log(`[MarketAnalysis] Skipping recalculation - only ${Math.floor((now - lastCalcTime)/1000)}s since last calc`);
-          }
+          // Mark that we've just calculated
+          module.markCalculationPerformed(symbol);
+          calculationAllowed = false;
         }
       });
       
-      // Get initial price
-      module.getCurrentPrice(symbol).then((price: number) => {
-        if (price > 0) {
-          console.log(`[MarketAnalysis] Initial price for ${symbol}: ${price}`);
-          setAssetPrice(price);
-          priceRef.current = price;
-          // For initial price, we always want to calculate
+      // Subscribe to price updates - with strict 3-minute calculation rules
+      const unsubscribe = module.subscribeToPriceUpdates(symbol, (price) => {
+        if (price <= 0) return;
+        
+        console.log(`[MarketAnalysis] Price update received for ${symbol}: ${price}`);
+        setAssetPrice(price);
+        priceRef.current = price;
+        
+        // Only calculate if we're allowed to (3-minute rule)
+        if (module.shouldCalculate(symbol)) {
+          console.log(`[MarketAnalysis] Triggering recalculation - 3 minutes have passed`);
           applyPriceAndCalculate(price);
           setLastCalcTime(Date.now());
+          module.markCalculationPerformed(symbol);
+        } else {
+          console.log(`[MarketAnalysis] Skipping calculation - has not been 3 minutes yet`);
         }
       });
       
-      // Cleanup function
+      // Also subscribe to the 3-minute refresh cycle
+      const unsubscribeRefresh = module.subscribeToRefreshCycle(() => {
+        console.log(`[MarketAnalysis] 3-minute refresh cycle completed`);
+        calculationAllowed = true;
+      });
+      
+      // Cleanup
       return () => {
-        stopPolling();
+        console.log(`[MarketAnalysis] Cleaning up price system for ${symbol}`);
         unsubscribe();
+        unsubscribeRefresh();
+        module.stopTracking(symbol);
       };
     }).catch(err => {
-      console.error("Failed to load fixed price system:", err);
+      console.error(`[MarketAnalysis] Failed to load final price system:`, err);
     });
-  }, [symbol, lastCalcTime]);
+  }, [symbol]);
   
   // Apply the stable price to all parts of the system with 3-minute refresh
   function applyPriceAndCalculate(price: number) {
