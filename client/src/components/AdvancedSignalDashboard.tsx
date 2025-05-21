@@ -1401,15 +1401,7 @@ export default function AdvancedSignalDashboard({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Left column with signals and indicators */}
                       <div className="space-y-4">
-                        {/* Price Display - Updated every 3 minutes */}
-                        <div className="space-y-1 mb-3">
-                          <h3 className="text-white font-bold text-sm flex items-center">
-                            Price <Badge variant="outline" className="ml-2 text-xs">Updates every 3m</Badge>
-                          </h3>
-                          <div className="text-2xl font-bold text-cyan-300">
-                            {formatCurrency(assetPrice || currentSignal?.entryPrice || 0)}
-                          </div>
-                        </div>
+                        {/* No price display here - using the one from PriceOverview component */}
                         
                         <div className="space-y-2">
                           <h3 className="text-white font-bold text-sm">Signal Strength</h3>
