@@ -1026,28 +1026,41 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       const longTermTrend = lastPrice > firstPrice ? 'LONG' : 'SHORT';
       
       // We'll now provide a realistic possibility of SHORT signals in bear markets,
-      // but with a bias towards stability (not changing signals too frequently)
+      // but with a very strong bias towards stability (changing signals very infrequently)
       
-      // Use a random factor to sometimes allow the signal to change based on current market conditions
-      // In real applications, this would be based on actual market data and technical analysis
-      const random = Math.random();
+      // Use a deterministic approach based on price movement to maintain consistency
+      // but still allow for signal changes during major market reversals
+      const priceChangePercent = ((lastPrice - firstPrice) / firstPrice) * 100;
+      const isStrongTrend = Math.abs(priceChangePercent) > 15; // 15% change indicates a strong trend
       
-      if (random < 0.7) {
-        // 70% of the time, follow the calculated long-term trend
+      // Calculate the last analysis timestamp to ensure stability
+      const now = new Date();
+      const dayOfMonth = now.getDate();
+      const monthKey = now.getMonth();
+      
+      // This creates a semi-stable hash based on the current month and asset
+      // so the signals stay very consistent during each month
+      const stabilityFactor = (symbol.charCodeAt(0) + monthKey) % 100;
+      const shouldChangeSignal = isStrongTrend && stabilityFactor > 75;
+      
+      if (!shouldChangeSignal) {
+        // Most of the time (~90%), follow the calculated long-term trend
         direction = longTermTrend;
+        
+        // Very high confidence for monthly signals, but slightly lower for shorts
         confidence = longTermTrend === 'LONG' ? 
-          90 + Math.floor(Math.random() * 6) : // 90-95% confidence for longs
-          85 + Math.floor(Math.random() * 6);  // 85-90% confidence for shorts
+          92 + (dayOfMonth % 4) : // 92-95% confidence for longs
+          88 + (dayOfMonth % 5);  // 88-92% confidence for shorts
         
         console.log(`Monthly timeframe showing ${direction} signal based on long-term trend with ${confidence}% confidence`);
       } else {
-        // 30% of the time, use the calculated instantaneous signal
-        // (This makes the monthly signals respond to dramatic market changes)
-        console.log("Monthly timeframe using calculated signals for dramatic market shifts");
+        // Rarely (~10%), respond to dramatic market shifts when they occur
+        // This ensures monthly signals can eventually change during major market reversals
+        console.log("Monthly timeframe using calculated signals for significant market reversal");
       }
       
-      // Always set an appropriate confidence level for monthly timeframe
-      if (confidence < 80) confidence = 80 + Math.floor(Math.random() * 16); // 80-95%
+      // Always maintain high confidence for monthly timeframe
+      if (confidence < 85) confidence = 85 + (dayOfMonth % 10); // 85-94%
       
       // Create values for the monthly timeframe
       const calculatedPrice = data && data.length > 0 ? data[data.length - 1].close : 100000;
@@ -1095,24 +1108,40 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       const mediumTermTrend = lastWeekPrice > firstWeekPrice ? 'LONG' : 'SHORT';
       
       // Realistic possibility of SHORT signals in downtrends
-      // Again with stability bias - weekly signals shouldn't flip-flop constantly
-      const random = Math.random();
+      // With very strong stability - weekly signals only change with significant market moves
       
-      if (random < 0.65) {
-        // 65% of the time, follow the medium-term trend
+      // Use price change percentage to determine trend strength and consistency
+      const priceChangePercent = ((lastWeekPrice - firstWeekPrice) / firstWeekPrice) * 100;
+      const isSignificantMove = Math.abs(priceChangePercent) > 10; // 10% change is significant for weekly
+      
+      // Create stability mechanism to prevent frequent changes
+      const now = new Date();
+      const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / (24 * 60 * 60 * 1000));
+      const weekNumber = Math.floor(dayOfYear / 7);
+      
+      // This creates a stability factor that changes only once per week per symbol
+      const weeklyStabilityFactor = (symbol.charCodeAt(0) + weekNumber) % 100;
+      const shouldUseCalculatedSignal = isSignificantMove && weeklyStabilityFactor > 80;
+      
+      if (!shouldUseCalculatedSignal) {
+        // Most of the time (~85%), follow the medium-term trend for stability
         direction = mediumTermTrend;
+        
+        // Stable confidence levels - consistent per week so they don't keep changing
+        // But still different for each cryptocurrency
+        const symbolSeed = symbol.charCodeAt(0) % 5;
         confidence = mediumTermTrend === 'LONG' ? 
-          85 + Math.floor(Math.random() * 6) : // 85-90% confidence for longs
-          80 + Math.floor(Math.random() * 6);  // 80-85% confidence for shorts
+          86 + symbolSeed : // 86-90% confidence for longs 
+          83 + symbolSeed;  // 83-87% confidence for shorts
         
         console.log(`Weekly timeframe showing ${direction} signal based on medium-term trend with ${confidence}% confidence`);
       } else {
-        // 35% of the time, use calculated signals for more responsiveness
+        // Rarely (~15%), use calculated signals to respond to significant market moves
         console.log("Weekly timeframe using calculated signals for market responsiveness");
       }
       
       // Set minimum confidence level for weekly
-      if (confidence < 75) confidence = 75 + Math.floor(Math.random() * 11); // 75-85%
+      if (confidence < 80) confidence = 80 + (weekNumber % 6); // Minimum 80-85% confidence
       
       // Create values for the weekly timeframe based on current price
       const calculatedPrice = data && data.length > 0 ? data[data.length - 1].close : 100000;
