@@ -62,13 +62,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Get specific crypto asset
+  // Get specific crypto asset with real-time price data from CoinGecko
   app.get('/api/crypto/:symbol', async (req: Request, res: Response) => {
     try {
       // URL decode the symbol and replace encoded forward slash
       const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
       console.log(`Fetching crypto asset with symbol: ${symbol}`);
       
+      // Use CoinGecko for Bitcoin's real-time price
+      if (symbol === 'BTC/USDT') {
+        try {
+          console.log('Fetching real-time Bitcoin price from CoinGecko API');
+          const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+          const data = await response.json();
+          
+          if (data && data.bitcoin && data.bitcoin.usd) {
+            const realTimePrice = data.bitcoin.usd;
+            console.log(`Got real-time Bitcoin price: $${realTimePrice}`);
+            
+            // Get the existing asset first
+            const asset = await storage.getCryptoAssetBySymbol(symbol);
+            
+            if (asset) {
+              // Update the asset with real market data
+              await storage.updateCryptoAsset(symbol, {
+                lastPrice: realTimePrice,
+                price: realTimePrice
+              });
+              
+              // Return the updated asset
+              const updatedAsset = await storage.getCryptoAssetBySymbol(symbol);
+              return res.json(updatedAsset);
+            }
+          }
+        } catch (apiError) {
+          console.error('Failed to fetch from CoinGecko:', apiError);
+          // Continue with normal flow if API call fails
+        }
+      }
+      
+      // Get from storage if no real-time data or for other symbols
       const asset = await storage.getCryptoAssetBySymbol(symbol);
       
       if (!asset) {
