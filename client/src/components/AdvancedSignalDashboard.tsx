@@ -97,10 +97,10 @@ interface AdvancedSignalDashboardProps {
 }
 
 // Main component
-export default function AdvancedSignalDashboard({ 
+const AdvancedSignalDashboard = React.forwardRef(({ 
   symbol, 
   onTimeframeSelect 
-}: AdvancedSignalDashboardProps) {
+}: AdvancedSignalDashboardProps, ref) => {
   // State for the selected timeframe
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
   const [isCalculating, setIsCalculating] = useState(false);

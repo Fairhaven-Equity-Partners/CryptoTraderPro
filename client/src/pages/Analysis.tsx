@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
@@ -21,9 +21,26 @@ const Analysis: React.FC = () => {
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
   const [isHeatMapOpen, setIsHeatMapOpen] = useState(true);
   const { price } = useAssetPrice(currentAsset);
+  const [assetChangeCounter, setAssetChangeCounter] = useState(0);
+  const signalDashboardRef = useRef<any>(null);
+  
+  // Effect to trigger analysis when asset changes
+  useEffect(() => {
+    // Skip the initial render
+    if (assetChangeCounter > 0 && signalDashboardRef.current?.runAnalysis) {
+      console.log(`Automatically running analysis for ${currentAsset}`);
+      // Allow time for data to load first
+      const timer = setTimeout(() => {
+        signalDashboardRef.current.runAnalysis();
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [currentAsset, assetChangeCounter]);
   
   const handleChangeAsset = (symbol: string) => {
     setCurrentAsset(symbol);
+    setAssetChangeCounter(prev => prev + 1);
   };
   
   const handleChangeTimeframe = (timeframe: TimeFrame) => {
@@ -46,6 +63,7 @@ const Analysis: React.FC = () => {
         
         <div className="px-4 py-2">
           <AdvancedSignalDashboard 
+            ref={signalDashboardRef}
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
           />
