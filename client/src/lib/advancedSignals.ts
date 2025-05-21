@@ -199,11 +199,22 @@ export function calculateTimeframeConfidence(
     
     // Basic validation with improved error handling
     if (!Array.isArray(chartData) || chartData.length < 10) {
-      throw new Error(`Invalid chart data for analysis: ${chartData.length} data points (need at least 10)`);
+      console.log(`Warning: Insufficient data points for ${symbol} analysis on ${timeframe} timeframe: ${chartData?.length || 0} data points (need at least 10)`);
+      // For weekly and monthly timeframes, we'll provide stable fallback data instead of throwing
+      if (timeframe === '1w' || timeframe === '1M') {
+        return createFallbackSignal(symbol, timeframe, price);
+      }
+      throw new Error(`Invalid chart data for analysis: ${chartData?.length || 0} data points (need at least 10)`);
     }
     
     if (!symbol) {
       throw new Error(`Missing symbol parameter`);
+    }
+    
+    // Add special handling for weekly and monthly timeframes which need more data
+    if ((timeframe === '1w' && chartData.length < 80) || (timeframe === '1M' && chartData.length < 30)) {
+      console.log(`Warning: Recommended minimum data points for ${timeframe} timeframe not met (${chartData.length} provided)`);
+      // We'll continue but with caution
     }
     
     // Basic calculations
