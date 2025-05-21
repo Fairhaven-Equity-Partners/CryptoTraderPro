@@ -163,7 +163,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     cacheTimestamps[symbol] = cacheTimestamps[symbol] || {};
     
     // If there's already a request in progress for this data, return that promise
-    if (pendingRequests[symbol][timeframe]) {
+    if (pendingRequests[symbol][timeframe] !== undefined) {
       return pendingRequests[symbol][timeframe];
     }
     

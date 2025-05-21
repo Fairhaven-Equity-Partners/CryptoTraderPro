@@ -615,7 +615,7 @@ export default function AdvancedSignalDashboard({
       patterns.push({
         name: `Market Structure: ${structureName}`,
         reliability,
-        direction: structureDirection,
+        direction: structureDirection as "bullish" | "bearish" | "neutral",
         priceTarget,
         description
       });
@@ -679,7 +679,7 @@ export default function AdvancedSignalDashboard({
       patterns.push({
         name: `Wyckoff ${wyckoffPhase}`,
         reliability,
-        direction: wyckoffDirection,
+        direction: wyckoffDirection as "bullish" | "bearish" | "neutral",
         priceTarget,
         description
       });
@@ -873,8 +873,7 @@ export default function AdvancedSignalDashboard({
           // Generate signal using our technical analysis functions
           let signal = await generateSignal(
             chartData[timeframe],
-            timeframe,
-            symbol
+            timeframe
           );
           
           // Generate pattern formations based on signal direction and timeframe
