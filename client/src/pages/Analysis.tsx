@@ -3,7 +3,8 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
-import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
+// Import our final component with guaranteed once-per-3min calculations
+import OneTimeCalculationDashboard from '../components/OneTimeCalculationDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -65,11 +66,9 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <AdvancedSignalDashboard 
+          <OneTimeCalculationDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
-            autoRun={shouldRunAnalysis}
-            onAnalysisComplete={() => setShouldRunAnalysis(false)}
           />
         </div>
         
