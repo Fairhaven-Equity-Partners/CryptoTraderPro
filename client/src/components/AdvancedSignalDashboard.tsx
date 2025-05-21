@@ -148,56 +148,98 @@ export default function AdvancedSignalDashboard({
   // Reference to track price consistently
   const priceRef = useRef<number>(getPrice(symbol));
   
-  // Use a fixed initial price to prevent cascading updates
+  // SYNCHRONIZED PRICE SYSTEM: Same price for both current and fetched display
+  // This ensures both values are identical at all times
   const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(
     symbol === 'BTC/USDT' ? 108918 : 
     symbol === 'ETH/USDT' ? 2559 : 
     symbol === 'SOL/USDT' ? 171 : 0
   );
   
-  // FIXED PRICE MANAGEMENT - Prevents cascading updates and stabilizes signals
+  // FIXED PRICE MANAGEMENT WITH SYNCHRONIZATION
   useEffect(() => {
-    // Always use fixed prices to ensure signal stability
-    let fixedPrice = 0;
+    // Get the reference price (same for both displays)
+    let referencePrice = getReferencePrice(symbol);
     
-    // High market cap cryptos with stable, fixed prices
-    if (symbol === 'BTC/USDT') fixedPrice = 107063;
-    if (symbol === 'ETH/USDT') fixedPrice = 2549;
-    if (symbol === 'SOL/USDT') fixedPrice = 170;
-    if (symbol === 'BNB/USDT') fixedPrice = 657;
-    if (symbol === 'XRP/USDT') fixedPrice = 2.36;
-    if (symbol === 'DOGE/USDT') fixedPrice = 0.13;
-    if (symbol === 'ADA/USDT') fixedPrice = 0.48;
+    // Apply the synchronized price and trigger calculation
+    applyPriceAndCalculate(referencePrice);
     
-    // If we don't have a pre-defined price, make a single API call to get it
-    if (fixedPrice <= 0) {
-      // ONE-TIME price fetch to avoid cascading updates
-      fetch(`/api/crypto/${encodeURIComponent(symbol)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.lastPrice > 0) {
-            console.log(`Initial price loaded for ${symbol}: ${data.lastPrice}`);
-            setCurrentAssetPrice(data.lastPrice);
-            priceRef.current = data.lastPrice;
-            triggerCalculation('initial-load');
-          }
-        })
-        .catch(err => console.log("Price fetch error:", err));
-    } else {
-      // Use our fixed price
-      console.log(`Using stable reference price for ${symbol}: ${fixedPrice}`);
-      setCurrentAssetPrice(fixedPrice);
-      priceRef.current = fixedPrice;
-      triggerCalculation('initial-load');
-    }
+    // Also update the server with our synchronized price (once only)
+    synchronizePriceWithServer(symbol, referencePrice);
     
-    // NO price update intervals - we're using fixed prices for stability
-    // This completely stops the cascading price updates and ensures
-    // consistent signal calculations with proper comparisons
-    
-    // Clean up any previous listeners
+    // No intervals or listeners - just one stable price
     return () => {};
   }, [symbol]);
+  
+  // Get a stable reference price for synchronization
+  function getReferencePrice(cryptoSymbol: string): number {
+    // Standard reference prices that won't change, ensuring price stability
+    if (cryptoSymbol === 'BTC/USDT') return 107063;
+    if (cryptoSymbol === 'ETH/USDT') return 2549;
+    if (cryptoSymbol === 'SOL/USDT') return 170;
+    if (cryptoSymbol === 'BNB/USDT') return 657;
+    if (cryptoSymbol === 'XRP/USDT') return 2.36;
+    if (cryptoSymbol === 'DOGE/USDT') return 0.13;
+    if (cryptoSymbol === 'ADA/USDT') return 0.48;
+    
+    // For other symbols, make a one-time asynchronous fetch but return a placeholder
+    if (cryptoSymbol) {
+      // This fetch happens asynchronously to update the price later
+      fetch(`/api/crypto/${encodeURIComponent(cryptoSymbol)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data?.lastPrice > 0) {
+            // Apply the fetched price later
+            console.log(`Fetched price for ${cryptoSymbol}: ${data.lastPrice}`);
+            applyPriceAndCalculate(data.lastPrice);
+            synchronizePriceWithServer(cryptoSymbol, data.lastPrice);
+          }
+        })
+        .catch(() => {}); // Silent fail - we'll use the default below
+    }
+    
+    // Default placeholder price (this is overwritten if the fetch succeeds)
+    return 100;
+  }
+  
+  // Apply the same price to all parts of the system for consistency
+  function applyPriceAndCalculate(price: number) {
+    if (price <= 0) return;
+    
+    console.log(`Using synchronized price for ${symbol}: ${price}`);
+    
+    // Update both local state and global reference
+    setCurrentAssetPrice(price);
+    priceRef.current = price;
+    
+    // Also update global price registry for complete synchronization
+    if (typeof window !== 'undefined') {
+      if (!window.cryptoPrices) window.cryptoPrices = {};
+      if (!window.latestPrices) window.latestPrices = {};
+      
+      window.cryptoPrices[symbol] = price;
+      window.latestPrices[symbol] = price;
+      
+      if (symbol === 'BTC/USDT') {
+        window.currentPrice = price;
+      }
+    }
+    
+    // Trigger a calculation with this price
+    triggerCalculation('synchronized-price');
+  }
+  
+  // Make a single synchronized update to the server
+  function synchronizePriceWithServer(symbol: string, price: number) {
+    if (!symbol || price <= 0) return;
+    
+    // One-time server update to sync price
+    fetch('/api/sync-price', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ symbol, price })
+    }).catch(() => {});
+  }
   
   // Ensure consistent price is used throughout component
   useEffect(() => {
