@@ -89,3 +89,17 @@ export interface AppTab {
   label: string;
   icon: string;
 }
+
+// Price event data structure
+export interface PriceEvent {
+  price: number;
+  timestamp: number;
+}
+
+// Global window extensions
+declare global {
+  interface Window {
+    latestPriceEvents: Record<string, PriceEvent>;
+    syncGlobalPrice: (symbol: string, price: number, timestamp?: number) => number;
+  }
+}

@@ -147,36 +147,35 @@ export default function AdvancedSignalDashboard({
   // We need to ensure price consistency throughout the component lifecycle
   const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(0);
   
+  // Create a shared reference for the global price value
+  const globalPriceRef = useRef<number>(0);
+  
   // Update price logic
   useEffect(() => {
-    // On initial load, check for the most accurate price source in this order:
-    // 1. Live price data from events
-    // 2. API data from asset query
-    // 3. Current accurate market values
-    
-    let bestPrice = 0;
-    
-    // First, check for API data (this comes from the server)
-    if (asset?.lastPrice) {
-      bestPrice = asset.lastPrice;
-      console.log(`Using API price data for ${symbol}: ${bestPrice}`);
-    }
-    
-    // Then check for live event data which would be most current
+    // First, always store the active symbol in a global reference
     const liveElement = document.getElementById('live-price-data');
     if (liveElement) {
-      const liveAttr = liveElement.getAttribute(`data-${symbol.replace('/', '-')}`);
-      if (liveAttr) {
-        try {
-          const livePrice = parseFloat(liveAttr);
-          if (livePrice > 0) {
-            bestPrice = livePrice;
-            console.log(`Using live event price data for ${symbol}: ${bestPrice}`);
-          }
-        } catch (e) {
-          // Continue with best price found so far
-        }
-      }
+      liveElement.setAttribute('data-active-symbol', symbol);
+    }
+    
+    // Force a single source of truth for price data
+    let bestPrice = 0;
+    
+    // Priority order for price sources:
+    // 1. Use the most recent real-time price update from CoinGecko
+    // 2. Use the server-side price only if it was recently updated
+    // 3. Use market-accurate fallback prices
+    
+    // Check for latest price from the WebSocket or event system
+    const eventData = window.latestPriceEvents?.[symbol];
+    if (eventData && eventData.price > 0 && eventData.timestamp > Date.now() - 60000) {
+      bestPrice = eventData.price;
+      console.log(`Using real-time event price for ${symbol}: ${bestPrice}`);
+    }
+    // Then check API data as backup
+    else if (asset?.lastPrice) {
+      bestPrice = asset.lastPrice;
+      console.log(`Using API price data for ${symbol}: ${bestPrice}`);
     }
     
     // If we still don't have a valid price, use accurate market values
