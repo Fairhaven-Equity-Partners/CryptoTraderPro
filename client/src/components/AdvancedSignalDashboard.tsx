@@ -161,56 +161,55 @@ export default function AdvancedSignalDashboard({
   
   // FIXED STRICT PRICE SYNCHRONIZATION SYSTEM - Fetches every exactly 3 minutes
   useEffect(() => {
-    // Import and use our strict fixed price system
-    const { getCurrentPrice, startPricePolling, subscribeToPriceUpdates } = require('../lib/fixedPriceSystem');
-    console.log(`[MarketAnalysis] Setting up fixed 3-minute price polling for ${symbol}`);
-    
-    // Start regular price polling (exactly every 3 minutes)
-    const stopPolling = startPricePolling(symbol);
-    
-    // Subscribe to price updates
-    const unsubscribe = subscribeToPriceUpdates(symbol, (price) => {
-      if (price > 0) {
-        console.log(`[MarketAnalysis] Price update received for ${symbol}: ${price}`);
-        setAssetPrice(price);
-        
-        // Also update our price reference
-        priceRef.current = price;
-        
-        // Apply the new price to all systems - but ONLY if 3 minutes have passed since last calculation
-        const now = Date.now();
-        if (now - lastCalcTime >= 180000) { // 3 minutes
-          console.log(`[MarketAnalysis] Triggering recalculation after 3-minute interval`);
-          applyPriceAndCalculate(price);
-          setLastCalcTime(now);
-        } else {
-          console.log(`[MarketAnalysis] Skipping recalculation - only ${Math.floor((now - lastCalcTime)/1000)}s since last calc`);
+    // Import and use our strict fixed price system with proper ES module syntax
+    import('../lib/fixedPriceSystem').then(module => {
+      console.log(`[MarketAnalysis] Setting up fixed 3-minute price polling for ${symbol}`);
+      
+      // Start regular price polling (exactly every 3 minutes)
+      const stopPolling = module.startPricePolling(symbol);
+      
+      // Subscribe to price updates
+      const unsubscribe = module.subscribeToPriceUpdates(symbol, (price: number) => {
+        if (price > 0) {
+          console.log(`[MarketAnalysis] Price update received for ${symbol}: ${price}`);
+          setAssetPrice(price);
+          
+          // Also update our price reference
+          priceRef.current = price;
+          
+          // Apply the new price to all systems - but ONLY if 3 minutes have passed since last calculation
+          const now = Date.now();
+          if (now - lastCalcTime >= 180000) { // 3 minutes
+            console.log(`[MarketAnalysis] Triggering recalculation after 3-minute interval`);
+            applyPriceAndCalculate(price);
+            setLastCalcTime(now);
+          } else {
+            console.log(`[MarketAnalysis] Skipping recalculation - only ${Math.floor((now - lastCalcTime)/1000)}s since last calc`);
+          }
         }
-      }
+      });
+      
+      // Get initial price
+      module.getCurrentPrice(symbol).then((price: number) => {
+        if (price > 0) {
+          console.log(`[MarketAnalysis] Initial price for ${symbol}: ${price}`);
+          setAssetPrice(price);
+          priceRef.current = price;
+          // For initial price, we always want to calculate
+          applyPriceAndCalculate(price);
+          setLastCalcTime(Date.now());
+        }
+      });
+      
+      // Cleanup function
+      return () => {
+        stopPolling();
+        unsubscribe();
+      };
+    }).catch(err => {
+      console.error("Failed to load fixed price system:", err);
     });
-    
-    // Get initial price
-    getCurrentPrice(symbol).then((price: number) => {
-      if (price > 0) {
-        console.log(`[MarketAnalysis] Initial price for ${symbol}: ${price}`);
-        setAssetPrice(price);
-        priceRef.current = price;
-        // For initial price, we always want to calculate
-        applyPriceAndCalculate(price);
-        setLastCalcTime(Date.now());
-      }
-    });
-    
-    // Cleanup function
-    return () => {
-      stopPolling();
-      unsubscribe();
-    };
-  }, [symbol]);
-    
-    // Default placeholder price (this is overwritten if the fetch succeeds)
-    return 100;
-  }
+  }, [symbol, lastCalcTime]);
   
   // Apply the stable price to all parts of the system with 3-minute refresh
   function applyPriceAndCalculate(price: number) {
