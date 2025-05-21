@@ -118,11 +118,20 @@ export function useAssetPrice(symbol: string) {
     setRealtimePrice(null);
     setIsLiveDataConnected(false);
     
-    // Import from our central price registry
-    const { FIXED_PRICES } = require('../lib/fixedPrices');
+    // Use fixed reference prices directly (must match AdvancedSignalDashboard.tsx values)
+    const getFixedPrice = (sym: string): number => {
+      if (sym === 'BTC/USDT') return 107063.00;
+      if (sym === 'ETH/USDT') return 2549.17;
+      if (sym === 'SOL/USDT') return 170.33;
+      if (sym === 'BNB/USDT') return 657.12;
+      if (sym === 'XRP/USDT') return 2.36;
+      if (sym === 'DOGE/USDT') return 0.13;
+      if (sym === 'ADA/USDT') return 0.48;
+      return 0;
+    };
     
     // Get fixed price from our reference set
-    const fixedPrice = FIXED_PRICES[symbol] || 0;
+    const fixedPrice = getFixedPrice(symbol);
     
     if (fixedPrice > 0 && initialPrice) {
       // Create a price object with our fixed price
