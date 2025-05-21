@@ -440,37 +440,34 @@ export default function AdvancedSignalDashboard({
       console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
     }
     
-    // Wait for both historical data to be loaded AND live price data to be ready before calculating
-    // This ensures we calculate with the most up-to-date data
-    if (isAllDataLoaded && isLiveDataReady && assetPrice > 0) {
-      console.log(`Auto-triggering calculation for ${symbol} - historical and live data are both ready`);
+    // FIRST LOAD ONLY: Wait for both historical data to be loaded AND live price data to be ready
+    // Only trigger initial calculation when component first mounts
+    if (isAllDataLoaded && isLiveDataReady && assetPrice > 0 && lastCalculationRef.current === 0) {
+      console.log(`FIRST LOAD ONLY: Initial calculation for ${symbol} - data ready`);
       
-      // Only calculate if we haven't recently calculated - 3-minute debounce to match price refresh
-      const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-      const THREE_MINUTES = 180000; // 3 minutes in milliseconds
+      // Calculate only once on first load - after this, price-update events will trigger calculations
+      console.log(`First-time calculation for ${symbol} with price ${assetPrice}`);
       
-      if (timeSinceLastCalc > THREE_MINUTES || lastCalculationRef.current === 0) { // Only recalculate every 3 minutes or on first load
-        // Force calculation with proper data
-        console.log(`Initiating calculation with live data for ${symbol} at price ${assetPrice} (3-minute interval)`);
+      // Set up initial calculation
+      setIsCalculating(true);
+      lastCalculationRef.current = Date.now();
+      lastCalculationTimeRef.current = Date.now() / 1000;
+      
+      // Call the calculation method with a slight delay to ensure all UI updates are processed
+      setTimeout(() => {
+        calculateAllSignals();
         
-        // Directly call calculate instead of going through the trigger function
-        setIsCalculating(true);
-        lastCalculationRef.current = Date.now();
-        lastCalculationTimeRef.current = Date.now() / 1000;
-        
-        // Call the calculation method with a slight delay to ensure all UI updates are processed
-        setTimeout(() => {
-          calculateAllSignals();
-          
-          // Show a confirmation toast that calculation is happening automatically
-          toast({
-            title: "Live Data Analysis",
-            description: `Analyzing ${symbol} with current price data`,
-            variant: "default"
-          });
-        }, 500);
-      }
+        // Show a confirmation toast that calculation is happening automatically
+        toast({
+          title: "Initial Data Analysis",
+          description: `First analysis of ${symbol} data`,
+          variant: "default"
+        });
+      }, 500);
     }
+    
+    // DO NOT ADD ANY OTHER CONDITIONS HERE THAT WOULD TRIGGER RECALCULATION
+    // All other recalculations are handled by the price-update event handler
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, assetPrice, triggerCalculation]);
   
   // Update timer for next refresh - synchronized with the price update system
