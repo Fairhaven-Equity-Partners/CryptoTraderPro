@@ -151,10 +151,13 @@ export default function AdvancedSignalDashboard({
   // FIXED PRICE SYSTEM: Single source of truth (updates every 3 minutes)
   // No separate current/fetched price concept anymore
   const [assetPrice, setAssetPrice] = useState<number>(
-    symbol === 'BTC/USDT' ? 108918 : 
+    symbol === 'BTC/USDT' ? 108181 : 
     symbol === 'ETH/USDT' ? 2559 : 
     symbol === 'SOL/USDT' ? 171 : 0
   );
+  
+  // Additional global flag to prevent excessive API calls for calculations
+  const [calculationsLocked, setCalculationsLocked] = useState<boolean>(true);
   
   // Track last calculation time to prevent excessive recalculations
   const [lastCalcTime, setLastCalcTime] = useState<number>(Date.now());
@@ -169,7 +172,9 @@ export default function AdvancedSignalDashboard({
     // Import our completely overhauled price system
     import('../lib/finalPriceSystem').then(module => {
       // Centralized flag to track if we're allowed to calculate now - ABSOLUTE STRICT RULE
-      let calculationAllowed = false; // Start with calculation DISABLED
+      // Start by unlocking calculations but enforce the 3-minute timer
+      setCalculationsLocked(false); 
+      let calculationAllowed = false;
       
       // Start tracking the symbol for price updates
       module.startTracking(symbol).then((initialPrice) => {
@@ -225,19 +230,29 @@ export default function AdvancedSignalDashboard({
     });
   }, [symbol]);
   
-  // Apply the stable price to all parts of the system with 3-minute refresh
+  // Apply the stable price to all parts of the system with 3-minute refresh - ULTRA STRICT TIMER
   function applyPriceAndCalculate(price: number) {
     if (price <= 0) return;
     
-    // IMPORTANT: Only allow calculations once every 3 minutes 
+    // Only show updated price, but don't trigger calculations until 3 minutes pass
+    setAssetPrice(price); // Always update price display immediately
+    
+    // ULTRA-STRICT 3-MINUTE LOCK: This is a global lock that prevents ALL recalculations
+    // for 3 full minutes regardless of what triggered the recalculation
     const now = Date.now();
     const timeSinceLastCalc = now - lastCalcTime;
     if (timeSinceLastCalc < 180000) { // 180000ms = 3 minutes
-      console.log(`[STRICT-TIMER] Skipping calculation - only ${Math.floor(timeSinceLastCalc/1000)}s since last calc (need 180s)`);
-      return; // Exit early to prevent the frequent recalculations
+      console.log(`[ULTRA-STRICT-TIMER] Blocking calculation - only ${Math.floor(timeSinceLastCalc/1000)}s since last calc (need 180s)`);
+      return; // Complete EXIT - no calculations allowed until 3 minutes pass
     }
     
-    console.log(`[StablePrice] Using synchronized price for ${symbol}: ${price} - recalculating after 3+ minutes`);
+    // Only allow calculations if timer has passed AND they're not locked
+    if (calculationsLocked) {
+      console.log(`[CALCULATION-LOCK] Calculations are currently locked - skipping`);
+      return;
+    }
+    
+    console.log(`[StablePrice] Using synchronized price for ${symbol}: ${price} - FULL recalculation after 3+ minutes`);
     
     // Update both local state and global reference
     setAssetPrice(price);
