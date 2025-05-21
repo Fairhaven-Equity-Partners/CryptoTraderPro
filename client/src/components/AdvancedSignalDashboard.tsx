@@ -443,11 +443,13 @@ export default function AdvancedSignalDashboard({
     if (isAllDataLoaded && isLiveDataReady && assetPrice > 0) {
       console.log(`Auto-triggering calculation for ${symbol} - historical and live data are both ready`);
       
-      // Only calculate if we haven't recently calculated
+      // Only calculate if we haven't recently calculated - 3-minute debounce to match price refresh
       const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-      if (timeSinceLastCalc > 2000) { // 2 second debounce
+      const THREE_MINUTES = 180000; // 3 minutes in milliseconds
+      
+      if (timeSinceLastCalc > THREE_MINUTES || lastCalculationRef.current === 0) { // Only recalculate every 3 minutes or on first load
         // Force calculation with proper data
-        console.log(`Initiating calculation with live data for ${symbol} at price ${assetPrice}`);
+        console.log(`Initiating calculation with live data for ${symbol} at price ${assetPrice} (3-minute interval)`);
         
         // Directly call calculate instead of going through the trigger function
         setIsCalculating(true);

@@ -25,9 +25,37 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     lastUpdate: new Date()
   });
   
+  // Add countdown timer for next price update
+  const [nextRefreshIn, setNextRefreshIn] = useState<number>(180);
+  
   // Ref to store interval
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
+  // Setup countdown timer for 3-minute updates
+  useEffect(() => {
+    // Countdown timer
+    const timer = setInterval(() => {
+      setNextRefreshIn(prev => {
+        if (prev <= 0) {
+          return 180; // Reset to 3 minutes when it reaches zero
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    // Listen for price updates to reset the countdown
+    const resetTimer = () => {
+      setNextRefreshIn(180); // Reset to 3 minutes on price update
+    };
+    
+    window.addEventListener('price-update', resetTimer);
+    
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('price-update', resetTimer);
+    };
+  }, []);
+
   // Handle updates from API and listen for price changes
   useEffect(() => {
     if (!price) return;
@@ -109,7 +137,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
             </span>
             {priceState.flash && priceDirection}
             <Badge variant="outline" className="ml-2 text-xs">
-              Refreshes every 3m
+              Next update: {Math.floor(nextRefreshIn / 60)}m {nextRefreshIn % 60}s
             </Badge>
           </div>
           <div className="flex items-center space-x-2 mt-1">
