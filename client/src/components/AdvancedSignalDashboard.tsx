@@ -31,6 +31,7 @@ import {
 import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
 import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
 import { formatCurrency, formatPercentage } from '../lib/calculations';
+import { getPrice, syncPrice } from '../lib/priceSync';
 import { useToast } from '../hooks/use-toast';
 import { useMarketData } from '../hooks/useMarketData';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -142,87 +143,24 @@ export default function AdvancedSignalDashboard({
     enabled: !!symbol
   });
   
-  // A fixed price dictionary that ensures all components work with the same exact values
-  // These are actual current market prices to ensure calculations are consistent and accurate
-  const FIXED_PRICES: Record<string, number> = {
-    'BTC/USDT': 108465,
-    'ETH/USDT': 2559,
-    'BNB/USDT': 656,
-    'SOL/USDT': 171,
-    'XRP/USDT': 2.39,
-    'AXS/USDT': 117,
-    'AAVE/USDT': 92.70,
-    'DOT/USDT': 7.10,
-    'LINK/USDT': 14.85,
-    'UNI/USDT': 9.73,
-    'DOGE/USDT': 0.13,
-    'AVAX/USDT': 31.52,
-    'MATIC/USDT': 0.64,
-    '1INCH/USDT': 99.30,
-    'QNT/USDT': 96.85
-  };
+  // Reference to track price consistently
+  const priceRef = useRef<number>(getPrice(symbol));
   
-  // We use a state to track the price but always initialize it from our fixed values
-  const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(() => {
-    return FIXED_PRICES[symbol] || 0;
-  });
+  // We use a state to track the price but always initialize it from our centralized source
+  const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(getPrice(symbol));
   
   // Update the price when the symbol changes to ensure we always use the accurate fixed prices
   useEffect(() => {
-    // Always use our fixed dictionary as the source of truth to ensure consistency
-    const price = FIXED_PRICES[symbol] || 0;
+    // Use our centralized price synchronization utility
+    const price = syncPrice(symbol);
+    
+    // If we have a valid price, update our local state
     if (price > 0) {
       setCurrentAssetPrice(price);
+      priceRef.current = price;
       console.log(`Using fixed market price for ${symbol}: ${price}`);
-      
-      // Also update the DOM reference point for other components
-      const liveElement = document.getElementById('live-price-data');
-      if (liveElement) {
-        liveElement.setAttribute(`data-${symbol.replace('/', '-')}`, price.toString());
-        liveElement.setAttribute('data-active-symbol', symbol);
-        liveElement.setAttribute('data-latest-price', price.toString());
-      }
     }
   }, [symbol]);
-      else if (symbol === 'AXS/USDT') bestPrice = 117;
-      else if (symbol === 'AAVE/USDT') bestPrice = 92.70;
-      else if (symbol === 'DOT/USDT') bestPrice = 7.10;
-      else if (symbol === 'LINK/USDT') bestPrice = 14.85;
-      else if (symbol === 'UNI/USDT') bestPrice = 9.73;
-      else if (symbol === 'DOGE/USDT') bestPrice = 0.13;
-      else if (symbol === 'AVAX/USDT') bestPrice = 31.52;
-      else if (symbol === 'MATIC/USDT') bestPrice = 0.64;
-      else if (symbol === '1INCH/USDT') bestPrice = 99.30;
-      else if (symbol === 'QNT/USDT') bestPrice = 96.85;
-      else bestPrice = 100; // Default fallback
-      
-      console.log(`Using fallback market price for ${symbol}: ${bestPrice}`);
-    }
-    
-    // Update both the state and ref with the best price we found
-    setCurrentAssetPrice(bestPrice);
-    priceRef.current = bestPrice;
-    
-    // Store this price in the hidden element to ensure calculation consistency
-    const priceElement = document.getElementById('live-price-data');
-    if (priceElement) {
-      priceElement.setAttribute(`data-${symbol.replace('/', '-')}`, bestPrice.toString());
-      
-      // Also update a global asset price attribute for other components to access
-      priceElement.setAttribute('data-current-asset', symbol);
-      priceElement.setAttribute('data-current-price', bestPrice.toString());
-    }
-    
-    // This direct server sync ensures the backend has the accurate price too
-    fetch(`/api/sync-price`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ symbol, price: bestPrice })
-    }).catch(() => {
-      // Silent catch - this is an enhancement, not critical functionality
-    });
-    
-  }, [symbol, asset]);
   
   // Ensure consistent price is used throughout component
   useEffect(() => {
