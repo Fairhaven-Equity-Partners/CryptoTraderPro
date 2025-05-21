@@ -41,7 +41,7 @@ import {
   alignSignalsWithTimeframeHierarchy,
   calculateSupportResistance
 } from '../lib/technicalIndicators';
-import { SignalIconDisplay } from './SignalDirectionFix';
+import ConsistentSignalDisplay from './ConsistentSignalDisplay';
 
 
 // This component ensures React re-renders price values when timeframe changes
@@ -153,7 +153,7 @@ export default function AdvancedSignalDashboard({
   
   // Update the price when the symbol changes to ensure we always use the accurate fixed prices
   useEffect(() => {
-    // Use our centralized price synchronization utility
+    // Use our centralized price synchronization utility to get initial price
     const price = syncPrice(symbol);
     
     // If we have a valid price, update our local state
@@ -163,16 +163,33 @@ export default function AdvancedSignalDashboard({
       console.log(`Using fixed market price for ${symbol}: ${price}`);
     }
     
-    // Set up interval to periodically refresh the displayed price
+    // Add event listener for live price updates
+    const handlePriceUpdate = (event: CustomEvent) => {
+      if (event.detail.symbol === symbol) {
+        console.log(`✨ PRICE UPDATE [${symbol}]: ${event.detail.price}`);
+        setCurrentAssetPrice(event.detail.price);
+        priceRef.current = event.detail.price;
+      }
+    };
+    
+    // Listen for price updates
+    window.addEventListener('price-update', handlePriceUpdate as EventListener);
+    
+    // Also set up interval to periodically force a price check/update
     const priceRefreshInterval = setInterval(() => {
       const latestPrice = getPrice(symbol);
-      if (latestPrice > 0 && latestPrice !== currentAssetPrice) {
+      if (latestPrice > 0) {
         setCurrentAssetPrice(latestPrice);
         priceRef.current = latestPrice;
+        console.log(`🔄 Refreshed price for ${symbol}: ${latestPrice}`);
       }
-    }, 5000); // Check every 5 seconds
+    }, 3000); // Check every 3 seconds
     
-    return () => clearInterval(priceRefreshInterval);
+    // Clean up event listeners and intervals
+    return () => {
+      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+      clearInterval(priceRefreshInterval);
+    };
   }, [symbol]);
   
   // Ensure consistent price is used throughout component
@@ -1205,18 +1222,15 @@ export default function AdvancedSignalDashboard({
                 >
                   {tf}
                   {/* Always show LONG for monthly and weekly timeframes */}
-                  {(tf === '1M' || tf === '1w') ? (
-                    <span className="ml-1 text-green-400">▲</span>
-                  ) : (
-                    <>
-                      {signals[tf] && signals[tf]?.direction === 'LONG' && (
-                        <span className="ml-1 text-green-400">▲</span>
-                      )}
-                      {signals[tf] && signals[tf]?.direction === 'SHORT' && (
-                        <span className="ml-1 text-red-400">▼</span>
-                      )}
-                    </>
-                  )}
+                  <>
+                    {/* Show correct arrows for all timeframes including weekly and monthly */}
+                    {signals[tf]?.direction === 'LONG' && (
+                      <span className="ml-1 text-green-400">▲</span>
+                    )}
+                    {signals[tf]?.direction === 'SHORT' && (
+                      <span className="ml-1 text-red-400">▼</span>
+                    )}
+                  </>
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -1258,50 +1272,12 @@ export default function AdvancedSignalDashboard({
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <h3 className="text-white font-bold text-xl mb-1 flex items-center">
-                          {selectedTimeframe === '1w' || selectedTimeframe === '1M' ? (
-                            <>
-                              {/* Use consistent signal display for weekly and monthly timeframes */}
-                              {currentSignal.direction === 'LONG' && (
-                                <>
-                                  <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
-                                  <span className="text-green-400">Long Signal</span>
-                                </>
-                              )}
-                              {currentSignal.direction === 'SHORT' && (
-                                <>
-                                  <TrendingDown className="mr-2 h-5 w-5 text-red-400" />
-                                  <span className="text-red-400">Short Signal</span>
-                                </>
-                              )}
-                              {currentSignal.direction === 'NEUTRAL' && (
-                                <>
-                                  <Minus className="mr-2 h-5 w-5 text-gray-400" />
-                                  <span className="text-gray-400">Neutral</span>
-                                </>
-                              )}
-                            </>
-                          ) : (
-                            <>
-                              {currentSignal.direction === 'LONG' && (
-                                <>
-                                  <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
-                                  <span className="text-green-400">Long Signal</span>
-                                </>
-                              )}
-                              {currentSignal.direction === 'SHORT' && (
-                                <>
-                                  <TrendingDown className="mr-2 h-5 w-5 text-red-400" />
-                                  <span className="text-red-400">Short Signal</span>
-                                </>
-                              )}
-                              {currentSignal.direction === 'NEUTRAL' && (
-                                <>
-                                  <Minus className="mr-2 h-5 w-5 text-gray-400" />
-                                  <span className="text-gray-400">Neutral</span>
-                                </>
-                              )}
-                            </>
-                          )}
+                          {/* Use our consistent signal display component */}
+                          <ConsistentSignalDisplay 
+                            direction={currentSignal.direction} 
+                            timeframe={selectedTimeframe as TimeFrame}
+                            size="sm"
+                          />
                         </h3>
                         <div className="flex items-center space-x-2">
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
