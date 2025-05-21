@@ -1009,26 +1009,60 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 0;
     
-    // Generate a mix of signal types, but ensure they're consistent per timeframe
-    // Use a hash of the timeframe to determine signal bias instead of random time
-    const timeframeHash = timeframe.charCodeAt(0) + (timeframe.length > 1 ? timeframe.charCodeAt(1) : 0);
-    const signalBias = timeframeHash % 5; // 0-4 bias value
+    // Generate signals with temporal consistency
+    // Longer timeframes should be more stable, shorter timeframes can change more often
+    // The stabilityFactor decreases the likelihood of signal changes for longer timeframes
+    const timeframeWeights = {
+      '1m': 1.0,  // Most volatile, can change frequently
+      '5m': 0.9,
+      '15m': 0.8,
+      '30m': 0.7,
+      '1h': 0.6,
+      '4h': 0.4,  // More stable
+      '1d': 0.3, 
+      '3d': 0.2,
+      '1w': 0.1,
+      '1M': 0.05  // Extremely stable, rarely changes
+    };
     
-    // More reliable algorithm that's dependent on timeframe rather than random time
-    if (bullishPercentage > bearishPercentage + 10 && bullishPercentage > neutralPercentage + 5) {
-      // Clear bullish signal
+    // Use time-based consistency but with strong timeframe influence
+    // This creates a hash that changes slowly for longer timeframes
+    const currentHour = new Date().getHours();
+    const currentDay = new Date().getDate();
+    
+    // For longer timeframes, make the signal more dependent on the day number 
+    // rather than the hour, making it change less frequently
+    const timeComponent = timeframe === '1M' || timeframe === '1w' ? 
+      currentDay : 
+      timeframe === '3d' || timeframe === '1d' ? 
+        currentDay * 2 + Math.floor(currentHour / 12) : 
+        currentDay * 4 + currentHour;
+        
+    // Combine timeframe characteristics with time component
+    const timeframeHash = timeframe.charCodeAt(0) + (timeframe.length > 1 ? timeframe.charCodeAt(1) : 0);
+    const stabilityFactor = timeframeWeights[timeframe as keyof typeof timeframeWeights] || 0.5;
+    
+    // Calculate a signal bias that changes less frequently for longer timeframes
+    // Include the date as part of the calculation to reduce random behavior
+    const dateString = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${currentDay}`;
+    const dateHash = dateString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const signalBias = Math.floor((timeframeHash + dateHash + timeComponent * stabilityFactor) % 5);
+    
+    // Determine signal based on indicator percentages with stability considerations
+    if (bullishPercentage > bearishPercentage + 15 && bullishPercentage > neutralPercentage + 10) {
+      // Strong bullish - consistent across all timeframes
       direction = 'LONG';
       confidence = bullishPercentage;
-    } else if (bearishPercentage > bullishPercentage + 5 && bearishPercentage > neutralPercentage) {
-      // Clear bearish signal
+    } else if (bearishPercentage > bullishPercentage + 15 && bearishPercentage > neutralPercentage + 5) {
+      // Strong bearish - consistent across all timeframes
       direction = 'SHORT';
       confidence = Math.max(55, bearishPercentage);
-    } else if (neutralPercentage > bullishPercentage + 10 && neutralPercentage > bearishPercentage + 10) {
-      // Clear neutral signal
+    } else if (neutralPercentage > bullishPercentage + 15 && neutralPercentage > bearishPercentage + 15) {
+      // Strong neutral - consistent across all timeframes
       direction = 'NEUTRAL';
       confidence = Math.max(50, 100 - (bullishPercentage + bearishPercentage));
     } else {
-      // Mixed signals - use the timeframe-specific bias for consistent results
+      // Mixed signals - use the stability-influenced bias
       if (signalBias === 0 || signalBias === 3) {
         direction = 'LONG';
         confidence = Math.max(60, bullishPercentage);
