@@ -21,18 +21,19 @@ const Analysis: React.FC = () => {
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
   const [isHeatMapOpen, setIsHeatMapOpen] = useState(true);
   const { price } = useAssetPrice(currentAsset);
+  // Keep track if this is first load or a user-initiated change
   const [assetChangeCounter, setAssetChangeCounter] = useState(0);
-  const signalDashboardRef = useRef<any>(null);
+  const [shouldRunAnalysis, setShouldRunAnalysis] = useState(false);
   
   // Effect to trigger analysis when asset changes
   useEffect(() => {
     // Skip the initial render
-    if (assetChangeCounter > 0 && signalDashboardRef.current?.runAnalysis) {
+    if (assetChangeCounter > 0) {
       console.log(`Automatically running analysis for ${currentAsset}`);
       // Allow time for data to load first
       const timer = setTimeout(() => {
-        signalDashboardRef.current.runAnalysis();
-      }, 500);
+        setShouldRunAnalysis(true);
+      }, 1000);
       
       return () => clearTimeout(timer);
     }
@@ -63,9 +64,10 @@ const Analysis: React.FC = () => {
         
         <div className="px-4 py-2">
           <AdvancedSignalDashboard 
-            ref={signalDashboardRef}
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
+            autoRun={shouldRunAnalysis}
+            onAnalysisComplete={() => setShouldRunAnalysis(false)}
           />
         </div>
         

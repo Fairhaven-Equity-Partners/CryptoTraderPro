@@ -94,13 +94,15 @@ const indicatorNames = {
 interface AdvancedSignalDashboardProps {
   symbol: string;
   onTimeframeSelect?: (timeframe: TimeFrame) => void;
+  autoRun?: boolean;
+  onAnalysisComplete?: () => void;
 }
 
 // Main component
-const AdvancedSignalDashboard = React.forwardRef(({ 
+export default function AdvancedSignalDashboard({ 
   symbol, 
   onTimeframeSelect 
-}: AdvancedSignalDashboardProps, ref) => {
+}: AdvancedSignalDashboardProps) {
   // State for the selected timeframe
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
   const [isCalculating, setIsCalculating] = useState(false);
