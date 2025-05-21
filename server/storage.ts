@@ -94,7 +94,7 @@ export class MemStorage implements IStorage {
       { symbol: "IMX/USDT", name: "Immutable", lastPrice: 1.71, change24h: 4.2, volume24h: 88000000, marketCap: 1800000000 },
       { symbol: "FLOW/USDT", name: "Flow", lastPrice: 0.8015, change24h: 1.8, volume24h: 70000000, marketCap: 1700000000 },
       { symbol: "ARB/USDT", name: "Arbitrum", lastPrice: 1.21, change24h: 2.8, volume24h: 140000000, marketCap: 1700000000 },
-      { symbol: "AXS/USDT", name: "Axie Infinity", lastPrice: 7.23, change24h: 4.1, volume24h: 96000000, marketCap: 1650000000 },
+      { symbol: "AXS/USDT", name: "Axie Infinity", lastPrice: 116.96, change24h: 4.1, volume24h: 96000000, marketCap: 1650000000 },
       { symbol: "EOS/USDT", name: "EOS", lastPrice: 0.855, change24h: 2.4, volume24h: 160000000, marketCap: 1600000000 },
       { symbol: "MANA/USDT", name: "Decentraland", lastPrice: 0.412, change24h: 1.05, volume24h: 105000000, marketCap: 1550000000 },
       { symbol: "XTZ/USDT", name: "Tezos", lastPrice: 1.09, change24h: -1.3, volume24h: 24000000, marketCap: 1500000000 },
