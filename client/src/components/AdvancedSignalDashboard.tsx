@@ -193,44 +193,49 @@ export default function AdvancedSignalDashboard({
         }
       });
       
-      // Subscribe to price updates - CALCULATE ONCE PER PRICE UPDATE ONLY
+      // COMPLETELY DISABLED - Only price updates, no calculations
       const unsubscribe = module.subscribeToPriceUpdates(symbol, (price) => {
         if (price <= 0) return;
         
-        console.log(`[MarketAnalysis] Price update received for ${symbol}: ${price}`);
+        console.log(`[PRICE-ONLY] Price update for ${symbol}: ${price}`);
         
-        // ALWAYS update the price display
+        // ONLY update the price display - NEVER trigger any calculations
         setAssetPrice(price);
         priceRef.current = price;
         
-        // SIMPLE SOLUTION: Calculate exactly once when the 3-minute refresh happens
-        // This is the key change you requested - we calculate only on price updates
-        if (module.shouldCalculate(symbol)) {
-          console.log(`[ONE-TIME-CALC] Performing SINGLE calculation after price update`);
+        // LOCK CALCULATION - We'll only calculate on manual refresh after 3 minutes
+        console.log(`[CALC-BLOCKED] Automatic calculations disabled completely`);
+      });
+      
+      // Manual calculation only on the 3-minute global refresh
+      const unsubscribeRefresh = module.subscribeToRefreshCycle((event) => {
+        console.log(`[STRICT-3-MIN] Global refresh cycle triggered`, event);
+        
+        // ONLY calculate on the 3-minute refresh event if explicitly allowed
+        if (event.detail && event.detail.isGlobalRefresh && event.detail.calculationAllowed) {
+          // Get current price
+          const price = priceRef.current;
+          if (price <= 0) return;
           
-          // Record that we did a calculation 
-          setLastCalcTime(Date.now());
-          module.markCalculationPerformed(symbol);
-          
-          // Do exactly ONE calculation for all timeframes
+          // Only calculate if we have data and not already calculating
           if (isAllDataLoaded && !isCalculating) {
+            console.log(`[ONCE-PER-3MIN] Starting single calculation with price ${price}`);
             setIsCalculating(true);
             
-            calculateTimeframesWithPrice(price).then((signals) => {
-              setSignals(signals);
+            // Record this calculation time
+            setLastCalcTime(Date.now());
+            
+            // Calculate all timeframes once
+            calculateAllSignals(price).then((newSignals) => {
+              setSignals(newSignals);
               updateRecommendationForTimeframe(selectedTimeframe);
               setIsCalculating(false);
-              console.log(`[ONE-TIME-CALC] Complete - next in 3 minutes`);
+              console.log(`[ONCE-PER-3MIN] Complete - next in exactly 3 minutes`);
             });
           }
         } else {
-          console.log(`[ONE-TIME-CALC] Skipping calculation - not time yet`);
+          console.log(`[CALC-BLOCKED] Calculation not allowed at this time`);
         }
-      });
-      
-      // Also subscribe to the 3-minute refresh cycle
-      const unsubscribeRefresh = module.subscribeToRefreshCycle(() => {
-        console.log(`[MarketAnalysis] 3-minute refresh cycle completed`);
         calculationAllowed = true;
       });
       
@@ -246,29 +251,14 @@ export default function AdvancedSignalDashboard({
     });
   }, [symbol]);
   
-  // Apply the stable price to all parts of the system with 3-minute refresh - ULTRA STRICT TIMER
+  // COMPLETELY DISABLED VERSION - NO CALCULATION TRIGGERED FROM HERE
   function applyPriceAndCalculate(price: number) {
     if (price <= 0) return;
     
-    // Only show updated price, but don't trigger calculations until 3 minutes pass
-    setAssetPrice(price); // Always update price display immediately
-    
-    // ULTRA-STRICT 3-MINUTE LOCK: This is a global lock that prevents ALL recalculations
-    // for 3 full minutes regardless of what triggered the recalculation
-    const now = Date.now();
-    const timeSinceLastCalc = now - lastCalcTime;
-    if (timeSinceLastCalc < 180000) { // 180000ms = 3 minutes
-      console.log(`[ULTRA-STRICT-TIMER] Blocking calculation - only ${Math.floor(timeSinceLastCalc/1000)}s since last calc (need 180s)`);
-      return; // Complete EXIT - no calculations allowed until 3 minutes pass
-    }
-    
-    // Only allow calculations if timer has passed AND they're not locked
-    if (calculationsLocked) {
-      console.log(`[CALCULATION-LOCK] Calculations are currently locked - skipping`);
-      return;
-    }
-    
-    console.log(`[StablePrice] Using synchronized price for ${symbol}: ${price} - FULL recalculation after 3+ minutes`);
+    // Only update the price display - NEVER trigger calculations from here
+    setAssetPrice(price);
+    console.log(`[DISABLED-CALC] Price update only, calculations disabled: ${price}`);
+    return; // EXIT IMMEDIATELY - never calculate from here
     
     // Update both local state and global reference
     setAssetPrice(price);
