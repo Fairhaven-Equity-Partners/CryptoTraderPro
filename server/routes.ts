@@ -34,15 +34,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get specific crypto asset
   app.get('/api/crypto/:symbol', async (req: Request, res: Response) => {
     try {
-      const symbol = req.params.symbol;
+      // URL decode the symbol and replace encoded forward slash
+      const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
+      console.log(`Fetching crypto asset with symbol: ${symbol}`);
+      
       const asset = await storage.getCryptoAssetBySymbol(symbol);
       
       if (!asset) {
+        console.log(`No crypto asset found for symbol: ${symbol}`);
         return res.status(404).json({ message: 'Crypto asset not found' });
       }
       
       res.json(asset);
     } catch (error) {
+      console.error(`Error fetching crypto asset:`, error);
       res.status(500).json({ message: 'Failed to fetch crypto asset' });
     }
   });

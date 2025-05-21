@@ -179,7 +179,10 @@ export class MemStorage implements IStorage {
   }
 
   async getCryptoAssetBySymbol(symbol: string): Promise<CryptoAsset | undefined> {
-    return this.cryptoAssets.get(symbol);
+    // Handle URL-encoded forward slashes that may come from API requests
+    const normalizedSymbol = symbol.replace('%2F', '/');
+    console.log(`Looking up crypto asset with normalized symbol: ${normalizedSymbol}`);
+    return this.cryptoAssets.get(normalizedSymbol);
   }
 
   async updateCryptoAsset(symbol: string, data: Partial<InsertCryptoAsset>): Promise<CryptoAsset | undefined> {
