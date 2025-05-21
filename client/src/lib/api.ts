@@ -118,27 +118,24 @@ export async function fetchAllAssets(): Promise<AssetPrice[]> {
 // Fetch asset by symbol
 export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/crypto/${symbol}`);
+    // Replace any forward slashes in the symbol with an encoded format for the API endpoint
+    const encodedSymbol = symbol.replace('/', '%2F');
+    console.log(`Fetching data for symbol: ${symbol}, encoded as: ${encodedSymbol}`);
+    
+    const response = await fetch(`${API_BASE_URL}/api/crypto/${encodedSymbol}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch ${symbol} data from server`);
     }
     return await response.json();
   } catch (error) {
     console.error(`Error fetching ${symbol} data:`, error);
-    // Return mock data
-    if (symbol.includes('BTC')) {
-      return { symbol, name: 'Bitcoin', price: 60000 + Math.random() * 5000, change24h: (Math.random() * 5) - 2 };
-    } else if (symbol.includes('ETH')) {
-      return { symbol, name: 'Ethereum', price: 3000 + Math.random() * 300, change24h: (Math.random() * 8) - 3 };
-    } else if (symbol.includes('BNB')) {
-      return { symbol, name: 'Binance Coin', price: 600 + Math.random() * 50, change24h: (Math.random() * 6) - 2 };
-    } else if (symbol.includes('SOL')) {
-      return { symbol, name: 'Solana', price: 150 + Math.random() * 20, change24h: (Math.random() * 10) - 4 };
-    } else if (symbol.includes('XRP')) {
-      return { symbol, name: 'Ripple', price: 2 + Math.random() * 0.5, change24h: (Math.random() * 7) - 3 };
-    } else {
-      return { symbol, name: symbol, price: 100 + Math.random() * 10, change24h: (Math.random() * 5) - 2 };
-    }
+    // Use a safe fallback that doesn't generate random data
+    return { 
+      symbol, 
+      name: symbol.split('/')[0] || 'Unknown', 
+      price: 0, 
+      change24h: 0 
+    };
   }
 }
 
