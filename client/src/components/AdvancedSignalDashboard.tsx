@@ -163,10 +163,13 @@ export default function AdvancedSignalDashboard({
   useEffect(() => {
     console.log(`[MarketAnalysis] Setting up final price system for ${symbol}`);
     
+    // Store initial calculation time to enforce strict 3-minute rule
+    setLastCalcTime(Date.now());
+    
     // Import our completely overhauled price system
     import('../lib/finalPriceSystem').then(module => {
-      // Centralized flag to track if we're allowed to calculate now
-      let calculationAllowed = true;
+      // Centralized flag to track if we're allowed to calculate now - ABSOLUTE STRICT RULE
+      let calculationAllowed = false; // Start with calculation DISABLED
       
       // Start tracking the symbol for price updates
       module.startTracking(symbol).then((initialPrice) => {
