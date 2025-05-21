@@ -193,22 +193,38 @@ export default function AdvancedSignalDashboard({
         }
       });
       
-      // Subscribe to price updates - with strict 3-minute calculation rules
+      // Subscribe to price updates - CALCULATE ONCE PER PRICE UPDATE ONLY
       const unsubscribe = module.subscribeToPriceUpdates(symbol, (price) => {
         if (price <= 0) return;
         
         console.log(`[MarketAnalysis] Price update received for ${symbol}: ${price}`);
+        
+        // ALWAYS update the price display
         setAssetPrice(price);
         priceRef.current = price;
         
-        // Only calculate if we're allowed to (3-minute rule)
+        // SIMPLE SOLUTION: Calculate exactly once when the 3-minute refresh happens
+        // This is the key change you requested - we calculate only on price updates
         if (module.shouldCalculate(symbol)) {
-          console.log(`[MarketAnalysis] Triggering recalculation - 3 minutes have passed`);
-          applyPriceAndCalculate(price);
+          console.log(`[ONE-TIME-CALC] Performing SINGLE calculation after price update`);
+          
+          // Record that we did a calculation 
           setLastCalcTime(Date.now());
           module.markCalculationPerformed(symbol);
+          
+          // Do exactly ONE calculation for all timeframes
+          if (isAllDataLoaded && !isCalculating) {
+            setIsCalculating(true);
+            
+            calculateTimeframesWithPrice(price).then((signals) => {
+              setSignals(signals);
+              updateRecommendationForTimeframe(selectedTimeframe);
+              setIsCalculating(false);
+              console.log(`[ONE-TIME-CALC] Complete - next in 3 minutes`);
+            });
+          }
         } else {
-          console.log(`[MarketAnalysis] Skipping calculation - has not been 3 minutes yet`);
+          console.log(`[ONE-TIME-CALC] Skipping calculation - not time yet`);
         }
       });
       
