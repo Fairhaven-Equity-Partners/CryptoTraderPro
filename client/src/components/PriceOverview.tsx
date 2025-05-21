@@ -31,41 +31,52 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   // Ref to store interval
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Setup countdown timer for 3-minute updates and trigger price fetch
+  // Setup countdown timer synced with the improved global price system
   useEffect(() => {
-    const fetchPrice = async () => {
-      console.log(`Price countdown reached 0 - Fetching new price for ${symbol}`);
-      try {
-        // Import directly here to avoid circular dependencies
-        const { getCurrentPrice } = await import('../lib/stablePriceSync');
-        getCurrentPrice(symbol);
-      } catch (error) {
-        console.error("Error fetching price at countdown end:", error);
-      }
+    // Calculate seconds remaining until next refresh
+    const calcTimeRemaining = () => {
+      const now = Date.now();
+      // Import directly to access the lastFetchTime
+      const stablePriceSync = require('../lib/stablePriceSync');
+      const lastFetch = stablePriceSync.lastFetchTime || now;
+      const elapsed = Math.floor((now - lastFetch) / 1000);
+      const remaining = Math.max(0, 180 - elapsed);
+      return remaining;
     };
     
-    // Countdown timer
-    const timer = setInterval(() => {
-      setNextRefreshIn(prev => {
-        if (prev <= 1) { // At 0 seconds, fetch and reset
-          fetchPrice(); // Actually trigger a fetch when countdown ends
-          return 180; // Reset to 3 minutes
+    // Initial calculation
+    setNextRefreshIn(calcTimeRemaining());
+    
+    // Start the timer that just DISPLAYS the countdown
+    const displayTimer = setInterval(() => {
+      setNextRefreshIn(prevTime => {
+        if (prevTime <= 0) {
+          return 0; // Stay at zero until refresh occurs
         }
-        return prev - 1;
+        return prevTime - 1;
       });
     }, 1000);
     
-    // Listen for price updates to reset the countdown
-    const resetTimer = () => {
+    // Listen for price updates - RESET countdown when actual price update occurs
+    const resetCountdown = () => {
       console.log(`Price update received - Resetting countdown to 180s`);
-      setNextRefreshIn(180); // Reset to 3 minutes on price update
+      setNextRefreshIn(180); // Reset when a real update happens
     };
     
-    window.addEventListener('price-update', resetTimer);
+    // Listen for the timer reaching exactly 3 minutes
+    const handleGlobalRefresh = () => {
+      console.log(`Global 3-minute timer triggered - Resetting countdown`);
+      setNextRefreshIn(180);
+    };
+    
+    // Register event listeners
+    window.addEventListener('price-update', resetCountdown);
+    window.addEventListener('price-refresh-timer', handleGlobalRefresh);
     
     return () => {
-      clearInterval(timer);
-      window.removeEventListener('price-update', resetTimer);
+      clearInterval(displayTimer);
+      window.removeEventListener('price-update', resetCountdown);
+      window.removeEventListener('price-refresh-timer', handleGlobalRefresh);
     };
   }, [symbol]);
 

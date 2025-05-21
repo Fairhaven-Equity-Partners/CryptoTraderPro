@@ -20,6 +20,9 @@ const REFRESH_INTERVAL = 180000; // 3 minutes
 // Active price polling intervals
 const activePolling: Record<string, NodeJS.Timeout> = {};
 
+// Export for other modules to access
+export { lastFetchTime };
+
 /**
  * Get the current price for a symbol
  * Returns cached price if available and not expired, otherwise fetches new price
@@ -103,23 +106,55 @@ export function subscribeToPriceUpdates(
 }
 
 /**
- * Start polling for price updates at a 3-minute interval
- * Only one polling interval will be created per symbol
+ * Global timer for price sync - ensures we only have ONE timer for all symbols
+ */
+let globalPriceTimer: NodeJS.Timeout | null = null;
+let lastFetchTime = 0;
+
+/**
+ * Start polling for price updates strictly at a 3-minute interval
+ * Uses a single global timer for all symbols to ensure consistency
  */
 export function startPricePolling(symbol: string): () => void {
-  // Check if we're already polling for this symbol
-  if (activePolling[symbol]) {
-    return () => stopPricePolling(symbol);
+  // Fetch initially if this is a new symbol
+  if (!priceCache[symbol]) {
+    console.log(`[StablePriceSync] Initial fetch for ${symbol}`);
+    getCurrentPrice(symbol);
+    lastFetchTime = Date.now();
   }
   
-  // Fetch immediately
-  getCurrentPrice(symbol);
+  // Only set up global timer if it doesn't exist
+  if (!globalPriceTimer) {
+    console.log(`[StablePriceSync] Setting up strict 3-minute global timer`);
+    
+    // The timer checks every second but only triggers fetch when 3 minutes has passed
+    globalPriceTimer = setInterval(() => {
+      const now = Date.now();
+      const timeSinceLastFetch = now - lastFetchTime;
+      
+      // Only fetch if at least 3 minutes have passed
+      if (timeSinceLastFetch >= REFRESH_INTERVAL) {
+        console.log(`[StablePriceSync] 3-MINUTE MARK REACHED - Fetching fresh prices`);
+        
+        // For each symbol we're tracking, get a fresh price
+        Object.keys(activePolling).forEach(trackedSymbol => {
+          getCurrentPrice(trackedSymbol);
+        });
+        
+        // Update the last fetch time
+        lastFetchTime = now;
+        
+        // This will broadcast to all components that we hit the 3-minute mark
+        const refreshEvent = new CustomEvent('price-refresh-timer', {
+          detail: { timestamp: now }
+        });
+        window.dispatchEvent(refreshEvent);
+      }
+    }, 1000); // Check every second
+  }
   
-  // Set up interval for future updates
-  activePolling[symbol] = setInterval(() => {
-    console.log(`[StablePriceSync] Polling price for ${symbol} (3-minute interval)`);
-    getCurrentPrice(symbol);
-  }, REFRESH_INTERVAL);
+  // Mark this symbol as actively being polled
+  activePolling[symbol] = globalPriceTimer;
   
   // Return a cleanup function
   return () => stopPricePolling(symbol);

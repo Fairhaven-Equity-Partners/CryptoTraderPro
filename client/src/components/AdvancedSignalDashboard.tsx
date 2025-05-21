@@ -465,9 +465,6 @@ export default function AdvancedSignalDashboard({
         });
       }, 500);
     }
-    
-    // DO NOT ADD ANY OTHER CONDITIONS HERE THAT WOULD TRIGGER RECALCULATION
-    // All other recalculations are handled by the price-update event handler
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, assetPrice, triggerCalculation]);
   
   // Update timer for next refresh - synchronized with the price update system
