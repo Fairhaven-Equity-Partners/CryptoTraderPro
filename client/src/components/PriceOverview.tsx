@@ -12,20 +12,7 @@ interface PriceOverviewProps {
 }
 
 const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
-  // Get fixed reference price that matches the dashboard
-  const getFixedPrice = (sym: string): number => {
-    if (sym === 'BTC/USDT') return 107063.00;
-    if (sym === 'ETH/USDT') return 2549.17;
-    if (sym === 'SOL/USDT') return 170.33;
-    if (sym === 'BNB/USDT') return 657.12;
-    if (sym === 'XRP/USDT') return 2.36;
-    if (sym === 'DOGE/USDT') return 0.13;
-    if (sym === 'ADA/USDT') return 0.48;
-    return 0;
-  };
-  
-  // Force the fixed reference price for display
-  const fixedPrice = getFixedPrice(symbol);
+  // We don't need this anymore as we're using real-time prices
   
   const { price, isLoading } = useAssetPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
@@ -45,8 +32,8 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   useEffect(() => {
     if (!price) return;
     
-    // FORCE the display price to be our fixed reference price
-    const displayPrice = fixedPrice > 0 ? fixedPrice : ('price' in price ? price.price : (price as any).lastPrice || 0);
+    // Get the real-time price but allow updates
+    const displayPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
     
     if (displayPrice !== priceState.currentPrice) {
       setPriceState(prev => ({
