@@ -162,6 +162,9 @@ export default function AdvancedSignalDashboard({
   // Track last calculation time to prevent excessive recalculations
   const [lastCalcTime, setLastCalcTime] = useState<number>(Date.now());
   
+  // State for countdown timer display
+  const [formattedTimer, setFormattedTimer] = useState<string>("3:00");
+  
   // AUTOMATIC PRICE UPDATES + ONE-TIME CALCULATION SYSTEM
   // Calculations happen exactly ONCE after each 3-minute price update
   useEffect(() => {
@@ -176,6 +179,11 @@ export default function AdvancedSignalDashboard({
         
         // Initialize the one-time calculation system
         calcModule.initOneTimeCalculation();
+        
+        // Start a countdown timer that updates every second
+        const timerInterval = setInterval(() => {
+          setFormattedTimer(priceModule.getFormattedCountdown());
+        }, 1000);
         
         console.log(`[AUTO-CALC] Getting initial price for ${symbol}`);
         
@@ -260,6 +268,7 @@ export default function AdvancedSignalDashboard({
           unsubscribePriceUpdates();
           unsubscribeCalc();
           priceModule.stopTracking(symbol);
+          clearInterval(timerInterval); // Clean up the timer
         };
       } catch (error) {
         console.error(`[AUTO-CALC] Error setting up price and calculation system:`, error);
@@ -1324,26 +1333,47 @@ export default function AdvancedSignalDashboard({
         </div>
         <div className="flex justify-end items-center space-x-2">
           {isCalculating ? (
-            <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800 px-3 py-1">
-              Calculating...
+            <Badge variant="outline" className="text-xs bg-amber-700/70 text-white border-amber-600 px-3 py-1 animate-pulse">
+              CALCULATING SIGNALS
+            </Badge>
+          ) : formattedTimer === "0:00" ? (
+            <Badge variant="outline" className="text-xs bg-blue-700/70 text-white border-blue-600 px-3 py-1 animate-pulse">
+              FETCHING PRICE DATA...
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
-              Auto-updating
-            </Badge>
+            <div className="flex flex-col items-end">
+              <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
+                Auto-updating
+              </Badge>
+              <div className="text-xs text-neutral-400 mt-1">
+                Next update: <span className="font-mono">{formattedTimer}</span>
+              </div>
+            </div>
           )}
         </div>
       </div>
       
       <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-bold text-white flex items-center">
-            Market Analysis
-            {isCalculating && (
-              <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
-                Calculating...
-              </Badge>
-            )}
+          <CardTitle className="text-xl font-bold text-white flex items-center justify-between">
+            <span>Market Analysis</span>
+            <div className="flex items-center">
+              {isCalculating ? (
+                <Badge variant="outline" className="ml-2 text-xs bg-amber-700/80 text-white border-amber-600 px-3 py-1 animate-pulse">
+                  <RefreshCcw className="animate-spin w-3 h-3 mr-1" />
+                  CALCULATING SIGNALS
+                </Badge>
+              ) : formattedTimer === "0:00" ? (
+                <Badge variant="outline" className="ml-2 text-xs bg-blue-700/80 text-white border-blue-600 px-3 py-1 animate-pulse">
+                  <span className="mr-1">⟳</span> FETCHING LATEST PRICE
+                </Badge>
+              ) : (
+                <div className="text-xs flex items-center">
+                  <span className="text-green-500 font-bold">{formatCurrency(assetPrice)}</span>
+                  <span className="ml-3 text-neutral-400">Next: <span className="font-mono">{formattedTimer}</span></span>
+                </div>
+              )}
+            </div>
           </CardTitle>
           <CardDescription className="text-gray-100">
             Timeframe-specific signals and trading opportunities
