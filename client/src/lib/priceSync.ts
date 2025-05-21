@@ -2,13 +2,20 @@
 declare global {
   interface Window {
     cryptoPrices: Record<string, number>;
+    currentPrice: number;
+    latestPrices: Record<string, number>;
   }
 }
 
-// Initialize the global price object if it doesn't exist yet
-if (typeof window !== 'undefined' && !window.cryptoPrices) {
-  window.cryptoPrices = {
-    'BTC/USDT': 108918, // Updated with latest price
+// Initialize the global price registry
+if (typeof window !== 'undefined') {
+  if (!window.cryptoPrices) {
+    window.cryptoPrices = {};
+  }
+  
+  // Set initial prices only if they don't already exist
+  const initialPrices = {
+    'BTC/USDT': 108918,
     'ETH/USDT': 2559,
     'BNB/USDT': 656,
     'SOL/USDT': 171,
@@ -24,6 +31,18 @@ if (typeof window !== 'undefined' && !window.cryptoPrices) {
     '1INCH/USDT': 99.30,
     'QNT/USDT': 96.85
   };
+  
+  // Initialize with initial values only if not already set
+  Object.entries(initialPrices).forEach(([symbol, price]) => {
+    if (!window.cryptoPrices[symbol]) {
+      window.cryptoPrices[symbol] = price;
+    }
+  });
+  
+  // Initialize other global state
+  if (!window.latestPrices) {
+    window.latestPrices = { ...window.cryptoPrices };
+  }
 }
 
 // Current prices stored in memory for consistency across the application
