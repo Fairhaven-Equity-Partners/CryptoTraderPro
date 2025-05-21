@@ -41,6 +41,7 @@ import {
   alignSignalsWithTimeframeHierarchy,
   calculateSupportResistance
 } from '../lib/technicalIndicators';
+import { SignalIconDisplay } from './SignalDirectionFix';
 
 
 // This component ensures React re-renders price values when timeframe changes
@@ -1246,22 +1247,48 @@ export default function AdvancedSignalDashboard({
                     <div className="flex items-center justify-between mb-4">
                       <div>
                         <h3 className="text-white font-bold text-xl mb-1 flex items-center">
-                          {currentSignal.direction === 'LONG' && (
+                          {selectedTimeframe === '1w' || selectedTimeframe === '1M' ? (
                             <>
-                              <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
-                              <span className="text-green-400">Long Signal</span>
+                              {/* Use consistent signal display for weekly and monthly timeframes */}
+                              {currentSignal.direction === 'LONG' && (
+                                <>
+                                  <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
+                                  <span className="text-green-400">Long Signal</span>
+                                </>
+                              )}
+                              {currentSignal.direction === 'SHORT' && (
+                                <>
+                                  <TrendingDown className="mr-2 h-5 w-5 text-red-400" />
+                                  <span className="text-red-400">Short Signal</span>
+                                </>
+                              )}
+                              {currentSignal.direction === 'NEUTRAL' && (
+                                <>
+                                  <Minus className="mr-2 h-5 w-5 text-gray-400" />
+                                  <span className="text-gray-400">Neutral</span>
+                                </>
+                              )}
                             </>
-                          )}
-                          {currentSignal.direction === 'SHORT' && (
+                          ) : (
                             <>
-                              <TrendingDown className="mr-2 h-5 w-5 text-red-400" />
-                              <span className="text-red-400">Short Signal</span>
-                            </>
-                          )}
-                          {currentSignal.direction === 'NEUTRAL' && (
-                            <>
-                              <Minus className="mr-2 h-5 w-5 text-gray-400" />
-                              <span className="text-gray-400">Neutral</span>
+                              {currentSignal.direction === 'LONG' && (
+                                <>
+                                  <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
+                                  <span className="text-green-400">Long Signal</span>
+                                </>
+                              )}
+                              {currentSignal.direction === 'SHORT' && (
+                                <>
+                                  <TrendingDown className="mr-2 h-5 w-5 text-red-400" />
+                                  <span className="text-red-400">Short Signal</span>
+                                </>
+                              )}
+                              {currentSignal.direction === 'NEUTRAL' && (
+                                <>
+                                  <Minus className="mr-2 h-5 w-5 text-gray-400" />
+                                  <span className="text-gray-400">Neutral</span>
+                                </>
+                              )}
                             </>
                           )}
                         </h3>
