@@ -421,6 +421,8 @@ export function startRealTimeUpdates() {
 
 // Generate realistic looking chart data with trend patterns
 function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
+  // Important: Always get the current price from the central price registry
+  const currentSynchronizedPrice = getPrice(symbol);
   const now = Math.floor(Date.now() / 1000);
   const data: ChartData[] = [];
   
@@ -475,22 +477,20 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
       count = 100;
   }
   
-  // Get starting price
-  let basePrice = 0;
+  // Always use the synchronized price from our central price registry
+  let basePrice = currentSynchronizedPrice;
   const baseAsset = symbol.split('/')[0];
   
-  // First try to get price from our central registry
-  const centralPrice = getPrice(symbol);
-  if (centralPrice > 0) {
-    basePrice = centralPrice;
-  } 
-  // Next try current price from API source
-  else {
+  // If we don't have a synchronized price yet, try other sources
+  if (!basePrice || basePrice <= 0) {
+    // Try the API price from lastPrices
     const apiPrice = lastPrices[symbol];
     if (apiPrice && apiPrice > 0) {
       basePrice = apiPrice;
+      // Update the central registry with this price
+      setPrice(symbol, apiPrice);
     }
-    // Otherwise use some reasonable defaults based on the asset
+    // Otherwise use reasonable defaults based on the asset
     else {
       if (baseAsset === 'BTC') {
         basePrice = 103000 + Math.random() * 2000;
@@ -505,6 +505,8 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
       } else {
         basePrice = 100 + Math.random() * 50;
       }
+      // Update the central registry with this fallback price
+      setPrice(symbol, basePrice);
     }
   }
   
