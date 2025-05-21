@@ -101,7 +101,9 @@ interface AdvancedSignalDashboardProps {
 // Main component
 export default function AdvancedSignalDashboard({ 
   symbol, 
-  onTimeframeSelect 
+  onTimeframeSelect,
+  autoRun = false,
+  onAnalysisComplete
 }: AdvancedSignalDashboardProps) {
   // State for the selected timeframe
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
@@ -275,6 +277,21 @@ export default function AdvancedSignalDashboard({
       }); // Clear existing signals with proper typing
       lastSymbolRef.current = symbol;
       lastCalculationRef.current = 0; // Reset last calculation time
+    }
+    
+    // Auto-run analysis when triggered by autoRun prop (when user selects from heat map)
+    if (autoRun && isAllDataLoaded && !isCalculating) {
+      console.log(`Auto-running analysis for ${symbol} based on user selection from heat map`);
+      
+      // Wait briefly for data to fully load
+      setTimeout(() => {
+        triggerCalculation();
+        
+        // Notify parent that analysis is complete
+        if (onAnalysisComplete) {
+          onAnalysisComplete();
+        }
+      }, 800);
     }
     
     // Log data status for debugging
