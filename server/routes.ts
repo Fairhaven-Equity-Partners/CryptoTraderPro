@@ -7,6 +7,7 @@ import {
   type InsertSignalHistory
 } from "@shared/schema";
 import { z } from "zod";
+import { extendedCryptoList } from "./cryptoData";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);

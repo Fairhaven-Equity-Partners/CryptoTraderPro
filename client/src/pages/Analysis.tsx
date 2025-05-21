@@ -51,13 +51,6 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-        <div className="px-4 py-4">
-          <LeverageCalculator 
-            symbol={currentAsset} 
-            currentPrice={price?.lastPrice || 0}
-          />
-        </div>
-        
         {/* Heat Map Section */}
         <div className="px-4 py-4">
           <Collapsible open={isHeatMapOpen} onOpenChange={setIsHeatMapOpen}>
@@ -78,6 +71,13 @@ const Analysis: React.FC = () => {
               <SignalHeatMap />
             </CollapsibleContent>
           </Collapsible>
+        </div>
+        
+        <div className="px-4 py-4">
+          <LeverageCalculator 
+            symbol={currentAsset} 
+            currentPrice={price?.lastPrice || 0}
+          />
         </div>
       </main>
     </div>
