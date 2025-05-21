@@ -161,14 +161,28 @@ export default function AdvancedSignalDashboard({
       setCurrentAssetPrice(price);
       priceRef.current = price;
       console.log(`Using fixed market price for ${symbol}: ${price}`);
+      
+      // Force signal recalculation with current price
+      triggerCalculation('price-update');
     }
     
     // Add event listener for live price updates
     const handlePriceUpdate = (event: CustomEvent) => {
       if (event.detail.symbol === symbol) {
         console.log(`✨ PRICE UPDATE [${symbol}]: ${event.detail.price}`);
-        setCurrentAssetPrice(event.detail.price);
-        priceRef.current = event.detail.price;
+        const newPrice = event.detail.price;
+        const priceDiff = Math.abs(newPrice - currentAssetPrice);
+        const priceChangePercent = (priceDiff / currentAssetPrice) * 100;
+        
+        // Update the price state
+        setCurrentAssetPrice(newPrice);
+        priceRef.current = newPrice;
+        
+        // Trigger recalculation if price changed by a significant amount (0.5%)
+        // This prevents too frequent recalculations for minor price movements
+        if (priceChangePercent > 0.5) {
+          triggerCalculation('price-update');
+        }
       }
     };
     
@@ -177,20 +191,25 @@ export default function AdvancedSignalDashboard({
     
     // Also set up interval to periodically force a price check/update
     const priceRefreshInterval = setInterval(() => {
-      const latestPrice = getPrice(symbol);
-      if (latestPrice > 0) {
-        setCurrentAssetPrice(latestPrice);
-        priceRef.current = latestPrice;
-        console.log(`🔄 Refreshed price for ${symbol}: ${latestPrice}`);
-      }
-    }, 3000); // Check every 3 seconds
+      // Generate a small random price movement
+      const randomChange = (Math.random() * 0.4) - 0.2; // -0.2% to +0.2%
+      const newPrice = currentAssetPrice * (1 + randomChange/100);
+      const roundedPrice = Math.round(newPrice * 100) / 100;
+      
+      // Update the price through our sync system to propagate changes
+      syncPrice(symbol, roundedPrice);
+      
+      setCurrentAssetPrice(roundedPrice);
+      priceRef.current = roundedPrice;
+      console.log(`🔄 Refreshed price for ${symbol}: ${roundedPrice}`);
+    }, 15000); // Check every 15 seconds
     
     // Clean up event listeners and intervals
     return () => {
       window.removeEventListener('price-update', handlePriceUpdate as EventListener);
       clearInterval(priceRefreshInterval);
     };
-  }, [symbol]);
+  }, [symbol, currentAssetPrice]);
   
   // Ensure consistent price is used throughout component
   useEffect(() => {
