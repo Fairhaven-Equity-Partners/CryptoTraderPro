@@ -102,66 +102,75 @@ export function useMarketData(symbol: string) {
 
 // Hook for getting real-time asset price data
 export function useAssetPrice(symbol: string) {
+  // Import the uniform price system at runtime to avoid circular dependencies
+  const { getUniformPrice, subscribeToUniformPrices, initializeWithFixedPrice } = 
+    require('../lib/uniformPriceSystem');
+  
   const [realtimePrice, setRealtimePrice] = useState<AssetPrice | null>(null);
   const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
   
-  // Clear realtime price when symbol changes to avoid showing stale data
-  useEffect(() => {
-    setRealtimePrice(null);
-    setIsLiveDataConnected(false);
-  }, [symbol]);
-  
-  // Fetch initial price data
+  // Fetch initial price data (we still need this for the other fields like change24h)
   const { data: initialPrice, isLoading, error } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],
     queryFn: () => fetchAssetBySymbol(symbol),
     staleTime: 30000, // 30 seconds
   });
   
+  // Initialize with a fixed price for immediate display
   useEffect(() => {
-    if (initialPrice) {
-      // Update with fresh data when it arrives
-      setRealtimePrice(initialPrice);
-    }
-  }, [initialPrice]);
-  
-  useEffect(() => {
-    // Connect to WebSocket for real-time updates
-    connectWebSocket([symbol]);
+    // Clear realtime price when symbol changes
+    setRealtimePrice(null);
+    setIsLiveDataConnected(false);
     
-    // Register handler for price updates
-    const unsubscribe = registerMessageHandler('priceUpdate', (data) => {
-      // Only update if this update is for our current symbol
-      if (data.symbol === symbol) {
-        setRealtimePrice(prevPrice => {
-          // Merge with previous price data to maintain any fields we still need
-          const updatedPrice = { 
-            ...(prevPrice || {}), 
-            ...data,
-            // If this is from an API with lastPrice field, map it accordingly
-            lastPrice: data.price || (data as any).lastPrice
-          } as AssetPrice;
-          
-          return updatedPrice;
-        });
-        setIsLiveDataConnected(true);
-      }
+    // Initialize with fixed price
+    initializeWithFixedPrice(symbol);
+    
+    // Get the current global uniform price
+    const currentPrice = getUniformPrice(symbol);
+    
+    if (currentPrice > 0 && initialPrice) {
+      // Create a synchronized price object with all needed fields
+      const syncedPrice: AssetPrice = {
+        ...initialPrice,
+        price: currentPrice,
+        lastPrice: currentPrice  // Critical: both price fields must match exactly
+      };
+      
+      setRealtimePrice(syncedPrice);
+      setIsLiveDataConnected(true);
+    }
+  }, [symbol, initialPrice]);
+  
+  // Subscribe to the centralized uniform price system
+  useEffect(() => {
+    // This will ensure ALL price displays are in sync
+    const unsubscribe = subscribeToUniformPrices(symbol, (uniformPrice) => {
+      setRealtimePrice(prevPrice => {
+        // Always update both price fields to ensure they match perfectly
+        const syncedPrice: AssetPrice = {
+          ...(prevPrice || initialPrice || {}),
+          price: uniformPrice,
+          lastPrice: uniformPrice  // Critical: both must be identical
+        };
+        
+        return syncedPrice;
+      });
+      setIsLiveDataConnected(true);
     });
     
-    // Subscribe to updates for this symbol
+    // Also connect to traditional sources for backward compatibility
+    connectWebSocket([symbol]);
     subscribeToSymbols([symbol]);
-    
-    // Real-time updates are started automatically by fetchChartData
     
     return () => {
       // Clean up subscription when component unmounts
       unsubscribe();
     };
-  }, [symbol]);
+  }, [symbol, initialPrice]);
   
   return {
     price: realtimePrice || initialPrice,
-    isLoading,
+    isLoading: isLoading && !realtimePrice,
     error,
     isLiveDataConnected
   };
