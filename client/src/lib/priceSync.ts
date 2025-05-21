@@ -78,63 +78,108 @@ export function setPrice(symbol: string, price: number): void {
   }
 }
 
+// Track the last time we updated a price to prevent flooding
+// This will allow us to enforce a minimum time between updates
+const lastPriceUpdateTime: Record<string, number> = {};
+
 /**
- * Updates all components with the latest price
- * This is the ONLY function that should be called to update prices
- * @returns The final synchronized price
+ * EMERGENCY FIXED VERSION: Updates component prices without causing circular updates
+ * This function is now much more restrictive to prevent price flooding
+ * @returns The final validated price
  */
 export function syncPrice(symbol: string, newPrice?: number): number {
-  // For real-world applications, we would use WebSockets for actual live price data
-  // For demo purposes, we'll create some realistic price movements
+  // STRICT anti-flooding protection
+  const now = Date.now();
+  const lastUpdate = lastPriceUpdateTime[symbol] || 0;
+  const timeSinceLastUpdate = now - lastUpdate;
+  
+  // Get the current price without doing any updates
+  const currentPrice = getPrice(symbol);
+  
+  // STOP CASCADE: If we updated recently (<10 seconds ago), do nothing
+  // This is a critical fix to prevent the cascading updates
+  if (timeSinceLastUpdate < 10000) {
+    console.log(`🛑 Price update for ${symbol} throttled (last update ${timeSinceLastUpdate}ms ago)`);
+    return currentPrice;
+  }
+  
+  // If no explicit price provided, just return current without generating random changes
   if (!newPrice) {
-    // Generate a small random price movement if no price is provided
-    const currentPrice = getPrice(symbol);
-    const percentChange = (Math.random() * 0.2) - 0.1; // -0.1% to +0.1% change
-    newPrice = Math.round(currentPrice * (1 + percentChange/100) * 100) / 100;
+    return currentPrice;
   }
   
-  // If a new price is provided, update our central registry
-  if (newPrice && newPrice > 0) {
-    setPrice(symbol, newPrice);
-  }
-  
-  // Get the current price from our central registry
-  const price = getPrice(symbol);
-  
-  if (price > 0) {
-    // Broadcast all events needed for components to stay in sync
+  // Only update if we have a valid price that's different from current
+  if (newPrice > 0 && newPrice !== currentPrice) {
+    // Update our global registry
+    window.cryptoPrices[symbol] = newPrice;
     
-    // 1. DOM attribute update for direct access
-    const liveElement = document.getElementById('live-price-data');
-    if (liveElement) {
-      liveElement.setAttribute(`data-${symbol.replace('/', '-')}`, price.toString());
-      liveElement.setAttribute('data-active-symbol', symbol);
-      liveElement.setAttribute('data-latest-price', price.toString());
-      liveElement.setAttribute('data-current-price', price.toString());
+    // Update timestamp to throttle future updates
+    lastPriceUpdateTime[symbol] = now;
+    
+    // For backwards compatibility
+    window.latestPrices[symbol] = newPrice;
+    if (symbol === 'BTC/USDT') {
+      window.currentPrice = newPrice;
     }
     
-    // 2. Live price update event (high priority)
-    const liveEvent = new CustomEvent('live-price-update', {
-      detail: { symbol, price, timestamp: Date.now() }
+    console.log(`✅ Price updated for ${symbol}: ${newPrice}`);
+    
+    // Broadcast a SINGLE event for price-aware components
+    const updateEvent = new CustomEvent('price-update', {
+      detail: { 
+        symbol, 
+        price: newPrice,
+        timestamp: now
+      }
     });
-    window.dispatchEvent(liveEvent);
-    console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${price}`);
+    window.dispatchEvent(updateEvent);
     
-    // 3. Trigger immediate calculation
-    console.log(`💯 IMMEDIATE CALCULATION TRIGGERED for ${symbol} with price ${price}`);
-    
-    // 4. Update global variables for backward compatibility
-    window.currentPrice = price;
-    window.latestPrices = window.latestPrices || {};
-    window.latestPrices[symbol] = price;
-    
-    // 5. Sync with server
-    fetch('/api/sync-price', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ symbol, price })
-    }).catch(() => {}); // Silent fail as this is just a nice-to-have
+    // CRITICAL: We only make ONE server sync and do not cascade
+    // We use a timeout to prevent immediate chaining of updates
+    setTimeout(() => {
+      fetch('/api/sync-price', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol, price: newPrice })
+      }).catch(() => {});
+    }, 1000);
   }
   
-  return price;
+  return window.cryptoPrices[symbol] || 0;
+}
+
+/**
+ * Update DOM elements and dispatch events with the new price
+ */
+function updatePriceDisplays(symbol: string, price: number): void {
+  // 1. DOM attribute update for direct access
+  const liveElement = document.getElementById('live-price-data');
+  if (liveElement) {
+    liveElement.setAttribute(`data-${symbol.replace('/', '-')}`, price.toString());
+    liveElement.setAttribute('data-active-symbol', symbol);
+    liveElement.setAttribute('data-latest-price', price.toString());
+    liveElement.setAttribute('data-current-price', price.toString());
+  }
+  
+  // 2. Live price update event (high priority)
+  const liveEvent = new CustomEvent('live-price-update', {
+    detail: { symbol, price, timestamp: Date.now() }
+  });
+  window.dispatchEvent(liveEvent);
+  console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${price}`);
+  
+  // 3. Trigger immediate calculation
+  console.log(`💯 IMMEDIATE CALCULATION TRIGGERED for ${symbol} with price ${price}`);
+  
+  // 4. Update global variables for backward compatibility
+  window.currentPrice = price;
+  window.latestPrices = window.latestPrices || {};
+  window.latestPrices[symbol] = price;
+  
+  // 5. Sync with server - throttled to prevent flooding
+  fetch('/api/sync-price', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ symbol, price })
+  }).catch(() => {}); // Silent fail as this is just a nice-to-have
 }

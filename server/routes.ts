@@ -83,6 +83,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Track price updates to prevent flooding
+  const lastPriceUpdates: Record<string, number> = {};
+  
   // Price synchronization endpoint for consistent price data
   app.post('/api/sync-price', async (req: Request, res: Response) => {
     try {
@@ -94,6 +97,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
           message: 'Symbol and price are required' 
         });
       }
+      
+      // Prevent update flooding - limit to one update per 5 seconds per symbol
+      const now = Date.now();
+      const lastUpdate = lastPriceUpdates[symbol] || 0;
+      const timeSinceLastUpdate = now - lastUpdate;
+      
+      if (timeSinceLastUpdate < 5000) {
+        return res.status(200).json({
+          success: true,
+          throttled: true,
+          message: 'Price update throttled to prevent flooding'
+        });
+      }
+      
+      // Update tracking
+      lastPriceUpdates[symbol] = now;
       
       // Update the cryptocurrency price in storage
       const updatedAsset = await storage.updateCryptoAsset(symbol, {
@@ -107,7 +126,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           type: 'PRICE_UPDATE',
           symbol,
           price,
-          timestamp: Date.now()
+          timestamp: now
         });
         
         console.log(`Price synchronized for ${symbol}: ${price}`);

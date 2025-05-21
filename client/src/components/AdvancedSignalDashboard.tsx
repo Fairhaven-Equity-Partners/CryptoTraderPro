@@ -189,20 +189,18 @@ export default function AdvancedSignalDashboard({
     // Listen for price updates
     window.addEventListener('price-update', handlePriceUpdate as EventListener);
     
-    // Also set up interval to periodically force a price check/update
+    // Set up interval to periodically check for fresh prices WITHOUT generating our own
     const priceRefreshInterval = setInterval(() => {
-      // Generate a small random price movement
-      const randomChange = (Math.random() * 0.4) - 0.2; // -0.2% to +0.2%
-      const newPrice = currentAssetPrice * (1 + randomChange/100);
-      const roundedPrice = Math.round(newPrice * 100) / 100;
+      // Get the latest price from the server (don't generate our own)
+      const latestPrice = getPrice(symbol);
       
-      // Update the price through our sync system to propagate changes
-      syncPrice(symbol, roundedPrice);
-      
-      setCurrentAssetPrice(roundedPrice);
-      priceRef.current = roundedPrice;
-      console.log(`🔄 Refreshed price for ${symbol}: ${roundedPrice}`);
-    }, 15000); // Check every 15 seconds
+      // Only update if we have a valid price
+      if (latestPrice > 0 && latestPrice !== currentAssetPrice) {
+        setCurrentAssetPrice(latestPrice);
+        priceRef.current = latestPrice;
+        console.log(`🔄 Latest price for ${symbol}: ${latestPrice}`);
+      }
+    }, 5000); // Check every 5 seconds
     
     // Clean up event listeners and intervals
     return () => {
