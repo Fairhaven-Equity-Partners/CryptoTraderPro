@@ -15,7 +15,7 @@ const priceCache: Record<string, {
 }> = {};
 
 // Time between price refreshes (3 minutes in milliseconds)
-const REFRESH_INTERVAL = 180000;
+const REFRESH_INTERVAL = 180000; // 3 minutes
 
 // Active price polling intervals
 const activePolling: Record<string, NodeJS.Timeout> = {};

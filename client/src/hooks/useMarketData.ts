@@ -180,17 +180,13 @@ export function useAssetPrice(symbol: string) {
         })
         .catch(err => console.error("Error fetching initial price:", err));
       
-      // Set up interval (every 3 minutes = 180000ms)
+      // Set up a dummy interval that doesn't actually do anything
+    // We now use the centralized stable price system instead 
+    // This is kept for backward compatibility
       priceUpdateInterval = setInterval(() => {
-        console.log(`Fetching price update for ${symbol} (3-minute interval)`);
-        fetchAssetBySymbol(symbol)
-          .then(data => {
-            if (data) {
-              handlePriceUpdate({ detail: { symbol, price: data.price } });
-            }
-          })
-          .catch(err => console.error("Error fetching price:", err));
-      }, 180000);
+        console.log(`Using centralized stable price system (3-minute update interval)`);
+        // No actual price fetch happens here anymore
+      }, 999999999);
     };
     
     // Start the price updates

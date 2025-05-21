@@ -58,16 +58,17 @@ export function subscribeToPrice(
   };
 }
 
-// Start price polling for a symbol
+// Start price polling for a symbol - DEPRECATED in favor of stablePriceSync.ts
+// This function is kept for backward compatibility but now delegates to the stable price system
 export function startPricePolling(symbol: string, intervalMs: number = 15000): () => void {
-  // Fetch immediately
-  fetchLatestPrice(symbol);
+  // We now use the stable price system with 3-minute updates only
+  console.log("Using stable price system (3-minute updates) instead of legacy system");
   
-  // Set up interval
-  const intervalId = setInterval(() => {
-    fetchLatestPrice(symbol);
-  }, intervalMs);
+  // Create a no-op interval that doesn't actually fetch prices
+  const dummyIntervalId = setInterval(() => {
+    // Do nothing - we use the stable price system now
+  }, 9999999); // Essentially does nothing
   
   // Return a cleanup function
-  return () => clearInterval(intervalId);
+  return () => clearInterval(dummyIntervalId);
 }
