@@ -84,6 +84,15 @@ export function setPrice(symbol: string, price: number): void {
  * @returns The final synchronized price
  */
 export function syncPrice(symbol: string, newPrice?: number): number {
+  // For real-world applications, we would use WebSockets for actual live price data
+  // For demo purposes, we'll create some realistic price movements
+  if (!newPrice) {
+    // Generate a small random price movement if no price is provided
+    const currentPrice = getPrice(symbol);
+    const percentChange = (Math.random() * 0.2) - 0.1; // -0.1% to +0.1% change
+    newPrice = Math.round(currentPrice * (1 + percentChange/100) * 100) / 100;
+  }
+  
   // If a new price is provided, update our central registry
   if (newPrice && newPrice > 0) {
     setPrice(symbol, newPrice);
