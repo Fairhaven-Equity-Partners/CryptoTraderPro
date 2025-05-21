@@ -151,6 +151,9 @@ const cacheTimestamps: Record<string, Record<TimeFrame, number>> = {};
 // Track in-flight requests to prevent duplicate calls
 const pendingRequests: Record<string, Record<TimeFrame, Promise<ChartData[]>>> = {};
 
+// Track active refresh schedulers for each symbol and timeframe
+const activeSchedulers: Record<string, Record<TimeFrame, number>> = {};
+
 // Optimized chart data fetching with smart caching
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
   try {
@@ -196,6 +199,9 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
         currentSymbols.push(symbol);
         subscribeToSymbols(currentSymbols);
       }
+      
+      // Setup automatic refresh for this timeframe based on optimized intervals
+      scheduleTimeframeRefresh(symbol, timeframe);
       
       console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
       return [...data];
@@ -243,6 +249,35 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
 
 // Track the last time we updated each symbol's price
 const lastUpdateTime: Record<string, number> = {};
+
+/**
+ * Schedule automatic refresh for a specific symbol and timeframe
+ * Uses the optimized intervals from refreshScheduler.ts
+ */
+function scheduleTimeframeRefresh(symbol: string, timeframe: TimeFrame) {
+  // Initialize container for this symbol if it doesn't exist
+  activeSchedulers[symbol] = activeSchedulers[symbol] || {};
+  
+  // Clear any existing interval for this symbol/timeframe
+  if (activeSchedulers[symbol][timeframe]) {
+    clearInterval(activeSchedulers[symbol][timeframe]);
+  }
+  
+  // Get the appropriate refresh interval for this timeframe
+  const refreshInterval = REFRESH_INTERVALS[timeframe];
+  
+  // Create a new refresh interval
+  activeSchedulers[symbol][timeframe] = window.setInterval(() => {
+    console.log(`Auto-refreshing data for ${symbol} (${timeframe}) after ${refreshInterval/1000}s interval`);
+    
+    // Create a new request to refresh data
+    fetchChartData(symbol, timeframe).catch(err => {
+      console.error(`Error auto-refreshing ${symbol} (${timeframe}):`, err);
+    });
+  }, refreshInterval);
+  
+  return activeSchedulers[symbol][timeframe];
+}
 
 // Throttle parameters to prevent excessive updates
 const PRICE_UPDATE_THROTTLE = 5000; // Minimum 5 seconds between updates for same symbol
