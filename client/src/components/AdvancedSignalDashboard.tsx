@@ -162,107 +162,116 @@ export default function AdvancedSignalDashboard({
   // Track last calculation time to prevent excessive recalculations
   const [lastCalcTime, setLastCalcTime] = useState<number>(Date.now());
   
-  // SUPER SIMPLE PRICE + CALCULATION SYSTEM
-  // Single calculation happens 1 second after a new price is fetched
+  // AUTOMATIC PRICE UPDATES + ONE-TIME CALCULATION SYSTEM
+  // Calculations happen exactly ONCE after each 3-minute price update
   useEffect(() => {
-    console.log(`[SIMPLE-SYSTEM] Setting up simplified price system for ${symbol}`);
+    console.log(`[AUTO-CALC] Setting up price and calculation system for ${symbol}`);
     
-    // Track when we last calculated
-    let lastCalculationTime = Date.now();
-    // Flag to prevent concurrent calculations
-    let isCurrentlyCalculating = false;
-    
-    // Import our price system
-    import('../lib/finalPriceSystem').then(module => {
-      console.log(`[SIMPLE-SYSTEM] Initialized price system for ${symbol}`);
-      
-      // Start tracking the symbol for price updates
-      module.startTracking(symbol).then((initialPrice) => {
+    // First: Set up price updates using finalPriceSystem
+    const setupPriceFeed = async () => {
+      try {
+        // Import needed modules
+        const priceModule = await import('../lib/finalPriceSystem');
+        const calcModule = await import('../lib/oneTimeCalculation');
+        
+        // Initialize the one-time calculation system
+        calcModule.initOneTimeCalculation();
+        
+        console.log(`[AUTO-CALC] Getting initial price for ${symbol}`);
+        
+        // Get initial price
+        const initialPrice = await priceModule.startTracking(symbol);
         if (initialPrice > 0) {
-          console.log(`[SIMPLE-SYSTEM] Initial price for ${symbol}: ${initialPrice}`);
-          
-          // Just update the price
+          console.log(`[AUTO-CALC] Initial price for ${symbol}: ${initialPrice}`);
           setAssetPrice(initialPrice);
           priceRef.current = initialPrice;
         }
-      });
-      
-      // Price updates - Only updates the display
-      const unsubscribe = module.subscribeToPriceUpdates(symbol, (price) => {
-        if (price <= 0) return;
         
-        console.log(`[SIMPLE-SYSTEM] Price update for ${symbol}: ${price}`);
-        
-        // Update display with the new price
-        setAssetPrice(price);
-        priceRef.current = price;
-      });
-      
-      // The 3-minute refresh cycle is the ONLY time we calculate
-      const unsubscribeRefresh = module.subscribeToRefreshCycle(() => {
-        console.log(`[SIMPLE-SYSTEM] 3-minute refresh occurred - scheduling ONE calculation`);
-        
-        // Wait a short time to ensure price is fully updated
-        setTimeout(() => {
-          // Get current price
-          const price = priceRef.current;
+        // Subscribe to price updates (just updates the displayed price)
+        const unsubscribePriceUpdates = priceModule.subscribeToPriceUpdates(symbol, (price) => {
           if (price <= 0) return;
+          console.log(`[AUTO-CALC] Price update received: ${symbol} = ${price}`);
+          setAssetPrice(price);
+          priceRef.current = price;
+        });
+        
+        // Subscribe to the one-time calculation events
+        const unsubscribeCalc = calcModule.subscribeToOneTimeCalculation((price) => {
+          console.log(`[AUTO-CALC] One-time calculation triggered with price ${price}`);
           
-          // Only calculate if we aren't already calculating and data is loaded
-          if (!isCurrentlyCalculating && isAllDataLoaded) {
-            console.log(`[SIMPLE-SYSTEM] Starting single calculation with price ${price}`);
-            
-            // Lock calculations while we work
-            isCurrentlyCalculating = true;
-            setIsCalculating(true);
-            
-            // Mark last calculation time
-            lastCalculationTime = Date.now();
-            setLastCalcTime(Date.now());
-            
-            // Call actual calculation method
-            try {
-              const allTimeframes = Object.values(TimeFrame);
-              const newSignals: Record<TimeFrame, AdvancedSignal | null> = {};
-              
-              // Calculate signals for each timeframe
-              Promise.all(allTimeframes.map(async (timeframe) => {
-                try {
-                  newSignals[timeframe] = await calculateTimeframe(symbol, timeframe, price);
-                } catch (err) {
-                  console.error(`Error calculating ${timeframe}:`, err);
-                  newSignals[timeframe] = null;
-                }
-              })).then(() => {
-                // Only update state ONCE with all results
-                setSignals(newSignals);
-                updateRecommendationForTimeframe(selectedTimeframe);
-                
-                // Mark that we're done calculating
-                isCurrentlyCalculating = false;
-                setIsCalculating(false);
-                console.log(`[SIMPLE-SYSTEM] Calculation complete - next in 3 minutes`);
-              });
-            } catch (err) {
-              console.error('[SIMPLE-SYSTEM] Calculation error:', err);
-              // Ensure we release the lock even on error
-              isCurrentlyCalculating = false;
-              setIsCalculating(false);
-            }
+          // Only calculate if all data is loaded and we're not already calculating
+          if (!isAllDataLoaded || isCalculating) {
+            console.log(`[AUTO-CALC] Skipping calculation - data not ready or already calculating`);
+            calcModule.markCalculationCompleted();
+            return;
           }
-        }, 1000); // 1 second delay ensures the latest price is used
-      });
-      
-      // Cleanup
-      return () => {
-        console.log(`[SIMPLE-SYSTEM] Cleaning up price system for ${symbol}`);
-        unsubscribe();
-        unsubscribeRefresh();
-        module.stopTracking(symbol);
-      };
-    }).catch(err => {
-      console.error(`[SIMPLE-SYSTEM] Failed to load price system:`, err);
-    });
+          
+          // Mark that we're calculating to prevent concurrent calculations
+          setIsCalculating(true);
+          calcModule.markCalculationStarted();
+          setLastCalcTime(Date.now()); // Update the UI timer
+          
+          // Run the actual calculation
+          console.log(`[AUTO-CALC] Starting calculation for all timeframes...`);
+          
+          // Define the calculation function
+          const performCalculation = async () => {
+            try {
+              // Create new signals object to hold results
+              const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
+              
+              // Get all timeframes
+              const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'] as TimeFrame[];
+              
+              // Calculate each timeframe
+              for (const tf of timeframes) {
+                try {
+                  // Use the existing calculateTimeframe function
+                  newSignals[tf] = await calculateTimeframe(symbol, tf, price);
+                } catch (error) {
+                  console.error(`[AUTO-CALC] Error calculating ${tf}:`, error);
+                  newSignals[tf] = null;
+                }
+              }
+              
+              // Update state with all results at once
+              setSignals(newSignals);
+              updateRecommendationForTimeframe(selectedTimeframe);
+              
+              console.log(`[AUTO-CALC] Calculation complete - next calculation in 3 minutes`);
+            } catch (error) {
+              console.error(`[AUTO-CALC] Calculation error:`, error);
+            } finally {
+              // Always reset calculation state
+              setIsCalculating(false);
+              calcModule.markCalculationCompleted();
+            }
+          };
+          
+          // Execute the calculation
+          performCalculation();
+        });
+        
+        // Return cleanup function
+        return () => {
+          console.log(`[AUTO-CALC] Cleaning up price and calculation system for ${symbol}`);
+          unsubscribePriceUpdates();
+          unsubscribeCalc();
+          priceModule.stopTracking(symbol);
+        };
+      } catch (error) {
+        console.error(`[AUTO-CALC] Error setting up price and calculation system:`, error);
+        return () => {}; // Empty cleanup if setup failed
+      }
+    };
+    
+    // Start the setup and store the cleanup function
+    const cleanupPromise = setupPriceFeed();
+    
+    // Return a cleanup function
+    return () => {
+      cleanupPromise.then(cleanup => cleanup());
+    };
   }, [symbol]);
   
   // COMPLETELY DISABLED VERSION - NO CALCULATION TRIGGERED FROM HERE
