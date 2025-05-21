@@ -143,16 +143,12 @@ function broadcastPriceUpdate(symbol: string, price: number) {
  * This will trigger ONE calculation across the system
  */
 function broadcastRefreshEvent() {
-  // Add a clear flag to indicate this is THE ONE calculation event
-  const event = new CustomEvent('final-price-refresh', {
-    detail: { 
-      timestamp: globalState.lastFetchTime,
-      calculationAllowed: true, // Flag to indicate we should calculate now
-      isGlobalRefresh: true // This is the ONLY event that should trigger calculations
-    }
-  });
+  // Super simple event with no complex data - avoids errors
+  console.log(`[FinalPriceSystem] 3-MINUTE MARK - broadcasting refresh event`);
+  
+  // Create and dispatch a very simple event
+  const event = new CustomEvent('final-price-refresh');
   window.dispatchEvent(event);
-  console.log(`[FinalPriceSystem] 3-MINUTE MARK - SINGLE calculation allowed now`);
 }
 
 /**

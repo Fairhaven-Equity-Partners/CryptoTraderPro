@@ -162,92 +162,106 @@ export default function AdvancedSignalDashboard({
   // Track last calculation time to prevent excessive recalculations
   const [lastCalcTime, setLastCalcTime] = useState<number>(Date.now());
   
-  // FINAL STRICT PRICE SYNCHRONIZATION SYSTEM - Guarantees exactly 3-minute intervals
+  // SUPER SIMPLE PRICE + CALCULATION SYSTEM
+  // Single calculation happens 1 second after a new price is fetched
   useEffect(() => {
-    console.log(`[MarketAnalysis] Setting up final price system for ${symbol}`);
+    console.log(`[SIMPLE-SYSTEM] Setting up simplified price system for ${symbol}`);
     
-    // Store initial calculation time to enforce strict 3-minute rule
-    setLastCalcTime(Date.now());
+    // Track when we last calculated
+    let lastCalculationTime = Date.now();
+    // Flag to prevent concurrent calculations
+    let isCurrentlyCalculating = false;
     
-    // Import our completely overhauled price system
+    // Import our price system
     import('../lib/finalPriceSystem').then(module => {
-      // Centralized flag to track if we're allowed to calculate now - ABSOLUTE STRICT RULE
-      // Start by unlocking calculations but enforce the 3-minute timer
-      setCalculationsLocked(false); 
-      let calculationAllowed = false;
+      console.log(`[SIMPLE-SYSTEM] Initialized price system for ${symbol}`);
       
       // Start tracking the symbol for price updates
       module.startTracking(symbol).then((initialPrice) => {
         if (initialPrice > 0) {
-          console.log(`[MarketAnalysis] Initial price for ${symbol}: ${initialPrice}`);
+          console.log(`[SIMPLE-SYSTEM] Initial price for ${symbol}: ${initialPrice}`);
+          
+          // Just update the price
           setAssetPrice(initialPrice);
           priceRef.current = initialPrice;
-          
-          // Always do the initial calculation
-          applyPriceAndCalculate(initialPrice);
-          setLastCalcTime(Date.now());
-          
-          // Mark that we've just calculated
-          module.markCalculationPerformed(symbol);
-          calculationAllowed = false;
         }
       });
       
-      // COMPLETELY DISABLED - Only price updates, no calculations
+      // Price updates - Only updates the display
       const unsubscribe = module.subscribeToPriceUpdates(symbol, (price) => {
         if (price <= 0) return;
         
-        console.log(`[PRICE-ONLY] Price update for ${symbol}: ${price}`);
+        console.log(`[SIMPLE-SYSTEM] Price update for ${symbol}: ${price}`);
         
-        // ONLY update the price display - NEVER trigger any calculations
+        // Update display with the new price
         setAssetPrice(price);
         priceRef.current = price;
-        
-        // LOCK CALCULATION - We'll only calculate on manual refresh after 3 minutes
-        console.log(`[CALC-BLOCKED] Automatic calculations disabled completely`);
       });
       
-      // Manual calculation only on the 3-minute global refresh
-      const unsubscribeRefresh = module.subscribeToRefreshCycle((event) => {
-        console.log(`[STRICT-3-MIN] Global refresh cycle triggered`, event);
+      // The 3-minute refresh cycle is the ONLY time we calculate
+      const unsubscribeRefresh = module.subscribeToRefreshCycle(() => {
+        console.log(`[SIMPLE-SYSTEM] 3-minute refresh occurred - scheduling ONE calculation`);
         
-        // ONLY calculate on the 3-minute refresh event if explicitly allowed
-        if (event.detail && event.detail.isGlobalRefresh && event.detail.calculationAllowed) {
+        // Wait a short time to ensure price is fully updated
+        setTimeout(() => {
           // Get current price
           const price = priceRef.current;
           if (price <= 0) return;
           
-          // Only calculate if we have data and not already calculating
-          if (isAllDataLoaded && !isCalculating) {
-            console.log(`[ONCE-PER-3MIN] Starting single calculation with price ${price}`);
+          // Only calculate if we aren't already calculating and data is loaded
+          if (!isCurrentlyCalculating && isAllDataLoaded) {
+            console.log(`[SIMPLE-SYSTEM] Starting single calculation with price ${price}`);
+            
+            // Lock calculations while we work
+            isCurrentlyCalculating = true;
             setIsCalculating(true);
             
-            // Record this calculation time
+            // Mark last calculation time
+            lastCalculationTime = Date.now();
             setLastCalcTime(Date.now());
             
-            // Calculate all timeframes once
-            calculateAllSignals(price).then((newSignals) => {
-              setSignals(newSignals);
-              updateRecommendationForTimeframe(selectedTimeframe);
+            // Call actual calculation method
+            try {
+              const allTimeframes = Object.values(TimeFrame);
+              const newSignals: Record<TimeFrame, AdvancedSignal | null> = {};
+              
+              // Calculate signals for each timeframe
+              Promise.all(allTimeframes.map(async (timeframe) => {
+                try {
+                  newSignals[timeframe] = await calculateTimeframe(symbol, timeframe, price);
+                } catch (err) {
+                  console.error(`Error calculating ${timeframe}:`, err);
+                  newSignals[timeframe] = null;
+                }
+              })).then(() => {
+                // Only update state ONCE with all results
+                setSignals(newSignals);
+                updateRecommendationForTimeframe(selectedTimeframe);
+                
+                // Mark that we're done calculating
+                isCurrentlyCalculating = false;
+                setIsCalculating(false);
+                console.log(`[SIMPLE-SYSTEM] Calculation complete - next in 3 minutes`);
+              });
+            } catch (err) {
+              console.error('[SIMPLE-SYSTEM] Calculation error:', err);
+              // Ensure we release the lock even on error
+              isCurrentlyCalculating = false;
               setIsCalculating(false);
-              console.log(`[ONCE-PER-3MIN] Complete - next in exactly 3 minutes`);
-            });
+            }
           }
-        } else {
-          console.log(`[CALC-BLOCKED] Calculation not allowed at this time`);
-        }
-        calculationAllowed = true;
+        }, 1000); // 1 second delay ensures the latest price is used
       });
       
       // Cleanup
       return () => {
-        console.log(`[MarketAnalysis] Cleaning up price system for ${symbol}`);
+        console.log(`[SIMPLE-SYSTEM] Cleaning up price system for ${symbol}`);
         unsubscribe();
         unsubscribeRefresh();
         module.stopTracking(symbol);
       };
     }).catch(err => {
-      console.error(`[MarketAnalysis] Failed to load final price system:`, err);
+      console.error(`[SIMPLE-SYSTEM] Failed to load price system:`, err);
     });
   }, [symbol]);
   
