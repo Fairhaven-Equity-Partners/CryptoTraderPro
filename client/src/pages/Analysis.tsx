@@ -3,12 +3,10 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
-// Import our simpler calculation dashboard
-import PriceOnlyCalcDashboard from '../components/PriceOnlyCalcDashboard';
+import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
-// Use original timeframe enum
 import { TimeFrame } from '../types';
 import { 
   Collapsible,
@@ -48,9 +46,8 @@ const Analysis: React.FC = () => {
     console.log(`Selected new asset: ${symbol} - analysis will run automatically`);
   };
   
-  const handleChangeTimeframe = (timeframe: string) => {
-    // Convert string timeframe to TimeFrame enum if needed
-    setCurrentTimeframe(timeframe as unknown as TimeFrame);
+  const handleChangeTimeframe = (timeframe: TimeFrame) => {
+    setCurrentTimeframe(timeframe);
   };
 
   return (
@@ -68,9 +65,11 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <PriceOnlyCalcDashboard 
+          <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
+            autoRun={shouldRunAnalysis}
+            onAnalysisComplete={() => setShouldRunAnalysis(false)}
           />
         </div>
         
