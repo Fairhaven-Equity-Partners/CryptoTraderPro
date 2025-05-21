@@ -38,6 +38,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        {/* Hidden element to store live price data for calculations */}
+        <div id="live-price-data" style={{ display: 'none' }} />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>
