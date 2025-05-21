@@ -162,6 +162,17 @@ export default function AdvancedSignalDashboard({
       priceRef.current = price;
       console.log(`Using fixed market price for ${symbol}: ${price}`);
     }
+    
+    // Set up interval to periodically refresh the displayed price
+    const priceRefreshInterval = setInterval(() => {
+      const latestPrice = getPrice(symbol);
+      if (latestPrice > 0 && latestPrice !== currentAssetPrice) {
+        setCurrentAssetPrice(latestPrice);
+        priceRef.current = latestPrice;
+      }
+    }, 5000); // Check every 5 seconds
+    
+    return () => clearInterval(priceRefreshInterval);
   }, [symbol]);
   
   // Ensure consistent price is used throughout component
