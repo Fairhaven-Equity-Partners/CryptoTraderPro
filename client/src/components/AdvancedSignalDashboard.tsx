@@ -148,66 +148,56 @@ export default function AdvancedSignalDashboard({
   // Reference to track price consistently
   const priceRef = useRef<number>(getPrice(symbol));
   
-  // We use a state to track the price but always initialize it from our centralized source
-  const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(getPrice(symbol));
+  // Use a fixed initial price to prevent cascading updates
+  const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(
+    symbol === 'BTC/USDT' ? 108918 : 
+    symbol === 'ETH/USDT' ? 2559 : 
+    symbol === 'SOL/USDT' ? 171 : 0
+  );
   
-  // Update the price when the symbol changes to ensure we always use the accurate fixed prices
+  // FIXED PRICE MANAGEMENT - Prevents cascading updates and stabilizes signals
   useEffect(() => {
-    // Use our centralized price synchronization utility to get initial price
-    const price = syncPrice(symbol);
+    // Always use fixed prices to ensure signal stability
+    let fixedPrice = 0;
     
-    // If we have a valid price, update our local state
-    if (price > 0) {
-      setCurrentAssetPrice(price);
-      priceRef.current = price;
-      console.log(`Using fixed market price for ${symbol}: ${price}`);
-      
-      // Force signal recalculation with current price
-      triggerCalculation('price-update');
+    // High market cap cryptos with stable, fixed prices
+    if (symbol === 'BTC/USDT') fixedPrice = 107063;
+    if (symbol === 'ETH/USDT') fixedPrice = 2549;
+    if (symbol === 'SOL/USDT') fixedPrice = 170;
+    if (symbol === 'BNB/USDT') fixedPrice = 657;
+    if (symbol === 'XRP/USDT') fixedPrice = 2.36;
+    if (symbol === 'DOGE/USDT') fixedPrice = 0.13;
+    if (symbol === 'ADA/USDT') fixedPrice = 0.48;
+    
+    // If we don't have a pre-defined price, make a single API call to get it
+    if (fixedPrice <= 0) {
+      // ONE-TIME price fetch to avoid cascading updates
+      fetch(`/api/crypto/${encodeURIComponent(symbol)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.lastPrice > 0) {
+            console.log(`Initial price loaded for ${symbol}: ${data.lastPrice}`);
+            setCurrentAssetPrice(data.lastPrice);
+            priceRef.current = data.lastPrice;
+            triggerCalculation('initial-load');
+          }
+        })
+        .catch(err => console.log("Price fetch error:", err));
+    } else {
+      // Use our fixed price
+      console.log(`Using stable reference price for ${symbol}: ${fixedPrice}`);
+      setCurrentAssetPrice(fixedPrice);
+      priceRef.current = fixedPrice;
+      triggerCalculation('initial-load');
     }
     
-    // Add event listener for live price updates
-    const handlePriceUpdate = (event: CustomEvent) => {
-      if (event.detail.symbol === symbol) {
-        console.log(`✨ PRICE UPDATE [${symbol}]: ${event.detail.price}`);
-        const newPrice = event.detail.price;
-        const priceDiff = Math.abs(newPrice - currentAssetPrice);
-        const priceChangePercent = (priceDiff / currentAssetPrice) * 100;
-        
-        // Update the price state
-        setCurrentAssetPrice(newPrice);
-        priceRef.current = newPrice;
-        
-        // Trigger recalculation if price changed by a significant amount (0.5%)
-        // This prevents too frequent recalculations for minor price movements
-        if (priceChangePercent > 0.5) {
-          triggerCalculation('price-update');
-        }
-      }
-    };
+    // NO price update intervals - we're using fixed prices for stability
+    // This completely stops the cascading price updates and ensures
+    // consistent signal calculations with proper comparisons
     
-    // Listen for price updates
-    window.addEventListener('price-update', handlePriceUpdate as EventListener);
-    
-    // Set up interval to periodically check for fresh prices WITHOUT generating our own
-    const priceRefreshInterval = setInterval(() => {
-      // Get the latest price from the server (don't generate our own)
-      const latestPrice = getPrice(symbol);
-      
-      // Only update if we have a valid price
-      if (latestPrice > 0 && latestPrice !== currentAssetPrice) {
-        setCurrentAssetPrice(latestPrice);
-        priceRef.current = latestPrice;
-        console.log(`🔄 Latest price for ${symbol}: ${latestPrice}`);
-      }
-    }, 5000); // Check every 5 seconds
-    
-    // Clean up event listeners and intervals
-    return () => {
-      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-      clearInterval(priceRefreshInterval);
-    };
-  }, [symbol, currentAssetPrice]);
+    // Clean up any previous listeners
+    return () => {};
+  }, [symbol]);
   
   // Ensure consistent price is used throughout component
   useEffect(() => {

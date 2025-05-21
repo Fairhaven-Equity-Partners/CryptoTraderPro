@@ -83,10 +83,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Track price updates to prevent flooding
+  // Track price updates to prevent flooding - much stricter with 15 second minimum interval
   const lastPriceUpdates: Record<string, number> = {};
   
-  // Price synchronization endpoint for consistent price data
+  // Price synchronization endpoint for consistent price data - FIXED VERSION
   app.post('/api/sync-price', async (req: Request, res: Response) => {
     try {
       const { symbol, price } = req.body;
@@ -98,12 +98,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      // Prevent update flooding - limit to one update per 5 seconds per symbol
+      // STRICT anti-flooding protection - min 15 seconds between updates
       const now = Date.now();
       const lastUpdate = lastPriceUpdates[symbol] || 0;
       const timeSinceLastUpdate = now - lastUpdate;
       
-      if (timeSinceLastUpdate < 5000) {
+      if (timeSinceLastUpdate < 15000) {
         return res.status(200).json({
           success: true,
           throttled: true,
@@ -114,10 +114,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Update tracking
       lastPriceUpdates[symbol] = now;
       
+      // Get the current price before updating
+      const asset = await storage.getCryptoAssetBySymbol(symbol);
+      const currentPrice = asset?.lastPrice || 0;
+      
+      // Only update if the price change is significant (>0.25%)
+      const priceDiff = Math.abs(price - currentPrice);
+      const percentChange = (currentPrice > 0) ? (priceDiff / currentPrice) * 100 : 0;
+      
+      if (percentChange < 0.25 && currentPrice > 0) {
+        return res.status(200).json({
+          success: true,
+          ignored: true,
+          message: 'Price change too small to update'
+        });
+      }
+      
       // Update the cryptocurrency price in storage
       const updatedAsset = await storage.updateCryptoAsset(symbol, {
-        lastPrice: price,
-        updatedAt: new Date()
+        lastPrice: price
       });
       
       if (updatedAsset) {
