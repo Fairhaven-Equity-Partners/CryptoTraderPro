@@ -136,7 +136,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
               {formatPrice(priceState.price, symbol)}
             </span>
             {priceState.flash && priceDirection}
-            <Badge variant="outline" className="ml-2 text-xs">
+            <Badge variant="outline" className="ml-2 text-xs font-medium text-white">
               Next update: {Math.floor(nextRefreshIn / 60)}m {nextRefreshIn % 60}s
             </Badge>
           </div>

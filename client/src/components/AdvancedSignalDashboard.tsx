@@ -390,7 +390,7 @@ export default function AdvancedSignalDashboard({
     
   }, [symbol, isCalculating, isAllDataLoaded, toast]);
 
-  // Each time data is loaded or symbol changes, trigger calculation if not already done
+  // ONLY run this when symbol changes or during initial component mount
   useEffect(() => {
     // Reset calculation status when symbol changes
     if (lastSymbolRef.current !== symbol) {
@@ -431,6 +431,8 @@ export default function AdvancedSignalDashboard({
     }
     
     // Log data status for debugging
+    // NOTE: This effect only runs when symbol changes, not on every data update
+    // This prevents constant recalculations
     console.log(`Data status for ${symbol}: loaded=${isAllDataLoaded}, timeframes=${Object.keys(chartData).length}`);
     if (Object.keys(chartData).length > 0) {
       // Check a sample timeframe to verify data
@@ -438,20 +440,14 @@ export default function AdvancedSignalDashboard({
       console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
     }
     
-    // Wait for both historical data to be loaded AND live price data to be ready before calculating
-    // This ensures we calculate with the most up-to-date data
-    if (isAllDataLoaded && isLiveDataReady && assetPrice > 0) {
-      console.log(`Auto-triggering calculation for ${symbol} - historical and live data are both ready`);
+    // Only do an initial calculation on component mount
+    if (isAllDataLoaded && isLiveDataReady && assetPrice > 0 && lastCalculationRef.current === 0) {
+      console.log(`First-time calculation for ${symbol} - initial data loaded`);
       
-      // Only calculate if we haven't recently calculated - 3-minute debounce to match price refresh
-      const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-      const THREE_MINUTES = 180000; // 3 minutes in milliseconds
-      
-      if (timeSinceLastCalc > THREE_MINUTES || lastCalculationRef.current === 0) { // Only recalculate every 3 minutes or on first load
-        // Force calculation with proper data
-        console.log(`Initiating calculation with live data for ${symbol} at price ${assetPrice} (3-minute interval)`);
+      // Only calculate once on first load, then rely on the timer-based updates (every 3 min)
+      console.log(`Initiating first calculation with live data for ${symbol} at price ${assetPrice}`);
         
-        // Directly call calculate instead of going through the trigger function
+      // Directly call calculate instead of going through the trigger function
         setIsCalculating(true);
         lastCalculationRef.current = Date.now();
         lastCalculationTimeRef.current = Date.now() / 1000;
