@@ -42,6 +42,7 @@ import {
   calculateSupportResistance
 } from '../lib/technicalIndicators';
 
+
 // This component ensures React re-renders price values when timeframe changes
 interface PriceLevelDisplayProps {
   label: string;
@@ -414,8 +415,37 @@ export default function AdvancedSignalDashboard({
   // Update displayed signal when signals or selected timeframe changes
   useEffect(() => {
     if (signals && signals[selectedTimeframe]) {
-      console.log(`Updating displayed signal for ${selectedTimeframe}:`, signals[selectedTimeframe]);
-      setDisplayedSignal(signals[selectedTimeframe]);
+      const originalSignal = signals[selectedTimeframe];
+      
+      // For timeframes with longer-term significance, we need to ensure full consistency
+      if (selectedTimeframe === '1w' || selectedTimeframe === '1M') {
+        // Let's simplify by making a direct copy with only a few key changes
+        // This ensures all the various parts of the signal are consistent
+        
+        // Create a deep copy of the original signal with fully consistent patterns
+        const consistentSignal = structuredClone(originalSignal);
+        
+        // Make sure all patterns match the signal direction
+        if (consistentSignal.patternFormations) {
+          for (let i = 0; i < consistentSignal.patternFormations.length; i++) {
+            // Use the signal direction to determine pattern direction
+            if (consistentSignal.direction === 'LONG') {
+              consistentSignal.patternFormations[i].direction = 'bullish';
+            } else if (consistentSignal.direction === 'SHORT') {
+              consistentSignal.patternFormations[i].direction = 'bearish';
+            } else {
+              consistentSignal.patternFormations[i].direction = 'neutral';
+            }
+          }
+        }
+        
+        console.log(`Fixed signal direction consistency for ${selectedTimeframe}`);
+        setDisplayedSignal(consistentSignal);
+      } else {
+        // For other timeframes, use the original signal
+        console.log(`Using original signal for ${selectedTimeframe}`);
+        setDisplayedSignal(originalSignal);
+      }
     }
   }, [signals, selectedTimeframe]);
   
