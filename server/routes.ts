@@ -83,6 +83,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Price synchronization endpoint for consistent price data
+  app.post('/api/sync-price', async (req: Request, res: Response) => {
+    try {
+      const { symbol, price } = req.body;
+      
+      if (!symbol || price === undefined || price === null) {
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Symbol and price are required' 
+        });
+      }
+      
+      // Update the cryptocurrency price in storage
+      const updatedAsset = await storage.updateCryptoAsset(symbol, {
+        lastPrice: price,
+        updatedAt: new Date()
+      });
+      
+      if (updatedAsset) {
+        // Broadcast price update to all connected clients
+        broadcastUpdates({
+          type: 'PRICE_UPDATE',
+          symbol,
+          price,
+          timestamp: Date.now()
+        });
+        
+        console.log(`Price synchronized for ${symbol}: ${price}`);
+        return res.status(200).json({ success: true, updatedAsset });
+      } else {
+        return res.status(404).json({ 
+          success: false, 
+          message: `Cryptocurrency ${symbol} not found` 
+        });
+      }
+    } catch (error) {
+      console.error(`Error synchronizing price:`, error);
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Server error processing price synchronization' 
+      });
+    }
+  });
+  
   // Get all alerts
   app.get('/api/alerts', async (req: Request, res: Response) => {
     try {
