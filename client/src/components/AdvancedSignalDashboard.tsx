@@ -212,8 +212,9 @@ export default function AdvancedSignalDashboard({
     setCurrentAssetPrice(price);
     priceRef.current = price;
     
-    // Also update global price registry for complete synchronization
+    // Update global registries to ensure all components see the same price
     if (typeof window !== 'undefined') {
+      // Original global registries
       if (!window.cryptoPrices) window.cryptoPrices = {};
       if (!window.latestPrices) window.latestPrices = {};
       
@@ -223,6 +224,25 @@ export default function AdvancedSignalDashboard({
       if (symbol === 'BTC/USDT') {
         window.currentPrice = price;
       }
+      
+      // Broadcast to all components via custom events
+      const priceUpdateEvent = new CustomEvent('price-update', {
+        detail: { symbol, price, timestamp: Date.now() }
+      });
+      window.dispatchEvent(priceUpdateEvent);
+      
+      // Also dispatch live-price-update for compatibility with other components
+      const livePriceEvent = new CustomEvent('live-price-update', {
+        detail: { symbol, price, timestamp: Date.now() }
+      });
+      document.dispatchEvent(livePriceEvent);
+      
+      // Force API data to update too (this updates the useAssetPrice hook data)
+      fetch(`/api/sync-price`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol, price })
+      }).catch(() => {});
     }
     
     // Trigger a calculation with this price
