@@ -7,6 +7,7 @@ import {
   LeverageResult 
 } from '../types';
 import { calculateSafeLeverage } from './calculations';
+import { getPrice } from './priceSync';
 
 // API Base URL
 const API_BASE_URL = window.location.origin;
@@ -474,8 +475,9 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
       count = 100;
   }
   
-  // Starting price based on symbol
-  let basePrice = 0;
+  // Get the current price from our central price registry for perfect consistency
+  // This ensures the chart data matches the displayed price exactly
+  const basePrice = getPrice(symbol);
   // Extract the base asset from pairs like "BTC/USDT"
   const baseAsset = symbol.split('/')[0];
   

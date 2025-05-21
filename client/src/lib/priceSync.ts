@@ -67,6 +67,12 @@ export function syncPrice(symbol: string, newPrice?: number): number {
     });
     document.dispatchEvent(updateEvent);
     
+    // Make sure any global price variables are updated (important for consistency)
+    // This ensures the fetchedPrice == currentPrice at all times
+    (window as any).currentPrice = price;
+    (window as any).latestPrices = (window as any).latestPrices || {};
+    (window as any).latestPrices[symbol] = price;
+    
     // Sync with server to ensure backend has the same prices
     fetch('/api/sync-price', {
       method: 'POST',
