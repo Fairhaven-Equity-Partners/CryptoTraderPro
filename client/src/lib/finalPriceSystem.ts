@@ -135,7 +135,10 @@ function broadcastPriceUpdate(symbol: string, price: number) {
     detail: { symbol, price, timestamp: Date.now() }
   });
   window.dispatchEvent(event);
-  console.log(`[FinalPriceSystem] Price broadcast: ${symbol} = ${price}`);
+  console.log('===================================================');
+  console.log(`💰 PRICE UPDATE: ${symbol} = ${price} 💰`);
+  console.log(`💰 CALCULATIONS COMING SOON 💰`);
+  console.log('===================================================');
 }
 
 /**
@@ -144,7 +147,9 @@ function broadcastPriceUpdate(symbol: string, price: number) {
  */
 function broadcastRefreshEvent() {
   // Super simple event with no complex data - avoids errors
-  console.log(`[FinalPriceSystem] 3-MINUTE MARK - broadcasting refresh event`);
+  console.log('⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰');
+  console.log('⏰ 3-MINUTE CYCLE COMPLETE - TRIGGERING CALCULATIONS ⏰');
+  console.log('⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰');
   
   // Create and dispatch a very simple event
   const event = new CustomEvent('final-price-refresh');

@@ -95,6 +95,11 @@ function triggerCalculation() {
   isCalculating = true;
   calculatedSinceLastUpdate = true;
   
+  // Show a clear message that calculation is happening
+  console.log('==================================================');
+  console.log(`🔄 CALCULATION HAPPENING NOW - PRICE: ${currentPrice}`);
+  console.log('==================================================');
+  
   // Fire the calculation event
   const event = new CustomEvent('one-time-calculation', {
     detail: {

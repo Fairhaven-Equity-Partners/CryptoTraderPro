@@ -211,8 +211,10 @@ export default function AdvancedSignalDashboard({
           calcModule.markCalculationStarted();
           setLastCalcTime(Date.now()); // Update the UI timer
           
-          // Run the actual calculation
-          console.log(`[AUTO-CALC] Starting calculation for all timeframes...`);
+          // Run the actual calculation with CLEAR visual indicator
+          console.log('🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄');
+          console.log(`🔥 CALCULATING ALL SIGNALS NOW - PRICE: ${price} 🔥`);
+          console.log('🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄');
           
           // Define the calculation function
           const performCalculation = async () => {
