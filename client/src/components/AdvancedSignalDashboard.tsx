@@ -1457,8 +1457,8 @@ export default function AdvancedSignalDashboard({
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Success Probability</span>
                             {currentSignal.direction === 'NEUTRAL' ? (
-                              <span className="font-bold px-3 py-1 rounded border text-gray-300 bg-gray-900/50 border-gray-700">
-                                N/A
+                              <span className="font-bold px-3 py-1 rounded border text-purple-300 bg-purple-900/50 border-purple-700">
+                                50% (Balanced)
                               </span>
                             ) : (
                               <span className={`font-bold px-3 py-1 rounded border ${
