@@ -1401,9 +1401,9 @@ export default function AdvancedSignalDashboard({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Left column with signals and indicators */}
                       <div className="space-y-4">
-                        {/* Current Price Display - Using real-time price */}
+                        {/* Price Display - Updated every 3 minutes */}
                         <div className="space-y-1 mb-3">
-                          <h3 className="text-white font-bold text-sm">Current Price</h3>
+                          <h3 className="text-white font-bold text-sm">Market Price</h3>
                           <div className="text-2xl font-bold text-cyan-300">
                             {formatCurrency(assetPrice || currentSignal?.entryPrice || 0)}
                           </div>

@@ -109,7 +109,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
             </span>
             {priceState.flash && priceDirection}
             <Badge variant="outline" className="ml-2 text-xs">
-              Updated {timeSinceUpdate < 180 ? `${Math.floor(timeSinceUpdate/60)}m ${timeSinceUpdate%60}s ago` : 'recently'}
+              Refreshes every 3m
             </Badge>
           </div>
           <div className="flex items-center space-x-2 mt-1">
