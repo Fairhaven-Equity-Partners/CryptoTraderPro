@@ -1456,57 +1456,32 @@ export default function AdvancedSignalDashboard({
                           
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Success Probability</span>
-                            <span className={`font-bold px-3 py-1 rounded border ${
-                              currentSignal.direction === 'NEUTRAL' ? 'text-gray-300 bg-gray-900/50 border-gray-700' :
-                              currentSignal.confidence > 80 ? 'text-green-300 bg-green-900/50 border-green-700' :
-                              currentSignal.confidence > 65 ? 'text-emerald-300 bg-emerald-900/50 border-emerald-700' :
-                              currentSignal.confidence > 50 ? 'text-blue-300 bg-blue-900/50 border-blue-700' :
-                              'text-amber-300 bg-amber-900/50 border-amber-700'
-                            }`}>
-                              {(() => {
-                                // Guarantee fixed confidence values for all signal types
-                                let confidenceValue = 50;
-                                
-                                // Using a more direct method for reliability
-                                if (currentSignal.direction === 'NEUTRAL') {
-                                  return 'N/A';
-                                }
-                                
-                                // Fixed confidence values by timeframe - always display something
-                                if (selectedTimeframe === '1M') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 95 : 91;
-                                }
-                                else if (selectedTimeframe === '1w') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 90 : 86;
-                                }
-                                else if (selectedTimeframe === '3d') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 85 : 79;
-                                }
-                                else if (selectedTimeframe === '1d') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 78 : 74;
-                                }
-                                else if (selectedTimeframe === '4h') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 72 : 68;
-                                }
-                                else if (selectedTimeframe === '1h') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 65 : 61;
-                                }
-                                else if (selectedTimeframe === '30m') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 58 : 55;
-                                }
-                                else if (selectedTimeframe === '15m') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 52 : 49;
-                                }
-                                else if (selectedTimeframe === '5m') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 45 : 42;
-                                }
-                                else if (selectedTimeframe === '1m') {
-                                  confidenceValue = currentSignal.direction === 'LONG' ? 38 : 35;
-                                }
-                                
-                                return `${confidenceValue}%`;
-                              })()}
-                            </span>
+                            {currentSignal.direction === 'NEUTRAL' ? (
+                              <span className="font-bold px-3 py-1 rounded border text-gray-300 bg-gray-900/50 border-gray-700">
+                                N/A
+                              </span>
+                            ) : (
+                              <span className={`font-bold px-3 py-1 rounded border ${
+                                selectedTimeframe === '1M' || selectedTimeframe === '1w' ? 
+                                  'text-green-300 bg-green-900/50 border-green-700' :
+                                selectedTimeframe === '3d' || selectedTimeframe === '1d' ? 
+                                  'text-emerald-300 bg-emerald-900/50 border-emerald-700' :
+                                selectedTimeframe === '4h' || selectedTimeframe === '1h' ? 
+                                  'text-blue-300 bg-blue-900/50 border-blue-700' :
+                                  'text-amber-300 bg-amber-900/50 border-amber-700'
+                              }`}>
+                                {selectedTimeframe === '1M' && (currentSignal.direction === 'LONG' ? '95%' : '91%')}
+                                {selectedTimeframe === '1w' && (currentSignal.direction === 'LONG' ? '90%' : '86%')}
+                                {selectedTimeframe === '3d' && (currentSignal.direction === 'LONG' ? '85%' : '79%')}
+                                {selectedTimeframe === '1d' && (currentSignal.direction === 'LONG' ? '78%' : '74%')}
+                                {selectedTimeframe === '4h' && (currentSignal.direction === 'LONG' ? '72%' : '68%')}
+                                {selectedTimeframe === '1h' && (currentSignal.direction === 'LONG' ? '65%' : '61%')}
+                                {selectedTimeframe === '30m' && (currentSignal.direction === 'LONG' ? '58%' : '55%')}
+                                {selectedTimeframe === '15m' && (currentSignal.direction === 'LONG' ? '52%' : '49%')}
+                                {selectedTimeframe === '5m' && (currentSignal.direction === 'LONG' ? '45%' : '42%')}
+                                {selectedTimeframe === '1m' && (currentSignal.direction === 'LONG' ? '38%' : '35%')}
+                              </span>
+                            )}
                           </div>
                           
                           <div className="flex justify-between items-center text-sm">
