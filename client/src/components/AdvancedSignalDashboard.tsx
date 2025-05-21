@@ -173,11 +173,12 @@ export default function AdvancedSignalDashboard({
   
   // Get a stable reference price for synchronization
   function getReferencePrice(cryptoSymbol: string): number {
+    // IMPORTANT: These must be the EXACT same prices used in PriceOverview component
     // Standard reference prices that won't change, ensuring price stability
-    if (cryptoSymbol === 'BTC/USDT') return 107063;
-    if (cryptoSymbol === 'ETH/USDT') return 2549;
-    if (cryptoSymbol === 'SOL/USDT') return 170;
-    if (cryptoSymbol === 'BNB/USDT') return 657;
+    if (cryptoSymbol === 'BTC/USDT') return 107063.00;
+    if (cryptoSymbol === 'ETH/USDT') return 2549.17;
+    if (cryptoSymbol === 'SOL/USDT') return 170.33;
+    if (cryptoSymbol === 'BNB/USDT') return 657.12;
     if (cryptoSymbol === 'XRP/USDT') return 2.36;
     if (cryptoSymbol === 'DOGE/USDT') return 0.13;
     if (cryptoSymbol === 'ADA/USDT') return 0.48;
