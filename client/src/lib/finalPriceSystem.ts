@@ -265,15 +265,41 @@ export async function getCurrentPrice(symbol: string): Promise<number> {
     // If fetch fails but we have a cached price, use it regardless of age
     if (cached) return cached.price;
     
-    // No price found, use default placeholder
-    return symbol === 'BTC/USDT' ? 108091 : 
-           symbol === 'ETH/USDT' ? 2501 : 0;
+    // No price found, try a direct API call to get the current market price
+    try {
+      console.log(`[FinalPriceSystem] Performing direct market price lookup for ${symbol}`);
+      // Use CoinGecko's public API for Bitcoin price (no API key needed)
+      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+      const data = await response.json();
+      
+      if (data && data.bitcoin && data.bitcoin.usd) {
+        const marketPrice = data.bitcoin.usd;
+        console.log(`[FinalPriceSystem] Got real market price for Bitcoin: ${marketPrice}`);
+        
+        // Update cache with this real price
+        globalState.priceCache.set(symbol, {
+          price: marketPrice,
+          timestamp: now
+        });
+        
+        // Broadcast this real market price
+        broadcastPriceUpdate(symbol, marketPrice);
+        
+        return marketPrice;
+      }
+    } catch (cgError) {
+      console.error("Error fetching from CoinGecko:", cgError);
+    }
+    
+    // Fallback in case all APIs fail, but use a more reasonable approximation
+    return symbol === 'BTC/USDT' ? 63000 : 
+           symbol === 'ETH/USDT' ? 3000 : 0;
   } catch (error) {
     console.error(`Error fetching price for ${symbol}:`, error);
-    // Return cached price if available, otherwise use default
+    // Return cached price if available, otherwise fallback
     return cached ? cached.price : 
-           (symbol === 'BTC/USDT' ? 108091 : 
-            symbol === 'ETH/USDT' ? 2501 : 0);
+           (symbol === 'BTC/USDT' ? 63000 : 
+            symbol === 'ETH/USDT' ? 3000 : 0);
   }
 }
 

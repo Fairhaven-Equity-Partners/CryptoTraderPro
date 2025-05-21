@@ -226,7 +226,15 @@ export default function AdvancedSignalDashboard({
   function applyPriceAndCalculate(price: number) {
     if (price <= 0) return;
     
-    console.log(`[StablePrice] Using synchronized price for ${symbol}: ${price}`);
+    // IMPORTANT: Only allow calculations once every 3 minutes 
+    const now = Date.now();
+    const timeSinceLastCalc = now - lastCalcTime;
+    if (timeSinceLastCalc < 180000) { // 180000ms = 3 minutes
+      console.log(`[STRICT-TIMER] Skipping calculation - only ${Math.floor(timeSinceLastCalc/1000)}s since last calc (need 180s)`);
+      return; // Exit early to prevent the frequent recalculations
+    }
+    
+    console.log(`[StablePrice] Using synchronized price for ${symbol}: ${price} - recalculating after 3+ minutes`);
     
     // Update both local state and global reference
     setAssetPrice(price);
