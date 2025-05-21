@@ -31,7 +31,7 @@ import {
 import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
 import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
 import { formatCurrency, formatPercentage } from '../lib/calculations';
-import { getPrice, syncPrice } from '../lib/priceSync';
+import { getCurrentPrice, broadcastPriceUpdate } from '../lib/stablePriceSync';
 import { useToast } from '../hooks/use-toast';
 import { useMarketData } from '../hooks/useMarketData';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -478,7 +478,7 @@ export default function AdvancedSignalDashboard({
     
     // Reset timer when a calculation completes
     if (!isCalculating) {
-      setNextRefreshIn(300); // Reset to 5 minutes (300 seconds)
+      setNextRefreshIn(180); // Reset to 3 minutes (180 seconds)
     }
     
     // Set up countdown timer
@@ -489,7 +489,7 @@ export default function AdvancedSignalDashboard({
           console.log("Refresh timer reached zero, triggering calculation");
           // Add a slight delay to ensure state updates have completed
           setTimeout(() => triggerCalculation('timer'), 100);
-          return 300; // Reset to 5 minutes
+          return 180; // Reset to 3 minutes
         }
         return prevTime - 1;
       });
@@ -1403,7 +1403,9 @@ export default function AdvancedSignalDashboard({
                       <div className="space-y-4">
                         {/* Price Display - Updated every 3 minutes */}
                         <div className="space-y-1 mb-3">
-                          <h3 className="text-white font-bold text-sm">Market Price</h3>
+                          <h3 className="text-white font-bold text-sm flex items-center">
+                            Price <Badge variant="outline" className="ml-2 text-xs">Updates every 3m</Badge>
+                          </h3>
                           <div className="text-2xl font-bold text-cyan-300">
                             {formatCurrency(assetPrice || currentSignal?.entryPrice || 0)}
                           </div>
