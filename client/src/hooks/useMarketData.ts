@@ -146,7 +146,7 @@ export function useAssetPrice(symbol: string) {
     }
   }, [symbol, initialPrice]);
   
-  // Subscribe to price updates (simplified version)
+  // Subscribe to price updates (reduced frequency - 3 minutes)
   useEffect(() => {
     // Listen for price update events
     const handlePriceUpdate = (event: any) => {
@@ -167,6 +167,35 @@ export function useAssetPrice(symbol: string) {
       }
     };
     
+    // Set up a price update on a 3-minute interval
+    let priceUpdateInterval: NodeJS.Timeout | null = null;
+    
+    const setupPriceUpdates = () => {
+      // Initial update
+      fetchAssetBySymbol(symbol)
+        .then(data => {
+          if (data) {
+            handlePriceUpdate({ detail: { symbol, price: data.price } });
+          }
+        })
+        .catch(err => console.error("Error fetching initial price:", err));
+      
+      // Set up interval (every 3 minutes = 180000ms)
+      priceUpdateInterval = setInterval(() => {
+        console.log(`Fetching price update for ${symbol} (3-minute interval)`);
+        fetchAssetBySymbol(symbol)
+          .then(data => {
+            if (data) {
+              handlePriceUpdate({ detail: { symbol, price: data.price } });
+            }
+          })
+          .catch(err => console.error("Error fetching price:", err));
+      }, 180000);
+    };
+    
+    // Start the price updates
+    setupPriceUpdates();
+    
     // Also connect to traditional sources for backward compatibility
     connectWebSocket([symbol]);
     subscribeToSymbols([symbol]);
@@ -179,6 +208,11 @@ export function useAssetPrice(symbol: string) {
       // Clean up event listeners
       window.removeEventListener('price-update', handlePriceUpdate);
       document.removeEventListener('live-price-update', handlePriceUpdate);
+      
+      // Clear interval
+      if (priceUpdateInterval) {
+        clearInterval(priceUpdateInterval);
+      }
     };
   }, [symbol, initialPrice]);
   

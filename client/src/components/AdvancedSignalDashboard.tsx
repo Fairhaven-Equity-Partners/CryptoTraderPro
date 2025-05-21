@@ -156,19 +156,47 @@ export default function AdvancedSignalDashboard({
     symbol === 'SOL/USDT' ? 171 : 0
   );
   
-  // FIXED PRICE MANAGEMENT WITH SYNCHRONIZATION
+  // STABLE PRICE SYNCHRONIZATION SYSTEM - Fetches every 3 minutes
   useEffect(() => {
-    // Get the reference price (same for both displays)
-    let referencePrice = getReferencePrice(symbol);
-    
-    // Apply the synchronized price and trigger calculation
-    applyPriceAndCalculate(referencePrice);
-    
-    // Also update the server with our synchronized price (once only)
-    synchronizePriceWithServer(symbol, referencePrice);
-    
-    // No intervals or listeners - just one stable price
-    return () => {};
+    // Import and use our new stable price system
+    import('../lib/stablePriceSync').then(({ getCurrentPrice, startPricePolling, subscribeToPriceUpdates }) => {
+      console.log(`Setting up stable 3-minute price polling for ${symbol}`);
+      
+      // Start regular price polling (every 3 minutes)
+      const stopPolling = startPricePolling(symbol);
+      
+      // Subscribe to price updates
+      const unsubscribe = subscribeToPriceUpdates(symbol, (price) => {
+        if (price > 0) {
+          console.log(`[StablePrice] Price update received for ${symbol}: ${price}`);
+          setCurrentAssetPrice(price);
+          
+          // Also update our price reference
+          priceRef.current = price;
+          
+          // Apply the new stable price to all systems
+          applyPriceAndCalculate(price);
+        }
+      });
+      
+      // Get initial price
+      getCurrentPrice(symbol).then(price => {
+        if (price > 0) {
+          console.log(`[StablePrice] Initial price for ${symbol}: ${price}`);
+          setCurrentAssetPrice(price);
+          priceRef.current = price;
+          applyPriceAndCalculate(price);
+        }
+      });
+      
+      // Cleanup function
+      return () => {
+        stopPolling();
+        unsubscribe();
+      };
+    }).catch(err => {
+      console.error("Failed to load stable price system:", err);
+    });
   }, [symbol]);
   
   // Get price from the API directly
@@ -196,11 +224,11 @@ export default function AdvancedSignalDashboard({
     return 100;
   }
   
-  // Apply the same price to all parts of the system for consistency
+  // Apply the stable price to all parts of the system with 3-minute refresh
   function applyPriceAndCalculate(price: number) {
     if (price <= 0) return;
     
-    console.log(`Using synchronized price for ${symbol}: ${price}`);
+    console.log(`[StablePrice] Using synchronized price for ${symbol}: ${price}`);
     
     // Update both local state and global reference
     setCurrentAssetPrice(price);
@@ -219,19 +247,10 @@ export default function AdvancedSignalDashboard({
         window.currentPrice = price;
       }
       
-      // Broadcast to all components via custom events
-      const priceUpdateEvent = new CustomEvent('price-update', {
-        detail: { symbol, price, timestamp: Date.now() }
-      });
-      window.dispatchEvent(priceUpdateEvent);
+      // We don't dispatch additional price-update events here since
+      // stablePriceSync.ts already handles broadcasting
       
-      // Also dispatch live-price-update for compatibility with other components
-      const livePriceEvent = new CustomEvent('live-price-update', {
-        detail: { symbol, price, timestamp: Date.now() }
-      });
-      document.dispatchEvent(livePriceEvent);
-      
-      // Force API data to update too (this updates the useAssetPrice hook data)
+      // Force API data to update on the server to ensure consistency (once per 3 minutes)
       fetch(`/api/sync-price`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -239,8 +258,11 @@ export default function AdvancedSignalDashboard({
       }).catch(() => {});
     }
     
-    // Trigger a calculation with this price
-    triggerCalculation('synchronized-price');
+    // Trigger a calculation with this price after a small delay
+    // to prevent signal volatility
+    setTimeout(() => {
+      triggerCalculation('stable-price-sync');
+    }, 500);
   }
   
   // Make a single synchronized update to the server

@@ -109,7 +109,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
             </span>
             {priceState.flash && priceDirection}
             <Badge variant="outline" className="ml-2 text-xs">
-              Live {timeSinceUpdate < 60 ? `${timeSinceUpdate}s ago` : 'updating...'}
+              Updated {timeSinceUpdate < 180 ? `${Math.floor(timeSinceUpdate/60)}m ${timeSinceUpdate%60}s ago` : 'recently'}
             </Badge>
           </div>
           <div className="flex items-center space-x-2 mt-1">
@@ -117,11 +117,6 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
               {formatPercentage(price.change24h)}
             </span>
             <span className="text-neutral text-xs">(24h)</span>
-            {priceState.previousPrice > 0 && (
-              <span className="text-xs">
-                Previous: {formatPrice(priceState.previousPrice, symbol)}
-              </span>
-            )}
           </div>
         </div>
         <div className="text-right">
