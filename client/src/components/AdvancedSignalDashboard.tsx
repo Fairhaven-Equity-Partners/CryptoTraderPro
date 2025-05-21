@@ -1325,44 +1325,25 @@ export default function AdvancedSignalDashboard({
                           <div className="mt-2">
                             <div className="text-gray-300 text-xs font-semibold mb-1">Support Levels</div>
                             <div className="space-y-1">
-                              {currentSignal?.supportResistance
-                                ?.filter(level => level.type === 'support')
-                                ?.sort((a, b) => b.price - a.price) // Sort by price descending
-                                ?.slice(0, 3) // Take top 3
-                                ?.map((level, i) => (
-                                  <div key={`supp-${i}`} className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">
-                                      {i === 0 ? 'Strong' : i === 1 ? 'Medium' : 'Weak'}
-                                    </span>
-                                    <span className="text-green-400 font-medium">
-                                      {formatCurrency(level.price)}
-                                    </span>
-                                  </div>
-                                ))}
-                              
-                              {/* If no levels found, show empty placeholders */}
-                              {(!currentSignal?.supportResistance || currentSignal.supportResistance.filter(level => level.type === 'support').length === 0) && (
-                                <>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">Strong</span>
-                                    <span className="text-green-400 font-medium">
-                                      {formatCurrency((currentSignal?.entryPrice || 0) * 0.95)}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">Medium</span>
-                                    <span className="text-green-400 font-medium">
-                                      {formatCurrency((currentSignal?.entryPrice || 0) * 0.97)}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">Weak</span>
-                                    <span className="text-green-400 font-medium">
-                                      {formatCurrency((currentSignal?.entryPrice || 0) * 0.98)}
-                                    </span>
-                                  </div>
-                                </>
-                              )}
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-400">Strong</span>
+                                <span className="text-green-400 font-medium">
+                                  ${formatCurrency((currentSignal?.entryPrice || 0) * 0.95)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-400">Medium</span>
+                                <span className="text-green-400 font-medium">
+                                  ${formatCurrency((currentSignal?.entryPrice || 0) * 0.97)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-400">Weak</span>
+                                <span className="text-green-400 font-medium">
+                                  ${formatCurrency((currentSignal?.entryPrice || 0) * 0.98)}
+                                </span>
+                              </div>
+
                             </div>
                           </div>
                         </div>
