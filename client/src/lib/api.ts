@@ -477,37 +477,29 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
       count = 100;
   }
   
-  // Always use the synchronized price from our central price registry
-  let basePrice = currentSynchronizedPrice;
+  // Use the single global source of truth for price data
   const baseAsset = symbol.split('/')[0];
   
-  // If we don't have a synchronized price yet, try other sources
+  // Get price directly from our global window registry
+  let basePrice = window.cryptoPrices[symbol] || 0;
+
+  // If no price in the registry yet, use defaults based on asset
   if (!basePrice || basePrice <= 0) {
-    // Try the API price from lastPrices
-    const apiPrice = lastPrices[symbol];
-    if (apiPrice && apiPrice > 0) {
-      basePrice = apiPrice;
-      // Update the central registry with this price
-      setPrice(symbol, apiPrice);
+    if (baseAsset === 'BTC') {
+      basePrice = 108918; // Fixed price for consistency
+    } else if (baseAsset === 'ETH') {
+      basePrice = 2559;
+    } else if (baseAsset === 'BNB') {
+      basePrice = 656;
+    } else if (baseAsset === 'SOL') {
+      basePrice = 171;
+    } else if (baseAsset === 'XRP') {
+      basePrice = 2.39;
+    } else {
+      basePrice = 100;
     }
-    // Otherwise use reasonable defaults based on the asset
-    else {
-      if (baseAsset === 'BTC') {
-        basePrice = 103000 + Math.random() * 2000;
-      } else if (baseAsset === 'ETH') {
-        basePrice = 2500 + Math.random() * 200;
-      } else if (baseAsset === 'BNB') {
-        basePrice = 650 + Math.random() * 50;
-      } else if (baseAsset === 'SOL') {
-        basePrice = 170 + Math.random() * 20;
-      } else if (baseAsset === 'XRP') {
-        basePrice = 2 + Math.random() * 0.5;
-      } else {
-        basePrice = 100 + Math.random() * 50;
-      }
-      // Update the central registry with this fallback price
-      setPrice(symbol, basePrice);
-    }
+    // Store this price in our global registry for future reference
+    window.cryptoPrices[symbol] = basePrice;
   }
   
   let price = basePrice;
