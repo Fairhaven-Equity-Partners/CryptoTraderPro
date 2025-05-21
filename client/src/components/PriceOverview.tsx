@@ -36,12 +36,8 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     // Calculate seconds remaining until next refresh
     const calcTimeRemaining = () => {
       const now = Date.now();
-      // Import directly to access the lastFetchTime
-      const stablePriceSync = require('../lib/stablePriceSync');
-      const lastFetch = stablePriceSync.lastFetchTime || now;
-      const elapsed = Math.floor((now - lastFetch) / 1000);
-      const remaining = Math.max(0, 180 - elapsed);
-      return remaining;
+      // Default to 180 initially - we'll update from the global timer events
+      return 180;
     };
     
     // Initial calculation
