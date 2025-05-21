@@ -440,14 +440,20 @@ export default function AdvancedSignalDashboard({
       console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
     }
     
-    // Only do an initial calculation on component mount
-    if (isAllDataLoaded && isLiveDataReady && assetPrice > 0 && lastCalculationRef.current === 0) {
-      console.log(`First-time calculation for ${symbol} - initial data loaded`);
+    // Wait for both historical data to be loaded AND live price data to be ready before calculating
+    // This ensures we calculate with the most up-to-date data
+    if (isAllDataLoaded && isLiveDataReady && assetPrice > 0) {
+      console.log(`Auto-triggering calculation for ${symbol} - historical and live data are both ready`);
       
-      // Only calculate once on first load, then rely on the timer-based updates (every 3 min)
-      console.log(`Initiating first calculation with live data for ${symbol} at price ${assetPrice}`);
+      // Only calculate if we haven't recently calculated - 3-minute debounce to match price refresh
+      const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
+      const THREE_MINUTES = 180000; // 3 minutes in milliseconds
+      
+      if (timeSinceLastCalc > THREE_MINUTES || lastCalculationRef.current === 0) { // Only recalculate every 3 minutes or on first load
+        // Force calculation with proper data
+        console.log(`Initiating calculation with live data for ${symbol} at price ${assetPrice} (3-minute interval)`);
         
-      // Directly call calculate instead of going through the trigger function
+        // Directly call calculate instead of going through the trigger function
         setIsCalculating(true);
         lastCalculationRef.current = Date.now();
         lastCalculationTimeRef.current = Date.now() / 1000;
