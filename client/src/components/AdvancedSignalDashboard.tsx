@@ -1300,44 +1300,24 @@ export default function AdvancedSignalDashboard({
                           <div>
                             <div className="text-gray-300 text-xs font-semibold mb-1">Resistance Levels</div>
                             <div className="space-y-1">
-                              {currentSignal?.supportResistance?.resistance
-                                ? currentSignal.supportResistance.resistance
-                                    .slice(0, 3) // Take top 3
-                                    .map((price, i) => (
-                                  <div key={`res-${i}`} className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">
-                                      {i === 0 ? 'Weak' : i === 1 ? 'Medium' : 'Strong'}
-                                    </span>
-                                    <span className="text-red-400 font-medium">
-                                      ${formatCurrency(price)}
-                                    </span>
-                                  </div>
-                                ))
-                              }
-                              
-                              {/* If no levels found, show empty placeholders */}
-                              {(!currentSignal?.supportResistance?.resistance || currentSignal.supportResistance.resistance.length === 0) && (
-                                <>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">Weak</span>
-                                    <span className="text-red-400 font-medium">
-                                      {formatCurrency((currentSignal?.entryPrice || 0) * 1.03)}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">Medium</span>
-                                    <span className="text-red-400 font-medium">
-                                      {formatCurrency((currentSignal?.entryPrice || 0) * 1.05)}
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center">
-                                    <span className="text-xs text-gray-400">Strong</span>
-                                    <span className="text-red-400 font-medium">
-                                      {formatCurrency((currentSignal?.entryPrice || 0) * 1.08)}
-                                    </span>
-                                  </div>
-                                </>
-                              )}
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-400">Weak</span>
+                                <span className="text-red-400 font-medium">
+                                  ${formatCurrency((currentSignal?.entryPrice || 0) * 1.03)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-400">Medium</span>
+                                <span className="text-red-400 font-medium">
+                                  ${formatCurrency((currentSignal?.entryPrice || 0) * 1.05)}
+                                </span>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-400">Strong</span>
+                                <span className="text-red-400 font-medium">
+                                  ${formatCurrency((currentSignal?.entryPrice || 0) * 1.08)}
+                                </span>
+                              </div>
                             </div>
                           </div>
                           
