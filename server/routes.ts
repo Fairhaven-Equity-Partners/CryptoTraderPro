@@ -8,15 +8,46 @@ import {
 } from "@shared/schema";
 import { z } from "zod";
 import { extendedCryptoList } from "./cryptoData";
+import { WebSocketServer } from 'ws';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   
-  // A simplified function to mock broadcasting updates
-  // In a real app, this would use WebSockets
+  // Set up WebSocket server for real-time updates
+  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  
+  // Track connected clients
+  const clients = new Set<any>();
+  
+  // WebSocket connection handling
+  wss.on('connection', (ws) => {
+    // Add new client to our set
+    clients.add(ws);
+    console.log(`WebSocket client connected. Total clients: ${clients.size}`);
+    
+    // Remove client when they disconnect
+    ws.on('close', () => {
+      clients.delete(ws);
+      console.log(`WebSocket client disconnected. Remaining clients: ${clients.size}`);
+    });
+  });
+  
+  // Function to broadcast updates to all connected clients
   function broadcastUpdates(data: any) {
-    console.log("Would broadcast to clients:", data);
-    // In a real app, this would send data to connected WebSocket clients
+    const message = JSON.stringify(data);
+    
+    clients.forEach((client: any) => {
+      try {
+        // Only send if connection is open
+        if (client.readyState === 1) { // WebSocket.OPEN
+          client.send(message);
+        }
+      } catch (error) {
+        console.error('Error broadcasting to client:', error);
+      }
+    });
+    
+    console.log(`Broadcast message sent to ${clients.size} clients:`, data);
   }
   
   // API Routes
