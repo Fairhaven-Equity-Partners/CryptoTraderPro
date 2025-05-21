@@ -68,7 +68,7 @@ const Analysis: React.FC = () => {
             </div>
             
             <CollapsibleContent>
-              <SignalHeatMap />
+              <SignalHeatMap onSelectAsset={handleChangeAsset} />
             </CollapsibleContent>
           </Collapsible>
         </div>

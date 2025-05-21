@@ -19,6 +19,10 @@ interface CryptoSignal {
   change24h: number;
 }
 
+interface SignalHeatMapProps {
+  onSelectAsset?: (symbol: string) => void;
+}
+
 // Get all timeframes from longest to shortest
 const ALL_TIMEFRAMES: TimeFrame[] = ['1M', '1w', '3d', '1d', '4h', '1h', '30m', '15m', '5m', '1m'];
 
@@ -45,7 +49,7 @@ function getSignalText(direction: string, confidence: number): string {
   return `${direction} (${confidence}%)`;
 }
 
-export default function SignalHeatMap() {
+export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
   const [sortBy, setSortBy] = useState<'confidence' | 'marketCap' | 'change24h'>('confidence');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
@@ -232,8 +236,9 @@ export default function SignalHeatMap() {
                   {groupedByConfidence.high_long.map(signal => (
                     <Badge 
                       key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90`}
-                      title={`${signal.confidence}% confidence`}
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -251,8 +256,9 @@ export default function SignalHeatMap() {
                   {groupedByConfidence.medium_long.map(signal => (
                     <Badge 
                       key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90`}
-                      title={`${signal.confidence}% confidence`}
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -273,8 +279,9 @@ export default function SignalHeatMap() {
                   {groupedByConfidence.neutral.map(signal => (
                     <Badge 
                       key={signal.symbol} 
-                      className="bg-gray-600 text-white hover:bg-gray-500"
-                      title="50% confidence (Neutral)"
+                      className="bg-gray-600 text-white hover:bg-gray-500 cursor-pointer"
+                      title={`50% confidence (Neutral) - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
                     >
                       {signal.name.split(' ')[0]}
                     </Badge>
@@ -297,8 +304,9 @@ export default function SignalHeatMap() {
                   {groupedByConfidence.high_short.map(signal => (
                     <Badge 
                       key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90`}
-                      title={`${signal.confidence}% confidence`}
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -316,8 +324,9 @@ export default function SignalHeatMap() {
                   {groupedByConfidence.medium_short.map(signal => (
                     <Badge 
                       key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90`}
-                      title={`${signal.confidence}% confidence`}
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -369,7 +378,12 @@ export default function SignalHeatMap() {
             </thead>
             <tbody className="divide-y divide-gray-800">
               {sortedAndFilteredSignals.map((signal) => (
-                <tr key={signal.symbol} className="hover:bg-gray-800 transition-colors">
+                <tr 
+                  key={signal.symbol} 
+                  className="hover:bg-gray-800 transition-colors cursor-pointer" 
+                  onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                  title={`Click to analyze ${signal.name}`}
+                >
                   <td className="px-4 py-2 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="ml-2">
