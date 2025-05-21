@@ -146,7 +146,7 @@ export default function AdvancedSignalDashboard({
   });
   
   // Reference to track price consistently
-  const priceRef = useRef<number>(getPrice(symbol));
+  const priceRef = useRef<number>(0); // Will be updated with real price
   
   // STABLE PRICE SYSTEM: Single source of truth (updates every 3 minutes)
   // No separate current/fetched price concept anymore
