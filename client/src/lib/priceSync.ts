@@ -1,5 +1,6 @@
-// Fixed market prices to ensure consistency across the application
-export const MARKET_PRICES: Record<string, number> = {
+// Current prices stored in memory for consistency across the application
+// This is a single source of truth that all components will reference
+const currentPrices: Record<string, number> = {
   'BTC/USDT': 108465,
   'ETH/USDT': 2559,
   'BNB/USDT': 656,
@@ -19,17 +20,34 @@ export const MARKET_PRICES: Record<string, number> = {
 
 /**
  * Gets the current price for a cryptocurrency symbol
- * Always uses the fixed prices for consistency
+ * Always uses the centralized price registry for consistency
  */
 export function getPrice(symbol: string): number {
-  return MARKET_PRICES[symbol] || 0;
+  return currentPrices[symbol] || 0;
 }
 
 /**
- * Synchronizes price data across the application
- * Updates DOM elements and sends server update
+ * Sets a new price for a cryptocurrency symbol
+ * Updates the central registry to maintain consistency
  */
-export function syncPrice(symbol: string): number {
+export function setPrice(symbol: string, price: number): void {
+  if (price > 0) {
+    currentPrices[symbol] = price;
+  }
+}
+
+/**
+ * Updates all components with the latest price
+ * This is the ONLY function that should be called to update prices
+ * @returns The final synchronized price
+ */
+export function syncPrice(symbol: string, newPrice?: number): number {
+  // If a new price is provided, update our central registry
+  if (newPrice && newPrice > 0) {
+    setPrice(symbol, newPrice);
+  }
+  
+  // Get the current price from our central registry
   const price = getPrice(symbol);
   
   if (price > 0) {
@@ -39,15 +57,17 @@ export function syncPrice(symbol: string): number {
       liveElement.setAttribute(`data-${symbol.replace('/', '-')}`, price.toString());
       liveElement.setAttribute('data-active-symbol', symbol);
       liveElement.setAttribute('data-latest-price', price.toString());
+      liveElement.setAttribute('data-current-asset', symbol);
+      liveElement.setAttribute('data-current-price', price.toString());
     }
     
-    // Dispatch price update event
+    // Broadcast a price update event for any components listening
     const updateEvent = new CustomEvent('live-price-update', {
       detail: { symbol, price, timestamp: Date.now() }
     });
     document.dispatchEvent(updateEvent);
     
-    // Sync with server
+    // Sync with server to ensure backend has the same prices
     fetch('/api/sync-price', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
