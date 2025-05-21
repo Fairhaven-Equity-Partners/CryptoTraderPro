@@ -75,7 +75,7 @@ export function useMarketData(symbol: string) {
     }
     
     // Register our price update listener - we'll subscribe to ALL messages and filter for price updates
-    registerMessageHandler((data: any) => handlePriceUpdate(data));
+    registerMessageHandler('priceUpdate', (data: any) => handlePriceUpdate(data));
     
     // Cleanup function
     return () => {

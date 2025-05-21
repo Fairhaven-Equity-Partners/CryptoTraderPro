@@ -5,6 +5,7 @@ import { formatPrice, formatPercentage, getPriceChangeClass } from '../lib/calcu
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown } from 'lucide-react';
+import { onPriceUpdate } from '../lib/singlePriceSource';
 
 interface PriceOverviewProps {
   symbol: string;
@@ -12,8 +13,7 @@ interface PriceOverviewProps {
 }
 
 const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
-  // We don't need this anymore as we're using real-time prices
-  
+  // Use the main price feed from the API
   const { price, isLoading } = useAssetPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
   
@@ -28,14 +28,31 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   // Ref to store interval
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Update price and trigger flash animation when price changes
+  // Listen for real-time price updates
+  useEffect(() => {
+    // Setup listener for price updates from our centralized source
+    const unsubscribe = onPriceUpdate((updatedSymbol, updatedPrice) => {
+      if (updatedSymbol === symbol && updatedPrice > 0) {
+        setPriceState(prev => ({
+          previousPrice: prev.currentPrice,
+          currentPrice: updatedPrice,
+          flash: true,
+          lastUpdate: new Date()
+        }));
+      }
+    });
+    
+    return () => unsubscribe();
+  }, [symbol]);
+  
+  // Handle initial price and regular API updates
   useEffect(() => {
     if (!price) return;
     
-    // Get the real-time price but allow updates
+    // Get the real-time price and allow updates
     const displayPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
     
-    if (displayPrice !== priceState.currentPrice) {
+    if (displayPrice > 0 && displayPrice !== priceState.currentPrice) {
       setPriceState(prev => ({
         previousPrice: prev.currentPrice,
         currentPrice: displayPrice,
