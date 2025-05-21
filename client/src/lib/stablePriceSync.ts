@@ -1,12 +1,15 @@
 /**
- * STABLE PRICE SYNCHRONIZATION SYSTEM
+ * STABLE PRICE SYNCHRONIZATION SYSTEM - FIXED
  * 
  * This module provides a unified price system that fetches prices at a reduced 
- * frequency (every 3 minutes) to minimize signal volatility while ensuring all
+ * frequency (exactly every 3 minutes) to minimize signal volatility while ensuring all
  * components display the same price data.
  */
 
 import { fetchAssetBySymbol } from './api';
+
+// IMPORTANT: Single global timer to control all price fetches to avoid timing race conditions
+let globalPriceTimer: NodeJS.Timeout | null = null;
 
 // Central storage for latest prices
 const priceCache: Record<string, {
@@ -17,27 +20,46 @@ const priceCache: Record<string, {
 // Time between price refreshes (3 minutes in milliseconds)
 const REFRESH_INTERVAL = 180000; // 3 minutes
 
-// Active price polling intervals
-const activePolling: Record<string, NodeJS.Timeout> = {};
+// Track symbols that need price updates
+const activeSymbols: Set<string> = new Set();
+
+// Track the last time we actually fetched
+let lastFetchTime = Date.now();
 
 // Export for other modules to access
 export { lastFetchTime };
 
 /**
- * Get the current price for a symbol
- * Returns cached price if available and not expired, otherwise fetches new price
+ * COMPLETELY REWRITTEN:
+ * Get the current price for a symbol - has strong debouncing to prevent excessive fetches
  */
 export async function getCurrentPrice(symbol: string): Promise<number> {
+  console.log(`[Price] getCurrentPrice called for ${symbol}`);
   const now = Date.now();
   const cachedData = priceCache[symbol];
   
-  // If we have a recent price (less than 3 minutes old), use it
+  // If we have a cache hit that's still valid, return it immediately
   if (cachedData && (now - cachedData.timestamp) < REFRESH_INTERVAL) {
+    console.log(`[Price] Using cached price for ${symbol}: ${cachedData.price}`);
     return cachedData.price;
   }
   
-  // Otherwise fetch a fresh price
+  // Track this symbol for regular updates
+  if (!activeSymbols.has(symbol)) {
+    activeSymbols.add(symbol);
+    console.log(`[Price] Added ${symbol} to active tracking list`);
+  }
+  
+  // Fetch a fresh price - but only if enough time has passed
+  const timeSinceFetch = now - lastFetchTime;
+  if (timeSinceFetch < REFRESH_INTERVAL && cachedData) {
+    console.log(`[Price] Skipping fetch, only ${Math.floor(timeSinceFetch/1000)}s since last fetch`);
+    return cachedData.price; // Return stale data if we have it
+  }
+  
+  // If we reach here, we need to fetch fresh data
   try {
+    console.log(`[Price] Fetching fresh price for ${symbol}...`);
     const data = await fetchAssetBySymbol(symbol);
     if (!data || !data.price) {
       // If fetch fails but we have a cached price, use it regardless of age
@@ -51,31 +73,51 @@ export async function getCurrentPrice(symbol: string): Promise<number> {
       timestamp: now
     };
     
+    // Update global fetch time
+    lastFetchTime = now;
+    
     // Broadcast this new price
     broadcastPriceUpdate(symbol, data.price);
     
     return data.price;
   } catch (error) {
-    console.error(`Error fetching price for ${symbol}:`, error);
+    console.error(`[Price] Error fetching price for ${symbol}:`, error);
     // Return cached price if available, otherwise 0
     return cachedData ? cachedData.price : 0;
   }
 }
 
 /**
- * Broadcast price update to all listeners
+ * Broadcast price update to all listeners with improved reliability
  */
 export function broadcastPriceUpdate(symbol: string, price: number) {
   // Create and dispatch a custom event with the price data
   const event = new CustomEvent('price-update', {
-    detail: { symbol, price }
+    detail: { symbol, price, timestamp: Date.now() }
   });
   
   // Broadcast to both window and document to maximize capture
   window.dispatchEvent(event);
   document.dispatchEvent(event);
   
-  console.log(`[StablePriceSync] Broadcasting price update: ${symbol} = ${price} (3-minute system)`);
+  console.log(`[Price] Broadcasting price update: ${symbol} = ${price} (3-minute system)`);
+  
+  // Also trigger a timer reset event
+  resetPriceTimer();
+}
+
+/**
+ * Reset the price timer - used when a new price update comes in
+ */
+function resetPriceTimer() {
+  console.log(`[Price] TIMER RESET - Starting new 3-minute cycle`);
+  lastFetchTime = Date.now();
+  
+  // Notify all components about the reset
+  const resetEvent = new CustomEvent('price-timer-reset', {
+    detail: { timestamp: lastFetchTime }
+  });
+  window.dispatchEvent(resetEvent);
 }
 
 /**
@@ -106,66 +148,48 @@ export function subscribeToPriceUpdates(
 }
 
 /**
- * Global timer for price sync - ensures we only have ONE timer for all symbols
- */
-let globalPriceTimer: NodeJS.Timeout | null = null;
-let lastFetchTime = 0;
-
-/**
- * Start polling for price updates strictly at a 3-minute interval
- * Uses a single global timer for all symbols to ensure consistency
+ * Start polling for price updates at a strict 3-minute interval
+ * Uses a centralized approach for all symbols with true synchronization
  */
 export function startPricePolling(symbol: string): () => void {
-  // Fetch initially if this is a new symbol
-  if (!priceCache[symbol]) {
-    console.log(`[StablePriceSync] Initial fetch for ${symbol}`);
-    getCurrentPrice(symbol);
-    lastFetchTime = Date.now();
-  }
+  // Add this symbol to our tracking list
+  activeSymbols.add(symbol);
   
-  // Only set up global timer if it doesn't exist
+  // Fetch immediately on first request
+  getCurrentPrice(symbol);
+  
+  // Setup the global timer if it doesn't exist
   if (!globalPriceTimer) {
-    console.log(`[StablePriceSync] Setting up strict 3-minute global timer`);
+    console.log(`[Price] Setting up master 3-minute price polling timer`);
     
-    // The timer checks every second but only triggers fetch when 3 minutes has passed
+    // Check every minute if we need to fetch prices
     globalPriceTimer = setInterval(() => {
       const now = Date.now();
-      const timeSinceLastFetch = now - lastFetchTime;
+      const secondsSinceLastFetch = Math.floor((now - lastFetchTime) / 1000);
       
-      // Only fetch if at least 3 minutes have passed
-      if (timeSinceLastFetch >= REFRESH_INTERVAL) {
-        console.log(`[StablePriceSync] 3-MINUTE MARK REACHED - Fetching fresh prices`);
+      console.log(`[Price] Timer check: ${secondsSinceLastFetch}s since last fetch`);
+      
+      // If 3 minutes have passed, fetch for all active symbols
+      if (secondsSinceLastFetch >= 180) {
+        console.log(`[Price] 3-MINUTE MARK REACHED - Fetching ALL prices`);
         
-        // For each symbol we're tracking, get a fresh price
-        Object.keys(activePolling).forEach(trackedSymbol => {
+        // Fetch prices for all tracked symbols
+        for (const trackedSymbol of activeSymbols) {
           getCurrentPrice(trackedSymbol);
-        });
-        
-        // Update the last fetch time
-        lastFetchTime = now;
-        
-        // This will broadcast to all components that we hit the 3-minute mark
-        const refreshEvent = new CustomEvent('price-refresh-timer', {
-          detail: { timestamp: now }
-        });
-        window.dispatchEvent(refreshEvent);
+        }
       }
-    }, 1000); // Check every second
+    }, 60000); // Check every minute
   }
   
-  // Mark this symbol as actively being polled
-  activePolling[symbol] = globalPriceTimer;
-  
-  // Return a cleanup function
-  return () => stopPricePolling(symbol);
-}
-
-/**
- * Stop polling for price updates
- */
-export function stopPricePolling(symbol: string) {
-  if (activePolling[symbol]) {
-    clearInterval(activePolling[symbol]);
-    delete activePolling[symbol];
-  }
+  // Return cleanup function
+  return () => {
+    activeSymbols.delete(symbol);
+    
+    // If no more symbols to track, clear the timer
+    if (activeSymbols.size === 0 && globalPriceTimer) {
+      clearInterval(globalPriceTimer);
+      globalPriceTimer = null;
+      console.log(`[Price] Stopped price polling (no active symbols)`);
+    }
+  };
 }

@@ -5,7 +5,11 @@ import { formatPrice, formatPercentage, getPriceChangeClass } from '../lib/calcu
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown } from 'lucide-react';
-import { onPriceUpdate } from '../lib/singlePriceSource';
+import { 
+  startPricePolling, 
+  subscribeToPriceUpdates, 
+  getSecondsUntilNextRefresh 
+} from '../lib/fixedPriceSystem';
 
 interface PriceOverviewProps {
   symbol: string;
@@ -13,11 +17,11 @@ interface PriceOverviewProps {
 }
 
 const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
-  // Use the main price feed from the API
+  // Global price data from API (for 24h change %, etc)
   const { price, isLoading } = useAssetPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
   
-  // Track only the fetched price and previous price for flash animation
+  // Track price state with animation
   const [priceState, setPriceState] = useState({
     price: 0,
     previousPrice: 0,
@@ -25,69 +29,52 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     lastUpdate: new Date()
   });
   
-  // Add countdown timer for next price update
+  // Countdown timer until next refresh
   const [nextRefreshIn, setNextRefreshIn] = useState<number>(180);
   
-  // Ref to store interval
+  // Ref for flash animation timer
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Setup countdown timer synced with the improved global price system
+  // Set up the price display countdown timer
   useEffect(() => {
-    // Calculate seconds remaining until next refresh
-    const calcTimeRemaining = () => {
-      const now = Date.now();
-      // Default to 180 initially - we'll update from the global timer events
-      return 180;
-    };
+    // Start with the current remaining time
+    setNextRefreshIn(getSecondsUntilNextRefresh());
     
-    // Initial calculation
-    setNextRefreshIn(calcTimeRemaining());
-    
-    // Start the timer that just DISPLAYS the countdown
-    const displayTimer = setInterval(() => {
-      setNextRefreshIn(prevTime => {
-        if (prevTime <= 0) {
-          return 0; // Stay at zero until refresh occurs
-        }
-        return prevTime - 1;
-      });
+    // Update the countdown every second 
+    const countdownTimer = setInterval(() => {
+      setNextRefreshIn(getSecondsUntilNextRefresh());
     }, 1000);
     
-    // Listen for price updates - RESET countdown when actual price update occurs
-    const resetCountdown = () => {
-      console.log(`Price update received - Resetting countdown to 180s`);
-      setNextRefreshIn(180); // Reset when a real update happens
+    // Listen for price-timer-reset events
+    const handleTimerReset = () => {
+      console.log('Price timer reset event received');
+      setNextRefreshIn(180); // Reset to 3 minutes
     };
     
-    // Listen for the timer reaching exactly 3 minutes
-    const handleGlobalRefresh = () => {
-      console.log(`Global 3-minute timer triggered - Resetting countdown`);
-      setNextRefreshIn(180);
-    };
-    
-    // Register event listeners
-    window.addEventListener('price-update', resetCountdown);
-    window.addEventListener('price-refresh-timer', handleGlobalRefresh);
+    // Register for timer reset events
+    window.addEventListener('price-timer-reset', handleTimerReset);
     
     return () => {
-      clearInterval(displayTimer);
-      window.removeEventListener('price-update', resetCountdown);
-      window.removeEventListener('price-refresh-timer', handleGlobalRefresh);
+      clearInterval(countdownTimer);
+      window.removeEventListener('price-timer-reset', handleTimerReset);
     };
-  }, [symbol]);
-
-  // Handle updates from API and listen for price changes
+  }, []);
+  
+  // Start price polling and subscribe to updates
   useEffect(() => {
-    if (!price) return;
+    console.log(`Setting up price updates for ${symbol}`);
     
-    // Get the price from the API - single source of truth
-    const apiPrice = 'price' in price ? price.price : (price as any).lastPrice || 0;
+    // Start the 3-minute price polling system
+    const stopPolling = startPricePolling(symbol);
     
-    // Only update if we have a valid new price
-    if (apiPrice > 0 && apiPrice !== priceState.price) {
+    // Subscribe to price updates from our unified system
+    const unsubscribe = subscribeToPriceUpdates(symbol, (newPrice) => {
+      console.log(`Price update received: ${newPrice}`);
+      
+      // Update the price state with animation
       setPriceState(prev => ({
         previousPrice: prev.price,
-        price: apiPrice,
+        price: newPrice,
         flash: true,
         lastUpdate: new Date()
       }));
@@ -97,22 +84,24 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
         clearTimeout(flashTimerRef.current);
       }
       
-      // Set timer to remove flash effect
+      // Set timer to remove flash effect after 2 seconds
       flashTimerRef.current = setTimeout(() => {
         setPriceState(prev => ({
           ...prev,
           flash: false
         }));
       }, 2000);
-    }
+    });
     
     // Cleanup
     return () => {
       if (flashTimerRef.current) {
         clearTimeout(flashTimerRef.current);
       }
+      unsubscribe();
+      stopPolling();
     };
-  }, [price]);
+  }, [symbol]);
   
   if (isLoading || !price) {
     return (

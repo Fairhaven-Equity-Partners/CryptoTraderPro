@@ -148,7 +148,7 @@ export default function AdvancedSignalDashboard({
   // Reference to track price consistently
   const priceRef = useRef<number>(0); // Will be updated with real price
   
-  // STABLE PRICE SYSTEM: Single source of truth (updates every 3 minutes)
+  // FIXED PRICE SYSTEM: Single source of truth (updates every 3 minutes)
   // No separate current/fetched price concept anymore
   const [assetPrice, setAssetPrice] = useState<number>(
     symbol === 'BTC/USDT' ? 108918 : 
@@ -156,69 +156,57 @@ export default function AdvancedSignalDashboard({
     symbol === 'SOL/USDT' ? 171 : 0
   );
   
-  // STABLE PRICE SYNCHRONIZATION SYSTEM - Fetches every 3 minutes
-  useEffect(() => {
-    // Import and use our new stable price system
-    import('../lib/stablePriceSync').then(({ getCurrentPrice, startPricePolling, subscribeToPriceUpdates }) => {
-      console.log(`Setting up stable 3-minute price polling for ${symbol}`);
-      
-      // Start regular price polling (every 3 minutes)
-      const stopPolling = startPricePolling(symbol);
-      
-      // Subscribe to price updates
-      const unsubscribe = subscribeToPriceUpdates(symbol, (price) => {
-        if (price > 0) {
-          console.log(`[StablePrice] Price update received for ${symbol}: ${price}`);
-          setAssetPrice(price);
-          
-          // Also update our price reference
-          priceRef.current = price;
-          
-          // Apply the new stable price to all systems
-          applyPriceAndCalculate(price);
-        }
-      });
-      
-      // Get initial price
-      getCurrentPrice(symbol).then(price => {
-        if (price > 0) {
-          console.log(`[StablePrice] Initial price for ${symbol}: ${price}`);
-          setAssetPrice(price);
-          priceRef.current = price;
-          applyPriceAndCalculate(price);
-        }
-      });
-      
-      // Cleanup function
-      return () => {
-        stopPolling();
-        unsubscribe();
-      };
-    }).catch(err => {
-      console.error("Failed to load stable price system:", err);
-    });
-  }, [symbol]);
+  // Track last calculation time to prevent excessive recalculations
+  const [lastCalcTime, setLastCalcTime] = useState<number>(Date.now());
   
-  // Get price from the API directly
-  function getReferencePrice(cryptoSymbol: string): number {
-    // We need to return a number, not null, but we'll use API prices downstream
-    return 0;
+  // FIXED STRICT PRICE SYNCHRONIZATION SYSTEM - Fetches every exactly 3 minutes
+  useEffect(() => {
+    // Import and use our strict fixed price system
+    const { getCurrentPrice, startPricePolling, subscribeToPriceUpdates } = require('../lib/fixedPriceSystem');
+    console.log(`[MarketAnalysis] Setting up fixed 3-minute price polling for ${symbol}`);
     
-    // For other symbols, make a one-time asynchronous fetch but return a placeholder
-    if (cryptoSymbol) {
-      // This fetch happens asynchronously to update the price later
-      fetch(`/api/crypto/${encodeURIComponent(cryptoSymbol)}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data?.lastPrice > 0) {
-            // Apply the fetched price later
-            console.log(`Fetched price for ${cryptoSymbol}: ${data.lastPrice}`);
-            applyPriceAndCalculate(data.lastPrice);
-            synchronizePriceWithServer(cryptoSymbol, data.lastPrice);
-          }
-        })
-        .catch(() => {}); // Silent fail - we'll use the default below
-    }
+    // Start regular price polling (exactly every 3 minutes)
+    const stopPolling = startPricePolling(symbol);
+    
+    // Subscribe to price updates
+    const unsubscribe = subscribeToPriceUpdates(symbol, (price) => {
+      if (price > 0) {
+        console.log(`[MarketAnalysis] Price update received for ${symbol}: ${price}`);
+        setAssetPrice(price);
+        
+        // Also update our price reference
+        priceRef.current = price;
+        
+        // Apply the new price to all systems - but ONLY if 3 minutes have passed since last calculation
+        const now = Date.now();
+        if (now - lastCalcTime >= 180000) { // 3 minutes
+          console.log(`[MarketAnalysis] Triggering recalculation after 3-minute interval`);
+          applyPriceAndCalculate(price);
+          setLastCalcTime(now);
+        } else {
+          console.log(`[MarketAnalysis] Skipping recalculation - only ${Math.floor((now - lastCalcTime)/1000)}s since last calc`);
+        }
+      }
+    });
+    
+    // Get initial price
+    getCurrentPrice(symbol).then((price: number) => {
+      if (price > 0) {
+        console.log(`[MarketAnalysis] Initial price for ${symbol}: ${price}`);
+        setAssetPrice(price);
+        priceRef.current = price;
+        // For initial price, we always want to calculate
+        applyPriceAndCalculate(price);
+        setLastCalcTime(Date.now());
+      }
+    });
+    
+    // Cleanup function
+    return () => {
+      stopPolling();
+      unsubscribe();
+    };
+  }, [symbol]);
     
     // Default placeholder price (this is overwritten if the fetch succeeds)
     return 100;
