@@ -475,30 +475,37 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
       count = 100;
   }
   
-  // Get the current price from our central price registry for perfect consistency
-  // This ensures the chart data matches the displayed price exactly
-  const basePrice = getPrice(symbol);
-  // Extract the base asset from pairs like "BTC/USDT"
+  // Get starting price
+  let basePrice = 0;
   const baseAsset = symbol.split('/')[0];
   
-  if (baseAsset === 'BTC') {
-    basePrice = 103000 + Math.random() * 2000;
-  } else if (baseAsset === 'ETH') {
-    basePrice = 2500 + Math.random() * 200;
-  } else if (baseAsset === 'BNB') {
-    basePrice = 650 + Math.random() * 50;
-  } else if (baseAsset === 'SOL') {
-    basePrice = 170 + Math.random() * 20;
-  } else if (baseAsset === 'XRP') {
-    basePrice = 2 + Math.random() * 0.5;
-  } else {
-    basePrice = 100 + Math.random() * 50;
-  }
-  
-  // Use current price from CoinGecko if available
-  const realPrice = getCurrentPrice(symbol);
-  if (realPrice > 0) {
-    basePrice = realPrice;
+  // First try to get price from our central registry
+  const centralPrice = getPrice(symbol);
+  if (centralPrice > 0) {
+    basePrice = centralPrice;
+  } 
+  // Next try current price from API source
+  else {
+    const apiPrice = lastPrices[symbol];
+    if (apiPrice && apiPrice > 0) {
+      basePrice = apiPrice;
+    }
+    // Otherwise use some reasonable defaults based on the asset
+    else {
+      if (baseAsset === 'BTC') {
+        basePrice = 103000 + Math.random() * 2000;
+      } else if (baseAsset === 'ETH') {
+        basePrice = 2500 + Math.random() * 200;
+      } else if (baseAsset === 'BNB') {
+        basePrice = 650 + Math.random() * 50;
+      } else if (baseAsset === 'SOL') {
+        basePrice = 170 + Math.random() * 20;
+      } else if (baseAsset === 'XRP') {
+        basePrice = 2 + Math.random() * 0.5;
+      } else {
+        basePrice = 100 + Math.random() * 50;
+      }
+    }
   }
   
   let price = basePrice;
