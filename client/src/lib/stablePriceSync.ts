@@ -72,7 +72,7 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
   window.dispatchEvent(event);
   document.dispatchEvent(event);
   
-  console.log(`[StablePriceSync] Broadcasting price update: ${symbol} = ${price}`);
+  console.log(`[StablePriceSync] Broadcasting price update: ${symbol} = ${price} (3-minute system)`);
 }
 
 /**

@@ -125,7 +125,7 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
-  const [nextRefreshIn, setNextRefreshIn] = useState<number>(300);
+  const [nextRefreshIn, setNextRefreshIn] = useState<number>(180); // 3-minute refresh interval
   
   // Refs to track calculation status
   const lastSymbolRef = useRef<string>(symbol);
@@ -486,7 +486,7 @@ export default function AdvancedSignalDashboard({
       setNextRefreshIn(prevTime => {
         // When timer reaches zero, trigger refresh
         if (prevTime <= 0) {
-          console.log("Refresh timer reached zero, triggering calculation");
+          console.log("[StablePrice] 3-minute refresh timer reached zero, triggering calculation");
           // Add a slight delay to ensure state updates have completed
           setTimeout(() => triggerCalculation('timer'), 100);
           return 180; // Reset to 3 minutes
