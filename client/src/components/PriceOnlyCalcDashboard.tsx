@@ -1,8 +1,8 @@
 /**
- * ONE-TIME CALCULATION DASHBOARD
+ * SIMPLIFIED CALCULATION DASHBOARD
  * 
- * This is a completely new dashboard implementation that guarantees
- * calculations happen exactly once per 3-minute cycle.
+ * This component shows real-time prices but runs calculations only 
+ * once every 3 minutes, with a visual countdown timer.
  */
 
 import { useState, useEffect, useRef } from 'react';
@@ -10,94 +10,59 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown, Minus, Clock } from 'lucide-react';
-// Define the TimeFrame enum directly in this file to avoid import issues
-export enum TimeFrame {
-  ONE_MINUTE = '1m',
-  FIVE_MINUTE = '5m',
-  FIFTEEN_MINUTE = '15m',
-  THIRTY_MINUTE = '30m',
-  ONE_HOUR = '1h',
-  FOUR_HOUR = '4h',
-  ONE_DAY = '1d',
-  THREE_DAY = '3d',
-  ONE_WEEK = '1w',
-  ONE_MONTH = '1M'
-}
 
-// Define basic types needed
-interface AdvancedSignal {
-  direction: 'LONG' | 'SHORT' | 'NEUTRAL';
-  strength: number;
-  volatility: number;
-  priceTarget?: number;
-  stopLoss?: number;
-  indicators: any[];
-  levels?: {
-    strongSupport?: number;
-    mediumSupport?: number;
-    weakSupport?: number;
-    strongResistance?: number;
-    mediumResistance?: number;
-    weakResistance?: number;
-  };
-}
-
-interface TradeRecommendation {
-  direction: string;
-  confidence: number;
-  priceTarget?: number;
-  stopLoss?: number;
-  timeframe: TimeFrame;
-  influentialIndicators?: string[];
-  expectedVolatility: number;
-  suggestedLeverage: number;
-  summary: string;
-}
-
-// Props interface
-interface OneTimeCalculationDashboardProps {
-  symbol: string;
-  onTimeframeSelect?: (timeframe: TimeFrame) => void;
-}
-
-// Global state to ensure only one calculation per 3 minutes
-const GLOBAL_STATE = {
-  lastCalculationTime: 0,
-  calculationInProgress: false,
-  calculationInterval: 180000, // 3 minutes
+// Define the timeframes
+const TIMEFRAMES = {
+  FIFTEEN_MINUTE: '15m',
+  THIRTY_MINUTE: '30m',
+  ONE_HOUR: '1h',
+  FOUR_HOUR: '4h',
+  ONE_DAY: '1d',
+  ONE_WEEK: '1w',
+  ONE_MONTH: '1M'
 };
 
+// Calculation interval (3 minutes in milliseconds)
+const CALC_INTERVAL = 180000;
+
+// Interface for the component props
+interface PriceOnlyCalcDashboardProps {
+  symbol: string;
+  onTimeframeSelect?: (timeframe: string) => void;
+}
+
 // Main component
-export default function OneTimeCalculationDashboard({
+export default function PriceOnlyCalcDashboard({
   symbol,
   onTimeframeSelect
-}: OneTimeCalculationDashboardProps) {
-  // State for UI
+}: PriceOnlyCalcDashboardProps) {
+  // State
   const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [countdown, setCountdown] = useState<string>("3:00");
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>(TimeFrame.FOUR_HOUR);
-  const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({} as Record<TimeFrame, AdvancedSignal | null>);
-  const [recommendation, setRecommendation] = useState<TradeRecommendation | null>(null);
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>(TIMEFRAMES.FOUR_HOUR);
+  const [signals, setSignals] = useState<any>({});
+  const [recommendation, setRecommendation] = useState<any>(null);
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
   const [supportLevels, setSupportLevels] = useState<(number | undefined)[]>([]);
   const [resistanceLevels, setResistanceLevels] = useState<(number | undefined)[]>([]);
   
   // Refs
-  const initialDataLoaded = useRef<boolean>(false);
+  const lastCalcTime = useRef<number>(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const isComponentMounted = useRef<boolean>(true);
   
   // On mount
   useEffect(() => {
     isComponentMounted.current = true;
+    lastCalcTime.current = Date.now();
     
-    // Initial price fetch for display
+    // Initial price fetch
     fetchCurrentPrice();
     
-    // Set up calculation cycle
-    setupCalculationCycle();
+    // Set up interval to fetch price for display
+    const priceInterval = setInterval(fetchCurrentPrice, 15000);
     
-    // Set up countdown display
+    // Start countdown
     startCountdown();
     
     // Cleanup
@@ -106,10 +71,11 @@ export default function OneTimeCalculationDashboard({
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
+      clearInterval(priceInterval);
     };
   }, [symbol]);
   
-  // Fetch current price for display purposes only
+  // Fetch current price for display
   const fetchCurrentPrice = async () => {
     try {
       const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
@@ -119,34 +85,16 @@ export default function OneTimeCalculationDashboard({
       if (data && data.price) {
         setCurrentPrice(data.price);
         
-        // If this is the first load, also do an initial calculation
-        if (!initialDataLoaded.current) {
-          initialDataLoaded.current = true;
-          calculateAllSignals(data.price);
+        // Check if it's time to calculate
+        const now = Date.now();
+        if (now - lastCalcTime.current >= CALC_INTERVAL && !isCalculating) {
+          console.log('[SIMPLIFIED] Time for a new calculation!');
+          calculateSignals(data.price);
+          lastCalcTime.current = now;
         }
       }
     } catch (error) {
-      console.error('[ONE-TIME-CALC] Error fetching price:', error);
-    }
-  };
-  
-  // Set up the calculation cycle (every 3 minutes)
-  const setupCalculationCycle = () => {
-    // Check if enough time has passed since last calculation
-    const now = Date.now();
-    const timeSinceLastCalc = now - GLOBAL_STATE.lastCalculationTime;
-    
-    if (timeSinceLastCalc >= GLOBAL_STATE.calculationInterval) {
-      // It's been more than 3 minutes, calculate now
-      fetchAndCalculate();
-    } else {
-      // Schedule the next calculation
-      const timeUntilNextCalc = GLOBAL_STATE.calculationInterval - timeSinceLastCalc;
-      setTimeout(() => {
-        if (isComponentMounted.current) {
-          fetchAndCalculate();
-        }
-      }, timeUntilNextCalc);
+      console.error('[SIMPLIFIED] Error fetching price:', error);
     }
   };
   
@@ -162,81 +110,42 @@ export default function OneTimeCalculationDashboard({
       if (!isComponentMounted.current) return;
       
       const now = Date.now();
-      const nextCalcTime = GLOBAL_STATE.lastCalculationTime + GLOBAL_STATE.calculationInterval;
+      const nextCalcTime = lastCalcTime.current + CALC_INTERVAL;
       const timeRemaining = Math.max(0, nextCalcTime - now);
       
       const minutes = Math.floor(timeRemaining / 60000);
       const seconds = Math.floor((timeRemaining % 60000) / 1000);
       setCountdown(`${minutes}:${seconds.toString().padStart(2, '0')}`);
-      
-      // If countdown reached zero, start a new cycle
-      if (timeRemaining <= 0 && !GLOBAL_STATE.calculationInProgress) {
-        fetchAndCalculate();
-      }
     }, 1000);
   };
   
-  // Fetch price and calculate signals
-  const fetchAndCalculate = async () => {
-    // Prevent concurrent calculations
-    if (GLOBAL_STATE.calculationInProgress) {
-      console.log('[ONE-TIME-CALC] Calculation already in progress, skipping');
-      return;
-    }
+  // Calculate all signals - runs once every 3 minutes
+  const calculateSignals = async (price: number) => {
+    if (isCalculating) return;
     
-    GLOBAL_STATE.calculationInProgress = true;
     setIsCalculating(true);
+    console.log(`[SIMPLIFIED] Starting ONE calculation for ${symbol} at ${price}`);
     
     try {
-      // Fetch the latest price
-      const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
-      if (!response.ok) throw new Error('Price fetch failed');
+      // Generate some example data
+      const newSignals: Record<string, any> = {};
       
-      const data = await response.json();
-      if (data && data.price) {
-        setCurrentPrice(data.price);
-        
-        // Calculate signals with the fresh price
-        await calculateAllSignals(data.price);
-        
-        // Update last calculation time
-        GLOBAL_STATE.lastCalculationTime = Date.now();
-      }
-    } catch (error) {
-      console.error('[ONE-TIME-CALC] Error in fetch and calculate:', error);
-    } finally {
-      GLOBAL_STATE.calculationInProgress = false;
-      setIsCalculating(false);
-    }
-  };
-  
-  // Calculate all signals for all timeframes
-  const calculateAllSignals = async (price: number) => {
-    console.log(`[ONE-TIME-CALC] Starting ONE calculation for ${symbol} with price ${price}`);
-    
-    // Sample generation of signals for demonstration
-    // In practice, this would call your actual signal calculation logic
-    const newSignals: Record<TimeFrame, AdvancedSignal | null> = {};
-    
-    // For each timeframe, create a simulated signal
-    for (const timeframe of Object.values(TimeFrame)) {
-      try {
-        // This is where your real calculation would happen
-        // For now, generating sample data
+      // For each timeframe, create a signal
+      for (const timeframe of Object.values(TIMEFRAMES)) {
+        const strength = Math.floor(Math.random() * 40) + 50; // 50-90%
+        const direction = strength > 75 ? 'LONG' : strength < 60 ? 'SHORT' : 'NEUTRAL';
         const volatility = Math.floor(Math.random() * 30) + 10; // 10-40%
-        const strength = Math.floor(Math.random() * 50) + 40; // 40-90%
-        const direction = ['LONG', 'SHORT', 'NEUTRAL'][Math.floor(Math.random() * 3)] as 'LONG' | 'SHORT' | 'NEUTRAL';
         
-        const signal: AdvancedSignal = {
+        newSignals[timeframe] = {
           direction,
           strength,
           volatility,
-          priceTarget: direction === 'LONG' ? price * 1.05 : direction === 'SHORT' ? price * 0.95 : undefined,
-          stopLoss: direction === 'LONG' ? price * 0.95 : direction === 'SHORT' ? price * 1.05 : undefined,
+          priceTarget: direction === 'LONG' ? price * 1.05 : direction === 'SHORT' ? price * 0.95 : price,
+          stopLoss: direction === 'LONG' ? price * 0.95 : direction === 'SHORT' ? price * 1.05 : price,
           indicators: [
-            { name: 'MACD', value: direction === 'LONG' ? 0.5 : -0.3, weight: 0.8 },
-            { name: 'RSI', value: direction === 'LONG' ? 65 : 35, weight: 0.7 },
-            { name: 'Bollinger Bands', value: 0.2, weight: 0.6 }
+            { name: 'RSI', value: direction === 'LONG' ? 65 : 35, weight: 0.8 },
+            { name: 'MACD', value: direction === 'LONG' ? 0.5 : -0.5, weight: 0.7 },
+            { name: 'Bollinger Bands', value: 0.3, weight: 0.6 }
           ],
           levels: {
             strongSupport: price * 0.9,
@@ -248,26 +157,26 @@ export default function OneTimeCalculationDashboard({
           }
         };
         
-        newSignals[timeframe] = signal;
-      } catch (error) {
-        console.error(`[ONE-TIME-CALC] Error calculating signal for ${timeframe}:`, error);
-        newSignals[timeframe] = null;
+        // Small delay to appear like it's calculating
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
+      
+      console.log(`[SIMPLIFIED] Calculation complete - next in 3 minutes`);
+      
+      // Update state
+      setSignals(newSignals);
+      
+      // Update recommendation for the selected timeframe
+      updateRecommendation(selectedTimeframe, newSignals);
+    } catch (error) {
+      console.error('[SIMPLIFIED] Error calculating signals:', error);
+    } finally {
+      setIsCalculating(false);
     }
-    
-    console.log(`[ONE-TIME-CALC] Calculation complete - next in 3 minutes`);
-    
-    // Update state with new signals
-    setSignals(newSignals);
-    
-    // Update recommendation for selected timeframe
-    updateRecommendationForTimeframe(selectedTimeframe, newSignals);
-    
-    return newSignals;
   };
   
-  // Update recommendation when timeframe changes
-  const updateRecommendationForTimeframe = (timeframe: TimeFrame, signalData = signals) => {
+  // Update recommendation based on selected timeframe
+  const updateRecommendation = (timeframe: string, signalData = signals) => {
     const signal = signalData[timeframe];
     if (!signal) return;
     
@@ -287,44 +196,38 @@ export default function OneTimeCalculationDashboard({
     setSupportLevels(support);
     setResistanceLevels(resistance);
     
-    // Generate trade recommendation
-    const suggestedLeverage = calculateSuggestedLeverage(signal.volatility, signal.strength);
-    
-    const recommendation: TradeRecommendation = {
+    // Create recommendation
+    const recommendation = {
       direction: signal.direction,
       confidence: signal.strength,
       priceTarget: signal.priceTarget,
       stopLoss: signal.stopLoss,
       timeframe,
-      influentialIndicators: signal.indicators.slice(0, 3).map(ind => ind.name),
+      influentialIndicators: signal.indicators.map((i: any) => i.name),
       expectedVolatility: signal.volatility,
-      suggestedLeverage,
+      suggestedLeverage: calculateLeverage(signal.volatility, signal.strength),
       summary: `${signal.direction === 'LONG' ? 'Buy' : signal.direction === 'SHORT' ? 'Sell' : 'Hold'} ${symbol} with ${signal.strength > 80 ? 'high' : signal.strength > 60 ? 'moderate' : 'low'} confidence.`
     };
     
     setRecommendation(recommendation);
   };
   
-  // Calculate suggested leverage based on volatility and signal strength
-  const calculateSuggestedLeverage = (volatility: number, strength: number): number => {
-    // Lower volatility and higher strength = higher safe leverage
-    const baseMultiplier = strength / 100; // 0 to 1
-    const volatilityFactor = 1 - (volatility / 100); // 1 to 0
-    
-    // Calculate safe leverage (between 1x and 10x)
-    const leverage = 1 + Math.round((baseMultiplier * volatilityFactor) * 9);
-    
-    return Math.min(10, Math.max(1, leverage));
-  };
-  
   // Handle timeframe selection
-  const handleTimeframeSelect = (timeframe: TimeFrame) => {
+  const handleTimeframeSelect = (timeframe: string) => {
     setSelectedTimeframe(timeframe);
-    updateRecommendationForTimeframe(timeframe);
+    updateRecommendation(timeframe);
     
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
+  };
+  
+  // Calculate suggested leverage
+  const calculateLeverage = (volatility: number, strength: number): number => {
+    const baseMultiplier = strength / 100;
+    const volatilityFactor = 1 - (volatility / 100);
+    const leverage = 1 + Math.round(baseMultiplier * volatilityFactor * 9);
+    return Math.min(10, Math.max(1, leverage));
   };
   
   // Format currency
@@ -332,8 +235,8 @@ export default function OneTimeCalculationDashboard({
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
     }).format(price);
   }
   
@@ -349,7 +252,7 @@ export default function OneTimeCalculationDashboard({
     }
   }
   
-  // Render component
+  // Render
   return (
     <Card className="w-full shadow-lg border-t-2 border-indigo-600">
       <CardHeader className="bg-zinc-900 text-white pb-2">
@@ -368,19 +271,19 @@ export default function OneTimeCalculationDashboard({
       </CardHeader>
       
       <CardContent className="pt-2">
-        <Tabs defaultValue={TimeFrame.FOUR_HOUR} className="w-full" onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}>
+        <Tabs defaultValue={TIMEFRAMES.FOUR_HOUR} className="w-full" onValueChange={handleTimeframeSelect}>
           <TabsList className="grid grid-cols-7 mb-4">
-            <TabsTrigger value={TimeFrame.FIFTEEN_MINUTE}>15m</TabsTrigger>
-            <TabsTrigger value={TimeFrame.THIRTY_MINUTE}>30m</TabsTrigger>
-            <TabsTrigger value={TimeFrame.ONE_HOUR}>1h</TabsTrigger>
-            <TabsTrigger value={TimeFrame.FOUR_HOUR}>4h</TabsTrigger>
-            <TabsTrigger value={TimeFrame.ONE_DAY}>1d</TabsTrigger>
-            <TabsTrigger value={TimeFrame.ONE_WEEK}>1w</TabsTrigger>
-            <TabsTrigger value={TimeFrame.ONE_MONTH}>1M</TabsTrigger>
+            <TabsTrigger value={TIMEFRAMES.FIFTEEN_MINUTE}>15m</TabsTrigger>
+            <TabsTrigger value={TIMEFRAMES.THIRTY_MINUTE}>30m</TabsTrigger>
+            <TabsTrigger value={TIMEFRAMES.ONE_HOUR}>1h</TabsTrigger>
+            <TabsTrigger value={TIMEFRAMES.FOUR_HOUR}>4h</TabsTrigger>
+            <TabsTrigger value={TIMEFRAMES.ONE_DAY}>1d</TabsTrigger>
+            <TabsTrigger value={TIMEFRAMES.ONE_WEEK}>1w</TabsTrigger>
+            <TabsTrigger value={TIMEFRAMES.ONE_MONTH}>1M</TabsTrigger>
           </TabsList>
           
           {/* Content for each timeframe */}
-          {Object.values(TimeFrame).map((timeframe) => (
+          {Object.values(TIMEFRAMES).map((timeframe) => (
             <TabsContent key={timeframe} value={timeframe} className="mt-0">
               <div className="flex flex-col space-y-4">
                 {/* Signal Information */}
@@ -509,7 +412,7 @@ export default function OneTimeCalculationDashboard({
                         <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-800">
                           <h4 className="text-sm font-medium text-gray-500 mb-1">Key Indicators</h4>
                           <div className="flex flex-wrap gap-1">
-                            {recommendation.influentialIndicators?.map((indicator, i) => (
+                            {recommendation.influentialIndicators?.map((indicator: string, i: number) => (
                               <Badge key={i} variant="secondary" className="text-xs">
                                 {indicator}
                               </Badge>

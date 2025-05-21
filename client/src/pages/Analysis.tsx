@@ -3,11 +3,12 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
-// Import our final component with guaranteed once-per-3min calculations
-import OneTimeCalculationDashboard from '../components/OneTimeCalculationDashboard';
+// Import our simpler calculation dashboard
+import PriceOnlyCalcDashboard from '../components/PriceOnlyCalcDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
+// Use original timeframe enum
 import { TimeFrame } from '../types';
 import { 
   Collapsible,
@@ -66,7 +67,7 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <OneTimeCalculationDashboard 
+          <PriceOnlyCalcDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
           />
