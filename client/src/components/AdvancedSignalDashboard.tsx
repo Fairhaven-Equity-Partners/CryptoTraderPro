@@ -1760,28 +1760,35 @@ export default function AdvancedSignalDashboard({
                       description: "Fetching latest price and running calculations...",
                     });
                     
-                    // Fetch latest price
-                    const currentPrice = await getCurrentPrice(symbol);
-                    
-                    // Set calculating state
-                    setIsCalculating(true);
-                    
                     try {
-                      // Direct calculation: Call the function directly without going through the oneTimeCalculation module
-                      console.log(`🔄 MANUAL CALCULATION: Directly calculating with price: ${currentPrice}`);
+                      // Get current price from the UI state 
+                      const currentPrice = assetPrice;
                       
-                      // Force a direct calculation for all timeframes with the current price
-                      // This bypasses all the disabling mechanisms
+                      console.log(`🔄 MANUAL CALCULATION: Starting for ${symbol} with price: ${currentPrice}`);
+                      
+                      // Set calculating state
+                      setIsCalculating(true);
+                      
+                      // Force a direct calculation for all timeframes - this bypasses the auto-calc blockers
                       await calculateAllSignals();
                       
-                      // Reset the calculation state after a delay
+                      // Force an update to the display by selecting the current timeframe again
+                      // This is the key fix - we need to manually trigger a UI update
                       setTimeout(() => {
+                        // Update recommendation for the current timeframe
+                        const recommendation = generateTradeRecommendation(selectedTimeframe);
+                        setRecommendation(recommendation);
+                        
+                        // Re-trigger the timeframe selection to refresh the UI
+                        handleTimeframeSelect(selectedTimeframe);
+                        
                         setIsCalculating(false);
+                        
                         toast({
                           title: "Calculation completed",
                           description: `Latest signals updated with price $${currentPrice.toLocaleString()}`,
                         });
-                      }, 2500);
+                      }, 1000);
                     } catch (error) {
                       console.error("Error during manual calculation:", error);
                       setIsCalculating(false);
