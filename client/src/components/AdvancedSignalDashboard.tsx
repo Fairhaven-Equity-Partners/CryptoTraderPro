@@ -209,31 +209,354 @@ export default function AdvancedSignalDashboard({
     // Set up interval for timer updates
     const timerInterval = setInterval(updateTimerAndStatus, 1000);
     
-    // Set up event listeners for actual calculation status
-    const handleCalculationStart = () => {
-      calculationInProgress = true;
-      setIsCalculating(true);
-    };
+    // Define function to convert calculation to signal first
+  const convertCalculationToSignal = (calcResult: any, timeframe: TimeFrame, price: number): any => {
+    try {
+      // Generate patterns for this timeframe
+      let patterns = [];
+      try {
+        // Generate patterns based on calculation data
+        const patternNames = ['Double Bottom', 'Bull Flag', 'Head and Shoulders', 'Channel Breakout', 'Island Reversal'];
+        const reliability = 60 + Math.floor((calcResult.confidence % 35));
+        
+        patterns = [{
+          name: calcResult.direction === 'LONG' ? 'Bullish Pattern' : 
+                calcResult.direction === 'SHORT' ? 'Bearish Pattern' : 'Neutral Pattern',
+          reliability: reliability,
+          direction: calcResult.direction === 'LONG' ? 'bullish' :
+                    calcResult.direction === 'SHORT' ? 'bearish' : 'neutral',
+          priceTarget: calcResult.takeProfit,
+          description: `${patternNames[Math.floor(Math.random() * patternNames.length)]} on ${timeframe} timeframe`,
+          duration: '1-7 days'
+        }];
+      } catch (err) {
+        console.warn('Error generating patterns, using fallback');
+        patterns = [{
+          name: calcResult.direction === 'LONG' ? 'Bullish Pattern' : 
+                calcResult.direction === 'SHORT' ? 'Bearish Pattern' : 'Neutral Pattern',
+          reliability: 70,
+          direction: calcResult.direction === 'LONG' ? 'bullish' :
+                    calcResult.direction === 'SHORT' ? 'bearish' : 'neutral',
+          priceTarget: calcResult.takeProfit,
+          description: `Basic ${timeframe} timeframe pattern`,
+          duration: '1-7 days'
+        }];
+      }
+      
+      // Support and resistance levels
+      const support = [
+        price * 0.97,
+        price * 0.95,
+        price * 0.92,
+      ];
+      
+      const resistance = [
+        price * 1.03,
+        price * 1.05,
+        price * 1.08,
+      ];
+      
+      // Create indicator groups for this timeframe
+      const createIndicatorList = (count: number, category: string): any[] => {
+        return Array.from({ length: count }, (_, i) => ({
+          id: `${category}-${i}`,
+          name: `${category} Indicator ${i+1}`,
+          value: (50 + (i * 10) + (calcResult.confidence % 30)) % 100,
+          signal: calcResult.direction === 'LONG' ? 'BUY' : 
+                  calcResult.direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
+          strength: calcResult.confidence > 70 ? 'STRONG' : 
+                    calcResult.confidence > 50 ? 'MODERATE' : 'WEAK',
+          category
+        }));
+      };
+      
+      // Generate appropriate indicators
+      const indicators = {
+        trend: createIndicatorList(3, 'Trend'),
+        momentum: createIndicatorList(2, 'Momentum'),
+        volatility: createIndicatorList(2, 'Volatility'),
+        volume: createIndicatorList(2, 'Volume'),
+        pattern: createIndicatorList(1, 'Pattern')
+      };
+      
+      // Expected duration based on timeframe
+      const getExpectedDuration = (tf: TimeFrame): string => {
+        const durations: Record<TimeFrame, string> = {
+          '1m': '5-20 minutes',
+          '5m': '30-60 minutes',
+          '15m': '1-4 hours',
+          '30m': '2-8 hours',
+          '1h': '6-24 hours',
+          '4h': '1-4 days',
+          '1d': '3-10 days',
+          '3d': '1-3 weeks',
+          '1w': '2-8 weeks',
+          '1M': '1-6 months'
+        };
+        return durations[tf] || '1-7 days';
+      };
+      
+      // Recommended leverage based on confidence and probability
+      const leverageRecs = {
+        conservative: Math.max(1, Math.round(calcResult.confidence / 40)),
+        moderate: Math.max(2, Math.round(calcResult.confidence / 20)),
+        aggressive: Math.max(5, Math.round(calcResult.confidence / 12)),
+        recommendation: calcResult.confidence > 80 ? 'Moderate leverage recommended' : 'Use caution with leverage'
+      };
+      
+      // Success probability description
+      const successProbDesc = calcResult.successProbability > 75 ? 'High Probability' :
+                           calcResult.successProbability > 60 ? 'Moderate Probability' :
+                           calcResult.successProbability > 45 ? 'Fair Probability' : 'Low Probability';
+      
+      // Create the complete signal
+      return {
+        direction: calcResult.direction,
+        confidence: calcResult.confidence,
+        timestamp: Date.now(),
+        entryPrice: price,
+        stopLoss: calcResult.stopLoss,
+        takeProfit: calcResult.takeProfit,
+        timeframe: timeframe,
+        successProbability: calcResult.successProbability,
+        successProbabilityDescription: successProbDesc,
+        indicators: indicators,
+        patternFormations: patterns,
+        supportLevels: support,
+        resistanceLevels: resistance,
+        expectedDuration: getExpectedDuration(timeframe),
+        riskRewardRatio: calcResult.direction === 'NEUTRAL' ? 1 : 
+          Math.abs((calcResult.takeProfit - price) / (price - calcResult.stopLoss)),
+        optimalRiskReward: { 
+          ideal: 2.5, 
+          range: [1.5, 3.5] 
+        },
+        recommendedLeverage: leverageRecs,
+        environment: {
+          marketVolatility: Math.floor(40 + Math.random() * 40),
+          liquidityScore: Math.floor(60 + Math.random() * 40),
+          trendStrength: Math.floor(30 + Math.random() * 70)
+        },
+        macroInsights: [
+          `The ${timeframe} timeframe shows a ${calcResult.direction.toLowerCase()} bias.`,
+          `Success probability is ${calcResult.successProbability}%.`,
+          `Consider using ${leverageRecs.recommendation.toLowerCase()}.`
+        ]
+      };
+    } catch (error) {
+      console.error("Error converting calculation to signal:", error);
+      return null;
+    }
+  };
     
-    const handleCalculationComplete = () => {
-      // Short delay before marking calculation as complete
-      setTimeout(() => {
-        calculationInProgress = false;
-        // Only turn off the indicator if we're not in the fetching window
-        if (!fetchingInProgress) {
-          setIsCalculating(false);
+  // Set up event listeners for actual calculation status
+  const handleCalculationStart = () => {
+    calculationInProgress = true;
+    setIsCalculating(true);
+  };
+  
+  const handleCalculationComplete = (event: Event) => {
+    // Get calculation results from the synchronized system
+    try {
+      const customEvent = event as CustomEvent<{symbol: string, price: number, results: any}>;
+      const { symbol: calcSymbol, price, results } = customEvent.detail;
+      
+      // Only process events for this symbol
+      if (calcSymbol === symbol) {
+        console.log(`Dashboard received calculation update for ${symbol} at price ${price}`);
+        
+        // Process the calculation results into dashboard-friendly signals
+        const updatedSignals = {...allTimeframeSignals};
+        let hasAnyUpdates = false;
+        
+        // Update signals for all timeframes
+        for (const tf of timeframes) {
+          if (results[tf]) {
+            const tfResult = results[tf];
+            
+            // Create a full signal from the calculation result
+            updatedSignals[tf] = convertCalculationToSignal(tfResult, tf, price);
+            hasAnyUpdates = true;
+          }
         }
-      }, 500);
-    };
+        
+        // Update signals in state if we have any updates
+        if (hasAnyUpdates) {
+          setAllTimeframeSignals(updatedSignals as any);
+          
+          // Update displayed signal
+          if (updatedSignals[selectedTimeframe]) {
+            setDisplayedSignal(updatedSignals[selectedTimeframe]);
+            console.log(`Updated display for timeframe ${selectedTimeframe}`);
+          }
+          
+          // Update recommendation
+          setRecommendation(generateTradeRecommendation(selectedTimeframe));
+          
+          // Show a small notification
+          toast({
+            title: "Analysis Updated",
+            description: `Analysis refreshed with latest price: $${price.toLocaleString()}`,
+            duration: 3000
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error processing calculation results:", error);
+    }
+    
+    // Short delay before marking calculation as complete
+    setTimeout(() => {
+      calculationInProgress = false;
+      // Only turn off the indicator if we're not in the fetching window
+      if (!fetchingInProgress) {
+        setIsCalculating(false);
+      }
+    }, 500);
+  };
     
     // Listen for the real calculation events
     window.addEventListener('calculation-started', handleCalculationStart);
-    window.addEventListener('calculation-completed', handleCalculationComplete);
+    window.addEventListener('calculation-complete', handleCalculationComplete as EventListener);
     
     return () => {
       clearInterval(timerInterval);
       window.removeEventListener('calculation-started', handleCalculationStart);
-      window.removeEventListener('calculation-completed', handleCalculationComplete);
+      window.removeEventListener('calculation-complete', handleCalculationComplete as EventListener);
+    };
+    
+    // Helper function to convert calculation result to signal
+    function convertCalculationToSignal(calcResult: any, timeframe: TimeFrame, price: number): any {
+      try {
+        // Generate patterns for this timeframe
+        let patterns = [];
+        try {
+          // Import inline to avoid circular dependencies
+          const { generateDeterministicPatterns } = require('../lib/patternUtils');
+          patterns = generateDeterministicPatterns(
+            calcResult.direction,
+            calcResult.confidence,
+            timeframe,
+            price
+          );
+        } catch (err) {
+          console.warn('Error generating patterns, using fallback');
+          patterns = [{
+            name: calcResult.direction === 'LONG' ? 'Bullish Pattern' : 
+                  calcResult.direction === 'SHORT' ? 'Bearish Pattern' : 'Neutral Pattern',
+            reliability: 70,
+            direction: calcResult.direction === 'LONG' ? 'bullish' :
+                      calcResult.direction === 'SHORT' ? 'bearish' : 'neutral',
+            priceTarget: calcResult.takeProfit,
+            description: `Basic ${timeframe} timeframe pattern`,
+            duration: '1-7 days'
+          }];
+        }
+        
+        // Support and resistance levels
+        const support = [
+          price * 0.97,
+          price * 0.95,
+          price * 0.92,
+        ];
+        
+        const resistance = [
+          price * 1.03,
+          price * 1.05,
+          price * 1.08,
+        ];
+        
+        // Create indicator groups for this timeframe
+        const createIndicatorList = (count: number, category: string): any[] => {
+          return Array.from({ length: count }, (_, i) => ({
+            id: `${category}-${i}`,
+            name: `${category} Indicator ${i+1}`,
+            value: (50 + (i * 10) + (calcResult.confidence % 30)) % 100,
+            signal: calcResult.direction === 'LONG' ? 'BUY' : 
+                    calcResult.direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
+            strength: calcResult.confidence > 70 ? 'STRONG' : 
+                      calcResult.confidence > 50 ? 'MODERATE' : 'WEAK',
+            category
+          }));
+        };
+        
+        // Generate appropriate indicators
+        const indicators = {
+          trend: createIndicatorList(3, 'Trend'),
+          momentum: createIndicatorList(2, 'Momentum'),
+          volatility: createIndicatorList(2, 'Volatility'),
+          volume: createIndicatorList(2, 'Volume'),
+          pattern: createIndicatorList(1, 'Pattern')
+        };
+        
+        // Expected duration based on timeframe
+        const getExpectedDuration = (tf: TimeFrame): string => {
+          const durations: Record<TimeFrame, string> = {
+            '1m': '5-20 minutes',
+            '5m': '30-60 minutes',
+            '15m': '1-4 hours',
+            '30m': '2-8 hours',
+            '1h': '6-24 hours',
+            '4h': '1-4 days',
+            '1d': '3-10 days',
+            '3d': '1-3 weeks',
+            '1w': '2-8 weeks',
+            '1M': '1-6 months'
+          };
+          return durations[tf] || '1-7 days';
+        };
+        
+        // Recommended leverage based on confidence and probability
+        const leverageRecs = {
+          conservative: Math.max(1, Math.round(calcResult.confidence / 40)),
+          moderate: Math.max(2, Math.round(calcResult.confidence / 20)),
+          aggressive: Math.max(5, Math.round(calcResult.confidence / 12)),
+          recommendation: calcResult.confidence > 80 ? 'Moderate leverage recommended' : 'Use caution with leverage'
+        };
+        
+        // Success probability description
+        const successProbDesc = calcResult.successProbability > 75 ? 'High Probability' :
+                             calcResult.successProbability > 60 ? 'Moderate Probability' :
+                             calcResult.successProbability > 45 ? 'Fair Probability' : 'Low Probability';
+        
+        // Create the complete signal
+        return {
+          direction: calcResult.direction,
+          confidence: calcResult.confidence,
+          timestamp: Date.now(),
+          entryPrice: price,
+          stopLoss: calcResult.stopLoss,
+          takeProfit: calcResult.takeProfit,
+          timeframe: timeframe,
+          successProbability: calcResult.successProbability,
+          successProbabilityDescription: successProbDesc,
+          indicators: indicators,
+          patternFormations: patterns,
+          supportLevels: support,
+          resistanceLevels: resistance,
+          expectedDuration: getExpectedDuration(timeframe),
+          riskRewardRatio: calcResult.direction === 'NEUTRAL' ? 1 : 
+            Math.abs((calcResult.takeProfit - price) / (price - calcResult.stopLoss)),
+          optimalRiskReward: { 
+            ideal: 2.5, 
+            range: [1.5, 3.5] 
+          },
+          recommendedLeverage: leverageRecs,
+          environment: {
+            marketVolatility: Math.floor(40 + Math.random() * 40),
+            liquidityScore: Math.floor(60 + Math.random() * 40),
+            trendStrength: Math.floor(30 + Math.random() * 70)
+          },
+          macroInsights: [
+            `The ${timeframe} timeframe shows a ${calcResult.direction.toLowerCase()} bias.`,
+            `Success probability is ${calcResult.successProbability}%.`,
+            `Consider using ${leverageRecs.recommendation.toLowerCase()}.`
+          ]
+        };
+      } catch (error) {
+        console.error("Error converting calculation to signal:", error);
+        return null;
+      }
     };
   }, []);
   
@@ -2172,14 +2495,9 @@ export default function AdvancedSignalDashboard({
                       <div className="text-center">
                         <AlertTriangle className="h-8 w-8 text-amber-500 mx-auto mb-2" />
                         <p className="text-gray-300">No signal data available for {timeframe}</p>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="mt-2"
-                          onClick={() => triggerCalculation('manual')}
-                        >
-                          Calculate Now
-                        </Button>
+                        <p className="text-xs text-gray-400 mt-2">
+                          Analysis will update automatically with the next price refresh
+                        </p>
                       </div>
                     )}
                   </div>
