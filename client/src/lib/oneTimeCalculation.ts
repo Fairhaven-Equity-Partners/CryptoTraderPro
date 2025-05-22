@@ -165,3 +165,71 @@ export const CalculationEvents = {
   STARTED: CALCULATION_STARTED_EVENT,
   COMPLETED: CALCULATION_COMPLETED_EVENT
 };
+
+/**
+ * Force a calculation update immediately with the current price
+ * @param symbol Asset symbol to update
+ * @param price Current price
+ */
+export function forceCalculation(symbol: string, price: number) {
+  triggerManualCalculation(symbol, price);
+}
+
+/**
+ * Subscribes to one-time calculation events
+ * @param symbol Asset symbol to monitor
+ * @param priceCallback Function to call with price during calculation
+ * @param completeCallback Function to call when calculation completes
+ */
+export function subscribeToOneTimeCalculation(
+  symbol: string, 
+  priceCallback: (price: number) => void,
+  completeCallback?: () => void
+) {
+  const handleCalculationStart = (event: CustomEvent) => {
+    if (event.detail.symbol === symbol) {
+      priceCallback(event.detail.price);
+    }
+  };
+  
+  const handleCalculationComplete = (event: CustomEvent) => {
+    if (event.detail.symbol === symbol && completeCallback) {
+      completeCallback();
+    }
+  };
+  
+  // Add event listeners
+  window.addEventListener(CALCULATION_STARTED_EVENT, handleCalculationStart as EventListener);
+  window.addEventListener(CALCULATION_COMPLETED_EVENT, handleCalculationComplete as EventListener);
+  
+  // Return cleanup function
+  return () => {
+    window.removeEventListener(CALCULATION_STARTED_EVENT, handleCalculationStart as EventListener);
+    window.removeEventListener(CALCULATION_COMPLETED_EVENT, handleCalculationComplete as EventListener);
+  };
+}
+
+/**
+ * Mark calculation as started for UI feedback
+ * @param symbol Asset symbol
+ */
+export function markCalculationStarted(symbol: string) {
+  const startEvent = new CustomEvent(CALCULATION_STARTED_EVENT, {
+    detail: { symbol, price: 0 }
+  });
+  window.dispatchEvent(startEvent);
+}
+
+/**
+ * Mark calculation as completed for UI feedback
+ * @param symbol Asset symbol
+ */
+export function markCalculationCompleted(symbol: string) {
+  const completeEvent = new CustomEvent(CALCULATION_COMPLETED_EVENT, {
+    detail: { symbol, timestamp: Date.now() }
+  });
+  window.dispatchEvent(completeEvent);
+}
+
+// Alias for backward compatibility
+export const initOneTimeCalculation = initOneTimeCalculationSystem;

@@ -180,6 +180,60 @@ export function manualPriceFetch(symbol: string): Promise<number> {
 }
 
 /**
+ * Subscribe to price updates for a symbol
+ * @param symbol Asset symbol to track
+ * @param callback Function to call when price updates
+ */
+export function subscribeToPriceUpdates(symbol: string, callback: (price: number) => void) {
+  const handlePriceUpdate = (event: CustomEvent) => {
+    if (event.detail.symbol === symbol) {
+      callback(event.detail.price);
+    }
+  };
+  
+  // Remove any existing handler to avoid duplicates
+  window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+  
+  // Add the new handler
+  window.addEventListener('price-update', handlePriceUpdate as EventListener);
+  
+  console.log(`[FinalPriceSystem] Subscribed to price updates for ${symbol}`);
+  
+  // Return unsubscribe function
+  return () => {
+    window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+    console.log(`[FinalPriceSystem] Unsubscribed from price updates for ${symbol}`);
+  };
+}
+
+/**
+ * Start tracking price for a symbol
+ * @param symbol Asset symbol to track
+ */
+export function startTracking(symbol: string) {
+  // Initialize the price system if it's not already running
+  if (!timerInterval) {
+    initPriceSystem();
+  }
+  
+  // Do an immediate fetch for the specified symbol
+  fetchLatestPrice(symbol).catch(error => {
+    console.error(`[FinalPriceSystem] Error in initial fetch for ${symbol}:`, error);
+  });
+  
+  console.log(`[FinalPriceSystem] Started tracking ${symbol}`);
+}
+
+/**
+ * Stop tracking price for a symbol
+ * @param symbol Asset symbol to stop tracking
+ */
+export function stopTracking(symbol: string) {
+  console.log(`[FinalPriceSystem] Stopped tracking ${symbol}`);
+  // Symbol-specific cleanup could go here if needed
+}
+
+/**
  * Clean up the timer when the component unmounts
  */
 export function cleanupPriceSystem() {

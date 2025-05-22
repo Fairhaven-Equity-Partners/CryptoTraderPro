@@ -94,6 +94,59 @@ export function calculateRiskRewardRatio(entry: number, stopLoss: number, takePr
  * @param riskTolerance Risk tolerance factor (0.5 = conservative, 1 = moderate, 2 = aggressive)
  * @returns Recommended leverage
  */
+/**
+ * Calculate safe leverage for a trade (alias for backward compatibility)
+ * 
+ * @param entry Entry price
+ * @param stopLoss Stop loss price
+ * @param volatility Market volatility index (0-100)
+ * @returns Recommended safe leverage
+ */
+export function calculateSafeLeverage(
+  entry: number,
+  stopLoss: number,
+  volatility = 50
+): number {
+  return calculateRecommendedLeverage(entry, stopLoss, volatility, 1);
+}
+
+/**
+ * Calculate appropriate leverage based on timeframe
+ * 
+ * @param timeframe Trading timeframe
+ * @param entry Entry price
+ * @param stopLoss Stop loss price
+ * @returns Recommended leverage for the timeframe
+ */
+export function calculateTimeframeLeverage(
+  timeframe: string,
+  entry: number,
+  stopLoss: number
+): number {
+  // Timeframes have different risk profiles
+  const timeframeRiskFactor: Record<string, number> = {
+    '1m': 0.5,   // Very short timeframes are high risk
+    '5m': 0.6,
+    '15m': 0.7,
+    '30m': 0.8,
+    '1h': 0.9,
+    '4h': 1.0,   // Base timeframe (moderate risk)
+    '1d': 1.1,   // Longer timeframes can handle slightly higher leverage
+    '3d': 1.2,
+    '1w': 1.3,
+    '1M': 1.4    // Monthly chart is most stable
+  };
+  
+  // Get the risk factor, default to moderate (1.0)
+  const riskFactor = timeframeRiskFactor[timeframe] || 1.0;
+  
+  // Calculate base leverage using the recommended formula
+  const baseLeverage = calculateRecommendedLeverage(entry, stopLoss, 50, 1);
+  
+  // Apply the timeframe-specific risk factor
+  return Math.min(Math.round(baseLeverage * riskFactor), 100);
+}
+
 export function calculateRecommendedLeverage(
   entry: number, 
   stopLoss: number, 
@@ -181,4 +234,20 @@ export function getPriceChangeClass(changePercent: number): string {
   if (changePercent > 0) return 'text-green-500';
   if (changePercent < 0) return 'text-red-500';
   return 'text-gray-400';
+}
+
+/**
+ * Get the current BTC price based on the hidden element in the page
+ * @returns The current BTC price or null if not available
+ */
+export function getCurrentPrice(): number | null {
+  const priceData = document.getElementById('live-price-data');
+  if (!priceData) return null;
+  
+  try {
+    return parseFloat(priceData.getAttribute('data-price') || '0');
+  } catch (error) {
+    console.error('Error parsing current price:', error);
+    return null;
+  }
 }
