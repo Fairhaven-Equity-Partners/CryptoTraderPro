@@ -48,9 +48,10 @@ export interface PatternResult {
 
 /**
  * Optimized pattern recognition function that runs only the most important patterns
+ * and eliminates duplicates
  * @param data Price data
  * @param timeframe Current timeframe
- * @returns Array of detected patterns
+ * @returns Array of detected patterns with duplicates removed
  */
 export function detectAllPatterns(data: ChartData[], timeframe: TimeFrame): PatternResult[] {
   // Return early if not enough data
@@ -65,7 +66,7 @@ export function detectAllPatterns(data: ChartData[], timeframe: TimeFrame): Patt
   if (timeframe === '1m' || timeframe === '5m' || timeframe === '15m') {
     // Only detect double patterns which are simpler and faster to calculate
     const doublePatterns = detectDoublePatterns(dataSubset);
-    return doublePatterns;
+    return removeDuplicatePatterns(doublePatterns);
   }
   
   // Determine which patterns to detect based on timeframe
@@ -88,7 +89,37 @@ export function detectAllPatterns(data: ChartData[], timeframe: TimeFrame): Patt
     results.push(...trianglePatterns);
   }
   
-  return results;
+  // Remove duplicate pattern types that occur close to each other
+  return removeDuplicatePatterns(results);
+}
+
+/**
+ * Removes duplicate pattern detections of the same type that are too close to each other
+ * This prevents the same pattern from appearing multiple times in the analysis
+ * @param patterns Array of detected patterns
+ * @returns Filtered array with duplicates removed
+ */
+function removeDuplicatePatterns(patterns: PatternResult[]): PatternResult[] {
+  // If there are less than 2 patterns, no need to de-duplicate
+  if (patterns.length < 2) {
+    return patterns;
+  }
+  
+  // Sort patterns by reliability (highest first)
+  const sortedPatterns = [...patterns].sort((a, b) => b.reliability - a.reliability);
+  
+  // Map to track which pattern types we've already seen
+  const seenPatternTypes = new Map<PatternType, PatternResult>();
+  
+  // For each pattern type, keep only the most reliable instance
+  for (const pattern of sortedPatterns) {
+    if (!seenPatternTypes.has(pattern.patternType)) {
+      seenPatternTypes.set(pattern.patternType, pattern);
+    }
+  }
+  
+  // Return array of unique patterns (highest reliability for each type)
+  return Array.from(seenPatternTypes.values());
 }
 
 /**
