@@ -64,6 +64,7 @@ export interface TradeRecommendation {
 
 /**
  * Generate pattern formations based on signal direction and confidence level
+ * Optimized version with reduced pattern count and simplified logic
  * 
  * @param direction Signal direction (LONG, SHORT, NEUTRAL)
  * @param confidence Confidence level (0-100)
@@ -77,83 +78,59 @@ export function generatePatternFormations(
   timeframe: TimeFrame, 
   currentPrice: number
 ): PatternFormation[] {
-  // List of potential pattern names for each direction
+  // Optimized list of most significant patterns for each direction
   const bullishPatterns = [
-    'Bullish Engulfing', 'Morning Star', 'Hammer', 'Bullish Harami',
-    'Three White Soldiers', 'Piercing Line', 'Bullish Marubozu',
-    'Bullish Kicker', 'Tweezer Bottom', 'Inverted Hammer'
+    'Bullish Engulfing', 'Morning Star', 'Hammer', 
+    'Three White Soldiers', 'Bullish Marubozu'
   ];
   
   const bearishPatterns = [
-    'Bearish Engulfing', 'Evening Star', 'Hanging Man', 'Bearish Harami',
-    'Three Black Crows', 'Dark Cloud Cover', 'Bearish Marubozu',
-    'Bearish Kicker', 'Tweezer Top', 'Shooting Star'
+    'Bearish Engulfing', 'Evening Star', 'Hanging Man', 
+    'Three Black Crows', 'Bearish Marubozu'
   ];
   
   const neutralPatterns = [
-    'Doji', 'Spinning Top', 'High Wave', 'Long-Legged Doji',
-    'Dragonfly Doji', 'Gravestone Doji', 'Four Price Doji',
-    'Inside Bar', 'Outside Bar', 'Harami Cross'
+    'Doji', 'Spinning Top', 'Inside Bar'
   ];
   
-  // Generate between 0-3 patterns based on the timeframe and confidence level
-  const patternCount = Math.min(
-    Math.floor(Math.random() * 4) + (timeframe.includes('d') || timeframe.includes('w') || timeframe.includes('M') ? 2 : 0),
-    8
-  );
+  // Generate a fixed number of patterns based on timeframe
+  // Lower number for shorter timeframes to reduce calculations
+  const patternCount = timeframe.includes('d') || timeframe.includes('w') || timeframe.includes('M') ? 3 : 2;
   
   const patterns: PatternFormation[] = [];
   
-  // Generate random patterns based on direction
+  // Generate patterns based on signal direction (simplified logic)
   for (let i = 0; i < patternCount; i++) {
     let patternDirection: 'bullish' | 'bearish' | 'neutral';
     let patternNames: string[];
     
-    // Higher chance to match the signal direction
-    const randomValue = Math.random() * 100;
-    
-    if (direction === 'LONG' && randomValue < 70) {
+    // Simplified direction selection - higher chance to match signal direction
+    if (direction === 'LONG') {
       patternDirection = 'bullish';
       patternNames = bullishPatterns;
-    } else if (direction === 'SHORT' && randomValue < 70) {
+    } else if (direction === 'SHORT') {
       patternDirection = 'bearish';
       patternNames = bearishPatterns;
-    } else if (direction === 'NEUTRAL' && randomValue < 70) {
+    } else {
       patternDirection = 'neutral';
       patternNames = neutralPatterns;
-    } else {
-      // Opposite direction or neutral with a lower probability
-      const rand = Math.random();
-      if (direction === 'LONG') {
-        patternDirection = rand < 0.7 ? 'neutral' : 'bearish';
-        patternNames = rand < 0.7 ? neutralPatterns : bearishPatterns;
-      } else if (direction === 'SHORT') {
-        patternDirection = rand < 0.7 ? 'neutral' : 'bullish';
-        patternNames = rand < 0.7 ? neutralPatterns : bullishPatterns;
-      } else {
-        patternDirection = rand < 0.5 ? 'bullish' : 'bearish';
-        patternNames = rand < 0.5 ? bullishPatterns : bearishPatterns;
-      }
     }
     
-    // Select a random pattern name from the appropriate list
-    const nameIndex = Math.floor(Math.random() * patternNames.length);
+    // Select a pattern name (deterministic for better stability)
+    const nameIndex = i % patternNames.length;
     const name = patternNames[nameIndex];
     
-    // Calculate a reliability based on confidence
-    const reliability = Math.min(
-      Math.max(confidence - 15 + Math.floor(Math.random() * 30), 30),
-      95
-    );
+    // Calculate reliability based on confidence (simplified calculation)
+    const reliability = Math.min(confidence + 5, 95);
     
-    // Calculate a random price target based on direction and current price
+    // Calculate price target based on direction
     const priceTarget = patternDirection === 'bullish' 
-      ? currentPrice * (1 + (0.02 + Math.random() * 0.05)) // 2%-7% higher
+      ? currentPrice * 1.05 // 5% higher
       : patternDirection === 'bearish'
-        ? currentPrice * (1 - (0.02 + Math.random() * 0.05)) // 2%-7% lower
-        : currentPrice * (1 + (Math.random() * 0.04 - 0.02)); // ±2%
+        ? currentPrice * 0.95 // 5% lower
+        : currentPrice; // No change for neutral
     
-    // Add the pattern to the array if it doesn't already exist
+    // Add the pattern if it doesn't already exist
     if (!patterns.find(p => p.name === name)) {
       patterns.push({
         name,
@@ -166,6 +143,9 @@ export function generatePatternFormations(
       });
     }
   }
+  
+  // Log the number of patterns generated
+  console.log(`Generated ${patterns.length} patterns for ${timeframe} timeframe`);
   
   return patterns;
 }
