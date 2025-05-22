@@ -1769,9 +1769,9 @@ export default function AdvancedSignalDashboard({
                       // Set calculating state
                       setIsCalculating(true);
                       
-                      // Import the optimized calculator and pattern utilities
+                      // Import the optimized calculator and simplified pattern generator
                       const { processAllTimeframes, calculateKeyLevels, calculateLeverage } = await import('../lib/optimizedCalculator');
-                      const { generateDeterministicPatterns, getExpectedDuration } = await import('../lib/patternUtils');
+                      const { generatePatterns, getDuration } = await import('../lib/generatePatterns');
                       
                       // Process all timeframes with a single call to ensure consistency and proper alignment
                       const calculationResults = processAllTimeframes(symbol, currentPrice, timeframes);
@@ -1789,8 +1789,8 @@ export default function AdvancedSignalDashboard({
                           
                           console.log(`Optimized calculation for ${tf}: ${calcResult.direction} (${calcResult.confidence}%)`);
                           
-                          // Create pattern formations using our deterministic pattern generator
-                          const patterns = generateDeterministicPatterns(
+                          // Create pattern formations using our simplified pattern generator
+                          const patterns = generatePatterns(
                             calcResult.direction, 
                             calcResult.confidence, 
                             tf, 
@@ -1847,7 +1847,7 @@ export default function AdvancedSignalDashboard({
                               patternFormations: patterns,
                               supportLevels: keyLevels.support,
                               resistanceLevels: keyLevels.resistance,
-                              expectedDuration: getExpectedDuration(tf),
+                              expectedDuration: getDuration(tf),
                               riskRewardRatio: calcResult.direction === 'NEUTRAL' ? 1 : 
                                 Math.abs((calcResult.takeProfit - currentPrice) / (currentPrice - calcResult.stopLoss)),
                               optimalRiskReward: { 
