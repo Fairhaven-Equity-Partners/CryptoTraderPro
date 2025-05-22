@@ -1126,57 +1126,45 @@ export default function AdvancedSignalDashboard({
       // Apply time frame hierarchy alignment to ensure signal consistency
       const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);
       
-      // Special stabilization for weekly and monthly timeframes
-      // These should not change drastically between calculations
-      if (persistentSignalsRef.current[symbol]) {
-        const previousSignals = persistentSignalsRef.current[symbol];
+      // Apply the advanced signal stabilization system to weekly and monthly timeframes
+      // This prevents signals from drastically flipping on single price updates
+      
+      // Weekly timeframe stabilization
+      if (alignedSignals['1w']) {
+        console.log(`Before weekly stabilization: ${alignedSignals['1w'].direction} (${alignedSignals['1w'].confidence}%)`);
         
-        // Weekly timeframe stabilization
-        if (previousSignals['1w'] && alignedSignals['1w']) {
-          console.log(`Before weekly stabilization: ${alignedSignals['1w'].direction} (${alignedSignals['1w'].confidence}%)`);
-          
-          // Only allow direction changes when they're very confident
-          if (previousSignals['1w'].direction !== alignedSignals['1w'].direction) {
-            if (alignedSignals['1w'].confidence < 85) {
-              alignedSignals['1w'].direction = previousSignals['1w'].direction;
-              // Allow a small shift in confidence (max 5%)
-              alignedSignals['1w'].confidence = previousSignals['1w'].confidence + 
-                (alignedSignals['1w'].confidence > previousSignals['1w'].confidence ? 5 : -5);
-            }
-          } else {
-            // For same direction, limit confidence changes to 10%
-            if (Math.abs(previousSignals['1w'].confidence - alignedSignals['1w'].confidence) > 10) {
-              alignedSignals['1w'].confidence = previousSignals['1w'].confidence + 
-                (alignedSignals['1w'].confidence > previousSignals['1w'].confidence ? 5 : -5);
-            }
-          }
-          
-          console.log(`After weekly stabilization: ${alignedSignals['1w'].direction} (${alignedSignals['1w'].confidence}%)`);
-        }
+        // Use our dedicated signal stabilizer for weekly signals
+        const stabilizedWeekly = getStabilizedSignal(
+          symbol,
+          '1w',
+          alignedSignals['1w'].direction as any,
+          alignedSignals['1w'].confidence
+        );
         
-        // Monthly timeframe stabilization - even more strict than weekly
-        if (previousSignals['1M'] && alignedSignals['1M']) {
-          console.log(`Before monthly stabilization: ${alignedSignals['1M'].direction} (${alignedSignals['1M'].confidence}%)`);
-          
-          // Monthly signals almost never flip direction on single updates
-          if (previousSignals['1M'].direction !== alignedSignals['1M'].direction) {
-            // Only allow direction changes when they're extremely confident
-            if (alignedSignals['1M'].confidence < 90) {
-              alignedSignals['1M'].direction = previousSignals['1M'].direction;
-              // Allow a tiny shift in confidence (max 2%)
-              alignedSignals['1M'].confidence = previousSignals['1M'].confidence + 
-                (alignedSignals['1M'].confidence > previousSignals['1M'].confidence ? 2 : -2);
-            }
-          } else {
-            // For same direction, limit confidence changes to 5%
-            if (Math.abs(previousSignals['1M'].confidence - alignedSignals['1M'].confidence) > 5) {
-              alignedSignals['1M'].confidence = previousSignals['1M'].confidence + 
-                (alignedSignals['1M'].confidence > previousSignals['1M'].confidence ? 2 : -2);
-            }
-          }
-          
-          console.log(`After monthly stabilization: ${alignedSignals['1M'].direction} (${alignedSignals['1M'].confidence}%)`);
-        }
+        // Apply the stabilized values
+        alignedSignals['1w'].direction = stabilizedWeekly.direction as any;
+        alignedSignals['1w'].confidence = stabilizedWeekly.confidence;
+        
+        console.log(`After weekly stabilization: ${alignedSignals['1w'].direction} (${alignedSignals['1w'].confidence}%)`);
+      }
+      
+      // Monthly timeframe stabilization (even more strict)
+      if (alignedSignals['1M']) {
+        console.log(`Before monthly stabilization: ${alignedSignals['1M'].direction} (${alignedSignals['1M'].confidence}%)`);
+        
+        // Use our dedicated signal stabilizer for monthly signals
+        const stabilizedMonthly = getStabilizedSignal(
+          symbol,
+          '1M',
+          alignedSignals['1M'].direction as any,
+          alignedSignals['1M'].confidence
+        );
+        
+        // Apply the stabilized values
+        alignedSignals['1M'].direction = stabilizedMonthly.direction as any;
+        alignedSignals['1M'].confidence = stabilizedMonthly.confidence;
+        
+        console.log(`After monthly stabilization: ${alignedSignals['1M'].direction} (${alignedSignals['1M'].confidence}%)`);
       }
       
       // Update the signals state
