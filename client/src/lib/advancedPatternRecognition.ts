@@ -47,35 +47,48 @@ export interface PatternResult {
 }
 
 /**
- * Master pattern recognition function that runs all pattern detection algorithms
+ * Optimized pattern recognition function that runs only the most important patterns
  * @param data Price data
  * @param timeframe Current timeframe
  * @returns Array of detected patterns
  */
 export function detectAllPatterns(data: ChartData[], timeframe: TimeFrame): PatternResult[] {
+  // Return early if not enough data
   if (!data || data.length < 30) {
     return [];
   }
   
+  // Use a subset of data for better performance (most recent 200 candles or all if fewer)
+  const dataSubset = data.length > 200 ? data.slice(data.length - 200) : data;
+  
+  // For shorter timeframes, focus on simpler patterns only
+  if (timeframe === '1m' || timeframe === '5m' || timeframe === '15m') {
+    // Only detect double patterns which are simpler and faster to calculate
+    const doublePatterns = detectDoublePatterns(dataSubset);
+    return doublePatterns;
+  }
+  
+  // Determine which patterns to detect based on timeframe
+  // For longer timeframes, focus on more significant patterns
   const results: PatternResult[] = [];
   
-  // Run all pattern detection algorithms
-  const headAndShoulders = detectHeadAndShoulders(data);
-  const doublePatterns = detectDoublePatterns(data);
-  const trianglePatterns = detectTrianglePatterns(data);
-  const wedgePatterns = detectWedgePatterns(data);
-  const flagPatterns = detectFlagPatterns(data);
-  const harmonic = detectHarmonicPatterns(data);
+  // Run selected pattern detection algorithms based on timeframe
+  const doublePatterns = detectDoublePatterns(dataSubset);
+  results.push(...doublePatterns);
   
-  // Combine all results
-  return [
-    ...headAndShoulders,
-    ...doublePatterns,
-    ...trianglePatterns,
-    ...wedgePatterns,
-    ...flagPatterns,
-    ...harmonic
-  ];
+  // Add more complex patterns only for longer timeframes
+  if (timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M') {
+    const headAndShoulders = detectHeadAndShoulders(dataSubset);
+    results.push(...headAndShoulders);
+  }
+  
+  // Medium-term timeframes get triangle patterns
+  if (timeframe === '4h' || timeframe === '1d' || timeframe === '3d') {
+    const trianglePatterns = detectTrianglePatterns(dataSubset);
+    results.push(...trianglePatterns);
+  }
+  
+  return results;
 }
 
 /**
