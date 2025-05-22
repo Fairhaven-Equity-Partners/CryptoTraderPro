@@ -17,8 +17,8 @@ const priceCache: Record<string, {
   timestamp: number;
 }> = {};
 
-// Time between price refreshes (3 minutes in milliseconds)
-const REFRESH_INTERVAL = 180000; // 3 minutes
+// Time between price refreshes (10 minutes in milliseconds) - significantly increased to prevent excessive recalculations
+const REFRESH_INTERVAL = 600000; // 10 minutes
 
 // Track symbols that need price updates
 const activeSymbols: Set<string> = new Set();
@@ -169,9 +169,9 @@ export function startPricePolling(symbol: string): () => void {
       
       console.log(`[Price] Timer check: ${secondsSinceLastFetch}s since last fetch`);
       
-      // If 3 minutes have passed, fetch for all active symbols
-      if (secondsSinceLastFetch >= 180) {
-        console.log(`[Price] 3-MINUTE MARK REACHED - Fetching ALL prices`);
+      // If 10 minutes have passed, fetch for all active symbols (increased from 3 minutes)
+      if (secondsSinceLastFetch >= 600) {
+        console.log(`[Price] 10-MINUTE MARK REACHED - Fetching ALL prices`);
         
         // Fetch prices for all tracked symbols
         for (const trackedSymbol of activeSymbols) {

@@ -57,10 +57,10 @@ function handlePriceUpdate(event: CustomEvent) {
     return;
   }
   
-  // If we recently calculated with this exact price, skip
+  // If we recently calculated with this exact price, skip with a much longer timeout
   if (lastCalculatedTimestamp[symbol] && 
-      Math.abs(Date.now() - lastCalculatedTimestamp[symbol]) < 2000) {
-    console.log('[ONE-TIME-CALC] Skipping duplicate calculation (recent)');
+      Math.abs(Date.now() - lastCalculatedTimestamp[symbol]) < 60000) { // Increased to 60 seconds (1 minute)
+    console.log('[ONE-TIME-CALC] Skipping duplicate calculation - last calculation was less than 60 seconds ago');
     return;
   }
   
