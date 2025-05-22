@@ -187,6 +187,15 @@ export default function AdvancedSignalDashboard({
   const lastSymbolRef = useRef<string>('');
   const recalcIntervalRef = useRef<any>(null);
   
+  // Add dummy autoRun function for compatibility
+  const autoRun = false;
+  
+  // Add missing setNextRefreshIn function for compatibility
+  const setNextRefreshIn = (prevTime: number) => {
+    // Dummy function that doesn't change the timer
+    return;
+  };
+  
   // Current asset price
   const [assetPrice, setAssetPrice] = useState<number>(
     symbol === 'BTC/USDT' ? 108181 : 
