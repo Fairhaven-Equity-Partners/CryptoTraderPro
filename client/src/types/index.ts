@@ -65,7 +65,7 @@ export interface AdvancedSignal {
   stopLoss?: number;
   takeProfit?: number;
   timeframe: TimeFrame;
-  timestamp: number;
+  timestamp?: number;  // Made optional
   macroScore?: number; // 0-100
   successProbability?: number; // 0-100
   indicators?: Indicator[];
@@ -146,13 +146,21 @@ export interface TechnicalIndicators {
   calculateEMA: (data: ChartData[], period?: number) => any;
 }
 
+// Signal stabilization system interface
+export interface SignalStabilizationSystem {
+  getStabilizedSignal: (symbol: string, timeframe: TimeFrame, direction: string, confidence: number) => {
+    direction: SignalDirection;
+    confidence: number;
+  };
+}
+
 // Global window extensions
 declare global {
   interface Window {
     latestPriceEvents: Record<string, PriceEvent>;
     syncGlobalPrice: (symbol: string, price: number, timestamp?: number) => number;
     technicalIndicators?: TechnicalIndicators;
-    signalStabilizationSystem?: any;
+    signalStabilizationSystem?: SignalStabilizationSystem;
     generateSupportLevels?: (price: number, data: ChartData[]) => number[];
     generateResistanceLevels?: (price: number, data: ChartData[]) => number[];
   }

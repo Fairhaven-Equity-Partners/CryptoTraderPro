@@ -763,8 +763,13 @@ export default function AdvancedSignalDashboard({
       confidence: confidence,
       timestamp: Date.now(),
       entryPrice: currentPrice,
-      supportLevels: window.generateSupportLevels ? window.generateSupportLevels(currentPrice, chartData) : [currentPrice * 0.95, currentPrice * 0.9, currentPrice * 0.85],
-      resistanceLevels: window.generateResistanceLevels ? window.generateResistanceLevels(currentPrice, chartData) : [currentPrice * 1.05, currentPrice * 1.1, currentPrice * 1.15]
+      supportLevels: window.generateSupportLevels ? 
+                    window.generateSupportLevels(currentPrice, timeframeData) : 
+                    [currentPrice * 0.95, currentPrice * 0.9, currentPrice * 0.85],
+      resistanceLevels: window.generateResistanceLevels ? 
+                       window.generateResistanceLevels(currentPrice, timeframeData) : 
+                       [currentPrice * 1.05, currentPrice * 1.1, currentPrice * 1.15],
+      successProbability: confidence // Add this to match the interface
     };
     
     return signal;
