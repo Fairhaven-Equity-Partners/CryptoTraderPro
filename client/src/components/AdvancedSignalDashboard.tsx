@@ -169,25 +169,36 @@ export default function AdvancedSignalDashboard({
   
   // Set up the timer update and status tracking
   useEffect(() => {
-    let isFetching = false;
-
-    // Check if we're in the "price fetching" window (last 5 seconds of countdown)
+    let fetchingInProgress = false;
+    let calculationInProgress = false;
+    
+    // Function to update the timer display
     const updateTimerAndStatus = () => {
       import('../lib/finalPriceSystem').then(module => {
         const countdown = module.getFormattedCountdown();
         setFormattedTimer(countdown);
         
-        // Extract seconds value
-        const seconds = parseInt(countdown.split(':')[1]);
+        // Extract seconds value and minutes
+        const parts = countdown.split(':');
+        const minutes = parseInt(parts[0]);
+        const seconds = parseInt(parts[1]);
         
-        // Check if we're in the fetching window (last 5 seconds)
-        if (seconds <= 5 && countdown.startsWith("0:")) {
-          if (!isFetching) {
-            isFetching = true;
+        // Only show fetching status if we're at 0 minutes and have 5 or fewer seconds
+        if (minutes === 0 && seconds <= 5) {
+          if (!fetchingInProgress) {
+            fetchingInProgress = true;
+            // Only set isCalculating if no actual calculation is in progress
+            if (!calculationInProgress) {
+              setIsCalculating(true);
+            }
           }
-        } else if (isFetching && seconds > 5) {
-          // We've moved past the fetching window, reset the fetching flag
-          isFetching = false;
+        } else if (fetchingInProgress && (minutes > 0 || seconds > 5)) {
+          // Reset fetching flag when we're past the 5-second window
+          fetchingInProgress = false;
+          // Only reset isCalculating if no actual calculation is in progress
+          if (!calculationInProgress) {
+            setIsCalculating(false);
+          }
         }
       });
     };
@@ -195,18 +206,27 @@ export default function AdvancedSignalDashboard({
     // Update immediately
     updateTimerAndStatus();
     
-    // Set up interval
+    // Set up interval for timer updates
     const timerInterval = setInterval(updateTimerAndStatus, 1000);
     
-    // Set up event listeners for calculation status
+    // Set up event listeners for actual calculation status
     const handleCalculationStart = () => {
+      calculationInProgress = true;
       setIsCalculating(true);
     };
     
     const handleCalculationComplete = () => {
-      setTimeout(() => setIsCalculating(false), 500);
+      // Short delay before marking calculation as complete
+      setTimeout(() => {
+        calculationInProgress = false;
+        // Only turn off the indicator if we're not in the fetching window
+        if (!fetchingInProgress) {
+          setIsCalculating(false);
+        }
+      }, 500);
     };
     
+    // Listen for the real calculation events
     window.addEventListener('calculation-started', handleCalculationStart);
     window.addEventListener('calculation-completed', handleCalculationComplete);
     
