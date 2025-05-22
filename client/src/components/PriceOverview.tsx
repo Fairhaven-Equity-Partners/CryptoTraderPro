@@ -150,7 +150,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
           <div className="ml-1">
             <div className="flex items-center mb-3">
               <span className={`text-3xl font-bold text-white transition-colors duration-300 ${flashClass}`}>
-                ${(Math.round(priceState.price * 100) / 100).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                ${priceState.price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
               </span>
               {priceState.flash && priceDirection}
             </div>
