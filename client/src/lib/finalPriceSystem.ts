@@ -199,13 +199,14 @@ function startGlobalTimer() {
     const now = Date.now();
     const timeUntilNextFetch = globalState.nextFetchTime - now;
     
-    // Only fetch if we've reached or passed the next fetch time
-    if (timeUntilNextFetch <= 0) {
+    // Start fetching 5 seconds before the actual time to reduce perceived delay
+    if (timeUntilNextFetch <= 5000) {
+      console.log(`[FinalPriceSystem] Starting fetch early to reduce delay`);
       fetchAllPrices();
     } else {
       console.log(`[FinalPriceSystem] Next fetch in ${Math.ceil(timeUntilNextFetch/1000)}s`);
     }
-  }, 60000); // Check every minute
+  }, 5000); // Check more frequently to reduce delay
 }
 
 /**

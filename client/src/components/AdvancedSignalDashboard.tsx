@@ -1336,7 +1336,7 @@ export default function AdvancedSignalDashboard({
             <Badge variant="outline" className="text-xs bg-amber-700/70 text-white border-amber-600 px-3 py-1 animate-pulse">
               CALCULATING SIGNALS
             </Badge>
-          ) : formattedTimer === "0:00" ? (
+          ) : formattedTimer === "0:00" || formattedTimer === "0:01" || formattedTimer === "0:02" || formattedTimer === "0:03" || formattedTimer === "0:04" || formattedTimer === "0:05" ? (
             <Badge variant="outline" className="text-xs bg-blue-700/70 text-white border-blue-600 px-3 py-1 animate-pulse">
               FETCHING PRICE DATA...
             </Badge>
@@ -1363,7 +1363,7 @@ export default function AdvancedSignalDashboard({
                   <RefreshCcw className="animate-spin w-3 h-3 mr-1" />
                   CALCULATING SIGNALS
                 </Badge>
-              ) : formattedTimer === "0:00" ? (
+              ) : formattedTimer === "0:00" || formattedTimer === "0:01" || formattedTimer === "0:02" || formattedTimer === "0:03" || formattedTimer === "0:04" || formattedTimer === "0:05" ? (
                 <Badge variant="outline" className="ml-2 text-xs bg-blue-700/80 text-white border-blue-600 px-3 py-1 animate-pulse">
                   <span className="mr-1">⟳</span> FETCHING LATEST PRICE
                 </Badge>
