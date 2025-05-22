@@ -28,12 +28,20 @@ import {
   Clock,
   CheckCircle2,
 } from "lucide-react";
+
 // Import window type definitions
 import '../lib/windowTypes';
-import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
-import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
-import { formatCurrency, formatPercentage } from '../lib/calculations';
-import { getCurrentPrice, broadcastPriceUpdate } from '../lib/stablePriceSync';
+
+// Import our new type definitions and utilities
+import { 
+  AdvancedSignal,
+  PatternFormation, 
+  Level, 
+  TradeRecommendation,
+  TimeFrame,
+  SignalDirection,
+  generatePatternFormations
+} from '../lib/advancedSignals';
 import { useToast } from '../hooks/use-toast';
 import { getStabilizedSignal } from '../lib/signalStabilizer';
 import { useMarketData } from '../hooks/useMarketData';

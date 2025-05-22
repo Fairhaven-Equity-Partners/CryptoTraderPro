@@ -4,12 +4,18 @@ import "./index.css";
 import { connectWebSocket } from "./lib/api";
 import "./lib/windowTypes"; // Import type definitions for window object
 import { initTechnicalIndicatorsModule } from "./lib/technicalIndicators";
+import { initSignalStabilizationSystem } from "./lib/signalStabilizer";
+import { initOneTimeCalculationSystem } from "./lib/oneTimeCalculation";
+import { initPriceSystem } from "./lib/finalPriceSystem";
 
 // Initialize WebSocket connection on app start
 connectWebSocket();
 
-// Initialize technical indicators and add them to the global window object
+// Initialize all subsystems
 initTechnicalIndicatorsModule();
+initSignalStabilizationSystem();
+initOneTimeCalculationSystem();
+initPriceSystem(180); // Initialize with 3-minute refresh interval
 
 // Initialize default price events container
 window.latestPriceEvents = window.latestPriceEvents || {};
@@ -18,7 +24,18 @@ window.latestPriceEvents = window.latestPriceEvents || {};
 window.syncGlobalPrice = window.syncGlobalPrice || ((symbol: string, price: number, timestamp?: number) => {
   const now = timestamp || Date.now();
   window.latestPriceEvents[symbol] = { price, timestamp: now };
+  
+  // Log price updates for debugging
+  console.log(`💰 PRICE UPDATE: ${symbol} = ${price} 💰`);
+  console.log(`💰 CALCULATIONS COMING SOON 💰`);
+  
   return price;
 });
+
+// Log that main initialization is complete
+console.log('===================================================');
+console.log('Cryptocurrency Analysis Platform Initialized');
+console.log('All subsystems ready for signal generation');
+console.log('===================================================');
 
 createRoot(document.getElementById("root")!).render(<App />);
