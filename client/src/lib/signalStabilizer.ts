@@ -1,8 +1,8 @@
 /**
- * Signal Stabilizer Module
+ * Advanced Signal Stabilization System
  * 
- * This module provides functions to enhance the stability of trading signals
- * by implementing buffer zones, hysteresis, and confidence adjustments.
+ * Prevents signals from drastically changing between price updates, 
+ * especially for weekly and monthly timeframes.
  */
 
 import { TimeFrame } from '../types';
@@ -10,223 +10,169 @@ import { TimeFrame } from '../types';
 // Define the signal direction types
 export type SignalDirection = 'LONG' | 'SHORT' | 'NEUTRAL';
 
-// A simple class to store recent signal history
-export class SignalHistory {
-  private static instance: SignalHistory;
-  private history: Map<string, Array<{timestamp: number, direction: SignalDirection, confidence: number}>>;
+/**
+ * Stabilize a weekly timeframe signal
+ * 
+ * Weekly signals should not flip direction unless there's very strong evidence
+ * (85%+ confidence in the new direction)
+ * 
+ * @param previousDirection Previous signal direction
+ * @param newDirection New calculated direction
+ * @param previousConfidence Previous confidence level (0-100)
+ * @param newConfidence New calculated confidence level (0-100)
+ * @returns Stabilized direction and confidence
+ */
+export function stabilizeWeeklySignal(
+  previousDirection: SignalDirection,
+  newDirection: SignalDirection,
+  previousConfidence: number,
+  newConfidence: number
+): { direction: SignalDirection, confidence: number } {
   
-  private constructor() {
-    this.history = new Map();
-  }
-  
-  public static getInstance(): SignalHistory {
-    if (!SignalHistory.instance) {
-      SignalHistory.instance = new SignalHistory();
-    }
-    return SignalHistory.instance;
-  }
-  
-  public addSignal(symbol: string, timeframe: TimeFrame, direction: SignalDirection, confidence: number): void {
-    const key = `${symbol}-${timeframe}`;
-    if (!this.history.has(key)) {
-      this.history.set(key, []);
-    }
-    
-    const signals = this.history.get(key)!;
-    signals.push({
-      timestamp: Date.now(),
-      direction,
-      confidence
-    });
-    
-    // Keep only the last 10 signals
-    if (signals.length > 10) {
-      signals.shift();
-    }
-  }
-  
-  public getRecentSignals(symbol: string, timeframe: TimeFrame, count: number = 5): Array<{timestamp: number, direction: SignalDirection, confidence: number}> {
-    const key = `${symbol}-${timeframe}`;
-    if (!this.history.has(key)) {
-      return [];
+  // If directions match, only allow small confidence changes (max 10%)
+  if (previousDirection === newDirection) {
+    // Limit confidence changes to prevent sudden jumps
+    if (Math.abs(previousConfidence - newConfidence) > 10) {
+      const adjustment = newConfidence > previousConfidence ? 5 : -5;
+      return {
+        direction: newDirection,
+        confidence: previousConfidence + adjustment
+      };
     }
     
-    const signals = this.history.get(key)!;
-    return signals.slice(-count);
+    // Directions match and confidence change is reasonable
+    return { direction: newDirection, confidence: newConfidence };
   }
   
-  public getMostFrequentDirection(symbol: string, timeframe: TimeFrame, count: number = 5): {direction: SignalDirection, frequency: number} {
-    const signals = this.getRecentSignals(symbol, timeframe, count);
-    if (signals.length === 0) {
-      return { direction: 'NEUTRAL', frequency: 0 };
-    }
-    
-    const directionCounts = signals.reduce((acc, signal) => {
-      acc[signal.direction] = (acc[signal.direction] || 0) + 1;
-      return acc;
-    }, {} as Record<SignalDirection, number>);
-    
-    let maxDirection: SignalDirection = 'NEUTRAL';
-    let maxCount = 0;
-    
-    Object.entries(directionCounts).forEach(([direction, count]) => {
-      if (count > maxCount) {
-        maxCount = count;
-        maxDirection = direction as SignalDirection;
-      }
-    });
-    
-    return { 
-      direction: maxDirection, 
-      frequency: maxCount / signals.length 
-    };
+  // If the new direction is different, require high confidence (85%+)
+  // for it to override the previous direction
+  if (newConfidence >= 85) {
+    console.log(`Weekly signal changed from ${previousDirection} to ${newDirection} with high confidence (${newConfidence}%)`);
+    return { direction: newDirection, confidence: newConfidence };
   }
   
-  public getAverageConfidence(symbol: string, timeframe: TimeFrame, count: number = 5): number {
-    const signals = this.getRecentSignals(symbol, timeframe, count);
-    if (signals.length === 0) {
-      return 0;
-    }
-    
-    const totalConfidence = signals.reduce((acc, signal) => acc + signal.confidence, 0);
-    return totalConfidence / signals.length;
-  }
+  // Not enough confidence to change direction
+  // Keep previous direction but allow slight confidence adjustment
+  console.log(`Weekly signal direction change rejected (${previousDirection} -> ${newDirection}): insufficient confidence (${newConfidence}%)`);
+  const adjustment = newConfidence > previousConfidence ? 5 : -5;
+  return {
+    direction: previousDirection,
+    confidence: Math.max(50, Math.min(95, previousConfidence + adjustment))
+  };
 }
 
 /**
- * Apply hysteresis to signal direction to prevent rapid switching
- * @param currentDirection Current signal direction
- * @param calculatedDirection New calculated direction
- * @param confidence Confidence level of the new signal
- * @param timeframe Timeframe of the signal
- * @returns Stabilized signal direction
+ * Stabilize a monthly timeframe signal
+ * 
+ * Monthly signals should almost never flip direction on a single price update
+ * unless there's extremely strong evidence (90%+ confidence)
+ * 
+ * @param previousDirection Previous signal direction
+ * @param newDirection New calculated direction
+ * @param previousConfidence Previous confidence level (0-100)
+ * @param newConfidence New calculated confidence level (0-100)
+ * @returns Stabilized direction and confidence
  */
-export function stabilizeSignalDirection(
+export function stabilizeMonthlySignal(
+  previousDirection: SignalDirection,
+  newDirection: SignalDirection,
+  previousConfidence: number,
+  newConfidence: number
+): { direction: SignalDirection, confidence: number } {
+  
+  // If directions match, only allow very small confidence changes (max 5%)
+  if (previousDirection === newDirection) {
+    // Limit confidence changes to prevent sudden jumps
+    if (Math.abs(previousConfidence - newConfidence) > 5) {
+      const adjustment = newConfidence > previousConfidence ? 2 : -2;
+      return {
+        direction: newDirection,
+        confidence: previousConfidence + adjustment
+      };
+    }
+    
+    // Directions match and confidence change is reasonable
+    return { direction: newDirection, confidence: newConfidence };
+  }
+  
+  // If the new direction is different, require extremely high confidence (90%+)
+  // for it to override the previous direction
+  if (newConfidence >= 90) {
+    console.log(`Monthly signal changed from ${previousDirection} to ${newDirection} with very high confidence (${newConfidence}%)`);
+    return { direction: newDirection, confidence: newConfidence };
+  }
+  
+  // Not enough confidence to change direction
+  // Keep previous direction but allow slight confidence adjustment
+  console.log(`Monthly signal direction change rejected (${previousDirection} -> ${newDirection}): insufficient confidence (${newConfidence}%)`);
+  const adjustment = newConfidence > previousConfidence ? 2 : -2;
+  return {
+    direction: previousDirection,
+    confidence: Math.max(50, Math.min(95, previousConfidence + adjustment))
+  };
+}
+
+// Tracking the most recent signals for each symbol and timeframe
+// This helps maintain stability over multiple price updates
+const signalHistory: Record<string, Record<TimeFrame, { direction: SignalDirection, confidence: number }>> = {};
+
+/**
+ * Tracks and stabilizes signals for a given symbol and timeframe
+ * 
+ * @param symbol The cryptocurrency symbol
+ * @param timeframe The timeframe for the signal
+ * @param newDirection The new calculated signal direction
+ * @param newConfidence The new calculated confidence level
+ * @returns Stabilized direction and confidence values
+ */
+export function getStabilizedSignal(
   symbol: string,
   timeframe: TimeFrame,
-  currentDirection: SignalDirection,
-  calculatedDirection: SignalDirection,
-  confidence: number
-): SignalDirection {
-  const signalHistory = SignalHistory.getInstance();
-  const recentSignals = signalHistory.getRecentSignals(symbol, timeframe);
+  newDirection: SignalDirection,
+  newConfidence: number
+): { direction: SignalDirection, confidence: number } {
   
-  // If we have no history, use the calculated direction
-  if (recentSignals.length === 0) {
-    signalHistory.addSignal(symbol, timeframe, calculatedDirection, confidence);
-    return calculatedDirection;
+  // Initialize signal history for this symbol if it doesn't exist
+  if (!signalHistory[symbol]) {
+    signalHistory[symbol] = {} as Record<TimeFrame, { direction: SignalDirection, confidence: number }>;
   }
   
-  // Get the most frequent recent direction
-  const { direction: mostFrequentDirection, frequency } = signalHistory.getMostFrequentDirection(symbol, timeframe);
-  
-  // Define hysteresis thresholds based on timeframe
-  // Longer timeframes require more confirmation to change direction
-  const hysteresisThreshold = getHysteresisThreshold(timeframe);
-  
-  // If the calculated direction matches the most frequent direction, keep it
-  if (calculatedDirection === mostFrequentDirection) {
-    signalHistory.addSignal(symbol, timeframe, calculatedDirection, confidence);
-    return calculatedDirection;
+  // If this is the first signal for this timeframe, just store it
+  if (!signalHistory[symbol][timeframe]) {
+    const result = { direction: newDirection, confidence: newConfidence };
+    signalHistory[symbol][timeframe] = result;
+    return result;
   }
   
-  // If the confidence is very high, accept the new direction immediately
-  if (confidence > 90) {
-    signalHistory.addSignal(symbol, timeframe, calculatedDirection, confidence);
-    return calculatedDirection;
+  // Get the previous signal
+  const previousSignal = signalHistory[symbol][timeframe];
+  
+  // Apply stabilization based on timeframe
+  let stabilized: { direction: SignalDirection, confidence: number };
+  
+  if (timeframe === '1w') {
+    // Stabilize weekly signals
+    stabilized = stabilizeWeeklySignal(
+      previousSignal.direction,
+      newDirection,
+      previousSignal.confidence,
+      newConfidence
+    );
+  } else if (timeframe === '1M') {
+    // Stabilize monthly signals (even more strict)
+    stabilized = stabilizeMonthlySignal(
+      previousSignal.direction,
+      newDirection,
+      previousSignal.confidence,
+      newConfidence
+    );
+  } else {
+    // For other timeframes, just use the new values
+    stabilized = { direction: newDirection, confidence: newConfidence };
   }
   
-  // For weekly and monthly timeframes, require even stronger confirmation
-  if (timeframe === '1w' || timeframe === '1M') {
-    // For these timeframes, require at least 3 signals in the same direction to change
-    if (frequency < 0.7 || confidence < 75) {
-      // Not enough confirmation - keep the current direction
-      signalHistory.addSignal(symbol, timeframe, mostFrequentDirection, confidence);
-      return mostFrequentDirection;
-    }
-  }
+  // Update signal history
+  signalHistory[symbol][timeframe] = stabilized;
   
-  // Apply hysteresis - require more confirmation for direction changes
-  if (frequency > hysteresisThreshold) {
-    // Strong historical bias - keep the most frequent direction
-    signalHistory.addSignal(symbol, timeframe, mostFrequentDirection, confidence);
-    return mostFrequentDirection;
-  }
-  
-  // Accept the new direction
-  signalHistory.addSignal(symbol, timeframe, calculatedDirection, confidence);
-  return calculatedDirection;
-}
-
-/**
- * Apply confidence adjustment to ensure realistic and stable values
- * @param calculatedConfidence The raw calculated confidence
- * @param timeframe The signal timeframe
- * @returns Adjusted confidence value
- */
-export function stabilizeConfidence(
-  symbol: string,
-  timeframe: TimeFrame, 
-  calculatedConfidence: number
-): number {
-  const signalHistory = SignalHistory.getInstance();
-  const averageConfidence = signalHistory.getAverageConfidence(symbol, timeframe);
-  
-  // If we have no history, use the calculated confidence
-  if (averageConfidence === 0) {
-    return Math.min(Math.max(calculatedConfidence, 50), 95);
-  }
-  
-  // Apply smoothing based on timeframe
-  // Longer timeframes should have more consistent confidence levels
-  const smoothingFactor = getConfidenceSmoothingFactor(timeframe);
-  
-  // Calculate smoothed confidence
-  const smoothedConfidence = (averageConfidence * smoothingFactor) + 
-                           (calculatedConfidence * (1 - smoothingFactor));
-  
-  // Apply reasonable bounds to confidence values
-  return Math.min(Math.max(smoothedConfidence, 50), 95);
-}
-
-/**
- * Get the hysteresis threshold for a timeframe
- * @param timeframe The signal timeframe
- * @returns Hysteresis threshold (0-1)
- */
-function getHysteresisThreshold(timeframe: TimeFrame): number {
-  switch (timeframe) {
-    case '1m': return 0.3;  // Very short timeframe - less stable
-    case '5m': return 0.4;
-    case '15m': return 0.5;
-    case '30m': return 0.5;
-    case '1h': return 0.6;
-    case '4h': return 0.6;
-    case '1d': return 0.7;
-    case '3d': return 0.7;
-    case '1w': return 0.8;  // Weekly - very stable
-    case '1M': return 0.9;  // Monthly - extremely stable
-    default: return 0.5;
-  }
-}
-
-/**
- * Get the confidence smoothing factor for a timeframe
- * @param timeframe The signal timeframe
- * @returns Smoothing factor (0-1)
- */
-function getConfidenceSmoothingFactor(timeframe: TimeFrame): number {
-  switch (timeframe) {
-    case '1m': return 0.3;  // Less smoothing - more responsive
-    case '5m': return 0.4;
-    case '15m': return 0.5;
-    case '30m': return 0.6;
-    case '1h': return 0.7;
-    case '4h': return 0.7;
-    case '1d': return 0.8;
-    case '3d': return 0.8;
-    case '1w': return 0.9;  // High smoothing - very stable
-    case '1M': return 0.95; // Highest smoothing - extremely stable
-    default: return 0.6;
-  }
+  return stabilized;
 }
