@@ -1384,9 +1384,34 @@ export default function AdvancedSignalDashboard({
             </Badge>
           ) : (
             <div className="flex flex-col items-end">
-              <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
-                Auto-updating
-              </Badge>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-7 text-xs bg-indigo-900/30 text-indigo-300 border-indigo-800 hover:bg-indigo-800/50 hover:text-indigo-200"
+                  onClick={() => {
+                    toast({
+                      title: "Manual calculation started",
+                      description: "Fetching latest price and running calculations...",
+                    });
+                    // Fetch latest price and trigger manual calculation
+                    const currentPrice = getCurrentPrice(symbol);
+                    setIsCalculating(true);
+                    
+                    // Small delay to ensure UI updates
+                    setTimeout(() => {
+                      performCalculation();
+                      setIsCalculating(false);
+                    }, 100);
+                  }}
+                >
+                  <RefreshCcw className="w-3 h-3 mr-1" />
+                  Calculate Now
+                </Button>
+                <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
+                  Auto-updating
+                </Badge>
+              </div>
               <div className="text-xs text-neutral-400 mt-1">
                 Next update: <span className="font-mono">{formattedTimer}</span>
               </div>
