@@ -1394,15 +1394,45 @@ export default function AdvancedSignalDashboard({
                       title: "Manual calculation started",
                       description: "Fetching latest price and running calculations...",
                     });
-                    // Fetch latest price and trigger manual calculation
+                    
+                    // Fetch latest price
                     const currentPrice = getCurrentPrice(symbol);
+                    
+                    // Set calculating state
                     setIsCalculating(true);
                     
-                    // Small delay to ensure UI updates
-                    setTimeout(() => {
-                      performCalculation();
+                    try {
+                      // Directly trigger a calculation event
+                      console.log("🔄 Manually triggering calculation with price:", currentPrice);
+                      
+                      // Create and dispatch a custom event to trigger calculation
+                      const event = new CustomEvent('one-time-calculation', {
+                        detail: {
+                          price: currentPrice,
+                          timestamp: Date.now()
+                        }
+                      });
+                      
+                      // Dispatch the event to trigger calculation
+                      window.dispatchEvent(event);
+                      
+                      // Reset the calculation state after a delay
+                      setTimeout(() => {
+                        setIsCalculating(false);
+                        toast({
+                          title: "Calculation completed",
+                          description: `Latest signals updated with price $${currentPrice}`,
+                        });
+                      }, 2500);
+                    } catch (error) {
+                      console.error("Error during manual calculation:", error);
                       setIsCalculating(false);
-                    }, 100);
+                      toast({
+                        title: "Calculation failed",
+                        description: "Please try again in a moment.",
+                        variant: "destructive"
+                      });
+                    }
                   }}
                 >
                   <RefreshCcw className="w-3 h-3 mr-1" />

@@ -77,8 +77,9 @@ function resetState() {
 
 /**
  * Trigger a calculation
+ * @param overridePrice Optional price to use instead of the current price
  */
-function triggerCalculation() {
+export function triggerCalculation(overridePrice?: number) {
   if (isCalculating) {
     console.log('[ONE-TIME-CALC] Already calculating, skipping');
     return;
@@ -100,10 +101,13 @@ function triggerCalculation() {
   console.log(`🔄 CALCULATION HAPPENING NOW - PRICE: ${currentPrice}`);
   console.log('==================================================');
   
+  // Use override price if provided
+  const priceToUse = overridePrice !== undefined ? overridePrice : currentPrice;
+  
   // Fire the calculation event
   const event = new CustomEvent('one-time-calculation', {
     detail: {
-      price: currentPrice,
+      price: priceToUse,
       timestamp: Date.now()
     }
   });
