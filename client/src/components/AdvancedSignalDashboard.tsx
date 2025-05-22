@@ -249,7 +249,7 @@ export default function AdvancedSignalDashboard({
           const performCalculation = async () => {
             try {
               // Create new signals object to hold results
-              const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
+              const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...allTimeframeSignals };
               
               // Get all timeframes
               const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'] as TimeFrame[];
@@ -266,7 +266,7 @@ export default function AdvancedSignalDashboard({
               }
               
               // Update state with all results at once
-              setSignals(newSignals);
+              setAllTimeframeSignals(newSignals);
               updateRecommendationForTimeframe(selectedTimeframe);
               
               console.log(`[AUTO-CALC] Calculation complete - next calculation in 3 minutes`);
@@ -481,7 +481,7 @@ export default function AdvancedSignalDashboard({
     if (lastSymbolRef.current !== symbol) {
       console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
       calculationTriggeredRef.current = false;
-      setSignals({
+      setAllTimeframeSignals({
         '1m': null,
         '5m': null,
         '15m': null,
@@ -617,8 +617,8 @@ export default function AdvancedSignalDashboard({
   
   // Update displayed signal when signals or selected timeframe changes
   useEffect(() => {
-    if (signals && signals[selectedTimeframe]) {
-      const originalSignal = signals[selectedTimeframe];
+    if (allTimeframeSignals && allTimeframeSignals[selectedTimeframe]) {
+      const originalSignal = allTimeframeSignals[selectedTimeframe];
       
       // For timeframes with longer-term significance, we need to ensure full consistency
       if (selectedTimeframe === '1w' || selectedTimeframe === '1M') {
@@ -693,7 +693,7 @@ export default function AdvancedSignalDashboard({
         setDisplayedSignal(originalSignal);
       }
     }
-  }, [signals, selectedTimeframe]);
+  }, [allTimeframeSignals, selectedTimeframe]);
   
   // Use the displayed signal state instead of directly accessing signals object
   const currentSignal = displayedSignal;
@@ -1467,7 +1467,7 @@ export default function AdvancedSignalDashboard({
       };
       
       // Calculate signals for all timeframes
-      const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
+      const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...allTimeframeSignals };
       
       // Calculate each timeframe sequentially to prevent overwhelming the browser
       for (const timeframe of Object.keys(timeframeWeights) as TimeFrame[]) {
@@ -1521,7 +1521,7 @@ export default function AdvancedSignalDashboard({
       }
       
       // Update the signals state
-      setSignals(alignedSignals);
+      setAllTimeframeSignals(alignedSignals);
       
       // Store the signals for this symbol in our persistent ref
       persistentSignalsRef.current[symbol] = { ...alignedSignals };
@@ -1544,12 +1544,12 @@ export default function AdvancedSignalDashboard({
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
     }
-  }, [chartData, isCalculating, signals, symbol]);
+  }, [chartData, isCalculating, allTimeframeSignals, symbol]);
 
   // Generate a trade recommendation based on signals across timeframes
   const generateTradeRecommendation = useCallback((timeframe: TimeFrame) => {
     const currentTimeframe = timeframe || selectedTimeframe;
-    const signal = signals[currentTimeframe];
+    const signal = allTimeframeSignals[currentTimeframe];
     
     if (!signal) {
       console.log(`No signal available for ${symbol} on ${currentTimeframe}`);
