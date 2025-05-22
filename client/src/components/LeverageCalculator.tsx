@@ -52,8 +52,9 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
   // Fetch and update macro indicators
   useEffect(() => {
     const updateMacroData = () => {
-      const score = analyzeMacroEnvironment();
-      const classification = getMacroEnvironmentClassification();
+      // Pass the symbol to these functions
+      const { score } = analyzeMacroEnvironment(symbol);
+      const classification = getMacroEnvironmentClassification(symbol);
       
       setMacroScore(score);
       setMacroClassification(classification);
