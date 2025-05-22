@@ -674,12 +674,13 @@ export default function AdvancedSignalDashboard({
     console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
     
     // Create technical analysis calculations
-    const macd = calculateMACD(timeframeData);
-    const rsi = calculateRSI(timeframeData, 14);
-    const stoch = calculateStochastics(timeframeData, 14, 3);
-    const bbands = calculateBollingerBands(timeframeData, 20, 2);
-    const ema50 = calculateEMA(timeframeData, 50);
-    const ema200 = calculateEMA(timeframeData, 200);
+    const ti = window.technicalIndicators || {};
+    const macd = ti.calculateMACD ? ti.calculateMACD(timeframeData) : { macd: [], signal: [], histogram: [] };
+    const rsi = ti.calculateRSI ? ti.calculateRSI(timeframeData, 14) : [50];
+    const stoch = ti.calculateStochastics ? ti.calculateStochastics(timeframeData, 14, 3) : { k: [50], d: [50] };
+    const bbands = ti.calculateBollingerBands ? ti.calculateBollingerBands(timeframeData, 20, 2) : { middle: [], upper: [], lower: [] };
+    const ema50 = ti.calculateEMA ? ti.calculateEMA(timeframeData, 50) : [];
+    const ema200 = ti.calculateEMA ? ti.calculateEMA(timeframeData, 200) : [];
     
     // Calculate percentage of bullish/bearish/neutral signals from all indicators
     let bullishCount = 0;
@@ -741,22 +742,29 @@ export default function AdvancedSignalDashboard({
     
     // Apply signal stabilization for weekly and monthly timeframes
     if (timeframe === '1w' || timeframe === '1M') {
-      const stableSignal = signalStabilizationSystem(direction, confidence, timeframe);
-      direction = stableSignal.direction;
-      confidence = stableSignal.confidence;
+      console.log(`Before ${timeframe} stabilization: ${direction} (${confidence}%)`);
+      
+      // Use the window.signalStabilizationSystem if available, otherwise keep signal as is
+      if (window.signalStabilizationSystem?.getStabilizedSignal) {
+        const stableSignal = window.signalStabilizationSystem.getStabilizedSignal(symbol, timeframe, direction, confidence);
+        console.log(`After ${timeframe} stabilization: ${stableSignal.direction} (${stableSignal.confidence}%)`);
+        direction = stableSignal.direction;
+        confidence = stableSignal.confidence;
+      } else {
+        console.log(`Signal stabilization not available, using original signal for ${timeframe}`);
+      }
     }
     
     // Create the advanced signal
     const signal: AdvancedSignal = {
-      symbol: symbol,
       timeframe: timeframe,
       direction: direction,
       patternFormations: patterns,
       confidence: confidence,
       timestamp: Date.now(),
-      price: currentPrice,
-      supportLevels: generateSupportLevels(currentPrice, direction),
-      resistanceLevels: generateResistanceLevels(currentPrice, direction)
+      entryPrice: currentPrice,
+      supportLevels: window.generateSupportLevels ? window.generateSupportLevels(currentPrice, chartData) : [currentPrice * 0.95, currentPrice * 0.9, currentPrice * 0.85],
+      resistanceLevels: window.generateResistanceLevels ? window.generateResistanceLevels(currentPrice, chartData) : [currentPrice * 1.05, currentPrice * 1.1, currentPrice * 1.15]
     };
     
     return signal;

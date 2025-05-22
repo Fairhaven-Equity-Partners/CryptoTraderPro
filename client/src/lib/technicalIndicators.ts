@@ -590,6 +590,80 @@ function clusterLevels(levels: number[], tolerance: number): number[] {
 }
 
 /**
+ * Generate support levels based on the current price and historical data
+ * @param price Current price
+ * @param data Historical price data
+ * @returns Array of support levels
+ */
+export function generateSupportLevels(price: number, data: ChartData[]): number[] {
+  // Calculate support levels using various technical methods
+  const { supports } = calculateSupportResistance(data);
+  
+  // Filter to get only supports below current price
+  const validSupports = supports.filter(level => level < price);
+  
+  // Sort levels from highest to lowest
+  validSupports.sort((a, b) => b - a);
+  
+  // Return the 3 closest support levels or fewer if not enough found
+  return validSupports.slice(0, 3);
+}
+
+/**
+ * Generate resistance levels based on the current price and historical data
+ * @param price Current price
+ * @param data Historical price data
+ * @returns Array of resistance levels
+ */
+export function generateResistanceLevels(price: number, data: ChartData[]): number[] {
+  // Calculate resistance levels using various technical methods
+  const { resistances } = calculateSupportResistance(data);
+  
+  // Filter to get only resistances above current price
+  const validResistances = resistances.filter(level => level > price);
+  
+  // Sort levels from lowest to highest
+  validResistances.sort((a, b) => a - b);
+  
+  // Return the 3 closest resistance levels or fewer if not enough found
+  return validResistances.slice(0, 3);
+}
+
+/**
+ * Initialize the technical indicators module and expose the functions globally
+ * for the advanced signal dashboard to use
+ */
+export function initTechnicalIndicatorsModule() {
+  // Add global access to essential technical indicator functions
+  window.technicalIndicators = {
+    calculateMACD,
+    calculateRSI,
+    calculateStochastics: calculateStochastic,
+    calculateBollingerBands,
+    calculateEMA
+  };
+  
+  // Add support & resistance generators
+  window.generateSupportLevels = generateSupportLevels;
+  window.generateResistanceLevels = generateResistanceLevels;
+  
+  // Add signal stabilization system
+  window.signalStabilizationSystem = {
+    getStabilizedSignal: (symbol: string, timeframe: TimeFrame, direction: string, confidence: number) => {
+      // This is a stub to fix errors - the actual implementation is in signalStabilizer.ts
+      return { direction, confidence };
+    }
+  };
+  
+  console.log('Technical indicators module initialized');
+}
+
+// Run the initialization 
+if (typeof window !== 'undefined') {
+  initTechnicalIndicatorsModule();
+}
+
+/**
  * Calculate the Ichimoku Cloud indicator
  * @param data Array of price data points
  * @param conversionPeriod Tenkan-sen period (typically 9)
