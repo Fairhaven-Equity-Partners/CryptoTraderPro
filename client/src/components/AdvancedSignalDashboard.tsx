@@ -1767,12 +1767,12 @@ export default function AdvancedSignalDashboard({
                     setIsCalculating(true);
                     
                     try {
-                      // Import the calculation module and use force calculation
-                      const calcModule = await import('../lib/oneTimeCalculation');
+                      // Direct calculation: Call the function directly without going through the oneTimeCalculation module
+                      console.log(`🔄 MANUAL CALCULATION: Directly calculating with price: ${currentPrice}`);
                       
-                      // Use the force calculation function which will bypass all checks
-                      console.log(`🔄 Manually triggering calculation with price: ${currentPrice}`);
-                      calcModule.forceCalculation(currentPrice);
+                      // Force a direct calculation for all timeframes with the current price
+                      // This bypasses all the disabling mechanisms
+                      await calculateAllSignals();
                       
                       // Reset the calculation state after a delay
                       setTimeout(() => {
