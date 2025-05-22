@@ -589,8 +589,9 @@ export default function AdvancedSignalDashboard({
       }
     };
     
-    // Listen for price updates from the central price system - this is the trigger for recalculation
-    window.addEventListener('price-update', handlePriceUpdate);
+    // DISABLED: No longer listen for automatic price updates
+    // window.addEventListener('price-update', handlePriceUpdate);
+    console.log("Auto-recalculation on price updates disabled");
     
     // Set up display-only countdown timer that stays in sync with PriceOverview
     const timerInterval = setInterval(() => {

@@ -122,11 +122,9 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
     });
     window.dispatchEvent(updateEvent);
     
-    // Also emit the price-fetch-completed event for the new calculation system
-    const fetchCompletedEvent = new CustomEvent('price-fetch-completed', {
-      detail: { symbol, price, timestamp }
-    });
-    window.dispatchEvent(fetchCompletedEvent);
+    // DISABLED: No longer emit the price-fetch-completed event
+    // This prevents auto-calculation while keeping price updates working
+    console.log(`[FinalPriceSystem] Price-fetch-completed event disabled (anti-auto-calculation fix)`);
     
     console.log(`[FinalPriceSystem] Price fetch completed for ${symbol}: ${price}`);
     
