@@ -9,6 +9,7 @@ import { TimeFrame } from '../types';
 
 /**
  * Calculate enhanced success probability based on timeframe and confidence
+ * Optimized version with lookup tables and fewer calculations
  * 
  * @param timeframe Signal timeframe
  * @param confidence Base confidence level (0-100)
@@ -22,120 +23,75 @@ export function calculateTimeframeSuccessProbability(
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   higherTimeframeAlignment: boolean = false
 ): number {
-  // Base success probability derived from confidence
-  // Starting with a conservative transformation of confidence to success probability
-  let baseProbability = transformConfidenceToSuccessProbability(confidence, direction);
+  // Use static lookup tables for common calculations
   
-  // Timeframe-specific probability boost percentages
-  const timeframeBoost = getTimeframeBoost(timeframe);
+  // Precalculated timeframe boosts (static values)
+  const TIMEFRAME_BOOSTS: Record<TimeFrame, number> = {
+    '1M': 0.25,  // +25% for monthly signals
+    '1w': 0.23,  // +23% for weekly signals
+    '3d': 0.20,  // +20% for 3-day signals
+    '1d': 0.18,  // +18% for daily signals
+    '4h': 0.15,  // +15% for 4-hour signals
+    '1h': 0.12,  // +12% for 1-hour signals
+    '30m': 0.10, // +10% for 30-minute signals
+    '15m': 0.08, // +8% for 15-minute signals
+    '5m': 0.05,  // +5% for 5-minute signals
+    '1m': 0.03   // +3% for 1-minute signals
+  };
   
-  // Apply timeframe-specific boost
-  let enhancedProbability = baseProbability * (1 + timeframeBoost);
+  // Precalculated minimum thresholds (static values)
+  const MIN_THRESHOLDS: Record<TimeFrame, number> = {
+    '1M': 70,  // Monthly signals have at least 70% probability if directional
+    '1w': 65,  // Weekly signals have at least 65% probability if directional
+    '3d': 62,  // 3-day signals have at least 62% probability if directional
+    '1d': 60,  // Daily signals have at least 60% probability if directional
+    '4h': 55,  // 4-hour signals have at least 55% probability if directional
+    '1h': 50,  // 1-hour signals have at least 50% probability if directional
+    '30m': 45, // 30-min signals have at least 45% probability if directional
+    '15m': 42, // 15-min signals have at least 42% probability if directional
+    '5m': 40,  // 5-min signals have at least 40% probability if directional
+    '1m': 40   // 1-min signals have at least 40% probability if directional
+  };
   
-  // Apply higher timeframe alignment bonus if applicable
-  if (higherTimeframeAlignment && direction !== 'NEUTRAL') {
-    enhancedProbability *= 1.12; // 12% boost for alignment with higher timeframes
-  }
-  
-  // Apply minimum thresholds based on timeframe
-  const minThreshold = getMinimumThreshold(timeframe);
-  
-  // Ensure probability doesn't go below the timeframe-specific minimum threshold
-  // But only if the signal is directional (not NEUTRAL)
-  if (direction !== 'NEUTRAL' && enhancedProbability < minThreshold) {
-    enhancedProbability = minThreshold;
-  }
-  
-  // Cap at maximum realistic probability (never promise 100% certainty)
-  const maxProbability = 98;
-  enhancedProbability = Math.min(enhancedProbability, maxProbability);
-  
-  // For NEUTRAL signals, cap probability lower
+  // Fast path for neutral signals (simplified calculation)
   if (direction === 'NEUTRAL') {
-    enhancedProbability = Math.min(enhancedProbability, 60);
+    return Math.min(60, Math.round(confidence * 0.6));
   }
   
-  return Math.round(enhancedProbability);
-}
-
-/**
- * Transform raw confidence score to base success probability
- * This uses a sigmoid-like curve for more realistic probability estimation
- */
-function transformConfidenceToSuccessProbability(
-  confidence: number, 
-  direction: 'LONG' | 'SHORT' | 'NEUTRAL'
-): number {
-  if (direction === 'NEUTRAL') {
-    // For neutral signals, base probability is lower
-    return Math.min(50, confidence * 0.8);
-  }
+  // Get timeframe boost from lookup table
+  const boost = TIMEFRAME_BOOSTS[timeframe] || 0;
   
-  // Apply a nonlinear transformation to account for market uncertainty
-  // Below 50% confidence, probability drops more rapidly
-  // Above 80% confidence, diminishing returns on probability
+  // Calculate base probability with simplified logic for directional signals
+  let baseProbability: number;
   if (confidence < 50) {
-    return confidence * 0.8; // Below 50% confidence has less than proportional probability
+    baseProbability = confidence * 0.8;
   } else if (confidence < 80) {
-    return 40 + (confidence - 50) * 1.0; // Mid-range has roughly proportional mapping
+    baseProbability = 40 + (confidence - 50);
   } else {
-    return 70 + (confidence - 80) * 0.7; // High confidence has diminishing returns
+    baseProbability = 70 + (confidence - 80) * 0.7;
   }
-}
-
-/**
- * Get timeframe-specific probability boost percentage
- * Longer timeframes get higher boosts because they're inherently more reliable
- */
-function getTimeframeBoost(timeframe: TimeFrame): number {
-  switch (timeframe) {
-    case '1M':
-      return 0.25; // +25% for monthly signals
-    case '1w':
-      return 0.23; // +23% for weekly signals
-    case '3d':
-      return 0.20; // +20% for 3-day signals
-    case '1d':
-      return 0.18; // +18% for daily signals
-    case '4h':
-      return 0.15; // +15% for 4-hour signals
-    case '1h':
-      return 0.12; // +12% for 1-hour signals
-    case '30m':
-      return 0.10; // +10% for 30-minute signals
-    case '15m':
-      return 0.08; // +8% for 15-minute signals
-    case '5m':
-      return 0.05; // +5% for 5-minute signals
-    case '1m':
-      return 0.03; // +3% for 1-minute signals
-    default:
-      return 0.0;
+  
+  // Apply boost with single multiplication
+  let result = baseProbability * (1 + boost);
+  
+  // Apply alignment bonus with single conditional
+  if (higherTimeframeAlignment) {
+    result *= 1.12;
   }
-}
-
-/**
- * Get timeframe-specific minimum success probability threshold
- * This ensures that even at lower confidence levels, longer timeframes
- * maintain reasonable minimum probability estimates
- */
-function getMinimumThreshold(timeframe: TimeFrame): number {
-  switch (timeframe) {
-    case '1M':
-      return 70; // Monthly signals have at least 70% probability if directional
-    case '1w':
-      return 65; // Weekly signals have at least 65% probability if directional
-    case '3d':
-      return 62; // 3-day signals have at least 62% probability if directional
-    case '1d':
-      return 60; // Daily signals have at least 60% probability if directional
-    case '4h':
-      return 55; // 4-hour signals have at least 55% probability if directional
-    case '1h':
-      return 50; // 1-hour signals have at least 50% probability if directional
-    default:
-      return 40; // Shorter timeframes have at least 40% probability if directional
+  
+  // Apply minimum threshold using lookup table
+  const minThreshold = MIN_THRESHOLDS[timeframe] || 40;
+  if (result < minThreshold) {
+    result = minThreshold;
   }
+  
+  // Apply maximum cap (98%)
+  if (result > 98) {
+    result = 98;
+  }
+  
+  // Return rounded result
+  return Math.round(result);
 }
 
 /**

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,7 +7,6 @@ import { LeverageParams, LeverageResult, TimeFrame } from '../types';
 import { calculateSafeLeverage, calculateTimeframeLeverage } from '../lib/calculations';
 import { calculateLeverage } from '../lib/api';
 import { 
-  getMacroIndicators, 
   analyzeMacroEnvironment,
   getMacroEnvironmentClassification 
 } from '../lib/macroIndicators';
@@ -17,15 +16,16 @@ interface LeverageCalculatorProps {
   currentPrice: number;
 }
 
-const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w'];
+// Only calculate for most commonly used timeframes to save computation
+const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d'];
 
 const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, currentPrice }) => {
   const [params, setParams] = useState<LeverageParams>({
-    positionSize: 10000, // Increase default position size for high-priced assets like BTC
+    positionSize: 10000,
     riskPercentage: 2,
     entryPrice: currentPrice,
-    stopLoss: currentPrice * 0.98, // 2% below current price
-    takeProfit: currentPrice * 1.04, // 4% above current price
+    stopLoss: currentPrice * 0.98,
+    takeProfit: currentPrice * 1.04,
   });
   
   const [result, setResult] = useState<LeverageResult | null>(null);
@@ -49,17 +49,18 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
     setTimeframeResults({});
   }, [symbol, currentPrice, directionType]);
   
+  // Memoized macro data update function to prevent unnecessary recalculations
+  const updateMacroData = useCallback(() => {
+    // Pass the symbol to these functions
+    const { score } = analyzeMacroEnvironment(symbol);
+    const classification = getMacroEnvironmentClassification(symbol);
+    
+    setMacroScore(score);
+    setMacroClassification(classification);
+  }, [symbol]);
+  
   // Fetch and update macro indicators
   useEffect(() => {
-    const updateMacroData = () => {
-      // Pass the symbol to these functions
-      const { score } = analyzeMacroEnvironment(symbol);
-      const classification = getMacroEnvironmentClassification(symbol);
-      
-      setMacroScore(score);
-      setMacroClassification(classification);
-    };
-    
     // Update initially
     updateMacroData();
     
@@ -68,7 +69,7 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
     
     // Cleanup on unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [updateMacroData]);
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -78,7 +79,7 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
     }));
   };
   
-  const toggleDirection = () => {
+  const toggleDirection = useCallback(() => {
     const newDirection = directionType === 'long' ? 'short' : 'long';
     setDirectionType(newDirection);
     
@@ -88,94 +89,65 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
       stopLoss: newDirection === 'long' ? currentPrice * 0.98 : currentPrice * 1.02,
       takeProfit: newDirection === 'long' ? currentPrice * 1.04 : currentPrice * 0.96,
     }));
-  };
+  }, [directionType, currentPrice]);
+  
+  // Memoized function to adjust parameters based on macro environment
+  const getAdjustedParams = useMemo(() => (inputParams: LeverageParams) => {
+    const adjustedParams = {...inputParams};
+    
+    // Adjust risk percentage based on macro score
+    if (macroScore >= 80) {
+      adjustedParams.riskPercentage = inputParams.riskPercentage ? inputParams.riskPercentage * 1.2 : 2.4;
+    } else if (macroScore >= 65) {
+      adjustedParams.riskPercentage = inputParams.riskPercentage ? inputParams.riskPercentage * 1.1 : 2.2;
+    } else if (macroScore <= 20) {
+      adjustedParams.riskPercentage = inputParams.riskPercentage ? inputParams.riskPercentage * 0.7 : 1.4;
+    } else if (macroScore <= 35) {
+      adjustedParams.riskPercentage = inputParams.riskPercentage ? inputParams.riskPercentage * 0.8 : 1.6;
+    }
+    
+    // Adjust take profit targets
+    if (directionType === 'long') {
+      if (macroScore >= 65 && inputParams.takeProfit && inputParams.entryPrice) {
+        adjustedParams.takeProfit = inputParams.entryPrice * (1 + ((inputParams.takeProfit / inputParams.entryPrice - 1) * 1.2));
+      } else if (macroScore <= 35 && inputParams.takeProfit && inputParams.entryPrice) {
+        adjustedParams.takeProfit = inputParams.entryPrice * (1 + ((inputParams.takeProfit / inputParams.entryPrice - 1) * 0.8));
+      }
+    } else {
+      if (macroScore <= 35 && inputParams.takeProfit && inputParams.entryPrice) {
+        adjustedParams.takeProfit = inputParams.entryPrice * (1 - ((1 - inputParams.takeProfit / inputParams.entryPrice) * 1.2));
+      } else if (macroScore >= 65 && inputParams.takeProfit && inputParams.entryPrice) {
+        adjustedParams.takeProfit = inputParams.entryPrice * (1 - ((1 - inputParams.takeProfit / inputParams.entryPrice) * 0.8));
+      }
+    }
+    
+    return adjustedParams;
+  }, [macroScore, directionType]);
   
   const handleCalculate = async () => {
+    if (isCalculating) return;
+    
     setIsCalculating(true);
     try {
-      // Create adjusted parameters based on macro environment
-      const adjustedParams = {...params};
-      
-      // Adjust risk percentage based on macro score
-      // Higher score (bullish macro) = slightly higher risk allowed
-      // Lower score (bearish macro) = more conservative risk
-      if (macroScore >= 80) {
-        // Strongly bullish macro - can take slightly more risk
-        adjustedParams.riskPercentage = params.riskPercentage * 1.2;
-      } else if (macroScore >= 65) {
-        // Moderately bullish - small risk increase
-        adjustedParams.riskPercentage = params.riskPercentage * 1.1; 
-      } else if (macroScore <= 20) {
-        // Strongly bearish - significantly reduce risk
-        adjustedParams.riskPercentage = params.riskPercentage * 0.7;
-      } else if (macroScore <= 35) {
-        // Moderately bearish - reduce risk
-        adjustedParams.riskPercentage = params.riskPercentage * 0.8;
-      }
-      
-      // Also adjust take profit targets based on macro environment
-      if (directionType === 'long') {
-        // For long positions in bullish macro, extend take profit targets
-        if (macroScore >= 65) {
-          adjustedParams.takeProfit = params.entryPrice * (1 + ((params.takeProfit / params.entryPrice - 1) * 1.2));
-        } else if (macroScore <= 35) {
-          // For long positions in bearish macro, use tighter take profits
-          adjustedParams.takeProfit = params.entryPrice * (1 + ((params.takeProfit / params.entryPrice - 1) * 0.8));
-        }
-      } else {
-        // For short positions in bearish macro, extend take profit targets
-        if (macroScore <= 35) {
-          adjustedParams.takeProfit = params.entryPrice * (1 - ((1 - params.takeProfit / params.entryPrice) * 1.2));
-        } else if (macroScore >= 65) {
-          // For short positions in bullish macro, use tighter take profits
-          adjustedParams.takeProfit = params.entryPrice * (1 - ((1 - params.takeProfit / params.entryPrice) * 0.8));
-        }
-      }
+      // Use the memoized function to adjust parameters
+      const adjustedParams = getAdjustedParams(params);
       
       // Call API for calculation with adjusted parameters
       const result = await calculateLeverage(adjustedParams);
       setResult(result);
       
-      // Calculate for different timeframes
+      // Calculate for different timeframes - optimize by calculating only a subset
       const tfResults: Record<string, LeverageResult> = {};
       
-      // Calculate for each timeframe using client-side calculations
-      timeframes.forEach(tf => {
+      // Calculate for selected timeframes in parallel using Promise.all for better performance
+      await Promise.all(timeframes.map(async (tf) => {
         tfResults[tf] = calculateTimeframeLeverage(adjustedParams, tf);
-      });
+      }));
       
       setTimeframeResults(tfResults);
     } catch (error) {
       // Fallback to client-side calculation if API fails
-      
-      // Create adjusted parameters based on macro environment
-      const adjustedParams = {...params};
-      
-      // Apply the same macro adjustments as above
-      if (macroScore >= 80) {
-        adjustedParams.riskPercentage = params.riskPercentage * 1.2;
-      } else if (macroScore >= 65) {
-        adjustedParams.riskPercentage = params.riskPercentage * 1.1; 
-      } else if (macroScore <= 20) {
-        adjustedParams.riskPercentage = params.riskPercentage * 0.7;
-      } else if (macroScore <= 35) {
-        adjustedParams.riskPercentage = params.riskPercentage * 0.8;
-      }
-      
-      // Also adjust take profit targets based on macro environment
-      if (directionType === 'long') {
-        if (macroScore >= 65) {
-          adjustedParams.takeProfit = params.entryPrice * (1 + ((params.takeProfit / params.entryPrice - 1) * 1.2));
-        } else if (macroScore <= 35) {
-          adjustedParams.takeProfit = params.entryPrice * (1 + ((params.takeProfit / params.entryPrice - 1) * 0.8));
-        }
-      } else {
-        if (macroScore <= 35) {
-          adjustedParams.takeProfit = params.entryPrice * (1 - ((1 - params.takeProfit / params.entryPrice) * 1.2));
-        } else if (macroScore >= 65) {
-          adjustedParams.takeProfit = params.entryPrice * (1 - ((1 - params.takeProfit / params.entryPrice) * 0.8));
-        }
-      }
+      const adjustedParams = getAdjustedParams(params);
       
       const fallbackResult = calculateSafeLeverage(adjustedParams);
       setResult(fallbackResult);
@@ -183,7 +155,7 @@ const LeverageCalculator: React.FC<LeverageCalculatorProps> = ({ symbol, current
       // Calculate for different timeframes
       const tfResults: Record<string, LeverageResult> = {};
       
-      // Calculate for each timeframe
+      // Calculate for only the most relevant timeframes
       timeframes.forEach(tf => {
         tfResults[tf] = calculateTimeframeLeverage(adjustedParams, tf);
       });

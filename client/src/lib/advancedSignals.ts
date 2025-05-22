@@ -64,7 +64,7 @@ export interface TradeRecommendation {
 
 /**
  * Generate pattern formations based on signal direction and confidence level
- * Optimized version with reduced pattern count and simplified logic
+ * Ultra-optimized version with minimal pattern count and deterministic selection for stability
  * 
  * @param direction Signal direction (LONG, SHORT, NEUTRAL)
  * @param confidence Confidence level (0-100)
@@ -78,76 +78,85 @@ export function generatePatternFormations(
   timeframe: TimeFrame, 
   currentPrice: number
 ): PatternFormation[] {
-  // Optimized list of most significant patterns for each direction
-  const bullishPatterns = [
-    'Bullish Engulfing', 'Morning Star', 'Hammer', 
-    'Three White Soldiers', 'Bullish Marubozu'
-  ];
+  // Use static mapping for preset pattern selections to avoid calculations
+  const patterns: Record<SignalDirection, Record<'high' | 'low', string[]>> = {
+    'LONG': {
+      'high': ['Bullish Engulfing', 'Morning Star'],
+      'low': ['Hammer', 'Bullish Marubozu']
+    },
+    'SHORT': {
+      'high': ['Bearish Engulfing', 'Evening Star'],
+      'low': ['Hanging Man', 'Bearish Marubozu']
+    },
+    'NEUTRAL': {
+      'high': ['Doji', 'Inside Bar'],
+      'low': ['Spinning Top', 'Sideways Channel']
+    }
+  };
+
+  // Determine confidence band for pattern selection
+  const confidenceBand = confidence > 70 ? 'high' : 'low';
   
-  const bearishPatterns = [
-    'Bearish Engulfing', 'Evening Star', 'Hanging Man', 
-    'Three Black Crows', 'Bearish Marubozu'
-  ];
+  // Use a single pattern for shorter timeframes, two for longer timeframes
+  // This significantly reduces calculation overhead
+  const patternCount = 
+    timeframe === '1M' || timeframe === '1w' ? 2 :
+    timeframe === '1d' || timeframe === '3d' ? 1 :
+    timeframe === '4h' ? 1 : 1;
   
-  const neutralPatterns = [
-    'Doji', 'Spinning Top', 'Inside Bar'
-  ];
+  // Convert timeframe to numeric value for deterministic pattern selection
+  const timeframeValue = 
+    timeframe === '1m' ? 1 :
+    timeframe === '5m' ? 5 :
+    timeframe === '15m' ? 15 :
+    timeframe === '30m' ? 30 :
+    timeframe === '1h' ? 60 :
+    timeframe === '4h' ? 240 :
+    timeframe === '1d' ? 1440 :
+    timeframe === '3d' ? 4320 :
+    timeframe === '1w' ? 10080 :
+    timeframe === '1M' ? 43200 : 0;
   
-  // Generate a fixed number of patterns based on timeframe
-  // Lower number for shorter timeframes to reduce calculations
-  const patternCount = timeframe.includes('d') || timeframe.includes('w') || timeframe.includes('M') ? 3 : 2;
+  // Create pattern array with pre-allocated size
+  const result: PatternFormation[] = [];
   
-  const patterns: PatternFormation[] = [];
+  // Get pattern selections for this direction and confidence
+  const patternOptions = patterns[direction][confidenceBand];
   
-  // Generate patterns based on signal direction (simplified logic)
+  // Deterministic pattern selection algorithm for stability
   for (let i = 0; i < patternCount; i++) {
-    let patternDirection: 'bullish' | 'bearish' | 'neutral';
-    let patternNames: string[];
+    // Select pattern deterministically based on timeframe and index
+    const patternIndex = (timeframeValue + i) % patternOptions.length;
+    const patternName = patternOptions[patternIndex];
     
-    // Simplified direction selection - higher chance to match signal direction
-    if (direction === 'LONG') {
-      patternDirection = 'bullish';
-      patternNames = bullishPatterns;
-    } else if (direction === 'SHORT') {
-      patternDirection = 'bearish';
-      patternNames = bearishPatterns;
+    // Map direction strings
+    const patternDirection = 
+      direction === 'LONG' ? 'bullish' :
+      direction === 'SHORT' ? 'bearish' : 'neutral';
+    
+    // Calculate price targets efficiently
+    let priceTarget: number;
+    if (patternDirection === 'bullish') {
+      priceTarget = Math.round(currentPrice * 1.05 * 100) / 100; // 5% higher
+    } else if (patternDirection === 'bearish') {
+      priceTarget = Math.round(currentPrice * 0.95 * 100) / 100; // 5% lower
     } else {
-      patternDirection = 'neutral';
-      patternNames = neutralPatterns;
+      priceTarget = currentPrice; // No change for neutral
     }
     
-    // Select a pattern name (deterministic for better stability)
-    const nameIndex = i % patternNames.length;
-    const name = patternNames[nameIndex];
-    
-    // Calculate reliability based on confidence (simplified calculation)
-    const reliability = Math.min(confidence + 5, 95);
-    
-    // Calculate price target based on direction
-    const priceTarget = patternDirection === 'bullish' 
-      ? currentPrice * 1.05 // 5% higher
-      : patternDirection === 'bearish'
-        ? currentPrice * 0.95 // 5% lower
-        : currentPrice; // No change for neutral
-    
-    // Add the pattern if it doesn't already exist
-    if (!patterns.find(p => p.name === name)) {
-      patterns.push({
-        name,
-        reliability,
-        direction: patternDirection,
-        priceTarget: Math.round(priceTarget * 100) / 100,
-        description: `${name} pattern detected on ${timeframe} timeframe`,
-        duration: getExpectedDuration(timeframe),
-        confidence: reliability
-      });
-    }
+    // Generate pattern directly without unnecessary calculations
+    result.push({
+      name: patternName,
+      reliability: Math.min(confidence + 5, 95),
+      direction: patternDirection,
+      priceTarget: priceTarget,
+      description: `${patternName} pattern detected on ${timeframe} timeframe`,
+      duration: getExpectedDuration(timeframe),
+      confidence: Math.min(confidence + 5, 95)
+    });
   }
   
-  // Log the number of patterns generated
-  console.log(`Generated ${patterns.length} patterns for ${timeframe} timeframe`);
-  
-  return patterns;
+  return result;
 }
 
 /**

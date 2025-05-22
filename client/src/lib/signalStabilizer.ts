@@ -4,6 +4,8 @@
  * Prevents dramatic signal flips in weekly and monthly timeframes
  * by maintaining signal consistency across price data updates.
  * 
+ * Optimized version with faster lookups and reduced memory usage.
+ * 
  * Confidence thresholds:
  * - Weekly: 85%+ required for signal change
  * - Monthly: 90%+ required for signal change
@@ -22,14 +24,19 @@ interface TimeframeSettings {
   fallbackPeriod: number;      // How many periods to hold signal before allowing change
 }
 
-// Last signals for each symbol and timeframe
-const lastSignals: Record<string, Record<TimeFrame, StabilizedSignal>> = {};
+// Combine signal state and counter into a single object to reduce lookups
+interface SignalState {
+  direction: SignalDirection;
+  confidence: number;
+  counter: number;
+}
 
-// Track how many periods a signal has been stable
-const stabilityCounter: Record<string, Record<TimeFrame, number>> = {};
+// Efficient cache using symbol_timeframe as key for faster lookups
+// This prevents unnecessary nested object creation and reduces memory overhead
+const signalCache = new Map<string, SignalState>();
 
-// Timeframe-specific settings
-const timeframeSettings: Record<TimeFrame, TimeframeSettings> = {
+// Use a single object for settings to improve lookup speed
+const TIMEFRAME_SETTINGS: Record<TimeFrame, TimeframeSettings> = {
   '1m': { confidenceThreshold: 60, overrideThreshold: 95, fallbackPeriod: 1 },
   '5m': { confidenceThreshold: 65, overrideThreshold: 95, fallbackPeriod: 1 },
   '15m': { confidenceThreshold: 70, overrideThreshold: 95, fallbackPeriod: 2 },
@@ -44,6 +51,7 @@ const timeframeSettings: Record<TimeFrame, TimeframeSettings> = {
 
 /**
  * Get a stabilized trading signal that resists dramatic flips
+ * Optimized version with faster cache lookups and reduced memory usage
  * 
  * @param symbol Asset symbol
  * @param timeframe Trading timeframe
@@ -59,62 +67,76 @@ export function getStabilizedSignal(
 ): StabilizedSignal {
   console.log(`Before ${timeframe} stabilization: ${direction} (${confidence}%)`);
   
-  // Initialize storage if needed
-  if (!lastSignals[symbol]) {
-    lastSignals[symbol] = {} as Record<TimeFrame, StabilizedSignal>;
-    stabilityCounter[symbol] = {} as Record<TimeFrame, number>;
-  }
+  // Create a compound key for faster lookups
+  const cacheKey = `${symbol}_${timeframe}`;
   
-  // If this is the first signal for this timeframe, just use it
-  if (!lastSignals[symbol][timeframe]) {
-    lastSignals[symbol][timeframe] = { direction, confidence };
-    stabilityCounter[symbol][timeframe] = 1;
+  // Get settings once (faster than multiple lookups)
+  const settings = TIMEFRAME_SETTINGS[timeframe];
+  
+  // If not in cache, initialize with current signal
+  if (!signalCache.has(cacheKey)) {
+    const initialState: SignalState = {
+      direction,
+      confidence,
+      counter: 1
+    };
+    signalCache.set(cacheKey, initialState);
     console.log(`After ${timeframe} stabilization: ${direction} (${confidence}%)`);
     return { direction, confidence };
   }
   
-  const settings = timeframeSettings[timeframe];
-  const lastSignal = lastSignals[symbol][timeframe];
-  let counter = stabilityCounter[symbol][timeframe] || 0;
+  // Get cached state (guaranteed to exist after above check)
+  const cachedState = signalCache.get(cacheKey)!;
+  const { direction: lastDirection, confidence: lastConfidence, counter } = cachedState;
   
-  // If confidence exceeds the override threshold, always accept the new signal
+  // Fast path: Override threshold - always accept new signal
   if (confidence >= settings.overrideThreshold) {
-    lastSignals[symbol][timeframe] = { direction, confidence };
-    stabilityCounter[symbol][timeframe] = 1;  // Reset counter
+    const newState: SignalState = { direction, confidence, counter: 1 };
+    signalCache.set(cacheKey, newState);
     console.log(`After ${timeframe} stabilization: ${direction} (${confidence}%) [Override]`);
     return { direction, confidence };
   }
   
-  // If direction is the same, always accept but update confidence as weighted average
-  if (direction === lastSignal.direction) {
-    // Weight recent signals more heavily
-    const weightedConfidence = (confidence * 0.7) + (lastSignal.confidence * 0.3);
-    lastSignals[symbol][timeframe] = { 
+  // Fast path: Same direction - weighted confidence update
+  if (direction === lastDirection) {
+    // Optimize weighted calculation - fewer operations
+    const weightedConfidence = Math.round((confidence * 0.7) + (lastConfidence * 0.3));
+    const newState: SignalState = { 
       direction, 
-      confidence: Math.round(weightedConfidence)
+      confidence: weightedConfidence,
+      counter: counter + 1
     };
-    stabilityCounter[symbol][timeframe] = counter + 1;  // Increase stability
-    console.log(`After ${timeframe} stabilization: ${direction} (${Math.round(weightedConfidence)}%) [Reinforced]`);
-    return { direction, confidence: Math.round(weightedConfidence) };
+    signalCache.set(cacheKey, newState);
+    console.log(`After ${timeframe} stabilization: ${direction} (${weightedConfidence}%) [Reinforced]`);
+    return { direction, confidence: weightedConfidence };
   }
   
-  // If direction differs but confidence is below threshold, maintain previous signal
+  // Fast path: Low confidence change - maintain previous signal
   if (confidence < settings.confidenceThreshold) {
-    console.log(`After ${timeframe} stabilization: ${lastSignal.direction} (${lastSignal.confidence}%) [Maintained]`);
-    return lastSignal;
+    console.log(`After ${timeframe} stabilization: ${lastDirection} (${lastConfidence}%) [Maintained]`);
+    return { direction: lastDirection, confidence: lastConfidence };
   }
   
-  // If the signal has been stable for less than the fallback period, maintain previous
+  // Fast path: In fallback period - maintain previous but increment counter
   if (counter < settings.fallbackPeriod) {
-    stabilityCounter[symbol][timeframe] = counter + 1;  // Still increment counter
-    console.log(`After ${timeframe} stabilization: ${lastSignal.direction} (${lastSignal.confidence}%) [Fallback]`);
-    return lastSignal;
+    const newState: SignalState = { 
+      direction: lastDirection, 
+      confidence: lastConfidence,
+      counter: counter + 1
+    };
+    signalCache.set(cacheKey, newState);
+    console.log(`After ${timeframe} stabilization: ${lastDirection} (${lastConfidence}%) [Fallback]`);
+    return { direction: lastDirection, confidence: lastConfidence };
   }
   
-  // If we get here, accept new direction but temper confidence slightly
-  const temperedConfidence = Math.max(confidence - 5, 50);  // Reduce confidence slightly
-  lastSignals[symbol][timeframe] = { direction, confidence: temperedConfidence };
-  stabilityCounter[symbol][timeframe] = 1;  // Reset counter
+  // Final case: Accept new direction with tempered confidence
+  const temperedConfidence = Math.max(confidence - 5, 50);
+  const newState: SignalState = { 
+    direction, 
+    confidence: temperedConfidence,
+    counter: 1
+  };
+  signalCache.set(cacheKey, newState);
   console.log(`After ${timeframe} stabilization: ${direction} (${temperedConfidence}%) [Changed]`);
   return { direction, confidence: temperedConfidence };
 }
