@@ -1961,6 +1961,27 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
+                        {/* Success Probability - NEW FEATURE */}
+                        <div className="space-y-2">
+                          <h3 className="text-white font-bold text-sm">Success Probability</h3>
+                          <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
+                            <div 
+                              className={`h-4 rounded-full ${
+                                (currentSignal.successProbability || 50) >= 80 ? 'bg-emerald-600' : 
+                                (currentSignal.successProbability || 50) >= 65 ? 'bg-green-600' : 
+                                (currentSignal.successProbability || 50) >= 50 ? 'bg-yellow-600' : 'bg-red-600'
+                              }`}
+                              style={{ width: `${currentSignal.successProbability || 50}%` }}
+                            />
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-gray-400">{currentSignal.successProbabilityDescription || 'Fair Probability'}</span>
+                            <Badge variant="outline" className="text-xs bg-indigo-900/20 text-indigo-400 border-indigo-800">
+                              {currentSignal.successProbability || 50}%
+                            </Badge>
+                          </div>
+                        </div>
+                        
                         {/* Macro Score */}
                         <div className="space-y-2">
                           <h3 className="text-white font-bold text-sm">Macro Score</h3>
