@@ -131,7 +131,7 @@ export default function AdvancedSignalDashboard({
   // State for the selected timeframe
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
   const [isCalculating, setIsCalculating] = useState(false);
-  // Track success probability history for trend calculation (last 5 updates)
+  // Track success probability history for trend calculation (last 8 updates)
   const [successProbHistory, setSuccessProbHistory] = useState<number[]>([]);
   // Calculate the trend (change) in success probability
   const successProbTrend = useMemo(() => {
@@ -1422,8 +1422,8 @@ export default function AdvancedSignalDashboard({
             if (timeframe === selectedTimeframe) {
               setSuccessProbHistory(prev => {
                 const newHistory = [...prev, signal.successProbability];
-                // Keep only last 5 values
-                return newHistory.slice(-5);
+                // Keep only last 8 values for more stable trend calculation
+                return newHistory.slice(-8);
               });
             }
             
