@@ -97,14 +97,10 @@ function handlePriceUpdate(event: CustomEvent) {
   const lastPriceFetch = priceUpdateTracker[symbol] || 0;
   const timeSinceFetch = Date.now() - lastPriceFetch;
   
-  // Only calculate if we're within 5 seconds of a price fetch event
-  // Or this is the first time we're seeing a price
-  if (timeSinceFetch < 5000 || !lastCalculatedTimestamp[symbol]) {
-    console.log(`[ONE-TIME-CALC] Scheduling calculation after fresh price fetch: ${price}`);
-    scheduleCalculation(symbol, price, true);
-  } else {
-    console.log(`[ONE-TIME-CALC] Not scheduling calculation - not following a fresh price fetch`);
-  }
+  // COMPLETELY DISABLED - No auto-calculations at all, ever
+  // Keep the code path but never actually schedule calculations
+  console.log(`[ONE-TIME-CALC] Auto-calculations completely disabled`);
+  return;
 }
 
 /**
