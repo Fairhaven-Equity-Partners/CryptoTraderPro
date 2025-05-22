@@ -28,6 +28,8 @@ import {
   Clock,
   CheckCircle2,
 } from "lucide-react";
+// Import window type definitions
+import '../lib/windowTypes';
 import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
 import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
 import { formatCurrency, formatPercentage } from '../lib/calculations';
