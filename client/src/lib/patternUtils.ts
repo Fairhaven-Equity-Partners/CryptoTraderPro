@@ -6,6 +6,7 @@
  */
 
 import { TimeFrame } from '../types';
+import { generatePatternFormations } from './advancedSignals';
 
 // Define pattern interfaces
 export interface PatternFormation {

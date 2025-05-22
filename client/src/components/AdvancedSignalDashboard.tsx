@@ -1754,33 +1754,56 @@ export default function AdvancedSignalDashboard({
                   variant="outline" 
                   size="sm" 
                   className="h-7 text-xs bg-indigo-900/30 text-indigo-300 border-indigo-800 hover:bg-indigo-800/50 hover:text-indigo-200"
-                  onClick={() => calculateAllSignals()}
-                >
-                  Calculate Now
-                </Button>
-                        };
-                        
-                        const patternIndex = Math.floor(currentPrice) % 4;
-                        const patternName = patternNames[calcResult.direction][patternIndex];
-                        
-                        const pattern = {
-                          name: patternName,
-                          direction: calcResult.direction === 'LONG' ? 'bullish' : 
-                                  calcResult.direction === 'SHORT' ? 'bearish' : 'neutral',
-                          reliability: calcResult.confidence,
-                          priceTarget: calcResult.takeProfit,
-                          description: `${patternName} pattern detected`
-                        };
-                        
-                        // Calculate leverage recommendations
-                        const leverageRecs = {
-                          conservative: calcResult.confidence > 80 ? 2 : 1,
-                          moderate: calcResult.confidence > 70 ? 3 : 2,
-                          aggressive: calcResult.confidence > 60 ? 5 : 3,
-                          recommendation: calcResult.confidence > 70 ? 
-                            'Moderate leverage may be appropriate' : 
-                            'Conservative leverage recommended'
-                        };
+                  onClick={async () => {
+                    toast({
+                      title: "Manual calculation started",
+                      description: "Running optimized calculations...",
+                    });
+                    
+                    try {
+                      // Get current price from the UI state 
+                      const currentPrice = assetPrice;
+                      
+                      console.log(`🔄 OPTIMIZED CALCULATION: Starting for ${symbol} with price: ${currentPrice}`);
+                      
+                      // Set calculating state
+                      setIsCalculating(true);
+                      
+                      // Import the optimized calculator and pattern utilities
+                      const { processAllTimeframes, calculateKeyLevels, calculateLeverage } = await import('../lib/optimizedCalculator');
+                      const { generateDeterministicPatterns, getExpectedDuration } = await import('../lib/patternUtils');
+                      
+                      // Process all timeframes with a single call to ensure consistency and proper alignment
+                      const calculationResults = processAllTimeframes(symbol, currentPrice, timeframes);
+                      
+                      // Calculate support and resistance levels
+                      const keyLevels = calculateKeyLevels(currentPrice);
+                      
+                      // Update all signals with the calculated results
+                      const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...allTimeframeSignals };
+                      
+                      // Convert calculation results to AdvancedSignal objects
+                      for (const tf of timeframes) {
+                        if (newSignals[tf]) {
+                          const calcResult = calculationResults[tf];
+                          
+                          console.log(`Optimized calculation for ${tf}: ${calcResult.direction} (${calcResult.confidence}%)`);
+                          
+                          // Create pattern formations using our deterministic pattern generator
+                          const patterns = generateDeterministicPatterns(
+                            calcResult.direction, 
+                            calcResult.confidence, 
+                            tf, 
+                            currentPrice
+                          );
+                          
+                          // Calculate appropriate leverage recommendations
+                          const leverageRecs = calculateLeverage(
+                            calcResult.direction,
+                            calcResult.confidence,
+                            calcResult.successProbability,
+                            currentPrice
+                          );
                           
                           // Update the signal with all the calculated data
                           if (newSignals[tf]) {
@@ -1824,7 +1847,7 @@ export default function AdvancedSignalDashboard({
                               patternFormations: patterns,
                               supportLevels: keyLevels.support,
                               resistanceLevels: keyLevels.resistance,
-                              expectedDuration: getDuration(tf),
+                              expectedDuration: getExpectedDuration(tf),
                               riskRewardRatio: calcResult.direction === 'NEUTRAL' ? 1 : 
                                 Math.abs((calcResult.takeProfit - currentPrice) / (currentPrice - calcResult.stopLoss)),
                               optimalRiskReward: { 

@@ -3,8 +3,7 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
-import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard_working';
-import SimpleCalculateButton from '../components/SimpleCalculateButton';
+import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -66,13 +65,6 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <SimpleCalculateButton 
-            symbol={currentAsset}
-            onCalculate={() => {
-              console.log("Calculate button clicked - triggering calculations for:", currentAsset);
-              // Add a toast or other feedback here if needed
-            }}
-          />
           <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
