@@ -170,3 +170,15 @@ export function timeframeToMs(timeframe: string): number {
 export function formatPrice(price: number, currencySymbol = '$'): string {
   return formatCurrency(price, currencySymbol);
 }
+
+/**
+ * Get CSS class based on price change percentage
+ * 
+ * @param changePercent The percentage change
+ * @returns CSS class for styling (text-green-500, text-red-500, or text-gray-400)
+ */
+export function getPriceChangeClass(changePercent: number): string {
+  if (changePercent > 0) return 'text-green-500';
+  if (changePercent < 0) return 'text-red-500';
+  return 'text-gray-400';
+}

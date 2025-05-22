@@ -148,6 +148,14 @@ export function getFormattedCountdown(): string {
 }
 
 /**
+ * Get the number of seconds until the next refresh
+ * @returns Seconds until next refresh
+ */
+export function getSecondsUntilNextRefresh(): number {
+  return countdownSeconds;
+}
+
+/**
  * Get the most recent price for a symbol
  * @param symbol Asset symbol
  * @returns The most recent price or null if not available
