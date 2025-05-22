@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
+import React, { useState, useEffect, useCallback, useRef, memo, useMemo } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -1418,6 +1418,15 @@ export default function AdvancedSignalDashboard({
             // This ensures both values displayed in the UI match
             signal.confidence = signal.successProbability;
             
+            // Update success probability history for trend calculation (only for active timeframe)
+            if (timeframe === selectedTimeframe) {
+              setSuccessProbHistory(prev => {
+                const newHistory = [...prev, signal.successProbability];
+                // Keep only last 5 values
+                return newHistory.slice(-5);
+              });
+            }
+            
             // Log the success probability calculation
             if (alignsWithHigherTimeframes) {
               console.log(`${timeframe} signal aligns with higher timeframes, boosting success probability`);
@@ -1980,7 +1989,7 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
-                        {/* Success Probability - NEW FEATURE */}
+                        {/* Success Probability with Trend */}
                         <div className="space-y-2">
                           <h3 className="text-white font-bold text-sm">Success Probability</h3>
                           <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
@@ -1995,9 +2004,27 @@ export default function AdvancedSignalDashboard({
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-xs text-gray-400">{currentSignal.successProbabilityDescription || 'Fair Probability'}</span>
-                            <Badge variant="outline" className="text-xs bg-indigo-900/20 text-indigo-400 border-indigo-800">
-                              {currentSignal.successProbability || 50}%
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                              {successProbTrend !== 0 && (
+                                <div className="flex items-center">
+                                  {successProbTrend > 0 ? (
+                                    <TrendingUp className="h-3 w-3 text-green-400 mr-1" />
+                                  ) : (
+                                    <TrendingDown className="h-3 w-3 text-red-400 mr-1" />
+                                  )}
+                                  <span className={`text-xs ${
+                                    successProbTrend > 5 ? 'text-green-400' : 
+                                    successProbTrend < -5 ? 'text-red-400' : 
+                                    successProbTrend > 0 ? 'text-green-300' : 'text-red-300'
+                                  }`}>
+                                    {successProbTrend > 0 ? '+' : ''}{successProbTrend}%
+                                  </span>
+                                </div>
+                              )}
+                              <Badge variant="outline" className="text-xs bg-indigo-900/20 text-indigo-400 border-indigo-800">
+                                {currentSignal.successProbability || 50}%
+                              </Badge>
+                            </div>
                           </div>
                         </div>
                         
