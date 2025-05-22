@@ -1612,7 +1612,7 @@ export default function AdvancedSignalDashboard({
     };
     
     // Create timeframe summary data
-    const tfSummary = Object.entries(signals)
+    const tfSummary = Object.entries(allTimeframeSignals)
       .filter(([tf, s]) => s !== null)
       .map(([tf, s]) => ({
         timeframe: tf as TimeFrame,
@@ -1665,7 +1665,7 @@ export default function AdvancedSignalDashboard({
     };
     
     return recommendation;
-  }, [signals, symbol, selectedTimeframe]);
+  }, [allTimeframeSignals, symbol, selectedTimeframe]);
 
   // Update the recommendation when the timeframe changes
   const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {
@@ -1677,9 +1677,9 @@ export default function AdvancedSignalDashboard({
   // Handle timeframe selection
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
     console.log(`Tab change to ${timeframe} with prices:`, {
-      entry: signals[timeframe]?.entryPrice,
-      tp: signals[timeframe]?.takeProfit,
-      sl: signals[timeframe]?.stopLoss
+      entry: allTimeframeSignals[timeframe]?.entryPrice,
+      tp: allTimeframeSignals[timeframe]?.takeProfit,
+      sl: allTimeframeSignals[timeframe]?.stopLoss
     });
     
     setSelectedTimeframe(timeframe);
@@ -1689,7 +1689,7 @@ export default function AdvancedSignalDashboard({
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  }, [updateRecommendationForTimeframe, onTimeframeSelect, signals]);
+  }, [updateRecommendationForTimeframe, onTimeframeSelect, allTimeframeSignals]);
 
   // Format price for display, with appropriate decimal places
   function formatCurrency(price: number): string {
@@ -1834,17 +1834,17 @@ export default function AdvancedSignalDashboard({
                 <TabsTrigger 
                   key={tf} 
                   value={tf}
-                  disabled={!signals[tf]}
-                  className={!signals[tf] ? 'opacity-50 cursor-not-allowed' : ''}
+                  disabled={!allTimeframeSignals[tf]}
+                  className={!allTimeframeSignals[tf] ? 'opacity-50 cursor-not-allowed' : ''}
                 >
                   {tf}
                   {/* Always show LONG for monthly and weekly timeframes */}
                   <>
                     {/* Show correct arrows for all timeframes including weekly and monthly */}
-                    {signals[tf]?.direction === 'LONG' && (
+                    {allTimeframeSignals[tf]?.direction === 'LONG' && (
                       <span className="ml-1 text-green-400">▲</span>
                     )}
-                    {signals[tf]?.direction === 'SHORT' && (
+                    {allTimeframeSignals[tf]?.direction === 'SHORT' && (
                       <span className="ml-1 text-red-400">▼</span>
                     )}
                   </>
@@ -1859,7 +1859,7 @@ export default function AdvancedSignalDashboard({
                 value={timeframe} 
                 className="mt-4 relative"
               >
-                {!signals[timeframe] && (
+                {!allTimeframeSignals[timeframe] && (
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm rounded-md z-10">
                     {isCalculating ? (
                       <div className="text-center">
