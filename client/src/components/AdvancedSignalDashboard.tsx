@@ -568,37 +568,24 @@ export default function AdvancedSignalDashboard({
       clearInterval(recalcIntervalRef.current);
     }
     
-    // Initialize the timer to 3 minutes
-    setNextRefreshIn(180); // 3 minutes (180 seconds)
+    // Initialize the timer to "Calculate Now" mode - no auto-refresh
+    setNextRefreshIn(0); // Manual mode only
+
+    console.log("[ManualCalc] AUTO-CALCULATION COMPLETELY DISABLED - Only manual calculations allowed");
     
-    // Create a price update handler - This is the ONLY place recalculations should be triggered
-    const handlePriceUpdate = (event: Event) => {
-      const detail = (event as CustomEvent).detail;
-      if (detail && detail.symbol === symbol) {
-        console.log(`[StablePrice] Price update received for ${symbol}, triggering recalculation`);
-        // Only trigger if we're not already calculating and enough time has passed
-        const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-        const THREE_MINUTES = 180000; // 3 minutes in milliseconds
-        
-        if (!isCalculating && (timeSinceLastCalc > THREE_MINUTES - 5000 || lastCalculationRef.current === 0)) {
-          // Set a small delay to allow state updates
-          setTimeout(() => triggerCalculation('price-update'), 100);
-        } else {
-          console.log(`[StablePrice] Skipping recalculation - Last calc was ${Math.floor(timeSinceLastCalc/1000)}s ago`);
-        }
-      }
-    };
+    // REMOVED ALL AUTO-CALCULATION HANDLERS
+    // No price update handler - we want ONLY manual calculations
     
-    // DISABLED: No longer listen for automatic price updates
-    // window.addEventListener('price-update', handlePriceUpdate);
-    console.log("Auto-recalculation on price updates disabled");
-    
-    // Set up display-only countdown timer that stays in sync with PriceOverview
+    // Set up display-only countdown timer - only for manual trigger status
     const timerInterval = setInterval(() => {
-      setNextRefreshIn(prevTime => {
-        // Just count down - actual recalculation will be triggered by price update event
-        return prevTime > 0 ? prevTime - 1 : 0;
-      });
+      // We'll reuse this timer for "Calculating..." display purposes only
+      if (isCalculating) {
+        // Count down from 10 when calculation is in progress for visual feedback
+        setNextRefreshIn(prevTime => {
+          if (prevTime <= 0) return 10;
+          return prevTime - 1;
+        });
+      }
     }, 1000);
     
     // Save interval reference for cleanup
@@ -609,7 +596,7 @@ export default function AdvancedSignalDashboard({
       if (recalcIntervalRef.current) {
         clearInterval(recalcIntervalRef.current);
       }
-      window.removeEventListener('price-update', handlePriceUpdate);
+      // No event listeners to remove - we don't add any
     };
   }, [symbol, isCalculating, triggerCalculation]);
 
