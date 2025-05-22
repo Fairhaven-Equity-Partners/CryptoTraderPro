@@ -1971,30 +1971,12 @@ export default function AdvancedSignalDashboard({
                       <div className="space-y-4">
                         {/* No price display here - using the one from PriceOverview component */}
                         
+                        {/* Success Probability with Trend - MOVED TO TOP as the primary decision metric */}
                         <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Signal Strength</h3>
-                          <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
+                          <h3 className="text-white font-bold text-sm font-lg">Success Probability</h3>
+                          <div className="w-full bg-gray-800 rounded-full h-5 mb-1">
                             <div 
-                              className={`h-4 rounded-full ${
-                                currentSignal.confidence >= 70 ? 'bg-green-600' : 
-                                currentSignal.confidence >= 45 ? 'bg-yellow-600' : 'bg-red-600'
-                              }`}
-                              style={{ width: `${currentSignal.confidence}%` }}
-                            />
-                          </div>
-                          <div className="flex justify-between text-xs text-gray-400">
-                            <span>Weak</span>
-                            <span>Moderate</span>
-                            <span>Strong</span>
-                          </div>
-                        </div>
-                        
-                        {/* Success Probability with Trend */}
-                        <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Success Probability</h3>
-                          <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
-                            <div 
-                              className={`h-4 rounded-full ${
+                              className={`h-5 rounded-full ${
                                 (currentSignal.successProbability || 50) >= 80 ? 'bg-emerald-600' : 
                                 (currentSignal.successProbability || 50) >= 65 ? 'bg-green-600' : 
                                 (currentSignal.successProbability || 50) >= 50 ? 'bg-yellow-600' : 'bg-red-600'
@@ -2025,6 +2007,25 @@ export default function AdvancedSignalDashboard({
                                 {currentSignal.successProbability || 50}%
                               </Badge>
                             </div>
+                          </div>
+                        </div>
+                        
+                        {/* Signal Strength - moved below success probability */}
+                        <div className="space-y-2">
+                          <h3 className="text-white font-bold text-sm">Signal Strength</h3>
+                          <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
+                            <div 
+                              className={`h-4 rounded-full ${
+                                currentSignal.confidence >= 70 ? 'bg-green-600' : 
+                                currentSignal.confidence >= 45 ? 'bg-yellow-600' : 'bg-red-600'
+                              }`}
+                              style={{ width: `${currentSignal.confidence}%` }}
+                            />
+                          </div>
+                          <div className="flex justify-between text-xs text-gray-400">
+                            <span>Weak</span>
+                            <span>Moderate</span>
+                            <span>Strong</span>
                           </div>
                         </div>
                         
