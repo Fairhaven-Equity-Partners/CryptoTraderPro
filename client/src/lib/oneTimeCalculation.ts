@@ -125,9 +125,21 @@ function scheduleCalculation(symbol: string, price: number, isAfterPriceFetch: b
     clearTimeout(calculationTimeouts[symbol]);
   }
   
+  // Check if we're in a calculation lockout period for this symbol
+  const now = Date.now();
+  const lockoutUntil = calculationLockUntil[symbol] || 0;
+  
+  if (now < lockoutUntil) {
+    console.log(`[ONE-TIME-CALC] Calculation for ${symbol} is locked until ${new Date(lockoutUntil).toLocaleTimeString()}`);
+    return;
+  }
+  
   // Schedule the calculation with a slight delay to allow UI updates
   calculationTimeouts[symbol] = setTimeout(() => {
     triggerCalculation(symbol, price);
+    
+    // Set a lockout period of 20 seconds to prevent frequent recalculations
+    calculationLockUntil[symbol] = Date.now() + 20000;
   }, 800);
   
   console.log('[ONE-TIME-CALC] Scheduling single calculation after price fetch');

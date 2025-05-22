@@ -167,16 +167,53 @@ export default function AdvancedSignalDashboard({
   // Use a real timer connected to the price system
   const [formattedTimer, setFormattedTimer] = useState("2:00");
   
-  // Set up the timer update
+  // Set up the timer update and status tracking
   useEffect(() => {
-    // Update the timer display from the price system
-    const timerInterval = setInterval(() => {
+    let isFetching = false;
+
+    // Check if we're in the "price fetching" window (last 5 seconds of countdown)
+    const updateTimerAndStatus = () => {
       import('../lib/finalPriceSystem').then(module => {
-        setFormattedTimer(module.getFormattedCountdown());
+        const countdown = module.getFormattedCountdown();
+        setFormattedTimer(countdown);
+        
+        // Extract seconds value
+        const seconds = parseInt(countdown.split(':')[1]);
+        
+        // Check if we're in the fetching window (last 5 seconds)
+        if (seconds <= 5) {
+          setIsCalculating(true);
+        } else if (isFetching && seconds > 5) {
+          // We've moved past the fetching window, reset the calculating flag
+          setIsCalculating(false);
+          isFetching = false;
+        }
       });
-    }, 1000);
+    };
     
-    return () => clearInterval(timerInterval);
+    // Update immediately
+    updateTimerAndStatus();
+    
+    // Set up interval
+    const timerInterval = setInterval(updateTimerAndStatus, 1000);
+    
+    // Set up event listeners for calculation status
+    const handleCalculationStart = () => {
+      setIsCalculating(true);
+    };
+    
+    const handleCalculationComplete = () => {
+      setTimeout(() => setIsCalculating(false), 500);
+    };
+    
+    window.addEventListener('calculation-started', handleCalculationStart);
+    window.addEventListener('calculation-completed', handleCalculationComplete);
+    
+    return () => {
+      clearInterval(timerInterval);
+      window.removeEventListener('calculation-started', handleCalculationStart);
+      window.removeEventListener('calculation-completed', handleCalculationComplete);
+    };
   }, []);
   
   // Get toast for notifications
