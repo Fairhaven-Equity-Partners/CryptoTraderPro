@@ -147,15 +147,15 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
       <div className="flex justify-between items-center">
         <div>
           <div className="flex items-center">
-            <span className={`text-2xl font-semibold text-white transition-colors duration-300 ${flashClass}`}>
-              {formatPrice(priceState.price, symbol)}
+            <span className={`text-2xl font-semibold text-white transition-colors duration-300 mt-2 mb-2 ${flashClass}`}>
+              {formatPrice(Math.round(priceState.price * 100) / 100, symbol)}
             </span>
             {priceState.flash && priceDirection}
             <Badge variant="outline" className="ml-2 text-xs font-medium text-white">
               Next update: {Math.floor(nextRefreshIn / 60)}m {nextRefreshIn % 60}s
             </Badge>
           </div>
-          <div className="flex items-center space-x-2 mt-1">
+          <div className="flex items-center space-x-2 mt-2">
             <span className={`${priceChangeClass} text-sm font-medium`}>
               {formatPercentage(price.change24h)}
             </span>
