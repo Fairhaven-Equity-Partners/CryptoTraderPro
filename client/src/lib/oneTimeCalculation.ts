@@ -139,8 +139,8 @@ function scheduleCalculation(symbol: string, price: number, isAfterPriceFetch: b
   calculationTimeouts[symbol] = setTimeout(() => {
     triggerCalculation(symbol, price);
     
-    // Set a lockout period of 20 seconds to prevent frequent recalculations
-    calculationLockUntil[symbol] = Date.now() + 20000;
+    // Set a lockout period of 5 minutes (300,000 ms) to prevent frequent recalculations
+    calculationLockUntil[symbol] = Date.now() + 300000;
   }, 800);
   
   console.log('[ONE-TIME-CALC] Scheduling single calculation after price fetch');
