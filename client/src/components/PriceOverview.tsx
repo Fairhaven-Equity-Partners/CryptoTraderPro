@@ -60,16 +60,18 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     console.log(`[PriceOverview] Setting up price updates for ${symbol}`);
     
     // Start tracking this symbol
-    startTracking(symbol).then((initialPrice) => {
-      if (initialPrice > 0) {
-        setPriceState({
-          price: initialPrice,
-          previousPrice: 0,
-          flash: false,
-          lastUpdate: new Date()
-        });
-      }
-    });
+    startTracking(symbol);
+    
+    // Get initial price if available
+    const initialPrice = price?.lastPrice || 0;
+    if (initialPrice > 0) {
+      setPriceState({
+        price: initialPrice,
+        previousPrice: 0,
+        flash: false,
+        lastUpdate: new Date()
+      });
+    }
     
     // Subscribe to price updates
     const unsubscribe = subscribeToPriceUpdates(symbol, (newPrice) => {
