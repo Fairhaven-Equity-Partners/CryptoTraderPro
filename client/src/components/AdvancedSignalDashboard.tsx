@@ -1754,11 +1754,8 @@ export default function AdvancedSignalDashboard({
           <p className="text-slate-400 text-sm">Comprehensive technical analysis for {symbol}</p>
         </div>
         <div className="flex justify-end items-center space-x-2">
-          {isCalculating ? (
-            <Badge variant="outline" className="text-xs bg-amber-700/70 text-white border-amber-600 px-3 py-1 animate-pulse">
-              CALCULATING SIGNALS
-            </Badge>
-          ) : formattedTimer === "0:00" || formattedTimer === "0:01" || formattedTimer === "0:02" || formattedTimer === "0:03" || formattedTimer === "0:04" || formattedTimer === "0:05" ? (
+          {/* Just always show the timer or price fetching, never show calculating signals */}
+          {formattedTimer === "0:00" || formattedTimer === "0:01" || formattedTimer === "0:02" || formattedTimer === "0:03" || formattedTimer === "0:04" || formattedTimer === "0:05" ? (
             <Badge variant="outline" className="text-xs bg-blue-700/70 text-white border-blue-600 px-3 py-1 animate-pulse">
               FETCHING PRICE DATA...
             </Badge>
