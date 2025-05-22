@@ -24,9 +24,11 @@ export function initSyncedCalculation() {
 }
 
 // Handle price update events
-function handlePriceUpdate(event: CustomEvent) {
+function handlePriceUpdate(event: Event) {
   try {
-    const { symbol, price } = event.detail;
+    // Cast to custom event
+    const customEvent = event as CustomEvent<{symbol: string, price: number}>;
+    const { symbol, price } = customEvent.detail;
     console.log(`[SYNC-CALC] Price update detected: ${symbol} = ${price}`);
     
     // Don't block the event, but trigger calculation in parallel
