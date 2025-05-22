@@ -460,13 +460,14 @@ export default function AdvancedSignalDashboard({
       return;
     }
     
-    // For other automated triggers, enforce throttling rules
+    // For other automated triggers, enforce stronger throttling rules to prevent excessive calculations
     if (
       calculationTriggeredRef.current || 
       isCalculating || 
-      (timeSinceLastCalc < 30) || 
+      (timeSinceLastCalc < 120) || // Increased from 30 to 120 seconds (2 minutes) to reduce frequency
       !isAllDataLoaded
     ) {
+      console.log(`Throttling calculation for ${symbol} - last calc was ${timeSinceLastCalc.toFixed(0)}s ago (minimum 120s)`);
       return;
     }
     
