@@ -72,6 +72,16 @@ interface PriceLevelDisplayProps {
   colorClass: string;
 }
 
+// Format currency function
+function formatCurrency(price: number): string {
+  return price.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: price < 1 ? 6 : price < 100 ? 2 : 0
+  });
+}
+
 // Use memo to prevent unnecessary re-renders
 const PriceLevelDisplay = memo(({ label, value, timeframe, colorClass }: PriceLevelDisplayProps) => {
   // Log for debugging
@@ -154,6 +164,8 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
+  // Add back placeholder state for display but without actual functionality
+  const formattedTimer = "10:00";
   
   // Get toast for notifications
   const { toast } = useToast();
@@ -167,6 +179,13 @@ export default function AdvancedSignalDashboard({
   
   // Reference to track price consistently
   const priceRef = useRef<number>(0); // Will be updated with real price
+  // Add refs needed for calculation state tracking
+  const lastCalculationRef = useRef<number>(0);
+  const lastCalculationTimeRef = useRef<number>(0);
+  const calculationTriggeredRef = useRef<boolean>(false);
+  const calculationTimeoutRef = useRef<any>(null);
+  const lastSymbolRef = useRef<string>('');
+  const recalcIntervalRef = useRef<any>(null);
   
   // Current asset price
   const [assetPrice, setAssetPrice] = useState<number>(
