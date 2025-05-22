@@ -52,6 +52,7 @@ import {
   alignSignalsWithTimeframeHierarchy,
   calculateSupportResistance
 } from '../lib/technicalIndicators';
+import { enhanceSignalWithAdvancedIndicators } from '../lib/advancedIndicators';
 import ConsistentSignalDisplay from './ConsistentSignalDisplay';
 
 
@@ -1273,10 +1274,56 @@ export default function AdvancedSignalDashboard({
             timeframe
           );
           
-          // Generate pattern formations based on signal direction and timeframe
-          // This adds chart patterns that weren't being generated before
+          // Enhance signal with our advanced indicators (Fibonacci, Market Structure, Divergences)
           if (signal) {
+            // Apply advanced indicator enhancements
+            const enhancedSignalData = enhanceSignalWithAdvancedIndicators(
+              chartData[timeframe],
+              timeframe,
+              signal.confidence,
+              signal.direction
+            );
+            
+            // Update signal confidence with the enhanced value
+            signal.confidence = enhancedSignalData.enhancedConfidence;
+            
+            // Add the advanced insights to the signal's macroInsights array
+            if (!signal.macroInsights) {
+              signal.macroInsights = [];
+            }
+            
+            // Add new insights from advanced indicators
+            signal.macroInsights = [
+              ...signal.macroInsights,
+              ...enhancedSignalData.additionalInsights
+            ];
+            
+            // Add key levels from advanced indicators
+            if (enhancedSignalData.keyLevels && enhancedSignalData.keyLevels.length > 0) {
+              // Convert to the expected format
+              const keyLevels: Level[] = enhancedSignalData.keyLevels.map(level => ({
+                price: level.price,
+                type: level.type.includes('Support') ? 'support' : 'resistance',
+                strength: level.strength >= 80 ? 'strong' : (level.strength >= 70 ? 'medium' : 'weak'),
+                description: level.type
+              }));
+              
+              // Add these to existing levels or create new array
+              if (!signal.keyLevels) {
+                signal.keyLevels = keyLevels;
+              } else {
+                // Only add a maximum of 3 new levels to not overwhelm the display
+                const newLevelsToAdd = keyLevels.slice(0, 3);
+                signal.keyLevels = [...signal.keyLevels, ...newLevelsToAdd];
+              }
+            }
+            
+            // Generate pattern formations based on signal direction and timeframe
+            // This adds chart patterns that weren't being generated before
             signal.patternFormations = generatePatternFormations(signal.direction, signal.confidence, timeframe, signal.entryPrice);
+            
+            // Log that we've enhanced the signal with advanced indicators
+            console.log(`Enhanced ${timeframe} signal with advanced indicators: confidence=${signal.confidence}%`);
           }
           
           return signal;
