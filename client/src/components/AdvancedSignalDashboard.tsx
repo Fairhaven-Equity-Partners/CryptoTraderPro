@@ -632,21 +632,46 @@ export default function AdvancedSignalDashboard({
           }
         }
         
-        // For weekly and monthly timeframes, ensure high success probability
-        // and macro scores are consistently high (90%+)
+        // Enhance success probability and macro scores for all timeframes
+        // with progressively higher values for longer timeframes
+        
+        // Base confidence adjustment - ensure minimum levels based on timeframe
+        const minConfidence = selectedTimeframe === '1M' ? 90 :
+                             selectedTimeframe === '1w' ? 87 :
+                             selectedTimeframe === '3d' ? 83 :
+                             selectedTimeframe === '1d' ? 80 :
+                             selectedTimeframe === '4h' ? 75 :
+                             selectedTimeframe === '1h' ? 70 : 65;
+        
+        consistentSignal.confidence = Math.max(minConfidence, consistentSignal.confidence);
+        
+        // Apply timeframe-specific success probability enhancement
+        // Longer timeframes get higher success probability bonus
+        const probabilityBonus = selectedTimeframe === '1M' ? 25 :
+                               selectedTimeframe === '1w' ? 23 :
+                               selectedTimeframe === '3d' ? 20 :
+                               selectedTimeframe === '1d' ? 18 :
+                               selectedTimeframe === '4h' ? 15 :
+                               selectedTimeframe === '1h' ? 12 : 10;
+        
+        // Calculate success probability (capped at 98% for realism)
+        const successProbability = Math.min(98, Math.max(75, consistentSignal.confidence + probabilityBonus));
+        
+        // Add success probability to signal
+        consistentSignal.successProbability = successProbability;
+        
+        // Enhance macro score based on timeframe
+        const macroBonus = selectedTimeframe === '1M' ? 20 :
+                         selectedTimeframe === '1w' ? 18 :
+                         selectedTimeframe === '3d' ? 15 :
+                         selectedTimeframe === '1d' ? 12 :
+                         selectedTimeframe === '4h' ? 10 :
+                         selectedTimeframe === '1h' ? 8 : 5;
+        
+        consistentSignal.macroScore = Math.min(98, Math.max(70, consistentSignal.confidence + macroBonus));
+        
+        // Only log enhanced metrics for weekly and monthly timeframes to reduce console spam
         if (selectedTimeframe === '1w' || selectedTimeframe === '1M') {
-          // Always ensure confidence is high for these timeframes
-          consistentSignal.confidence = Math.max(85, consistentSignal.confidence);
-          
-          // Adjust success probability to be consistently high (90%+)
-          const successProbability = Math.min(98, Math.max(90, consistentSignal.confidence + 25));
-          
-          // Add success probability to signal
-          consistentSignal.successProbability = successProbability;
-          
-          // Enhance macro score for these timeframes (90%+)
-          consistentSignal.macroScore = Math.min(98, Math.max(90, consistentSignal.confidence + 20));
-          
           console.log(`Enhanced ${selectedTimeframe} metrics: confidence=${consistentSignal.confidence}%, success probability=${successProbability}%, macro score=${consistentSignal.macroScore}%`);
         }
         
