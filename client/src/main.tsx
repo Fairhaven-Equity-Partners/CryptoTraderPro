@@ -14,8 +14,15 @@ connectWebSocket();
 // Initialize all subsystems
 initTechnicalIndicatorsModule();
 initSignalStabilizationSystem();
-initOneTimeCalculationSystem();
-initPriceSystem(180); // Initialize with 3-minute refresh interval
+
+// Important: Use the new synchronized calculation system for price updates
+import('./lib/syncedPriceCalculation').then(({ initSyncedCalculation }) => {
+  console.log("⚡ Starting synchronized calculation system");
+  initSyncedCalculation();
+});
+
+// Initialize price system with 1-minute refresh interval for more frequent updates
+initPriceSystem(60);
 
 // Initialize default price events container
 window.latestPriceEvents = window.latestPriceEvents || {};
