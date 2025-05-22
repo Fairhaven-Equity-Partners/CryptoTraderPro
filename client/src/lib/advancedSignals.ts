@@ -3,12 +3,25 @@
  * 
  * This file contains all the interfaces needed for the advanced signal dashboard
  * to ensure proper typing across the application.
+ * 
+ * OPTIMIZED VERSION - Eliminates redundant indicator definitions and streamlines structure
  */
 
-import { TimeFrame, SignalDirection, IndicatorCategory, Indicator, PatternFormation as CorePatternFormation } from '../types';
+import { TimeFrame, SignalDirection, IndicatorCategory, PatternFormation as CorePatternFormation } from '../types';
 
-// Re-export core types with more specific definitions
-export { TimeFrame, SignalDirection, IndicatorCategory, Indicator } from '../types';
+// Re-export core types
+export { TimeFrame, SignalDirection, IndicatorCategory } from '../types';
+
+// Unified optimized indicator interface
+export interface Indicator {
+  id: string;
+  name: string;
+  value: number | string;
+  signal: 'BUY' | 'SELL' | 'NEUTRAL';
+  strength: 'WEAK' | 'MODERATE' | 'STRONG';
+  category: IndicatorCategory;
+  description?: string;
+}
 
 // Pattern formation with expanded properties for display
 export interface PatternFormation extends CorePatternFormation {
@@ -24,6 +37,16 @@ export interface Level {
   description?: string;
 }
 
+// Core indicator groups with no redundancy
+export interface IndicatorGroups {
+  // Single array for each category to prevent duplicates
+  trend: Indicator[];
+  momentum: Indicator[];
+  volatility: Indicator[];
+  volume: Indicator[];
+  pattern: Indicator[];
+}
+
 // Complete advanced signal interface with all properties needed for display
 export interface AdvancedSignal {
   direction: SignalDirection;
@@ -37,7 +60,7 @@ export interface AdvancedSignal {
   macroClassification?: 'bullish' | 'bearish' | 'neutral';
   successProbability: number; // Required for display functionality (0-100)
   successProbabilityDescription?: string; // Human-readable description of success probability
-  indicators?: Indicator[];
+  indicators: IndicatorGroups; // Changed from optional array to required structured object
   patternFormations?: PatternFormation[];
   supportLevels?: number[];
   resistanceLevels?: number[];

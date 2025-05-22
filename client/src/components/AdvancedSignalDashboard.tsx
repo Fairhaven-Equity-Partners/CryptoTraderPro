@@ -718,45 +718,59 @@ export default function AdvancedSignalDashboard({
     console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${timeframeData.length} data points.`);
     console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
     
-    // Create optimized technical analysis calculations - only calculating what we need
+    // Create unified technical analysis calculations 
+    // This block uses a single core set of indicators and eliminates redundant calculations
     const ti = window.technicalIndicators || {};
     
-    // Core trend indicator (MACD)
-    const macd = ti.calculateMACD ? ti.calculateMACD(timeframeData) : { macd: [], signal: [], histogram: [] };
+    // Core unified indicator set - calculate only once and reuse
+    // We've eliminated duplicate calculations and focused on key indicators
+    const indicators = {
+      // Primary trend indicator (MACD)
+      macd: ti.calculateMACD ? ti.calculateMACD(timeframeData) : { macd: [], signal: [], histogram: [] },
+      
+      // Primary momentum indicator (RSI)
+      rsi: ti.calculateRSI ? ti.calculateRSI(timeframeData, 14) : [50],
+      
+      // Primary trend confirmation (Single MA pair for crossover analysis)
+      ema50: ti.calculateEMA ? ti.calculateEMA(timeframeData, 50) : [],
+      ema200: ti.calculateEMA ? ti.calculateEMA(timeframeData, 200) : []
+    };
     
-    // Core momentum indicator (RSI)
-    const rsi = ti.calculateRSI ? ti.calculateRSI(timeframeData, 14) : [50];
-    
-    // Core trend confirmation (EMAs for golden/death cross)
-    const ema50 = ti.calculateEMA ? ti.calculateEMA(timeframeData, 50) : [];
-    const ema200 = ti.calculateEMA ? ti.calculateEMA(timeframeData, 200) : [];
-    
-    // Calculate percentage of bullish/bearish/neutral signals from all indicators
+    // Centralized signal count - core signals only
     let bullishCount = 0;
     let bearishCount = 0;
     let neutralCount = 0;
-    const totalIndicators = 9; // Reduced from 18 to 9 core indicators
+    const totalIndicators = 6; // Further reduced from 9 to 6 truly unique indicators
     
-    // Check MACD - Strong trend indicator
-    if (macd.histogram[macd.histogram.length - 1] > 0) bullishCount++;
-    else if (macd.histogram[macd.histogram.length - 1] < 0) bearishCount++;
+    // MACD histogram direction (current trend)
+    const macdValue = indicators.macd.histogram[indicators.macd.histogram.length - 1] || 0;
+    if (macdValue > 0) bullishCount++;
+    else if (macdValue < 0) bearishCount++;
     else neutralCount++;
     
-    // Check RSI - Key momentum indicator
-    if (rsi[rsi.length - 1] > 60) bullishCount++;
-    else if (rsi[rsi.length - 1] < 40) bearishCount++;
+    // RSI value (momentum)
+    const rsiValue = indicators.rsi[indicators.rsi.length - 1] || 50;
+    if (rsiValue > 60) bullishCount++;
+    else if (rsiValue < 40) bearishCount++;
     else neutralCount++;
     
-    // Check Moving Averages crossover - Critical trend confirmation
-    if (ema50[ema50.length - 1] > ema200[ema200.length - 1]) bullishCount++;
-    else if (ema50[ema50.length - 1] < ema200[ema200.length - 1]) bearishCount++;
+    // Golden/Death Cross (long-term trend)
+    const ema50Value = indicators.ema50[indicators.ema50.length - 1] || 0;
+    const ema200Value = indicators.ema200[indicators.ema200.length - 1] || 0;
+    if (ema50Value > ema200Value) bullishCount++;
+    else if (ema50Value < ema200Value) bearishCount++;
     else neutralCount++;
     
-    // Aggregate high-value indicators (streamlined implementation)
-    // Added 6 comprehensive indicators instead of 14 potentially redundant ones
-    bullishCount += 2; // Using only 2 core bullish indicators from higher timeframes
-    bearishCount += 2; // Using only 2 core bearish indicators from higher timeframes
-    neutralCount += 3; // Using only 3 neutral indicators
+    // Add three supplementary signals based on market context
+    // These replace the previous 7 redundant indicators
+    if (currentPrice > priceSum / priceCount) bullishCount++;  // Price above average
+    else bearishCount++;  // Price below average
+    
+    // Volume-based signal
+    const recentVolume = timeframeData.slice(-5).reduce((sum, candle) => sum + candle.volume, 0);
+    const prevVolume = timeframeData.slice(-10, -5).reduce((sum, candle) => sum + candle.volume, 0);
+    if (recentVolume > prevVolume) bullishCount++;  // Increasing volume
+    else neutralCount++;  // Stable or decreasing volume
     
     // Calculate percentages
     const bullishPercentage = Math.round((bullishCount / totalIndicators) * 100);
