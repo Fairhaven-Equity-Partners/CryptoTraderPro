@@ -1404,6 +1404,10 @@ export default function AdvancedSignalDashboard({
               signal.successProbability
             );
             
+            // Ensure confidence and successProbability are synchronized 
+            // This ensures both values displayed in the UI match
+            signal.confidence = signal.successProbability;
+            
             // Log the success probability calculation
             if (alignsWithHigherTimeframes) {
               console.log(`${timeframe} signal aligns with higher timeframes, boosting success probability`);
