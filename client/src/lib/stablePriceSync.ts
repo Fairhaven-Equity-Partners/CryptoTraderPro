@@ -88,6 +88,25 @@ export async function getCurrentPrice(symbol: string): Promise<number> {
 }
 
 /**
+ * Check if enough time has passed since the last calculation
+ * to prevent excessive recalculations
+ */
+function shouldAllowCalculation(symbol: string): boolean {
+  // Get the timestamp of the last calculation
+  const lastCalcTime = (window as any).lastCalcTimestamp || {};
+  const lastTime = lastCalcTime[symbol] || 0;
+  const now = Date.now();
+  
+  // If it's been less than 20 seconds, skip the calculation
+  if (now - lastTime < 20000) {
+    console.log(`[StablePrice] Skipping recalculation - Last calc was ${Math.floor((now - lastTime)/1000)}s ago`);
+    return false;
+  }
+  
+  return true;
+}
+
+/**
  * Broadcast price update to all listeners with improved reliability
  */
 export function broadcastPriceUpdate(symbol: string, price: number) {
@@ -100,13 +119,24 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
   window.dispatchEvent(event);
   document.dispatchEvent(event);
   
-  // Also emit the fetch-completed event for the new calculation system
-  const fetchCompletedEvent = new CustomEvent('price-fetch-completed', {
-    detail: { symbol, price, timestamp: Date.now() }
-  });
-  window.dispatchEvent(fetchCompletedEvent);
+  // Only trigger a new calculation if enough time has passed
+  if (shouldAllowCalculation(symbol)) {
+    console.log(`[StablePrice] Triggering calculation for ${symbol}`);
+    
+    // Also emit the fetch-completed event for the new calculation system
+    const fetchCompletedEvent = new CustomEvent('price-fetch-completed', {
+      detail: { symbol, price, timestamp: Date.now() }
+    });
+    window.dispatchEvent(fetchCompletedEvent);
+    
+    // Update the last calculation timestamp
+    if (!(window as any).lastCalcTimestamp) {
+      (window as any).lastCalcTimestamp = {};
+    }
+    (window as any).lastCalcTimestamp[symbol] = Date.now();
+  }
   
-  console.log(`[Price] Broadcasting price update: ${symbol} = ${price} (10-minute system)`);
+  console.log(`[Price] Broadcasting price update: ${symbol} = ${price} (2-minute system)`);
   
   // Also trigger a timer reset event
   resetPriceTimer();

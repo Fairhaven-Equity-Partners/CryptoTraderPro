@@ -18,6 +18,7 @@ let lastCalculatedPrice: Record<string, number> = {}; // Track the last price we
 let pendingCalculations: Record<string, PriceEvent> = {};
 let calculationTimeouts: Record<string, NodeJS.Timeout> = {};
 let priceUpdateTracker: Record<string, number> = {}; // Track when we last received a price update
+let calculationLockUntil: Record<string, number> = {}; // Lock to prevent excessive calculations
 
 // Custom event names
 const CALCULATION_STARTED_EVENT = 'calculation-started';
