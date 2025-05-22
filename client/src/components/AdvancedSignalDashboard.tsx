@@ -1757,87 +1757,122 @@ export default function AdvancedSignalDashboard({
                   onClick={async () => {
                     toast({
                       title: "Manual calculation started",
-                      description: "Fetching latest price and running calculations...",
+                      description: "Running optimized calculations...",
                     });
                     
                     try {
                       // Get current price from the UI state 
                       const currentPrice = assetPrice;
-                      const priceKey = Math.floor(currentPrice); // Use the price as a deterministic seed
                       
-                      console.log(`🔄 MANUAL CALCULATION: Starting for ${symbol} with price: ${currentPrice} (key: ${priceKey})`);
+                      console.log(`🔄 OPTIMIZED CALCULATION: Starting for ${symbol} with price: ${currentPrice}`);
                       
                       // Set calculating state
                       setIsCalculating(true);
                       
-                      // DETERMINISTIC APPROACH - uses price as seed for consistency
-                      // Generate a new set of signals that will be consistent for the same price
+                      // Import the optimized calculator and pattern utilities
+                      const { processAllTimeframes, calculateKeyLevels, calculateLeverage } = await import('../lib/optimizedCalculator');
+                      const { generateDeterministicPatterns, getExpectedDuration } = await import('../lib/patternUtils');
+                      
+                      // Process all timeframes with a single call to ensure consistency and proper alignment
+                      const calculationResults = processAllTimeframes(symbol, currentPrice, timeframes);
+                      
+                      // Calculate support and resistance levels
+                      const keyLevels = calculateKeyLevels(currentPrice);
+                      
+                      // Update all signals with the calculated results
                       const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...allTimeframeSignals };
                       
-                      // Create signals that are deterministic for a given price
+                      // Convert calculation results to AdvancedSignal objects
                       for (const tf of timeframes) {
                         if (newSignals[tf]) {
-                          // Use consistent values based on the price and timeframe rather than random numbers
-                          console.log(`Direct update: Creating consistent signal for ${tf} with price ${currentPrice}`);
+                          const calcResult = calculationResults[tf];
                           
-                          // Generate deterministic hash values from price and timeframe
-                          // This ensures the same price + timeframe always gives the same result
-                          const tfIndex = timeframes.indexOf(tf);
-                          const priceTimeframeHash = (priceKey * 100 + tfIndex) % 1000;
+                          console.log(`Optimized calculation for ${tf}: ${calcResult.direction} (${calcResult.confidence}%)`);
                           
-                          // Deterministic direction calculation based on the price+timeframe hash
-                          const directionValue = priceTimeframeHash % 3; // 0, 1, or 2
-                          const directions = ['LONG', 'SHORT', 'NEUTRAL'];
-                          const direction = directions[directionValue];
+                          // Create pattern formations using our deterministic pattern generator
+                          const patterns = generateDeterministicPatterns(
+                            calcResult.direction, 
+                            calcResult.confidence, 
+                            tf, 
+                            currentPrice
+                          );
                           
-                          // Deterministic confidence based on price+timeframe
-                          // Higher timeframes get higher confidence values
-                          const baseConfidence = 60 + ((priceTimeframeHash % 30) + tfIndex * 3);
-                          const confidence = Math.min(98, baseConfidence);
+                          // Calculate appropriate leverage recommendations
+                          const leverageRecs = calculateLeverage(
+                            calcResult.direction,
+                            calcResult.confidence,
+                            calcResult.successProbability,
+                            currentPrice
+                          );
                           
-                          // Create a new signal with deterministic values
+                          // Update the signal with all the calculated data
                           if (newSignals[tf]) {
-                            newSignals[tf]!.direction = direction as any;
-                            newSignals[tf]!.confidence = confidence;
-                            newSignals[tf]!.timestamp = Date.now();
-                            newSignals[tf]!.entryPrice = currentPrice;
-                            newSignals[tf]!.successProbability = confidence + (tfIndex * 2);
+                            // Create consistent indicators for this timeframe
+                            const createIndicatorList = (count: number, category: string): any[] => {
+                              return Array.from({ length: count }, (_, i) => ({
+                                id: `${category}-${i}`,
+                                name: `${category} Indicator ${i+1}`,
+                                value: (50 + (i * 10) + (calcResult.confidence % 30)) % 100,
+                                signal: calcResult.direction === 'LONG' ? 'BUY' : 
+                                        calcResult.direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
+                                strength: calcResult.confidence > 70 ? 'STRONG' : 
+                                          calcResult.confidence > 50 ? 'MODERATE' : 'WEAK',
+                                category
+                              }));
+                            };
                             
-                            // Deterministic take profit and stop loss based on the direction and confidence
-                            const tpMultiplier = direction === 'LONG' ? 1 + (confidence/1000) : 1 - (confidence/1000);
-                            const slMultiplier = direction === 'LONG' ? 1 - (confidence/1000) : 1 + (confidence/1000);
+                            // Create indicator groups with appropriate counts
+                            const indicators = {
+                              trend: createIndicatorList(3, 'Trend'),
+                              momentum: createIndicatorList(2, 'Momentum'),
+                              volatility: createIndicatorList(2, 'Volatility'),
+                              volume: createIndicatorList(2, 'Volume'),
+                              pattern: createIndicatorList(1, 'Pattern')
+                            };
                             
-                            newSignals[tf]!.takeProfit = currentPrice * tpMultiplier;
-                            newSignals[tf]!.stopLoss = currentPrice * slMultiplier;
+                            // Create a fully populated advanced signal
+                            newSignals[tf] = {
+                              direction: calcResult.direction,
+                              confidence: calcResult.confidence,
+                              timestamp: Date.now(),
+                              entryPrice: currentPrice,
+                              stopLoss: calcResult.stopLoss,
+                              takeProfit: calcResult.takeProfit,
+                              timeframe: tf,
+                              successProbability: calcResult.successProbability,
+                              successProbabilityDescription: calcResult.successProbability > 75 ? 'High Probability' :
+                                                            calcResult.successProbability > 60 ? 'Moderate Probability' :
+                                                            calcResult.successProbability > 45 ? 'Fair Probability' : 'Low Probability',
+                              indicators: indicators,
+                              patternFormations: patterns,
+                              supportLevels: keyLevels.support,
+                              resistanceLevels: keyLevels.resistance,
+                              expectedDuration: getExpectedDuration(tf),
+                              riskRewardRatio: calcResult.direction === 'NEUTRAL' ? 1 : 
+                                Math.abs((calcResult.takeProfit - currentPrice) / (currentPrice - calcResult.stopLoss)),
+                              optimalRiskReward: { 
+                                ideal: 2.5, 
+                                range: [1.5, 3.5] 
+                              },
+                              recommendedLeverage: leverageRecs,
+                              macroInsights: [
+                                `The ${tf} timeframe shows a ${calcResult.direction.toLowerCase()} bias.`,
+                                `Success probability is ${calcResult.successProbability}%.`,
+                                `Consider using ${leverageRecs.recommendation.toLowerCase()}.`
+                              ]
+                            };
                           }
                         }
                       }
                       
-                      // Ensure signal alignment across timeframes (higher timeframes influence lower ones)
-                      // This creates a more realistic, aligned market structure
-                      const alignedSignals = { ...newSignals };
-                      
-                      // Make longer timeframes influence shorter ones
-                      if (alignedSignals['1M']?.direction === 'LONG') {
-                        // In an uptrend on monthly, weekly more likely to be LONG too
-                        if (alignedSignals['1w'] && priceKey % 7 < 5) {
-                          alignedSignals['1w']!.direction = 'LONG';
-                        }
-                      } else if (alignedSignals['1M']?.direction === 'SHORT') {
-                        // In a downtrend on monthly, weekly more likely to be SHORT too
-                        if (alignedSignals['1w'] && priceKey % 7 < 5) {
-                          alignedSignals['1w']!.direction = 'SHORT';
-                        }
-                      }
-                      
                       // Force the UI to update with the new signals
-                      console.log("FORCE UPDATING ALL TIMEFRAME SIGNALS WITH CONSISTENT DATA");
-                      setAllTimeframeSignals({...alignedSignals});
+                      console.log("FORCE UPDATING ALL TIMEFRAME SIGNALS WITH OPTIMIZED DATA");
+                      setAllTimeframeSignals({...newSignals});
                       
                       // Also force update the displayedSignal
-                      if (alignedSignals[selectedTimeframe]) {
+                      if (newSignals[selectedTimeframe]) {
                         console.log(`Forcing update of displayed signal for ${selectedTimeframe}`);
-                        setDisplayedSignal(alignedSignals[selectedTimeframe]);
+                        setDisplayedSignal(newSignals[selectedTimeframe]);
                       }
                       
                       // Generate a new recommendation
@@ -1853,7 +1888,7 @@ export default function AdvancedSignalDashboard({
                         });
                       }, 1000);
                     } catch (error) {
-                      console.error("Error during manual calculation:", error);
+                      console.error("Error during optimized calculation:", error);
                       setIsCalculating(false);
                       toast({
                         title: "Calculation failed",
