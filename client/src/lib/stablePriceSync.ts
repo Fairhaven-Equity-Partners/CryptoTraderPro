@@ -100,7 +100,13 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
   window.dispatchEvent(event);
   document.dispatchEvent(event);
   
-  console.log(`[Price] Broadcasting price update: ${symbol} = ${price} (3-minute system)`);
+  // Also emit the fetch-completed event for the new calculation system
+  const fetchCompletedEvent = new CustomEvent('price-fetch-completed', {
+    detail: { symbol, price, timestamp: Date.now() }
+  });
+  window.dispatchEvent(fetchCompletedEvent);
+  
+  console.log(`[Price] Broadcasting price update: ${symbol} = ${price} (10-minute system)`);
   
   // Also trigger a timer reset event
   resetPriceTimer();

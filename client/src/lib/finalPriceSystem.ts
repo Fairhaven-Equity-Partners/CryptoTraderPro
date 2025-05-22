@@ -122,6 +122,14 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
     });
     window.dispatchEvent(updateEvent);
     
+    // Also emit the price-fetch-completed event for the new calculation system
+    const fetchCompletedEvent = new CustomEvent('price-fetch-completed', {
+      detail: { symbol, price, timestamp }
+    });
+    window.dispatchEvent(fetchCompletedEvent);
+    
+    console.log(`[FinalPriceSystem] Price fetch completed for ${symbol}: ${price}`);
+    
     return price;
   } catch (error) {
     console.error('[FinalPriceSystem] Error fetching price:', error);

@@ -1,9 +1,12 @@
 /**
- * One-Time Calculation System
+ * One-Time Calculation System - REDESIGNED
  * 
- * Ensures calculations happen exactly once after each price update
- * Prevents redundant calculations and provides visual feedback
- * during the calculation process
+ * COMPLETELY REDESIGNED AUTO UPDATE FEATURE:
+ * - Only calculates once immediately after a new price fetch
+ * - Does not calculate again until either:
+ *   1. Next price fetch occurs, or
+ *   2. User manually triggers with "Calculate now" button
+ * - Provides visual feedback during calculation process
  */
 
 import { PriceEvent } from '../types';
@@ -11,31 +14,63 @@ import { PriceEvent } from '../types';
 // Tracking variables
 let isCalculationInProgress = false;
 let lastCalculatedTimestamp: Record<string, number> = {};
+let lastCalculatedPrice: Record<string, number> = {}; // Track the last price we calculated with
 let pendingCalculations: Record<string, PriceEvent> = {};
 let calculationTimeouts: Record<string, NodeJS.Timeout> = {};
+let priceUpdateTracker: Record<string, number> = {}; // Track when we last received a price update
 
 // Custom event names
 const CALCULATION_STARTED_EVENT = 'calculation-started';
 const CALCULATION_COMPLETED_EVENT = 'calculation-completed';
+const PRICE_FETCH_COMPLETED = 'price-fetch-completed';
 
 /**
- * Initialize the one-time calculation system
+ * Initialize the one-time calculation system with the new price-based calculation model
  */
 export function initOneTimeCalculationSystem() {
-  console.log('[ONE-TIME-CALC] Initializing one-time calculation system');
+  console.log('[ONE-TIME-CALC] Initializing redesigned one-time calculation system');
   
   // Clear any existing handlers to prevent duplicates during hot reload
   window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+  window.removeEventListener('price-fetching', handlePriceFetching as EventListener);
+  window.removeEventListener('price-fetch-completed', handlePriceFetchCompleted as EventListener);
   
-  // Add price update event listener
+  // Add event listeners
   window.addEventListener('price-update', handlePriceUpdate as EventListener);
+  window.addEventListener('price-fetching', handlePriceFetching as EventListener);
+  window.addEventListener('price-fetch-completed', handlePriceFetchCompleted as EventListener);
   
-  console.log('[ONE-TIME-CALC] Event handlers registered');
+  console.log('[ONE-TIME-CALC] Event handlers registered for redesigned system');
 }
 
 /**
- * Handle a price update by scheduling a single calculation
- * @param event Custom event with symbol and price data
+ * Handle when a price fetch starts (used to show loading indicators)
+ */
+function handlePriceFetching(event: CustomEvent) {
+  const { symbol } = event.detail;
+  console.log('[ONE-TIME-CALC] Price fetch started for', symbol);
+  
+  // Mark that we're starting a new fetch cycle
+  priceUpdateTracker[symbol] = Date.now();
+}
+
+/**
+ * Handle when a price fetch completes - this is the key event that should trigger calculation
+ * This is explicitly emitted by the price fetching system
+ */
+function handlePriceFetchCompleted(event: CustomEvent) {
+  const { symbol, price } = event.detail;
+  console.log('[ONE-TIME-CALC] Price fetch completed for', symbol, 'with price', price);
+  
+  // Schedule a calculation since we just got a fresh price
+  scheduleCalculation(symbol, price, true);
+}
+
+/**
+ * Handle a price update event
+ * With the redesigned system, we only schedule a calculation if:
+ * 1. This is a new price we haven't calculated with before, AND
+ * 2. We've recently had a price fetch completed event for this symbol
  */
 function handlePriceUpdate(event: CustomEvent) {
   const { symbol, price } = event.detail;
@@ -45,22 +80,43 @@ function handlePriceUpdate(event: CustomEvent) {
     return;
   }
   
-  console.log(`[ONE-TIME-CALC] Price update received: ${price}`);
+  // Store this as the latest price
+  pendingCalculations[symbol] = { 
+    price, 
+    timestamp: Date.now() 
+  };
   
-  // If we're already calculating, just store this update for later
+  // If we already calculated with this exact price, don't recalculate
+  if (lastCalculatedPrice[symbol] === price) {
+    console.log(`[ONE-TIME-CALC] Skipping calculation, already calculated with price ${price}`);
+    return;
+  }
+  
+  // Check if we're within the "fresh price fetch" window
+  const lastPriceFetch = priceUpdateTracker[symbol] || 0;
+  const timeSinceFetch = Date.now() - lastPriceFetch;
+  
+  // Only calculate if we're within 5 seconds of a price fetch event
+  // Or this is the first time we're seeing a price
+  if (timeSinceFetch < 5000 || !lastCalculatedTimestamp[symbol]) {
+    console.log(`[ONE-TIME-CALC] Scheduling calculation after fresh price fetch: ${price}`);
+    scheduleCalculation(symbol, price, true);
+  } else {
+    console.log(`[ONE-TIME-CALC] Not scheduling calculation - not following a fresh price fetch`);
+  }
+}
+
+/**
+ * Schedule a calculation with the new system's rules
+ */
+function scheduleCalculation(symbol: string, price: number, isAfterPriceFetch: boolean) {
+  // If a calculation is in progress, just update the pending queue
   if (isCalculationInProgress) {
     console.log('[ONE-TIME-CALC] Calculation in progress, queueing update');
     pendingCalculations[symbol] = { 
       price, 
       timestamp: Date.now() 
     };
-    return;
-  }
-  
-  // If we recently calculated with this exact price, skip with a much longer timeout
-  if (lastCalculatedTimestamp[symbol] && 
-      Math.abs(Date.now() - lastCalculatedTimestamp[symbol]) < 60000) { // Increased to 60 seconds (1 minute)
-    console.log('[ONE-TIME-CALC] Skipping duplicate calculation - last calculation was less than 60 seconds ago');
     return;
   }
   
@@ -74,11 +130,12 @@ function handlePriceUpdate(event: CustomEvent) {
     triggerCalculation(symbol, price);
   }, 800);
   
-  console.log('[ONE-TIME-CALC] Scheduling single calculation');
+  console.log('[ONE-TIME-CALC] Scheduling single calculation after price fetch');
 }
 
 /**
  * Trigger the actual calculation and dispatch appropriate events
+ * With the redesigned system, we also track the price we calculated with
  * @param symbol Asset symbol
  * @param price Current price
  */
@@ -101,8 +158,9 @@ function triggerCalculation(symbol: string, price: number) {
   console.log('==================================================');
   console.log(`🔄 CALCULATION HAPPENING NOW - PRICE: ${price}`);
   
-  // Store when we last calculated for this symbol
+  // Store when we last calculated for this symbol and the price we used
   lastCalculatedTimestamp[symbol] = Date.now();
+  lastCalculatedPrice[symbol] = price;
   
   // Trigger the actual calculation
   const calculateEvent = new CustomEvent('calculate-signals', {
@@ -119,6 +177,8 @@ function triggerCalculation(symbol: string, price: number) {
 
 /**
  * Mark the current calculation as complete and process any pending updates
+ * With the redesigned system, we only process pending calculations if they 
+ * were explicitly triggered by a price fetch completed event or manual calculation
  * @param symbol Asset symbol that was calculated
  */
 function finishCalculation(symbol: string) {
@@ -127,43 +187,48 @@ function finishCalculation(symbol: string) {
   
   // Dispatch a calculation-completed event for UI feedback
   const completeEvent = new CustomEvent(CALCULATION_COMPLETED_EVENT, {
-    detail: { symbol, timestamp: Date.now() }
+    detail: { 
+      symbol, 
+      timestamp: Date.now(),
+      price: lastCalculatedPrice[symbol]
+    }
   });
   window.dispatchEvent(completeEvent);
   
   console.log('[ONE-TIME-CALC] Calculation completed');
   
-  // Check if we have any pending calculations
-  if (Object.keys(pendingCalculations).length > 0) {
-    // Take the oldest pending calculation
-    const nextSymbol = Object.keys(pendingCalculations)[0];
-    const nextCalculation = pendingCalculations[nextSymbol];
-    
-    // Remove it from pending list
-    delete pendingCalculations[nextSymbol];
-    
-    // Schedule it
-    setTimeout(() => {
-      triggerCalculation(nextSymbol, nextCalculation.price);
-    }, 500);
-  }
+  // For now, don't automatically process pending calculations
+  // Only calculate again when the next price fetch occurs
+  // or when the user manually requests a calculation
 }
 
 /**
  * Manually trigger a calculation for a specific symbol and price
- * This can be called from a UI button or other user action
+ * This is explicitly called when the user clicks the "Calculate now" button
  * @param symbol Asset symbol
  * @param price Current price
  */
 export function triggerManualCalculation(symbol: string, price: number) {
   console.log(`[ONE-TIME-CALC] Manual calculation requested for ${symbol} at $${price}`);
+  
+  // Clear any existing calculation info to force a new one
+  delete lastCalculatedPrice[symbol];
+  
+  // Dispatch a special event so the system knows this was manually requested
+  const manualEvent = new CustomEvent('manual-calculation-requested', {
+    detail: { symbol, price }
+  });
+  window.dispatchEvent(manualEvent);
+  
+  // Bypass all the normal checks and force a calculation
   triggerCalculation(symbol, price);
 }
 
 // Export event names for components to listen for
 export const CalculationEvents = {
   STARTED: CALCULATION_STARTED_EVENT,
-  COMPLETED: CALCULATION_COMPLETED_EVENT
+  COMPLETED: CALCULATION_COMPLETED_EVENT,
+  PRICE_FETCH_COMPLETED: PRICE_FETCH_COMPLETED
 };
 
 /**
@@ -172,6 +237,7 @@ export const CalculationEvents = {
  * @param price Current price
  */
 export function forceCalculation(symbol: string, price: number) {
+  // This is the same as a manual trigger by the user
   triggerManualCalculation(symbol, price);
 }
 
