@@ -181,11 +181,12 @@ export default function AdvancedSignalDashboard({
         const seconds = parseInt(countdown.split(':')[1]);
         
         // Check if we're in the fetching window (last 5 seconds)
-        if (seconds <= 5) {
-          setIsCalculating(true);
+        if (seconds <= 5 && countdown.startsWith("0:")) {
+          if (!isFetching) {
+            isFetching = true;
+          }
         } else if (isFetching && seconds > 5) {
-          // We've moved past the fetching window, reset the calculating flag
-          setIsCalculating(false);
+          // We've moved past the fetching window, reset the fetching flag
           isFetching = false;
         }
       });
