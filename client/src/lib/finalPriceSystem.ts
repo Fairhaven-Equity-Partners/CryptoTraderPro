@@ -14,7 +14,7 @@ import { TimeFrame } from './advancedSignals';
 import { PriceEvent } from '../types';
 
 // Configuration
-const DEFAULT_REFRESH_INTERVAL = 420; // 7 minutes in seconds - increased to reduce calculation frequency
+const DEFAULT_REFRESH_INTERVAL = 120; // 2 minutes in seconds - better balance between updates and stability
 const PREFETCH_OFFSET = 5; // Fetch price 5 seconds before countdown ends
 const CHECK_INTERVAL = 10; // Check every 10 seconds - reduced log frequency
 

@@ -164,8 +164,20 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
-  // Add back placeholder state for display but without actual functionality
-  const formattedTimer = "10:00";
+  // Use a real timer connected to the price system
+  const [formattedTimer, setFormattedTimer] = useState("2:00");
+  
+  // Set up the timer update
+  useEffect(() => {
+    // Update the timer display from the price system
+    const timerInterval = setInterval(() => {
+      import('../lib/finalPriceSystem').then(module => {
+        setFormattedTimer(module.getFormattedCountdown());
+      });
+    }, 1000);
+    
+    return () => clearInterval(timerInterval);
+  }, []);
   
   // Get toast for notifications
   const { toast } = useToast();
@@ -1764,7 +1776,7 @@ export default function AdvancedSignalDashboard({
               ) : (
                 <div className="text-xs flex items-center">
                   <span className="text-green-500 font-bold">{formatCurrency(assetPrice)}</span>
-                  <span className="ml-3 text-neutral-400">Next: <span className="font-mono">{formattedTimer}</span></span>
+                  <span className="ml-3 text-neutral-400">Next: <span className="font-mono text-green-400">{formattedTimer}</span></span>
                 </div>
               )}
             </div>
