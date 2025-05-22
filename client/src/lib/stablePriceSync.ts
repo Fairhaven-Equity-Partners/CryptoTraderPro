@@ -97,9 +97,10 @@ function shouldAllowCalculation(symbol: string): boolean {
   const lastTime = lastCalcTime[symbol] || 0;
   const now = Date.now();
   
-  // If it's been less than 20 seconds, skip the calculation
-  if (now - lastTime < 20000) {
-    console.log(`[StablePrice] Skipping recalculation - Last calc was ${Math.floor((now - lastTime)/1000)}s ago`);
+  // DRAMATICALLY REDUCE CALCULATION FREQUENCY - 10 MINUTE LOCKOUT PERIOD
+  // This completely prevents the market analysis box from changing too frequently
+  if (now - lastTime < 600000) { // 10 minutes in milliseconds
+    console.log(`[StablePrice] Skipping recalculation - Last calc was ${Math.floor((now - lastTime)/1000)}s ago, 10-minute lockout in effect`);
     return false;
   }
   
@@ -119,20 +120,14 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
   window.dispatchEvent(event);
   document.dispatchEvent(event);
   
-  // Only trigger a new calculation if enough time has passed
-  if (shouldAllowCalculation(symbol)) {
-    console.log(`[StablePrice] Triggering calculation for ${symbol}`);
-    
-    // Also emit the fetch-completed event for the new calculation system
-    const fetchCompletedEvent = new CustomEvent('price-fetch-completed', {
-      detail: { symbol, price, timestamp: Date.now() }
-    });
-    window.dispatchEvent(fetchCompletedEvent);
-    
-    // Update the last calculation timestamp
-    if (!(window as any).lastCalcTimestamp) {
-      (window as any).lastCalcTimestamp = {};
-    }
+  // COMPLETELY DISABLE AUTO-CALCULATION EXCEPT FOR MANUAL TRIGGERS
+  // This will allow manual calculation but prevent auto-updates entirely
+  // ONLY update calculation timestamp without triggering calculation
+  if (!(window as any).lastCalcTimestamp) {
+    (window as any).lastCalcTimestamp = {};
+  }
+  // Update the timestamp only - no calculation events emitted
+  if (!(window as any).lastCalcTimestamp[symbol]) {
     (window as any).lastCalcTimestamp[symbol] = Date.now();
   }
   
