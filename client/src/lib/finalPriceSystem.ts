@@ -9,59 +9,50 @@
 
 import { fetchAssetBySymbol } from './api';
 
-// Global state
-let globalState = {
-  // Last time we fetched price data
-  lastFetchTime: Date.now(),
-  
-  // Next scheduled fetch time
-  nextFetchTime: Date.now() + 180000, // 3 minutes from now
-  
-  // Global timer that manages fetches
-  fetchTimer: null as NodeJS.Timeout | null,
-  
-  // Whether a fetch is currently in progress
-  fetchInProgress: false,
-  
-  // Symbols that are actively being tracked
-  activeSymbols: new Set<string>(),
-  
-  // Cache of latest prices
-  priceCache: new Map<string, { price: number, timestamp: number }>()
-};
-
-// Constants
+// Constants for improved readability and maintainability
 const REFRESH_INTERVAL = 180000; // Exactly 3 minutes in milliseconds
 const CALCULATION_DEBOUNCE = 180000; // Only allow calculations every 3 minutes
+const CHECK_INTERVAL = 5000; // Check refresh status every 5 seconds
+const PREFETCH_THRESHOLD = 5000; // Start fetching 5 seconds early
 
-// Last time we performed calculations for each symbol
-const lastCalculationTimes = new Map<string, number>();
+// More structured state management
+const priceSystem = {
+  timing: {
+    lastFetchTime: Date.now(),
+    nextFetchTime: Date.now() + REFRESH_INTERVAL,
+  },
+  status: {
+    fetchInProgress: false,
+    fetchTimer: null as NodeJS.Timeout | null,
+  },
+  data: {
+    activeSymbols: new Set<string>(),
+    priceCache: new Map<string, { price: number, timestamp: number }>(),
+    lastCalculationTimes: new Map<string, number>(),
+  }
+};
 
 /**
  * Check if a symbol needs calculation based on the 3-minute rule
  */
 export function shouldCalculate(symbol: string): boolean {
   const now = Date.now();
-  const lastCalcTime = lastCalculationTimes.get(symbol) || 0;
-  const timeSinceLastCalc = now - lastCalcTime;
-  
-  // Only allow calculation if at least 3 minutes have passed since last calculation
-  return timeSinceLastCalc >= CALCULATION_DEBOUNCE;
+  const lastCalcTime = priceSystem.data.lastCalculationTimes.get(symbol) || 0;
+  return (now - lastCalcTime) >= CALCULATION_DEBOUNCE;
 }
 
 /**
  * Mark a symbol as having been calculated
  */
 export function markCalculationPerformed(symbol: string): void {
-  lastCalculationTimes.set(symbol, Date.now());
+  priceSystem.data.lastCalculationTimes.set(symbol, Date.now());
 }
 
 /**
- * Get time remaining until the next price refresh
+ * Get time remaining until the next price refresh in seconds
  */
 export function getSecondsUntilNextRefresh(): number {
-  const now = Date.now();
-  const timeUntilRefresh = Math.max(0, globalState.nextFetchTime - now);
+  const timeUntilRefresh = Math.max(0, priceSystem.timing.nextFetchTime - Date.now());
   return Math.floor(timeUntilRefresh / 1000);
 }
 
@@ -79,51 +70,54 @@ export function getFormattedCountdown(): string {
  * Fetch prices for all active symbols
  */
 async function fetchAllPrices() {
-  if (globalState.fetchInProgress) return;
+  if (priceSystem.status.fetchInProgress) return;
   
   try {
-    globalState.fetchInProgress = true;
+    priceSystem.status.fetchInProgress = true;
     
     // Update timing information
     const now = Date.now();
-    globalState.lastFetchTime = now;
-    globalState.nextFetchTime = now + REFRESH_INTERVAL;
+    priceSystem.timing.lastFetchTime = now;
+    priceSystem.timing.nextFetchTime = now + REFRESH_INTERVAL;
     
-    console.log(`[FinalPriceSystem] 3-MINUTE MARK - Fetching prices for ${globalState.activeSymbols.size} symbols`);
+    console.log(`[FinalPriceSystem] 3-MINUTE MARK - Fetching prices for ${priceSystem.data.activeSymbols.size} symbols`);
     
     // Fetch all prices in parallel
-    const symbols = Array.from(globalState.activeSymbols);
-    const fetchPromises = symbols.map(async (symbol) => {
-      try {
-        const data = await fetchAssetBySymbol(symbol);
-        if (data && data.price) {
-          // Update cache
-          globalState.priceCache.set(symbol, {
-            price: data.price,
-            timestamp: now
-          });
-          
-          // Broadcast the update
-          broadcastPriceUpdate(symbol, data.price);
-          
-          return { symbol, price: data.price, success: true };
-        }
-        return { symbol, success: false };
-      } catch (error) {
-        console.error(`Error fetching ${symbol}:`, error);
-        return { symbol, success: false };
-      }
-    });
-    
-    // Wait for all fetches to complete
-    await Promise.all(fetchPromises);
+    const symbols = Array.from(priceSystem.data.activeSymbols);
+    await Promise.all(symbols.map(fetchAndUpdateSymbol));
     
     // Notify that the 3-minute refresh has occurred
     broadcastRefreshEvent();
   } catch (error) {
     console.error('Error in fetchAllPrices:', error);
   } finally {
-    globalState.fetchInProgress = false;
+    priceSystem.status.fetchInProgress = false;
+  }
+}
+
+/**
+ * Fetch and update a single symbol
+ */
+async function fetchAndUpdateSymbol(symbol: string) {
+  try {
+    const data = await fetchAssetBySymbol(symbol);
+    const now = Date.now();
+    
+    if (data && data.price) {
+      // Update cache
+      priceSystem.data.priceCache.set(symbol, {
+        price: data.price,
+        timestamp: now
+      });
+      
+      // Broadcast the update
+      broadcastPriceUpdate(symbol, data.price);
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error(`Error fetching ${symbol}:`, error);
+    return false;
   }
 }
 
@@ -131,37 +125,28 @@ async function fetchAllPrices() {
  * Broadcast a price update event
  */
 function broadcastPriceUpdate(symbol: string, price: number) {
-  const event = new CustomEvent('final-price-update', {
+  window.dispatchEvent(new CustomEvent('final-price-update', {
     detail: { symbol, price, timestamp: Date.now() }
-  });
-  window.dispatchEvent(event);
+  }));
+  
   console.log('===================================================');
   console.log(`💰 PRICE UPDATE: ${symbol} = ${price} 💰`);
   console.log(`💰 CALCULATIONS COMING SOON 💰`);
-  console.log('===================================================');
 }
 
 /**
  * Broadcast that the 3-minute refresh cycle has completed
- * This will trigger ONE calculation across the system
  */
 function broadcastRefreshEvent() {
-  // Super simple event with no complex data - avoids errors
-  console.log('⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰');
   console.log('⏰ 3-MINUTE CYCLE COMPLETE - TRIGGERING CALCULATIONS ⏰');
-  console.log('⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰⏰');
-  
-  // Create and dispatch a very simple event
-  const event = new CustomEvent('final-price-refresh');
-  window.dispatchEvent(event);
+  window.dispatchEvent(new CustomEvent('final-price-refresh'));
 }
 
 /**
  * Start tracking a symbol and fetch initial price
  */
 export async function startTracking(symbol: string): Promise<number> {
-  // Add to active symbols
-  globalState.activeSymbols.add(symbol);
+  priceSystem.data.activeSymbols.add(symbol);
   console.log(`[FinalPriceSystem] Started tracking ${symbol}`);
   
   // Start the global timer if needed
@@ -175,14 +160,13 @@ export async function startTracking(symbol: string): Promise<number> {
  * Stop tracking a symbol
  */
 export function stopTracking(symbol: string) {
-  globalState.activeSymbols.delete(symbol);
+  priceSystem.data.activeSymbols.delete(symbol);
   console.log(`[FinalPriceSystem] Stopped tracking ${symbol}`);
   
   // Stop the timer if no more symbols are being tracked
-  if (globalState.activeSymbols.size === 0 && globalState.fetchTimer) {
-    clearInterval(globalState.fetchTimer);
-    globalState.fetchTimer = null;
-    console.log(`[FinalPriceSystem] Stopped global timer (no active symbols)`);
+  if (priceSystem.data.activeSymbols.size === 0 && priceSystem.status.fetchTimer) {
+    clearInterval(priceSystem.status.fetchTimer);
+    priceSystem.status.fetchTimer = null;
   }
 }
 
@@ -190,23 +174,22 @@ export function stopTracking(symbol: string) {
  * Start the global fetch timer
  */
 function startGlobalTimer() {
-  if (globalState.fetchTimer) return;
+  if (priceSystem.status.fetchTimer) return;
   
   console.log(`[FinalPriceSystem] Starting global 3-minute timer`);
   
-  // Check every minute if we need to fetch
-  globalState.fetchTimer = setInterval(() => {
-    const now = Date.now();
-    const timeUntilNextFetch = globalState.nextFetchTime - now;
+  // Check frequently if we need to fetch
+  priceSystem.status.fetchTimer = setInterval(() => {
+    const timeUntilNextFetch = priceSystem.timing.nextFetchTime - Date.now();
     
-    // Start fetching 5 seconds before the actual time to reduce perceived delay
-    if (timeUntilNextFetch <= 5000) {
+    // Start fetching early to reduce perceived delay
+    if (timeUntilNextFetch <= PREFETCH_THRESHOLD) {
       console.log(`[FinalPriceSystem] Starting fetch early to reduce delay`);
       fetchAllPrices();
     } else {
       console.log(`[FinalPriceSystem] Next fetch in ${Math.ceil(timeUntilNextFetch/1000)}s`);
     }
-  }, 5000); // Check more frequently to reduce delay
+  }, CHECK_INTERVAL); 
 }
 
 /**
@@ -214,10 +197,10 @@ function startGlobalTimer() {
  */
 export async function getCurrentPrice(symbol: string): Promise<number> {
   // Check if we have the symbol in cache
-  const cached = globalState.priceCache.get(symbol);
+  const cached = priceSystem.data.priceCache.get(symbol);
   const now = Date.now();
   
-  // If we have a recent price (less than 3 minutes old), use it
+  // If we have a recent price, use it
   if (cached && (now - cached.timestamp) < REFRESH_INTERVAL) {
     console.log(`[FinalPriceSystem] Using cached price for ${symbol}: ${cached.price}`);
     return cached.price;
@@ -228,40 +211,25 @@ export async function getCurrentPrice(symbol: string): Promise<number> {
     console.log(`[FinalPriceSystem] Fetching fresh price for ${symbol}`);
     const data = await fetchAssetBySymbol(symbol);
     
-    if (data && typeof data.lastPrice === 'number') {
-      const price = data.lastPrice;
+    // Handle both price and lastPrice fields for compatibility
+    let price: number | null = null;
+    
+    if (data?.lastPrice !== undefined && typeof data.lastPrice === 'number') {
+      price = data.lastPrice;
+    } else if (data?.price !== undefined && typeof data.price === 'number') {
+      price = data.price;
+    }
+    
+    if (price !== null) {
       console.log(`[FinalPriceSystem] Successfully fetched price for ${symbol}: ${price}`);
       
       // Update cache with the new price
-      globalState.priceCache.set(symbol, {
-        price: price,
-        timestamp: now
-      });
+      priceSystem.data.priceCache.set(symbol, { price, timestamp: now });
       
       // Update timing information for initial fetch
       if (!cached) {
-        globalState.lastFetchTime = now;
-        globalState.nextFetchTime = now + REFRESH_INTERVAL;
-      }
-      
-      // Broadcast this new price immediately
-      broadcastPriceUpdate(symbol, price);
-      
-      return price;
-    } else if (data && typeof data.price === 'number') {
-      const price = data.price;
-      console.log(`[FinalPriceSystem] Successfully fetched price for ${symbol}: ${price}`);
-      
-      // Update cache with the new price
-      globalState.priceCache.set(symbol, {
-        price: price,
-        timestamp: now
-      });
-      
-      // Update timing information for initial fetch
-      if (!cached) {
-        globalState.lastFetchTime = now;
-        globalState.nextFetchTime = now + REFRESH_INTERVAL;
+        priceSystem.timing.lastFetchTime = now;
+        priceSystem.timing.nextFetchTime = now + REFRESH_INTERVAL;
       }
       
       // Broadcast this new price immediately
@@ -273,41 +241,31 @@ export async function getCurrentPrice(symbol: string): Promise<number> {
     // If fetch fails but we have a cached price, use it regardless of age
     if (cached) return cached.price;
     
-    // No price found, try a direct API call to get the current market price
-    try {
-      console.log(`[FinalPriceSystem] Performing direct market price lookup for ${symbol}`);
-      // Use CoinGecko's public API for Bitcoin price (no API key needed)
-      const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-      const data = await response.json();
-      
-      if (data && data.bitcoin && data.bitcoin.usd) {
-        const marketPrice = data.bitcoin.usd;
-        console.log(`[FinalPriceSystem] Got real market price for Bitcoin: ${marketPrice}`);
+    // Try CoinGecko as fallback for Bitcoin
+    if (symbol === 'BTC/USDT') {
+      try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+        const cgData = await response.json();
         
-        // Update cache with this real price
-        globalState.priceCache.set(symbol, {
-          price: marketPrice,
-          timestamp: now
-        });
-        
-        // Broadcast this real market price
-        broadcastPriceUpdate(symbol, marketPrice);
-        
-        return marketPrice;
+        if (cgData?.bitcoin?.usd) {
+          const marketPrice = cgData.bitcoin.usd;
+          console.log(`[FinalPriceSystem] Got real market price for Bitcoin: ${marketPrice}`);
+          
+          priceSystem.data.priceCache.set(symbol, { price: marketPrice, timestamp: now });
+          broadcastPriceUpdate(symbol, marketPrice);
+          
+          return marketPrice;
+        }
+      } catch (cgError) {
+        console.error("Error fetching from CoinGecko:", cgError);
       }
-    } catch (cgError) {
-      console.error("Error fetching from CoinGecko:", cgError);
     }
     
-    // Fallback in case all APIs fail, but use a more reasonable approximation
-    return symbol === 'BTC/USDT' ? 63000 : 
-           symbol === 'ETH/USDT' ? 3000 : 0;
+    // Fallback values if all else fails
+    return symbol === 'BTC/USDT' ? 63000 : symbol === 'ETH/USDT' ? 3000 : 0;
   } catch (error) {
     console.error(`Error fetching price for ${symbol}:`, error);
-    // Return cached price if available, otherwise fallback
-    return cached ? cached.price : 
-           (symbol === 'BTC/USDT' ? 63000 : 
-            symbol === 'ETH/USDT' ? 3000 : 0);
+    return cached?.price || (symbol === 'BTC/USDT' ? 63000 : symbol === 'ETH/USDT' ? 3000 : 0);
   }
 }
 
@@ -320,31 +278,19 @@ export function subscribeToPriceUpdates(
 ): () => void {
   const handler = (event: Event) => {
     const detail = (event as CustomEvent).detail;
-    if (detail && detail.symbol === symbol) {
+    if (detail?.symbol === symbol) {
       callback(detail.price);
     }
   };
   
   window.addEventListener('final-price-update', handler);
-  
-  return () => {
-    window.removeEventListener('final-price-update', handler);
-  };
+  return () => window.removeEventListener('final-price-update', handler);
 }
 
 /**
  * Subscribe to the 3-minute refresh cycle events
  */
-export function subscribeToRefreshCycle(
-  callback: () => void
-): () => void {
-  const handler = () => {
-    callback();
-  };
-  
-  window.addEventListener('final-price-refresh', handler);
-  
-  return () => {
-    window.removeEventListener('final-price-refresh', handler);
-  };
+export function subscribeToRefreshCycle(callback: () => void): () => void {
+  window.addEventListener('final-price-refresh', callback);
+  return () => window.removeEventListener('final-price-refresh', callback);
 }

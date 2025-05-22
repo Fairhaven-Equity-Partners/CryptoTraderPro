@@ -27,6 +27,15 @@ export type IndicatorSignal = 'BUY' | 'SELL' | 'NEUTRAL';
 
 export type IndicatorStrength = 'WEAK' | 'MODERATE' | 'STRONG' | 'HIGH' | 'LOW' | null;
 
+// Pattern Formation Interface
+export interface PatternFormation {
+  name: string;
+  reliability: number; // 0-100
+  direction: 'bullish' | 'bearish' | 'neutral';
+  priceTarget?: number;
+  description?: string;
+}
+
 export interface Indicator {
   name: string;
   category: IndicatorCategory;
@@ -46,6 +55,38 @@ export interface SignalSummaryData {
   direction: SignalDirection;
   strength: number; // 0-100
   indicators: Record<IndicatorCategory, Indicator[]>;
+}
+
+// Advanced Signal Interface for the dashboard
+export interface AdvancedSignal {
+  direction: SignalDirection;
+  confidence: number; // 0-100
+  entryPrice: number;
+  stopLoss?: number;
+  takeProfit?: number;
+  timeframe: TimeFrame;
+  timestamp: number;
+  macroScore?: number; // 0-100
+  successProbability?: number; // 0-100
+  indicators?: Indicator[];
+  patternFormations?: PatternFormation[];
+  supportLevels?: number[];
+  resistanceLevels?: number[];
+  expectedDuration?: string;
+  riskRewardRatio?: number;
+}
+
+// Trade recommendation interface
+export interface TradeRecommendation {
+  direction: SignalDirection;
+  confidence: number;
+  entry: number;
+  stopLoss: number;
+  takeProfits: number[];
+  leverage: number;
+  timeframe: TimeFrame;
+  summary: string;
+  keyIndicators: string[];
 }
 
 export interface Alert {
@@ -96,10 +137,23 @@ export interface PriceEvent {
   timestamp: number;
 }
 
+// Technical indicator calculation utility functions
+export interface TechnicalIndicators {
+  calculateMACD: (data: ChartData[], fastPeriod?: number, slowPeriod?: number, signalPeriod?: number) => any;
+  calculateRSI: (data: ChartData[], period?: number) => any;
+  calculateStochastics: (data: ChartData[], kPeriod?: number, dPeriod?: number, slowing?: number) => any;
+  calculateBollingerBands: (data: ChartData[], period?: number, stdDev?: number) => any;
+  calculateEMA: (data: ChartData[], period?: number) => any;
+}
+
 // Global window extensions
 declare global {
   interface Window {
     latestPriceEvents: Record<string, PriceEvent>;
     syncGlobalPrice: (symbol: string, price: number, timestamp?: number) => number;
+    technicalIndicators?: TechnicalIndicators;
+    signalStabilizationSystem?: any;
+    generateSupportLevels?: (price: number, data: ChartData[]) => number[];
+    generateResistanceLevels?: (price: number, data: ChartData[]) => number[];
   }
 }

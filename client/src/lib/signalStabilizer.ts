@@ -10,30 +10,48 @@ import { TimeFrame } from '../types';
 // Define the signal direction types
 export type SignalDirection = 'LONG' | 'SHORT' | 'NEUTRAL';
 
+// Constants for signal stabilization
+const WEEKLY_CONFIDENCE_THRESHOLD = 85;  // Minimum confidence to change weekly signal
+const MONTHLY_CONFIDENCE_THRESHOLD = 90; // Minimum confidence to change monthly signal
+const WEEKLY_MAX_CHANGE = 10;            // Maximum confidence change for weekly signals
+const MONTHLY_MAX_CHANGE = 5;            // Maximum confidence change for monthly signals
+const WEEKLY_ADJUSTMENT = 5;             // Standard adjustment for weekly signals
+const MONTHLY_ADJUSTMENT = 2;            // Standard adjustment for monthly signals
+const MIN_CONFIDENCE = 50;               // Minimum confidence level
+const MAX_CONFIDENCE = 95;               // Maximum confidence level
+
+// Signal stabilization configuration by timeframe
+const timeframeConfig = {
+  '1w': {
+    confidenceThreshold: WEEKLY_CONFIDENCE_THRESHOLD,
+    maxChange: WEEKLY_MAX_CHANGE,
+    adjustment: WEEKLY_ADJUSTMENT
+  },
+  '1M': {
+    confidenceThreshold: MONTHLY_CONFIDENCE_THRESHOLD,
+    maxChange: MONTHLY_MAX_CHANGE,
+    adjustment: MONTHLY_ADJUSTMENT
+  }
+};
+
 /**
- * Stabilize a weekly timeframe signal
- * 
- * Weekly signals should not flip direction unless there's very strong evidence
- * (85%+ confidence in the new direction)
- * 
- * @param previousDirection Previous signal direction
- * @param newDirection New calculated direction
- * @param previousConfidence Previous confidence level (0-100)
- * @param newConfidence New calculated confidence level (0-100)
- * @returns Stabilized direction and confidence
+ * Stabilize a signal based on its timeframe configuration
  */
-export function stabilizeWeeklySignal(
+function stabilizeSignal(
+  timeframe: '1w' | '1M',
   previousDirection: SignalDirection,
   newDirection: SignalDirection,
   previousConfidence: number,
   newConfidence: number
 ): { direction: SignalDirection, confidence: number } {
+  // Get configuration for this timeframe
+  const config = timeframeConfig[timeframe];
   
-  // If directions match, only allow small confidence changes (max 10%)
+  // If directions match, only allow small confidence changes
   if (previousDirection === newDirection) {
     // Limit confidence changes to prevent sudden jumps
-    if (Math.abs(previousConfidence - newConfidence) > 10) {
-      const adjustment = newConfidence > previousConfidence ? 5 : -5;
+    if (Math.abs(previousConfidence - newConfidence) > config.maxChange) {
+      const adjustment = newConfidence > previousConfidence ? config.adjustment : -config.adjustment;
       return {
         direction: newDirection,
         confidence: previousConfidence + adjustment
@@ -44,77 +62,25 @@ export function stabilizeWeeklySignal(
     return { direction: newDirection, confidence: newConfidence };
   }
   
-  // If the new direction is different, require high confidence (85%+)
+  // If the new direction is different, require high confidence
   // for it to override the previous direction
-  if (newConfidence >= 85) {
-    console.log(`Weekly signal changed from ${previousDirection} to ${newDirection} with high confidence (${newConfidence}%)`);
+  if (newConfidence >= config.confidenceThreshold) {
+    console.log(`${timeframe} signal changed from ${previousDirection} to ${newDirection} with high confidence (${newConfidence}%)`);
     return { direction: newDirection, confidence: newConfidence };
   }
   
   // Not enough confidence to change direction
   // Keep previous direction but allow slight confidence adjustment
-  console.log(`Weekly signal direction change rejected (${previousDirection} -> ${newDirection}): insufficient confidence (${newConfidence}%)`);
-  const adjustment = newConfidence > previousConfidence ? 5 : -5;
+  console.log(`${timeframe} signal direction change rejected (${previousDirection} -> ${newDirection}): insufficient confidence (${newConfidence}%)`);
+  const adjustment = newConfidence > previousConfidence ? config.adjustment : -config.adjustment;
   return {
     direction: previousDirection,
-    confidence: Math.max(50, Math.min(95, previousConfidence + adjustment))
+    confidence: Math.max(MIN_CONFIDENCE, Math.min(MAX_CONFIDENCE, previousConfidence + adjustment))
   };
 }
 
-/**
- * Stabilize a monthly timeframe signal
- * 
- * Monthly signals should almost never flip direction on a single price update
- * unless there's extremely strong evidence (90%+ confidence)
- * 
- * @param previousDirection Previous signal direction
- * @param newDirection New calculated direction
- * @param previousConfidence Previous confidence level (0-100)
- * @param newConfidence New calculated confidence level (0-100)
- * @returns Stabilized direction and confidence
- */
-export function stabilizeMonthlySignal(
-  previousDirection: SignalDirection,
-  newDirection: SignalDirection,
-  previousConfidence: number,
-  newConfidence: number
-): { direction: SignalDirection, confidence: number } {
-  
-  // If directions match, only allow very small confidence changes (max 5%)
-  if (previousDirection === newDirection) {
-    // Limit confidence changes to prevent sudden jumps
-    if (Math.abs(previousConfidence - newConfidence) > 5) {
-      const adjustment = newConfidence > previousConfidence ? 2 : -2;
-      return {
-        direction: newDirection,
-        confidence: previousConfidence + adjustment
-      };
-    }
-    
-    // Directions match and confidence change is reasonable
-    return { direction: newDirection, confidence: newConfidence };
-  }
-  
-  // If the new direction is different, require extremely high confidence (90%+)
-  // for it to override the previous direction
-  if (newConfidence >= 90) {
-    console.log(`Monthly signal changed from ${previousDirection} to ${newDirection} with very high confidence (${newConfidence}%)`);
-    return { direction: newDirection, confidence: newConfidence };
-  }
-  
-  // Not enough confidence to change direction
-  // Keep previous direction but allow slight confidence adjustment
-  console.log(`Monthly signal direction change rejected (${previousDirection} -> ${newDirection}): insufficient confidence (${newConfidence}%)`);
-  const adjustment = newConfidence > previousConfidence ? 2 : -2;
-  return {
-    direction: previousDirection,
-    confidence: Math.max(50, Math.min(95, previousConfidence + adjustment))
-  };
-}
-
-// Tracking the most recent signals for each symbol and timeframe
-// This helps maintain stability over multiple price updates
-const signalHistory: Record<string, Record<TimeFrame, { direction: SignalDirection, confidence: number }>> = {};
+// Tracking the most recent signals for each symbol and timeframe using a Map for better performance
+const signalHistory = new Map<string, Map<TimeFrame, { direction: SignalDirection, confidence: number }>>();
 
 /**
  * Tracks and stabilizes signals for a given symbol and timeframe
@@ -131,48 +97,44 @@ export function getStabilizedSignal(
   newDirection: SignalDirection,
   newConfidence: number
 ): { direction: SignalDirection, confidence: number } {
-  
-  // Initialize signal history for this symbol if it doesn't exist
-  if (!signalHistory[symbol]) {
-    signalHistory[symbol] = {} as Record<TimeFrame, { direction: SignalDirection, confidence: number }>;
+  // Get or create symbol history
+  let symbolHistory = signalHistory.get(symbol);
+  if (!symbolHistory) {
+    symbolHistory = new Map();
+    signalHistory.set(symbol, symbolHistory);
   }
   
   // If this is the first signal for this timeframe, just store it
-  if (!signalHistory[symbol][timeframe]) {
+  const previousSignal = symbolHistory.get(timeframe);
+  if (!previousSignal) {
     const result = { direction: newDirection, confidence: newConfidence };
-    signalHistory[symbol][timeframe] = result;
+    symbolHistory.set(timeframe, result);
     return result;
   }
-  
-  // Get the previous signal
-  const previousSignal = signalHistory[symbol][timeframe];
   
   // Apply stabilization based on timeframe
   let stabilized: { direction: SignalDirection, confidence: number };
   
-  if (timeframe === '1w') {
-    // Stabilize weekly signals
-    stabilized = stabilizeWeeklySignal(
+  if (timeframe === '1w' || timeframe === '1M') {
+    // Use the stabilizeSignal function for weekly and monthly signals
+    stabilized = stabilizeSignal(
+      timeframe,
       previousSignal.direction,
       newDirection,
       previousSignal.confidence,
       newConfidence
     );
-  } else if (timeframe === '1M') {
-    // Stabilize monthly signals (even more strict)
-    stabilized = stabilizeMonthlySignal(
-      previousSignal.direction,
-      newDirection,
-      previousSignal.confidence,
-      newConfidence
-    );
+    
+    // Log before/after for monitoring
+    console.log(`Before ${timeframe} stabilization: ${newDirection} (${newConfidence}%)`);
+    console.log(`After ${timeframe} stabilization: ${stabilized.direction} (${stabilized.confidence}%)`);
   } else {
     // For other timeframes, just use the new values
     stabilized = { direction: newDirection, confidence: newConfidence };
   }
   
   // Update signal history
-  signalHistory[symbol][timeframe] = stabilized;
+  symbolHistory.set(timeframe, stabilized);
   
   return stabilized;
 }
