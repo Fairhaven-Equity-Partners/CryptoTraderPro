@@ -11,6 +11,7 @@ import Settings from "@/pages/Settings";
 import NavigationBar from "@/components/NavigationBar";
 import GlobalNotifications from "@/components/GlobalNotifications";
 import { AppTab } from "./types";
+import { disableAllAutoCalculations } from "./lib/disableAllAutoCalculations";
 
 function Router() {
   const [currentTab, setCurrentTab] = useState<AppTab['id']>('analysis');
@@ -34,12 +35,27 @@ function Router() {
 }
 
 function App() {
+  // Call the disableAllAutoCalculations function when the app loads
+  useEffect(() => {
+    // Completely disable all automatic calculations at startup
+    console.log('🛑 App initializing - disabling all auto-calculations 🛑');
+    disableAllAutoCalculations();
+    
+    // Also apply again after a short delay to catch any late initializations
+    const secondaryDisableTimer = setTimeout(() => {
+      console.log('🔒 Secondary disable pass for auto-calculations 🔒');
+      disableAllAutoCalculations();
+    }, 1000);
+    
+    return () => clearTimeout(secondaryDisableTimer);
+  }, []);
+  
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        {/* Hidden element to store live price data for calculations */}
-        <div id="live-price-data" style={{ display: 'none' }} />
+        {/* Hidden element to store live price data for calculations - MANUAL ONLY */}
+        <div id="live-price-data" style={{ display: 'none' }} data-calculation-mode="manual-only" />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>

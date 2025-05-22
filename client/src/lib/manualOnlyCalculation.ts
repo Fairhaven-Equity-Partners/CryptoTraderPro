@@ -1,113 +1,105 @@
 /**
- * Manual-Only Calculation System
+ * MANUAL-ONLY CALCULATION SYSTEM
  * 
- * A completely simplified calculation system with only two triggers:
- * 1. Manual calculation via the "Calculate Now" button
- * 2. First-time loading of the application
- * 
- * NO auto-calculations from price updates or any other automatic trigger
+ * This module provides a completely redesigned calculation system that:
+ * 1. ONLY allows calculations when explicitly triggered by the "Calculate Now" button
+ * 2. Completely blocks all auto-calculation attempts
+ * 3. Uses a secure token system to verify calculation requests
  */
 
-import { TimeFrame } from './advancedSignals';
+// Secure token that's only set when manually triggered
+let manualCalculationToken: string | null = null;
 
-// Simple tracking variables - minimal state
-let isCalculationInProgress = false;
-let lastCalculationTime: Record<string, number> = {};
+// Timestamp of last manual calculation
+let lastManualCalculationTime = 0;
 
-// Custom event names
-const CALCULATION_STARTED_EVENT = 'calculation-started';
-const CALCULATION_COMPLETED_EVENT = 'calculation-completed';
+// Flag to track if we're currently calculating
+let isManualCalculationInProgress = false;
 
 /**
- * Trigger a manual calculation for a specific asset
- * 
- * @param symbol The crypto symbol to calculate signals for
- * @param timeframe The specific timeframe to focus on
- * @param price The current price to use for calculation
- * @returns True if calculation was triggered, false if already in progress
+ * Generate a new manual calculation token
+ * This token is required to authorize any calculation
  */
-export function triggerManualCalculation(
-  symbol: string, 
-  timeframe: TimeFrame, 
-  price: number
-): boolean {
-  // Don't allow multiple calculations at once
-  if (isCalculationInProgress) {
-    console.log(`[MANUAL-CALC] Calculation already in progress for ${symbol}, please wait`);
+export function generateManualCalculationToken(): string {
+  // Generate a random token
+  const newToken = Math.random().toString(36).substring(2) + Date.now().toString(36);
+  
+  // Set the token globally
+  manualCalculationToken = newToken;
+  
+  // Record the time
+  lastManualCalculationTime = Date.now();
+  
+  console.log('[ManualCalc] New calculation token generated');
+  
+  return newToken;
+}
+
+/**
+ * Check if a calculation is allowed
+ * @param token The token to validate
+ * @returns True if calculation is allowed, false otherwise
+ */
+export function isCalculationAllowed(token?: string): boolean {
+  // If no token is provided, it's an auto-calculation attempt - block it
+  if (!token) {
+    console.log('[ManualCalc] Auto-calculation attempt blocked - no token provided');
     return false;
   }
   
-  console.log(`[MANUAL-CALC] Manual calculation triggered for ${symbol} (${timeframe}) at price ${price}`);
+  // If we're already calculating, block duplicate calculations
+  if (isManualCalculationInProgress) {
+    console.log('[ManualCalc] Calculation already in progress - blocked duplicate');
+    return false;
+  }
   
-  // Start the calculation process
-  isCalculationInProgress = true;
+  // Check if the token matches
+  if (token !== manualCalculationToken) {
+    console.log('[ManualCalc] Invalid calculation token - blocked unauthorized calculation');
+    return false;
+  }
   
-  // Dispatch calculation started event
-  const startEvent = new CustomEvent(CALCULATION_STARTED_EVENT, {
-    detail: { symbol, timeframe, price, timestamp: Date.now() }
-  });
-  window.dispatchEvent(startEvent);
-  
-  // Perform the calculation asynchronously
-  setTimeout(() => {
-    // The calculation itself happens elsewhere through event listeners
-    // This just makes sure we eventually mark it as complete
-    completeCalculation(symbol);
-  }, 10000); // 10 second safeguard timeout
-  
+  // Token is valid, allow calculation
+  console.log('[ManualCalc] Manual calculation approved with valid token');
   return true;
 }
 
 /**
- * Mark a calculation as complete
- * 
- * @param symbol The crypto symbol that was calculated
+ * Mark calculation as started
  */
-function completeCalculation(symbol: string) {
-  if (!isCalculationInProgress) {
-    return; // Already completed
+export function startManualCalculation(): void {
+  isManualCalculationInProgress = true;
+}
+
+/**
+ * Mark calculation as completed
+ */
+export function completeManualCalculation(): void {
+  isManualCalculationInProgress = false;
+  
+  // Clear the token to prevent reuse
+  manualCalculationToken = null;
+}
+
+/**
+ * Check if this is likely an auto-calculation attempt
+ * Uses heuristics to determine if calculations were triggered automatically
+ */
+export function isAutoCalculationAttempt(): boolean {
+  const timeFromLastManual = Date.now() - lastManualCalculationTime;
+  
+  // If we haven't had a manual calculation yet, then allow the first one
+  // (likely initial load of component)
+  if (lastManualCalculationTime === 0) {
+    return false;
   }
   
-  // Update last calculation time
-  lastCalculationTime[symbol] = Date.now();
+  // If it's been less than 3 seconds since the last manual calculation
+  // and we don't have a token, it's probably an auto-recalculation
+  if (timeFromLastManual < 3000 && manualCalculationToken === null) {
+    console.log('[ManualCalc] Detected auto-calculation attempt');
+    return true;
+  }
   
-  // Reset calculation status
-  isCalculationInProgress = false;
-  
-  // Dispatch calculation completed event
-  const completeEvent = new CustomEvent(CALCULATION_COMPLETED_EVENT, {
-    detail: { symbol, timestamp: Date.now() }
-  });
-  window.dispatchEvent(completeEvent);
-  
-  console.log(`[MANUAL-CALC] Calculation complete for ${symbol}`);
-}
-
-/**
- * Check if a calculation is currently in progress
- * 
- * @returns True if calculation is in progress, false otherwise
- */
-export function isCalculating(): boolean {
-  return isCalculationInProgress;
-}
-
-/**
- * Get the time of the last calculation for a specific symbol
- * 
- * @param symbol The crypto symbol to check
- * @returns Timestamp of last calculation, or 0 if never calculated
- */
-export function getLastCalculationTime(symbol: string): number {
-  return lastCalculationTime[symbol] || 0;
-}
-
-/**
- * Manually mark a calculation as complete
- * This is used by external components when they finish their calculations
- * 
- * @param symbol The crypto symbol that was calculated 
- */
-export function notifyCalculationComplete(symbol: string) {
-  completeCalculation(symbol);
+  return false;
 }
