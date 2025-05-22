@@ -145,3 +145,20 @@ export function markCalculationCompleted() {
   isCalculating = false;
   console.log('[ONE-TIME-CALC] Calculation completed');
 }
+
+/**
+ * Force a calculation even if one is already in progress
+ * This is used for the manual "Calculate Now" button
+ */
+export function forceCalculation(price: number) {
+  // Reset calculating flag to allow a new calculation
+  isCalculating = false;
+  calculatedSinceLastUpdate = false;
+  
+  // Update the current price
+  currentPrice = price;
+  
+  // Call the trigger calculation function
+  console.log(`[ONE-TIME-CALC] Force calculation with price: ${price}`);
+  triggerCalculation(price);
+}
