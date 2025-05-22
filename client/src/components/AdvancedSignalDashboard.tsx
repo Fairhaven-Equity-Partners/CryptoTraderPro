@@ -117,7 +117,6 @@ const indicatorNames = {
 interface AdvancedSignalDashboardProps {
   symbol: string;
   onTimeframeSelect?: (timeframe: TimeFrame) => void;
-  autoRun?: boolean;
   onAnalysisComplete?: () => void;
 }
 
@@ -125,7 +124,6 @@ interface AdvancedSignalDashboardProps {
 export default function AdvancedSignalDashboard({ 
   symbol, 
   onTimeframeSelect,
-  autoRun = false,
   onAnalysisComplete
 }: AdvancedSignalDashboardProps) {
   // State for the selected timeframe
@@ -156,15 +154,6 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
-  const [nextRefreshIn, setNextRefreshIn] = useState<number>(180); // 3-minute refresh interval
-  
-  // Refs to track calculation status
-  const lastSymbolRef = useRef<string>(symbol);
-  const lastCalculationRef = useRef<number>(0);
-  const lastCalculationTimeRef = useRef<number>(0);
-  const calculationTriggeredRef = useRef<boolean>(false);
-  const recalcIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const calculationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   // Get toast for notifications
   const { toast } = useToast();
@@ -179,136 +168,47 @@ export default function AdvancedSignalDashboard({
   // Reference to track price consistently
   const priceRef = useRef<number>(0); // Will be updated with real price
   
-  // FIXED PRICE SYSTEM: Single source of truth (updates every 3 minutes)
-  // No separate current/fetched price concept anymore
+  // Current asset price
   const [assetPrice, setAssetPrice] = useState<number>(
     symbol === 'BTC/USDT' ? 108181 : 
     symbol === 'ETH/USDT' ? 2559 : 
     symbol === 'SOL/USDT' ? 171 : 0
   );
   
-  // Additional global flag to prevent excessive API calls for calculations
-  const [calculationsLocked, setCalculationsLocked] = useState<boolean>(true);
-  
-  // Track last calculation time to prevent excessive recalculations
-  const [lastCalcTime, setLastCalcTime] = useState<number>(Date.now());
-  
-  // State for countdown timer display
-  const [formattedTimer, setFormattedTimer] = useState<string>("3:00");
-  
-  // AUTOMATIC PRICE UPDATES + ONE-TIME CALCULATION SYSTEM
-  // Calculations happen exactly ONCE after each 3-minute price update
+  // Setup price subscription
   useEffect(() => {
-    console.log(`[AUTO-CALC] Setting up price and calculation system for ${symbol}`);
-    
-    // First: Set up price updates using finalPriceSystem
-    const setupPriceFeed = async () => {
+    // Import the finalPriceSystem module and subscribe to price updates
+    const setupPriceSubscription = async () => {
       try {
-        // Import needed modules
         const priceModule = await import('../lib/finalPriceSystem');
-        const calcModule = await import('../lib/oneTimeCalculation');
-        
-        // Initialize the one-time calculation system
-        calcModule.initOneTimeCalculation();
-        
-        // Start a countdown timer that updates every second
-        const timerInterval = setInterval(() => {
-          setFormattedTimer(priceModule.getFormattedCountdown());
-        }, 1000);
-        
-        console.log(`[AUTO-CALC] Getting initial price for ${symbol}`);
         
         // Get initial price
-        const initialPrice = await priceModule.startTracking(symbol);
+        const initialPrice = await priceModule.fetchLatestPrice(symbol);
         if (initialPrice > 0) {
-          console.log(`[AUTO-CALC] Initial price for ${symbol}: ${initialPrice}`);
           setAssetPrice(initialPrice);
           priceRef.current = initialPrice;
         }
         
-        // Subscribe to price updates (just updates the displayed price)
+        // Subscribe to price updates
         const unsubscribePriceUpdates = priceModule.subscribeToPriceUpdates(symbol, (price) => {
           if (price <= 0) return;
-          console.log(`[AUTO-CALC] Price update received: ${symbol} = ${price}`);
           setAssetPrice(price);
           priceRef.current = price;
         });
         
-        // Subscribe to the one-time calculation events
-        const unsubscribeCalc = calcModule.subscribeToOneTimeCalculation((price) => {
-          console.log(`[AUTO-CALC] One-time calculation triggered with price ${price}`);
-          
-          // Only calculate if all data is loaded and we're not already calculating
-          if (!isAllDataLoaded || isCalculating) {
-            console.log(`[AUTO-CALC] Skipping calculation - data not ready or already calculating`);
-            calcModule.markCalculationCompleted();
-            return;
-          }
-          
-          // Mark that we're calculating to prevent concurrent calculations
-          setIsCalculating(true);
-          calcModule.markCalculationStarted();
-          setLastCalcTime(Date.now()); // Update the UI timer
-          
-          // Run the actual calculation with CLEAR visual indicator
-          console.log('🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄');
-          console.log(`🔥 CALCULATING ALL SIGNALS NOW - PRICE: ${price} 🔥`);
-          console.log('🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄🔄');
-          
-          // Define the calculation function
-          const performCalculation = async () => {
-            try {
-              // Create new signals object to hold results
-              const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...allTimeframeSignals };
-              
-              // Get all timeframes
-              const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'] as TimeFrame[];
-              
-              // Calculate each timeframe
-              for (const tf of timeframes) {
-                try {
-                  // Calculate this timeframe using our signal generation logic
-                  newSignals[tf] = await generateSignalForTimeframe(symbol, tf, price);
-                } catch (error) {
-                  console.error(`[AUTO-CALC] Error calculating ${tf}:`, error);
-                  newSignals[tf] = null;
-                }
-              }
-              
-              // Update state with all results at once
-              setAllTimeframeSignals(newSignals);
-              updateRecommendationForTimeframe(selectedTimeframe);
-              
-              console.log(`[AUTO-CALC] Calculation complete - next calculation in 3 minutes`);
-            } catch (error) {
-              console.error(`[AUTO-CALC] Calculation error:`, error);
-            } finally {
-              // Always reset calculation state
-              setIsCalculating(false);
-              calcModule.markCalculationCompleted();
-            }
-          };
-          
-          // Execute the calculation
-          performCalculation();
-        });
-        
         // Return cleanup function
         return () => {
-          console.log(`[AUTO-CALC] Cleaning up price and calculation system for ${symbol}`);
           unsubscribePriceUpdates();
-          unsubscribeCalc();
           priceModule.stopTracking(symbol);
-          clearInterval(timerInterval); // Clean up the timer
         };
       } catch (error) {
-        console.error(`[AUTO-CALC] Error setting up price and calculation system:`, error);
+        console.error(`Error setting up price subscription:`, error);
         return () => {}; // Empty cleanup if setup failed
       }
     };
     
     // Start the setup and store the cleanup function
-    const cleanupPromise = setupPriceFeed();
+    const cleanupPromise = setupPriceSubscription();
     
     // Return a cleanup function
     return () => {
@@ -1813,12 +1713,6 @@ export default function AdvancedSignalDashboard({
                   <RefreshCcw className="w-3 h-3 mr-1" />
                   Calculate Now
                 </Button>
-                <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
-                  Auto-updating
-                </Badge>
-              </div>
-              <div className="text-xs text-neutral-400 mt-1">
-                Next update: <span className="font-mono">{formattedTimer}</span>
               </div>
             </div>
           )}
