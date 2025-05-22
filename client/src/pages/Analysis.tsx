@@ -3,11 +3,11 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
+import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard_working';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
-import BasicSignalDashboard from '../components/BasicSignalDashboard';
 import { 
   Collapsible,
   CollapsibleContent,
@@ -65,9 +65,11 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <BasicSignalDashboard 
+          <AdvancedSignalDashboard 
             symbol={currentAsset} 
-            price={price?.lastPrice || 0}
+            onTimeframeSelect={handleChangeTimeframe}
+            autoRun={shouldRunAnalysis}
+            onAnalysisComplete={() => setShouldRunAnalysis(false)}
           />
         </div>
         
