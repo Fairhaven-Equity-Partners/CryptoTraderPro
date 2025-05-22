@@ -53,6 +53,14 @@ import {
   calculateSupportResistance
 } from '../lib/technicalIndicators';
 import { enhanceSignalWithAdvancedIndicators } from '../lib/advancedIndicators';
+import { detectAllPatterns, PatternResult } from '../lib/advancedPatternRecognition';
+import { enhanceSignalWithMacro, MacroIndicator } from '../lib/macroIndicators';
+import { 
+  calculateTimeframeSuccessProbability, 
+  checkHigherTimeframeAlignment,
+  getHigherTimeframes,
+  getSuccessProbabilityDescription
+} from '../lib/timeframeSuccessProbability';
 import ConsistentSignalDisplay from './ConsistentSignalDisplay';
 
 
@@ -124,7 +132,8 @@ export default function AdvancedSignalDashboard({
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
   const [isCalculating, setIsCalculating] = useState(false);
   // Initialize signals with empty state for each timeframe
-  const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({
+  // Store signals for all timeframes
+  const [allTimeframeSignals, setAllTimeframeSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({
     '1m': null,
     '5m': null,
     '15m': null,
@@ -1274,9 +1283,9 @@ export default function AdvancedSignalDashboard({
             timeframe
           );
           
-          // Enhance signal with our advanced indicators (Fibonacci, Market Structure, Divergences)
+          // Enhance signal with our advanced indicators and pattern recognition systems
           if (signal) {
-            // Apply advanced indicator enhancements
+            // 1. APPLY ADVANCED INDICATOR ENHANCEMENTS (Fibonacci, Market Structure, Divergences)
             const enhancedSignalData = enhanceSignalWithAdvancedIndicators(
               chartData[timeframe],
               timeframe,
@@ -1284,7 +1293,7 @@ export default function AdvancedSignalDashboard({
               signal.direction
             );
             
-            // Update signal confidence with the enhanced value
+            // Update signal confidence with the enhanced value from indicators
             signal.confidence = enhancedSignalData.enhancedConfidence;
             
             // Add the advanced insights to the signal's macroInsights array
@@ -1304,7 +1313,7 @@ export default function AdvancedSignalDashboard({
               const keyLevels: Level[] = enhancedSignalData.keyLevels.map(level => ({
                 price: level.price,
                 type: level.type.includes('Support') ? 'support' : 'resistance',
-                strength: level.strength >= 80 ? 'strong' : (level.strength >= 70 ? 'medium' : 'weak'),
+                strength: level.strength >= 80 ? 'Strong' : (level.strength >= 70 ? 'Medium' : 'Weak'),
                 description: level.type
               }));
               
@@ -1318,11 +1327,135 @@ export default function AdvancedSignalDashboard({
               }
             }
             
-            // Generate pattern formations based on signal direction and timeframe
-            // This adds chart patterns that weren't being generated before
-            signal.patternFormations = generatePatternFormations(signal.direction, signal.confidence, timeframe, signal.entryPrice);
+            // 3. APPLY MACROECONOMIC INDICATORS
+            // Enhance signal with macroeconomic indicators for a broader market context
+            const macroEnhancement = enhanceSignalWithMacro(
+              symbol,
+              timeframe,
+              signal.direction,
+              signal.confidence
+            );
             
-            // Log that we've enhanced the signal with advanced indicators
+            // Update signal direction and confidence with macro-enhanced values
+            signal.direction = macroEnhancement.enhancedSignal;
+            signal.confidence = macroEnhancement.enhancedConfidence;
+            
+            // Add macro insights to the signal
+            signal.macroInsights.push(macroEnhancement.macroOverlay.description);
+            
+            // Add top macro indicators as individual insights
+            const macroIndicatorInsights = macroEnhancement.macroOverlay.indicators.map(
+              indicator => `${indicator.type}: ${indicator.description} (${indicator.signal})`
+            );
+            
+            signal.macroInsights = [
+              ...signal.macroInsights,
+              ...macroIndicatorInsights
+            ];
+            
+            // Store macro classification for display purposes
+            signal.macroClassification = macroEnhancement.macroOverlay.signal;
+            
+            // 4. CALCULATE SUCCESS PROBABILITY BASED ON TIMEFRAME
+            // Determine if this signal aligns with higher timeframe signals
+            const higherTimeframes = getHigherTimeframes(timeframe);
+            
+            // Collect signal directions from higher timeframes that have been calculated
+            const higherTimeframeDirections: ('LONG' | 'SHORT' | 'NEUTRAL')[] = [];
+            
+            // Only check alignment if we have some higher timeframe signals already processed
+            if (allTimeframeSignals && higherTimeframes.length > 0) {
+              for (const tf of higherTimeframes) {
+                if (allTimeframeSignals[tf]) {
+                  higherTimeframeDirections.push(allTimeframeSignals[tf]!.direction);
+                }
+              }
+            }
+            
+            // Check if current signal aligns with higher timeframes
+            const alignsWithHigherTimeframes = checkHigherTimeframeAlignment(
+              signal.direction,
+              higherTimeframeDirections
+            );
+            
+            // Calculate final success probability based on all factors
+            signal.successProbability = calculateTimeframeSuccessProbability(
+              timeframe,
+              signal.confidence,
+              signal.direction,
+              alignsWithHigherTimeframes
+            );
+            
+            // Add a description of the success probability
+            signal.successProbabilityDescription = getSuccessProbabilityDescription(
+              signal.successProbability
+            );
+            
+            // Log the success probability calculation
+            if (alignsWithHigherTimeframes) {
+              console.log(`${timeframe} signal aligns with higher timeframes, boosting success probability`);
+            }
+            console.log(`Calculated success probability for ${timeframe}: ${signal.successProbability}% (${signal.successProbabilityDescription})`);
+            
+            // Set timestamp for this signal
+            signal.timestamp = new Date().getTime();
+            
+            // 2. APPLY ADVANCED PATTERN RECOGNITION
+            // Detect chart patterns using our comprehensive pattern recognition system
+            const detectedPatterns = detectAllPatterns(chartData[timeframe], timeframe);
+            
+            // If we found any patterns, use them to enhance our signal
+            if (detectedPatterns.length > 0) {
+              // Generate additional insights from the detected patterns
+              const patternInsights = detectedPatterns.slice(0, 3).map(pattern => {
+                return `${pattern.patternType} detected (${pattern.reliability}% reliability): ${pattern.description}`;
+              });
+              
+              // Add pattern insights to macro insights
+              signal.macroInsights = [
+                ...signal.macroInsights,
+                ...patternInsights
+              ];
+              
+              // Convert detected patterns to pattern formations for display
+              const patternFormations: PatternFormation[] = detectedPatterns.slice(0, 5).map(pattern => {
+                return {
+                  name: pattern.patternType,
+                  reliability: pattern.reliability,
+                  direction: pattern.direction,
+                  priceTarget: pattern.targetPrice || signal.entryPrice * 1.05,
+                  description: pattern.description
+                };
+              });
+              
+              // Add advanced patterns to existing pattern formations
+              signal.patternFormations = [
+                ...patternFormations,
+                ...generatePatternFormations(signal.direction, signal.confidence, timeframe, signal.entryPrice)
+              ];
+              
+              // Further enhance confidence based on patterns that align with signal direction
+              const alignedPatterns = detectedPatterns.filter(pattern => 
+                (pattern.direction === 'bullish' && signal.direction === 'LONG') ||
+                (pattern.direction === 'bearish' && signal.direction === 'SHORT')
+              );
+              
+              if (alignedPatterns.length > 0) {
+                // Calculate average reliability of aligned patterns
+                const avgReliability = alignedPatterns.reduce((sum, p) => sum + p.reliability, 0) / alignedPatterns.length;
+                
+                // Use pattern reliability to enhance confidence (max +15%)
+                const patternBonus = Math.min(15, avgReliability / 7);
+                signal.confidence = Math.min(98, signal.confidence + patternBonus);
+                
+                console.log(`Pattern recognition boosted confidence by +${patternBonus.toFixed(1)}%`);
+              }
+            } else {
+              // If no patterns detected, still generate some basic pattern formations
+              signal.patternFormations = generatePatternFormations(signal.direction, signal.confidence, timeframe, signal.entryPrice);
+            }
+            
+            // Log that we've enhanced the signal with advanced indicators and patterns
             console.log(`Enhanced ${timeframe} signal with advanced indicators: confidence=${signal.confidence}%`);
           }
           

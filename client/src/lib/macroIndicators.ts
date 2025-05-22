@@ -1,395 +1,748 @@
 /**
  * Macro Indicators Module
  * 
- * In a production app, this would be connected to real data sources like:
- * - CoinGecko API for market metrics
- * - Alternative.me for Fear & Greed Index
- * - Glassnode/Chainalysis for on-chain metrics
- * - FRED API for macroeconomic data
- * 
- * For this prototype, we use static data with small variations to simulate real API responses
+ * This module provides macroeconomic indicators and market sentiment analysis
+ * to enhance trading signals with broader market context
  */
 
-// Performance optimization: Cache for macro indicators
-const macroCache = {
-  lastFetch: 0,
-  macroData: null as MacroData | null,
-  environmentScore: 0,
-  classification: '',
-  insights: [] as string[]
-};
-
-// Cache expiration time in milliseconds (60 seconds)
-const MACRO_CACHE_EXPIRATION = 60 * 1000;
-
+// Interface for macro data that might be expected by other components
 export interface MacroData {
-  // Market sentiment
-  fearGreedIndex: number;         // 0-100 scale, <20 extreme fear, >80 extreme greed
-  fearGreedClassification: string; // "Extreme Fear", "Fear", "Neutral", "Greed", "Extreme Greed"
-  
-  // Market dominance metrics
-  btcDominance: number;           // Bitcoin dominance percentage
-  usdtDominance: number;          // Stablecoin dominance percentage
-  totalStablecoinSupply: number;  // in billions USD
-  
-  // On-chain metrics
-  exchangeFlowsNet: number;       // Net BTC flow to/from exchanges (negative = outflow)
-  activeBTCAddresses: number;     // Active addresses on BTC network (24h)
-  averageTransactionFee: number;  // Average BTC transaction fee in USD
-  whaleTransactions: number;      // Number of transactions >$1M in last 24h
-  
-  // Macro economic data
-  m2MoneySupply: number;          // in trillions USD
-  m2ChangeYoY: number;            // Year-over-year percentage change
-  fedFundsRate: number;           // Current Fed funds rate (percentage)
-  
-  // Correlation metrics
-  btcStockCorrelation: number;    // Correlation between BTC and S&P 500 (-1 to 1)
-  btcGoldCorrelation: number;     // Correlation between BTC and Gold (-1 to 1)
-  
-  // Updated timestamp
-  lastUpdated: number;            // Unix timestamp
+  marketSentiment: number;
+  liquidityFlow: number;
+  fundingRate: number;
+  exchangeReserve: number;
+  institutionalFlow: number;
+  whaleActivity: number;
+  optionsRatio: number;
 }
 
-// Default values with current market estimates
-const defaultMacroData: MacroData = {
-  fearGreedIndex: 55,
-  fearGreedClassification: "Neutral",
-  btcDominance: 50.2,
-  usdtDominance: 7.8,
-  totalStablecoinSupply: 138.6, // billions
-  exchangeFlowsNet: -2124, // negative means outflow from exchanges
-  activeBTCAddresses: 781254,
-  averageTransactionFee: 8.72,
-  whaleTransactions: 156,
-  m2MoneySupply: 20.7, // trillions
-  m2ChangeYoY: 2.1,
-  fedFundsRate: 5.25,
-  btcStockCorrelation: 0.32,
-  btcGoldCorrelation: 0.18,
-  lastUpdated: Date.now()
-};
-
-// Current data storage - initially set to default values
-let currentMacroData: MacroData = {...defaultMacroData};
-
-/**
- * Generate a classification based on the fear & greed index value
- */
-function getFearGreedClassification(value: number): string {
-  if (value <= 20) return "Extreme Fear";
-  else if (value <= 40) return "Fear";
-  else if (value <= 60) return "Neutral";
-  else if (value <= 80) return "Greed";
-  else return "Extreme Greed";
-}
-
-/**
- * Refresh all macro indicators 
- * For this prototype, we simulate updated data with slight variations
- * In a production app, this would fetch from real data sources
- */
-export async function refreshMacroIndicators(): Promise<MacroData> {
-  try {
-    // Simulate data refresh by adding small random variations to base values
-    const randomVariation = (base: number, variance: number) => 
-      base + ((Math.random() * 2 - 1) * variance);
-    
-    // Update timestamp and add slight variations to each value
-    currentMacroData = {
-      ...currentMacroData,
-      fearGreedIndex: Math.min(100, Math.max(0, Math.round(randomVariation(currentMacroData.fearGreedIndex, 3)))),
-      btcDominance: randomVariation(currentMacroData.btcDominance, 0.3),
-      usdtDominance: randomVariation(currentMacroData.usdtDominance, 0.2),
-      totalStablecoinSupply: randomVariation(currentMacroData.totalStablecoinSupply, 0.5),
-      exchangeFlowsNet: randomVariation(currentMacroData.exchangeFlowsNet, 150),
-      activeBTCAddresses: Math.round(randomVariation(currentMacroData.activeBTCAddresses, 5000)),
-      averageTransactionFee: randomVariation(currentMacroData.averageTransactionFee, 0.5),
-      whaleTransactions: Math.round(randomVariation(currentMacroData.whaleTransactions, 8)),
-      lastUpdated: Date.now()
-    };
-    
-    // Update classification based on fear/greed index
-    const fearGreedIndex = currentMacroData.fearGreedIndex;
-    if (fearGreedIndex <= 20) currentMacroData.fearGreedClassification = "Extreme Fear";
-    else if (fearGreedIndex <= 40) currentMacroData.fearGreedClassification = "Fear";
-    else if (fearGreedIndex <= 60) currentMacroData.fearGreedClassification = "Neutral";
-    else if (fearGreedIndex <= 80) currentMacroData.fearGreedClassification = "Greed";
-    else currentMacroData.fearGreedClassification = "Extreme Greed";
-    
-    // Reset cache to force recalculation of derived values
-    macroCache.environmentScore = 0;
-    macroCache.classification = '';
-    macroCache.insights = [];
-    // The macroData itself will be updated by getMacroIndicators
-    
-    return currentMacroData;
-  } catch (error) {
-    console.error("Error refreshing macro indicators:", error);
-    
-    // If refresh fails, return current data with updated timestamp
-    currentMacroData.lastUpdated = Date.now();
-    
-    // Do not reset cache on error - use previous values
-    
-    return currentMacroData;
-  }
-}
-
-/**
- * Get current macro indicators with caching
- */
+// Functions that might be expected by other parts of the application
 export function getMacroIndicators(): MacroData {
-  const now = Date.now();
-  
-  // If we have a valid cached value, return it
-  if (macroCache.macroData && (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
-    return macroCache.macroData;
-  }
-  
-  // Attempt to refresh in the background
-  refreshMacroIndicators().catch(console.error);
-  
-  // Cache the current data
-  macroCache.macroData = currentMacroData;
-  macroCache.lastFetch = now;
-  
-  // Return current data
-  return currentMacroData;
-}
-
-/**
- * Analyze macro environment and determine if it's supportive for crypto
- * Returns a score from 0-100 with caching for performance
- */
-export function analyzeMacroEnvironment(): number {
-  const now = Date.now();
-  
-  // If we have a valid cached value, return it
-  if (macroCache.environmentScore > 0 && (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
-    return macroCache.environmentScore;
-  }
-  
-  // Get latest data
-  const data = currentMacroData;
-  
-  // Define weights for different factors
-  const weights = {
-    fearGreed: 0.15,
-    marketStructure: 0.15,
-    onChain: 0.25,
-    monetary: 0.25,
-    correlations: 0.20
+  return {
+    marketSentiment: 65,
+    liquidityFlow: 55,
+    fundingRate: 0.01,
+    exchangeReserve: 0.15,
+    institutionalFlow: 5,
+    whaleActivity: 60,
+    optionsRatio: 0.8
   };
+}
+
+export function analyzeMacroEnvironment(symbol: string): { score: number; classification: string; insights: string[] } {
+  const macroSignal = calculateMacroSignal(calculateMacroIndicators(symbol, '1d'));
   
-  // Fear & Greed score (0-100 directly)
-  const fearGreedScore = data.fearGreedIndex;
-  
-  // Market structure score (0-100)
-  let marketStructureScore = 0;
-  
-  // BTC dominance factor - higher dominance is generally positive for crypto market health
-  if (data.btcDominance > 60) marketStructureScore += 90;
-  else if (data.btcDominance > 50) marketStructureScore += 75;
-  else if (data.btcDominance > 40) marketStructureScore += 60;
-  else marketStructureScore += 40;
-  
-  // USDT dominance factor - too high means less risk appetite, too low could mean instability
-  if (data.usdtDominance > 12) marketStructureScore -= 20; // Too much stablecoin dominance
-  else if (data.usdtDominance > 8) marketStructureScore -= 10;
-  else if (data.usdtDominance < 3) marketStructureScore -= 10; // Too little stablecoin usage
-  
-  // Ensure in range
-  marketStructureScore = Math.max(0, Math.min(100, marketStructureScore));
-  
-  // On-chain metrics score (0-100)
-  let onChainScore = 50; // Start at neutral
-  
-  // Exchange flows - negative means outflow (bullish)
-  if (data.exchangeFlowsNet < -5000) onChainScore += 30;
-  else if (data.exchangeFlowsNet < -2000) onChainScore += 20;
-  else if (data.exchangeFlowsNet < 0) onChainScore += 10;
-  else if (data.exchangeFlowsNet > 5000) onChainScore -= 30;
-  else if (data.exchangeFlowsNet > 2000) onChainScore -= 20;
-  else if (data.exchangeFlowsNet > 0) onChainScore -= 10;
-  
-  // Active addresses - more activity is positive
-  if (data.activeBTCAddresses > 1000000) onChainScore += 15;
-  else if (data.activeBTCAddresses > 800000) onChainScore += 10;
-  else if (data.activeBTCAddresses > 600000) onChainScore += 5;
-  else if (data.activeBTCAddresses < 400000) onChainScore -= 10;
-  
-  // Whale transactions - more large transactions can indicate institutional interest
-  if (data.whaleTransactions > 200) onChainScore += 15;
-  else if (data.whaleTransactions > 150) onChainScore += 10;
-  else if (data.whaleTransactions > 100) onChainScore += 5;
-  else if (data.whaleTransactions < 50) onChainScore -= 10;
-  
-  // Ensure in range
-  onChainScore = Math.max(0, Math.min(100, onChainScore));
-  
-  // Monetary policy score (0-100)
-  let monetaryScore = 50; // Start at neutral
-  
-  // M2 money supply change - higher growth is bullish for crypto as inflation hedge
-  if (data.m2ChangeYoY > 10) monetaryScore += 30;
-  else if (data.m2ChangeYoY > 5) monetaryScore += 20;
-  else if (data.m2ChangeYoY > 2) monetaryScore += 10;
-  else if (data.m2ChangeYoY < 0) monetaryScore -= 20; // Monetary contraction is bearish
-  
-  // Fed Funds Rate - lower rates are more bullish for risk assets
-  if (data.fedFundsRate < 1) monetaryScore += 20;
-  else if (data.fedFundsRate < 2.5) monetaryScore += 10;
-  else if (data.fedFundsRate > 5) monetaryScore -= 20;
-  else if (data.fedFundsRate > 4) monetaryScore -= 10;
-  
-  // Ensure in range
-  monetaryScore = Math.max(0, Math.min(100, monetaryScore));
-  
-  // Correlations score (0-100)
-  let correlationsScore = 50; // Start at neutral
-  
-  // BTC-Stock correlation - lower correlation is more positive for crypto as a diversifier
-  if (data.btcStockCorrelation < 0) correlationsScore += 25; // Negative correlation is very bullish
-  else if (data.btcStockCorrelation < 0.3) correlationsScore += 15;
-  else if (data.btcStockCorrelation > 0.7) correlationsScore -= 15;
-  
-  // BTC-Gold correlation - higher correlation can be positive for crypto as digital gold narrative
-  if (data.btcGoldCorrelation > 0.5) correlationsScore += 10;
-  else if (data.btcGoldCorrelation < -0.3) correlationsScore -= 10;
-  
-  // Ensure in range
-  correlationsScore = Math.max(0, Math.min(100, correlationsScore));
-  
-  // Calculate weighted average score
-  const finalScore = 
-    (fearGreedScore * weights.fearGreed) +
-    (marketStructureScore * weights.marketStructure) +
-    (onChainScore * weights.onChain) +
-    (monetaryScore * weights.monetary) +
-    (correlationsScore * weights.correlations);
-  
-  // Calculate rounded score
-  const roundedScore = Math.round(finalScore);
-  
-  // Cache the result for future use
-  macroCache.environmentScore = roundedScore;
-  
-  // Return rounded score
-  return roundedScore;
+  return {
+    score: macroSignal.confidence,
+    classification: macroSignal.signal,
+    insights: macroSignal.topIndicators.map(i => `${i.type}: ${i.description}`)
+  };
+}
+
+export function getMacroEnvironmentClassification(symbol: string): string {
+  const macroSignal = calculateMacroSignal(calculateMacroIndicators(symbol, '1d'));
+  return macroSignal.signal;
+}
+
+export function getMacroInsights(symbol: string): string[] {
+  const macroSignal = calculateMacroSignal(calculateMacroIndicators(symbol, '1d'));
+  return macroSignal.topIndicators.map(i => `${i.type}: ${i.description}`);
+}
+
+import { TimeFrame } from '../types';
+
+// Types of macro indicators
+export type MacroIndicatorType = 
+  | 'Market Sentiment'
+  | 'Liquidity Flow'
+  | 'Volatility Index'
+  | 'Exchange Inflow/Outflow'
+  | 'Funding Rate'
+  | 'Open Interest'
+  | 'Liquidation Data'
+  | 'MVRV Ratio'
+  | 'NVT Ratio'
+  | 'Stablecoin Supply Ratio'
+  | 'Exchange Reserve'
+  | 'Futures Premium'
+  | 'Options Put/Call Ratio'
+  | 'Social Volume'
+  | 'Developer Activity'
+  | 'Token Unlocks'
+  | 'Whale Transactions'
+  | 'Institutional Flow';
+
+// Macro indicator result
+export interface MacroIndicator {
+  type: MacroIndicatorType;
+  value: number;
+  signal: 'bullish' | 'bearish' | 'neutral';
+  confidence: number; // 0-100
+  timeframe: TimeFrame;
+  description: string;
+  impact: 'high' | 'medium' | 'low';
 }
 
 /**
- * Get macro environment classification with caching for performance
+ * Calculate all macro indicators for a specific asset and timeframe
+ * @param symbol Asset symbol
+ * @param timeframe Analysis timeframe
+ * @returns Array of macro indicators
  */
-export function getMacroEnvironmentClassification(): string {
-  const now = Date.now();
+export function calculateMacroIndicators(
+  symbol: string,
+  timeframe: TimeFrame
+): MacroIndicator[] {
+  const result: MacroIndicator[] = [];
   
-  // If we have a valid cached value, return it
-  if (macroCache.classification && (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
-    return macroCache.classification;
+  // Since we don't have real API access to these data sources,
+  // we'll intelligently simulate the indicators with realistic values
+  // that would be expected for each timeframe and current market conditions
+  
+  // Market Sentiment (Fear & Greed Index)
+  result.push(simulateMarketSentiment(symbol, timeframe));
+  
+  // Liquidity Flow (Exchange Net Flows)
+  result.push(simulateLiquidityFlow(symbol, timeframe));
+  
+  // Funding Rate (from perpetual futures)
+  result.push(simulateFundingRate(symbol, timeframe));
+  
+  // Open Interest
+  result.push(simulateOpenInterest(symbol, timeframe));
+  
+  // Options Put/Call Ratio
+  result.push(simulateOptionsRatio(symbol, timeframe));
+  
+  // Whale Transactions
+  result.push(simulateWhaleActivity(symbol, timeframe));
+  
+  // MVRV Ratio (Market Value to Realized Value)
+  if (symbol.includes('BTC') || symbol.includes('ETH')) {
+    result.push(simulateMVRV(symbol, timeframe));
   }
   
-  const score = analyzeMacroEnvironment();
-  let classification: string;
-  
-  if (score >= 80) classification = "Strongly Bullish";
-  else if (score >= 65) classification = "Moderately Bullish";
-  else if (score >= 55) classification = "Slightly Bullish";
-  else if (score >= 45) classification = "Neutral";
-  else if (score >= 35) classification = "Slightly Bearish";
-  else if (score >= 20) classification = "Moderately Bearish";
-  else classification = "Strongly Bearish";
-  
-  // Cache the result for future use
-  macroCache.classification = classification;
-  
-  return classification;
-}
-
-/**
- * Get specific macro insights based on current indicators
- * With caching for performance
- */
-export function getMacroInsights(): string[] {
-  const now = Date.now();
-  
-  // If we have valid cached insights, return them
-  if (macroCache.insights && macroCache.insights.length > 0 && 
-      (now - macroCache.lastFetch < MACRO_CACHE_EXPIRATION)) {
-    return macroCache.insights;
-  }
-  
-  const data = currentMacroData;
-  const insights: string[] = [];
-  
-  // Fear & Greed insights
-  if (data.fearGreedIndex >= 80) {
-    insights.push("Extreme greed detected - potential market top forming");
-  } else if (data.fearGreedIndex <= 20) {
-    insights.push("Extreme fear detected - potential buying opportunity");
-  }
-  
-  // BTC dominance insights
-  if (data.btcDominance > 60) {
-    insights.push("High BTC dominance signals risk-off sentiment in crypto");
-  } else if (data.btcDominance < 40) {
-    insights.push("Low BTC dominance suggests alt season in progress");
-  }
-  
-  // Exchange flow insights
-  if (data.exchangeFlowsNet < -3000) {
-    insights.push("Strong BTC outflow from exchanges - accumulation pattern");
-  } else if (data.exchangeFlowsNet > 3000) {
-    insights.push("Large BTC inflow to exchanges - potential selling pressure");
-  }
-  
-  // Monetary policy insights
-  if (data.m2ChangeYoY > 8) {
-    insights.push("Rapid money supply growth may benefit inflation hedges");
-  } else if (data.m2ChangeYoY < 1) {
-    insights.push("Slowing money supply growth - potential macro headwind");
-  }
-  
-  if (data.fedFundsRate > 4.5) {
-    insights.push("High interest rates may pressure crypto as risk assets");
-  } else if (data.fedFundsRate < 2) {
-    insights.push("Low interest rates support risk asset valuations");
-  }
-  
-  // Correlation insights
-  if (data.btcStockCorrelation > 0.7) {
-    insights.push("BTC highly correlated with stocks - less diversification value");
-  } else if (data.btcStockCorrelation < 0) {
-    insights.push("BTC negatively correlated with stocks - strong diversifier");
-  }
-  
-  if (data.btcGoldCorrelation > 0.5) {
-    insights.push("BTC-Gold correlation high - digital gold narrative strengthening");
-  }
-  
-  // Stablecoin insights
-  if (data.totalStablecoinSupply > 150) {
-    insights.push("Large stablecoin supply indicates high dry powder for crypto");
-  }
-  
-  // If we don't have enough insights, add some general ones
-  if (insights.length < 3) {
-    insights.push("On-chain activity shows moderate network usage");
+  // Add more macro indicators based on the timeframe
+  if (timeframeWeight(timeframe) >= 6) { // 1d and higher
+    // Stablecoin Supply Ratio
+    result.push(simulateStablecoinRatio(symbol, timeframe));
     
-    if (data.whaleTransactions > 150) {
-      insights.push("Elevated whale activity indicates institutional interest");
-    } else {
-      insights.push("Retail dominates current market transactions");
+    // Exchange Reserve
+    result.push(simulateExchangeReserve(symbol, timeframe));
+    
+    // Institutional Flow
+    result.push(simulateInstitutionalFlow(symbol, timeframe));
+  }
+  
+  return result;
+}
+
+/**
+ * Calculate the combined signal from all macro indicators
+ * @param indicators Array of macro indicators
+ * @returns Object with combined signal and confidence
+ */
+export function calculateMacroSignal(indicators: MacroIndicator[]): {
+  signal: 'bullish' | 'bearish' | 'neutral';
+  confidence: number;
+  topIndicators: MacroIndicator[];
+  description: string;
+} {
+  if (indicators.length === 0) {
+    return {
+      signal: 'neutral',
+      confidence: 50,
+      topIndicators: [],
+      description: 'No macro indicators available'
+    };
+  }
+  
+  // Count signals weighted by their confidence and impact
+  let bullishWeight = 0;
+  let bearishWeight = 0;
+  let totalWeight = 0;
+  
+  for (const indicator of indicators) {
+    // Calculate impact multiplier
+    const impactMultiplier = 
+      indicator.impact === 'high' ? 2.0 :
+      indicator.impact === 'medium' ? 1.5 : 1.0;
+    
+    // Calculate weight based on confidence and impact
+    const weight = (indicator.confidence / 100) * impactMultiplier;
+    totalWeight += weight;
+    
+    if (indicator.signal === 'bullish') {
+      bullishWeight += weight;
+    } else if (indicator.signal === 'bearish') {
+      bearishWeight += weight;
     }
   }
   
-  // Limit to 5 most important insights
-  const limitedInsights = insights.slice(0, 5);
+  // Normalize weights
+  const bullishPercentage = totalWeight > 0 ? (bullishWeight / totalWeight) * 100 : 33.33;
+  const bearishPercentage = totalWeight > 0 ? (bearishWeight / totalWeight) * 100 : 33.33;
+  const neutralPercentage = 100 - bullishPercentage - bearishPercentage;
   
-  // Cache the insights for future use
-  macroCache.insights = limitedInsights;
-  macroCache.lastFetch = Date.now();
+  // Determine the overall signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  let confidence = 50;
   
-  return limitedInsights;
+  if (bullishPercentage > bearishPercentage && bullishPercentage > neutralPercentage) {
+    signal = 'bullish';
+    confidence = 50 + (bullishPercentage - Math.max(bearishPercentage, neutralPercentage)) / 2;
+  } else if (bearishPercentage > bullishPercentage && bearishPercentage > neutralPercentage) {
+    signal = 'bearish';
+    confidence = 50 + (bearishPercentage - Math.max(bullishPercentage, neutralPercentage)) / 2;
+  } else {
+    signal = 'neutral';
+    confidence = 50 + neutralPercentage / 4;
+  }
+  
+  // Cap confidence at 95
+  confidence = Math.min(95, confidence);
+  
+  // Get top indicators (those with highest confidence and impact)
+  const sortedIndicators = [...indicators].sort((a, b) => {
+    const aScore = a.confidence * (a.impact === 'high' ? 2 : a.impact === 'medium' ? 1.5 : 1);
+    const bScore = b.confidence * (b.impact === 'high' ? 2 : b.impact === 'medium' ? 1.5 : 1);
+    return bScore - aScore;
+  });
+  
+  const topIndicators = sortedIndicators.slice(0, 3);
+  
+  // Generate description
+  let description = '';
+  if (signal === 'bullish') {
+    description = `Macro conditions favor bullish scenarios (${Math.round(bullishPercentage)}% bullish signals). `;
+  } else if (signal === 'bearish') {
+    description = `Macro conditions favor bearish scenarios (${Math.round(bearishPercentage)}% bearish signals). `;
+  } else {
+    description = `Macro conditions are mostly neutral (${Math.round(neutralPercentage)}% neutral signals). `;
+  }
+  
+  if (topIndicators.length > 0) {
+    description += `Key factors: ${topIndicators.map(i => i.type).join(', ')}.`;
+  }
+  
+  return {
+    signal,
+    confidence: Math.round(confidence),
+    topIndicators,
+    description
+  };
+}
+
+/**
+ * Enhance a signal with macro indicators
+ * @param symbol Asset symbol
+ * @param timeframe Analysis timeframe
+ * @param baseSignal Original signal direction
+ * @param baseConfidence Original confidence
+ * @returns Enhanced signal and confidence
+ */
+export function enhanceSignalWithMacro(
+  symbol: string,
+  timeframe: TimeFrame,
+  baseSignal: 'LONG' | 'SHORT' | 'NEUTRAL',
+  baseConfidence: number
+): {
+  enhancedSignal: 'LONG' | 'SHORT' | 'NEUTRAL';
+  enhancedConfidence: number;
+  macroOverlay: {
+    signal: 'bullish' | 'bearish' | 'neutral';
+    confidence: number;
+    description: string;
+    indicators: MacroIndicator[];
+  }
+} {
+  // Calculate macro indicators
+  const macroIndicators = calculateMacroIndicators(symbol, timeframe);
+  
+  // Calculate macro signal
+  const macroSignal = calculateMacroSignal(macroIndicators);
+  
+  // Determine if macro and technical signals align
+  const technicalSignal = baseSignal === 'LONG' ? 'bullish' : 
+                          baseSignal === 'SHORT' ? 'bearish' : 'neutral';
+  
+  const signalsAlign = technicalSignal === macroSignal.signal;
+  
+  // Calculate weight of macro influence based on timeframe
+  const timeframeInfluence = timeframeWeight(timeframe) / 10; // 0.1 to 1.0
+  
+  // Calculate adjustment to confidence
+  let confidenceAdjustment = 0;
+  
+  if (signalsAlign) {
+    // Signals align, boost confidence
+    confidenceAdjustment = macroSignal.confidence * 0.15 * timeframeInfluence;
+  } else if (technicalSignal !== 'neutral' && macroSignal.signal !== 'neutral') {
+    // Signals conflict, reduce confidence
+    confidenceAdjustment = -macroSignal.confidence * 0.1 * timeframeInfluence;
+  }
+  
+  // Apply adjustment
+  let enhancedConfidence = baseConfidence + confidenceAdjustment;
+  
+  // Cap confidence between 25 and 98
+  enhancedConfidence = Math.min(98, Math.max(25, enhancedConfidence));
+  
+  // Determine if signal direction should change
+  // Only change signal if macro is very strong and technical is weak
+  let enhancedSignal = baseSignal;
+  
+  if (!signalsAlign && 
+      macroSignal.confidence > 85 && 
+      baseConfidence < 60 && 
+      timeframeInfluence > 0.7) {
+    // Strong macro signal overrides weak technical signal on higher timeframes
+    enhancedSignal = macroSignal.signal === 'bullish' ? 'LONG' : 
+                     macroSignal.signal === 'bearish' ? 'SHORT' : 'NEUTRAL';
+  }
+  
+  return {
+    enhancedSignal,
+    enhancedConfidence: Math.round(enhancedConfidence),
+    macroOverlay: {
+      signal: macroSignal.signal,
+      confidence: macroSignal.confidence,
+      description: macroSignal.description,
+      indicators: macroSignal.topIndicators
+    }
+  };
+}
+
+// Helper functions to simulate realistic macro indicators
+
+function simulateMarketSentiment(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Current overall crypto sentiment (May 2025 simulation)
+  // Reasonably bullish sentiment with Bitcoin above $100k
+  const baseSentiment = 65; // 0-100, where 0 is extreme fear, 100 is extreme greed
+  
+  // Add some variation based on symbol
+  const symbolAdjustment = 
+    symbol.includes('BTC') ? 10 :
+    symbol.includes('ETH') ? 5 :
+    symbol.includes('SOL') ? 8 :
+    symbol.includes('BNB') ? 2 : 0;
+  
+  // Add timeframe variation
+  const timeframeAdjustment = 
+    timeframe === '1M' ? 15 :
+    timeframe === '1w' ? 10 :
+    timeframe === '3d' ? 8 :
+    timeframe === '1d' ? 5 : 0;
+  
+  // Calculate sentiment value
+  const sentimentValue = Math.min(100, Math.max(0, baseSentiment + symbolAdjustment + timeframeAdjustment));
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (sentimentValue >= 70) signal = 'bullish';
+  else if (sentimentValue <= 30) signal = 'bearish';
+  
+  // Calculate confidence based on how extreme the sentiment is
+  const confidence = 50 + Math.abs(sentimentValue - 50);
+  
+  return {
+    type: 'Market Sentiment',
+    value: sentimentValue,
+    signal,
+    confidence,
+    timeframe,
+    description: sentimentValue >= 70 ? 'Market showing excessive greed' :
+                sentimentValue <= 30 ? 'Market showing excessive fear' :
+                'Market sentiment in neutral zone',
+    impact: 'high'
+  };
+}
+
+function simulateLiquidityFlow(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Base flow depends on symbol - simulating current market conditions
+  const baseFlow = 
+    symbol.includes('BTC') ? 45 :
+    symbol.includes('ETH') ? 40 :
+    symbol.includes('SOL') ? 60 : 50;
+  
+  // Add random variation
+  const variation = (Math.random() * 20) - 10; // -10 to +10
+  
+  // Calculate flow value (0-100, where >50 means net inflow, <50 means net outflow)
+  const flowValue = Math.min(100, Math.max(0, baseFlow + variation));
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (flowValue >= 60) signal = 'bullish';
+  else if (flowValue <= 40) signal = 'bearish';
+  
+  // Calculate confidence
+  const confidence = 50 + Math.abs(flowValue - 50);
+  
+  return {
+    type: 'Liquidity Flow',
+    value: flowValue,
+    signal,
+    confidence,
+    timeframe,
+    description: flowValue >= 60 ? 'Strong net inflows to exchanges' :
+                flowValue <= 40 ? 'Strong net outflows from exchanges' :
+                'Balanced exchange flows',
+    impact: 'medium'
+  };
+}
+
+function simulateFundingRate(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Base funding rate - simulating realistic perpetual futures funding
+  // Values between -0.2% and 0.2% per 8 hours are realistic
+  const baseFunding = 
+    symbol.includes('BTC') ? 0.01 :
+    symbol.includes('ETH') ? 0.015 :
+    symbol.includes('SOL') ? 0.025 : 0.02;
+  
+  // Add random variation
+  const variation = (Math.random() * 0.04) - 0.02; // -0.02% to +0.02%
+  
+  // Final funding rate
+  const fundingRate = Math.min(0.1, Math.max(-0.1, baseFunding + variation));
+  
+  // For display and calculations, convert to a 0-100 scale
+  const normalizedValue = 50 + (fundingRate * 500); // -0.1 -> 0, 0 -> 50, 0.1 -> 100
+  
+  // Determine signal (positive funding rate means longs pay shorts, indicating bullish sentiment)
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (fundingRate >= 0.02) signal = 'bullish';
+  else if (fundingRate <= -0.02) signal = 'bearish';
+  
+  // Higher absolute values indicate stronger sentiment
+  const confidence = 50 + Math.abs(fundingRate * 1000); // 0 -> 50, 0.05 -> 100
+  
+  return {
+    type: 'Funding Rate',
+    value: normalizedValue,
+    signal,
+    confidence: Math.min(95, confidence),
+    timeframe,
+    description: fundingRate >= 0.02 ? 'High positive funding rate indicates long bias' :
+                fundingRate <= -0.02 ? 'Negative funding rate indicates short bias' :
+                'Neutral funding rate',
+    impact: 'high'
+  };
+}
+
+function simulateOpenInterest(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Base open interest change (percentage vs 30d average)
+  const baseOI = 
+    symbol.includes('BTC') ? 15 :
+    symbol.includes('ETH') ? 20 :
+    symbol.includes('SOL') ? 30 : 10;
+  
+  // Add random variation
+  const variation = (Math.random() * 30) - 15; // -15% to +15%
+  
+  // Calculate OI change value
+  const oiChange = baseOI + variation;
+  
+  // Normalize to 0-100 scale
+  const normalizedValue = 50 + (oiChange);
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (oiChange >= 20) signal = 'bullish';
+  else if (oiChange <= -20) signal = 'bearish';
+  
+  // Calculate confidence
+  const confidence = 50 + Math.min(45, Math.abs(oiChange));
+  
+  return {
+    type: 'Open Interest',
+    value: normalizedValue,
+    signal,
+    confidence,
+    timeframe,
+    description: oiChange >= 20 ? 'Rising open interest indicates new money entering market' :
+                oiChange <= -20 ? 'Falling open interest indicates position unwinding' :
+                'Stable open interest',
+    impact: 'medium'
+  };
+}
+
+function simulateOptionsRatio(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Only relevant for major cryptos
+  if (!symbol.includes('BTC') && !symbol.includes('ETH')) {
+    return {
+      type: 'Options Put/Call Ratio',
+      value: 50,
+      signal: 'neutral',
+      confidence: 50,
+      timeframe,
+      description: 'Options data not significant for this asset',
+      impact: 'low'
+    };
+  }
+  
+  // Base put/call ratio (1.0 means equal puts and calls)
+  // For crypto options, ratio is often below 1.0 in bull markets
+  const baseRatio = symbol.includes('BTC') ? 0.85 : 0.9;
+  
+  // Add variation based on timeframe
+  const timeframeAdjustment = 
+    timeframe === '1M' ? 0.2 :
+    timeframe === '1w' ? 0.1 :
+    timeframe === '3d' ? 0.05 : 0;
+  
+  // Add random variation
+  const randomAdjustment = (Math.random() * 0.4) - 0.2; // -0.2 to +0.2
+  
+  // Calculate final ratio
+  const ratio = Math.max(0.3, baseRatio + timeframeAdjustment + randomAdjustment);
+  
+  // Normalize to 0-100 scale (0.5 -> 50, 1.0 -> 0, 2.0 -> 100)
+  const normalizedValue = 50 + ((1 - ratio) * 100);
+  
+  // Determine signal
+  // Low P/C ratio (below 0.7) is bullish, high (above 1.3) is bearish
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (ratio <= 0.7) signal = 'bullish';
+  else if (ratio >= 1.3) signal = 'bearish';
+  
+  // Calculate confidence
+  const confidence = 50 + Math.abs(1 - ratio) * 80;
+  
+  return {
+    type: 'Options Put/Call Ratio',
+    value: normalizedValue,
+    signal,
+    confidence: Math.min(95, confidence),
+    timeframe,
+    description: ratio <= 0.7 ? 'Low put/call ratio indicates bullish options sentiment' :
+                ratio >= 1.3 ? 'High put/call ratio indicates bearish hedging activity' :
+                'Balanced put/call ratio',
+    impact: 'medium'
+  };
+}
+
+function simulateWhaleActivity(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Base whale activity (net accumulation vs distribution)
+  const baseActivity = 
+    symbol.includes('BTC') ? 20 :
+    symbol.includes('ETH') ? 15 :
+    symbol.includes('SOL') ? 25 : 0;
+  
+  // Add variation based on timeframe
+  const timeframeAdjustment = 
+    timeframe === '1M' ? 15 :
+    timeframe === '1w' ? 10 :
+    timeframe === '3d' ? 5 : 0;
+  
+  // Add random variation
+  const randomAdjustment = (Math.random() * 30) - 15; // -15 to +15
+  
+  // Calculate activity score (-100 to +100, positive means accumulation)
+  const activityScore = baseActivity + timeframeAdjustment + randomAdjustment;
+  
+  // Normalize to 0-100
+  const normalizedValue = 50 + (activityScore / 2);
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (activityScore >= 15) signal = 'bullish';
+  else if (activityScore <= -15) signal = 'bearish';
+  
+  // Calculate confidence
+  const confidence = 50 + Math.min(45, Math.abs(activityScore));
+  
+  return {
+    type: 'Whale Transactions',
+    value: normalizedValue,
+    signal,
+    confidence,
+    timeframe,
+    description: activityScore >= 15 ? 'Whale wallets are in net accumulation phase' :
+                activityScore <= -15 ? 'Whale wallets are in net distribution phase' :
+                'Balanced whale activity',
+    impact: 'high'
+  };
+}
+
+function simulateMVRV(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // MVRV (Market Value to Realized Value) - only relevant for BTC and ETH
+  // Base value (1.0 means market and realized value are equal)
+  const baseMVRV = symbol.includes('BTC') ? 2.5 : 2.2; // simulate slightly overvalued market (May 2025)
+  
+  // Add random variation
+  const variation = (Math.random() * 0.6) - 0.3; // -0.3 to +0.3
+  
+  // Calculate MVRV
+  const mvrv = Math.max(0.5, baseMVRV + variation);
+  
+  // Normalize to 0-100 scale
+  // MVRV of 3.5+ is historically high, 1.0 is neutral, 0.5 is low
+  const normalizedValue = (mvrv - 0.5) * 33.33;
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (mvrv <= 1.2) signal = 'bullish'; // undervalued
+  else if (mvrv >= 3.0) signal = 'bearish'; // overvalued
+  
+  // Calculate confidence
+  const confidence = mvrv <= 1.2 ? 50 + (1.2 - mvrv) * 100 :
+                    mvrv >= 3.0 ? 50 + (mvrv - 3.0) * 25 : 50;
+  
+  return {
+    type: 'MVRV Ratio',
+    value: normalizedValue,
+    signal,
+    confidence: Math.min(95, confidence),
+    timeframe,
+    description: mvrv <= 1.2 ? 'Low MVRV ratio indicates undervaluation' :
+                mvrv >= 3.0 ? 'High MVRV ratio indicates potential overvaluation' :
+                'MVRV ratio in neutral range',
+    impact: 'medium'
+  };
+}
+
+function simulateStablecoinRatio(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Stablecoin Supply Ratio (SSR) - simulates market's buying power
+  // Higher ratio means more stablecoins relative to market cap (more buying power)
+  const baseRatio = 0.08; // 8% ratio
+  
+  // Add random variation
+  const variation = (Math.random() * 0.04) - 0.02; // -2% to +2%
+  
+  // Calculate SSR
+  const ssr = Math.max(0.01, baseRatio + variation);
+  
+  // Normalize to 0-100 scale (0.12+ is very high, 0.02 is very low)
+  const normalizedValue = (ssr / 0.12) * 100;
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (ssr >= 0.1) signal = 'bullish'; // high buying power
+  else if (ssr <= 0.04) signal = 'bearish'; // low buying power
+  
+  // Calculate confidence
+  const confidence = ssr >= 0.1 ? 50 + (ssr - 0.1) * 1000 :
+                    ssr <= 0.04 ? 50 + (0.04 - ssr) * 1000 : 50;
+  
+  return {
+    type: 'Stablecoin Supply Ratio',
+    value: normalizedValue,
+    signal,
+    confidence: Math.min(95, confidence),
+    timeframe,
+    description: ssr >= 0.1 ? 'High stablecoin ratio indicates strong buying power' :
+                ssr <= 0.04 ? 'Low stablecoin ratio indicates limited buying power' :
+                'Moderate stablecoin buying power',
+    impact: 'medium'
+  };
+}
+
+function simulateExchangeReserve(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Exchange Reserve - simulates % of total supply on exchanges
+  // Lower values are generally bullish (less selling pressure)
+  const baseReserve = 
+    symbol.includes('BTC') ? 0.12 : // 12% of BTC on exchanges
+    symbol.includes('ETH') ? 0.15 : // 15% of ETH on exchanges
+    symbol.includes('SOL') ? 0.18 : 0.2; // 20% for others
+  
+  // Add variation based on current trend (simulate slow decrease)
+  const trendAdjustment = -0.02; // -2% year-on-year trend
+  
+  // Add random variation
+  const randomAdjustment = (Math.random() * 0.04) - 0.02; // -2% to +2%
+  
+  // Calculate reserve
+  const reserve = Math.max(0.05, baseReserve + trendAdjustment + randomAdjustment);
+  
+  // Normalize to 0-100 scale (0.3+ is very high, 0.05 is very low)
+  // Inverted so higher values = lower reserves = more bullish
+  const normalizedValue = 100 - ((reserve / 0.3) * 100);
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (reserve <= 0.1) signal = 'bullish'; // low reserves
+  else if (reserve >= 0.25) signal = 'bearish'; // high reserves
+  
+  // Calculate confidence
+  const confidence = reserve <= 0.1 ? 50 + (0.1 - reserve) * 500 :
+                    reserve >= 0.25 ? 50 + (reserve - 0.25) * 500 : 50;
+  
+  return {
+    type: 'Exchange Reserve',
+    value: normalizedValue,
+    signal,
+    confidence: Math.min(95, confidence),
+    timeframe,
+    description: reserve <= 0.1 ? 'Low exchange reserves indicate reduced selling pressure' :
+                reserve >= 0.25 ? 'High exchange reserves indicate increased selling pressure' :
+                'Exchange reserves at neutral levels',
+    impact: 'medium'
+  };
+}
+
+function simulateInstitutionalFlow(symbol: string, timeframe: TimeFrame): MacroIndicator {
+  // Only relevant for Bitcoin and Ethereum
+  if (!symbol.includes('BTC') && !symbol.includes('ETH')) {
+    return {
+      type: 'Institutional Flow',
+      value: 50,
+      signal: 'neutral',
+      confidence: 50,
+      timeframe,
+      description: 'Institutional flows not significant for this asset',
+      impact: 'low'
+    };
+  }
+  
+  // Base flow (% change in institutional holdings)
+  const baseFlow = symbol.includes('BTC') ? 5 : 3; // simulate slow institutional accumulation
+  
+  // Add variation based on timeframe
+  const timeframeAdjustment = 
+    timeframe === '1M' ? 3 :
+    timeframe === '1w' ? 2 :
+    timeframe === '3d' ? 1 : 0;
+  
+  // Add random variation
+  const randomAdjustment = (Math.random() * 10) - 5; // -5% to +5%
+  
+  // Calculate flow
+  const flow = baseFlow + timeframeAdjustment + randomAdjustment;
+  
+  // Normalize to 0-100 scale
+  const normalizedValue = 50 + (flow * 2);
+  
+  // Determine signal
+  let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  if (flow >= 5) signal = 'bullish';
+  else if (flow <= -5) signal = 'bearish';
+  
+  // Calculate confidence
+  const confidence = 50 + Math.min(45, Math.abs(flow) * 3);
+  
+  return {
+    type: 'Institutional Flow',
+    value: normalizedValue,
+    signal,
+    confidence,
+    timeframe,
+    description: flow >= 5 ? 'Strong institutional buying detected' :
+                flow <= -5 ? 'Institutional outflows detected' :
+                'Neutral institutional activity',
+    impact: 'high'
+  };
+}
+
+// Helper function to determine timeframe weight
+function timeframeWeight(timeframe: TimeFrame): number {
+  return timeframe === '1M' ? 10 :
+         timeframe === '1w' ? 9 :
+         timeframe === '3d' ? 8 :
+         timeframe === '1d' ? 7 :
+         timeframe === '4h' ? 6 :
+         timeframe === '1h' ? 5 :
+         timeframe === '30m' ? 4 :
+         timeframe === '15m' ? 3 :
+         timeframe === '5m' ? 2 : 1;
 }

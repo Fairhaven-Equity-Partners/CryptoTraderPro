@@ -34,13 +34,19 @@ export interface AdvancedSignal {
   timeframe: TimeFrame;
   timestamp: number;  // Required for display functionality
   macroScore?: number; // 0-100
+  macroClassification?: 'bullish' | 'bearish' | 'neutral';
   successProbability: number; // Required for display functionality (0-100)
+  successProbabilityDescription?: string; // Human-readable description of success probability
   indicators?: Indicator[];
   patternFormations?: PatternFormation[];
   supportLevels?: number[];
   resistanceLevels?: number[];
+  keyLevels?: Level[];
+  macroInsights?: string[];
   expectedDuration?: string;
   riskRewardRatio?: number;
+  optimalRiskReward?: { ideal: number; range: number[] };
+  recommendedLeverage?: { conservative: number; moderate: number; aggressive: number; recommendation: string };
 }
 
 // Trade recommendation interface for display
