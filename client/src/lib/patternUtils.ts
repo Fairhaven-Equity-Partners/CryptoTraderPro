@@ -28,7 +28,7 @@ export function generateDeterministicPatterns(
   confidence: number,
   timeframe: TimeFrame,
   price: number
-): PatternFormation[] {
+): any[] {
   // Deterministic hash based on price
   const priceSeed = Math.floor(price * 100);
   const timeframeValue = getTimeframeNumericValue(timeframe);

@@ -1789,21 +1789,50 @@ export default function AdvancedSignalDashboard({
                           
                           console.log(`Optimized calculation for ${tf}: ${calcResult.direction} (${calcResult.confidence}%)`);
                           
-                          // Create pattern formations using our deterministic pattern generator
-                          const patterns = generateDeterministicPatterns(
-                            calcResult.direction, 
-                            calcResult.confidence, 
-                            tf, 
-                            currentPrice
-                          );
+                          // Create pattern formations with error handling
+                          let patterns = [];
+                          try {
+                            patterns = generateDeterministicPatterns(
+                              calcResult.direction, 
+                              calcResult.confidence, 
+                              tf, 
+                              currentPrice
+                            );
+                            console.log(`Generated ${patterns.length} patterns for ${tf}`);
+                          } catch (err) {
+                            console.error(`Pattern generation error for ${tf}:`, err);
+                            // Fallback pattern if generation fails
+                            patterns = [{
+                              name: calcResult.direction === 'LONG' ? 'Bullish Pattern' : 
+                                    calcResult.direction === 'SHORT' ? 'Bearish Pattern' : 'Neutral Pattern',
+                              reliability: 70,
+                              direction: calcResult.direction === 'LONG' ? 'bullish' :
+                                         calcResult.direction === 'SHORT' ? 'bearish' : 'neutral',
+                              priceTarget: calcResult.takeProfit,
+                              description: `Basic ${tf} timeframe pattern`,
+                              duration: '1-7 days'
+                            }];
+                          }
                           
-                          // Calculate appropriate leverage recommendations
-                          const leverageRecs = calculateLeverage(
-                            calcResult.direction,
-                            calcResult.confidence,
-                            calcResult.successProbability,
-                            currentPrice
-                          );
+                          // Calculate appropriate leverage recommendations with error handling
+                          let leverageRecs;
+                          try {
+                            leverageRecs = calculateLeverage(
+                              calcResult.direction,
+                              calcResult.confidence,
+                              calcResult.successProbability,
+                              currentPrice
+                            );
+                          } catch (err) {
+                            console.error(`Leverage calculation error for ${tf}:`, err);
+                            // Fallback leverage recommendations
+                            leverageRecs = {
+                              conservative: 1.5,
+                              moderate: 3.0,
+                              aggressive: 5.0,
+                              recommendation: 'Use caution with leverage'
+                            };
+                          }
                           
                           // Update the signal with all the calculated data
                           if (newSignals[tf]) {
