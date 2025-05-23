@@ -613,10 +613,65 @@ export default function AdvancedSignalDashboard({
       }
     };
     
-    // Add event listeners to detect price updates
-    window.addEventListener('price-update', handlePriceUpdate as EventListener);
-    window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
-    window.addEventListener('calculation-needed', handlePriceUpdate as EventListener);
+    // Add event listeners to detect price updates - with proper throttling
+    let lastPriceUpdateTime = 0;
+    const MIN_UPDATE_INTERVAL = 30000; // 30 seconds minimum between auto-calculations
+    
+    // Create throttled price update handler
+    const handleThrottledPriceUpdate = (event: Event) => {
+      const now = Date.now();
+      const priceEvent = event as CustomEvent;
+      
+      // Skip if no price details
+      if (!priceEvent.detail) return;
+      
+      // Extract price data
+      const { symbol: eventSymbol, price } = priceEvent.detail;
+      
+      // Only process events for the current symbol
+      if (eventSymbol === symbol) {
+        console.log(`📊 Price update received for ${symbol}: ${price}`);
+        
+        // Always update the displayed price
+        setAssetPrice(price);
+        priceRef.current = price;
+        
+        // But only trigger a calculation if enough time has passed
+        const timeSinceLastUpdate = now - lastPriceUpdateTime;
+        if (timeSinceLastUpdate >= MIN_UPDATE_INTERVAL) {
+          console.log(`Triggering calculation after ${Math.round(timeSinceLastUpdate/1000)}s since last update`);
+          lastPriceUpdateTime = now;
+          
+          // Only trigger if not already calculating
+          if (!isCalculating && isAllDataLoaded && isLiveDataReady) {
+            console.log(`🚀 Triggering throttled auto-calculation from price update for ${symbol}`);
+            setIsCalculating(true);
+            
+            // Broadcast calculation start event for display purposes
+            window.dispatchEvent(new Event('calculation-started'));
+            
+            // Trigger calculation with a small delay to ensure state updates
+            setTimeout(() => {
+              // Use the existing calculation function
+              triggerCalculation('throttled-price-update');
+              
+              // Make sure to set the calculation state back to false after a short delay
+              setTimeout(() => {
+                setIsCalculating(false);
+                console.log("✅ Throttled auto-calculation complete - updating UI status");
+              }, 1500);
+            }, 200);
+          }
+        } else {
+          console.log(`Skipping calculation - only ${Math.round(timeSinceLastUpdate/1000)}s since last update (minimum: ${MIN_UPDATE_INTERVAL/1000}s)`);
+        }
+      }
+    };
+    
+    // Add the throttled event listeners
+    window.addEventListener('price-update', handleThrottledPriceUpdate as EventListener);
+    window.addEventListener('live-price-update', handleThrottledPriceUpdate as EventListener);
+    window.addEventListener('calculation-needed', handleThrottledPriceUpdate as EventListener);
     
     // Set up display-only countdown timer - only for manual trigger status
     const timerInterval = setInterval(() => {
@@ -637,9 +692,9 @@ export default function AdvancedSignalDashboard({
       }
       
       // Remove event listeners when component unmounts
-      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-      window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
-      window.removeEventListener('calculation-needed', handlePriceUpdate as EventListener);
+      window.removeEventListener('price-update', handleThrottledPriceUpdate as EventListener);
+      window.removeEventListener('live-price-update', handleThrottledPriceUpdate as EventListener);
+      window.removeEventListener('calculation-needed', handleThrottledPriceUpdate as EventListener);
     };
   }, [symbol, isCalculating, triggerCalculation]);
 
