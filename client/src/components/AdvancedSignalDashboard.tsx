@@ -602,6 +602,12 @@ export default function AdvancedSignalDashboard({
           setTimeout(() => {
             // Use the existing calculation function
             triggerCalculation('auto-price-update');
+            
+            // Make sure to set the calculation state back to false after a short delay
+            setTimeout(() => {
+              setIsCalculating(false);
+              console.log("✅ Auto-calculation complete - updating UI status");
+            }, 1500);
           }, 200);
         }
       }
