@@ -1,0 +1,1 @@
+window.manualTrigger = function() { console.log('Manually triggering calculation...'); try { window.triggerCalculation('BTC/USDT', 111175); console.log('Manual trigger complete'); } catch(e) { console.error('Error in manual trigger:', e); } }

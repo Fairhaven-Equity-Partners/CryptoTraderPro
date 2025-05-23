@@ -419,6 +419,14 @@ export default function AdvancedSignalDashboard({
     window.addEventListener('calculation-started', handleCalculationStart);
     window.addEventListener('calculation-complete', handleCalculationComplete as EventListener);
     
+    // Manually trigger calculation to ensure initial display
+    setTimeout(() => {
+      if (window.triggerCalculation) {
+        console.log('Triggering initial calculation for display...');
+        window.triggerCalculation(symbol, currentPrice);
+      }
+    }, 2500);
+    
     return () => {
       clearInterval(timerInterval);
       window.removeEventListener('calculation-started', handleCalculationStart);
