@@ -1,7 +1,7 @@
 // This file intercepts automatic calculation events
 // to let the improved synced calculation system handle them instead
 
-export function setupEventInterceptor() {
+export function disableAllAutoCalculations() {
   console.log("[AUTO-CALC-DISABLED] Setting up event interceptor");
   
   // Intercept price update events
