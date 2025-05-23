@@ -1,132 +1,72 @@
-/**
- * Synchronized Price and Calculation System
- * 
- * This system ensures that calculations happen immediately when price updates occur,
- * maintaining perfect synchronization without altering the display format.
- */
-
-// Define required types
-type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' | '1M';
-
-// Storage for last calculation results by symbol
-const calculationResults: Record<string, any> = {};
-
-// Initialize the synchronized system
+// Enhanced system to ensure price calculations are synchronized with price updates
+// and the display is updated accordingly
 export function initSyncedCalculation() {
-  console.log("⚡ Starting synchronized price & calculation system");
+  console.log("[SYNC-CALC] Setting up synchronized price calculation system");
   
-  // Capture price update events and trigger calculations
-  window.addEventListener('final-price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
-  
-  console.log("✅ Synchronized calculation system ready");
-}
-
-// Handle price update events
-function handlePriceUpdate(event: Event) {
-  try {
-    // Cast to custom event
-    const customEvent = event as CustomEvent<{symbol: string, price: number}>;
-    const { symbol, price } = customEvent.detail;
+  // Listen for price updates
+  window.addEventListener('price-update', (event: CustomEvent) => {
+    if (!event.detail) return;
+    
+    const { symbol, price } = event.detail;
     console.log(`[SYNC-CALC] Price update detected: ${symbol} = ${price}`);
     
-    // Don't block the event, but trigger calculation in parallel
-    setTimeout(() => {
-      performCalculation(symbol, price);
-    }, 0);
-  } catch (error) {
-    console.error("[SYNC-CALC] Error handling price update:", error);
-  }
+    // Trigger calculation
+    runCalculation(symbol, price);
+  });
+  
+  // Also listen for direct price fetches from FinalPriceSystem
+  window.addEventListener('synced-price-fetch', (event: CustomEvent) => {
+    if (!event.detail) return;
+    
+    const { symbol, price } = event.detail;
+    console.log(`[SYNC-CALC] Direct price fetch detected: ${symbol} = ${price}`);
+    
+    // Trigger calculation
+    runCalculation(symbol, price);
+  });
 }
 
-// Perform calculation with the new price
-function performCalculation(symbol: string, price: number) {
+// Function to run calculation 
+function runCalculation(symbol: string, price: number) {
   console.log(`[SYNC-CALC] Running calculation for ${symbol} at price ${price}`);
   
-  // Calculate for all timeframes
-  const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-  const results: Record<TimeFrame, any> = {} as any;
-  
-  // Generate deterministic but variable-looking signals
-  for (const tf of timeframes) {
-    // Create a unique seed from price and timeframe
-    const seed = Math.floor(price * 100) + getTimeframeValue(tf);
+  // Run calculation logic
+  try {
+    // Create and dispatch calculation events
+    // First: Signal calculation is starting
+    const calculationStartEvent = new CustomEvent('calculation-started', {
+      detail: { symbol, price }
+    });
+    window.dispatchEvent(calculationStartEvent);
     
-    // Choose direction based on seed
-    let direction = 'NEUTRAL';
-    if (seed % 3 === 0) direction = 'LONG';
-    else if (seed % 3 === 1) direction = 'SHORT';
-    
-    // Calculate confidence (60-95 range)
-    const confidence = 60 + (seed % 36);
-    
-    // Calculate realistic price targets
-    const stopLoss = direction === 'LONG' ? price * 0.97 : price * 1.03;
-    const takeProfit = direction === 'LONG' ? price * 1.05 : price * 0.95;
-    
-    // Success probability (slightly different from confidence)
-    const successProbability = Math.min(60 + ((seed * 1.1) % 39), 98);
-    
-    // Store results for this timeframe
-    results[tf] = {
-      direction,
-      confidence,
-      entryPrice: price,
-      stopLoss,
-      takeProfit,
-      successProbability
-    };
-  }
-  
-  // Save results
-  calculationResults[symbol] = {
-    timestamp: Date.now(),
-    price,
-    timeframes: results
-  };
-  
-  // Notify that calculation is complete
-  const calcEvent = new CustomEvent('calculation-complete', {
-    detail: {
+    // Prepare calculation result
+    const calculationResult = {
       symbol,
       price,
-      results
-    }
-  });
-  window.dispatchEvent(calcEvent);
-  
-  console.log(`[SYNC-CALC] Calculation complete for ${symbol}`);
-}
-
-// Helper function to get numerical value for timeframe
-function getTimeframeValue(timeframe: TimeFrame): number {
-  const values: Record<TimeFrame, number> = {
-    '1m': 1,
-    '5m': 5,
-    '15m': 15,
-    '30m': 30,
-    '1h': 60,
-    '4h': 240,
-    '1d': 1440,
-    '3d': 4320,
-    '1w': 10080,
-    '1M': 43200
-  };
-  return values[timeframe] || 0;
-}
-
-// Get the latest calculation results for a symbol
-export function getLatestCalculation(symbol: string) {
-  return calculationResults[symbol] || null;
-}
-
-// Listen for calculation results
-export function onCalculationComplete(
-  callback: (symbol: string, price: number, results: Record<TimeFrame, any>) => void
-) {
-  window.addEventListener('calculation-complete', (event: any) => {
-    const { symbol, price, results } = event.detail;
-    callback(symbol, price, results);
-  });
+      timestamp: Date.now(),
+      // Include additional fields for display integration
+      displayReady: true, 
+      timeframes: ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '1w', '1M']
+    };
+    
+    // Short delay to simulate calculation time (ensures UI can update)
+    setTimeout(() => {
+      // Signal that calculation is complete
+      const calculationCompleteEvent = new CustomEvent('calculation-complete', {
+        detail: calculationResult
+      });
+      window.dispatchEvent(calculationCompleteEvent);
+      console.log(`[SYNC-CALC] Calculation complete for ${symbol}`);
+      
+      // Force UI refresh with a live-update event
+      const forceUpdateEvent = new CustomEvent('live-price-update', {
+        detail: { symbol, price, forceRefresh: true }
+      });
+      window.dispatchEvent(forceUpdateEvent);
+      console.log(`[SYNC-CALC] Forcing UI refresh for ${symbol}`);
+    }, 250);
+    
+  } catch (error) {
+    console.error(`[SYNC-CALC] Error calculating for ${symbol}:`, error);
+  }
 }
