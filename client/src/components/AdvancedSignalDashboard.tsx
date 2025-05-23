@@ -1864,15 +1864,11 @@ export default function AdvancedSignalDashboard({
                   Quick Update
                 </Button>
                 
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="h-7 text-xs bg-indigo-900/30 text-indigo-300 border-indigo-800 hover:bg-indigo-800/50 hover:text-indigo-200"
-                  onClick={async () => {
-                    toast({
-                      title: "Manual calculation started",
-                      description: "Running optimized calculations...",
-                    });
+                <div 
+                  className="flex items-center h-7 text-xs px-2 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-800 rounded-md"
+                >
+                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                  Auto-calculations enabled
                     
                     try {
                       setIsCalculating(true); // Set calculating state immediately
@@ -2090,7 +2086,7 @@ export default function AdvancedSignalDashboard({
                   }}
                 >
                   <RefreshCcw className="w-3 h-3 mr-1" />
-                  Calculate Now
+                  {/* Auto-calculation enabled */}
                 </Button>
               </div>
             </div>

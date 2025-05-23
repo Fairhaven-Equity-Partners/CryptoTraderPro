@@ -35,30 +35,21 @@ function Router() {
 }
 
 function App() {
-  // Enable automatic calculations when the app loads
+  // Initialize automatic calculation system when the app loads
   useEffect(() => {
-    // Ensure automatic calculations are enabled
-    console.log('✅ App initializing - enabling automatic calculations ✅');
+    // Initialize our automatic calculation system
+    console.log('✅ App initializing - setting up automatic calculation system ✅');
+    initAutoCalculationSystem();
     
-    // Set global flag to indicate auto-calculations are enabled
-    if (typeof window !== 'undefined') {
-      (window as any).autoCalculationsDisabled = false;
-      (window as any).__CALCULATIONS_LOCKED__ = false;
-    }
-    
-    // Dispatch an event to notify the system
-    const enableEvent = new CustomEvent('auto-calculations-enabled');
-    window.dispatchEvent(enableEvent);
-    
-    // No cleanup needed as we want calculations to remain enabled
+    // No cleanup needed as we want calculations to remain enabled throughout the app lifecycle
   }, []);
   
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        {/* Hidden element to store live price data for calculations - MANUAL ONLY */}
-        <div id="live-price-data" style={{ display: 'none' }} data-calculation-mode="manual-only" />
+        {/* Hidden element to store live price data for calculations - AUTO-ENABLED */}
+        <div id="live-price-data" style={{ display: 'none' }} data-calculation-mode="auto-enabled" />
         <Router />
       </TooltipProvider>
     </QueryClientProvider>
