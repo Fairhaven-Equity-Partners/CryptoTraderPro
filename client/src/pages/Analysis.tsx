@@ -1,105 +1,23 @@
-import React, { useState, useRef, useEffect } from 'react';
-import StatusBar from '../components/StatusBar';
-import Header from '../components/Header';
-import PriceOverview from '../components/PriceOverview';
-import LeverageCalculator from '../components/LeverageCalculator';
-import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
-import SignalHeatMap from '../components/SignalHeatMap';
-import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
-import { useAssetPrice } from '../hooks/useMarketData';
-import { TimeFrame } from '../types';
-import { 
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger 
-} from "@/components/ui/collapsible";
-import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState } from 'react';
+import SimpleSignalDisplay from '../components/SimpleSignalDisplay';
 
 const Analysis: React.FC = () => {
-  const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
-  const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
-  const [isHeatMapOpen, setIsHeatMapOpen] = useState(true);
-  const { price } = useAssetPrice(currentAsset);
-  // Keep track if this is first load or a user-initiated change
-  const [assetChangeCounter, setAssetChangeCounter] = useState(0);
-  const [shouldRunAnalysis, setShouldRunAnalysis] = useState(false);
-  
-  // Effect to trigger analysis when asset changes
-  useEffect(() => {
-    // Skip the initial render
-    if (assetChangeCounter > 0) {
-      console.log(`Automatically running analysis for ${currentAsset}`);
-      // Allow time for data to load first
-      const timer = setTimeout(() => {
-        setShouldRunAnalysis(true);
-      }, 1000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [currentAsset, assetChangeCounter]);
-  
-  const handleChangeAsset = (symbol: string) => {
-    setCurrentAsset(symbol);
-    setShouldRunAnalysis(true); // Directly set to run analysis
-    setAssetChangeCounter(prev => prev + 1);
-    console.log(`Selected new asset: ${symbol} - analysis will run automatically`);
-  };
-  
-  const handleChangeTimeframe = (timeframe: TimeFrame) => {
-    setCurrentTimeframe(timeframe);
-  };
+  const [currentAsset] = useState('BTC/USDT');
 
   return (
-    <div className="flex flex-col h-screen">
-      <StatusBar />
-      <Header 
-        currentAsset={currentAsset} 
-        onChangeAsset={handleChangeAsset} 
-      />
+    <div className="flex flex-col min-h-screen bg-gray-900">
+      <header className="bg-gray-800 py-4 px-6 shadow-md">
+        <h1 className="text-2xl font-bold text-white">CryptoSignals Pro</h1>
+      </header>
       
-      <main className="flex-1 overflow-y-auto pb-16">
-        <PriceOverview 
-          symbol={currentAsset} 
-          timeframe={currentTimeframe}
-        />
-        
-        <div className="px-4 py-2">
-          <AdvancedSignalDashboard 
-            symbol={currentAsset} 
-            onTimeframeSelect={handleChangeTimeframe}
-            autoRun={shouldRunAnalysis}
-            onAnalysisComplete={() => setShouldRunAnalysis(false)}
-          />
+      <main className="flex-1 p-6">
+        <div className="mb-6">
+          <h2 className="text-3xl font-bold text-white mb-2">Market Analysis</h2>
+          <p className="text-gray-400">Technical analysis and trade signals</p>
         </div>
         
-        {/* Heat Map Section */}
-        <div className="px-4 py-4">
-          <Collapsible open={isHeatMapOpen} onOpenChange={setIsHeatMapOpen}>
-            <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-bold text-white">Market-Wide Signal Analysis</h2>
-              <CollapsibleTrigger asChild>
-                <Button variant="ghost" size="sm" className="w-9 p-0">
-                  {isHeatMapOpen ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </Button>
-              </CollapsibleTrigger>
-            </div>
-            
-            <CollapsibleContent>
-              <SignalHeatMap onSelectAsset={handleChangeAsset} />
-            </CollapsibleContent>
-          </Collapsible>
-        </div>
-        
-        <div className="px-4 py-4">
-          <LeverageCalculator 
-            symbol={currentAsset} 
-            currentPrice={price?.lastPrice || 0}
-          />
+        <div className="mb-8">
+          <SimpleSignalDisplay symbol={currentAsset} />
         </div>
       </main>
     </div>
