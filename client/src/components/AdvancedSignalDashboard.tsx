@@ -649,29 +649,30 @@ export default function AdvancedSignalDashboard({
       if (eventSymbol === symbol) {
         console.log(`📊 Price update received for ${symbol}: ${price}`);
         
-        // Always update the displayed price
+        // Always update the displayed price - this ensures the UI always shows the latest price
+        // even if we don't perform calculations every time
         setAssetPrice(price);
         priceRef.current = price;
         
-        // Calculate time since last calculation - we use SUPER STRICT time limits
-        // to prevent too many calculations
+        // STRICT CALCULATION THROTTLE: Calculate time since last calculation
+        // Uses a strict time limit to prevent too many calculations
         const timeSinceLastUpdate = now - lastCalculationTimeRef.current;
         const MIN_CALCULATION_INTERVAL = 120000; // 2 minutes minimum between calculations
         
         if (timeSinceLastUpdate >= MIN_CALCULATION_INTERVAL) {
           console.log(`Triggering calculation after ${Math.round(timeSinceLastUpdate/1000)}s since last update`);
           
-          // Mark this time as the last update time
+          // IMPORTANT: Mark this time as the last update time IMMEDIATELY to prevent race conditions
+          // This prevents other handlers from triggering calculations in the small time gap
           lastPriceUpdateTime = now;
-          // Also update the last calculation time immediately
           lastCalculationTimeRef.current = now;
           
-          // Only trigger if not already calculating
+          // Only trigger if not already calculating and all data is ready
           if (!isCalculating && isAllDataLoaded && isLiveDataReady) {
             console.log(`🚀 Triggering throttled auto-calculation from price update for ${symbol}`);
             setIsCalculating(true);
             
-            // Broadcast calculation start event for display purposes
+            // Broadcast calculation start event for display purposes only
             window.dispatchEvent(new Event('calculation-started'));
             
             // Trigger calculation with a small delay to ensure state updates
@@ -682,7 +683,7 @@ export default function AdvancedSignalDashboard({
               // Make sure to set the calculation state back to false after a short delay
               setTimeout(() => {
                 setIsCalculating(false);
-                console.log("✅ Throttled auto-calculation complete - updating UI status");
+                console.log("✅ Throttled auto-calculation complete - updated UI");
               }, 1500);
             }, 200);
           }
