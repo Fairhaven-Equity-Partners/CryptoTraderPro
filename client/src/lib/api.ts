@@ -383,10 +383,15 @@ export function startRealTimeUpdates() {
             if (newPrice && currentPrice) {
               console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
               
-              // DIRECT TRIGGER: Dispatch a custom event to initiate calculations immediately
+              // DIRECT TRIGGER WAS DISABLED TO PREVENT DUPLICATE CALCULATIONS
+              // This was causing multiple calculation triggers across the system
+              console.log(`[API] Price update received for ${symbol} but NOT dispatching additional event`);
+              
+              /* DISABLED TO PREVENT MULTIPLE CALCULATIONS
               document.dispatchEvent(new CustomEvent('live-price-update', { 
                 detail: { symbol, price: newPrice, timestamp: Date.now() }
               }));
+              */
             }
             
             // Notify all handlers about the price update

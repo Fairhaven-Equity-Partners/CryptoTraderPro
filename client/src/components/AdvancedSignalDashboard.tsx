@@ -408,6 +408,7 @@ export default function AdvancedSignalDashboard({
   
   // Function to trigger calculation
   const triggerCalculation = useCallback((trigger: string) => {
+    // We need to use Date.now() / 1000 to match other places where we track time
     const now = Date.now() / 1000;
     const timeSinceLastCalc = now - lastCalculationTimeRef.current;
     
@@ -620,13 +621,29 @@ export default function AdvancedSignalDashboard({
     // Create throttled price update handler
     const handleThrottledPriceUpdate = (event: Event) => {
       const now = Date.now();
-      const priceEvent = event as CustomEvent;
+      let priceEvent = event as CustomEvent;
+      let price = 0;
+      let eventSymbol = '';
       
-      // Skip if no price details
-      if (!priceEvent.detail) return;
+      // Handle different event types correctly
+      if (priceEvent.detail) {
+        // Standard price events with detail object
+        eventSymbol = priceEvent.detail.symbol;
+        price = priceEvent.detail.price;
+      } else if (event.type === 'calculation-needed') {
+        // For calculation-needed events, use current price and symbol
+        eventSymbol = symbol;
+        price = priceRef.current;
+      } else {
+        console.log(`Skipping unrecognized event type: ${event.type}`);
+        return;
+      }
       
-      // Extract price data
-      const { symbol: eventSymbol, price } = priceEvent.detail;
+      // Skip if no valid price
+      if (!price || price <= 0) {
+        console.log(`Skipping update with invalid price: ${price}`);
+        return;
+      }
       
       // Only process events for the current symbol
       if (eventSymbol === symbol) {
@@ -636,11 +653,18 @@ export default function AdvancedSignalDashboard({
         setAssetPrice(price);
         priceRef.current = price;
         
-        // But only trigger a calculation if enough time has passed
-        const timeSinceLastUpdate = now - lastPriceUpdateTime;
-        if (timeSinceLastUpdate >= MIN_UPDATE_INTERVAL) {
+        // Calculate time since last calculation - we use SUPER STRICT time limits
+        // to prevent too many calculations
+        const timeSinceLastUpdate = now - lastCalculationTimeRef.current;
+        const MIN_CALCULATION_INTERVAL = 120000; // 2 minutes minimum between calculations
+        
+        if (timeSinceLastUpdate >= MIN_CALCULATION_INTERVAL) {
           console.log(`Triggering calculation after ${Math.round(timeSinceLastUpdate/1000)}s since last update`);
+          
+          // Mark this time as the last update time
           lastPriceUpdateTime = now;
+          // Also update the last calculation time immediately
+          lastCalculationTimeRef.current = now;
           
           // Only trigger if not already calculating
           if (!isCalculating && isAllDataLoaded && isLiveDataReady) {
@@ -663,7 +687,7 @@ export default function AdvancedSignalDashboard({
             }, 200);
           }
         } else {
-          console.log(`Skipping calculation - only ${Math.round(timeSinceLastUpdate/1000)}s since last update (minimum: ${MIN_UPDATE_INTERVAL/1000}s)`);
+          console.log(`Throttling calculation for ${symbol} - last calc was ${Math.round(timeSinceLastUpdate/1000)}s ago (minimum 120s)`);
         }
       }
     };
