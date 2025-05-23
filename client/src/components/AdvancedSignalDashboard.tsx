@@ -569,20 +569,55 @@ export default function AdvancedSignalDashboard({
       clearInterval(recalcIntervalRef.current);
     }
     
-    // Initialize the timer to "Calculate Now" mode - no auto-refresh
-    setNextRefreshIn(0); // Manual mode only
-
-    console.log("[ManualCalc] AUTO-CALCULATION COMPLETELY DISABLED - Only manual calculations allowed");
+    // Initialize the timer but enable auto-refresh when price updates occur
+    setNextRefreshIn(0); // Start in manual mode but will respond to price updates
     
-    // REMOVED ALL AUTO-CALCULATION HANDLERS
-    // No price update handler - we want ONLY manual calculations
+    console.log("[AutoCalc] Setting up price-triggered calculations for signal dashboard");
+    
+    // Add event listener for price update events that will trigger calculations
+    const handlePriceUpdate = (event: Event) => {
+      const priceEvent = event as CustomEvent;
+      if (!priceEvent.detail) return;
+      
+      const { symbol: eventSymbol, price } = priceEvent.detail;
+      
+      // Only process events for the current symbol
+      if (eventSymbol === symbol) {
+        console.log(`📊 Price update received for ${symbol}: ${price}`);
+        console.log(`🔄 Updating price for ${symbol} from ${assetPrice} to ${price}`);
+        // Update the asset price state with the new price
+        setAssetPrice(price);
+        // Update the reference as well for consistency
+        priceRef.current = price;
+        
+        // Only trigger calculation if we're not already calculating and data is loaded
+        if (!isCalculating && isAllDataLoaded && isLiveDataReady) {
+          console.log(`🚀 Triggering auto-calculation from price update for ${symbol}`);
+          setIsCalculating(true);
+          
+          // Broadcast calculation start event for display purposes
+          window.dispatchEvent(new Event('calculation-started'));
+          
+          // Trigger calculation with a small delay to ensure state updates
+          setTimeout(() => {
+            // Use the existing calculation function
+            triggerCalculation('auto-price-update');
+          }, 200);
+        }
+      }
+    };
+    
+    // Add event listeners to detect price updates
+    window.addEventListener('price-update', handlePriceUpdate as EventListener);
+    window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
+    window.addEventListener('calculation-needed', handlePriceUpdate as EventListener);
     
     // Set up display-only countdown timer - only for manual trigger status
     const timerInterval = setInterval(() => {
       // We'll reuse this timer for "Calculating..." display purposes only
       if (isCalculating) {
         // Count down from 10 when calculation is in progress for visual feedback
-        setNextRefreshIn(prevTime => {
+        setNextRefreshIn((prevTime: number) => {
           if (prevTime <= 0) return 10;
           return prevTime - 1;
         });
@@ -597,7 +632,11 @@ export default function AdvancedSignalDashboard({
       if (recalcIntervalRef.current) {
         clearInterval(recalcIntervalRef.current);
       }
-      // No event listeners to remove - we don't add any
+      
+      // Remove event listeners when component unmounts
+      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+      window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+      window.removeEventListener('calculation-needed', handlePriceUpdate as EventListener);
     };
   }, [symbol, isCalculating, triggerCalculation]);
 

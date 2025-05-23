@@ -146,12 +146,11 @@ export interface TechnicalIndicators {
   calculateEMA: (data: ChartData[], period?: number) => any;
 }
 
-// Signal stabilization system interface
+// Signal stabilization system interface - updated to match our new implementation
 export interface SignalStabilizationSystem {
-  getStabilizedSignal: (symbol: string, timeframe: TimeFrame, direction: string, confidence: number) => {
-    direction: SignalDirection;
-    confidence: number;
-  };
+  stabilizeSignals: (newSignal: any, previousSignal: any) => any;
+  harmonizeSignalsAcrossTimeframes: (signals: Record<string, any>) => Record<string, any>;
+  getStabilizedSignal: (newSignals: Record<string, any>, previousSignals: Record<string, any>) => Record<string, any>;
 }
 
 // We removed this interface because it's now defined in windowTypes.ts
