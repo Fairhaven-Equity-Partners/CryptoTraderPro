@@ -1,63 +1,30 @@
-import { useState, useEffect } from 'react';
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
+import React from 'react';
+import './index.css';
 import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
-import Analysis from "@/pages/Analysis";
-import Alerts from "@/pages/Alerts";
-import Settings from "@/pages/Settings";
-import NavigationBar from "@/components/NavigationBar";
-import GlobalNotifications from "@/components/GlobalNotifications";
-import { AppTab } from "./types";
-import { disableAllAutoCalculations } from "./lib/disableAllAutoCalculations";
 
-function Router() {
-  const [currentTab, setCurrentTab] = useState<AppTab['id']>('analysis');
-
-  const handleTabChange = (tab: AppTab['id']) => {
-    setCurrentTab(tab);
-  };
-
-  return (
-    <div className="flex flex-col min-h-screen bg-primary">
-      <Switch>
-        <Route path="/" component={() => <Analysis />} />
-        <Route path="/alerts" component={() => <Alerts />} />
-        <Route path="/settings" component={() => <Settings />} />
-        <Route component={NotFound} />
-      </Switch>
-      <NavigationBar currentTab={currentTab} onChangeTab={handleTabChange} />
-      <GlobalNotifications />
-    </div>
-  );
-}
+// Import the standalone market analysis component
+import StandaloneMarketAnalysis from './components/StandaloneMarketAnalysis';
 
 function App() {
-  // Call the disableAllAutoCalculations function when the app loads
-  useEffect(() => {
-    // Completely disable all automatic calculations at startup
-    console.log('🛑 App initializing - disabling all auto-calculations 🛑');
-    disableAllAutoCalculations();
-    
-    // Also apply again after a short delay to catch any late initializations
-    const secondaryDisableTimer = setTimeout(() => {
-      console.log('🔒 Secondary disable pass for auto-calculations 🔒');
-      disableAllAutoCalculations();
-    }, 1000);
-    
-    return () => clearTimeout(secondaryDisableTimer);
-  }, []);
-  
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        {/* Hidden element to store live price data for calculations - MANUAL ONLY */}
-        <div id="live-price-data" style={{ display: 'none' }} data-calculation-mode="manual-only" />
-        <Router />
-      </TooltipProvider>
+      <Toaster />
+      <div className="min-h-screen bg-gray-900 text-gray-100">
+        <header className="bg-gray-800 py-4 px-6 shadow-md">
+          <h1 className="text-2xl font-bold">CryptoSignals Pro</h1>
+        </header>
+        
+        <main className="p-6">
+          <div className="mb-6">
+            <h2 className="text-3xl font-bold text-white mb-2">Market Analysis</h2>
+            <p className="text-gray-400">Technical analysis and trade signals</p>
+          </div>
+          
+          <StandaloneMarketAnalysis symbol="BTC/USDT" />
+        </main>
+      </div>
     </QueryClientProvider>
   );
 }
