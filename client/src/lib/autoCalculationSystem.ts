@@ -1,81 +1,84 @@
 /**
  * Auto Calculation System
  * 
- * This module ensures that calculations happen automatically when price data is updated,
- * eliminating the need for manual "Calculate Now" or "Quick Update" buttons.
+ * A centralized system that coordinates automatic calculations
+ * whenever price updates occur, while maintaining the same display format.
  */
 
-let autoCalculationEnabled = true;
+import { TimeFrame } from './advancedSignals';
+
+// Define required types if needed
+type CalculationCallback = (symbol: string, price: number) => void;
+
+// Track registered calculation callbacks
+const calculationCallbacks: CalculationCallback[] = [];
+
+// Track initialization state
+let isInitialized = false;
 
 /**
  * Initialize the automatic calculation system
- * This sets up event listeners to trigger calculations on price updates
  */
 export function initAutoCalculationSystem() {
-  console.log('🧮 Initializing automatic calculation system 🧮');
-  
-  // Remove any disabling flags
-  if (typeof window !== 'undefined') {
-    (window as any).autoCalculationsDisabled = false;
-    (window as any).__CALCULATIONS_LOCKED__ = false;
-  }
-  
-  // Listen for price updates and trigger calculations
-  window.addEventListener('price-update', handlePriceUpdate);
-  window.addEventListener('live-price-update', handlePriceUpdate);
-  window.addEventListener('price-fetching', handlePriceUpdate);
-  
-  console.log('✅ Auto calculation system initialized and enabled ✅');
-  
-  // Dispatch an event to notify the system
-  const enableEvent = new CustomEvent('auto-calculations-enabled');
-  window.dispatchEvent(enableEvent);
-}
-
-/**
- * Enable automatic calculations
- */
-export function enableAutoCalculation() {
-  console.log('✅ Enabling automatic calculations ✅');
-  autoCalculationEnabled = true;
-  
-  // Dispatch an event to notify the system
-  const enableEvent = new CustomEvent('auto-calculations-enabled');
-  window.dispatchEvent(enableEvent);
-}
-
-/**
- * Disable automatic calculations (for debugging only)
- */
-export function disableAutoCalculation() {
-  console.log('⛔ Disabling automatic calculations ⛔');
-  autoCalculationEnabled = false;
-  
-  // Dispatch an event to notify the system
-  const disableEvent = new CustomEvent('auto-calculations-disabled');
-  window.dispatchEvent(disableEvent);
-}
-
-/**
- * Handle price update events by triggering calculations
- */
-function handlePriceUpdate(event: Event) {
-  if (!autoCalculationEnabled) {
-    console.log('Auto calculations are disabled, skipping calculation');
+  if (isInitialized) {
+    console.log('Auto calculation system already initialized');
     return;
   }
+
+  // Listen for price update events
+  window.addEventListener('price-update', handlePriceUpdate as EventListener);
+  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
+  window.addEventListener('final-price-update', handlePriceUpdate as EventListener);
   
-  console.log('🔄 Price update detected, triggering automatic calculation 🔄');
-  
-  // Trigger calculation by dispatching an event
-  const calcEvent = new CustomEvent('trigger-calculation', {
-    detail: (event as CustomEvent).detail
-  });
-  
-  window.dispatchEvent(calcEvent);
+  console.log('✅ Auto calculation system initialized ✅');
+  isInitialized = true;
 }
 
-// Initialize auto calculation on module import
-if (typeof window !== 'undefined') {
-  console.log('Auto calculation system module loaded');
+/**
+ * Handle price update events
+ */
+function handlePriceUpdate(event: Event) {
+  const customEvent = event as CustomEvent<{symbol: string, price: number}>;
+  const { symbol, price } = customEvent.detail;
+  
+  console.log(`🔄 Price update detected, triggering automatic calculation 🔄`);
+  
+  // Notify all registered callbacks
+  calculationCallbacks.forEach(callback => {
+    try {
+      callback(symbol, price);
+    } catch (error) {
+      console.error('Error in calculation callback:', error);
+    }
+  });
+}
+
+/**
+ * Register a calculation callback
+ * @param callback Function to call when price updates
+ * @returns Unregister function
+ */
+export function registerCalculationCallback(callback: CalculationCallback) {
+  calculationCallbacks.push(callback);
+  
+  return () => {
+    const index = calculationCallbacks.indexOf(callback);
+    if (index !== -1) {
+      calculationCallbacks.splice(index, 1);
+    }
+  };
+}
+
+/**
+ * Clean up the auto calculation system
+ */
+export function cleanupAutoCalculationSystem() {
+  window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+  window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+  window.removeEventListener('final-price-update', handlePriceUpdate as EventListener);
+  
+  calculationCallbacks.length = 0;
+  isInitialized = false;
+  
+  console.log('Auto calculation system cleaned up');
 }

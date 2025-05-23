@@ -1750,14 +1750,7 @@ export default function AdvancedSignalDashboard({
           ) : (
             <div className="flex flex-col items-end">
               <div className="flex items-center space-x-2">
-                <div
-                  className="flex items-center h-7 text-xs px-2 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-800 rounded-md"
-                >
-                  <CheckCircle2 className="w-3 h-3 mr-1" />
-                  Auto-calculations enabled
-                </div>
-                {/* Kept for code structure, but disabled */}
-                {false && <Button 
+                <Button 
                   variant="outline" 
                   size="sm" 
                   className="h-7 text-xs bg-green-900/30 text-green-300 border-green-800 hover:bg-green-800/50 hover:text-green-200 mr-1"
@@ -1871,12 +1864,11 @@ export default function AdvancedSignalDashboard({
                   Quick Update
                 </Button>
                 
-                <div 
-                  className="flex items-center h-7 text-xs px-2 py-1 bg-emerald-900/30 text-emerald-300 border border-emerald-800 rounded-md"
-                >
-                  <CheckCircle2 className="w-3 h-3 mr-1" />
-                  Auto-calculations enabled
-                    
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-7 text-xs bg-blue-900/30 text-blue-300 border-blue-800 hover:bg-blue-800/50 hover:text-blue-200"
+                  onClick={() => {
                     try {
                       setIsCalculating(true); // Set calculating state immediately
                       
