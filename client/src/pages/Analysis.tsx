@@ -68,7 +68,6 @@ const Analysis: React.FC = () => {
           <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
-            autoRun={shouldRunAnalysis}
             onAnalysisComplete={() => setShouldRunAnalysis(false)}
           />
         </div>
