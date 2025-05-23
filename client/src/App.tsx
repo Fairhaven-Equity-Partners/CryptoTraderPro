@@ -11,7 +11,7 @@ import Settings from "@/pages/Settings";
 import NavigationBar from "@/components/NavigationBar";
 import GlobalNotifications from "@/components/GlobalNotifications";
 import { AppTab } from "./types";
-import { disableAllAutoCalculations } from "./lib/disableAllAutoCalculations";
+import { initAutoCalculationSystem } from "./lib/autoCalculationSystem";
 
 function Router() {
   const [currentTab, setCurrentTab] = useState<AppTab['id']>('analysis');

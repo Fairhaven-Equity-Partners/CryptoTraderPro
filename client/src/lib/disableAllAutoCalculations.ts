@@ -46,19 +46,33 @@ function noopHandler(event: Event) {
 // Accept any function signature
 function anyFunction() {}
 
-// Disable any global trigger functions or variables
+// Also define the disableGlobalTriggers function to maintain compatibility
 function disableGlobalTriggers() {
-  // Create backup of any needed functions but null out the triggers
+  // This function is maintained for backward compatibility
+  // but now actually enables calculations
+  enableGlobalTriggers();
+}
+
+// Re-enable global trigger functions for automatic calculations
+function enableGlobalTriggers() {
+  // Set flags to enable auto-calculations
   if (window) {
-    // Add a global flag to indicate auto-calculations are disabled
-    (window as any).autoCalculationsDisabled = true;
+    // Set global flag to indicate auto-calculations are enabled
+    (window as any).autoCalculationsDisabled = false;
     
-    // Preserve necessary price function but disable calculation triggers
+    // Re-enable calculation triggers for price updates
     if ((window as any).syncGlobalPrice) {
       const originalSyncPrice = (window as any).syncGlobalPrice;
       (window as any).syncGlobalPrice = function(symbol: string, price: number) {
-        // Still update price tracking but without triggering calculations
-        console.log(`[AUTO-CALC-DISABLED] Price updated for ${symbol}: ${price} (no calculation triggered)`);
+        // Update price and trigger calculations
+        console.log(`[AUTO-CALC-ENABLED] Price updated for ${symbol}: ${price} (triggering calculation)`);
+        
+        // Create and dispatch calculation event
+        const calcEvent = new CustomEvent('calculation-triggered', {
+          detail: { symbol, price, timestamp: Date.now() }
+        });
+        window.dispatchEvent(calcEvent);
+        
         return originalSyncPrice(symbol, price);
       };
     }
