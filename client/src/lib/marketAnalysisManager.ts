@@ -206,6 +206,7 @@ function getTimeframeWeight(timeframe: TimeFrame): number {
     '30m': 30,
     '1h': 60,
     '4h': 240,
+    '12h': 720,
     '1d': 1440,
     '3d': 4320,
     '1w': 10080,

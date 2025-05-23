@@ -4,7 +4,8 @@ import "./index.css";
 import { connectWebSocket } from "./lib/api";
 import "./lib/windowTypes"; // Import type definitions for window object
 import { initTechnicalIndicatorsModule } from "./lib/technicalIndicators";
-import { initSignalStabilizationSystem } from "./lib/signalStabilizer";
+// Import our signal stabilizer functions directly - no init function needed
+import { stabilizeSignals, harmonizeSignalsAcrossTimeframes, getStabilizedSignal } from "./lib/signalStabilizer";
 import { initOneTimeCalculationSystem } from "./lib/oneTimeCalculation";
 import { initPriceSystem } from "./lib/finalPriceSystem";
 
@@ -13,7 +14,7 @@ connectWebSocket();
 
 // Initialize all subsystems
 initTechnicalIndicatorsModule();
-initSignalStabilizationSystem();
+// Signal stabilization system is ready to use without initialization
 
 // Important: Use the new synchronized calculation system for price updates
 import('./lib/syncedPriceCalculation').then(({ initSyncedCalculation }) => {
