@@ -8,6 +8,13 @@ declare global {
   }
 }
 
+// Initialize the price system with a specified interval
+export function initPriceSystem(intervalSeconds: number = 60) {
+  console.log(`[FinalPriceSystem] Initializing with ${intervalSeconds}s interval`);
+  setupPriceSystem();
+  return true;
+}
+
 // Main function to set up the price system
 export function setupPriceSystem() {
   console.log("[FinalPriceSystem] Setting up optimized price system");
