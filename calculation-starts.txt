@@ -1,0 +1,11 @@
+client/src/components/AdvancedSignalDashboard.tsx:    window.addEventListener('calculation-started', handleCalculationStart);
+client/src/components/AdvancedSignalDashboard.tsx:      window.removeEventListener('calculation-started', handleCalculationStart);
+client/src/components/AdvancedSignalDashboard.tsx:          window.dispatchEvent(new Event('calculation-started'));
+client/src/components/AdvancedSignalDashboard.tsx:            window.dispatchEvent(new Event('calculation-started'));
+client/src/components/AdvancedSignalDashboard.tsx:                      console.log(`Simple direct calculation started with price ${currentPrice}`);
+client/src/lib/manualOnlyCalculation.ts: * Mark calculation as started
+client/src/lib/oneTimeCalculation.ts:const CALCULATION_STARTED_EVENT = 'calculation-started';
+client/src/lib/oneTimeCalculation.ts:  // Mark calculation as started
+client/src/lib/oneTimeCalculation.ts:  // Dispatch a calculation-started event for UI feedback
+client/src/lib/oneTimeCalculation.ts: * Mark calculation as started for UI feedback
+client/src/lib/simpleCalcTrigger.ts: * Mark that a calculation has started

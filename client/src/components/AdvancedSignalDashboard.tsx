@@ -410,7 +410,14 @@ export default function AdvancedSignalDashboard({
   const triggerCalculation = useCallback((trigger: string) => {
     // We need to use Date.now() / 1000 to match other places where we track time
     const now = Date.now() / 1000;
-    const timeSinceLastCalc = now - lastCalculationTimeRef.current;
+    
+    // Fix time calculations - ensure consistent timing format
+    // Note that lastCalculationTimeRef.current may be in milliseconds in some places
+    const lastCalcInSeconds = (lastCalculationTimeRef.current > 1600000000) 
+                            ? lastCalculationTimeRef.current / 1000  // Convert from ms to seconds if needed
+                            : lastCalculationTimeRef.current;        // Already in seconds
+    
+    const timeSinceLastCalc = now - lastCalcInSeconds;
     
     console.log(`Attempt to trigger calculation (${trigger}) for ${symbol}:
       - Already triggered: ${calculationTriggeredRef.current}
@@ -419,9 +426,9 @@ export default function AdvancedSignalDashboard({
       - All data loaded: ${isAllDataLoaded}
       - Live data ready: ${isLiveDataReady}`);
     
-    // Always allow manual triggers and heat-map selections to recalculate
-    if (trigger === 'manual' || trigger === 'timer' || trigger === 'heat-map-selection') {
-      console.log(`${trigger} calculation requested for ${symbol}`);
+    // SPECIAL CASE: Always allow manual triggers, timer triggers and other special cases to recalculate without restrictions
+    if (trigger === 'manual' || trigger === 'timer' || trigger === 'heat-map-selection' || trigger === 'throttled-price-update') {
+      console.log(`${trigger} calculation requested for ${symbol} - bypassing throttling restrictions`);
       calculationTriggeredRef.current = true;
       
       // For timer-triggered refreshes, use a delayed toast to avoid React warning
@@ -442,6 +449,7 @@ export default function AdvancedSignalDashboard({
       }
       
       // Force a direct calculation
+      console.log(`⚡ DIRECT CALCULATION for ${symbol} (from ${trigger} trigger)`);
       calculateAllSignals();
       return;
     }
@@ -675,10 +683,11 @@ export default function AdvancedSignalDashboard({
             // Broadcast calculation start event for display purposes only
             window.dispatchEvent(new Event('calculation-started'));
             
-            // Trigger calculation with a small delay to ensure state updates
+            // DIRECT CALCULATION: Instead of using triggerCalculation which has additional checks,
+            // we'll directly call calculateAllSignals since we've already done all necessary checks
             setTimeout(() => {
-              // Use the existing calculation function
-              triggerCalculation('throttled-price-update');
+              console.log(`⚡ DIRECT CALCULATION EXECUTION for ${symbol} with price ${price}`);
+              calculateAllSignals();
               
               // Make sure to set the calculation state back to false after a short delay
               setTimeout(() => {
