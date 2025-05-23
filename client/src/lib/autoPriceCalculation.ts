@@ -53,6 +53,13 @@ function handlePriceUpdate(event: any) {
   const priceEvent = event as CustomEvent;
   const { symbol, price } = priceEvent.detail;
   
+  // IMPORTANT: This function is now DISABLED to prevent conflicts with 
+  // the throttling in AdvancedSignalDashboard
+  
+  // Just log that we received the price but won't do anything
+  console.log(`🔄 Price update detected for ${symbol} (${price}), but not triggering calculation - throttling in dashboard`);
+  
+  /* DISABLED to prevent conflicts with dashboard throttling
   // Determine if we should calculate now
   const now = Date.now();
   const lastCalc = lastCalculationTime[symbol] || 0;
@@ -75,6 +82,7 @@ function handlePriceUpdate(event: any) {
     // Update last calculation time
     lastCalculationTime[symbol] = now;
   }
+  */
 }
 
 /**

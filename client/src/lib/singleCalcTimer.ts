@@ -30,7 +30,10 @@ export function initSingleCalcTimer(): void {
   // Set initial state
   resetCalcTimer();
   
-  // Set up a periodic timer to allow calculations every 3 minutes
+  // DISABLED: This was triggering additional calculations beyond our 2-minute throttle
+  // The AdvancedSignalDashboard now has its own throttling mechanism
+  
+  /*
   setInterval(() => {
     if (!globalState.calculationAllowed) {
       console.log('[SINGLE-CALC-TIMER] 3-minute mark reached - allowing ONE calculation');
@@ -40,6 +43,9 @@ export function initSingleCalcTimer(): void {
       broadcastCalcAllowed();
     }
   }, CALCULATION_INTERVAL);
+  */
+  
+  console.log('[SINGLE-CALC-TIMER] AUTO-TRIGGER DISABLED - throttling handled by AdvancedSignalDashboard');
 }
 
 /**
