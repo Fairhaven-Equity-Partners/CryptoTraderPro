@@ -116,19 +116,14 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
       window.syncGlobalPrice(symbol, price, timestamp);
     }
     
-    // Broadcast the price update
+    // Broadcast the price update - this is the ONLY event we should dispatch
+    // The AdvancedSignalDashboard will listen for this and handle throttled calculations
     const updateEvent = new CustomEvent('price-update', {
       detail: { symbol, price, timestamp }
     });
     window.dispatchEvent(updateEvent);
     
-    // Emit a calculation trigger event for the synchronized system
-    const calcEvent = new CustomEvent('sync-calculation', {
-      detail: { symbol, price, timestamp }
-    });
-    window.dispatchEvent(calcEvent);
-    
-    console.log(`[FinalPriceSystem] Triggered synchronized calculation for ${symbol}: ${price}`);
+    console.log(`[FinalPriceSystem] Price update broadcast for ${symbol}: ${price}`);
     
     console.log(`[FinalPriceSystem] Price fetch completed for ${symbol}: ${price}`);
     

@@ -21,18 +21,19 @@ export function initSyncedCalculation() {
   console.log("✅ Synchronized calculation system ready");
 }
 
-// Handle price update events
+// Handle price update events - DISABLED
+// This function has been moved to the AdvancedSignalDashboard component
+// to prevent duplicate calculations
 function handlePriceUpdate(event: Event) {
   try {
     // Cast to custom event
     const customEvent = event as CustomEvent<{symbol: string, price: number}>;
     const { symbol, price } = customEvent.detail;
-    console.log(`[SYNC-CALC] Price update detected: ${symbol} = ${price}`);
     
-    // Don't block the event, but trigger calculation in parallel
-    setTimeout(() => {
-      performCalculation(symbol, price);
-    }, 0);
+    // DISABLED - No longer used
+    console.log(`[SYNC-CALC] Legacy price handler called - should not happen`);
+    
+    // Don't do anything - the dashboard component handles calculations now
   } catch (error) {
     console.error("[SYNC-CALC] Error handling price update:", error);
   }
@@ -84,7 +85,11 @@ function performCalculation(symbol: string, price: number) {
     timeframes: results
   };
   
-  // Notify that calculation is complete
+  // NOTE: We're disabling this event dispatch to prevent multiple calculation triggers
+  // The dashboard component will handle calculations internally
+  
+  // Leaving code commented for reference
+  /*
   const calcEvent = new CustomEvent('calculation-complete', {
     detail: {
       symbol,
@@ -93,6 +98,7 @@ function performCalculation(symbol: string, price: number) {
     }
   });
   window.dispatchEvent(calcEvent);
+  */
   
   console.log(`[SYNC-CALC] Calculation complete for ${symbol}`);
 }
