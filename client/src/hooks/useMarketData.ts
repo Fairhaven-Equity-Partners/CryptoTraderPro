@@ -67,10 +67,17 @@ export function useMarketData(symbol: string) {
         // We need to force this to be true to trigger calculations
         setIsLiveDataReady(true);
         
-        // Publish an event to notify the dashboard that new live data is ready
+        // Disabled this event dispatch to prevent duplicate calculations
+        // The AdvancedSignalDashboard will track isLiveDataReady state directly
+        
+        // Log for debugging only
+        console.log(`[useMarketData] Price update for ${symbol}: ${data.price} - NOT dispatching extra event`);
+        
+        /* DISABLED TO PREVENT DUPLICATE CALCULATIONS
         document.dispatchEvent(new CustomEvent('live-price-update', { 
           detail: { symbol, price: data.price, timestamp: Date.now() }
         }));
+        */
       }
     }
     

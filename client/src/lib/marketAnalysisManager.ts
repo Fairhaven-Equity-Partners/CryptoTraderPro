@@ -16,20 +16,24 @@ const signalCache: Record<string, {
 
 // Register for price update events
 export function initMarketAnalysis() {
-  console.log('🚀 Initializing Market Analysis System');
+  console.log('🚀 Initializing Market Analysis System - NO LISTENERS');
   
-  // Listen for price update events
-  window.addEventListener('price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
+  // We've disabled these event listeners to centralize price update handling
+  // in the AdvancedSignalDashboard component
   
   return () => {
-    window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-    window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+    // No listeners to remove
   };
 }
 
 // Handle price update events
 function handlePriceUpdate(event: Event) {
+  // FUNCTION DISABLED - now the AdvancedSignalDashboard component
+  // is responsible for handling price updates and throttling calculations
+  
+  console.log(`[MarketAnalysisManager] Legacy handler called - should not happen`);
+  
+  /* DISABLED TO PREVENT DUPLICATE CALCULATIONS
   const priceEvent = event as CustomEvent;
   const { symbol, price } = priceEvent.detail;
   
@@ -37,6 +41,7 @@ function handlePriceUpdate(event: Event) {
   
   // Trigger analysis with the new price
   triggerAnalysis(symbol, price);
+  */
 }
 
 // Trigger market analysis for a symbol

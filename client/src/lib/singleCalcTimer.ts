@@ -85,9 +85,13 @@ export function completeCalculation(): void {
 }
 
 /**
- * Broadcast that calculation is allowed
+ * Broadcast that calculation is allowed - DISABLED
  */
 function broadcastCalcAllowed(): void {
+  // Disabled to prevent triggering extra calculations
+  console.log('[SINGLE-CALC-TIMER] Auto broadcasting disabled - using direct API only');
+  
+  /* DISABLED TO PREVENT MULTIPLE CALCULATIONS
   const event = new CustomEvent('calculation-allowed', {
     detail: { 
       timestamp: Date.now(),
@@ -95,6 +99,7 @@ function broadcastCalcAllowed(): void {
     }
   });
   window.dispatchEvent(event);
+  */
 }
 
 /**
