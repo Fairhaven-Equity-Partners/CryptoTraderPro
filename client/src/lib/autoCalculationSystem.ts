@@ -18,40 +18,26 @@ export function initAutoCalculationSystem() {
   
   console.log('✅ Initializing automatic calculation system');
   
-  // Set up event listeners for price updates
-  window.addEventListener('price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
+  // Event listeners have been moved to the AdvancedSignalDashboard component
+  // to prevent duplicate calculations across multiple systems
+  console.log('✅ Auto calculation system initialized - using centralized event handling');
   
   isInitialized = true;
   
   return () => {
-    window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-    window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+    // Event listeners have been moved, so no need to clean them up here
     isInitialized = false;
   };
 }
 
 /**
  * Handle price update events
+ * NOTE: This function is no longer used as event listeners are now in the AdvancedSignalDashboard
+ * Keeping it for reference only
  */
 function handlePriceUpdate(event: Event) {
-  const customEvent = event as CustomEvent;
-  if (!customEvent.detail) return;
-  
-  const { symbol, price } = customEvent.detail;
-  console.log(`Price update received: ${symbol} at ${price}`);
-  
-  // Create a calculation trigger event
-  const calcEvent = new CustomEvent('calculation-needed', {
-    detail: {
-      symbol,
-      price,
-      timestamp: Date.now()
-    }
-  });
-  
-  // Dispatch the event to trigger calculations
-  window.dispatchEvent(calcEvent);
+  // This function has been moved to AdvancedSignalDashboard for central management
+  console.log('Legacy price handler called - should not happen');
 }
 
 /**
@@ -69,8 +55,8 @@ export function toggleAutoCalculation(enable: boolean): boolean {
     initAutoCalculationSystem();
     return true;
   } else if (!enable && isInitialized) {
-    window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-    window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+    // Event listeners have been moved to AdvancedSignalDashboard
+    // so no need to remove them here
     isInitialized = false;
     return false;
   }

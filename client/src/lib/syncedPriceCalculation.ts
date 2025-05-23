@@ -15,10 +15,8 @@ const calculationResults: Record<string, any> = {};
 export function initSyncedCalculation() {
   console.log("⚡ Starting synchronized price & calculation system");
   
-  // Capture price update events and trigger calculations
-  window.addEventListener('final-price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
+  // NOTE: Event listeners have been moved to the AdvancedSignalDashboard component
+  // to prevent duplicate calculations. This function is still called for compatibility.
   
   console.log("✅ Synchronized calculation system ready");
 }

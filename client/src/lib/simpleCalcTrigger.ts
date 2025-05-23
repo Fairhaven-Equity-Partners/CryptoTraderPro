@@ -25,26 +25,10 @@ export function setupCalculationTrigger() {
   calculationInProgress = false;
   calculatedSinceLastUpdate = false;
   
-  // Listen for price updates from the finalPriceSystem
-  window.addEventListener('final-price-update', (event: Event) => {
-    const priceEvent = event as CustomEvent;
-    if (priceEvent.detail) {
-      // Mark that we've received a new price
-      lastPriceUpdateTime = Date.now();
-      calculatedSinceLastUpdate = false;
-      
-      // Wait a short delay (1 second) before allowing calculation
-      // This ensures we have the latest price before calculating
-      setTimeout(() => {
-        // Broadcast that it's time to calculate - exactly ONCE
-        if (!calculatedSinceLastUpdate) {
-          broadcastCalculationTrigger(priceEvent.detail.price);
-        }
-      }, 1000);
-    }
-  });
+  // The event listeners have been moved to the dashboard component to prevent duplicate triggers
+  // This function is kept for compatibility
   
-  console.log('[SimpleCalcTrigger] Setup complete - will trigger exactly one calculation after each price update');
+  console.log('[SimpleCalcTrigger] Setup redirected to dashboard component - no duplicate listeners');
 }
 
 /**
