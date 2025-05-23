@@ -35,19 +35,22 @@ function Router() {
 }
 
 function App() {
-  // Call the disableAllAutoCalculations function when the app loads
+  // Enable automatic calculations when the app loads
   useEffect(() => {
-    // Completely disable all automatic calculations at startup
-    console.log('🛑 App initializing - disabling all auto-calculations 🛑');
-    disableAllAutoCalculations();
+    // Ensure automatic calculations are enabled
+    console.log('✅ App initializing - enabling automatic calculations ✅');
     
-    // Also apply again after a short delay to catch any late initializations
-    const secondaryDisableTimer = setTimeout(() => {
-      console.log('🔒 Secondary disable pass for auto-calculations 🔒');
-      disableAllAutoCalculations();
-    }, 1000);
+    // Set global flag to indicate auto-calculations are enabled
+    if (typeof window !== 'undefined') {
+      (window as any).autoCalculationsDisabled = false;
+      (window as any).__CALCULATIONS_LOCKED__ = false;
+    }
     
-    return () => clearTimeout(secondaryDisableTimer);
+    // Dispatch an event to notify the system
+    const enableEvent = new CustomEvent('auto-calculations-enabled');
+    window.dispatchEvent(enableEvent);
+    
+    // No cleanup needed as we want calculations to remain enabled
   }, []);
   
   return (

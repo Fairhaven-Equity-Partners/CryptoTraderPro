@@ -5,41 +5,34 @@
  * It works by replacing and removing all event listeners that could trigger calculations.
  */
 
-// Function to completely disable all auto-calculation mechanisms
+// Function to enable all auto-calculation mechanisms
 export function disableAllAutoCalculations() {
-  console.log('🛑 DISABLING ALL AUTO-CALCULATIONS COMPLETELY 🛑');
+  console.log('✅ ENABLING AUTO-CALCULATIONS COMPLETELY ✅');
   
   try {
-    // 1. Neutralize oneTimeCalculation system
+    // 1. Enable oneTimeCalculation system by removing blockers
     if (window.addEventListener) {
-      // Remove the real handlers that trigger calculations
-      window.removeEventListener('price-update', anyFunction);
-      window.removeEventListener('price-fetching', anyFunction);
-      window.removeEventListener('price-fetch-completed', anyFunction);
+      // Remove any blocking handlers
+      window.removeEventListener('price-update', noopHandler);
+      window.removeEventListener('price-fetching', noopHandler);
+      window.removeEventListener('price-fetch-completed', noopHandler);
+      window.removeEventListener('final-price-update', noopHandler);
+      window.removeEventListener('calculation-started', noopHandler);
+      window.removeEventListener('calculation-completed', noopHandler);
+      window.removeEventListener('live-price-update', noopHandler);
       
-      // Replace with no-op handlers to intercept any future event dispatches
-      window.addEventListener('price-update', noopHandler);
-      window.addEventListener('price-fetching', noopHandler);
-      window.addEventListener('price-fetch-completed', noopHandler);
-      
-      // Disable all other potential event trigger paths
-      window.addEventListener('final-price-update', noopHandler, { capture: true });
-      window.addEventListener('calculation-started', noopHandler, { capture: true });
-      window.addEventListener('calculation-completed', noopHandler, { capture: true });
-      window.addEventListener('live-price-update', noopHandler, { capture: true });
-      
-      // Also intercept document-level events
-      document.addEventListener('price-update', noopHandler, { capture: true });
-      document.addEventListener('live-price-update', noopHandler, { capture: true });
+      // Also remove document-level blockers
+      document.removeEventListener('price-update', noopHandler);
+      document.removeEventListener('live-price-update', noopHandler);
     }
     
-    // 2. Disable any window global variables that could be used to trigger calculations
-    disableGlobalTriggers();
+    // 2. Re-enable window global variables for auto-calculations
+    enableGlobalTriggers();
     
-    console.log('✅ AUTO-CALCULATION SYSTEMS SUCCESSFULLY DISABLED');
-    console.log('👉 Only MANUAL "Calculate Now" button will trigger calculations');
+    console.log('✅ AUTO-CALCULATION SYSTEMS SUCCESSFULLY ENABLED');
+    console.log('👉 Calculations will run automatically with price updates');
   } catch (error) {
-    console.error('Error while disabling auto-calculations:', error);
+    console.error('Error while enabling auto-calculations:', error);
   }
 }
 
