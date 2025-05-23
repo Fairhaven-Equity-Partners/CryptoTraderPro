@@ -109,10 +109,11 @@ const timeframeWeights: Record<TimeFrame, number> = {
   '30m': 4,
   '1h': 5,
   '4h': 6,
-  '1d': 7,
-  '3d': 8,
-  '1w': 9,
-  '1M': 10
+  '12h': 7,
+  '1d': 8,
+  '3d': 9,
+  '1w': 10,
+  '1M': 11
 };
 
 // Define common indicator names for each category
@@ -159,6 +160,7 @@ export default function AdvancedSignalDashboard({
     '30m': null,
     '1h': null,
     '4h': null,
+    '12h': null,
     '1d': null,
     '3d': null,
     '1w': null,
@@ -261,11 +263,8 @@ export default function AdvancedSignalDashboard({
   // Add dummy autoRun function for compatibility
   const autoRun = false;
   
-  // Add missing setNextRefreshIn function for compatibility
-  const setNextRefreshIn = (prevTime: number) => {
-    // Dummy function that doesn't change the timer
-    return;
-  };
+  // Add state for next refresh timer instead of dummy function
+  const [nextRefreshIn, setNextRefreshIn] = useState<number>(0);
   
   // Current asset price
   const [assetPrice, setAssetPrice] = useState<number>(
@@ -498,6 +497,7 @@ export default function AdvancedSignalDashboard({
         '30m': null,
         '1h': null,
         '4h': null,
+        '12h': null,
         '1d': null,
         '3d': null,
         '1w': null,
@@ -617,10 +617,7 @@ export default function AdvancedSignalDashboard({
       // We'll reuse this timer for "Calculating..." display purposes only
       if (isCalculating) {
         // Count down from 10 when calculation is in progress for visual feedback
-        setNextRefreshIn((prevTime: number) => {
-          if (prevTime <= 0) return 10;
-          return prevTime - 1;
-        });
+        setNextRefreshIn(nextRefreshIn <= 0 ? 10 : nextRefreshIn - 1);
       }
     }, 1000);
     

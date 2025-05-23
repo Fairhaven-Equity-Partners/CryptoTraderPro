@@ -64,12 +64,12 @@ export function stabilizeSignals(newSignal: any, previousSignal: any): any {
   if (previousSignal.patternFormations && previousSignal.patternFormations.length > 0 &&
       newSignal.patternFormations && newSignal.patternFormations.length > 0) {
     // Keep high reliability patterns from previous calculation
-    const highReliabilityPatterns = previousSignal.patternFormations.filter((oldPattern) => {
+    const highReliabilityPatterns = previousSignal.patternFormations.filter((oldPattern: any) => {
       return oldPattern.reliability > 75;
     });
     
     // Add them to new patterns if they don't conflict with direction
-    highReliabilityPatterns.forEach((newPattern) => {
+    highReliabilityPatterns.forEach((newPattern: any) => {
       if ((newPattern.direction === 'bullish' && newSignal.direction === 'LONG') ||
           (newPattern.direction === 'bearish' && newSignal.direction === 'SHORT') ||
           newSignal.direction === 'NEUTRAL') {
