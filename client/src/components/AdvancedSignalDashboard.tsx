@@ -43,7 +43,8 @@ import {
   generatePatternFormations
 } from '../lib/advancedSignals';
 import { useToast } from '../hooks/use-toast';
-import { getStabilizedSignal } from '../lib/signalStabilizer';
+// Import signal stabilization utility
+import { stabilizeSignals, harmonizeSignalsAcrossTimeframes, getStabilizedSignal } from '../lib/signalStabilizer';
 import { useMarketData } from '../hooks/useMarketData';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { queryClient } from '../lib/queryClient';

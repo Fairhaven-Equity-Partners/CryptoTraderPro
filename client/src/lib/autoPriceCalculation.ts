@@ -1,0 +1,104 @@
+/**
+ * Auto Price Calculation System
+ * 
+ * This system automatically triggers calculations whenever price updates occur,
+ * while maintaining the same familiar display format users are accustomed to.
+ */
+
+// Set up simple event handling for connecting price updates to calculations
+let isInitialized = false;
+let lastCalculationTime: Record<string, number> = {};
+const MIN_CALCULATION_INTERVAL = 5000; // 5 seconds minimum between calculations
+
+/**
+ * Initialize the auto calculation system
+ */
+export function initAutoCalculation() {
+  if (isInitialized) {
+    return;
+  }
+  
+  console.log('✅ Initializing automatic price calculation system');
+  
+  // Listen for all price update events
+  window.addEventListener('price-update', handlePriceUpdate);
+  window.addEventListener('live-price-update', handlePriceUpdate);
+  
+  isInitialized = true;
+  
+  // Create a hidden element to indicate auto-calculation is enabled
+  const autoCalcIndicator = document.createElement('div');
+  autoCalcIndicator.id = 'auto-calculation-enabled';
+  autoCalcIndicator.style.display = 'none';
+  autoCalcIndicator.dataset.enabled = 'true';
+  document.body.appendChild(autoCalcIndicator);
+  
+  return () => {
+    window.removeEventListener('price-update', handlePriceUpdate);
+    window.removeEventListener('live-price-update', handlePriceUpdate);
+    isInitialized = false;
+    
+    // Remove the indicator
+    const indicator = document.getElementById('auto-calculation-enabled');
+    if (indicator) {
+      document.body.removeChild(indicator);
+    }
+  };
+}
+
+/**
+ * Handle price update events
+ */
+function handlePriceUpdate(event: any) {
+  const priceEvent = event as CustomEvent;
+  const { symbol, price } = priceEvent.detail;
+  
+  // Determine if we should calculate now
+  const now = Date.now();
+  const lastCalc = lastCalculationTime[symbol] || 0;
+  
+  if (now - lastCalc > MIN_CALCULATION_INTERVAL) {
+    console.log(`🔄 Price update detected, triggering automatic calculation for ${symbol} at price ${price}`);
+    
+    // Trigger a calculation-needed event that the dashboard can listen for
+    const calcEvent = new CustomEvent('calculation-needed', {
+      detail: {
+        symbol,
+        price,
+        timestamp: now,
+        trigger: 'auto'
+      }
+    });
+    
+    window.dispatchEvent(calcEvent);
+    
+    // Update last calculation time
+    lastCalculationTime[symbol] = now;
+  }
+}
+
+/**
+ * Check if auto calculation is enabled
+ */
+export function isAutoCalculationEnabled(): boolean {
+  const indicator = document.getElementById('auto-calculation-enabled');
+  return indicator?.dataset.enabled === 'true';
+}
+
+/**
+ * Manually trigger a calculation for a symbol
+ */
+export function triggerCalculation(symbol: string, price: number) {
+  console.log(`Manual calculation triggered for ${symbol} at price ${price}`);
+  
+  const calcEvent = new CustomEvent('calculation-needed', {
+    detail: {
+      symbol,
+      price,
+      timestamp: Date.now(),
+      trigger: 'manual'
+    }
+  });
+  
+  window.dispatchEvent(calcEvent);
+}

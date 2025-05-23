@@ -1,94 +1,87 @@
 /**
  * Signal Stabilizer
  * 
- * This module helps prevent signals from flip-flopping between different directions
- * with each price update, providing more stable and consistent trading recommendations.
+ * Provides functions to stabilize signals across timeframes and prevent
+ * rapid changes in signal direction with minor price movements.
  */
 
-// The minimum confidence threshold for changing a signal direction
-const DIRECTION_CHANGE_THRESHOLD = 15;
-
-// The minimum time (in milliseconds) before allowing a direction change
-const DIRECTION_CHANGE_COOLDOWN = 300000; // 5 minutes
+import { TimeFrame } from './advancedSignals';
 
 /**
- * Stabilize a new signal by comparing it with the previous signal
- * This ensures signal directions don't flip-flop with small price movements
+ * Stabilize a new signal against a previous signal to prevent rapid changes
  * 
- * @param newSignal The newly calculated signal
- * @param previousSignal The previous signal for the same timeframe
+ * @param newSignal The newly calculated signal 
+ * @param previousSignal The previous signal from the last calculation
  * @returns A stabilized signal
  */
 export function stabilizeSignals(newSignal: any, previousSignal: any): any {
-  // If no previous signal, return the new one as is
+  // If there's no previous signal, just return the new one
   if (!previousSignal) {
     return newSignal;
   }
-
-  // Create a copy of the new signal
-  const stabilizedSignal = { ...newSignal };
   
-  // Check if the direction is trying to change
-  if (newSignal.direction !== previousSignal.direction) {
-    const timeSinceLastChange = Date.now() - (previousSignal.timestamp || 0);
-    const confidenceDifference = newSignal.confidence - previousSignal.confidence;
-    
-    // Only allow direction change if:
-    // 1. Sufficient time has passed since the last change
-    // 2. The new signal has significantly higher confidence
-    if (timeSinceLastChange < DIRECTION_CHANGE_COOLDOWN && confidenceDifference < DIRECTION_CHANGE_THRESHOLD) {
-      console.log(`Stabilizing signal direction: keeping ${previousSignal.direction} instead of changing to ${newSignal.direction}`);
-      stabilizedSignal.direction = previousSignal.direction;
-      
-      // Adjust confidence but allow it to gradually move toward the new value
-      stabilizedSignal.confidence = Math.max(
-        previousSignal.confidence - 2, 
-        Math.min(previousSignal.confidence + 2, newSignal.confidence)
-      );
+  // Don't change signal direction unless confidence is significantly higher
+  if (previousSignal.direction !== newSignal.direction) {
+    // Only switch if the new signal has much higher confidence
+    if (newSignal.confidence > previousSignal.confidence + 15) {
+      // Allow the switch to the new direction
+      console.log(`Signal direction changed from ${previousSignal.direction} to ${newSignal.direction} (confident switch)`);
+    } else {
+      // Keep the previous direction but with slightly reduced confidence
+      console.log(`Maintaining previous direction ${previousSignal.direction} (new direction ${newSignal.direction} not confident enough)`);
+      newSignal = {
+        ...newSignal,
+        direction: previousSignal.direction,
+        confidence: Math.max(previousSignal.confidence - 2, newSignal.confidence - 10)
+      };
     }
   }
   
-  // Gradually adjust success probability - don't allow wild swings
-  if (typeof previousSignal.successProbability === 'number' && typeof newSignal.successProbability === 'number') {
-    const maxProbabilityChange = 5; // Max 5% change at a time
-    stabilizedSignal.successProbability = Math.max(
-      previousSignal.successProbability - maxProbabilityChange,
-      Math.min(previousSignal.successProbability + maxProbabilityChange, newSignal.successProbability)
-    );
+  // Stabilize support/resistance levels - don't let them change too much
+  if (previousSignal.supportLevels && newSignal.supportLevels) {
+    newSignal.supportLevels = newSignal.supportLevels.map((level: number, i: number) => {
+      // If we have a previous level, blend them for stability
+      const prevLevel = previousSignal.supportLevels[i];
+      if (prevLevel) {
+        return (0.7 * prevLevel) + (0.3 * level);
+      }
+      return level;
+    });
   }
   
-  // Smooth out leverage recommendations
-  if (typeof previousSignal.recommendedLeverage === 'number' && typeof newSignal.recommendedLeverage === 'number') {
-    const maxLeverageChange = 1; // Maximum 1x change at a time
-    stabilizedSignal.recommendedLeverage = Math.max(
-      previousSignal.recommendedLeverage - maxLeverageChange,
-      Math.min(previousSignal.recommendedLeverage + maxLeverageChange, newSignal.recommendedLeverage)
-    );
+  if (previousSignal.resistanceLevels && newSignal.resistanceLevels) {
+    newSignal.resistanceLevels = newSignal.resistanceLevels.map((level: number, i: number) => {
+      // If we have a previous level, blend them for stability
+      const prevLevel = previousSignal.resistanceLevels[i];
+      if (prevLevel) {
+        return (0.7 * prevLevel) + (0.3 * level);
+      }
+      return level;
+    });
   }
   
-  // Keep some recent pattern formations for consistency
+  // Stabilize patterns - keep patterns that have high reliability
   if (previousSignal.patternFormations && previousSignal.patternFormations.length > 0 &&
       newSignal.patternFormations && newSignal.patternFormations.length > 0) {
-    // Always keep at least one pattern from previous signal if available
-    const oldPatterns = previousSignal.patternFormations.slice(0, 1);
-    const newPatterns = newSignal.patternFormations;
-    
-    // Merge patterns, avoiding duplicates
-    stabilizedSignal.patternFormations = [...newPatterns];
-    oldPatterns.forEach(oldPattern => {
-      // Only add old pattern if it's not already in the new patterns
-      if (!newPatterns.some(newPattern => newPattern.name === oldPattern.name)) {
-        stabilizedSignal.patternFormations.unshift(oldPattern);
-      }
+    // Keep high reliability patterns from previous calculation
+    const highReliabilityPatterns = previousSignal.patternFormations.filter((oldPattern) => {
+      return oldPattern.reliability > 75;
     });
     
-    // Limit to maximum 3 patterns
-    if (stabilizedSignal.patternFormations.length > 3) {
-      stabilizedSignal.patternFormations = stabilizedSignal.patternFormations.slice(0, 3);
-    }
+    // Add them to new patterns if they don't conflict with direction
+    highReliabilityPatterns.forEach((newPattern) => {
+      if ((newPattern.direction === 'bullish' && newSignal.direction === 'LONG') ||
+          (newPattern.direction === 'bearish' && newSignal.direction === 'SHORT') ||
+          newSignal.direction === 'NEUTRAL') {
+        // Only add if not already present
+        if (!newSignal.patternFormations.some((p: any) => p.name === newPattern.name)) {
+          newSignal.patternFormations.push(newPattern);
+        }
+      }
+    });
   }
   
-  return stabilizedSignal;
+  return newSignal;
 }
 
 /**
@@ -99,68 +92,72 @@ export function stabilizeSignals(newSignal: any, previousSignal: any): any {
  * @returns Harmonized signals with timeframe influence
  */
 export function harmonizeSignalsAcrossTimeframes(signals: Record<string, any>): Record<string, any> {
-  const timeframes = Object.keys(signals);
   const result = { ...signals };
   
-  // Define timeframe influence weights
-  const timeframeWeights = {
-    '1m': 1,
-    '5m': 2,
-    '15m': 3,
-    '30m': 4,
-    '1h': 5,
-    '4h': 7,
-    '1d': 10,
-    '3d': 12,
-    '1w': 15,
-    '1M': 20
-  };
+  // Define timeframes in descending order of importance
+  const timeframeOrder: TimeFrame[] = ['1M', '1w', '3d', '1d', '4h', '1h', '30m', '15m', '5m', '1m'];
   
-  // Sort timeframes by weight (higher timeframes first)
-  const sortedTimeframes = timeframes.sort((a, b) => 
-    (timeframeWeights[b as keyof typeof timeframeWeights] || 0) - 
-    (timeframeWeights[a as keyof typeof timeframeWeights] || 0)
-  );
-  
-  // Higher timeframes influence lower timeframes, but not vice versa
-  for (let i = 0; i < sortedTimeframes.length; i++) {
-    const higherTf = sortedTimeframes[i];
+  // Higher timeframes influence lower timeframes
+  for (let i = 0; i < timeframeOrder.length - 1; i++) {
+    const higherTf = timeframeOrder[i];
     const higherSignal = signals[higherTf];
     
-    // Skip if no valid signal for this timeframe
     if (!higherSignal) continue;
     
-    // Apply influence to all lower timeframes
-    for (let j = i + 1; j < sortedTimeframes.length; j++) {
-      const lowerTf = sortedTimeframes[j];
-      const lowerSignal = signals[lowerTf];
+    // Only strong signals influence lower timeframes
+    if (higherSignal.confidence > 80) {
+      // Apply influence to the next 2-3 lower timeframes only
+      const influenceRange = Math.min(3, timeframeOrder.length - i - 1);
       
-      // Skip if no valid signal for lower timeframe
-      if (!lowerSignal) continue;
-      
-      // Calculate influence factor based on timeframe difference
-      const higherWeight = timeframeWeights[higherTf as keyof typeof timeframeWeights] || 1;
-      const lowerWeight = timeframeWeights[lowerTf as keyof typeof timeframeWeights] || 1;
-      const weightDiff = higherWeight - lowerWeight;
-      
-      // Higher timeframe influence (0-30%)
-      const influenceFactor = Math.min(0.3, weightDiff * 0.03);
-      
-      // Only strong signals on higher timeframes influence lower timeframes
-      if (higherSignal.confidence > 70) {
-        // Slightly pull lower timeframe confidence toward higher timeframe
-        result[lowerTf].confidence = Math.round(
+      for (let j = i + 1; j <= i + influenceRange; j++) {
+        const lowerTf = timeframeOrder[j];
+        const lowerSignal = result[lowerTf];
+        
+        if (!lowerSignal) continue;
+        
+        // Calculate influence factor based on timeframe distance
+        const influenceFactor = 0.2 / (j - i);
+        
+        // Apply influence to confidence
+        lowerSignal.confidence = Math.round(
           (1 - influenceFactor) * lowerSignal.confidence + 
           influenceFactor * higherSignal.confidence
         );
         
-        // If higher timeframe has a very strong signal, increase the chance of direction alignment
-        if (higherSignal.confidence > 85 && Math.random() < influenceFactor * 2) {
-          result[lowerTf].direction = higherSignal.direction;
+        // Potentially influence direction for very strong higher timeframe signals
+        if (higherSignal.confidence > 90 && Math.random() < influenceFactor) {
+          lowerSignal.direction = higherSignal.direction;
         }
       }
     }
   }
   
   return result;
+}
+
+/**
+ * Get a stabilized signal - this is a convenience function that combines both stabilization
+ * and harmonization for the dashboard component
+ * 
+ * @param newSignals New signals for all timeframes
+ * @param previousSignals Previous signals for all timeframes
+ * @returns Stabilized and harmonized signals
+ */
+export function getStabilizedSignal(newSignals: Record<string, any>, previousSignals: Record<string, any>): Record<string, any> {
+  // First stabilize each timeframe independently
+  const stabilizedSignals: Record<string, any> = {};
+  
+  Object.keys(newSignals).forEach((timeframe) => {
+    const newSignal = newSignals[timeframe];
+    const prevSignal = previousSignals[timeframe];
+    
+    if (newSignal) {
+      stabilizedSignals[timeframe] = stabilizeSignals(newSignal, prevSignal);
+    } else {
+      stabilizedSignals[timeframe] = prevSignal || null;
+    }
+  });
+  
+  // Then harmonize across timeframes
+  return harmonizeSignalsAcrossTimeframes(stabilizedSignals);
 }

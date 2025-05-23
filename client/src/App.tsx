@@ -39,6 +39,8 @@ function App() {
   useEffect(() => {
     // Initialize our automatic calculation system
     console.log('✅ App initializing - setting up automatic calculation system ✅');
+    
+    // Call the auto calculation initialization function
     initAutoCalculationSystem();
     
     // No cleanup needed as we want calculations to remain enabled throughout the app lifecycle

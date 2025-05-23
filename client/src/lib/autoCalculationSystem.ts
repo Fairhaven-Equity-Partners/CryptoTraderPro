@@ -1,84 +1,78 @@
 /**
  * Auto Calculation System
  * 
- * A centralized system that coordinates automatic calculations
- * whenever price updates occur, while maintaining the same display format.
+ * This lightweight system coordinates automatic market analysis calculations
+ * whenever price updates occur, maintaining the same display format.
  */
 
-import { TimeFrame } from './advancedSignals';
-
-// Define required types if needed
-type CalculationCallback = (symbol: string, price: number) => void;
-
-// Track registered calculation callbacks
-const calculationCallbacks: CalculationCallback[] = [];
-
-// Track initialization state
 let isInitialized = false;
 
 /**
- * Initialize the automatic calculation system
+ * Initialize the auto calculation system
  */
 export function initAutoCalculationSystem() {
   if (isInitialized) {
     console.log('Auto calculation system already initialized');
     return;
   }
-
-  // Listen for price update events
+  
+  console.log('✅ Initializing automatic calculation system');
+  
+  // Set up event listeners for price updates
   window.addEventListener('price-update', handlePriceUpdate as EventListener);
   window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('final-price-update', handlePriceUpdate as EventListener);
   
-  console.log('✅ Auto calculation system initialized ✅');
   isInitialized = true;
+  
+  return () => {
+    window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+    window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+    isInitialized = false;
+  };
 }
 
 /**
  * Handle price update events
  */
 function handlePriceUpdate(event: Event) {
-  const customEvent = event as CustomEvent<{symbol: string, price: number}>;
+  const customEvent = event as CustomEvent;
+  if (!customEvent.detail) return;
+  
   const { symbol, price } = customEvent.detail;
+  console.log(`Price update received: ${symbol} at ${price}`);
   
-  console.log(`🔄 Price update detected, triggering automatic calculation 🔄`);
-  
-  // Notify all registered callbacks
-  calculationCallbacks.forEach(callback => {
-    try {
-      callback(symbol, price);
-    } catch (error) {
-      console.error('Error in calculation callback:', error);
+  // Create a calculation trigger event
+  const calcEvent = new CustomEvent('calculation-needed', {
+    detail: {
+      symbol,
+      price,
+      timestamp: Date.now()
     }
   });
+  
+  // Dispatch the event to trigger calculations
+  window.dispatchEvent(calcEvent);
 }
 
 /**
- * Register a calculation callback
- * @param callback Function to call when price updates
- * @returns Unregister function
+ * Check if auto calculation is enabled
  */
-export function registerCalculationCallback(callback: CalculationCallback) {
-  calculationCallbacks.push(callback);
-  
-  return () => {
-    const index = calculationCallbacks.indexOf(callback);
-    if (index !== -1) {
-      calculationCallbacks.splice(index, 1);
-    }
-  };
+export function isAutoCalculationEnabled(): boolean {
+  return isInitialized;
 }
 
 /**
- * Clean up the auto calculation system
+ * Manually toggle auto calculation
  */
-export function cleanupAutoCalculationSystem() {
-  window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-  window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
-  window.removeEventListener('final-price-update', handlePriceUpdate as EventListener);
-  
-  calculationCallbacks.length = 0;
-  isInitialized = false;
-  
-  console.log('Auto calculation system cleaned up');
+export function toggleAutoCalculation(enable: boolean): boolean {
+  if (enable && !isInitialized) {
+    initAutoCalculationSystem();
+    return true;
+  } else if (!enable && isInitialized) {
+    window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+    window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+    isInitialized = false;
+    return false;
+  }
+  return isInitialized;
 }
