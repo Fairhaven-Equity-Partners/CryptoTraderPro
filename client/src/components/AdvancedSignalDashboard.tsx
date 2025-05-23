@@ -1806,11 +1806,32 @@ export default function AdvancedSignalDashboard({
       const confidenceText = signal.confidence >= 70 ? 'Strong' : 
                              signal.confidence >= 50 ? 'Moderate' : 'Weak';
       
+      // Safely display risk-reward ratio regardless of format
+      const getRiskRewardText = () => {
+        // Default for safety
+        let riskReward = '1.5';
+        
+        try {
+          if (typeof signal.optimalRiskReward === 'number') {
+            riskReward = signal.optimalRiskReward.toFixed(1);
+          } else if (signal.optimalRiskReward && typeof signal.optimalRiskReward === 'object') {
+            if ('ideal' in signal.optimalRiskReward && typeof signal.optimalRiskReward.ideal === 'number') {
+              riskReward = signal.optimalRiskReward.ideal.toFixed(1);
+            }
+          }
+        } catch (err) {
+          console.warn('Error formatting risk-reward ratio', err);
+        }
+        
+        return riskReward;
+      };
+      
+      // Get safely formatted risk-reward text
+      const riskReward = getRiskRewardText();
+      
       if (signal.direction === 'LONG') {
-        const riskReward = signal.optimalRiskReward ? signal.optimalRiskReward.toFixed(1) : '1.5';
         return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else if (signal.direction === 'SHORT') {
-        const riskReward = signal.optimalRiskReward ? signal.optimalRiskReward.toFixed(1) : '1.5';
         return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else {
         return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals.`;
@@ -1835,13 +1856,11 @@ export default function AdvancedSignalDashboard({
       direction: signal.direction,
       confidence: signal.confidence,
       timeframeSummary: tfSummary,
-      entry: {
-        ideal: signal.entryPrice,
-        range: [
-          signal.entryPrice * 0.995,
-          signal.entryPrice * 1.005
-        ]
-      },
+      entry: signal.entryPrice,
+      entryRange: [
+        signal.entryPrice * 0.995,
+        signal.entryPrice * 1.005
+      ],
       exit: {
         takeProfit: [
           signal.takeProfit * 0.8,
@@ -2006,10 +2025,7 @@ export default function AdvancedSignalDashboard({
                                          tf === '1d' ? '1-2 weeks' :
                                          tf === '4h' ? '1-3 days' : '1-24 hours',
                           riskRewardRatio: 2.0,
-                          optimalRiskReward: { 
-                            ideal: 2.5, 
-                            range: [1.5, 3.5] 
-                          },
+                          optimalRiskReward: 2.5,
                           recommendedLeverage: {
                             conservative: 2,
                             moderate: 5,
