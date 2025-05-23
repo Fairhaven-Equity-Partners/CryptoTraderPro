@@ -1503,12 +1503,12 @@ export default function AdvancedSignalDashboard({
         console.log(`Before weekly stabilization: ${alignedSignals['1w'].direction} (${alignedSignals['1w'].confidence}%)`);
         
         // Use our dedicated signal stabilizer for weekly signals
-        const stabilizedWeekly = getStabilizedSignal(
-          symbol,
-          '1w',
-          alignedSignals['1w'].direction as any,
-          alignedSignals['1w'].confidence
-        );
+        // Create a signals object for the stabilizer
+        const weeklySignals = {
+          '1w': alignedSignals['1w']
+        };
+        const prevWeeklySignals = persistentSignalsRef.current[symbol] || {};
+        const stabilizedWeekly = getStabilizedSignal(weeklySignals, prevWeeklySignals)['1w'];
         
         // Apply the stabilized values
         alignedSignals['1w'].direction = stabilizedWeekly.direction as any;
@@ -1522,12 +1522,12 @@ export default function AdvancedSignalDashboard({
         console.log(`Before monthly stabilization: ${alignedSignals['1M'].direction} (${alignedSignals['1M'].confidence}%)`);
         
         // Use our dedicated signal stabilizer for monthly signals
-        const stabilizedMonthly = getStabilizedSignal(
-          symbol,
-          '1M',
-          alignedSignals['1M'].direction as any,
-          alignedSignals['1M'].confidence
-        );
+        // Create a signals object for the stabilizer
+        const monthlySignals = {
+          '1M': alignedSignals['1M']
+        };
+        const prevMonthlySignals = persistentSignalsRef.current[symbol] || {};
+        const stabilizedMonthly = getStabilizedSignal(monthlySignals, prevMonthlySignals)['1M'];
         
         // Apply the stabilized values
         alignedSignals['1M'].direction = stabilizedMonthly.direction as any;

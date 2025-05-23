@@ -11,7 +11,7 @@ import Settings from "@/pages/Settings";
 import NavigationBar from "@/components/NavigationBar";
 import GlobalNotifications from "@/components/GlobalNotifications";
 import { AppTab } from "./types";
-import { initAutoCalculationSystem } from "./lib/autoCalculationSystem";
+
 
 function Router() {
   const [currentTab, setCurrentTab] = useState<AppTab['id']>('analysis');
@@ -40,10 +40,35 @@ function App() {
     // Initialize our automatic calculation system
     console.log('✅ App initializing - setting up automatic calculation system ✅');
     
-    // Call the auto calculation initialization function
-    initAutoCalculationSystem();
+    // Direct implementation of price update to calculation connection
+    const handlePriceUpdate = (event: CustomEvent) => {
+      if (event.detail && event.detail.symbol && event.detail.price) {
+        console.log(`🔄 Price update detected for ${event.detail.symbol}: ${event.detail.price}`);
+        
+        // Broadcast a calculation needed event with the new price data
+        const calcEvent = new CustomEvent('calculation-needed', {
+          detail: {
+            symbol: event.detail.symbol,
+            price: event.detail.price,
+            timestamp: Date.now(),
+            trigger: 'auto-price-update'
+          }
+        });
+        
+        // Dispatch the event to trigger calculations
+        window.dispatchEvent(calcEvent);
+      }
+    };
     
-    // No cleanup needed as we want calculations to remain enabled throughout the app lifecycle
+    // Listen for all price update events
+    window.addEventListener('price-update', handlePriceUpdate as EventListener);
+    window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
+    
+    // Return cleanup function
+    return () => {
+      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+      window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
+    };
   }, []);
   
   return (
