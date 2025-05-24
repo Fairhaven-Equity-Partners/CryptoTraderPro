@@ -12,30 +12,31 @@ const MIN_CALCULATION_INTERVAL = 5000; // 5 seconds minimum between calculations
 
 /**
  * Initialize the auto calculation system
+ * DISABLED: Previously, this was causing duplicate calculation triggers
+ * Now all calculation logic is centralized in AdvancedSignalDashboard.tsx
  */
 export function initAutoCalculation() {
   if (isInitialized) {
     return;
   }
   
-  console.log('✅ Initializing automatic price calculation system');
+  console.log('✅ Auto-calculation system is now DISABLED - using AdvancedSignalDashboard throttling only');
   
-  // Listen for all price update events
-  window.addEventListener('price-update', handlePriceUpdate);
-  window.addEventListener('live-price-update', handlePriceUpdate);
+  // NO LONGER LISTENING TO PRICE EVENTS TO PREVENT DUPLICATE CALCULATION TRIGGERS
+  // window.addEventListener('price-update', handlePriceUpdate);
+  // window.addEventListener('live-price-update', handlePriceUpdate);
   
   isInitialized = true;
   
-  // Create a hidden element to indicate auto-calculation is enabled
+  // Create a hidden element to indicate auto-calculation is disabled
   const autoCalcIndicator = document.createElement('div');
   autoCalcIndicator.id = 'auto-calculation-enabled';
   autoCalcIndicator.style.display = 'none';
-  autoCalcIndicator.dataset.enabled = 'true';
+  autoCalcIndicator.dataset.enabled = 'false';  // IMPORTANT: Set to 'false' to prevent duplicate calculations
   document.body.appendChild(autoCalcIndicator);
   
   return () => {
-    window.removeEventListener('price-update', handlePriceUpdate);
-    window.removeEventListener('live-price-update', handlePriceUpdate);
+    // No event listeners to remove anymore
     isInitialized = false;
     
     // Remove the indicator
