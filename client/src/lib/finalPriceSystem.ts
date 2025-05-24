@@ -58,13 +58,12 @@ function updateCountdown() {
     // Reset the timer to exactly 3 minutes (180 seconds)
     countdownSeconds = 180; // Fixed 3-minute interval
     
-    // At zero, fetch price ONLY - do not trigger any calculations
-    // The dashboard handles calculations based on throttling settings
-    console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price only`);
+    // At zero, fetch price AND trigger a synchronized calculation
+    console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation`);
     
     fetchLatestPrice('BTC/USDT')
       .then(price => {
-        console.log(`[FinalPriceSystem] DISPLAY ONLY: New price ${price} fetched (no calculation)`);
+        console.log(`[FinalPriceSystem] Price updated to ${price} - calculation will follow automatically`);
       })
       .catch(error => {
         console.error('[FinalPriceSystem] Error fetching price:', error);
@@ -140,12 +139,15 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
     });
     window.dispatchEvent(cryptoUpdateEvent);
     
-    // Add a live-price-update event that will trigger calculations
-    // This is critical for the auto-calculation system
-    const liveUpdateEvent = new CustomEvent('live-price-update', {
-      detail: { symbol, price, timestamp }
-    });
-    document.dispatchEvent(liveUpdateEvent);
+    // Only trigger a live-price-update event when the countdown timer hits zero
+    // This ensures calculations only happen at the 3-minute mark
+    if (countdownSeconds === 180) {
+      console.log(`💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark`);
+      const liveUpdateEvent = new CustomEvent('live-price-update', {
+        detail: { symbol, price, timestamp, forceCalculate: true }
+      });
+      document.dispatchEvent(liveUpdateEvent);
+    }
     
     console.log(`[FinalPriceSystem] Price update broadcast for ${symbol}: ${price}`);
     

@@ -146,20 +146,20 @@ export default function AdvancedSignalDashboard({
       if (event.detail.symbol === symbol) {
         console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${event.detail.price}`);
         
-        // Only proceed if we have historical data loaded and are not currently calculating
-        if (isAllDataLoaded && !isCalculating) {
-          console.log(`💯 IMMEDIATE CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
+        // Check if this is a forced calculation from the 3-minute timer
+        const isTimerTriggered = event.detail.forceCalculate === true;
+        
+        // Only proceed if it's a timer-triggered update or if we haven't calculated recently
+        if (isAllDataLoaded && !isCalculating && isTimerTriggered) {
+          console.log(`💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
           
           // Set calculation state
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           
-          // Directly calculate with a short delay, but without showing alerts
-          setTimeout(() => {
-            calculateAllSignals();
-            // Toast notification removed as requested
-          }, 100);
+          // Calculate immediately to ensure perfect synchronization with the 3-minute timer
+          calculateAllSignals();
         }
       }
     };
