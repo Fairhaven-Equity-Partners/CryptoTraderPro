@@ -1248,6 +1248,30 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
+                        {/* Success Probability Bar */}
+                        <div className="space-y-2 mb-3">
+                          <h3 className="text-white font-bold text-sm">Success Probability</h3>
+                          <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
+                            <div 
+                              className={`h-4 rounded-full ${
+                                (currentSignal?.successProbability || 50) >= 70 ? 'bg-green-600' : 
+                                (currentSignal?.successProbability || 50) >= 45 ? 'bg-yellow-600' : 'bg-red-600'
+                              }`}
+                              style={{ width: `${currentSignal?.successProbability || 50}%` }}
+                            />
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <div className="flex justify-between text-xs text-gray-400 w-full">
+                              <span>Low</span>
+                              <span>Medium</span>
+                              <span>High</span>
+                            </div>
+                            <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
+                              {currentSignal?.successProbability || 50}%
+                            </Badge>
+                          </div>
+                        </div>
+                        
                         <div className="space-y-2">
                           <h3 className="text-white font-bold text-sm">Signal Strength</h3>
                           <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
