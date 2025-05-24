@@ -369,39 +369,142 @@ export default function AdvancedSignalDashboard({
     }
   }, [assetPrice]);
   
+  // Define the triggerCalculation function first to fix hook dependency order issues
+  const triggerCalculation = useCallback((trigger: string) => {
+    // We need to use Date.now() / 1000 to match other places where we track time
+    const now = Date.now() / 1000;
+    
+    // Fix time calculations - ensure consistent timing format
+    // Note that lastCalculationTimeRef.current may be in milliseconds in some places
+    const lastCalcInSeconds = (lastCalculationTimeRef.current > 1600000000) 
+                            ? lastCalculationTimeRef.current / 1000  // Convert from ms to seconds if needed
+                            : lastCalculationTimeRef.current;        // Already in seconds
+    
+    const timeSinceLastCalc = now - lastCalcInSeconds;
+    
+    console.log(`Attempt to trigger calculation (${trigger}) for ${symbol}:
+      - Already triggered: ${calculationTriggeredRef.current}
+      - Currently calculating: ${isCalculating}
+      - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
+      - All data loaded: ${isAllDataLoaded}
+      - Live data ready: ${isLiveDataReady}`);
+    
+    // SPECIAL CASE: Always allow manual triggers, timer triggers and other special cases to recalculate without restrictions
+    if (trigger === 'manual' || trigger === 'timer' || trigger === 'heat-map-selection' || trigger === 'throttled-price-update') {
+      // Show toast notification for manual recalculations
+      if (trigger === 'manual') {
+        setTimeout(() => {
+          toast({
+            title: "Manual Recalculation",
+            description: `Automatically refreshing signals for ${symbol}`,
+            variant: "default"
+          });
+        }, 100);
+      }
+      
+      // Clear any pending calculation
+      if (calculationTimeoutRef.current) {
+        clearTimeout(calculationTimeoutRef.current);
+      }
+      
+      // Force a direct calculation
+      console.log(`⚡ DIRECT CALCULATION for ${symbol} (from ${trigger} trigger)`);
+      calculateAllSignals();
+      return;
+    }
+    
+    // For data-loaded triggers, we want to be less restrictive
+    if (trigger === 'data-loaded') {
+      if (isCalculating) {
+        console.log(`Already calculating for ${symbol}, will retry when complete`);
+        return;
+      }
+      
+      // Proceed with calculation regardless of other conditions
+      calculationTriggeredRef.current = true;
+      calculateAllSignals();
+      return;
+    }
+    
+    // For other automated triggers, enforce stronger throttling rules to prevent excessive calculations
+    if (
+      calculationTriggeredRef.current || 
+      isCalculating || 
+      (timeSinceLastCalc < 120) || // Increased from 30 to 120 seconds (2 minutes) to reduce frequency
+      !isAllDataLoaded
+    ) {
+      console.log(`Throttling calculation for ${symbol} - last calc was ${timeSinceLastCalc.toFixed(0)}s ago (minimum 120s)`);
+      return;
+    }
+    
+    // Prevent multiple triggers
+    calculationTriggeredRef.current = true;
+    
+    // Use a timeout to debounce calculation
+    if (calculationTimeoutRef.current) {
+      clearTimeout(calculationTimeoutRef.current);
+    }
+    
+    // Wait a second to allow any other trigger events to settle
+    calculationTimeoutRef.current = setTimeout(() => {
+      calculateAllSignals();
+    }, 1000);
+    
+  }, [symbol, isCalculating, isAllDataLoaded, toast, isLiveDataReady, calculateAllSignals]);
+  
   // Listen directly for the live price update custom event
   useEffect(() => {
     // Create a specific handler for the live price update event
     const handleLivePriceUpdate = (event: CustomEvent) => {
       if (event.detail.symbol === symbol) {
-        console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${event.detail.price}`);
+        console.log(`✅ LIVE PRICE RECEIVED for ${symbol}: ${event.detail.price}`);
         
-        // Only proceed if we have historical data loaded and are not currently calculating
-        if (isAllDataLoaded && !isCalculating) {
-          console.log(`💯 IMMEDIATE CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
-          
-          // Set calculation state
-          setIsCalculating(true);
-          lastCalculationRef.current = Date.now();
-          lastCalculationTimeRef.current = Date.now() / 1000;
-          
-          // Directly calculate with a short delay, but without showing alerts
-          setTimeout(() => {
-            calculateAllSignals();
-            // Toast notification removed as requested
-          }, 100);
+        // IMPORTANT: We no longer trigger immediate calculations from price updates
+        // Instead, we'll rely on the throttled mechanism in triggerCalculation
+        
+        // Update price display without triggering a calculation
+        setAssetPrice(event.detail.price);
+        priceRef.current = event.detail.price;
+        
+        // Now trigger a throttled calculation
+        const now = Date.now() / 1000;
+        const lastCalcInSeconds = (lastCalculationTimeRef.current > 1600000000) 
+                                ? lastCalculationTimeRef.current / 1000
+                                : lastCalculationTimeRef.current;
+        
+        const timeSinceLastCalc = now - lastCalcInSeconds;
+        
+        // Only attempt to trigger a calculation if enough time has passed
+        if (timeSinceLastCalc >= 120) { // 2 minutes minimum between calculations
+          console.log(`Triggering calculation after ${timeSinceLastCalc.toFixed(0)}s since last update`);
+          triggerCalculation('throttled-price-update');
+        } else {
+          console.log(`Not triggering calculation - last calc was ${timeSinceLastCalc.toFixed(0)}s ago (minimum 120s)`);
         }
       }
     };
     
-    // Add the event listener
+    // Handle other price update events (from finalPriceSystem.ts)
+    const handlePriceUpdate = (event: Event) => {
+      const priceEvent = event as CustomEvent;
+      if (priceEvent.detail?.symbol === symbol) {
+        console.log(`[API] Price update received for ${symbol} but NOT dispatching additional event`);
+        // Just update display without triggering calculation or dispatching more events
+        setAssetPrice(priceEvent.detail.price);
+        priceRef.current = priceEvent.detail.price;
+      }
+    };
+    
+    // Add the event listeners
     document.addEventListener('live-price-update', handleLivePriceUpdate as EventListener);
+    window.addEventListener('price-update', handlePriceUpdate as EventListener);
     
     // Return cleanup function
     return () => {
       document.removeEventListener('live-price-update', handleLivePriceUpdate as EventListener);
+      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
     };
-  }, [symbol, isAllDataLoaded, isCalculating]);
+  }, [symbol, isAllDataLoaded, isCalculating, triggerCalculation]);
 
   // This hook block was moved to maintain the correct hook order
   // No price tracking here anymore, we'll use the isLiveDataReady flag from useMarketData
@@ -583,7 +686,7 @@ export default function AdvancedSignalDashboard({
     
     console.log("[AutoCalc] Setting up price-triggered calculations for signal dashboard");
     
-    // Add event listener for price update events that will trigger calculations
+    // Add event listener for price update events - UPDATE: NO LONGER TRIGGERS CALCULATIONS
     const handlePriceUpdate = (event: Event) => {
       const priceEvent = event as CustomEvent;
       if (!priceEvent.detail) return;
@@ -593,12 +696,16 @@ export default function AdvancedSignalDashboard({
       // Only process events for the current symbol
       if (eventSymbol === symbol) {
         console.log(`📊 Price update received for ${symbol}: ${price}`);
-        console.log(`🔄 Updating price for ${symbol} from ${assetPrice} to ${price}`);
+        
+        // IMPORTANT: We now ONLY update the display price - NO calculation triggering
+        // This ensures we display live price changes but don't excessively calculate signals
+        
         // Update the asset price state with the new price
         setAssetPrice(price);
         // Update the reference as well for consistency
         priceRef.current = price;
         
+        /* AUTO-CALCULATION COMPLETELY DISABLED - We rely on the 2-minute throttling only
         // Only trigger calculation if we're not already calculating and data is loaded
         if (!isCalculating && isAllDataLoaded && isLiveDataReady) {
           console.log(`🚀 Triggering auto-calculation from price update for ${symbol}`);
@@ -619,6 +726,7 @@ export default function AdvancedSignalDashboard({
             }, 1500);
           }, 200);
         }
+        */
       }
     };
     
