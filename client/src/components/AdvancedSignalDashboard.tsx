@@ -96,6 +96,7 @@ const indicatorNames = {
 interface AdvancedSignalDashboardProps {
   symbol: string;
   onTimeframeSelect?: (timeframe: TimeFrame) => void;
+  onAnalysisComplete?: () => void;
 }
 
 // Main component
