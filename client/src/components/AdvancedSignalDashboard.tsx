@@ -118,7 +118,8 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
-  const [nextRefreshIn, setNextRefreshIn] = useState<number>(300);
+  const [nextRefreshIn, setNextRefreshIn] = useState<number>(180);
+  const [formattedTimer, setFormattedTimer] = useState<string>("3:00");
   
   // Refs to track calculation status
   const lastSymbolRef = useRef<string>(symbol);
@@ -323,7 +324,9 @@ export default function AdvancedSignalDashboard({
     
     // Reset timer when a calculation completes
     if (!isCalculating) {
-      setNextRefreshIn(300); // Reset to 5 minutes (300 seconds)
+      setNextRefreshIn(180); // Reset to 3 minutes (180 seconds)
+      // Initialize formatted timer
+      setFormattedTimer("3:00");
     }
     
     // Set up countdown timer
@@ -334,8 +337,15 @@ export default function AdvancedSignalDashboard({
           console.log("Refresh timer reached zero, triggering calculation");
           // Add a slight delay to ensure state updates have completed
           setTimeout(() => triggerCalculation('timer'), 100);
-          return 300; // Reset to 5 minutes
+          setFormattedTimer("3:00");
+          return 180; // Reset to 3 minutes
         }
+        
+        // Update the formatted timer display
+        const minutes = Math.floor(prevTime / 60);
+        const seconds = prevTime % 60;
+        setFormattedTimer(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+        
         return prevTime - 1;
       });
     }, 1000);
