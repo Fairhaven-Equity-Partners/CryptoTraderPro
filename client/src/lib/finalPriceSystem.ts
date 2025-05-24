@@ -140,6 +140,13 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
     });
     window.dispatchEvent(cryptoUpdateEvent);
     
+    // Add a live-price-update event that will trigger calculations
+    // This is critical for the auto-calculation system
+    const liveUpdateEvent = new CustomEvent('live-price-update', {
+      detail: { symbol, price, timestamp }
+    });
+    document.dispatchEvent(liveUpdateEvent);
+    
     console.log(`[FinalPriceSystem] Price update broadcast for ${symbol}: ${price}`);
     
     console.log(`[FinalPriceSystem] Price fetch completed for ${symbol}: ${price}`);
