@@ -435,8 +435,8 @@ export default function AdvancedSignalDashboard({
       
       // Wait a bit longer for data to fully load before triggering calculation
       const timer = setTimeout(() => {
-        console.log(`Triggering calculation for ${symbol} after waiting for data to load`);
-        triggerCalculation('heat-map-selection');
+        console.log(`Starting calculation for ${symbol} after waiting for data to load`);
+        calculateAllSignals();
         
         // Notify parent that analysis is complete
         if (onAnalysisComplete) {
@@ -522,8 +522,8 @@ export default function AdvancedSignalDashboard({
           
           // Trigger calculation with a small delay to ensure state updates
           setTimeout(() => {
-            // Use the existing calculation function
-            triggerCalculation('auto-price-update');
+            // Directly call our calculation function instead of using the manual trigger
+            calculateAllSignals();
             
             // Make sure to set the calculation state back to false after a short delay
             setTimeout(() => {
@@ -647,7 +647,7 @@ export default function AdvancedSignalDashboard({
       // Only remove the single event listener we added
       window.removeEventListener('price-update', handleThrottledPriceUpdate as EventListener);
     };
-  }, [symbol, isCalculating, triggerCalculation]);
+  }, [symbol, isCalculating]);
 
   // Store persistent signals across refreshes
   const persistentSignalsRef = useRef<Record<string, Record<TimeFrame, AdvancedSignal | null>>>({
