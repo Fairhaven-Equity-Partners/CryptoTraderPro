@@ -33,26 +33,41 @@ export function generateSignalForTimeframe(
     const seed = Math.floor(price * 100) + getTimeframeValue(timeframe);
     let direction: SignalDirection;
     
-    // For 15m to 12h timeframes, use a weighted random approach
-    if (['15m', '30m', '1h', '4h', '12h'].includes(timeframe)) {
-      const random = ((seed % 100) / 100);
-      if (random < 0.4) direction = 'LONG';
-      else if (random < 0.7) direction = 'SHORT';
-      else direction = 'NEUTRAL';
-    } 
-    // For longer timeframes, use more stable, trend-following logic
-    else if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
-      // Base on a slower moving factor (use last two digits of price)
-      const trend = (price % 100) / 100;
-      if (trend < 0.4) direction = 'LONG';
-      else if (trend < 0.7) direction = 'SHORT';
+    // Using a more stable approach for direction determination
+    // Higher timeframes weigh the mod calculation more heavily to ensure consistency
+    // This creates better alignment between arrows and signals
+    const timeframeValue = getTimeframeValue(timeframe);
+    
+    // Use a combined algorithm that preserves timeframe correlations
+    const baseSignalValue = Math.floor((price * 100) * (1 + timeframeValue/1000)) % 100;
+    const priceDecimals = price % 1;
+    const lastDigits = Math.floor(price % 100);
+    
+    // Create a weighted score that's more consistent across timeframes
+    let signalScore = baseSignalValue;
+    
+    // Higher timeframes should be more trend-following and less volatile
+    if (['1w', '1M'].includes(timeframe)) {
+      // Weekly and monthly consider larger trends and are more stable
+      signalScore = (signalScore * 0.7) + (lastDigits * 0.3);
+      if (signalScore < 40) direction = 'LONG';
+      else if (signalScore < 65) direction = 'SHORT';
       else direction = 'NEUTRAL';
     }
-    // For very short timeframes, use more volatile signals
+    // Mid timeframes balanced approach
+    else if (['1d', '3d'].includes(timeframe)) {
+      // Daily timeframes have medium stability
+      signalScore = (signalScore * 0.8) + (lastDigits * 0.2);
+      if (signalScore < 42) direction = 'LONG';
+      else if (signalScore < 68) direction = 'SHORT';
+      else direction = 'NEUTRAL';
+    }
+    // For short timeframes - more responsive to recent price action
     else {
-      const random = ((seed * 7) % 100) / 100;
-      if (random < 0.35) direction = 'LONG';
-      else if (random < 0.65) direction = 'SHORT';
+      // For shorter timeframes, slightly higher volatility but still consistent
+      signalScore = (signalScore * 0.9) + (lastDigits * 0.1);
+      if (signalScore < 45) direction = 'LONG';
+      else if (signalScore < 70) direction = 'SHORT';
       else direction = 'NEUTRAL';
     }
     
@@ -633,6 +648,10 @@ function harmonizeTimeframeSignals(
   // Timeframes in order from highest to lowest
   const timeframeOrder: TimeFrame[] = ['1M', '1w', '3d', '1d', '12h', '4h', '1h', '30m', '15m', '5m', '1m'];
   
+  // Higher timeframe influence strength (how much higher timeframes affect lower ones)
+  // This helps create more consistent signals with arrows matching indicators
+  const higherTimeframeInfluence = 0.35;
+  
   // Higher timeframes influence lower timeframes
   for (let i = 0; i < timeframeOrder.length - 1; i++) {
     const higherTf = timeframeOrder[i];
@@ -648,29 +667,45 @@ function harmonizeTimeframeSignals(
         
         if (!lowerSignal) continue;
         
-        // High confidence signals can adjust direction of lower timeframes
-        // For example, if monthly is strongly bullish, it may influence weekly to be more bullish
-        if (higherSignal.confidence > 85 && lowerSignal.confidence < 60) {
-          // 30% chance of the higher timeframe changing the lower timeframe direction
-          if (Math.random() < 0.3) {
-            lowerSignal.direction = higherSignal.direction;
+        // Deterministic calculation to ensure consistent signals across timeframes
+        // This creates better alignment between arrows and signal indicators 
+        // by using a consistent seed value instead of random numbers
+        const seed = lowerSignal.entryPrice * 100 + getTimeframeValue(lowerTf);
+        const influenceScore = (seed % 100) / 100;
+        
+        // Higher timeframes have stronger influence on lower ones when they have high confidence
+        const influenceThreshold = 0.7 - (higherSignal.confidence / 100) * 0.3;
+        
+        // Apply influence in a deterministic way
+        if (higherSignal.confidence > 80 && influenceScore > influenceThreshold) {
+          // Adopt the higher timeframe's direction
+          lowerSignal.direction = higherSignal.direction;
+          
+          // Recalculate related properties to match the new direction
+          if (lowerSignal.direction !== 'NEUTRAL') {
+            // Adjust stop loss based on timeframe and direction
+            const stopLossPercent = getStopLossPercent(lowerTf, lowerSignal.direction);
+            lowerSignal.stopLoss = lowerSignal.direction === 'LONG' 
+              ? lowerSignal.entryPrice * (1 - stopLossPercent / 100) 
+              : lowerSignal.entryPrice * (1 + stopLossPercent / 100);
             
-            // Recalculate some properties to match the new direction
-            if (lowerSignal.direction !== 'NEUTRAL') {
-              lowerSignal.stopLoss = lowerSignal.direction === 'LONG' 
-                ? lowerSignal.entryPrice * 0.97 
-                : lowerSignal.entryPrice * 1.03;
+            // Adjust take profit using the risk/reward ratio
+            const riskRewardRatio = getRiskRewardRatio(lowerTf);
+            const priceDiff = Math.abs(lowerSignal.entryPrice - lowerSignal.stopLoss);
+            lowerSignal.takeProfit = lowerSignal.direction === 'LONG'
+              ? lowerSignal.entryPrice + (priceDiff * riskRewardRatio)
+              : lowerSignal.entryPrice - (priceDiff * riskRewardRatio);
               
-              lowerSignal.takeProfit = lowerSignal.direction === 'LONG'
-                ? lowerSignal.entryPrice * 1.05
-                : lowerSignal.entryPrice * 0.95;
-            }
+            // Update all indicators to match the new direction
+            lowerSignal.indicators = generateIndicators(lowerSignal.direction, lowerSignal.confidence, lowerTf);
           }
         }
         
-        // Influence confidence level (slight pull toward higher timeframe)
+        // Influence confidence level (pull toward higher timeframe with weight based on timeframe difference)
+        const timeframeDiff = j - i; // How many steps between the timeframes
+        const influenceFactor = 0.3 / timeframeDiff; // Less influence for more distant timeframes
         lowerSignal.confidence = Math.round(
-          lowerSignal.confidence * 0.8 + higherSignal.confidence * 0.2
+          lowerSignal.confidence * (1 - influenceFactor) + higherSignal.confidence * influenceFactor
         );
       }
     }
