@@ -369,88 +369,16 @@ export default function AdvancedSignalDashboard({
     }
   }, [assetPrice]);
   
-  // Define the triggerCalculation function first to fix hook dependency order issues
-  const triggerCalculation = useCallback((trigger: string) => {
-    // We need to use Date.now() / 1000 to match other places where we track time
+  // Define a simple function to check if calculations are allowed based on time constraints
+  const isCalculationAllowed = useCallback(() => {
     const now = Date.now() / 1000;
-    
-    // Fix time calculations - ensure consistent timing format
-    // Note that lastCalculationTimeRef.current may be in milliseconds in some places
     const lastCalcInSeconds = (lastCalculationTimeRef.current > 1600000000) 
-                            ? lastCalculationTimeRef.current / 1000  // Convert from ms to seconds if needed
-                            : lastCalculationTimeRef.current;        // Already in seconds
+                            ? lastCalculationTimeRef.current / 1000
+                            : lastCalculationTimeRef.current;
     
     const timeSinceLastCalc = now - lastCalcInSeconds;
-    
-    console.log(`Attempt to trigger calculation (${trigger}) for ${symbol}:
-      - Already triggered: ${calculationTriggeredRef.current}
-      - Currently calculating: ${isCalculating}
-      - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
-      - All data loaded: ${isAllDataLoaded}
-      - Live data ready: ${isLiveDataReady}`);
-    
-    // SPECIAL CASE: Always allow manual triggers, timer triggers and other special cases to recalculate without restrictions
-    if (trigger === 'manual' || trigger === 'timer' || trigger === 'heat-map-selection' || trigger === 'throttled-price-update') {
-      // Show toast notification for manual recalculations
-      if (trigger === 'manual') {
-        setTimeout(() => {
-          toast({
-            title: "Manual Recalculation",
-            description: `Automatically refreshing signals for ${symbol}`,
-            variant: "default"
-          });
-        }, 100);
-      }
-      
-      // Clear any pending calculation
-      if (calculationTimeoutRef.current) {
-        clearTimeout(calculationTimeoutRef.current);
-      }
-      
-      // Force a direct calculation
-      console.log(`⚡ DIRECT CALCULATION for ${symbol} (from ${trigger} trigger)`);
-      calculateAllSignals();
-      return;
-    }
-    
-    // For data-loaded triggers, we want to be less restrictive
-    if (trigger === 'data-loaded') {
-      if (isCalculating) {
-        console.log(`Already calculating for ${symbol}, will retry when complete`);
-        return;
-      }
-      
-      // Proceed with calculation regardless of other conditions
-      calculationTriggeredRef.current = true;
-      calculateAllSignals();
-      return;
-    }
-    
-    // For other automated triggers, enforce stronger throttling rules to prevent excessive calculations
-    if (
-      calculationTriggeredRef.current || 
-      isCalculating || 
-      (timeSinceLastCalc < 120) || // Increased from 30 to 120 seconds (2 minutes) to reduce frequency
-      !isAllDataLoaded
-    ) {
-      console.log(`Throttling calculation for ${symbol} - last calc was ${timeSinceLastCalc.toFixed(0)}s ago (minimum 120s)`);
-      return;
-    }
-    
-    // Prevent multiple triggers
-    calculationTriggeredRef.current = true;
-    
-    // Use a timeout to debounce calculation
-    if (calculationTimeoutRef.current) {
-      clearTimeout(calculationTimeoutRef.current);
-    }
-    
-    // Wait a second to allow any other trigger events to settle
-    calculationTimeoutRef.current = setTimeout(() => {
-      calculateAllSignals();
-    }, 1000);
-    
-  }, [symbol, isCalculating, isAllDataLoaded, toast, isLiveDataReady, calculateAllSignals]);
+    return timeSinceLastCalc >= 120; // 2 minutes (120 seconds) minimum between calculations
+  }, []);
   
   // Listen directly for the live price update custom event
   useEffect(() => {
