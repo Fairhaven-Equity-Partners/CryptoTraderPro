@@ -315,40 +315,40 @@ export default function AdvancedSignalDashboard({
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
-  // Update timer for next refresh
+  // Update timer for next refresh - synchronized with finalPriceSystem.ts
   useEffect(() => {
     // Clear any existing timers first to prevent duplicates
     if (recalcIntervalRef.current) {
       clearInterval(recalcIntervalRef.current);
     }
     
-    // Reset timer when a calculation completes
-    if (!isCalculating) {
-      setNextRefreshIn(180); // Reset to 3 minutes (180 seconds)
-      // Initialize formatted timer
-      setFormattedTimer("3:00");
-    }
-    
-    // Set up countdown timer
-    const timerInterval = setInterval(() => {
-      setNextRefreshIn(prevTime => {
-        // When timer reaches zero, trigger refresh
-        if (prevTime <= 0) {
-          console.log("Refresh timer reached zero, triggering calculation");
-          // Add a slight delay to ensure state updates have completed
-          setTimeout(() => triggerCalculation('timer'), 100);
-          setFormattedTimer("3:00");
-          return 180; // Reset to 3 minutes
-        }
+    // Import functions from finalPriceSystem (already added at top of file)
+    const updateTimerFromSystem = () => {
+      try {
+        // Access the timer values from the finalPriceSystem module
+        const systemTimerSeconds = window.finalPriceSystemTimer ? 
+          window.finalPriceSystemTimer.getSecondsUntilNextRefresh() : 180;
         
-        // Update the formatted timer display
-        const minutes = Math.floor(prevTime / 60);
-        const seconds = prevTime % 60;
+        const systemFormattedTime = window.finalPriceSystemTimer ? 
+          window.finalPriceSystemTimer.getFormattedCountdown() : "3:00";
+        
+        // Set the timer values in our component state
+        setNextRefreshIn(systemTimerSeconds);
+        setFormattedTimer(systemFormattedTime);
+      } catch (err) {
+        console.error("Error syncing with price system timer:", err);
+        // Fallback to default timer if there's an error
+        const minutes = Math.floor(nextRefreshIn / 60);
+        const seconds = nextRefreshIn % 60;
         setFormattedTimer(`${minutes}:${seconds.toString().padStart(2, '0')}`);
-        
-        return prevTime - 1;
-      });
-    }, 1000);
+      }
+    };
+    
+    // Update immediately
+    updateTimerFromSystem();
+    
+    // Set up countdown timer to synchronize with system timer
+    const timerInterval = setInterval(updateTimerFromSystem, 1000);
     
     // Save interval reference for cleanup
     recalcIntervalRef.current = timerInterval;
