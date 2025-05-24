@@ -1062,6 +1062,11 @@ export default function AdvancedSignalDashboard({
           <p className="text-slate-400 text-sm">Comprehensive technical analysis for {symbol}</p>
         </div>
         <div className="flex justify-end items-center space-x-2">
+          {/* Add countdown timer display */}
+          <Badge variant="outline" className="text-xs bg-gray-800/70 text-gray-300 border-gray-700 px-3 py-1">
+            Next update in: {formattedTimer}
+          </Badge>
+          
           {isCalculating ? (
             <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800 px-3 py-1">
               Calculating...
