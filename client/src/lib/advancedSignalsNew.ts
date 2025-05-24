@@ -27,8 +27,8 @@ export function generateSignalForTimeframe(
     const seed = Math.floor(price * 100) + getTimeframeValue(timeframe);
     let direction: SignalDirection;
     
-    // For 15m to 4h timeframes, use a weighted random approach
-    if (['15m', '30m', '1h', '4h'].includes(timeframe)) {
+    // For 15m to 12h timeframes, use a weighted random approach
+    if (['15m', '30m', '1h', '4h', '12h'].includes(timeframe)) {
       const random = ((seed % 100) / 100);
       if (random < 0.4) direction = 'LONG';
       else if (random < 0.7) direction = 'SHORT';
@@ -242,10 +242,9 @@ function generateIndicators(
   const bullishWeight = direction === 'LONG' ? confidence / 100 : 0.3;
   const bearishWeight = direction === 'SHORT' ? confidence / 100 : 0.3;
   
-  // Generate trend indicators
+  // Generate trend indicators with proper typing
   result.trend = [
     {
-      id: 'ma',
       name: 'Moving Average',
       value: direction === 'LONG' ? 'Bullish Crossover' : direction === 'SHORT' ? 'Bearish Crossover' : 'Neutral',
       signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
@@ -253,7 +252,6 @@ function generateIndicators(
       category: 'TREND'
     },
     {
-      id: 'macd',
       name: 'MACD',
       value: direction === 'LONG' ? 'Bullish Divergence' : direction === 'SHORT' ? 'Bearish Divergence' : 'Neutral',
       signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
@@ -265,7 +263,6 @@ function generateIndicators(
   // Generate momentum indicators
   result.momentum = [
     {
-      id: 'rsi',
       name: 'RSI',
       value: direction === 'LONG' ? Math.round(35 + 15 * bullishWeight) : direction === 'SHORT' ? Math.round(65 + 15 * bearishWeight) : '50',
       signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
@@ -273,7 +270,6 @@ function generateIndicators(
       category: 'MOMENTUM'
     },
     {
-      id: 'stoch',
       name: 'Stochastic',
       value: direction === 'LONG' ? `${Math.round(20 + 30 * bullishWeight)}/${Math.round(30 + 40 * bullishWeight)}` : 
              direction === 'SHORT' ? `${Math.round(70 + 20 * bearishWeight)}/${Math.round(60 + 30 * bearishWeight)}` : '50/50',
@@ -286,7 +282,6 @@ function generateIndicators(
   // Generate volatility indicators
   result.volatility = [
     {
-      id: 'bb',
       name: 'Bollinger Bands',
       value: direction === 'LONG' ? 'Near Lower Band' : direction === 'SHORT' ? 'Near Upper Band' : 'Middle Band',
       signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
@@ -298,7 +293,6 @@ function generateIndicators(
   // Generate volume indicators
   result.volume = [
     {
-      id: 'obv',
       name: 'On-Balance Volume',
       value: direction === 'LONG' ? 'Rising' : direction === 'SHORT' ? 'Falling' : 'Flat',
       signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
