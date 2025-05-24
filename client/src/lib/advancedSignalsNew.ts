@@ -75,68 +75,79 @@ export function generateSignalForTimeframe(
     const baseConfidence = getBaseConfidence(timeframe);
     let confidence = baseConfidence + ((seed % 20) - 10); // +/- 10 variation
     
-    // Ensure confidence is within 30-95 range
-    confidence = Math.min(Math.max(confidence, 30), 95);
+    // Ensure confidence is within reasonable range
+    confidence = Math.max(40, Math.min(confidence, 95));
     
-    // Calculate entry, stop, and take profit prices
-    const entryPrice = price;
-    
-    // Calculate dynamic stop loss based on timeframe volatility
-    // Higher timeframes can use wider stops
+    // Calculate appropriate stop loss based on direction and timeframe
     const stopLossPercent = getStopLossPercent(timeframe, direction);
-    const stopLoss = direction === 'LONG' 
-      ? price * (1 - stopLossPercent) 
-      : direction === 'SHORT'
-        ? price * (1 + stopLossPercent)
-        : 0; // No stop loss for neutral signals
+    let stopLoss = 0;
+    
+    if (direction === 'LONG') {
+      stopLoss = price * (1 - stopLossPercent / 100);
+    } else if (direction === 'SHORT') {
+      stopLoss = price * (1 + stopLossPercent / 100);
+    } else {
+      // For neutral signals, set a symmetric stop loss
+      stopLoss = price * (1 - stopLossPercent / 200);
+    }
     
     // Calculate take profit based on risk/reward ratio
     const riskRewardRatio = getRiskRewardRatio(timeframe);
-    const takeProfitPercent = stopLossPercent * riskRewardRatio;
-    const takeProfit = direction === 'LONG'
-      ? price * (1 + takeProfitPercent)
-      : direction === 'SHORT'
-        ? price * (1 - takeProfitPercent)
-        : 0; // No take profit for neutral signals
+    const priceDiff = Math.abs(price - stopLoss);
+    let takeProfit = 0;
     
-    // Generate indicators with signals matching the overall direction
+    if (direction === 'LONG') {
+      takeProfit = price + (priceDiff * riskRewardRatio);
+    } else if (direction === 'SHORT') {
+      takeProfit = price - (priceDiff * riskRewardRatio);
+    } else {
+      // For neutral signals, set a symmetric take profit
+      takeProfit = price * (1 + stopLossPercent / 100);
+    }
+    
+    // Generate technical indicators based on the signal direction
     const indicators = generateIndicators(direction, confidence, timeframe);
     
-    // Generate pattern formations relevant to the timeframe and direction
+    // Generate pattern formations based on signal direction and timeframe
     const patternFormations = generatePatternFormations(direction, confidence, timeframe, price);
     
-    // Calculate success probability using our specialized module
-    const successProbability = getTimeframeSuccessProbability(timeframe, direction);
-    
-    // Calculate support and resistance levels
-    const { supportLevels, resistanceLevels } = calculateKeyLevels(price, timeframe);
-    
-    // Generate macro insights
+    // Generate macro insights based on the signal direction
     const macroInsights = generateMacroInsights(direction, timeframe, price);
     
-    // Assemble the advanced signal
+    // Calculate key support and resistance levels
+    const { supportLevels, resistanceLevels } = calculateKeyLevels(price, timeframe);
+    
+    // Get expected duration of the trade based on timeframe
+    const expectedDuration = getExpectedDuration(timeframe);
+    
+    // Calculate recommended leverage based on timeframe, direction, and confidence
+    const recommendedLeverage = calculateRecommendedLeverage(timeframe, direction, confidence);
+    
+    // Calculate success probability based on timeframe and direction
+    const successProbability = getTimeframeSuccessProbability(timeframe, direction);
+    
+    // The complete advanced signal
     const advancedSignal: AdvancedSignal = {
       direction,
       confidence,
-      entryPrice,
+      entryPrice: price,
       stopLoss,
       takeProfit,
       timeframe,
       timestamp: Date.now(),
       successProbability,
       successProbabilityDescription: getSuccessProbabilityDescription(successProbability),
-      indicators: indicators as any, // Type coercion to match expected structure
+      indicators,
       patternFormations,
       supportLevels,
       resistanceLevels,
-      expectedDuration: getExpectedDuration(timeframe),
+      expectedDuration,
       riskRewardRatio,
-      // Add optional fields needed for the UI
       optimalRiskReward: {
         ideal: riskRewardRatio,
         range: [riskRewardRatio * 0.8, riskRewardRatio * 1.2]
       },
-      recommendedLeverage: calculateRecommendedLeverage(timeframe, direction, confidence),
+      recommendedLeverage,
       macroInsights
     };
     
@@ -144,38 +155,16 @@ export function generateSignalForTimeframe(
   } catch (error) {
     console.error(`Error generating signal for ${timeframe}:`, error);
     
-    // Provide fallback signal for critical timeframes to ensure stability
-    if (['1w', '1M'].includes(timeframe)) {
-      console.log(`Providing fallback signal for ${timeframe}`);
-      
-      // Create a stable fallback signal
-      const successProbability = timeframe === '1M' ? 92 : 88;
-      return {
-        direction: 'LONG',  // Default to long for long timeframes as markets trend up over time
-        confidence: timeframe === '1M' ? 85 : 80,
-        entryPrice: price,
-        stopLoss: price * 0.95,  // 5% stop loss
-        takeProfit: price * 1.1,  // 10% profit target
-        timeframe: timeframe,
-        timestamp: Date.now(),
-        successProbability,
-        successProbabilityDescription: getSuccessProbabilityDescription(successProbability),
-        indicators: generateIndicators('LONG', 80, timeframe),
-        patternFormations: [],
-        supportLevels: [price * 0.98, price * 0.95, price * 0.92],
-        resistanceLevels: [price * 1.02, price * 1.05, price * 1.08],
-        expectedDuration: getExpectedDuration(timeframe),
-        riskRewardRatio: 2.0,
-        optimalRiskReward: {
-          ideal: 2.0,
-          range: [1.6, 2.4]
-        },
-        recommendedLeverage: calculateRecommendedLeverage(timeframe, 'LONG', 80),
-        macroInsights: generateMacroInsights('LONG', timeframe, price)
-      };
+    // Create a fallback signal for the given timeframe
+    // Use special treatment for higher timeframes to ensure visual indicators match
+    const signal = createFallbackSignal(timeframe, price, symbol.toString());
+    
+    if (!signal) {
+      console.error(`Failed to create even a fallback signal for ${timeframe}`);
+      return null;
     }
     
-    return null;
+    return signal;
   }
 }
 
@@ -197,82 +186,74 @@ function getTimeframeValue(timeframe: TimeFrame): number {
     '1M': 43200
   };
   
-  return values[timeframe] || 60; // Default to 1h if not found
+  return values[timeframe] || 60; // Default to 1h if unknown
 }
 
 /**
  * Get base confidence level for a timeframe
  */
 function getBaseConfidence(timeframe: TimeFrame): number {
-  // Higher timeframes have higher base confidence
-  switch (timeframe) {
-    case '1M': return 85;
-    case '1w': return 80;
-    case '3d': return 75;
-    case '1d': return 70;
-    case '12h': return 68;
-    case '4h': return 65;
-    case '1h': return 60;
-    case '30m': return 55;
-    case '15m': return 52;
-    case '5m': return 48;
-    case '1m': return 45;
-    default: return 60;
-  }
+  const baseConfidences: Record<TimeFrame, number> = {
+    '1m': 50,
+    '5m': 52,
+    '15m': 55,
+    '30m': 58,
+    '1h': 60,
+    '4h': 65,
+    '12h': 68,
+    '1d': 70,
+    '3d': 75,
+    '1w': 78,
+    '1M': 80
+  };
+  
+  return baseConfidences[timeframe] || 60; // Default to 1h if unknown
 }
 
 /**
  * Get appropriate stop loss percentage for a timeframe
  */
 function getStopLossPercent(timeframe: TimeFrame, direction: SignalDirection): number {
-  // Base stop loss percentages by timeframe
-  let basePercent = 0;
-  switch (timeframe) {
-    case '1M': basePercent = 0.20; break; // 20% for monthly
-    case '1w': basePercent = 0.15; break; // 15% for weekly
-    case '3d': basePercent = 0.10; break; // 10% for 3-day
-    case '1d': basePercent = 0.08; break; // 8% for daily
-    case '12h': basePercent = 0.06; break; // 6% for 12-hour
-    case '4h': basePercent = 0.05; break; // 5% for 4-hour
-    case '1h': basePercent = 0.04; break; // 4% for 1-hour
-    case '30m': basePercent = 0.03; break; // 3% for 30-min
-    case '15m': basePercent = 0.025; break; // 2.5% for 15-min
-    case '5m': basePercent = 0.02; break; // 2% for 5-min
-    case '1m': basePercent = 0.015; break; // 1.5% for 1-min
-    default: basePercent = 0.05; break;
-  }
+  // Base stop loss percentages
+  const baseStopLoss: Record<TimeFrame, number> = {
+    '1m': 0.5,
+    '5m': 0.8,
+    '15m': 1.2,
+    '30m': 1.5,
+    '1h': 2,
+    '4h': 3,
+    '12h': 4,
+    '1d': 5,
+    '3d': 7,
+    '1w': 10,
+    '1M': 15
+  };
   
-  // Direction-specific adjustments
-  if (direction === 'LONG') {
-    // Long positions typically need slightly tighter stops
-    return basePercent * 0.9; 
-  } else if (direction === 'SHORT') {
-    // Short positions often need slightly wider stops
-    return basePercent * 1.1;
-  }
+  // Adjust based on direction (shorts might need wider stops in some markets)
+  const directionMultiplier = direction === 'SHORT' ? 1.1 : 1;
   
-  return basePercent;
+  return (baseStopLoss[timeframe] || 2) * directionMultiplier;
 }
 
 /**
  * Get appropriate risk/reward ratio for a timeframe
  */
 function getRiskRewardRatio(timeframe: TimeFrame): number {
-  // Higher timeframes can have higher risk/reward ratios
-  switch (timeframe) {
-    case '1M': return 5.0; // 5:1 for monthly
-    case '1w': return 4.0; // 4:1 for weekly
-    case '3d': return 3.5; // 3.5:1 for 3-day
-    case '1d': return 3.0; // 3:1 for daily
-    case '12h': return 2.8; // 2.8:1 for 12-hour
-    case '4h': return 2.5; // 2.5:1 for 4-hour
-    case '1h': return 2.2; // 2.2:1 for 1-hour
-    case '30m': return 2.0; // 2:1 for 30-min
-    case '15m': return 1.8; // 1.8:1 for 15-min
-    case '5m': return 1.5; // 1.5:1 for 5-min
-    case '1m': return 1.3; // 1.3:1 for 1-min
-    default: return 2.0; // Default 2:1
-  }
+  const baseRatios: Record<TimeFrame, number> = {
+    '1m': 1.5,
+    '5m': 1.8,
+    '15m': 2,
+    '30m': 2.2,
+    '1h': 2.5,
+    '4h': 2.8,
+    '12h': 3,
+    '1d': 3.2,
+    '3d': 3.5,
+    '1w': 4,
+    '1M': 5
+  };
+  
+  return baseRatios[timeframe] || 2.5; // Default to 1h if unknown
 }
 
 /**
@@ -282,79 +263,141 @@ function generateIndicators(
   direction: SignalDirection, 
   confidence: number,
   timeframe: TimeFrame
-): Record<string, Indicator[]> {
-  const result: Record<string, Indicator[]> = {
-    trend: [],
-    momentum: [],
-    volatility: [],
-    volume: [],
-    pattern: []
-  };
+): Record<string, Indicator> {
+  const indicators: Record<string, Indicator> = {};
   
-  // Factor in our confidence level when determining indicator signals
-  const bullishWeight = direction === 'LONG' ? confidence / 100 : 0.3;
-  const bearishWeight = direction === 'SHORT' ? confidence / 100 : 0.3;
+  // RSI indicator
+  if (direction === 'LONG') {
+    indicators['RSI'] = {
+      value: 30 + Math.floor(Math.random() * 15),
+      signal: 'BUY',
+      strength: confidence > 70 ? 'STRONG' : 'MODERATE'
+    };
+  } else if (direction === 'SHORT') {
+    indicators['RSI'] = {
+      value: 70 + Math.floor(Math.random() * 15),
+      signal: 'SELL',
+      strength: confidence > 70 ? 'STRONG' : 'MODERATE'
+    };
+  } else {
+    indicators['RSI'] = {
+      value: 45 + Math.floor(Math.random() * 10),
+      signal: 'NEUTRAL',
+      strength: 'WEAK'
+    };
+  }
   
-  // Generate trend indicators with proper typing
-  result.trend = [
-    {
-      name: 'Moving Average',
-      value: direction === 'LONG' ? 'Bullish Crossover' : direction === 'SHORT' ? 'Bearish Crossover' : 'Neutral',
-      signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
-      strength: confidence > 70 ? 'STRONG' : 'MODERATE',
-      category: 'TREND'
-    },
-    {
-      name: 'MACD',
-      value: direction === 'LONG' ? 'Bullish Divergence' : direction === 'SHORT' ? 'Bearish Divergence' : 'Neutral',
-      signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
-      strength: confidence > 75 ? 'STRONG' : 'MODERATE',
-      category: 'TREND'
+  // MACD indicator
+  if (direction === 'LONG') {
+    indicators['MACD'] = {
+      value: 0.5 + Math.random() * 2,
+      signal: 'BUY',
+      strength: confidence > 65 ? 'STRONG' : 'MODERATE'
+    };
+  } else if (direction === 'SHORT') {
+    indicators['MACD'] = {
+      value: -0.5 - Math.random() * 2,
+      signal: 'SELL',
+      strength: confidence > 65 ? 'STRONG' : 'MODERATE'
+    };
+  } else {
+    indicators['MACD'] = {
+      value: -0.2 + Math.random() * 0.4,
+      signal: 'NEUTRAL',
+      strength: 'WEAK'
+    };
+  }
+  
+  // Moving Average indicator
+  if (direction === 'LONG') {
+    indicators['MA'] = {
+      value: 1 + Math.random() * 3,
+      signal: 'BUY',
+      strength: confidence > 60 ? 'STRONG' : 'MODERATE'
+    };
+  } else if (direction === 'SHORT') {
+    indicators['MA'] = {
+      value: -1 - Math.random() * 3,
+      signal: 'SELL',
+      strength: confidence > 60 ? 'STRONG' : 'MODERATE'
+    };
+  } else {
+    indicators['MA'] = {
+      value: -0.5 + Math.random(),
+      signal: 'NEUTRAL',
+      strength: 'WEAK'
+    };
+  }
+  
+  // Bollinger Bands indicator
+  if (direction === 'LONG') {
+    indicators['BB'] = {
+      value: -2 - Math.random(),
+      signal: 'BUY',
+      strength: confidence > 75 ? 'STRONG' : 'MODERATE'
+    };
+  } else if (direction === 'SHORT') {
+    indicators['BB'] = {
+      value: 2 + Math.random(),
+      signal: 'SELL',
+      strength: confidence > 75 ? 'STRONG' : 'MODERATE'
+    };
+  } else {
+    indicators['BB'] = {
+      value: -0.5 + Math.random(),
+      signal: 'NEUTRAL',
+      strength: 'WEAK'
+    };
+  }
+  
+  // Add more indicators based on timeframe
+  if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
+    // Ichimoku Cloud for longer timeframes
+    if (direction === 'LONG') {
+      indicators['ICHIMOKU'] = {
+        value: 1,
+        signal: 'BUY',
+        strength: confidence > 80 ? 'STRONG' : 'MODERATE'
+      };
+    } else if (direction === 'SHORT') {
+      indicators['ICHIMOKU'] = {
+        value: -1,
+        signal: 'SELL',
+        strength: confidence > 80 ? 'STRONG' : 'MODERATE'
+      };
+    } else {
+      indicators['ICHIMOKU'] = {
+        value: 0,
+        signal: 'NEUTRAL',
+        strength: 'WEAK'
+      };
     }
-  ];
+  }
   
-  // Generate momentum indicators
-  result.momentum = [
-    {
-      name: 'RSI',
-      value: direction === 'LONG' ? Math.round(35 + 15 * bullishWeight) : direction === 'SHORT' ? Math.round(65 + 15 * bearishWeight) : '50',
-      signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
-      strength: confidence > 70 ? 'STRONG' : 'MODERATE',
-      category: 'MOMENTUM'
-    },
-    {
-      name: 'Stochastic',
-      value: direction === 'LONG' ? `${Math.round(20 + 30 * bullishWeight)}/${Math.round(30 + 40 * bullishWeight)}` : 
-             direction === 'SHORT' ? `${Math.round(70 + 20 * bearishWeight)}/${Math.round(60 + 30 * bearishWeight)}` : '50/50',
-      signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
-      strength: confidence > 70 ? 'STRONG' : 'MODERATE',
-      category: 'MOMENTUM'
+  if (['5m', '15m', '30m', '1h'].includes(timeframe)) {
+    // Stochastic for shorter timeframes
+    if (direction === 'LONG') {
+      indicators['STOCH'] = {
+        value: 20 + Math.random() * 15,
+        signal: 'BUY',
+        strength: confidence > 70 ? 'STRONG' : 'MODERATE'
+      };
+    } else if (direction === 'SHORT') {
+      indicators['STOCH'] = {
+        value: 80 + Math.random() * 15,
+        signal: 'SELL',
+        strength: confidence > 70 ? 'STRONG' : 'MODERATE'
+      };
+    } else {
+      indicators['STOCH'] = {
+        value: 45 + Math.random() * 10,
+        signal: 'NEUTRAL',
+        strength: 'WEAK'
+      };
     }
-  ];
+  }
   
-  // Generate volatility indicators
-  result.volatility = [
-    {
-      name: 'Bollinger Bands',
-      value: direction === 'LONG' ? 'Near Lower Band' : direction === 'SHORT' ? 'Near Upper Band' : 'Middle Band',
-      signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
-      strength: confidence > 70 ? 'STRONG' : 'MODERATE',
-      category: 'VOLATILITY'
-    }
-  ];
-  
-  // Generate volume indicators
-  result.volume = [
-    {
-      name: 'On-Balance Volume',
-      value: direction === 'LONG' ? 'Rising' : direction === 'SHORT' ? 'Falling' : 'Flat',
-      signal: direction === 'LONG' ? 'BUY' : direction === 'SHORT' ? 'SELL' : 'NEUTRAL',
-      strength: confidence > 70 ? 'STRONG' : 'MODERATE',
-      category: 'VOLUME'
-    }
-  ];
-  
-  return result;
+  return indicators;
 }
 
 /**
@@ -368,67 +411,100 @@ function generatePatternFormations(
 ): PatternFormation[] {
   const patterns: PatternFormation[] = [];
   
-  // Number of patterns based on timeframe
-  const patternCount = 
-    timeframe === '1M' || timeframe === '1w' ? 3 :
-    timeframe === '1d' || timeframe === '3d' ? 2 :
-    1;
+  // Only generate patterns with some probability to make it realistic
+  const shouldGeneratePattern = Math.random() < 0.7;
+  if (!shouldGeneratePattern) return patterns;
   
-  // Bullish patterns
-  const bullishPatterns = [
-    { name: 'Double Bottom', reliability: 75, potentialMultiplier: 1.1 },
-    { name: 'Bullish Engulfing', reliability: 82, potentialMultiplier: 1.08 },
-    { name: 'Morning Star', reliability: 85, potentialMultiplier: 1.15 },
-    { name: 'Inverse Head & Shoulders', reliability: 80, potentialMultiplier: 1.2 },
-    { name: 'Cup & Handle', reliability: 88, potentialMultiplier: 1.25 }
-  ];
-  
-  // Bearish patterns
-  const bearishPatterns = [
-    { name: 'Double Top', reliability: 78, potentialMultiplier: 0.9 },
-    { name: 'Bearish Engulfing', reliability: 80, potentialMultiplier: 0.92 },
-    { name: 'Evening Star', reliability: 83, potentialMultiplier: 0.85 },
-    { name: 'Head & Shoulders', reliability: 82, potentialMultiplier: 0.8 },
-    { name: 'Rising Wedge', reliability: 75, potentialMultiplier: 0.88 }
-  ];
-  
-  // Neutral patterns
-  const neutralPatterns = [
-    { name: 'Doji', reliability: 65, potentialMultiplier: 1.0 },
-    { name: 'Symmetrical Triangle', reliability: 60, potentialMultiplier: 1.0 },
-    { name: 'Rectangle', reliability: 55, potentialMultiplier: 1.0 }
-  ];
-  
-  // Deterministic pattern selection
-  let patternChoices: any[] = [];
+  // Long patterns
   if (direction === 'LONG') {
-    patternChoices = bullishPatterns;
-  } else if (direction === 'SHORT') {
-    patternChoices = bearishPatterns;
-  } else {
-    patternChoices = neutralPatterns;
+    const longPatterns = [
+      'Double Bottom',
+      'Bullish Engulfing',
+      'Morning Star',
+      'Hammer',
+      'Cup and Handle',
+      'Inverse Head and Shoulders',
+      'Bullish Rectangle',
+      'Bullish Flag',
+      'Bullish Pennant'
+    ];
+    
+    // Add 1-3 random patterns
+    const patternCount = 1 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < patternCount; i++) {
+      const randomIndex = Math.floor(Math.random() * longPatterns.length);
+      const patternName = longPatterns[randomIndex];
+      
+      patterns.push({
+        name: patternName,
+        significance: confidence > 75 ? 'HIGH' : confidence > 60 ? 'MEDIUM' : 'LOW',
+        priceTarget: price * (1 + (Math.random() * 0.05 + 0.02)),  // 2-7% above current price
+      });
+      
+      // Remove the pattern so we don't add it twice
+      longPatterns.splice(randomIndex, 1);
+      if (longPatterns.length === 0) break;
+    }
   }
-  
-  // Select patterns based on timeframe and price to ensure consistency
-  for (let i = 0; i < patternCount; i++) {
-    // Use deterministic value for selection
-    const seed = (price * 100 + getTimeframeValue(timeframe) + i * 1000) % patternChoices.length;
-    const pattern = patternChoices[Math.floor(seed) % patternChoices.length];
+  // Short patterns
+  else if (direction === 'SHORT') {
+    const shortPatterns = [
+      'Double Top',
+      'Bearish Engulfing',
+      'Evening Star',
+      'Shooting Star',
+      'Head and Shoulders',
+      'Bearish Rectangle',
+      'Bearish Flag',
+      'Bearish Pennant',
+      'Dark Cloud Cover'
+    ];
     
-    // Adjust reliability based on confidence
-    const reliability = Math.min(Math.round(pattern.reliability * (confidence / 80)), 95);
+    // Add 1-3 random patterns
+    const patternCount = 1 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < patternCount; i++) {
+      const randomIndex = Math.floor(Math.random() * shortPatterns.length);
+      const patternName = shortPatterns[randomIndex];
+      
+      patterns.push({
+        name: patternName,
+        significance: confidence > 75 ? 'HIGH' : confidence > 60 ? 'MEDIUM' : 'LOW',
+        priceTarget: price * (1 - (Math.random() * 0.05 + 0.02)),  // 2-7% below current price
+      });
+      
+      // Remove the pattern so we don't add it twice
+      shortPatterns.splice(randomIndex, 1);
+      if (shortPatterns.length === 0) break;
+    }
+  }
+  // Neutral patterns
+  else {
+    const neutralPatterns = [
+      'Symmetrical Triangle',
+      'Ascending Triangle',
+      'Descending Triangle',
+      'Rectangle',
+      'Wedge',
+      'Doji',
+      'Spinning Top'
+    ];
     
-    // Calculate price target
-    const priceTarget = Math.round(price * pattern.potentialMultiplier * 100) / 100;
-    
-    // Add to patterns list with safe type handling
-    patterns.push({
-      name: pattern.name,
-      reliability: reliability,
-      direction: direction === 'LONG' ? 'bullish' : direction === 'SHORT' ? 'bearish' : 'neutral',
-      priceTarget: priceTarget,
-      description: `${pattern.name} pattern detected with ${reliability}% reliability indicating a ${direction === 'LONG' ? 'bullish' : direction === 'SHORT' ? 'bearish' : 'neutral'} bias.`
-    });
+    // Add 1-2 random patterns
+    const patternCount = 1 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < patternCount; i++) {
+      const randomIndex = Math.floor(Math.random() * neutralPatterns.length);
+      const patternName = neutralPatterns[randomIndex];
+      
+      patterns.push({
+        name: patternName,
+        significance: confidence > 70 ? 'MEDIUM' : 'LOW',
+        priceTarget: price * (1 + (Math.random() * 0.04 - 0.02)),  // ±2% from current price
+      });
+      
+      // Remove the pattern so we don't add it twice
+      neutralPatterns.splice(randomIndex, 1);
+      if (neutralPatterns.length === 0) break;
+    }
   }
   
   return patterns;
@@ -444,9 +520,8 @@ function generateMacroInsights(
 ): string[] {
   const insights: string[] = [];
   
-  // Add direction-specific insights
   if (direction === 'LONG') {
-    insights.push(`${timeframe} trend analysis indicates bullish momentum.`);
+    insights.push(`${timeframe} trend analysis indicates bullish pressure.`);
     insights.push(`Support levels are holding strong with buying pressure increasing.`);
     
     // Add timeframe-specific insights
@@ -498,57 +573,65 @@ function calculateKeyLevels(price: number, timeframe: TimeFrame): {
   resistanceLevels: number[] 
 } {
   // Get volatility factor based on timeframe
-  let volatilityFactor = 0.01; // Default 1%
+  const volatilityFactor = getVolatilityFactor(timeframe);
   
-  switch (timeframe) {
-    case '1M': volatilityFactor = 0.20; break; // 20%
-    case '1w': volatilityFactor = 0.15; break; // 15%
-    case '3d': volatilityFactor = 0.10; break; // 10% 
-    case '1d': volatilityFactor = 0.07; break; // 7%
-    case '12h': volatilityFactor = 0.05; break; // 5%
-    case '4h': volatilityFactor = 0.03; break; // 3%
-    case '1h': volatilityFactor = 0.02; break; // 2%
-    case '30m': volatilityFactor = 0.015; break; // 1.5%
-    case '15m': volatilityFactor = 0.01; break; // 1%
-    case '5m': volatilityFactor = 0.005; break; // 0.5%
-    case '1m': volatilityFactor = 0.003; break; // 0.3%
-  }
-  
-  // Calculate support levels
+  // Calculate support levels (3 levels)
   const supportLevels = [
-    Math.round(price * (1 - volatilityFactor * 1) * 100) / 100,
-    Math.round(price * (1 - volatilityFactor * 2) * 100) / 100,
-    Math.round(price * (1 - volatilityFactor * 3) * 100) / 100
+    price * (1 - volatilityFactor * 0.5),  // Minor support
+    price * (1 - volatilityFactor),       // Medium support
+    price * (1 - volatilityFactor * 2)    // Major support
   ];
   
-  // Calculate resistance levels
+  // Calculate resistance levels (3 levels)
   const resistanceLevels = [
-    Math.round(price * (1 + volatilityFactor * 1) * 100) / 100,
-    Math.round(price * (1 + volatilityFactor * 2) * 100) / 100,
-    Math.round(price * (1 + volatilityFactor * 3) * 100) / 100
+    price * (1 + volatilityFactor * 0.5),  // Minor resistance
+    price * (1 + volatilityFactor),       // Medium resistance
+    price * (1 + volatilityFactor * 2)    // Major resistance
   ];
   
   return { supportLevels, resistanceLevels };
 }
 
 /**
+ * Get volatility factor based on timeframe
+ */
+function getVolatilityFactor(timeframe: TimeFrame): number {
+  const volatilityFactors: Record<TimeFrame, number> = {
+    '1m': 0.002,
+    '5m': 0.003,
+    '15m': 0.005,
+    '30m': 0.008,
+    '1h': 0.01,
+    '4h': 0.02,
+    '12h': 0.03,
+    '1d': 0.05,
+    '3d': 0.08,
+    '1w': 0.12,
+    '1M': 0.2
+  };
+  
+  return volatilityFactors[timeframe] || 0.01; // Default to 1h if unknown
+}
+
+/**
  * Get expected duration of the trade based on timeframe
  */
 function getExpectedDuration(timeframe: TimeFrame): string {
-  switch (timeframe) {
-    case '1m': return '10-30 minutes';
-    case '5m': return '1-4 hours';
-    case '15m': return '3-12 hours';
-    case '30m': return '6-24 hours';
-    case '1h': return '1-3 days';
-    case '4h': return '3-10 days';
-    case '12h': return '5-15 days';
-    case '1d': return '1-4 weeks';
-    case '3d': return '2-8 weeks';
-    case '1w': return '1-3 months';
-    case '1M': return '3-12 months';
-    default: return 'Variable';
-  }
+  const durations: Record<TimeFrame, string> = {
+    '1m': '5-15 minutes',
+    '5m': '15-60 minutes',
+    '15m': '1-4 hours',
+    '30m': '2-8 hours',
+    '1h': '4-24 hours',
+    '4h': '1-3 days',
+    '12h': '2-5 days',
+    '1d': '3-10 days',
+    '3d': '1-3 weeks',
+    '1w': '2-8 weeks',
+    '1M': '1-6 months'
+  };
+  
+  return durations[timeframe] || '1-3 days'; // Default to 4h if unknown
 }
 
 /**
@@ -559,36 +642,40 @@ function calculateRecommendedLeverage(
   direction: SignalDirection,
   confidence: number
 ): { conservative: number; moderate: number; aggressive: number; recommendation: string } {
-  // Base leverage by timeframe (lower for longer timeframes due to higher volatility)
-  let baseLeverage = 1.0;
+  // Base leverage based on timeframe (shorter timeframes = higher risk = lower leverage)
+  const baseLeverage: Record<TimeFrame, number> = {
+    '1m': 1,
+    '5m': 1.2,
+    '15m': 1.5,
+    '30m': 1.8,
+    '1h': 2,
+    '4h': 2.5,
+    '12h': 3,
+    '1d': 3.5,
+    '3d': 4,
+    '1w': 5,
+    '1M': 7
+  };
   
-  switch (timeframe) {
-    case '1M': baseLeverage = 1.5; break;
-    case '1w': baseLeverage = 2.0; break;
-    case '3d': baseLeverage = 3.0; break;
-    case '1d': baseLeverage = 5.0; break;
-    case '12h': baseLeverage = 7.0; break;
-    case '4h': baseLeverage = 10.0; break;
-    case '1h': baseLeverage = 15.0; break;
-    case '30m': baseLeverage = 20.0; break;
-    case '15m': baseLeverage = 25.0; break;
-    case '5m': baseLeverage = 30.0; break;
-    case '1m': baseLeverage = 50.0; break;
-  }
+  // Adjust for confidence (higher confidence = slightly higher leverage)
+  const confidenceMultiplier = 1 + ((confidence - 60) / 100);
   
-  // Adjust based on confidence level
-  const confidenceMultiplier = confidence / 70; // Normalize around 70% confidence
+  // Adjust for direction (neutral = lower leverage)
+  const directionMultiplier = direction === 'NEUTRAL' ? 0.5 : 1;
   
-  // Calculate different risk profiles
-  const conservative = Math.max(1, Math.round(baseLeverage * 0.5 * confidenceMultiplier));
-  const moderate = Math.max(1, Math.round(baseLeverage * 0.75 * confidenceMultiplier));
-  const aggressive = Math.max(1, Math.round(baseLeverage * confidenceMultiplier));
+  // Calculate adjusted base leverage
+  const adjustedBase = (baseLeverage[timeframe] || 2) * confidenceMultiplier * directionMultiplier;
   
-  // Determine recommendation based on confidence
+  // Set leverage for different risk profiles
+  const conservative = Math.min(Math.max(Math.floor(adjustedBase * 0.5), 1), 5);
+  const moderate = Math.min(Math.max(Math.floor(adjustedBase), 1), 10);
+  const aggressive = Math.min(Math.max(Math.floor(adjustedBase * 1.5), 2), 20);
+  
+  // Generate recommendation
   let recommendation = 'moderate';
-  if (confidence >= 85) {
-    recommendation = 'aggressive';
-  } else if (confidence <= 60) {
+  if (confidence > 80) {
+    recommendation = 'moderate to aggressive';
+  } else if (confidence < 60 || direction === 'NEUTRAL') {
     recommendation = 'conservative';
   }
   
@@ -602,11 +689,6 @@ function calculateRecommendedLeverage(
 
 /**
  * Calculate signals for all timeframes at once
- * 
- * @param symbol Trading pair symbol
- * @param price Current price
- * @param marketData Optional historical market data
- * @returns Record of signals for all timeframes
  */
 export function calculateAllTimeframeSignals(
   symbol: string,
@@ -672,8 +754,6 @@ export function calculateAllTimeframeSignals(
 
 /**
  * Create a fallback signal when normal generation fails
- * This ensures we always have a signal for every timeframe
- * with better alignment between arrows and analysis
  */
 function createFallbackSignal(timeframe: TimeFrame, price: number, symbol: string): AdvancedSignal {
   // Special handling for higher timeframes to ensure arrow-indicator alignment
@@ -743,7 +823,6 @@ function createFallbackSignal(timeframe: TimeFrame, price: number, symbol: strin
 
 /**
  * Special handling for weekly and monthly timeframes
- * to ensure consistent signals that match the arrows
  */
 function createHigherTimeframeSignal(timeframe: TimeFrame, price: number, symbol: string): AdvancedSignal {
   // Highly deterministic algorithm for weekly and monthly timeframes
@@ -812,51 +891,9 @@ function createHigherTimeframeSignal(timeframe: TimeFrame, price: number, symbol
     macroInsights: generateMacroInsights(direction, timeframe, price)
   };
 }
-  
-  // Calculate appropriate risk parameters
-  const stopLossPercent = getStopLossPercent(timeframe, direction);
-  const stopLoss = direction === 'LONG' 
-    ? price * (1 - stopLossPercent / 100) 
-    : price * (1 + stopLossPercent / 100);
-  
-  const riskRewardRatio = getRiskRewardRatio(timeframe);
-  const priceDiff = Math.abs(price - stopLoss);
-  const takeProfit = direction === 'LONG'
-    ? price + (priceDiff * riskRewardRatio)
-    : price - (priceDiff * riskRewardRatio);
-  
-  // Calculate success probability
-  const successProbability = getTimeframeSuccessProbability(timeframe, direction);
-  
-  // Generate complete fallback signal
-  return {
-    direction,
-    confidence,
-    entryPrice: price,
-    stopLoss,
-    takeProfit,
-    timeframe,
-    timestamp: Date.now(),
-    successProbability,
-    successProbabilityDescription: getSuccessProbabilityDescription(successProbability),
-    indicators: generateIndicators(direction, confidence, timeframe),
-    patternFormations: generatePatternFormations(direction, confidence, timeframe, price),
-    supportLevels: calculateKeyLevels(price, timeframe).supportLevels,
-    resistanceLevels: calculateKeyLevels(price, timeframe).resistanceLevels,
-    expectedDuration: getExpectedDuration(timeframe),
-    riskRewardRatio,
-    optimalRiskReward: {
-      ideal: riskRewardRatio,
-      range: [riskRewardRatio * 0.8, riskRewardRatio * 1.2]
-    },
-    recommendedLeverage: calculateRecommendedLeverage(timeframe, direction, confidence),
-    macroInsights: generateMacroInsights(direction, timeframe, price)
-  };
-}
 
 /**
  * Make signals consistent across timeframes
- * Higher timeframes should influence lower timeframes
  */
 function harmonizeTimeframeSignals(
   signals: Record<TimeFrame, AdvancedSignal | null>
@@ -957,7 +994,6 @@ function harmonizeTimeframeSignals(
   }
   
   // Final pass: Apply the dominant trend influence to specific timeframes
-  // This ensures better visual alignment between arrows and signals
   for (const tf of timeframeOrder) {
     const signal = result[tf];
     if (!signal) continue;
@@ -988,7 +1024,6 @@ function harmonizeTimeframeSignals(
 
 /**
  * Helper function to update signal attributes when direction changes
- * This ensures all properties remain consistent with the direction
  */
 function updateSignalAttributes(signal: AdvancedSignal): void {
   // Only process direction-specific attributes
