@@ -354,55 +354,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // API endpoint for calculating safe leverage based on parameters
-  app.post('/api/calculate-leverage', (req: Request, res: Response) => {
-    try {
-      const { positionSize, riskPercentage, entryPrice, stopLoss, takeProfit } = req.body;
-      
-      // Validate inputs
-      if (!positionSize || !riskPercentage || !entryPrice || !stopLoss) {
-        return res.status(400).json({ 
-          message: 'Missing required parameters: positionSize, riskPercentage, entryPrice, stopLoss' 
-        });
-      }
-      
-      // Simple leverage calculation (in a real app, this would be more sophisticated)
-      const priceChangePercentage = Math.abs((stopLoss - entryPrice) / entryPrice * 100);
-      const maxLeverage = Math.floor(riskPercentage / priceChangePercentage * 100) / 10;
-      
-      // Ensure leverage is within reasonable bounds
-      const safeLeverage = Math.min(Math.max(1, maxLeverage), 20);
-      
-      // Calculate risk metrics
-      const riskAmount = positionSize * (riskPercentage / 100);
-      let potentialProfit = 0;
-      let riskRewardRatio = 0;
-      let liquidationPrice = 0;
-      
-      if (takeProfit) {
-        const profitPercentage = Math.abs((takeProfit - entryPrice) / entryPrice * 100);
-        potentialProfit = (positionSize * (profitPercentage / 100)) * safeLeverage;
-        riskRewardRatio = parseFloat((potentialProfit / riskAmount).toFixed(2));
-      }
-      
-      // Simplified liquidation calculation (would be more complex in reality)
-      if (stopLoss < entryPrice) { // LONG position
-        liquidationPrice = entryPrice * (1 - (1 / safeLeverage));
-      } else { // SHORT position
-        liquidationPrice = entryPrice * (1 + (1 / safeLeverage));
-      }
-      
-      res.json({
-        recommendedLeverage: safeLeverage.toFixed(1),
-        maxLoss: riskAmount.toFixed(2),
-        potentialProfit: potentialProfit.toFixed(2),
-        riskRewardRatio,
-        liquidationPrice: liquidationPrice.toFixed(2)
-      });
-    } catch (error) {
-      res.status(500).json({ message: 'Failed to calculate leverage' });
-    }
-  });
+  // Advanced signals and calculations are now handled client-side
+  // in the timeframeSuccessProbability and advancedSignalsNew modules
   
   return httpServer;
 }
