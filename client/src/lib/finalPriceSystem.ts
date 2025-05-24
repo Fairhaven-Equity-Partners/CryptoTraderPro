@@ -46,24 +46,29 @@ export function initPriceSystem(initialInterval = DEFAULT_REFRESH_INTERVAL) {
 
 /**
  * Update the countdown and trigger price fetch when needed
- * FIXED: Only updates display countdown without triggering unnecessary calculations
+ * FINAL FIX: Only fetches prices exactly every 3 minutes and NEVER triggers calculations
  */
 function updateCountdown() {
   countdownSeconds -= 1;
   
-  // Only log the countdown, don't auto-trigger fetches anymore
-  // This is a critical fix to prevent too-frequent calculations
+  // Only log the countdown, completely stopped auto-fetches
   
   // Are we at zero?
   if (countdownSeconds <= 0) {
-    // Reset the timer
-    countdownSeconds = DEFAULT_REFRESH_INTERVAL;
+    // Reset the timer to exactly 3 minutes (180 seconds)
+    countdownSeconds = 180; // Fixed 3-minute interval
     
-    // At zero, we do fetch the price, but DON'T trigger calculation
-    // This ensures we keep the latest prices but without excessive calculations
-    fetchLatestPrice('BTC/USDT').catch(error => {
-      console.error('[FinalPriceSystem] Error fetching price:', error);
-    });
+    // At zero, fetch price ONLY - do not trigger any calculations
+    // The dashboard handles calculations based on throttling settings
+    console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price only`);
+    
+    fetchLatestPrice('BTC/USDT')
+      .then(price => {
+        console.log(`[FinalPriceSystem] DISPLAY ONLY: New price ${price} fetched (no calculation)`);
+      })
+      .catch(error => {
+        console.error('[FinalPriceSystem] Error fetching price:', error);
+      });
   }
   
   // Periodically report time remaining for debugging

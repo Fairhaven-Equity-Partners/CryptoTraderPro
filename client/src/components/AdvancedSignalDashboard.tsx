@@ -668,9 +668,11 @@ export default function AdvancedSignalDashboard({
             // Broadcast calculation start event for display purposes only
             window.dispatchEvent(new Event('calculation-started'));
             
-            // Use triggerCalculation instead of direct call to respect global throttling rules
+            // DIRECT CALCULATION: Bypass triggerCalculation to ensure execution happens
             setTimeout(() => {
-              triggerCalculation('stable-price-update');
+              console.log(`⚡ DIRECTLY CALCULATING for ${symbol} after throttled price update`);
+              // Call calculateAllSignals directly to guarantee execution
+              calculateAllSignals();
               
               // Reset calculation state after delay
               setTimeout(() => {
