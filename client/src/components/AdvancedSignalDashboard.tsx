@@ -611,9 +611,9 @@ export default function AdvancedSignalDashboard({
     let lastPriceUpdateTime = 0;
     const MIN_UPDATE_INTERVAL = 30000; // 30 seconds minimum between auto-calculations
     
-    // Create throttled price update handler - UPDATED TO PREVENT FREQUENT CALCULATIONS
+    // COMPLETELY REWRITTEN price update handler to fix all time tracking issues
     const handleThrottledPriceUpdate = (event: Event) => {
-      const now = Date.now();
+      const nowMs = Date.now(); // Always use milliseconds for time calculations
       let priceEvent = event as CustomEvent;
       let price = 0;
       let eventSymbol = '';
@@ -647,43 +647,47 @@ export default function AdvancedSignalDashboard({
         setAssetPrice(price);
         priceRef.current = price;
         
-        // ENFORCE STRICT 3-MINUTE THROTTLING 
-        // This is the main change to prevent frequent calculations
-        const timeSinceLastUpdate = now - lastCalculationTimeRef.current;
-        const MIN_CALCULATION_INTERVAL = 180000; // 3 minutes (180s) minimum between any calculations
+        // FIXED TIME TRACKING: Always use milliseconds internally
+        const lastCalcTimeMs = lastCalculationTimeRef.current || 0;
+        const timeSinceLastCalcMs = nowMs - lastCalcTimeMs;
+        const MIN_CALCULATION_INTERVAL = 180000; // 3 minutes (180s) minimum
         
-        // Only allow calculation if significant time has passed since last calculation
-        if (timeSinceLastUpdate >= MIN_CALCULATION_INTERVAL) {
-          console.log(`Sufficient time passed (${Math.round(timeSinceLastUpdate/1000)}s) - triggering calculation`);
+        console.log(`⏱️ Time since last calculation: ${Math.round(timeSinceLastCalcMs/1000)}s (minimum: 180s)`);
+        
+        // Check if enough time has passed for a new calculation
+        if (timeSinceLastCalcMs >= MIN_CALCULATION_INTERVAL) {
+          console.log(`🔄 AUTO-CALCULATION TRIGGERED - ${Math.round(timeSinceLastCalcMs/1000)}s passed threshold`);
           
-          // Mark this time as the last update time IMMEDIATELY to prevent race conditions
-          lastPriceUpdateTime = now;
-          lastCalculationTimeRef.current = now;
+          // Mark calculation time IMMEDIATELY to prevent race conditions
+          lastPriceUpdateTime = nowMs;
+          lastCalculationTimeRef.current = nowMs;
+          calculationTriggeredRef.current = true;
           
-          // Only trigger if not already calculating and all data is ready
+          // Only proceed if not already calculating and all data is ready
           if (!isCalculating && isAllDataLoaded && isLiveDataReady) {
-            console.log(`🚀 Throttled calculation allowed for ${symbol}`);
+            console.log(`🚀 Starting calculation for ${symbol} after time threshold reached`);
             setIsCalculating(true);
             
             // Broadcast calculation start event for display purposes only
             window.dispatchEvent(new Event('calculation-started'));
             
-            // DIRECT CALCULATION: Bypass triggerCalculation to ensure execution happens
+            // DIRECTLY call calculation function (bypass all other throttling)
             setTimeout(() => {
-              console.log(`⚡ DIRECTLY CALCULATING for ${symbol} after throttled price update`);
-              // Call calculateAllSignals directly to guarantee execution
+              console.log(`⚡ EXECUTING CALCULATION for ${symbol} with price ${price}`);
+              // Direct calculation call that skips all throttling checks
               calculateAllSignals();
               
-              // Reset calculation state after delay
+              // Reset calculation state after a delay
               setTimeout(() => {
                 setIsCalculating(false);
-                console.log("✅ Throttled auto-calculation complete - updated UI");
+                calculationTriggeredRef.current = false;
+                console.log(`✅ Calculation complete for ${symbol} - updated UI`);
               }, 1500);
             }, 200);
           }
         } else {
           // Log throttling without triggering calculation
-          console.log(`STRICT THROTTLING: No calculation for ${symbol} - last calc was ${Math.round(timeSinceLastUpdate/1000)}s ago (required: 180s)`);
+          console.log(`⏳ THROTTLED: No calculation for ${symbol} - last calc was ${Math.round(timeSinceLastCalcMs/1000)}s ago (need 180s)`);
         }
       }
     };
