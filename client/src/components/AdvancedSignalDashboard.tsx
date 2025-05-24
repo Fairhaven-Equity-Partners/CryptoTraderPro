@@ -343,11 +343,8 @@ export default function AdvancedSignalDashboard({
       }).catch(() => {});
     }
     
-    // Trigger a calculation with this price after a small delay
-    // to prevent signal volatility
-    setTimeout(() => {
-      triggerCalculation('stable-price-sync');
-    }, 500);
+    // Auto-calculation happens on regular intervals
+    // No manual triggers allowed
   }
   
   // Make a single synchronized update to the server
@@ -406,77 +403,8 @@ export default function AdvancedSignalDashboard({
   // This hook block was moved to maintain the correct hook order
   // No price tracking here anymore, we'll use the isLiveDataReady flag from useMarketData
   
-  // Function to trigger calculation
-  const triggerCalculation = useCallback((trigger: string) => {
-    // We need to use Date.now() / 1000 to match other places where we track time
-    const now = Date.now() / 1000;
-    
-    // Fix time calculations - ensure consistent timing format
-    // Note that lastCalculationTimeRef.current may be in milliseconds in some places
-    const lastCalcInSeconds = (lastCalculationTimeRef.current > 1600000000) 
-                            ? lastCalculationTimeRef.current / 1000  // Convert from ms to seconds if needed
-                            : lastCalculationTimeRef.current;        // Already in seconds
-    
-    const timeSinceLastCalc = now - lastCalcInSeconds;
-    
-    console.log(`Attempt to trigger calculation (${trigger}) for ${symbol}:
-      - Already triggered: ${calculationTriggeredRef.current}
-      - Currently calculating: ${isCalculating}
-      - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
-      - All data loaded: ${isAllDataLoaded}
-      - Live data ready: ${isLiveDataReady}`);
-    
-    // ONLY MANUAL USER CLICK SHOULD BYPASS THROTTLING
-    // All other triggers including timer and auto-update should respect throttling
-    if (trigger === 'manual') {
-      console.log(`Manual calculation requested for ${symbol} - bypassing throttling restrictions`);
-      calculationTriggeredRef.current = true;
-      
-      // Clear any pending calculation
-      if (calculationTimeoutRef.current) {
-        clearTimeout(calculationTimeoutRef.current);
-      }
-      
-      // Force a direct calculation
-      console.log(`⚡ MANUAL DIRECT CALCULATION for ${symbol}`);
-      calculateAllSignals();
-      return;
-    }
-    
-    // STRICT THROTTLING FOR ALL OTHER TRIGGERS (including timer, heat-map, auto-updates)
-    // This ensures we don't recalculate too frequently for any reason except manual clicks
-    if (
-      calculationTriggeredRef.current || 
-      isCalculating || 
-      (timeSinceLastCalc < 120) || // 2 minutes (120s) throttling for ALL automatic calculation triggers
-      !isAllDataLoaded
-    ) {
-      console.log(`Throttling calculation for ${symbol} - last calc was ${timeSinceLastCalc.toFixed(0)}s ago (minimum 120s)`);
-      return;
-    }
-    
-    // If we pass throttling, check specific triggers to execute
-    if (trigger === 'price-update' || trigger === 'stable-price-update') {
-      console.log(`📊 Price update triggered calculation for ${symbol} after throttling check passed`);
-      calculationTriggeredRef.current = true;
-      calculateAllSignals();
-      return;
-    }
-    
-    // Prevent multiple triggers
-    calculationTriggeredRef.current = true;
-    
-    // Use a timeout to debounce calculation
-    if (calculationTimeoutRef.current) {
-      clearTimeout(calculationTimeoutRef.current);
-    }
-    
-    // Wait a second to allow any other trigger events to settle
-    calculationTimeoutRef.current = setTimeout(() => {
-      calculateAllSignals();
-    }, 1000);
-    
-  }, [symbol, isCalculating, isAllDataLoaded, toast]);
+  // [REMOVED] - All manual calculation triggers have been removed to ensure our 
+  // automated 3-minute interval-based calculation system works without interruption.
 
   // ONLY run this when symbol changes or during initial component mount
   useEffect(() => {
@@ -554,7 +482,7 @@ export default function AdvancedSignalDashboard({
         });
       }, 500);
     }
-  }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, assetPrice, triggerCalculation]);
+  }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, assetPrice]);
   
   // Update timer for next refresh - synchronized with the price update system
   useEffect(() => {
@@ -2323,14 +2251,9 @@ export default function AdvancedSignalDashboard({
                       <div className="text-center">
                         <AlertTriangle className="h-8 w-8 text-amber-500 mx-auto mb-2" />
                         <p className="text-gray-300">No signal data available for {timeframe}</p>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="mt-2"
-                          onClick={() => triggerCalculation('manual')}
-                        >
-                          Calculate Now
-                        </Button>
+                        <p className="text-sm text-gray-400 mt-2">
+                          Auto-calculation occurs every 3 minutes
+                        </p>
                       </div>
                     )}
                   </div>
