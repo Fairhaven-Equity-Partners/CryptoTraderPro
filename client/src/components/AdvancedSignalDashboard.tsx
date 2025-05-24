@@ -261,6 +261,7 @@ export default function AdvancedSignalDashboard({
     if (lastSymbolRef.current !== symbol) {
       console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
       calculationTriggeredRef.current = false;
+      // Initialize signals for all timeframes defined in the TimeFrame type
       setSignals({
         '1m': null,
         '5m': null,
@@ -268,6 +269,7 @@ export default function AdvancedSignalDashboard({
         '30m': null,
         '1h': null,
         '4h': null,
+        '12h': null, // Added missing timeframe from TimeFrame type
         '1d': null,
         '3d': null,
         '1w': null,

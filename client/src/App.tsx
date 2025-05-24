@@ -37,10 +37,15 @@ function Router() {
 function App() {
   // Initialize automatic calculation system when the app loads
   useEffect(() => {
-    // Initialize our automatic calculation system
-    console.log('✅ App initializing - setting up automatic calculation system ✅');
+    // Import and initialize the improved auto calculation system
+    import('./lib/autoCalculationSystem').then(({ initAutoCalculation }) => {
+      console.log('✅ App initializing - setting up enhanced auto calculation system ✅');
+      initAutoCalculation();
+    }).catch(error => {
+      console.error('Failed to initialize auto calculation system:', error);
+    });
     
-    // Direct implementation of price update to calculation connection
+    // Our legacy price update listener - preserved for backward compatibility
     const handlePriceUpdate = (event: CustomEvent) => {
       if (event.detail && event.detail.symbol && event.detail.price) {
         console.log(`🔄 Price update detected for ${event.detail.symbol}: ${event.detail.price}`);
