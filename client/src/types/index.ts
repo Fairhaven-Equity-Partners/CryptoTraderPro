@@ -31,12 +31,13 @@ export type IndicatorStrength = 'WEAK' | 'MODERATE' | 'STRONG' | 'HIGH' | 'LOW' 
 export interface PatternFormation {
   name: string;
   reliability: number; // 0-100
-  direction: 'bullish' | 'bearish' | 'neutral';
+  direction: string; // Allow string flexibility for display purposes
   priceTarget?: number;
   description?: string;
 }
 
 export interface Indicator {
+  id?: string;
   name: string;
   category: IndicatorCategory;
   signal: IndicatorSignal;
@@ -68,12 +69,24 @@ export interface AdvancedSignal {
   timestamp: number;  // Required for display functionality
   macroScore?: number; // 0-100
   successProbability: number; // Required for display functionality (0-100)
-  indicators?: Indicator[];
+  successProbabilityDescription?: string; // Human-readable description of the probability
+  indicators?: any; // Allow flexible indicator structure
   patternFormations?: PatternFormation[];
   supportLevels?: number[];
   resistanceLevels?: number[];
   expectedDuration?: string;
   riskRewardRatio?: number;
+  optimalRiskReward?: {
+    ideal: number;
+    range: number[];
+  };
+  recommendedLeverage?: {
+    conservative: number;
+    moderate: number; 
+    aggressive: number;
+    recommendation: string;
+  };
+  macroInsights?: string[]; // Insights about market conditions
 }
 
 // Trade recommendation interface
