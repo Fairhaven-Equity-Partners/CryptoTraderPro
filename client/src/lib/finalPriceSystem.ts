@@ -126,12 +126,19 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
       window.syncGlobalPrice(symbol, price, timestamp);
     }
     
-    // Broadcast the price update - this is the ONLY event we should dispatch
-    // The AdvancedSignalDashboard will listen for this and handle throttled calculations
+    // Broadcast the price update MORE WIDELY to ensure all listeners catch it
+    // The AdvancedSignalDashboard will listen for these and handle throttled calculations
     const updateEvent = new CustomEvent('price-update', {
       detail: { symbol, price, timestamp }
     });
     window.dispatchEvent(updateEvent);
+    document.dispatchEvent(updateEvent);
+    
+    // Also dispatch with the crypto-specific event name for wider compatibility
+    const cryptoUpdateEvent = new CustomEvent('crypto-price-update', {
+      detail: { symbol, price, timestamp }
+    });
+    window.dispatchEvent(cryptoUpdateEvent);
     
     console.log(`[FinalPriceSystem] Price update broadcast for ${symbol}: ${price}`);
     

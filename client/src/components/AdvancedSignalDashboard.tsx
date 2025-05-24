@@ -692,9 +692,11 @@ export default function AdvancedSignalDashboard({
       }
     };
     
-    // SINGLE EVENT LISTENER: Only listen for price-update events
-    // This eliminates redundant calculation triggers from multiple event types
+    // MULTIPLE EVENT LISTENERS: Make sure we catch all relevant price update events
+    // This ensures we don't miss any price updates from any source
     window.addEventListener('price-update', handleThrottledPriceUpdate as EventListener);
+    document.addEventListener('price-update', handleThrottledPriceUpdate as EventListener);
+    window.addEventListener('crypto-price-update', handleThrottledPriceUpdate as EventListener);
     
     // Set up display-only countdown timer - only for UI feedback
     const timerInterval = setInterval(() => {
