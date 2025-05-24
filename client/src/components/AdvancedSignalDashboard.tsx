@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
 import { Progress } from "./ui/progress";
+import { getSecondsUntilNextRefresh, getFormattedCountdown } from '../lib/finalPriceSystem';
 import { 
   AlertTriangle, 
   TrendingUp, 
@@ -315,29 +316,25 @@ export default function AdvancedSignalDashboard({
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
-  // Update timer for next refresh - synchronized with finalPriceSystem.ts
+  // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
   useEffect(() => {
     // Clear any existing timers first to prevent duplicates
     if (recalcIntervalRef.current) {
       clearInterval(recalcIntervalRef.current);
     }
     
-    // Import functions from finalPriceSystem (already added at top of file)
-    const updateTimerFromSystem = () => {
+    const updateTimerDisplay = () => {
       try {
-        // Access the timer values from the finalPriceSystem module
-        const systemTimerSeconds = window.finalPriceSystemTimer ? 
-          window.finalPriceSystemTimer.getSecondsUntilNextRefresh() : 180;
+        // Get countdown values directly from the finalPriceSystem module
+        const remainingSeconds = getSecondsUntilNextRefresh();
+        const formattedTime = getFormattedCountdown();
         
-        const systemFormattedTime = window.finalPriceSystemTimer ? 
-          window.finalPriceSystemTimer.getFormattedCountdown() : "3:00";
-        
-        // Set the timer values in our component state
-        setNextRefreshIn(systemTimerSeconds);
-        setFormattedTimer(systemFormattedTime);
+        // Set the state with the values from finalPriceSystem
+        setNextRefreshIn(remainingSeconds);
+        setFormattedTimer(formattedTime);
       } catch (err) {
-        console.error("Error syncing with price system timer:", err);
-        // Fallback to default timer if there's an error
+        console.error("Error getting timer from finalPriceSystem:", err);
+        // Fallback to internal timer if needed
         const minutes = Math.floor(nextRefreshIn / 60);
         const seconds = nextRefreshIn % 60;
         setFormattedTimer(`${minutes}:${seconds.toString().padStart(2, '0')}`);
@@ -345,10 +342,10 @@ export default function AdvancedSignalDashboard({
     };
     
     // Update immediately
-    updateTimerFromSystem();
+    updateTimerDisplay();
     
-    // Set up countdown timer to synchronize with system timer
-    const timerInterval = setInterval(updateTimerFromSystem, 1000);
+    // Set up countdown timer that updates every second
+    const timerInterval = setInterval(updateTimerDisplay, 1000);
     
     // Save interval reference for cleanup
     recalcIntervalRef.current = timerInterval;

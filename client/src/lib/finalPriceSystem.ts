@@ -41,13 +41,7 @@ export function initPriceSystem(initialInterval = DEFAULT_REFRESH_INTERVAL) {
     updateCountdown();
   }, 1000);
   
-  // Make timer functions globally accessible for components to use
-  if (typeof window !== 'undefined') {
-    window.finalPriceSystemTimer = {
-      getSecondsUntilNextRefresh,
-      getFormattedCountdown
-    };
-  }
+  // No need to add to the window object since we're exporting these functions directly
   
   console.log(`[FinalPriceSystem] Initialized with ${initialInterval}s refresh interval`);
 }
