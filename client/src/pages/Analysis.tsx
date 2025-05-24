@@ -3,7 +3,7 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import LeverageCalculator from '../components/LeverageCalculator';
-import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard_simple';
+import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -68,6 +68,7 @@ const Analysis: React.FC = () => {
           <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
+            onAnalysisComplete={() => setShouldRunAnalysis(false)}
           />
         </div>
         
