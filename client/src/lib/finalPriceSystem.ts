@@ -46,18 +46,24 @@ export function initPriceSystem(initialInterval = DEFAULT_REFRESH_INTERVAL) {
 
 /**
  * Update the countdown and trigger price fetch when needed
+ * FIXED: Only updates display countdown without triggering unnecessary calculations
  */
 function updateCountdown() {
   countdownSeconds -= 1;
   
-  // Only log the countdown, don't auto-trigger fetches
-  // This change ensures we don't automatically trigger calculations
-  // The AdvancedSignalDashboard will handle this with proper throttling
+  // Only log the countdown, don't auto-trigger fetches anymore
+  // This is a critical fix to prevent too-frequent calculations
   
   // Are we at zero?
   if (countdownSeconds <= 0) {
     // Reset the timer
     countdownSeconds = DEFAULT_REFRESH_INTERVAL;
+    
+    // At zero, we do fetch the price, but DON'T trigger calculation
+    // This ensures we keep the latest prices but without excessive calculations
+    fetchLatestPrice('BTC/USDT').catch(error => {
+      console.error('[FinalPriceSystem] Error fetching price:', error);
+    });
   }
   
   // Periodically report time remaining for debugging

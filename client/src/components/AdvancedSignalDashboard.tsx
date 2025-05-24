@@ -426,22 +426,11 @@ export default function AdvancedSignalDashboard({
       - All data loaded: ${isAllDataLoaded}
       - Live data ready: ${isLiveDataReady}`);
     
-    // SPECIAL CASE: Always allow manual triggers, timer triggers and other special cases to recalculate without restrictions
-    if (trigger === 'manual' || trigger === 'timer' || trigger === 'heat-map-selection' || trigger === 'throttled-price-update') {
-      console.log(`${trigger} calculation requested for ${symbol} - bypassing throttling restrictions`);
+    // ONLY MANUAL USER CLICK SHOULD BYPASS THROTTLING
+    // All other triggers including timer and auto-update should respect throttling
+    if (trigger === 'manual') {
+      console.log(`Manual calculation requested for ${symbol} - bypassing throttling restrictions`);
       calculationTriggeredRef.current = true;
-      
-      // For timer-triggered refreshes, use a delayed toast to avoid React warning
-      if (trigger === 'timer') {
-        // Use setTimeout to defer the toast until after the component finishes rendering
-        setTimeout(() => {
-          toast({
-            title: "Auto-Refresh",
-            description: `Automatically refreshing signals for ${symbol}`,
-            variant: "default"
-          });
-        }, 100);
-      }
       
       // Clear any pending calculation
       if (calculationTimeoutRef.current) {
@@ -449,32 +438,28 @@ export default function AdvancedSignalDashboard({
       }
       
       // Force a direct calculation
-      console.log(`⚡ DIRECT CALCULATION for ${symbol} (from ${trigger} trigger)`);
+      console.log(`⚡ MANUAL DIRECT CALCULATION for ${symbol}`);
       calculateAllSignals();
       return;
     }
     
-    // For data-loaded triggers, we want to be less restrictive
-    if (trigger === 'data-loaded') {
-      if (isCalculating) {
-        console.log(`Already calculating for ${symbol}, will retry when complete`);
-        return;
-      }
-      
-      // Proceed with calculation regardless of other conditions
-      calculationTriggeredRef.current = true;
-      calculateAllSignals();
-      return;
-    }
-    
-    // For other automated triggers, enforce stronger throttling rules to prevent excessive calculations
+    // STRICT THROTTLING FOR ALL OTHER TRIGGERS (including timer, heat-map, auto-updates)
+    // This ensures we don't recalculate too frequently for any reason except manual clicks
     if (
       calculationTriggeredRef.current || 
       isCalculating || 
-      (timeSinceLastCalc < 120) || // Increased from 30 to 120 seconds (2 minutes) to reduce frequency
+      (timeSinceLastCalc < 120) || // 2 minutes (120s) throttling for ALL automatic calculation triggers
       !isAllDataLoaded
     ) {
       console.log(`Throttling calculation for ${symbol} - last calc was ${timeSinceLastCalc.toFixed(0)}s ago (minimum 120s)`);
+      return;
+    }
+    
+    // If we pass throttling, check specific triggers to execute
+    if (trigger === 'price-update' || trigger === 'stable-price-update') {
+      console.log(`📊 Price update triggered calculation for ${symbol} after throttling check passed`);
+      calculationTriggeredRef.current = true;
+      calculateAllSignals();
       return;
     }
     
@@ -626,7 +611,7 @@ export default function AdvancedSignalDashboard({
     let lastPriceUpdateTime = 0;
     const MIN_UPDATE_INTERVAL = 30000; // 30 seconds minimum between auto-calculations
     
-    // Create throttled price update handler
+    // Create throttled price update handler - UPDATED TO PREVENT FREQUENT CALCULATIONS
     const handleThrottledPriceUpdate = (event: Event) => {
       const now = Date.now();
       let priceEvent = event as CustomEvent;
@@ -657,39 +642,37 @@ export default function AdvancedSignalDashboard({
       if (eventSymbol === symbol) {
         console.log(`📊 Price update received for ${symbol}: ${price}`);
         
-        // Always update the displayed price - this ensures the UI always shows the latest price
-        // even if we don't perform calculations every time
+        // ALWAYS UPDATE DISPLAYED PRICE (without triggering calculations)
+        // This ensures the UI always shows the latest price even when we don't recalculate
         setAssetPrice(price);
         priceRef.current = price;
         
-        // STRICT CALCULATION THROTTLE: Calculate time since last calculation
-        // Uses a strict time limit to prevent too many calculations
+        // ENFORCE STRICT 3-MINUTE THROTTLING 
+        // This is the main change to prevent frequent calculations
         const timeSinceLastUpdate = now - lastCalculationTimeRef.current;
-        const MIN_CALCULATION_INTERVAL = 120000; // 2 minutes minimum between calculations
+        const MIN_CALCULATION_INTERVAL = 180000; // 3 minutes (180s) minimum between any calculations
         
+        // Only allow calculation if significant time has passed since last calculation
         if (timeSinceLastUpdate >= MIN_CALCULATION_INTERVAL) {
-          console.log(`Triggering calculation after ${Math.round(timeSinceLastUpdate/1000)}s since last update`);
+          console.log(`Sufficient time passed (${Math.round(timeSinceLastUpdate/1000)}s) - triggering calculation`);
           
-          // IMPORTANT: Mark this time as the last update time IMMEDIATELY to prevent race conditions
-          // This prevents other handlers from triggering calculations in the small time gap
+          // Mark this time as the last update time IMMEDIATELY to prevent race conditions
           lastPriceUpdateTime = now;
           lastCalculationTimeRef.current = now;
           
           // Only trigger if not already calculating and all data is ready
           if (!isCalculating && isAllDataLoaded && isLiveDataReady) {
-            console.log(`🚀 Triggering throttled auto-calculation from price update for ${symbol}`);
+            console.log(`🚀 Throttled calculation allowed for ${symbol}`);
             setIsCalculating(true);
             
             // Broadcast calculation start event for display purposes only
             window.dispatchEvent(new Event('calculation-started'));
             
-            // DIRECT CALCULATION: Instead of using triggerCalculation which has additional checks,
-            // we'll directly call calculateAllSignals since we've already done all necessary checks
+            // Use triggerCalculation instead of direct call to respect global throttling rules
             setTimeout(() => {
-              console.log(`⚡ DIRECT CALCULATION EXECUTION for ${symbol} with price ${price}`);
-              calculateAllSignals();
+              triggerCalculation('stable-price-update');
               
-              // Make sure to set the calculation state back to false after a short delay
+              // Reset calculation state after delay
               setTimeout(() => {
                 setIsCalculating(false);
                 console.log("✅ Throttled auto-calculation complete - updated UI");
@@ -697,17 +680,17 @@ export default function AdvancedSignalDashboard({
             }, 200);
           }
         } else {
-          console.log(`Throttling calculation for ${symbol} - last calc was ${Math.round(timeSinceLastUpdate/1000)}s ago (minimum 120s)`);
+          // Log throttling without triggering calculation
+          console.log(`STRICT THROTTLING: No calculation for ${symbol} - last calc was ${Math.round(timeSinceLastUpdate/1000)}s ago (required: 180s)`);
         }
       }
     };
     
-    // Add the throttled event listeners
+    // SINGLE EVENT LISTENER: Only listen for price-update events
+    // This eliminates redundant calculation triggers from multiple event types
     window.addEventListener('price-update', handleThrottledPriceUpdate as EventListener);
-    window.addEventListener('live-price-update', handleThrottledPriceUpdate as EventListener);
-    window.addEventListener('calculation-needed', handleThrottledPriceUpdate as EventListener);
     
-    // Set up display-only countdown timer - only for manual trigger status
+    // Set up display-only countdown timer - only for UI feedback
     const timerInterval = setInterval(() => {
       // We'll reuse this timer for "Calculating..." display purposes only
       if (isCalculating) {
@@ -725,10 +708,8 @@ export default function AdvancedSignalDashboard({
         clearInterval(recalcIntervalRef.current);
       }
       
-      // Remove event listeners when component unmounts
+      // Only remove the single event listener we added
       window.removeEventListener('price-update', handleThrottledPriceUpdate as EventListener);
-      window.removeEventListener('live-price-update', handleThrottledPriceUpdate as EventListener);
-      window.removeEventListener('calculation-needed', handleThrottledPriceUpdate as EventListener);
     };
   }, [symbol, isCalculating, triggerCalculation]);
 
