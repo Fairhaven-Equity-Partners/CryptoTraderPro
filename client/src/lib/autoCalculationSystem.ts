@@ -1,211 +1,114 @@
 /**
- * Auto Calculation System
+ * Enhanced Auto Calculation System
  * 
- * This module ensures that all price updates trigger calculations exactly once,
- * maintaining consistency across all timeframes and preventing calculation errors.
+ * This system ensures that market analysis calculations run exactly once
+ * after each price fetch, not repeatedly, while maintaining consistent
+ * recommendations across all timeframes.
  */
 
-import { TimeFrame } from '../types';
-import { calculateAllTimeframeSignals } from './advancedSignalsNew';
+// Time between calculations (in seconds)
+const MIN_CALCULATION_INTERVAL = 180; // 3 minutes between full calculations
 
-// Configuration
-const CALCULATION_INTERVAL = 180000; // 3 minutes in milliseconds
-let lastCalculationTime = 0;
-let isCalculationInProgress = false;
-let calculationQueue: {symbol: string, price: number}[] = [];
+// Store the last calculation time for each symbol
+const lastCalculationTimes: Record<string, number> = {};
 
-// Event handler references
-let priceUpdateHandler: ((event: Event) => void) | null = null;
-let calculationHandler: ((event: Event) => void) | null = null;
+// Flag to track if system has been initialized
+let systemInitialized = false;
 
 /**
  * Initialize the auto calculation system
  */
-export function initAutoCalculation() {
-  // Clean up any existing handlers
-  cleanupAutoCalculation();
-  
-  // Set up event listener for price updates
-  priceUpdateHandler = (event: Event) => {
-    const customEvent = event as CustomEvent;
-    const { symbol, price, forceCalculate } = customEvent.detail || {};
-    
-    if (symbol && price) {
-      handlePriceUpdate(symbol, price, !!forceCalculate);
-    }
-  };
-  
-  // Set up event listener for forced calculations
-  calculationHandler = (event: Event) => {
-    const customEvent = event as CustomEvent;
-    const { symbol, timestamp } = customEvent.detail || {};
-    
-    if (symbol) {
-      // Get the current price
-      const priceElements = document.querySelectorAll('[data-symbol="' + symbol + '"]');
-      let price = 0;
-      
-      if (priceElements.length > 0) {
-        const priceStr = priceElements[0].textContent || '0';
-        price = parseFloat(priceStr.replace(/[^0-9.]/g, ''));
-      }
-      
-      if (price > 0) {
-        console.log(`[AutoCalculation] Forced calculation for ${symbol} at price ${price}`);
-        performCalculation(symbol, price);
-      } else {
-        console.log(`[AutoCalculation] Unable to get price for forced calculation on ${symbol}`);
-      }
-    }
-  };
-  
-  // Add event listeners
-  window.addEventListener('live-price-update', priceUpdateHandler);
-  window.addEventListener('price-update', priceUpdateHandler);
-  window.addEventListener('trigger-calculation', calculationHandler);
-  
-  console.log('[AutoCalculation] System initialized and listening for price updates');
-}
-
-/**
- * Handle a price update event
- */
-function handlePriceUpdate(symbol: string, price: number, forceCalculate: boolean) {
-  const now = Date.now();
-  const timeSinceLastCalculation = now - lastCalculationTime;
-  
-  // Only calculate if:
-  // 1. We're explicitly forced to calculate (at the 3-minute mark)
-  // 2. It's been at least 3 minutes since the last calculation
-  if (forceCalculate || timeSinceLastCalculation >= CALCULATION_INTERVAL) {
-    console.log(`[AutoCalculation] Triggering calculation for ${symbol} at price ${price}`);
-    queueCalculation(symbol, price);
-    lastCalculationTime = now;
-  } else {
-    // Log but don't calculate
-    console.log(`[AutoCalculation] Skipping calculation for ${symbol} (calculated ${Math.floor(timeSinceLastCalculation/1000)}s ago)`);
-  }
-}
-
-/**
- * Queue a calculation to prevent multiple simultaneous calculations
- */
-function queueCalculation(symbol: string, price: number) {
-  // Add to the queue
-  calculationQueue.push({ symbol, price });
-  
-  // Process the queue if not already in progress
-  if (!isCalculationInProgress) {
-    processCalculationQueue();
-  }
-}
-
-/**
- * Process the calculation queue one at a time
- */
-function processCalculationQueue() {
-  if (calculationQueue.length === 0) {
-    isCalculationInProgress = false;
+export function initAutoCalculationSystem() {
+  if (systemInitialized) {
+    console.log('[AutoCalculation] System already initialized');
     return;
   }
   
-  isCalculationInProgress = true;
+  console.log('[AutoCalculation] System initialized and listening for price updates');
+  systemInitialized = true;
   
-  // Get the next item
-  const { symbol, price } = calculationQueue.shift()!;
+  // Listen for price update events
+  window.addEventListener('priceUpdate', handlePriceUpdate as EventListener);
   
-  // Perform the calculation
-  performCalculation(symbol, price)
-    .finally(() => {
-      // Process the next item in the queue
-      setTimeout(() => {
-        processCalculationQueue();
-      }, 100);
-    });
+  // Schedule regular synchronization points
+  setupSynchronizedCalculations();
 }
 
 /**
- * Perform calculation for all timeframes
+ * Handle price update events
  */
-async function performCalculation(symbol: string, price: number): Promise<void> {
+function handlePriceUpdate(event: CustomEvent) {
+  const { symbol, price } = event.detail;
+  
+  console.log(`🔄 Price update detected for ${symbol}: ${price}`);
+  
+  // Check if enough time has passed since the last calculation
+  const now = Date.now();
+  const lastCalcTime = lastCalculationTimes[symbol] || 0;
+  const timeSinceLastCalc = Math.floor((now - lastCalcTime) / 1000);
+  
+  if (timeSinceLastCalc < MIN_CALCULATION_INTERVAL) {
+    console.log(`[AutoCalculation] Skipping calculation for ${symbol} (calculated ${timeSinceLastCalc}s ago)`);
+    return;
+  }
+  
+  // Trigger calculation
+  console.log(`[AutoCalculation] Triggering calculation for ${symbol} at price ${price}`);
+  triggerCalculation(symbol, price);
+}
+
+/**
+ * Trigger a full calculation for all timeframes
+ */
+function triggerCalculation(symbol: string, price: number) {
+  console.log(`[AutoCalculation] Calculating signals for ${symbol} at price ${price}`);
+  
   try {
-    console.log(`[AutoCalculation] Calculating signals for ${symbol} at price ${price}`);
-    
-    // Broadcast calculation start
-    const startEvent = new CustomEvent('calculation-start', {
-      detail: { symbol, price, timestamp: Date.now() }
+    // Dispatch calculation event
+    const calculationEvent = new CustomEvent('calculateSignals', {
+      detail: { symbol, price }
     });
-    window.dispatchEvent(startEvent);
+    window.dispatchEvent(calculationEvent);
     
-    // Use our improved calculation function that handles all timeframes
-    const signals = calculateAllTimeframeSignals(symbol, price);
-    
-    // Check if signals were generated successfully
-    const validSignalCount = Object.values(signals).filter(s => s !== null).length;
-    console.log(`[AutoCalculation] Generated ${validSignalCount} valid signals for ${symbol}`);
-    
-    // Broadcast the results
-    const resultEvent = new CustomEvent('calculation-complete', {
-      detail: { symbol, price, signals, timestamp: Date.now() }
-    });
-    window.dispatchEvent(resultEvent);
-    
-    // Also dispatch an event for the legacy system
-    const legacyEvent = new CustomEvent('market-analysis-complete', {
-      detail: { symbol, price, signals, timestamp: Date.now() }
-    });
-    window.dispatchEvent(legacyEvent);
-    
-    return Promise.resolve();
+    // Update last calculation time
+    lastCalculationTimes[symbol] = Date.now();
   } catch (error) {
-    console.error(`[AutoCalculation] Error calculating signals for ${symbol}:`, error);
+    console.error(`[AutoCalculation] Error triggering calculation:`, error);
+  }
+}
+
+/**
+ * Set up synchronized calculation points
+ * This ensures calculations happen at regular intervals regardless of price updates
+ */
+function setupSynchronizedCalculations() {
+  // Check every 15 seconds if we need to calculate
+  setInterval(() => {
+    const now = new Date();
+    console.log(`Scheduled price update check (15-second interval) at ${now.toLocaleTimeString()}`);
     
-    // Broadcast error
-    const errorEvent = new CustomEvent('calculation-error', {
-      detail: { symbol, price, error, timestamp: Date.now() }
-    });
-    window.dispatchEvent(errorEvent);
-    
-    return Promise.reject(error);
-  }
+    // Trigger calculations at the 0, 3, 6, 9... minute marks for better synchronization
+    if (now.getMinutes() % 3 === 0 && now.getSeconds() < 15) {
+      console.log('💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark');
+      
+      // Fetch current price and trigger calculation for active symbols
+      const activeSymbol = document.querySelector('[data-active-symbol]')?.getAttribute('data-active-symbol') || 'BTC/USDT';
+      const priceElement = document.querySelector('[data-current-price]');
+      const currentPrice = priceElement ? parseFloat(priceElement.textContent || '0') : 0;
+      
+      if (currentPrice > 0) {
+        console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${activeSymbol} price=${currentPrice}`);
+        console.log(`💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for ${activeSymbol} with price ${currentPrice}`);
+        triggerCalculation(activeSymbol, currentPrice);
+      }
+    }
+  }, 15000);
 }
 
 /**
- * Manually trigger a calculation
+ * Mark signals as calculated for a symbol
  */
-export function triggerManualCalculation(symbol: string, price: number): void {
-  console.log(`[AutoCalculation] Manual calculation triggered for ${symbol} at price ${price}`);
-  performCalculation(symbol, price);
-}
-
-/**
- * Register for calculation events
- */
-export function onCalculationComplete(callback: (data: any) => void): () => void {
-  const handleEvent = (event: Event) => {
-    const customEvent = event as CustomEvent;
-    callback(customEvent.detail);
-  };
-  
-  window.addEventListener('calculation-complete', handleEvent as EventListener);
-  
-  return () => {
-    window.removeEventListener('calculation-complete', handleEvent as EventListener);
-  };
-}
-
-/**
- * Clean up event handlers
- */
-export function cleanupAutoCalculation(): void {
-  if (priceUpdateHandler) {
-    window.removeEventListener('live-price-update', priceUpdateHandler);
-    window.removeEventListener('price-update', priceUpdateHandler);
-    priceUpdateHandler = null;
-  }
-  
-  if (calculationHandler) {
-    window.removeEventListener('trigger-calculation', calculationHandler);
-    calculationHandler = null;
-  }
+export function markCalculationComplete(symbol: string, signalCount: number) {
+  console.log(`[AutoCalculation] Generated ${signalCount} valid signals for ${symbol}`);
+  lastCalculationTimes[symbol] = Date.now();
 }

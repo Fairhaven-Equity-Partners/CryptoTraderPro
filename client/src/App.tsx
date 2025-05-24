@@ -38,9 +38,9 @@ function App() {
   // Initialize automatic calculation system when the app loads
   useEffect(() => {
     // Import and initialize the improved auto calculation system
-    import('./lib/autoCalculationSystem').then(({ initAutoCalculation }) => {
+    import('./lib/autoCalculationSystem').then(({ initAutoCalculationSystem }) => {
       console.log('✅ App initializing - setting up enhanced auto calculation system ✅');
-      initAutoCalculation();
+      initAutoCalculationSystem();
     }).catch(error => {
       console.error('Failed to initialize auto calculation system:', error);
     });

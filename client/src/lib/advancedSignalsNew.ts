@@ -157,7 +157,7 @@ export function generateSignalForTimeframe(
     
     // Create a fallback signal for the given timeframe
     // Use special treatment for higher timeframes to ensure visual indicators match
-    const signal = createFallbackSignal(timeframe, price, symbol.toString());
+    const signal = createFallbackSignal(timeframe, price, "unknown");
     
     if (!signal) {
       console.error(`Failed to create even a fallback signal for ${timeframe}`);
