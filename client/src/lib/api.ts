@@ -339,6 +339,7 @@ export function startRealTimeUpdates() {
   registerMessageHandler('priceUpdate', handlePriceUpdate);
   
   // Update prices at the optimal frequency specified in the scheduler
+  // This will continue to update live prices for the UI without triggering calculations
   const updateInterval = setInterval(() => {
     // Log for debugging
     console.log(`Scheduled price update check (${PRICE_REFRESH_INTERVAL/1000}-second interval) at ${new Date().toLocaleTimeString()}`);
@@ -392,23 +393,33 @@ export function startRealTimeUpdates() {
                 detail: { symbol, price: newPrice, timestamp: Date.now() }
               }));
               */
-            }
-            
-            // Notify all handlers about the price update
-            const priceData = {
-              symbol,
-              price: newPrice,
-              change24h
-            };
-            
-            // Directly call the price update handler
-            handlePriceUpdate(priceData);
-            
-            // Also broadcast to all message handlers
-            if (messageHandlers['priceUpdate']) {
-              messageHandlers['priceUpdate'].forEach(handler => {
-                handler(priceData);
-              });
+              
+              // IMPORTANT: This next line was causing duplicate calculations
+              // We still want to update the UI with the latest price, but
+              // we don't want to trigger the direct handlePriceUpdate function
+              // as this can trigger unwanted calculations
+              
+              // Update price in the UI but DON'T trigger automatic calculations
+              // by calling handlePriceUpdate directly
+              const priceData = {
+                symbol,
+                price: newPrice,
+                change24h
+              };
+              
+              // DISABLED: Direct price update handler call to prevent calculations
+              // handlePriceUpdate(priceData);
+              
+              // Only broadcast to UI display handlers, not calculation handlers
+              if (messageHandlers['priceUpdate']) {
+                messageHandlers['priceUpdate'].forEach(handler => {
+                  handler(priceData);
+                });
+              }
+              
+              // Update tracking values
+              lastPrices[symbol] = newPrice;
+              lastChangePercentages[symbol] = change24h;
             }
           });
         })

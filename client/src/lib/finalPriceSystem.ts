@@ -50,10 +50,9 @@ export function initPriceSystem(initialInterval = DEFAULT_REFRESH_INTERVAL) {
 function updateCountdown() {
   countdownSeconds -= 1;
   
-  // Time to prefetch?
-  if (countdownSeconds === PREFETCH_OFFSET) {
-    triggerPriceFetch();
-  }
+  // Only log the countdown, don't auto-trigger fetches
+  // This change ensures we don't automatically trigger calculations
+  // The AdvancedSignalDashboard will handle this with proper throttling
   
   // Are we at zero?
   if (countdownSeconds <= 0) {
