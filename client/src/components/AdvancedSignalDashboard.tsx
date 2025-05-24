@@ -1254,25 +1254,64 @@ export default function AdvancedSignalDashboard({
                         {/* Success Probability Bar */}
                         <div className="space-y-2 mb-3">
                           <h3 className="text-white font-bold text-sm">Success Probability</h3>
-                          <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
-                            <div 
-                              className={`h-4 rounded-full ${
-                                getSuccessProbability() >= 70 ? 'bg-green-600' : 
-                                getSuccessProbability() >= 45 ? 'bg-yellow-600' : 'bg-red-600'
-                              }`}
-                              style={{ width: `${getSuccessProbability()}%` }}
-                            />
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <div className="flex justify-between text-xs text-gray-400 w-full">
-                              <span>Low</span>
-                              <span>Medium</span>
-                              <span>High</span>
-                            </div>
-                            <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
-                              {getSuccessProbability()}%
-                            </Badge>
-                          </div>
+                          {(() => {
+                            // Calculate success probability inline based on timeframe and direction
+                            const baseProbabilities: Record<string, number> = {
+                              '1M': 95,  // Monthly timeframe has highest probability
+                              '1w': 90,  // Weekly is very strong
+                              '3d': 85,  // 3-day is strong
+                              '1d': 80,  // Daily is reliable
+                              '12h': 75, // 12-hour is reliable
+                              '4h': 70,  // 4-hour is moderately reliable
+                              '1h': 65,  // 1-hour is medium reliability
+                              '30m': 60, // 30-min is less reliable
+                              '15m': 55, // 15-min is getting speculative
+                              '5m': 45,  // 5-min is speculative
+                              '1m': 40   // 1-min is highly speculative
+                            };
+                            
+                            // Get the current direction or default to NEUTRAL
+                            const direction = currentSignal?.direction || 'NEUTRAL';
+                            
+                            // Calculate the base probability
+                            let probability = currentSignal?.successProbability || baseProbabilities[selectedTimeframe] || 60;
+                            
+                            // Apply direction adjustments
+                            if (direction === 'LONG' && !currentSignal?.successProbability) {
+                              probability += 5; // Add 5% for long positions
+                            }
+                            if (direction === 'NEUTRAL' && !currentSignal?.successProbability) {
+                              probability -= 10; // Subtract 10% for neutral positions
+                            }
+                            
+                            // Ensure the probability stays within 0-100
+                            probability = Math.min(Math.max(probability, 0), 100);
+                            
+                            // Calculate the CSS classes and render the bar
+                            const barColorClass = probability >= 70 ? 'bg-green-600' : 
+                              probability >= 45 ? 'bg-yellow-600' : 'bg-red-600';
+                              
+                            return (
+                              <>
+                                <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
+                                  <div 
+                                    className={`h-4 rounded-full ${barColorClass}`}
+                                    style={{ width: `${probability}%` }}
+                                  />
+                                </div>
+                                <div className="flex justify-between items-center">
+                                  <div className="flex justify-between text-xs text-gray-400 w-full">
+                                    <span>Low</span>
+                                    <span>Medium</span>
+                                    <span>High</span>
+                                  </div>
+                                  <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
+                                    {probability}%
+                                  </Badge>
+                                </div>
+                              </>
+                            );
+                          })()}
                         </div>
                         
                         <div className="space-y-2">
