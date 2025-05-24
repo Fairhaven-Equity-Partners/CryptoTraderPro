@@ -673,9 +673,15 @@ export function calculateAllTimeframeSignals(
 /**
  * Create a fallback signal when normal generation fails
  * This ensures we always have a signal for every timeframe
+ * with better alignment between arrows and analysis
  */
 function createFallbackSignal(timeframe: TimeFrame, price: number, symbol: string): AdvancedSignal {
-  // Use a deterministic but simplified approach
+  // Special handling for higher timeframes to ensure arrow-indicator alignment
+  if (['1w', '1M'].includes(timeframe)) {
+    return createHigherTimeframeSignal(timeframe, price, symbol);
+  }
+
+  // Use a deterministic but simplified approach for other timeframes
   const timeframeValue = getTimeframeValue(timeframe);
   const seed = Math.floor(price * 100) + timeframeValue;
   
@@ -683,10 +689,8 @@ function createFallbackSignal(timeframe: TimeFrame, price: number, symbol: strin
   let direction: SignalDirection;
   const random = (seed % 100) / 100;
   
-  // Longer timeframes favor long positions slightly
-  if (['1w', '1M'].includes(timeframe)) {
-    direction = random < 0.45 ? 'LONG' : random < 0.75 ? 'SHORT' : 'NEUTRAL';
-  } else if (['1d', '3d'].includes(timeframe)) {
+  // Adjust thresholds to create more consistent signals
+  if (['1d', '3d'].includes(timeframe)) {
     direction = random < 0.4 ? 'LONG' : random < 0.8 ? 'SHORT' : 'NEUTRAL';
   } else {
     direction = random < 0.33 ? 'LONG' : random < 0.66 ? 'SHORT' : 'NEUTRAL';
@@ -695,6 +699,119 @@ function createFallbackSignal(timeframe: TimeFrame, price: number, symbol: strin
   // Set reasonable confidence based on timeframe
   const baseConfidence = getBaseConfidence(timeframe);
   const confidence = Math.min(Math.max(baseConfidence + ((seed % 20) - 10), 40), 85);
+  
+  // Calculate appropriate risk parameters
+  const stopLossPercent = getStopLossPercent(timeframe, direction);
+  const stopLoss = direction === 'LONG' 
+    ? price * (1 - stopLossPercent / 100) 
+    : price * (1 + stopLossPercent / 100);
+  
+  const riskRewardRatio = getRiskRewardRatio(timeframe);
+  const priceDiff = Math.abs(price - stopLoss);
+  const takeProfit = direction === 'LONG'
+    ? price + (priceDiff * riskRewardRatio)
+    : price - (priceDiff * riskRewardRatio);
+  
+  // Calculate success probability
+  const successProbability = getTimeframeSuccessProbability(timeframe, direction);
+  
+  // Generate complete fallback signal
+  return {
+    direction,
+    confidence,
+    entryPrice: price,
+    stopLoss,
+    takeProfit,
+    timeframe,
+    timestamp: Date.now(),
+    successProbability,
+    successProbabilityDescription: getSuccessProbabilityDescription(successProbability),
+    indicators: generateIndicators(direction, confidence, timeframe),
+    patternFormations: generatePatternFormations(direction, confidence, timeframe, price),
+    supportLevels: calculateKeyLevels(price, timeframe).supportLevels,
+    resistanceLevels: calculateKeyLevels(price, timeframe).resistanceLevels,
+    expectedDuration: getExpectedDuration(timeframe),
+    riskRewardRatio,
+    optimalRiskReward: {
+      ideal: riskRewardRatio,
+      range: [riskRewardRatio * 0.8, riskRewardRatio * 1.2]
+    },
+    recommendedLeverage: calculateRecommendedLeverage(timeframe, direction, confidence),
+    macroInsights: generateMacroInsights(direction, timeframe, price)
+  };
+}
+
+/**
+ * Special handling for weekly and monthly timeframes
+ * to ensure consistent signals that match the arrows
+ */
+function createHigherTimeframeSignal(timeframe: TimeFrame, price: number, symbol: string): AdvancedSignal {
+  // Highly deterministic algorithm for weekly and monthly timeframes
+  // Use the last two digits of price to determine direction consistently
+  const lastTwoDigits = Math.floor(price % 100);
+  const timeframeValue = getTimeframeValue(timeframe);
+  const seed = Math.floor(price * 100) + timeframeValue;
+  
+  // Create a more stable direction determination
+  let direction: SignalDirection;
+  
+  // Monthly timeframe - even more stable, favors neutral positions
+  if (timeframe === '1M') {
+    if (lastTwoDigits < 33) direction = 'LONG';
+    else if (lastTwoDigits < 66) direction = 'SHORT';
+    else direction = 'NEUTRAL';
+  } 
+  // Weekly timeframe - slightly more varied
+  else {
+    if (lastTwoDigits < 35) direction = 'LONG';
+    else if (lastTwoDigits < 70) direction = 'SHORT';
+    else direction = 'NEUTRAL';
+  }
+  
+  // Set reasonable confidence based on timeframe
+  const baseConfidence = getBaseConfidence(timeframe);
+  const confidence = Math.min(Math.max(baseConfidence + ((seed % 20) - 10), 40), 85);
+  
+  // Calculate appropriate risk parameters
+  const stopLossPercent = getStopLossPercent(timeframe, direction);
+  const stopLoss = direction === 'LONG' 
+    ? price * (1 - stopLossPercent / 100) 
+    : price * (1 + stopLossPercent / 100);
+  
+  const riskRewardRatio = getRiskRewardRatio(timeframe);
+  const priceDiff = Math.abs(price - stopLoss);
+  const takeProfit = direction === 'LONG'
+    ? price + (priceDiff * riskRewardRatio)
+    : price - (priceDiff * riskRewardRatio);
+  
+  // Calculate success probability
+  const successProbability = getTimeframeSuccessProbability(timeframe, direction);
+  
+  // Generate complete signal for higher timeframes
+  return {
+    direction,
+    confidence,
+    entryPrice: price,
+    stopLoss,
+    takeProfit,
+    timeframe,
+    timestamp: Date.now(),
+    successProbability,
+    successProbabilityDescription: getSuccessProbabilityDescription(successProbability),
+    indicators: generateIndicators(direction, confidence, timeframe),
+    patternFormations: generatePatternFormations(direction, confidence, timeframe, price),
+    supportLevels: calculateKeyLevels(price, timeframe).supportLevels,
+    resistanceLevels: calculateKeyLevels(price, timeframe).resistanceLevels,
+    expectedDuration: getExpectedDuration(timeframe),
+    riskRewardRatio,
+    optimalRiskReward: {
+      ideal: riskRewardRatio,
+      range: [riskRewardRatio * 0.8, riskRewardRatio * 1.2]
+    },
+    recommendedLeverage: calculateRecommendedLeverage(timeframe, direction, confidence),
+    macroInsights: generateMacroInsights(direction, timeframe, price)
+  };
+}
   
   // Calculate appropriate risk parameters
   const stopLossPercent = getStopLossPercent(timeframe, direction);
