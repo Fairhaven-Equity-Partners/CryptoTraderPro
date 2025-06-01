@@ -14,6 +14,7 @@ import { Separator } from "./ui/separator";
 import { Progress } from "./ui/progress";
 import { getSecondsUntilNextRefresh, getFormattedCountdown } from '../lib/finalPriceSystem';
 import { getTimeframeSuccessProbability } from '../lib/timeframeSuccessProbability';
+import { getCurrentMoonPhase, getMoonPhaseEmoji } from '../lib/moonPhase';
 import { 
   AlertTriangle, 
   TrendingUp, 

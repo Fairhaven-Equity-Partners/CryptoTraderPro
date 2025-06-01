@@ -5,6 +5,8 @@
  * to enhance trading signals with broader market context
  */
 
+import { calculateMoonPhaseImpact, MoonPhaseData } from './moonPhase';
+
 // Interface for macro data that might be expected by other components
 export interface MacroData {
   marketSentiment: number;
@@ -14,6 +16,7 @@ export interface MacroData {
   institutionalFlow: number;
   whaleActivity: number;
   optionsRatio: number;
+  moonPhase?: MoonPhaseData;
 }
 
 // Functions that might be expected by other parts of the application
@@ -147,6 +150,7 @@ export function calculateMacroSignal(indicators: MacroIndicator[]): {
   confidence: number;
   topIndicators: MacroIndicator[];
   description: string;
+  moonPhase?: MoonPhaseData;
 } {
   if (indicators.length === 0) {
     return {
@@ -184,23 +188,35 @@ export function calculateMacroSignal(indicators: MacroIndicator[]): {
   const bearishPercentage = totalWeight > 0 ? (bearishWeight / totalWeight) * 100 : 33.33;
   const neutralPercentage = 100 - bullishPercentage - bearishPercentage;
   
-  // Determine the overall signal
+  // Calculate base macro score
+  let baseMacroScore = 50;
   let signal: 'bullish' | 'bearish' | 'neutral' = 'neutral';
-  let confidence = 50;
   
   if (bullishPercentage > bearishPercentage && bullishPercentage > neutralPercentage) {
     signal = 'bullish';
-    confidence = 50 + (bullishPercentage - Math.max(bearishPercentage, neutralPercentage)) / 2;
+    baseMacroScore = 50 + (bullishPercentage - Math.max(bearishPercentage, neutralPercentage)) / 2;
   } else if (bearishPercentage > bullishPercentage && bearishPercentage > neutralPercentage) {
     signal = 'bearish';
-    confidence = 50 + (bearishPercentage - Math.max(bullishPercentage, neutralPercentage)) / 2;
+    baseMacroScore = 50 + (bearishPercentage - Math.max(bullishPercentage, neutralPercentage)) / 2;
   } else {
     signal = 'neutral';
-    confidence = 50 + neutralPercentage / 4;
+    baseMacroScore = 50 + neutralPercentage / 4;
+  }
+  
+  // Apply moon phase impact to the macro score
+  const moonPhaseResult = calculateMoonPhaseImpact(baseMacroScore);
+  const finalConfidence = moonPhaseResult.adjustedScore;
+  
+  // Update signal based on moon phase adjustment if significant
+  if (signal === 'neutral' && moonPhaseResult.moonData.marketBias !== 'NEUTRAL') {
+    const moonImpact = Math.abs(moonPhaseResult.adjustedScore - baseMacroScore);
+    if (moonImpact > 5) { // Significant moon phase impact
+      signal = moonPhaseResult.moonData.marketBias === 'BULLISH' ? 'bullish' : 'bearish';
+    }
   }
   
   // Cap confidence at 95
-  confidence = Math.min(95, confidence);
+  const confidence = Math.min(95, finalConfidence);
   
   // Get top indicators (those with highest confidence and impact)
   const sortedIndicators = [...indicators].sort((a, b) => {
@@ -211,7 +227,7 @@ export function calculateMacroSignal(indicators: MacroIndicator[]): {
   
   const topIndicators = sortedIndicators.slice(0, 3);
   
-  // Generate description
+  // Generate description including moon phase
   let description = '';
   if (signal === 'bullish') {
     description = `Macro conditions favor bullish scenarios (${Math.round(bullishPercentage)}% bullish signals). `;
@@ -221,6 +237,9 @@ export function calculateMacroSignal(indicators: MacroIndicator[]): {
     description = `Macro conditions are mostly neutral (${Math.round(neutralPercentage)}% neutral signals). `;
   }
   
+  // Add moon phase information
+  description += `${moonPhaseResult.impactDetails}. `;
+  
   if (topIndicators.length > 0) {
     description += `Key factors: ${topIndicators.map(i => i.type).join(', ')}.`;
   }
@@ -229,7 +248,8 @@ export function calculateMacroSignal(indicators: MacroIndicator[]): {
     signal,
     confidence: Math.round(confidence),
     topIndicators,
-    description
+    description,
+    moonPhase: moonPhaseResult.moonData
   };
 }
 
