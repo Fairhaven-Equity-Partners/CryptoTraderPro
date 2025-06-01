@@ -1300,18 +1300,15 @@ export default function AdvancedSignalDashboard({
                   className={!signals[tf] ? 'opacity-50 cursor-not-allowed' : ''}
                 >
                   {tf}
-                  {/* Always show LONG for monthly and weekly timeframes */}
-                  {(tf === '1M' || tf === '1w') ? (
+                  {/* Show arrow based on actual signal direction */}
+                  {signals[tf] && signals[tf]?.direction === 'LONG' && (
                     <span className="ml-1 text-green-400">▲</span>
-                  ) : (
-                    <>
-                      {signals[tf] && signals[tf]?.direction === 'LONG' && (
-                        <span className="ml-1 text-green-400">▲</span>
-                      )}
-                      {signals[tf] && signals[tf]?.direction === 'SHORT' && (
-                        <span className="ml-1 text-red-400">▼</span>
-                      )}
-                    </>
+                  )}
+                  {signals[tf] && signals[tf]?.direction === 'SHORT' && (
+                    <span className="ml-1 text-red-400">▼</span>
+                  )}
+                  {signals[tf] && signals[tf]?.direction === 'NEUTRAL' && (
+                    <span className="ml-1 text-gray-400">—</span>
                   )}
                 </TabsTrigger>
               ))}
