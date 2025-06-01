@@ -45,6 +45,8 @@ import {
 } from '../lib/technicalIndicators';
 import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
 import { calculateStreamlinedSignal, enhancePatternRecognition, calculateDynamicLeverage } from '../lib/streamlinedCalculationEngine';
+import { generateAccurateSignal } from '../lib/accurateSignalEngine';
+import { calculateUnifiedSignal } from '../lib/unifiedCalculationEngine';
 
 // Enhanced macro analysis functions
 function analyzeIndicatorConvergence(indicators: any[]): { confidence: number; description: string } {
