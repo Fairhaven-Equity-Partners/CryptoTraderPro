@@ -1222,24 +1222,7 @@ export default function AdvancedSignalDashboard({
                           {selectedTimeframe === '1m' && '1-Min Timeframe Analysis'}
                         </div>
                         
-                        {/* Visual indicator of timeframe importance */}
-                        <div className="w-full h-2 rounded-full bg-gray-800 mt-3 mb-1">
-                          <div 
-                            className={`h-2 rounded-full ${
-                              selectedTimeframe === '1M' ? 'bg-green-500 w-full' :
-                              selectedTimeframe === '1w' ? 'bg-emerald-500 w-11/12' :
-                              selectedTimeframe === '3d' ? 'bg-teal-500 w-10/12' :
-                              selectedTimeframe === '1d' ? 'bg-cyan-500 w-9/12' :
-                              selectedTimeframe === '4h' ? 'bg-blue-500 w-8/12' :
-                              selectedTimeframe === '1h' ? 'bg-indigo-500 w-7/12' :
-                              selectedTimeframe === '30m' ? 'bg-violet-500 w-6/12' :
-                              selectedTimeframe === '15m' ? 'bg-purple-500 w-5/12' :
-                              selectedTimeframe === '5m' ? 'bg-fuchsia-500 w-4/12' :
-                              'bg-gray-500 w-3/12'
-                            }`}
-                          />
-                        </div>
-                        <div className="text-sm text-gray-300">Timeframe Reliability</div>
+
                       </div>
                     </div>
                     
