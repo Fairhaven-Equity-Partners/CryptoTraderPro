@@ -158,28 +158,3 @@ export function calculateMoonPhaseImpact(baseMacroScore: number): {
   };
 }
 
-/**
- * Get moon phase emoji for display
- */
-export function getMoonPhaseEmoji(phaseName: string): string {
-  switch (phaseName) {
-    case 'New Moon':
-      return '🌑';
-    case 'Waxing Crescent':
-      return '🌒';
-    case 'First Quarter':
-      return '🌓';
-    case 'Waxing Gibbous':
-      return '🌔';
-    case 'Full Moon':
-      return '🌕';
-    case 'Waning Gibbous':
-      return '🌖';
-    case 'Last Quarter':
-      return '🌗';
-    case 'Waning Crescent':
-      return '🌘';
-    default:
-      return '🌙';
-  }
-}
