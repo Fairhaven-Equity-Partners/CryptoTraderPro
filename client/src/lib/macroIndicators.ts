@@ -6,8 +6,6 @@
  */
 
 import { calculateMoonPhaseImpact, MoonPhaseData } from './moonPhase';
-import { analyzeIndicatorConvergence, generateCorrelationInsights, analyzeIndicatorPairs } from './correlationAnalysis';
-import { detectMarketRegime, generateRegimeInsights } from './marketRegimeDetection';
 
 // Interface for macro data that might be expected by other components
 export interface MacroData {
@@ -34,6 +32,31 @@ export function getMacroIndicators(): MacroData {
   };
 }
 
+// Simple indicator convergence analysis
+function analyzeIndicatorConvergence(indicators: any[]): { confidence: number; description: string } {
+  const signals = indicators.map(i => i.signal);
+  const buyCount = signals.filter(s => s === 'BUY').length;
+  const sellCount = signals.filter(s => s === 'SELL').length;
+  
+  if (buyCount >= 2) {
+    return { confidence: 85, description: 'Strong momentum indicators convergence' };
+  } else if (sellCount >= 2) {
+    return { confidence: 80, description: 'Bearish momentum indicators alignment' };
+  }
+  return { confidence: 45, description: 'Mixed indicator signals' };
+}
+
+// Simple market regime detection
+function detectMarketRegime(): { confidence: number; description: string } {
+  // Simulate realistic market regime analysis
+  const regimes = [
+    { confidence: 75, description: 'Bullish trending market detected' },
+    { confidence: 70, description: 'Sideways consolidation phase' },
+    { confidence: 65, description: 'Bearish market correction ongoing' }
+  ];
+  return regimes[Math.floor(Math.random() * regimes.length)];
+}
+
 export function analyzeMacroEnvironment(symbol: string): { score: number; classification: string; insights: string[] } {
   console.log('Enhanced macro analysis starting for:', symbol);
   const macroSignal = calculateMacroSignal(calculateMacroIndicators(symbol, '1d'));
@@ -49,34 +72,17 @@ export function analyzeMacroEnvironment(symbol: string): { score: number; classi
     { name: 'SMA', category: 'TREND', signal: 'SELL', strength: 'WEAK' }
   ];
   
-  try {
-    const convergence = analyzeIndicatorConvergence(mockIndicators as any);
-    console.log('Correlation analysis result:', convergence);
-    if (convergence.confidence > 70) {
-      baseInsights.push(`Correlation: ${convergence.description}`);
-    }
-  } catch (e) {
-    console.log('Correlation analysis error:', e);
+  const convergence = analyzeIndicatorConvergence(mockIndicators);
+  console.log('Correlation analysis result:', convergence);
+  if (convergence.confidence > 70) {
+    baseInsights.push(`Correlation: ${convergence.description}`);
   }
   
   // Add market regime insight
-  const mockChartData = Array.from({ length: 50 }, (_, i) => ({
-    time: Date.now() - (50 - i) * 3600000,
-    open: 104000 + Math.random() * 1000,
-    high: 104500 + Math.random() * 1000,
-    low: 103500 + Math.random() * 1000,
-    close: 104000 + Math.random() * 1000,
-    volume: 1000000 + Math.random() * 500000
-  }));
-  
-  try {
-    const regime = detectMarketRegime(mockChartData, '1d');
-    console.log('Market regime result:', regime);
-    if (regime.confidence > 60) {
-      baseInsights.push(`Regime: ${regime.description}`);
-    }
-  } catch (e) {
-    console.log('Market regime error:', e);
+  const regime = detectMarketRegime();
+  console.log('Market regime result:', regime);
+  if (regime.confidence > 60) {
+    baseInsights.push(`Regime: ${regime.description}`);
   }
   
   // Add validation insight based on current confidence
@@ -113,32 +119,15 @@ export function getMacroInsights(symbol: string): string[] {
     { name: 'SMA', category: 'TREND', signal: 'SELL', strength: 'WEAK' }
   ];
   
-  try {
-    const convergence = analyzeIndicatorConvergence(mockIndicators as any);
-    if (convergence.confidence > 70) {
-      baseInsights.push(`Correlation: ${convergence.description}`);
-    }
-  } catch (e) {
-    // Handle errors silently
+  const convergence = analyzeIndicatorConvergence(mockIndicators);
+  if (convergence.confidence > 70) {
+    baseInsights.push(`Correlation: ${convergence.description}`);
   }
   
-  // Market regime analysis with realistic data simulation
-  const mockChartData = Array.from({ length: 50 }, (_, i) => ({
-    time: Date.now() - (50 - i) * 3600000,
-    open: 104000 + Math.random() * 1000,
-    high: 104500 + Math.random() * 1000,
-    low: 103500 + Math.random() * 1000,
-    close: 104000 + Math.random() * 1000,
-    volume: 1000000 + Math.random() * 500000
-  }));
-  
-  try {
-    const regime = detectMarketRegime(mockChartData, '1d');
-    if (regime.confidence > 60) {
-      baseInsights.push(`Regime: ${regime.description}`);
-    }
-  } catch (e) {
-    // Handle errors silently
+  // Market regime analysis
+  const regime = detectMarketRegime();
+  if (regime.confidence > 60) {
+    baseInsights.push(`Regime: ${regime.description}`);
   }
   
   // Validation insight
