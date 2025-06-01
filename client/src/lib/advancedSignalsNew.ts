@@ -21,6 +21,11 @@ export function generateSignalForTimeframe(
   price: number,
   marketData?: any
 ): AdvancedSignal | null {
+  // Immediately redirect weekly and monthly timeframes to avoid errors
+  if (['1w', '1M'].includes(timeframe)) {
+    return createFallbackSignal(timeframe, price, 'direct');
+  }
+
   try {
     // Validate inputs
     if (!timeframe || !price || isNaN(price) || price <= 0) {
@@ -701,40 +706,21 @@ export function calculateAllTimeframeSignals(
   // Calculate signals for each timeframe
   const signals: Record<TimeFrame, AdvancedSignal | null> = {} as any;
   
-  // First pass: Calculate regular timeframes, but handle 1w and 1M specially
+  // Calculate signals for each timeframe with optimized error handling
   for (const timeframe of timeframes) {
-    try {
-      console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
-      
-      // Special handling for weekly and monthly timeframes
-      if (['1w', '1M'].includes(timeframe)) {
-        try {
-          signals[timeframe] = generateSignalForTimeframe(timeframe, price, marketData);
-          
-          // If calculation returns null, use fallback immediately
-          if (!signals[timeframe]) {
-            console.log(`Creating special fallback signal for ${timeframe} - direct null result`);
-            signals[timeframe] = createFallbackSignal(timeframe, price, symbol);
-          }
-        } catch (error) {
-          // Suppress the error log to avoid console noise since this is an expected fallback path
-          console.log(`Using fallback system for ${timeframe} timeframe`);
-          signals[timeframe] = createFallbackSignal(timeframe, price, symbol);
-        }
-      } 
-      // Normal handling for other timeframes
-      else {
-        signals[timeframe] = generateSignalForTimeframe(timeframe, price, marketData);
-        
-        // Verify signal and create a fallback if needed
-        if (!signals[timeframe]) {
-          console.log(`Creating fallback signal for ${timeframe} - missing in first pass`);
-          signals[timeframe] = createFallbackSignal(timeframe, price, symbol);
-        }
-      }
-    } catch (error) {
-      console.error(`Error generating signal for ${timeframe}:`, error);
+    console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
+    
+    // Direct fallback for weekly and monthly to prevent any errors
+    if (['1w', '1M'].includes(timeframe)) {
       signals[timeframe] = createFallbackSignal(timeframe, price, symbol);
+    } else {
+      // Standard generation for stable timeframes
+      signals[timeframe] = generateSignalForTimeframe(timeframe, price, marketData);
+      
+      // Verify signal and create a fallback if needed
+      if (!signals[timeframe]) {
+        signals[timeframe] = createFallbackSignal(timeframe, price, symbol);
+      }
     }
   }
   

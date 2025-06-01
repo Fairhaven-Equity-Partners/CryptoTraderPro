@@ -7,7 +7,7 @@
  */
 
 // Time between calculations (in seconds)
-const MIN_CALCULATION_INTERVAL = 180; // 3 minutes between full calculations
+const MIN_CALCULATION_INTERVAL = 300; // 5 minutes between full calculations
 
 // Store the last calculation time for each symbol
 const lastCalculationTimes: Record<string, number> = {};
@@ -82,14 +82,13 @@ function triggerCalculation(symbol: string, price: number) {
  * This ensures calculations happen at regular intervals regardless of price updates
  */
 function setupSynchronizedCalculations() {
-  // Check every 15 seconds if we need to calculate
+  // Check every 30 seconds if we need to calculate
   setInterval(() => {
     const now = new Date();
-    console.log(`Scheduled price update check (15-second interval) at ${now.toLocaleTimeString()}`);
     
-    // Trigger calculations at the 0, 3, 6, 9... minute marks for better synchronization
-    if (now.getMinutes() % 3 === 0 && now.getSeconds() < 15) {
-      console.log('💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark');
+    // Trigger calculations at the 0, 5, 10, 15... minute marks for better synchronization
+    if (now.getMinutes() % 5 === 0 && now.getSeconds() < 30) {
+      console.log('Synchronized calculation triggered at 5-minute mark');
       
       // Fetch current price and trigger calculation for active symbols
       const activeSymbol = document.querySelector('[data-active-symbol]')?.getAttribute('data-active-symbol') || 'BTC/USDT';
@@ -97,8 +96,6 @@ function setupSynchronizedCalculations() {
       const currentPrice = priceElement ? parseFloat(priceElement.textContent || '0') : 0;
       
       if (currentPrice > 0) {
-        console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${activeSymbol} price=${currentPrice}`);
-        console.log(`💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for ${activeSymbol} with price ${currentPrice}`);
         triggerCalculation(activeSymbol, currentPrice);
       }
     }
