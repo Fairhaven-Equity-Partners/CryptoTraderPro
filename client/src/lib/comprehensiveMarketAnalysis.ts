@@ -300,17 +300,18 @@ export function calculateStopLossAndTakeProfit(
   riskReward: number;
 } {
   const timeframeMultiplier = {
-    '1M': 3.0,
-    '1w': 2.5,
-    '3d': 2.0,
-    '1d': 1.5,
-    '4h': 1.2,
-    '1h': 1.0,
-    '30m': 0.8,
-    '15m': 0.6,
-    '5m': 0.4,
-    '1m': 0.3
-  }[timeframe];
+    '1M': 4.0,
+    '1w': 3.5,
+    '3d': 3.0,
+    '1d': 2.5,
+    '12h': 2.2,
+    '4h': 2.0,
+    '1h': 1.6,
+    '30m': 1.4,
+    '15m': 1.2,
+    '5m': 1.0,
+    '1m': 0.8
+  }[timeframe] || 2.0;
   
   const atrMultiplied = atr * timeframeMultiplier;
   

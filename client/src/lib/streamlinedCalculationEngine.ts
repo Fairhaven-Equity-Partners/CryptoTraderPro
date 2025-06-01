@@ -168,18 +168,18 @@ function optimizeRiskReward(
   // Base volatility from Bollinger Bands
   const volatility = (indicators.bb.upper - indicators.bb.lower) / indicators.bb.middle;
   
-  // Timeframe-based risk adjustments
+  // Timeframe-based risk adjustments - mathematically calibrated for Bitcoin volatility
   const timeframeRiskMultipliers: Record<string, number> = {
-    '1m': 0.5,
-    '5m': 0.6,
-    '15m': 0.7,
-    '30m': 0.8,
-    '1h': 0.9,
-    '4h': 1.0,
-    '1d': 1.1,
-    '3d': 1.2,
-    '1w': 1.3,
-    '1M': 1.4
+    '1m': 0.8,
+    '5m': 1.0,
+    '15m': 1.2,
+    '30m': 1.4,
+    '1h': 1.6,
+    '4h': 2.0,
+    '1d': 2.5,
+    '3d': 3.0,
+    '1w': 3.5,
+    '1M': 4.0
   };
   
   const riskMultiplier = timeframeRiskMultipliers[timeframe] || 1.0;

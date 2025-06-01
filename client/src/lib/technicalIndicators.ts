@@ -1373,21 +1373,38 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     // Price levels for the signal
     const currentPrice = data[data.length - 1].close;
     
-    // Calculate stop loss and take profit based on direction
+    // Calculate mathematically accurate stop loss and take profit levels
     let stopLoss, takeProfit;
+    
+    // ATR-based calculations with proper timeframe multipliers for Bitcoin's volatility
+    const timeframeMultipliers: Record<string, { stopLoss: number; takeProfit: number }> = {
+      '1m': { stopLoss: 0.8, takeProfit: 1.6 },   // Short-term tight stops
+      '5m': { stopLoss: 1.0, takeProfit: 2.0 },   // Quick scalping
+      '15m': { stopLoss: 1.2, takeProfit: 2.4 },  // Intraday moves
+      '30m': { stopLoss: 1.4, takeProfit: 2.8 },  // Extended intraday
+      '1h': { stopLoss: 1.6, takeProfit: 3.2 },   // Hourly trends
+      '4h': { stopLoss: 2.0, takeProfit: 4.0 },   // Strong trend moves
+      '1d': { stopLoss: 2.5, takeProfit: 5.0 },   // Daily swing trades
+      '3d': { stopLoss: 3.0, takeProfit: 6.0 },   // Multi-day positions
+      '1w': { stopLoss: 3.5, takeProfit: 7.0 },   // Weekly trend following
+      '1M': { stopLoss: 4.0, takeProfit: 8.0 }    // Monthly position trades
+    };
+    
+    const multipliers = timeframeMultipliers[timeframe] || { stopLoss: 1.5, takeProfit: 3.0 };
     
     if (direction === 'LONG') {
       // For LONG positions: Stop loss below current price, take profit above
-      stopLoss = currentPrice - (indicators.atr * 1.5);
-      takeProfit = currentPrice + (indicators.atr * 2.5);
+      stopLoss = currentPrice - (indicators.atr * multipliers.stopLoss);
+      takeProfit = currentPrice + (indicators.atr * multipliers.takeProfit);
     } else if (direction === 'SHORT') {
       // For SHORT positions: Stop loss above current price, take profit below
-      stopLoss = currentPrice + (indicators.atr * 1.5);
-      takeProfit = currentPrice - (indicators.atr * 2.5);
+      stopLoss = currentPrice + (indicators.atr * multipliers.stopLoss);
+      takeProfit = currentPrice - (indicators.atr * multipliers.takeProfit);
     } else {
-      // For NEUTRAL positions: Symmetric levels
-      stopLoss = currentPrice - (indicators.atr * 1.5);
-      takeProfit = currentPrice + (indicators.atr * 1.5);
+      // For NEUTRAL positions: Conservative symmetric levels
+      const neutralMultiplier = multipliers.stopLoss * 0.8;
+      stopLoss = currentPrice - (indicators.atr * neutralMultiplier);
+      takeProfit = currentPrice + (indicators.atr * neutralMultiplier);
     }
     
     return {
