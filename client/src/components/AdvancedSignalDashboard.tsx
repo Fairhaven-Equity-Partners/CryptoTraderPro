@@ -1720,26 +1720,14 @@ export default function AdvancedSignalDashboard({
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Take Profit</span>
                             <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                              {formatCurrency((currentSignal?.takeProfit || 0) * 
-                                (selectedTimeframe === '1h' ? 1.002 :
-                                 selectedTimeframe === '4h' ? 1.004 :
-                                 selectedTimeframe === '1d' ? 1.006 :
-                                 selectedTimeframe === '3d' ? 1.008 :
-                                 selectedTimeframe === '1w' ? 1.010 :
-                                 selectedTimeframe === '1M' ? 1.012 : 1.0))}
+                              {formatCurrency(currentSignal?.takeProfit || 0)}
                             </span>
                           </div>
                           
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Stop Loss</span>
                             <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                              {formatCurrency((currentSignal?.stopLoss || 0) * 
-                                (selectedTimeframe === '1h' ? 0.991 :
-                                 selectedTimeframe === '4h' ? 0.982 :
-                                 selectedTimeframe === '1d' ? 0.973 :
-                                 selectedTimeframe === '3d' ? 0.964 :
-                                 selectedTimeframe === '1w' ? 0.955 :
-                                 selectedTimeframe === '1M' ? 0.946 : 1.0))}
+                              {formatCurrency(currentSignal?.stopLoss || 0)}
                             </span>
                           </div>
                         </div>
