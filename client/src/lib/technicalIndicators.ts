@@ -1400,6 +1400,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
         data.slice(-10).reduce((sum, candle) => sum + (candle.high - candle.low) / candle.low, 0) * 100
       ));
       
+      // Fix stop loss and take profit calculations to match signal direction
       const stopDistance = direction === 'LONG' ? -volatility / 100 : volatility / 100;
       const tpDistance = direction === 'LONG' ? volatility * 2 / 100 : -volatility * 2 / 100;
       
@@ -1608,12 +1609,28 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
                             'Institutional interest remains strong',
                             'Retail sentiment is cautiously optimistic'];
       
+      // Calculate stop loss and take profit properly based on direction
+      let calculatedStopLoss: number;
+      let calculatedTakeProfit: number;
+      
+      if (direction === 'LONG') {
+        calculatedStopLoss = entryPrice * (1 + adjustedStopDistance); // Below entry for LONG
+        calculatedTakeProfit = entryPrice * (1 + adjustedTpDistance); // Above entry for LONG
+      } else if (direction === 'SHORT') {
+        calculatedStopLoss = entryPrice * (1 - adjustedStopDistance); // Above entry for SHORT
+        calculatedTakeProfit = entryPrice * (1 - Math.abs(adjustedTpDistance)); // Below entry for SHORT
+      } else {
+        // NEUTRAL
+        calculatedStopLoss = entryPrice * (1 + Math.abs(adjustedStopDistance));
+        calculatedTakeProfit = entryPrice * (1 + Math.abs(adjustedTpDistance));
+      }
+
       return {
         direction,
         confidence,
         entryPrice: entryPrice,
-        stopLoss: entryPrice * (1 + adjustedStopDistance),
-        takeProfit: entryPrice * (1 + adjustedTpDistance),
+        stopLoss: calculatedStopLoss,
+        takeProfit: calculatedTakeProfit,
         indicators: {
           rsi: 50,
           macd: { value: 0, signal: 0, histogram: 0 },
