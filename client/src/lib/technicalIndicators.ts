@@ -941,6 +941,11 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
   macroClassification: string,
   macroInsights: string[]
 } {
+  // Prevent errors for weekly and monthly timeframes by using simplified signal
+  if (['1w', '1M'].includes(timeframe)) {
+    return generateSimplifiedSignal(data, timeframe);
+  }
+  
   try {
     // Make sure we have enough data
     // Monthly timeframe requires fewer data points than other timeframes

@@ -99,7 +99,7 @@ function setupSynchronizedCalculations() {
         triggerCalculation(activeSymbol, currentPrice);
       }
     }
-  }, 15000);
+  }, 30000); // Reduced frequency from 15s to 30s
 }
 
 /**
