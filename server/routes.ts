@@ -83,7 +83,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const cents = Math.floor(Math.random() * 100);
             const realTimePrice = parseFloat((basePrice + (cents/100)).toFixed(2));
             const change24h = data.bitcoin.usd_24h_change || 0;
-            console.log(`Got real-time Bitcoin price: $${realTimePrice}`);
+            console.log(`Got real-time Bitcoin price: $${realTimePrice} with 24h change: ${change24h.toFixed(2)}%`);
             
             // Get the existing asset first
             const asset = await storage.getCryptoAssetBySymbol(symbol);
