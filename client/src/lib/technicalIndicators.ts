@@ -1217,8 +1217,8 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       // With very strong stability - weekly signals only change with significant market moves
       
       // Use price change percentage to determine trend strength and consistency
-      const priceChangePercent = ((lastWeekPrice - firstWeekPrice) / firstWeekPrice) * 100;
-      const isSignificantMove = Math.abs(priceChangePercent) > 10; // 10% change is significant for weekly
+      const weeklyPriceChangePercent = ((lastWeekPrice - firstWeekPrice) / firstWeekPrice) * 100;
+      const isSignificantMove = Math.abs(weeklyPriceChangePercent) > 10; // 10% change is significant for weekly
       
       // Create stability mechanism to prevent frequent changes
       const now = new Date();
