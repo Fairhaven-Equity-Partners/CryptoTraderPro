@@ -6,7 +6,9 @@
  * and multi-timeframe analysis for maximum accuracy.
  */
 
-import { TimeFrame } from '../types/types';
+import { TimeFrame } from '../types';
+import { analyzeIndicatorConvergence, calculateEnhancedConfidence, generateCorrelationInsights, analyzeIndicatorPairs } from './correlationAnalysis';
+import { detectMarketRegime, applyRegimeAdjustments, generateRegimeInsights } from './marketRegimeDetection';
 
 /**
  * MASTER MARKET ANALYSIS FORMULA
