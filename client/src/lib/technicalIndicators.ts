@@ -1336,31 +1336,35 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
     const dateHash = dateString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const signalBias = Math.floor((timeframeHash + dateHash + timeComponent * stabilityFactor) % 5);
     
-    // Determine signal based on indicator percentages with stability considerations
-    if (bullishPercentage > bearishPercentage + 15 && bullishPercentage > neutralPercentage + 10) {
-      // Strong bullish - consistent across all timeframes
+    // Mathematical signal determination based on actual technical analysis
+    // Focus on the relative strength between bullish and bearish signals, ignoring neutral dominance
+    
+    if (bullishPercentage > bearishPercentage) {
+      // More bullish signals than bearish - this should be LONG
       direction = 'LONG';
-      confidence = bullishPercentage;
-    } else if (bearishPercentage > bullishPercentage + 15 && bearishPercentage > neutralPercentage + 5) {
-      // Strong bearish - consistent across all timeframes
+      
+      // Calculate confidence based on the strength of bullish dominance
+      const dominanceRatio = bearishPercentage > 0 ? bullishPercentage / bearishPercentage : 2;
+      confidence = Math.min(95, Math.max(65, 50 + (dominanceRatio * 15) + (bullishPercentage * 0.5)));
+      
+      console.log(`LONG signal: ${bullishPercentage}% bullish vs ${bearishPercentage}% bearish, confidence: ${confidence}%`);
+      
+    } else if (bearishPercentage > bullishPercentage) {
+      // More bearish signals than bullish - this should be SHORT
       direction = 'SHORT';
-      confidence = Math.max(55, bearishPercentage);
-    } else if (neutralPercentage > bullishPercentage + 15 && neutralPercentage > bearishPercentage + 15) {
-      // Strong neutral - consistent across all timeframes
-      direction = 'NEUTRAL';
-      confidence = Math.max(50, 100 - (bullishPercentage + bearishPercentage));
+      
+      // Calculate confidence based on the strength of bearish dominance
+      const dominanceRatio = bullishPercentage > 0 ? bearishPercentage / bullishPercentage : 2;
+      confidence = Math.min(90, Math.max(60, 50 + (dominanceRatio * 12) + (bearishPercentage * 0.4)));
+      
+      console.log(`SHORT signal: ${bearishPercentage}% bearish vs ${bullishPercentage}% bullish, confidence: ${confidence}%`);
+      
     } else {
-      // Mixed signals - use the stability-influenced bias
-      if (signalBias === 0 || signalBias === 3) {
-        direction = 'LONG';
-        confidence = Math.max(60, bullishPercentage);
-      } else if (signalBias === 1 || signalBias === 4) {
-        direction = 'SHORT';
-        confidence = Math.max(55, bearishPercentage);
-      } else {
-        direction = 'NEUTRAL';
-        confidence = Math.max(50, 100 - (bullishPercentage + bearishPercentage));
-      }
+      // Equal bullish and bearish signals - only then use NEUTRAL
+      direction = 'NEUTRAL';
+      confidence = Math.max(50, 55 + Math.abs(bullishPercentage - bearishPercentage) * 0.3);
+      
+      console.log(`NEUTRAL signal: Equal ${bullishPercentage}% bullish and ${bearishPercentage}% bearish`);
     }
     
     // Modify confidence based on market environment
