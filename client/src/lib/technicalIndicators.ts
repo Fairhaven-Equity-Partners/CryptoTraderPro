@@ -1691,14 +1691,14 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
       let calculatedTakeProfit: number;
       
       if (direction === 'LONG') {
-        calculatedStopLoss = entryPrice * (1 + adjustedStopDistance); // Below entry for LONG
+        calculatedStopLoss = entryPrice * (1 - adjustedStopDistance); // Below entry for LONG
         calculatedTakeProfit = entryPrice * (1 + adjustedTpDistance); // Above entry for LONG
       } else if (direction === 'SHORT') {
-        calculatedStopLoss = entryPrice * (1 - adjustedStopDistance); // Above entry for SHORT
-        calculatedTakeProfit = entryPrice * (1 - Math.abs(adjustedTpDistance)); // Below entry for SHORT
+        calculatedStopLoss = entryPrice * (1 + adjustedStopDistance); // Above entry for SHORT
+        calculatedTakeProfit = entryPrice * (1 - adjustedTpDistance); // Below entry for SHORT
       } else {
-        // NEUTRAL
-        calculatedStopLoss = entryPrice * (1 + Math.abs(adjustedStopDistance));
+        // NEUTRAL - conservative levels
+        calculatedStopLoss = entryPrice * (1 - Math.abs(adjustedStopDistance));
         calculatedTakeProfit = entryPrice * (1 + Math.abs(adjustedTpDistance));
       }
 
