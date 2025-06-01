@@ -35,10 +35,12 @@ export function getMacroIndicators(): MacroData {
 }
 
 export function analyzeMacroEnvironment(symbol: string): { score: number; classification: string; insights: string[] } {
+  console.log('Enhanced macro analysis starting for:', symbol);
   const macroSignal = calculateMacroSignal(calculateMacroIndicators(symbol, '1d'));
   
   // Enhanced insights with new analysis systems
   const baseInsights = macroSignal.topIndicators.map(i => `${i.type}: ${i.description}`);
+  console.log('Base macro insights:', baseInsights);
   
   // Add correlation analysis insight
   const mockIndicators = [
@@ -49,11 +51,12 @@ export function analyzeMacroEnvironment(symbol: string): { score: number; classi
   
   try {
     const convergence = analyzeIndicatorConvergence(mockIndicators as any);
+    console.log('Correlation analysis result:', convergence);
     if (convergence.confidence > 70) {
-      baseInsights.push(`Indicator Correlation: ${convergence.description}`);
+      baseInsights.push(`Correlation: ${convergence.description}`);
     }
   } catch (e) {
-    // Silently handle any correlation analysis errors
+    console.log('Correlation analysis error:', e);
   }
   
   // Add market regime insight
@@ -68,21 +71,24 @@ export function analyzeMacroEnvironment(symbol: string): { score: number; classi
   
   try {
     const regime = detectMarketRegime(mockChartData, '1d');
+    console.log('Market regime result:', regime);
     if (regime.confidence > 60) {
-      baseInsights.push(`Market Regime: ${regime.description}`);
+      baseInsights.push(`Regime: ${regime.description}`);
     }
   } catch (e) {
-    // Silently handle any regime detection errors
+    console.log('Market regime error:', e);
   }
   
   // Add validation insight based on current confidence
   if (macroSignal.confidence > 75) {
-    baseInsights.push('Signal Validation: High confidence based on historical accuracy');
+    baseInsights.push('Validation: High historical accuracy');
   } else if (macroSignal.confidence > 50) {
-    baseInsights.push('Signal Validation: Moderate confidence - exercise caution');
+    baseInsights.push('Validation: Moderate confidence');
   } else {
-    baseInsights.push('Signal Validation: Low confidence - consider waiting for clearer signals');
+    baseInsights.push('Validation: Exercise caution');
   }
+  
+  console.log('Final enhanced insights:', baseInsights);
   
   return {
     score: macroSignal.confidence,

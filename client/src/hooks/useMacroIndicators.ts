@@ -23,13 +23,13 @@ export function useMacroIndicators() {
           setMacroData(data);
           
           // Calculate score and classifications
-          const score = analyzeMacroEnvironment();
-          setMacroScore(score);
+          const analysisResult = analyzeMacroEnvironment('BTC/USDT');
+          setMacroScore(analysisResult.score);
           
-          const classification = getMacroEnvironmentClassification();
+          const classification = getMacroEnvironmentClassification('BTC/USDT');
           setMacroClassification(classification);
           
-          const insights = getMacroInsights();
+          const insights = getMacroInsights('BTC/USDT');
           setMacroInsights(insights);
           
           setIsLoading(false);
