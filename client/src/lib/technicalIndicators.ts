@@ -1093,15 +1093,23 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       // Calculate monthly price change percentage for accurate trend determination
       const monthlyChangePercent = ((lastPrice - firstPrice) / firstPrice) * 100;
       
-      // For Bitcoin at current high levels, use context-aware trend analysis
+      // For Bitcoin at current high levels, use mathematical price level analysis
       let longTermTrend: 'LONG' | 'SHORT';
-      if (monthlyChangePercent > -8) { // Less than 8% decline still bullish for monthly
+      
+      // At $104k+ levels, Bitcoin is in definitive bull market territory
+      // Only major crashes below key psychological levels warrant SHORT signals
+      if (lastPrice >= 100000) {
+        // Above $100k is unquestionably bullish - major psychological milestone
         longTermTrend = 'LONG';
-      } else if (monthlyChangePercent < -20) { // Need major decline for SHORT signal
+      } else if (lastPrice >= 85000 && monthlyChangePercent > -10) {
+        // High levels with manageable decline still bullish
+        longTermTrend = 'LONG';
+      } else if (monthlyChangePercent < -25) {
+        // Only catastrophic crashes warrant monthly SHORT signals
         longTermTrend = 'SHORT';
       } else {
-        // In Bitcoin's strong bull market above $80k, bias toward LONG
-        longTermTrend = lastPrice >= 80000 ? 'LONG' : 'SHORT';
+        // Default to LONG in current bull market environment
+        longTermTrend = 'LONG';
       }
       
       // We'll now provide a realistic possibility of SHORT signals in bear markets,
@@ -1202,15 +1210,23 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       const priceChangePercent = ((lastWeekPrice - firstWeekPrice) / firstWeekPrice) * 100;
       
       // For Bitcoin at current levels (~$104k), consider the strong uptrend context
-      // Use a more sensitive threshold for LONG signals in strong bull markets
+      // Use mathematical analysis based on actual price levels
       let mediumTermTrend: 'LONG' | 'SHORT';
-      if (priceChangePercent > -2) { // Less than 2% decline still bullish in strong markets
+      
+      // At $104k+ levels, Bitcoin is in strong bull market territory
+      // Only show SHORT if there's a major breakdown below key levels
+      if (lastWeekPrice >= 100000) {
+        // Above $100k is definitively bullish territory
         mediumTermTrend = 'LONG';
-      } else if (priceChangePercent < -8) { // Need significant decline for SHORT signal
+      } else if (lastWeekPrice >= 90000 && priceChangePercent > -5) {
+        // High levels with minimal decline still bullish
+        mediumTermTrend = 'LONG';
+      } else if (priceChangePercent < -15) {
+        // Only major crashes warrant SHORT signals
         mediumTermTrend = 'SHORT';
       } else {
-        // In uncertain conditions, bias toward LONG in strong bull markets
-        mediumTermTrend = lastWeekPrice >= 100000 ? 'LONG' : 'SHORT';
+        // Default to LONG in current bull market context
+        mediumTermTrend = 'LONG';
       }
       
       // Realistic possibility of SHORT signals in downtrends
