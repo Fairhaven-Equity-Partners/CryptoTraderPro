@@ -1132,9 +1132,21 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       // Create values for the monthly timeframe
       const calculatedPrice = data && data.length > 0 ? data[data.length - 1].close : 100000;
       
-      // Set stop loss and take profit based on direction
-      const stopLossPercent = direction === 'LONG' ? 0.92 : 1.08;
-      const takeProfitPercent = direction === 'LONG' ? 1.15 : 0.85;
+      // Set stop loss and take profit based on direction - ensuring consistency
+      let stopLossPercent: number;
+      let takeProfitPercent: number;
+      
+      if (direction === 'LONG') {
+        stopLossPercent = 0.92;  // Stop loss below entry price for LONG
+        takeProfitPercent = 1.15; // Take profit above entry price for LONG
+      } else if (direction === 'SHORT') {
+        stopLossPercent = 1.08;  // Stop loss above entry price for SHORT
+        takeProfitPercent = 0.85; // Take profit below entry price for SHORT
+      } else {
+        // NEUTRAL - symmetric levels
+        stopLossPercent = 0.95;
+        takeProfitPercent = 1.05;
+      }
       
       // Return a complete object with all required fields
       return {
