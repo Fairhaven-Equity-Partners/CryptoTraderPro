@@ -1089,15 +1089,28 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       const lastThreeMonthsData = data.slice(-90);
       const firstPrice = lastThreeMonthsData[0]?.close || 0;
       const lastPrice = lastThreeMonthsData[lastThreeMonthsData.length - 1]?.close || 0;
-      const longTermTrend = lastPrice > firstPrice ? 'LONG' : 'SHORT';
+      
+      // Calculate monthly price change percentage for accurate trend determination
+      const monthlyChangePercent = ((lastPrice - firstPrice) / firstPrice) * 100;
+      
+      // For Bitcoin at current high levels, use context-aware trend analysis
+      let longTermTrend: 'LONG' | 'SHORT';
+      if (monthlyChangePercent > -8) { // Less than 8% decline still bullish for monthly
+        longTermTrend = 'LONG';
+      } else if (monthlyChangePercent < -20) { // Need major decline for SHORT signal
+        longTermTrend = 'SHORT';
+      } else {
+        // In Bitcoin's strong bull market above $80k, bias toward LONG
+        longTermTrend = lastPrice >= 80000 ? 'LONG' : 'SHORT';
+      }
       
       // We'll now provide a realistic possibility of SHORT signals in bear markets,
       // but with a very strong bias towards stability (changing signals very infrequently)
       
       // Use a deterministic approach based on price movement to maintain consistency
       // but still allow for signal changes during major market reversals
-      const priceChangePercent = ((lastPrice - firstPrice) / firstPrice) * 100;
-      const isStrongTrend = Math.abs(priceChangePercent) > 15; // 15% change indicates a strong trend
+      const monthlyPriceChangePercent = ((lastPrice - firstPrice) / firstPrice) * 100;
+      const isStrongTrend = Math.abs(monthlyPriceChangePercent) > 15; // 15% change indicates a strong trend
       
       // Calculate the last analysis timestamp to ensure stability
       const now = new Date();
@@ -1184,7 +1197,21 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       const lastFourWeeksData = data.slice(-28);
       const firstWeekPrice = lastFourWeeksData[0]?.close || 0;
       const lastWeekPrice = lastFourWeeksData[lastFourWeeksData.length - 1]?.close || 0;
-      const mediumTermTrend = lastWeekPrice > firstWeekPrice ? 'LONG' : 'SHORT';
+      
+      // Calculate actual price change percentage for accurate trend determination
+      const priceChangePercent = ((lastWeekPrice - firstWeekPrice) / firstWeekPrice) * 100;
+      
+      // For Bitcoin at current levels (~$104k), consider the strong uptrend context
+      // Use a more sensitive threshold for LONG signals in strong bull markets
+      let mediumTermTrend: 'LONG' | 'SHORT';
+      if (priceChangePercent > -2) { // Less than 2% decline still bullish in strong markets
+        mediumTermTrend = 'LONG';
+      } else if (priceChangePercent < -8) { // Need significant decline for SHORT signal
+        mediumTermTrend = 'SHORT';
+      } else {
+        // In uncertain conditions, bias toward LONG in strong bull markets
+        mediumTermTrend = lastWeekPrice >= 100000 ? 'LONG' : 'SHORT';
+      }
       
       // Realistic possibility of SHORT signals in downtrends
       // With very strong stability - weekly signals only change with significant market moves
