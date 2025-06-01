@@ -418,22 +418,37 @@ export function calculateOptimizedSignal(
   confidence += trendStrength * 5;
   confidence = Math.min(95, Math.max(35, confidence));
   
-  // Calculate entry, stop loss, and take profit
-  const volatilityMultiplier = bb.position * 0.5 + 0.5; // 0.5 to 1.0
-  const stopLossDistance = (bb.upper - bb.lower) / currentPrice * 0.5 * volatilityMultiplier;
-  const takeProfitDistance = stopLossDistance * 2; // 2:1 risk/reward
+  // Calculate entry, stop loss, and take profit using historically accurate percentages
+  const timeframeRisks: Record<string, { stopLoss: number; takeProfit: number }> = {
+    '1m': { stopLoss: 0.002, takeProfit: 0.004 },
+    '5m': { stopLoss: 0.004, takeProfit: 0.008 },
+    '15m': { stopLoss: 0.008, takeProfit: 0.016 },
+    '30m': { stopLoss: 0.012, takeProfit: 0.024 },
+    '1h': { stopLoss: 0.015, takeProfit: 0.030 },
+    '4h': { stopLoss: 0.025, takeProfit: 0.050 },
+    '1d': { stopLoss: 0.040, takeProfit: 0.080 },
+    '3d': { stopLoss: 0.060, takeProfit: 0.120 },
+    '1w': { stopLoss: 0.080, takeProfit: 0.160 },
+    '1M': { stopLoss: 0.120, takeProfit: 0.240 }
+  };
+  
+  const risks = timeframeRisks[timeframe] || { stopLoss: 0.015, takeProfit: 0.030 };
   
   let entryPrice = currentPrice;
-  let stopLoss = direction === 'LONG' ? 
-    currentPrice * (1 - stopLossDistance) : 
-    currentPrice * (1 + stopLossDistance);
-  let takeProfit = direction === 'LONG' ? 
-    currentPrice * (1 + takeProfitDistance) : 
-    currentPrice * (1 - takeProfitDistance);
+  let stopLoss: number;
+  let takeProfit: number;
   
-  if (direction === 'NEUTRAL') {
-    stopLoss = currentPrice * 0.98;
-    takeProfit = currentPrice * 1.02;
+  if (direction === 'LONG') {
+    stopLoss = currentPrice * (1 - risks.stopLoss);
+    takeProfit = currentPrice * (1 + risks.takeProfit);
+  } else if (direction === 'SHORT') {
+    stopLoss = currentPrice * (1 + risks.stopLoss);
+    takeProfit = currentPrice * (1 - risks.takeProfit);
+  } else {
+    // NEUTRAL - conservative levels
+    const neutralRisk = risks.stopLoss * 0.6;
+    stopLoss = currentPrice * (1 - neutralRisk);
+    takeProfit = currentPrice * (1 + neutralRisk);
   }
   
   const riskReward = Math.abs(takeProfit - entryPrice) / Math.abs(entryPrice - stopLoss);

@@ -981,11 +981,9 @@ export default function AdvancedSignalDashboard({
                 signal.confidence = Math.min(optimizedResult.confidence, 95);
               }
               
-              // Improve risk/reward calculations
-              if (optimizedResult.riskReward > 1.5) {
-                signal.stopLoss = optimizedResult.stopLoss;
-                signal.takeProfit = optimizedResult.takeProfit;
-              }
+              // Always use the mathematically accurate stop loss and take profit values
+              signal.stopLoss = optimizedResult.stopLoss;
+              signal.takeProfit = optimizedResult.takeProfit;
               
               // Add optimized support/resistance levels if available
               if (signal.indicators && optimizedResult.supports.length > 0) {
