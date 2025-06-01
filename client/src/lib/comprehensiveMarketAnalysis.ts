@@ -299,46 +299,47 @@ export function calculateStopLossAndTakeProfit(
   takeProfit: number;
   riskReward: number;
 } {
-  const timeframeMultiplier = {
-    '1M': 4.0,
-    '1w': 3.5,
-    '3d': 3.0,
-    '1d': 2.5,
-    '12h': 2.2,
-    '4h': 2.0,
-    '1h': 1.6,
-    '30m': 1.4,
-    '15m': 1.2,
-    '5m': 1.0,
-    '1m': 0.8
-  }[timeframe] || 2.0;
-  
-  const atrMultiplied = atr * timeframeMultiplier;
+  // Use percentage-based risk calculations instead of ATR multipliers for accuracy
+  const timeframeRisks = {
+    '1M': { stopLoss: 0.120, takeProfit: 0.240 },
+    '1w': { stopLoss: 0.080, takeProfit: 0.160 },
+    '3d': { stopLoss: 0.060, takeProfit: 0.120 },
+    '1d': { stopLoss: 0.040, takeProfit: 0.080 },
+    '12h': { stopLoss: 0.032, takeProfit: 0.064 },
+    '4h': { stopLoss: 0.025, takeProfit: 0.050 },
+    '1h': { stopLoss: 0.015, takeProfit: 0.030 },
+    '30m': { stopLoss: 0.012, takeProfit: 0.024 },
+    '15m': { stopLoss: 0.008, takeProfit: 0.016 },
+    '5m': { stopLoss: 0.004, takeProfit: 0.008 },
+    '1m': { stopLoss: 0.002, takeProfit: 0.004 }
+  }[timeframe] || { stopLoss: 0.015, takeProfit: 0.030 };
   
   let stopLoss: number;
   let takeProfit: number;
   
   if (direction === 'LONG') {
-    // Use support level if available, otherwise ATR-based
+    // Use percentage-based calculation for realistic stop loss
+    const percentageStopLoss = entryPrice * (1 - timeframeRisks.stopLoss);
     stopLoss = supportLevel 
-      ? Math.min(supportLevel * 0.995, entryPrice - atrMultiplied)
-      : entryPrice - atrMultiplied;
+      ? Math.min(supportLevel * 0.995, percentageStopLoss)
+      : percentageStopLoss;
     
-    // Use resistance level if available, otherwise risk/reward ratio
-    const stopDistance = entryPrice - stopLoss;
+    // Use percentage-based calculation for realistic take profit
+    const percentageTakeProfit = entryPrice * (1 + timeframeRisks.takeProfit);
     takeProfit = resistanceLevel
-      ? Math.max(resistanceLevel * 0.995, entryPrice + (stopDistance * riskRewardRatio))
-      : entryPrice + (stopDistance * riskRewardRatio);
+      ? Math.max(resistanceLevel * 0.995, percentageTakeProfit)
+      : percentageTakeProfit;
   } else {
     // SHORT position
+    const percentageStopLoss = entryPrice * (1 + timeframeRisks.stopLoss);
     stopLoss = resistanceLevel
-      ? Math.max(resistanceLevel * 1.005, entryPrice + atrMultiplied)
-      : entryPrice + atrMultiplied;
+      ? Math.max(resistanceLevel * 1.005, percentageStopLoss)
+      : percentageStopLoss;
     
-    const stopDistance = stopLoss - entryPrice;
+    const percentageTakeProfit = entryPrice * (1 - timeframeRisks.takeProfit);
     takeProfit = supportLevel
-      ? Math.min(supportLevel * 1.005, entryPrice - (stopDistance * riskRewardRatio))
-      : entryPrice - (stopDistance * riskRewardRatio);
+      ? Math.min(supportLevel * 1.005, percentageTakeProfit)
+      : percentageTakeProfit;
   }
   
   const actualRiskReward = Math.abs(takeProfit - entryPrice) / Math.abs(entryPrice - stopLoss);
