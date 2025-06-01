@@ -1344,16 +1344,16 @@ export default function AdvancedSignalDashboard({
                           <h3 className="text-white font-bold text-sm">Moon Phase Analysis</h3>
                           {(() => {
                             const moonPhase = getCurrentMoonPhase();
-                            const moonEmoji = getMoonPhaseEmoji(moonPhase.phase);
+                            const moonEmoji = getMoonPhaseEmoji(moonPhase.phaseName);
                             return (
                               <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
                                 <div className="flex items-center justify-between mb-2">
                                   <div className="flex items-center space-x-2">
                                     <span className="text-2xl">{moonEmoji}</span>
-                                    <span className="text-gray-300 font-medium">{moonPhase.phase}</span>
+                                    <span className="text-gray-300 font-medium">{moonPhase.phaseName}</span>
                                   </div>
                                   <Badge variant="outline" className="text-xs bg-purple-900/20 text-purple-400 border-purple-800">
-                                    {Math.round(moonPhase.illumination * 100)}% lit
+                                    {Math.round(moonPhase.illumination)}% lit
                                   </Badge>
                                 </div>
                                 <div className="text-xs text-gray-400 mb-2">
@@ -1362,8 +1362,8 @@ export default function AdvancedSignalDashboard({
                                 <div className="flex justify-between items-center">
                                   <span className="text-xs text-gray-400">Market Bias:</span>
                                   <span className={`text-xs font-medium ${
-                                    moonPhase.marketBias === 'Bullish' ? 'text-green-400' : 
-                                    moonPhase.marketBias === 'Bearish' ? 'text-red-400' : 'text-gray-400'
+                                    moonPhase.marketBias === 'BULLISH' ? 'text-green-400' : 
+                                    moonPhase.marketBias === 'BEARISH' ? 'text-red-400' : 'text-gray-400'
                                   }`}>
                                     {moonPhase.marketBias}
                                   </span>

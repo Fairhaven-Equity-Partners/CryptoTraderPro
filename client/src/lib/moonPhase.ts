@@ -99,6 +99,32 @@ export function getCurrentMoonPhase(): MoonPhaseData {
 }
 
 /**
+ * Get appropriate emoji for moon phase
+ */
+export function getMoonPhaseEmoji(phaseName: string): string {
+  switch (phaseName) {
+    case 'New Moon':
+      return '🌑';
+    case 'Waxing Crescent':
+      return '🌒';
+    case 'First Quarter':
+      return '🌓';
+    case 'Waxing Gibbous':
+      return '🌔';
+    case 'Full Moon':
+      return '🌕';
+    case 'Waning Gibbous':
+      return '🌖';
+    case 'Last Quarter':
+      return '🌗';
+    case 'Waning Crescent':
+      return '🌘';
+    default:
+      return '🌙';
+  }
+}
+
+/**
  * Calculate moon phase impact on macro score
  * Integrates lunar cycle influence into overall market sentiment analysis
  */
