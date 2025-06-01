@@ -73,7 +73,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (symbol === 'BTC/USDT') {
         try {
           console.log('Fetching real-time Bitcoin price from CoinGecko API');
-          const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+          const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
           const data = await response.json();
           
           if (data && data.bitcoin && data.bitcoin.usd) {
@@ -82,6 +82,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const basePrice = data.bitcoin.usd;
             const cents = Math.floor(Math.random() * 100);
             const realTimePrice = parseFloat((basePrice + (cents/100)).toFixed(2));
+            const change24h = data.bitcoin.usd_24h_change || 0;
             console.log(`Got real-time Bitcoin price: $${realTimePrice}`);
             
             // Get the existing asset first
@@ -91,7 +92,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
               // Update the asset with real market data
               await storage.updateCryptoAsset(symbol, {
                 lastPrice: realTimePrice,
-                price: realTimePrice
+                price: realTimePrice,
+                change24h: change24h
               });
               
               // Return the updated asset
