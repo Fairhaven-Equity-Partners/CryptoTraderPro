@@ -278,15 +278,16 @@ export default function AdvancedSignalDashboard({
       if (event.detail.symbol === symbol) {
         console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${event.detail.price}`);
         
-        // Check if this is a forced calculation from the 3-minute timer
+        // STRICT: Only respond to the 3-minute synchronized timer events
         const isTimerTriggered = event.detail.forceCalculate === true;
         console.log(`⚡ Event details: forceCalculate=${event.detail.forceCalculate}, isTimerTriggered=${isTimerTriggered}`);
         
-        // Only proceed if it's a timer-triggered update or if we haven't calculated recently
-        // Allow calculation if we have some chart data loaded (don't wait for ALL timeframes)
-        const hasMinimumData = Object.keys(chartData).length >= 5; // At least 5 timeframes loaded
+        // ONLY proceed if this is explicitly a 3-minute timer-triggered update
+        const hasMinimumData = Object.keys(chartData).length >= 5;
+        const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        if (hasMinimumData && !isCalculating && isTimerTriggered) {
+        // Require: timer trigger AND minimum 150 seconds since last calculation (safety buffer)
+        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 150) {
           console.log(`💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
           console.log(`Data status: ${Object.keys(chartData).length} timeframes loaded, allDataLoaded=${isAllDataLoaded}`);
           
@@ -300,8 +301,12 @@ export default function AdvancedSignalDashboard({
           calculateAllSignals();
           console.log(`🚀 calculateAllSignals() call completed`);
         } else {
-          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}`);
+          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s`);
           console.log(`Available timeframes: ${Object.keys(chartData).join(', ')}`);
+          
+          if (!isTimerTriggered) {
+            console.log(`❌ Ignoring non-timer price update to enforce 3-minute intervals`);
+          }
         }
       }
     };
