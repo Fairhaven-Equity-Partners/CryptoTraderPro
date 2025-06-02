@@ -296,7 +296,9 @@ export default function AdvancedSignalDashboard({
           lastCalculationTimeRef.current = Date.now() / 1000;
           
           // Calculate immediately to ensure perfect synchronization with the 3-minute timer
+          console.log(`🚀 CALLING calculateAllSignals() function now`);
           calculateAllSignals();
+          console.log(`🚀 calculateAllSignals() call completed`);
         } else {
           console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}`);
           console.log(`Available timeframes: ${Object.keys(chartData).join(', ')}`);
@@ -1083,16 +1085,33 @@ export default function AdvancedSignalDashboard({
       const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
       
       // Calculate each timeframe sequentially to prevent overwhelming the browser
+      console.log(`⚡ Starting calculation loop for ${Object.keys(timeframeWeights).length} timeframes`);
       for (const timeframe of Object.keys(timeframeWeights) as TimeFrame[]) {
         if (chartData[timeframe]) {
-          newSignals[timeframe] = await calculateTimeframe(timeframe);
+          console.log(`⚡ About to calculate ${timeframe} timeframe`);
+          try {
+            newSignals[timeframe] = await calculateTimeframe(timeframe);
+            console.log(`⚡ Successfully calculated ${timeframe}: ${newSignals[timeframe]?.direction || 'null'}`);
+          } catch (error) {
+            console.error(`❌ Error calculating ${timeframe}:`, error);
+            newSignals[timeframe] = null;
+          }
+        } else {
+          console.log(`⚡ No chart data available for ${timeframe}`);
         }
       }
+      console.log(`⚡ Calculation loop completed`);  
+      
+      console.log(`🔧 Raw signals before alignment:`, Object.keys(newSignals).map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'}`));
       
       // Apply time frame hierarchy alignment to ensure signal consistency
       const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);
       
+      console.log(`🔧 Aligned signals after processing:`, Object.keys(alignedSignals).map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
+      
       // Update the signals state
+      console.log(`📊 UPDATING UI STATE with ${Object.keys(alignedSignals).length} timeframe signals`);
+      console.log(`📊 Signal data being set:`, Object.keys(alignedSignals).map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
       setSignals(alignedSignals);
       
       // Store the signals for this symbol in our persistent ref
