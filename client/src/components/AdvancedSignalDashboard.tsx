@@ -1833,7 +1833,12 @@ export default function AdvancedSignalDashboard({
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Risk/Reward</span>
                             <span className="font-bold text-blue-300 bg-blue-900/50 px-3 py-1 rounded border border-blue-700">
-                              {Math.round((currentSignal?.optimalRiskReward || 1.5) * 10) / 10}
+                              {(() => {
+                                const riskReward = typeof currentSignal?.optimalRiskReward === 'object' ? 
+                                  currentSignal?.optimalRiskReward?.ideal || 1.5 : 
+                                  currentSignal?.optimalRiskReward || 1.5;
+                                return Math.round(Number(riskReward) * 10) / 10;
+                              })()}
                             </span>
                           </div>
                           
