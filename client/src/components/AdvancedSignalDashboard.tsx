@@ -978,6 +978,13 @@ export default function AdvancedSignalDashboard({
             symbol
           );
           
+          // Ensure signal has all required properties for AdvancedSignal type
+          if (signal) {
+            // Add missing properties to make it compatible with AdvancedSignal type
+            (signal as any).timestamp = Date.now();
+            (signal as any).successProbability = signal.confidence || 75;
+          }
+          
           // Apply optimized technical analysis if signal exists
           if (signal) {
             try {
@@ -1112,7 +1119,31 @@ export default function AdvancedSignalDashboard({
       // Update the signals state
       console.log(`📊 UPDATING UI STATE with ${Object.keys(alignedSignals).length} timeframe signals`);
       console.log(`📊 Signal data being set:`, Object.keys(alignedSignals).map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
-      setSignals(alignedSignals);
+      
+      // Force a state update by creating a completely new object
+      try {
+        // Filter out any null values and ensure proper structure
+        const cleanSignals: Record<TimeFrame, AdvancedSignal | null> = {};
+        Object.keys(alignedSignals).forEach(tf => {
+          const signal = alignedSignals[tf as TimeFrame];
+          if (signal) {
+            // Ensure all required properties exist
+            cleanSignals[tf as TimeFrame] = {
+              ...signal,
+              timestamp: signal.timestamp || Date.now(),
+              successProbability: signal.successProbability || signal.confidence || 75
+            };
+          } else {
+            cleanSignals[tf as TimeFrame] = null;
+          }
+        });
+        
+        console.log(`📊 About to call setSignals with:`, Object.keys(cleanSignals));
+        setSignals(cleanSignals);
+        console.log(`📊 setSignals call completed successfully`);
+      } catch (error) {
+        console.error(`❌ Error updating signals state:`, error);
+      }
       
       // Store the signals for this symbol in our persistent ref
       persistentSignalsRef.current[symbol] = { ...alignedSignals };
