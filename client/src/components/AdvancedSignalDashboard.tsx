@@ -268,7 +268,7 @@ export default function AdvancedSignalDashboard({
     queryKey: [`/api/crypto/${symbol}`],
     enabled: !!symbol
   });
-  const currentAssetPrice = asset?.lastPrice || 0;
+  const currentAssetPrice = (asset as any)?.lastPrice || 0;
   
   // Listen directly for the live price update custom event
   useEffect(() => {
@@ -1147,7 +1147,10 @@ export default function AdvancedSignalDashboard({
       // Force a state update by creating a completely new object
       try {
         // Filter out any null values and ensure proper structure
-        const cleanSignals: Record<TimeFrame, AdvancedSignal | null> = {};
+        const cleanSignals: Record<TimeFrame, AdvancedSignal | null> = {
+          "1m": null, "5m": null, "15m": null, "30m": null, "1h": null, 
+          "4h": null, "12h": null, "1d": null, "3d": null, "1w": null, "1M": null
+        };
         Object.keys(alignedSignals).forEach(tf => {
           const signal = alignedSignals[tf as TimeFrame];
           if (signal) {
@@ -1294,9 +1297,9 @@ export default function AdvancedSignalDashboard({
       },
       exit: {
         takeProfit: [
-          signal.takeProfit * 0.8,
-          signal.takeProfit,
-          signal.takeProfit * 1.2
+          (signal.takeProfit || signal.entryPrice * 1.05) * 0.8,
+          signal.takeProfit || signal.entryPrice * 1.05,
+          (signal.takeProfit || signal.entryPrice * 1.05) * 1.2
         ],
         stopLoss: signal.stopLoss,
         trailingStopActivation: signal.direction === 'LONG' ? 
@@ -1305,15 +1308,15 @@ export default function AdvancedSignalDashboard({
         trailingStopPercent: 1.5
       },
       leverage: {
-        conservative: Math.max(1, Math.floor(signal.recommendedLeverage * 0.5)),
-        moderate: Math.floor(signal.recommendedLeverage),
-        aggressive: Math.floor(signal.recommendedLeverage * 1.5),
+        conservative: Math.max(1, Math.floor((typeof signal.recommendedLeverage === 'object' ? signal.recommendedLeverage.moderate : signal.recommendedLeverage || 1) * 0.5)),
+        moderate: Math.floor(typeof signal.recommendedLeverage === 'object' ? signal.recommendedLeverage.moderate : signal.recommendedLeverage || 1),
+        aggressive: Math.floor((typeof signal.recommendedLeverage === 'object' ? signal.recommendedLeverage.moderate : signal.recommendedLeverage || 1) * 1.5),
         recommendation: signal.confidence > 65 ? 'moderate' : 'conservative'
       },
       riskManagement: {
         positionSizeRecommendation: `${Math.min(5, Math.max(1, Math.floor(signal.confidence / 20)))}% of portfolio`,
         maxRiskPercentage: Math.min(5, Math.max(1, Math.floor(signal.confidence / 20))),
-        potentialRiskReward: signal.optimalRiskReward || 1.5,
+        potentialRiskReward: typeof signal.optimalRiskReward === 'object' ? signal.optimalRiskReward.ideal : (signal.optimalRiskReward || 1.5),
         winProbability: signal.confidence / 100
       },
       keyIndicators: findInfluentialIndicators(signal),
