@@ -384,20 +384,18 @@ export function startRealTimeUpdates() {
             if (newPrice && currentPrice) {
               console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
               
-              // We need to dispatch the price-update event for UI updates,
-              // but NOT the live-price-update event which triggers calculations
-              console.log(`[API] Price update received for ${symbol} but NOT dispatching calculation event`);
+              // Dispatch both price-update and live-price-update events
+              console.log(`[API] Price update received for ${symbol} - dispatching calculation event`);
               
-              // Dispatch price-update for UI updates ONLY
+              // Dispatch price-update for UI updates
               window.dispatchEvent(new CustomEvent('price-update', { 
                 detail: { symbol, price: newPrice, timestamp: Date.now() }
               }));
               
-              /* DISABLED TO PREVENT MULTIPLE CALCULATIONS
+              // Dispatch live-price-update for calculations (throttling handled in dashboard)
               document.dispatchEvent(new CustomEvent('live-price-update', { 
                 detail: { symbol, price: newPrice, timestamp: Date.now() }
               }));
-              */
               
               // IMPORTANT: This next line was causing duplicate calculations
               // We still want to update the UI with the latest price, but

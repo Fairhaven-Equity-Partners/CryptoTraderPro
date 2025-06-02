@@ -82,6 +82,17 @@ export function markCalculationCompleted() {
 }
 
 /**
+ * Reset calculation flags when a new price update is received
+ * This allows the next calculation to proceed
+ */
+export function resetCalculationFlags() {
+  calculatedSinceLastUpdate = false;
+  calculationInProgress = false;
+  lastPriceUpdateTime = Date.now();
+  console.log('[SimpleCalcTrigger] Calculation flags reset - ready for new calculation');
+}
+
+/**
  * Subscribe to calculation trigger events
  */
 export function subscribeToCalculationTrigger(callback: (price: number) => void): () => void {
