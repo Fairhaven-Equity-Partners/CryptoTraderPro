@@ -1179,6 +1179,16 @@ export default function AdvancedSignalDashboard({
       
       // Count valid signals for logging
       const validSignalCount = Object.values(alignedSignals).filter(s => s !== null).length;
+      
+      // Show visual notification for auto-calculations
+      if (validSignalCount > 0) {
+        toast({
+          title: "Auto-Calculation Complete",
+          description: `Updated ${validSignalCount} signals for ${symbol} at ${new Date().toLocaleTimeString()}`,
+          variant: "default", 
+          duration: 2000
+        });
+      }
       console.log(`Found ${validSignalCount} valid signals for recommendation for ${symbol}`);
       
       // Generate a recommendation from the signals if we have enough data
