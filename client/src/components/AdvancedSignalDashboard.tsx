@@ -999,8 +999,7 @@ export default function AdvancedSignalDashboard({
             try {
               const optimizedResult = calculateOptimizedSignal(
                 chartData[timeframe],
-                timeframe,
-                signal.entryPrice
+                timeframe
               );
               
               // Enhance signal with optimized calculations while preserving structure
@@ -1283,13 +1282,7 @@ export default function AdvancedSignalDashboard({
       direction: signal.direction,
       confidence: signal.confidence,
       timeframeSummary: tfSummary,
-      entry: {
-        ideal: signal.entryPrice,
-        range: [
-          signal.entryPrice * 0.995,
-          signal.entryPrice * 1.005
-        ]
-      },
+      entry: signal.entryPrice,
       exit: {
         takeProfit: [
           (signal.takeProfit || signal.entryPrice * 1.05) * 0.8,
