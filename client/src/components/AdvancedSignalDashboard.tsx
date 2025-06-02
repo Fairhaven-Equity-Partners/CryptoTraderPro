@@ -274,15 +274,21 @@ export default function AdvancedSignalDashboard({
   useEffect(() => {
     // Create a specific handler for the live price update event
     const handleLivePriceUpdate = (event: CustomEvent) => {
+      console.log(`🔥 RAW LIVE PRICE EVENT:`, event.detail);
       if (event.detail.symbol === symbol) {
         console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${event.detail.price}`);
         
         // Check if this is a forced calculation from the 3-minute timer
         const isTimerTriggered = event.detail.forceCalculate === true;
+        console.log(`⚡ Event details: forceCalculate=${event.detail.forceCalculate}, isTimerTriggered=${isTimerTriggered}`);
         
         // Only proceed if it's a timer-triggered update or if we haven't calculated recently
-        if (isAllDataLoaded && !isCalculating && isTimerTriggered) {
+        // Allow calculation if we have some chart data loaded (don't wait for ALL timeframes)
+        const hasMinimumData = Object.keys(chartData).length >= 5; // At least 5 timeframes loaded
+        
+        if (hasMinimumData && !isCalculating && isTimerTriggered) {
           console.log(`💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
+          console.log(`Data status: ${Object.keys(chartData).length} timeframes loaded, allDataLoaded=${isAllDataLoaded}`);
           
           // Set calculation state
           setIsCalculating(true);
@@ -291,6 +297,9 @@ export default function AdvancedSignalDashboard({
           
           // Calculate immediately to ensure perfect synchronization with the 3-minute timer
           calculateAllSignals();
+        } else {
+          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}`);
+          console.log(`Available timeframes: ${Object.keys(chartData).join(', ')}`);
         }
       }
     };

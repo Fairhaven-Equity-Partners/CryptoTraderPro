@@ -394,7 +394,7 @@ export function startRealTimeUpdates() {
               
               // Dispatch live-price-update for calculations (throttling handled in dashboard)
               document.dispatchEvent(new CustomEvent('live-price-update', { 
-                detail: { symbol, price: newPrice, timestamp: Date.now() }
+                detail: { symbol, price: newPrice, timestamp: Date.now(), forceCalculate: true }
               }));
               
               // IMPORTANT: This next line was causing duplicate calculations
