@@ -1186,7 +1186,7 @@ export default function AdvancedSignalDashboard({
           title: "Auto-Calculation Complete",
           description: `Updated ${validSignalCount} signals for ${symbol} at ${new Date().toLocaleTimeString()}`,
           variant: "default", 
-          duration: 2000
+          duration: 10000
         });
       }
       console.log(`Found ${validSignalCount} valid signals for recommendation for ${symbol}`);
@@ -1396,18 +1396,13 @@ export default function AdvancedSignalDashboard({
           <p className="text-slate-400 text-sm">Comprehensive technical analysis for {symbol}</p>
         </div>
         <div className="flex justify-end items-center space-x-2">
-          {/* Add countdown timer display */}
-          <Badge variant="outline" className="text-xs bg-gray-800/70 text-gray-300 border-gray-700 px-3 py-1">
-            Next update in: {formattedTimer}
-          </Badge>
-          
           {isCalculating ? (
             <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800 px-3 py-1">
               Calculating...
             </Badge>
           ) : (
             <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
-              Auto-updating
+              Auto-calculations active
             </Badge>
           )}
         </div>
