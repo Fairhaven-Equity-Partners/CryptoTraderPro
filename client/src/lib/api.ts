@@ -201,8 +201,8 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
         subscribeToSymbols(currentSymbols);
       }
       
-      // Setup automatic refresh for this timeframe based on optimized intervals
-      scheduleTimeframeRefresh(symbol, timeframe);
+      // Automatic refresh handled by 5-minute synchronized calculation system
+      // scheduleTimeframeRefresh(symbol, timeframe); // DISABLED - redundant with sync system
       
       console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
       return [...data];
