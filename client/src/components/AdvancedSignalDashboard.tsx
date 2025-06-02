@@ -432,34 +432,14 @@ export default function AdvancedSignalDashboard({
       console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
     }
     
-    // Wait for both historical data to be loaded AND live price data to be ready before calculating
-    // This ensures we calculate with the most up-to-date data
+    // DISABLED: Auto-calculation trigger to enforce 3-minute timer intervals only
+    // This was causing calculations every 15 seconds instead of every 3 minutes
     if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0) {
-      console.log(`Auto-triggering calculation for ${symbol} - historical and live data are both ready`);
+      console.log(`Data ready for ${symbol} - but auto-calculation DISABLED to enforce 3-minute intervals`);
+      console.log(`⏰ Calculations will only occur via the synchronized 3-minute timer`);
       
-      // Only calculate if we haven't recently calculated
-      const timeSinceLastCalc = Date.now() - lastCalculationRef.current;
-      if (timeSinceLastCalc > 2000) { // 2 second debounce
-        // Force calculation with proper data
-        console.log(`Initiating calculation with live data for ${symbol} at price ${currentAssetPrice}`);
-        
-        // Directly call calculate instead of going through the trigger function
-        setIsCalculating(true);
-        lastCalculationRef.current = Date.now();
-        lastCalculationTimeRef.current = Date.now() / 1000;
-        
-        // Call the calculation method with a slight delay to ensure all UI updates are processed
-        setTimeout(() => {
-          calculateAllSignals();
-          
-          // Show a confirmation toast that calculation is happening automatically
-          toast({
-            title: "Live Data Analysis",
-            description: `Analyzing ${symbol} with current price data`,
-            variant: "default"
-          });
-        }, 500);
-      }
+      // All calculations now happen exclusively via the 3-minute synchronized timer
+      // in finalPriceSystem with forceCalculate=true events
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
