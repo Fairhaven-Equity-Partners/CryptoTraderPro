@@ -972,17 +972,41 @@ export default function AdvancedSignalDashboard({
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
           // Generate signal using our technical analysis functions with optimization
-          let signal = await generateSignal(
+          let rawSignal = await generateSignal(
             chartData[timeframe],
             timeframe,
             symbol
           );
           
-          // Ensure signal has all required properties for AdvancedSignal type
-          if (signal) {
-            // Add missing properties to make it compatible with AdvancedSignal type
-            (signal as any).timestamp = Date.now();
-            (signal as any).successProbability = signal.confidence || 75;
+          // Convert to proper AdvancedSignal format
+          let signal: AdvancedSignal | null = null;
+          if (rawSignal) {
+            signal = {
+              direction: rawSignal.direction,
+              confidence: rawSignal.confidence,
+              entryPrice: rawSignal.entryPrice,
+              stopLoss: rawSignal.stopLoss,
+              takeProfit: rawSignal.takeProfit,
+              timeframe: timeframe,
+              timestamp: Date.now(),
+              successProbability: rawSignal.confidence || 75,
+              indicators: rawSignal.indicators || {},
+              patternFormations: rawSignal.patternFormations || [],
+              supportLevels: Array.isArray(rawSignal.supportResistance?.support) ? rawSignal.supportResistance.support : [],
+              resistanceLevels: Array.isArray(rawSignal.supportResistance?.resistance) ? rawSignal.supportResistance.resistance : [],
+              macroInsights: rawSignal.macroInsights || [],
+              recommendedLeverage: typeof rawSignal.recommendedLeverage === 'number' ? {
+                conservative: rawSignal.recommendedLeverage,
+                moderate: rawSignal.recommendedLeverage * 1.5,
+                aggressive: rawSignal.recommendedLeverage * 2,
+                recommendation: 'moderate'
+              } : rawSignal.recommendedLeverage,
+              riskRewardRatio: typeof rawSignal.optimalRiskReward === 'number' ? rawSignal.optimalRiskReward : 2,
+              optimalRiskReward: typeof rawSignal.optimalRiskReward === 'number' ? {
+                ideal: rawSignal.optimalRiskReward,
+                range: [rawSignal.optimalRiskReward * 0.8, rawSignal.optimalRiskReward * 1.2]
+              } : rawSignal.optimalRiskReward
+            };
           }
           
           // Apply optimized technical analysis if signal exists
@@ -1139,6 +1163,8 @@ export default function AdvancedSignalDashboard({
         });
         
         console.log(`📊 About to call setSignals with:`, Object.keys(cleanSignals));
+        console.log(`📊 Sample signal structure:`, cleanSignals['1d'] ? Object.keys(cleanSignals['1d']!) : 'no 1d signal');
+        console.log(`📊 Sample 1d signal:`, cleanSignals['1d']);
         setSignals(cleanSignals);
         console.log(`📊 setSignals call completed successfully`);
       } catch (error) {
