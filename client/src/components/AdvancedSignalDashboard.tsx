@@ -1249,10 +1249,18 @@ export default function AdvancedSignalDashboard({
                              signal.confidence >= 50 ? 'Moderate' : 'Weak';
       
       if (signal.direction === 'LONG') {
-        const riskReward = signal.optimalRiskReward ? signal.optimalRiskReward.toFixed(1) : '1.5';
+        const riskReward = signal.optimalRiskReward ? 
+          (typeof signal.optimalRiskReward === 'object' && signal.optimalRiskReward.ideal ? 
+            signal.optimalRiskReward.ideal.toFixed(1) : 
+            (typeof signal.optimalRiskReward === 'number' ? signal.optimalRiskReward.toFixed(1) : '1.5')
+          ) : '1.5';
         return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else if (signal.direction === 'SHORT') {
-        const riskReward = signal.optimalRiskReward ? signal.optimalRiskReward.toFixed(1) : '1.5';
+        const riskReward = signal.optimalRiskReward ? 
+          (typeof signal.optimalRiskReward === 'object' && signal.optimalRiskReward.ideal ? 
+            signal.optimalRiskReward.ideal.toFixed(1) : 
+            (typeof signal.optimalRiskReward === 'number' ? signal.optimalRiskReward.toFixed(1) : '1.5')
+          ) : '1.5';
         return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else {
         return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals.`;
