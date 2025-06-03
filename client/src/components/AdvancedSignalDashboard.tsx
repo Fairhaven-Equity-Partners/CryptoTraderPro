@@ -1058,6 +1058,9 @@ export default function AdvancedSignalDashboard({
       });
     }
 
+    // Sort patterns by reliability percentage (highest to lowest)
+    patterns.sort((a, b) => b.reliability - a.reliability);
+    
     console.log(`Generated ${patterns.length} patterns for ${timeframe} timeframe`);
     return patterns;
   };
