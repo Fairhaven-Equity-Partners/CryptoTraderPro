@@ -74,7 +74,7 @@ export function generateStreamlinedSignal(
 
     return signal;
   } catch (error) {
-    console.error(`Signal calculation error for ${symbol}:`, error);
+    // Silently handle calculation errors to prevent console spam
     return createNeutralSignal(symbol, timeframe, currentPrice);
   }
 }

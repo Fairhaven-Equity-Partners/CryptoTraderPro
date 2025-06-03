@@ -1116,7 +1116,7 @@ export default function AdvancedSignalDashboard({
         } catch (error) {
           // Return neutral signal instead of null to prevent console errors
           return {
-            direction: 'NEUTRAL' as SignalDirection,
+            direction: 'NEUTRAL' as const,
             confidence: 50,
             entryPrice: currentAssetPrice,
             stopLoss: currentAssetPrice * 0.98,
@@ -1128,7 +1128,8 @@ export default function AdvancedSignalDashboard({
               trend: [],
               momentum: [],
               volume: [],
-              pattern: []
+              pattern: [],
+              volatility: []
             },
             patternFormations: [],
             supportResistance: {
