@@ -1046,12 +1046,12 @@ export default function AdvancedSignalDashboard({
               supportLevels: [],
               resistanceLevels: [],
               macroInsights: rawSignal.macroInsights || [],
-              recommendedLeverage: typeof rawSignal.recommendedLeverage === 'number' ? {
-                conservative: rawSignal.recommendedLeverage,
-                moderate: rawSignal.recommendedLeverage * 1.5,
-                aggressive: rawSignal.recommendedLeverage * 2,
+              recommendedLeverage: typeof rawSignal.recommendedLeverage === 'object' ? rawSignal.recommendedLeverage : {
+                conservative: 1,
+                moderate: 1.5,
+                aggressive: 2,
                 recommendation: 'moderate'
-              } : rawSignal.recommendedLeverage,
+              },
               riskRewardRatio: typeof rawSignal.optimalRiskReward === 'number' ? rawSignal.optimalRiskReward : 2,
               optimalRiskReward: typeof rawSignal.optimalRiskReward === 'number' ? {
                 ideal: rawSignal.optimalRiskReward,
@@ -1066,7 +1066,7 @@ export default function AdvancedSignalDashboard({
               const optimizedResult = calculateOptimizedSignal(
                 chartData[timeframe],
                 timeframe,
-                symbol
+                Number(currentAssetPrice)
               );
               
               // Enhance signal with optimized calculations while preserving structure
@@ -1543,8 +1543,8 @@ export default function AdvancedSignalDashboard({
 
                 const dataFrequency = ['1m', '5m', '15m', '30m'].includes(selectedTimeframe) ? 'High' : 
                                     ['1h', '4h'].includes(selectedTimeframe) ? 'Medium' : 'Low';
-                const volatilityLevel = currentSignal.indicators?.atr ? 
-                  (currentSignal.indicators.atr / currentAssetPrice * 100 > 2 ? 'High' : 'Medium') : 'Unknown';
+                const volatilityLevel = (currentSignal.indicators as any)?.atr ? 
+                  ((currentSignal.indicators as any).atr / currentAssetPrice * 100 > 2 ? 'High' : 'Medium') : 'Unknown';
 
                 return (
                   <>
@@ -1963,23 +1963,18 @@ export default function AdvancedSignalDashboard({
                           <div className="mt-2">
                             <div className="text-gray-300 text-xs font-semibold mb-1">Support Levels</div>
                             <div className="space-y-1">
-                              {currentSignal?.supportResistance
-                                ?.filter(level => level.type === 'support')
-                                ?.sort((a, b) => b.price - a.price) // Sort by price descending
-                                ?.slice(0, 3) // Take top 3
-                                ?.map((level, i) => (
+                              {currentSignal?.supportLevels && currentSignal.supportLevels.length > 0
+                                ? currentSignal.supportLevels.slice(0, 3).map((level: any, i: number) => (
                                   <div key={`supp-${i}`} className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">
                                       {i === 0 ? 'Strong' : i === 1 ? 'Medium' : 'Weak'}
                                     </span>
                                     <span className="text-green-400 font-medium">
-                                      {formatCurrency(level.price)}
+                                      {formatCurrency(typeof level === 'number' ? level : level.price)}
                                     </span>
                                   </div>
-                                ))}
-                              
-                              {/* If no levels found, show empty placeholders */}
-                              {(!currentSignal?.supportResistance || currentSignal.supportResistance.filter(level => level.type === 'support').length === 0) && (
+                                ))
+                                : (
                                 <>
                                   <div className="flex justify-between items-center">
                                     <span className="text-xs text-gray-400">Strong</span>
