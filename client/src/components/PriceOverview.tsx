@@ -8,9 +8,7 @@ import { ArrowUp, ArrowDown } from 'lucide-react';
 import { 
   startTracking, 
   stopTracking,
-  subscribeToPriceUpdates, 
-  getSecondsUntilNextRefresh,
-  getFormattedCountdown
+  subscribeToPriceUpdates
 } from '../lib/finalPriceSystem';
 
 interface PriceOverviewProps {
@@ -31,29 +29,8 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     lastUpdate: new Date()
   });
   
-  // Countdown timer until next refresh
-  const [nextRefreshIn, setNextRefreshIn] = useState<number>(180);
-  
   // Ref for flash animation timer
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
-  
-  // Setup a strict countdown timer that updates every second
-  useEffect(() => {
-    // Update the timer immediately and then every second
-    const updateCountdown = () => {
-      setNextRefreshIn(getSecondsUntilNextRefresh());
-    };
-    
-    // Update now
-    updateCountdown();
-    
-    // And update every second
-    const countdownTimer = setInterval(updateCountdown, 1000);
-    
-    return () => {
-      clearInterval(countdownTimer);
-    };
-  }, []);
   
   // Connect to our final price system
   useEffect(() => {
@@ -159,9 +136,6 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
                 {formatPercentage(price.change24h)}
               </span>
               <span className="text-neutral text-sm">(24h)</span>
-              <Badge variant="outline" className="text-xs font-medium text-white">
-                Next: {Math.floor(nextRefreshIn / 60)}m {nextRefreshIn % 60}s
-              </Badge>
             </div>
           </div>
         </div>
