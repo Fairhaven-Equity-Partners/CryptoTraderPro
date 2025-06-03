@@ -1672,7 +1672,7 @@ export default function AdvancedSignalDashboard({
 
       <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl font-bold text-white flex items-center">
+          <CardTitle className="text-lg font-bold text-white flex items-center">
             Market Analysis
             {isCalculating && (
               <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
@@ -1756,7 +1756,7 @@ export default function AdvancedSignalDashboard({
                     {/* Confidence Score and Direction */}
                     <div className="flex items-center justify-between mb-4">
                       <div>
-                        <h3 className="text-white font-bold text-xl mb-1 flex items-center">
+                        <h3 className="text-white font-bold text-lg mb-1 flex items-center">
                           {currentSignal.direction === 'LONG' && (
                             <>
                               <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
@@ -1807,7 +1807,7 @@ export default function AdvancedSignalDashboard({
                         {/* Current Price Display - Using real-time price */}
                         <div className="space-y-1 mb-3">
                           <h3 className="text-white font-bold text-sm">Current Price</h3>
-                          <div className="text-2xl font-bold text-cyan-300">
+                          <div className="text-lg font-bold text-cyan-300">
                             {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
                           </div>
                         </div>
@@ -1961,7 +1961,7 @@ export default function AdvancedSignalDashboard({
                         
                         {/* Pattern Formations */}
                         <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Pattern Formations</h3>
+                          <h3 className="text-white font-bold text-xs">Pattern Formations</h3>
                           {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
                             currentSignal.patternFormations.map((pattern, i) => (
                               <div key={i} className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
