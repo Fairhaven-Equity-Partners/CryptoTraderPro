@@ -33,45 +33,15 @@ function Router() {
 }
 
 function App() {
-  // Initialize automatic calculation system when the app loads
+  // Initialize streamlined calculation system
   useEffect(() => {
-    // Import and initialize the improved auto calculation system
-    import('./lib/autoCalculationSystem').then(({ initAutoCalculationSystem }) => {
-      console.log('✅ App initializing - setting up enhanced auto calculation system ✅');
-      initAutoCalculationSystem();
+    // Import and initialize the optimized unified calculation system
+    import('./lib/streamlinedPriceManager').then(({ initPriceManager }) => {
+      console.log('✅ Initializing streamlined calculation system');
+      initPriceManager();
     }).catch(error => {
-      console.error('Failed to initialize auto calculation system:', error);
+      console.error('Failed to initialize streamlined system:', error);
     });
-    
-    // Our legacy price update listener - preserved for backward compatibility
-    const handlePriceUpdate = (event: CustomEvent) => {
-      if (event.detail && event.detail.symbol && event.detail.price) {
-        console.log(`🔄 Price update detected for ${event.detail.symbol}: ${event.detail.price}`);
-        
-        // Broadcast a calculation needed event with the new price data
-        const calcEvent = new CustomEvent('calculation-needed', {
-          detail: {
-            symbol: event.detail.symbol,
-            price: event.detail.price,
-            timestamp: Date.now(),
-            trigger: 'auto-price-update'
-          }
-        });
-        
-        // Dispatch the event to trigger calculations
-        window.dispatchEvent(calcEvent);
-      }
-    };
-    
-    // Listen for all price update events
-    window.addEventListener('price-update', handlePriceUpdate as EventListener);
-    window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
-    
-    // Return cleanup function
-    return () => {
-      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-      window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
-    };
   }, []);
   
   return (
