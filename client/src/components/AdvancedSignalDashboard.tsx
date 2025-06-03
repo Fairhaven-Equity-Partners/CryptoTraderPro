@@ -1795,77 +1795,7 @@ export default function AdvancedSignalDashboard({
             </div>
           </div>
           
-          {/* Key Price Levels - Support and Resistance */}
-          <div className="mt-4 p-3 bg-gradient-to-r from-amber-900/20 to-orange-900/20 rounded-lg border border-amber-500/30">
-            <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
-              <Target className="h-4 w-4 text-amber-400" />
-              Key Price Levels ({selectedTimeframe})
-            </h4>
-            {(() => {
-              const currentSignal = signals[selectedTimeframe];
-              if (!currentSignal || !currentSignal.indicators) {
-                return (
-                  <div className="p-2 bg-slate-700/30 rounded-lg">
-                    <p className="text-slate-400 text-xs">No price level data available</p>
-                  </div>
-                );
-              }
 
-              const indicators = currentSignal.indicators as any;
-              const supports = indicators.supports || [];
-              const resistances = indicators.resistances || [];
-
-              return (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {/* Support Levels */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                      <span className="text-green-400 font-semibold text-sm">Support Levels</span>
-                    </div>
-                    {supports.length > 0 ? (
-                      supports.slice(0, 3).map((level: number, index: number) => (
-                        <div key={index} className="flex justify-between items-center p-2 bg-green-900/20 rounded border border-green-700/30">
-                          <span className="text-green-300 text-xs">S{index + 1}</span>
-                          <span className="text-green-400 font-bold text-sm">{formatCurrency(level)}</span>
-                          <span className="text-green-300 text-xs">
-                            {((currentAssetPrice - level) / currentAssetPrice * 100).toFixed(2)}%
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="p-2 bg-slate-700/30 rounded">
-                        <span className="text-slate-400 text-xs">Calculating...</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Resistance Levels */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <span className="text-red-400 font-semibold text-sm">Resistance Levels</span>
-                    </div>
-                    {resistances.length > 0 ? (
-                      resistances.slice(0, 3).map((level: number, index: number) => (
-                        <div key={index} className="flex justify-between items-center p-2 bg-red-900/20 rounded border border-red-700/30">
-                          <span className="text-red-300 text-xs">R{index + 1}</span>
-                          <span className="text-red-400 font-bold text-sm">{formatCurrency(level)}</span>
-                          <span className="text-red-300 text-xs">
-                            +{((level - currentAssetPrice) / currentAssetPrice * 100).toFixed(2)}%
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="p-2 bg-slate-700/30 rounded">
-                        <span className="text-slate-400 text-xs">Calculating...</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })()}
-          </div>
 
           {/* Adaptive Learning Feedback Loop Display */}
           <div className="mt-4 p-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-500/30">
