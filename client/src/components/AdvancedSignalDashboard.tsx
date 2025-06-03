@@ -1708,14 +1708,17 @@ export default function AdvancedSignalDashboard({
                           )}
                         </h3>
                         
-                        {/* Current Price - Moved to right of signal */}
-                        <div className="text-right">
-                          <div className="text-lg font-bold text-cyan-300">
-                            {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
-                          </div>
-                          <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                            {timeframe}
-                          </Badge>
+                        {/* Timeframe Badge */}
+                        <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
+                          {timeframe}
+                        </Badge>
+                        
+                        {/* Current Price Label */}
+                        <span className="text-white text-sm font-medium">Current Price:</span>
+                        
+                        {/* Current Price Value */}
+                        <div className="text-lg font-bold text-cyan-300">
+                          {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
                         </div>
                       </div>
                       
