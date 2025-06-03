@@ -248,8 +248,7 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
-  const [nextRefreshIn, setNextRefreshIn] = useState<number>(180);
-  const [formattedTimer, setFormattedTimer] = useState<string>("3:00");
+  // Timer display permanently removed - calculations happen automatically via 3-minute intervals
   
   // Refs to track calculation status
   const lastSymbolRef = useRef<string>(symbol);
