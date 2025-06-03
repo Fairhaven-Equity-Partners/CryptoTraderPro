@@ -261,8 +261,9 @@ export default function AdvancedSignalDashboard({
     correctPredictions: 0
   });
   
-  // 3-minute timer state synchronized with calculation cycle
+  // 3-minute timer state synchronized with actual calculation execution logic
   const [timeUntilNextCalc, setTimeUntilNextCalc] = useState<number>(180); // 3 minutes in seconds
+  const [actualLastCalculationTime, setActualLastCalculationTime] = useState<number>(Date.now() / 1000);
   
   // Refs to track calculation status
   const lastSymbolRef = useRef<string>(symbol);
@@ -371,23 +372,35 @@ export default function AdvancedSignalDashboard({
     return () => clearInterval(timerInterval);
   }, []);
 
-  // Track when signals actually get updated to sync timer
-  const prevSignalRef = useRef<string>('');
+  // Synchronized timer system that matches actual calculation execution logic
   useEffect(() => {
-    // Create a signature of current signals to detect changes
-    const currentSignature = JSON.stringify(Object.entries(signals).map(([tf, signal]) => 
-      signal ? `${tf}:${signal.direction}:${signal.confidence}` : `${tf}:null`
-    ));
-    
-    // If signals changed meaningfully, reset timer
-    if (prevSignalRef.current && prevSignalRef.current !== currentSignature && 
-        Object.values(signals).some(s => s !== null)) {
-      console.log('🔄 Signals updated, resetting timer to 3:00');
-      setTimeUntilNextCalc(180);
-    }
-    
-    prevSignalRef.current = currentSignature;
-  }, [signals]);
+    const timerInterval = setInterval(() => {
+      const now = Date.now() / 1000;
+      const timeSinceActualLastCalc = now - actualLastCalculationTime;
+      const remainingTime = Math.max(0, 180 - timeSinceActualLastCalc);
+      
+      setTimeUntilNextCalc(Math.ceil(remainingTime));
+      
+      // Update actual last calculation time when signals are updated
+      const currentSignature = JSON.stringify(Object.entries(signals).map(([tf, signal]) => 
+        signal ? `${tf}:${signal.direction}:${signal.confidence}` : `${tf}:null`
+      ));
+      
+      // If signals changed meaningfully, update the actual last calculation time
+      if (Object.values(signals).some(s => s !== null)) {
+        const signalTimestamp = Math.max(...Object.values(signals)
+          .filter(s => s !== null)
+          .map(s => s!.timestamp || 0)) / 1000;
+        
+        if (signalTimestamp > actualLastCalculationTime) {
+          console.log('🔄 Signals updated, syncing timer with actual calculation time');
+          setActualLastCalculationTime(signalTimestamp);
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, [signals, actualLastCalculationTime]);
 
   // Listen directly for the live price update custom event
   useEffect(() => {
