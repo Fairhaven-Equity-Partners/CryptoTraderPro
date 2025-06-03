@@ -43,7 +43,7 @@ class LiveForexTradeGenerator {
     // Fetch real current EUR/USD price first
     await this.fetchRealEURUSDPrice();
     
-    const signals = forexAnalysisEngine.generateMultiTimeframeAnalysis();
+    const signals = await forexAnalysisEngine.generateMultiTimeframeAnalysis();
     const trades: LiveForexTrade[] = [];
     
     signals.forEach((signal, index) => {

@@ -19,7 +19,7 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
   const generateAnalysis = useCallback(async () => {
     setIsLoading(true);
     try {
-      const analysis = forexAnalysisEngine.generateMultiTimeframeAnalysis();
+      const analysis = await forexAnalysisEngine.generateMultiTimeframeAnalysis();
       const liveTrades = await liveForexTradeGenerator.generateLiveForexTrades();
       setSignals(analysis);
       setTrades(liveTrades);

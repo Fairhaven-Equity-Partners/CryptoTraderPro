@@ -246,13 +246,12 @@ class ForexAnalysisEngine {
   async generateSignal(timeframe: '15m' | '1h' | '4h'): Promise<ForexSignal> {
     // Get real EUR/USD data first
     const data = await this.getEURUSDData();
+    const currentPrice = await this.fetchRealEURUSDPrice();
 
     const vwapResult = this.calculateVWAP(data);
     const fibLevels = this.calculateFibonacci(data);
     const marketStructure = this.analyzeMarketStructure(data);
     const priceAction = this.analyzePriceAction(data);
-    
-    const currentPrice = this.eurUsdPrice;
     
     // Signal generation logic based on analysis
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
@@ -328,8 +327,12 @@ class ForexAnalysisEngine {
     }
   }
 
-  generateMultiTimeframeAnalysis(): ForexSignal[] {
-    return ['15m', '1h', '4h'].map(tf => this.generateSignal(tf as any));
+  async generateMultiTimeframeAnalysis(): Promise<ForexSignal[]> {
+    const timeframes: ('15m' | '1h' | '4h')[] = ['15m', '1h', '4h'];
+    const signals = await Promise.all(
+      timeframes.map(tf => this.generateSignal(tf))
+    );
+    return signals;
   }
 }
 
