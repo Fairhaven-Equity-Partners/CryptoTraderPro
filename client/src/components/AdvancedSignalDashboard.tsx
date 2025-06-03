@@ -976,8 +976,7 @@ export default function AdvancedSignalDashboard({
           // Generate signal using our technical analysis functions with optimization
           let rawSignal = await generateSignal(
             chartData[timeframe],
-            timeframe,
-            symbol
+            timeframe
           );
           
           // Convert to proper AdvancedSignal format
@@ -1044,8 +1043,8 @@ export default function AdvancedSignalDashboard({
               successProbability: rawSignal.confidence || 75,
               indicators: rawSignal.indicators || {},
               patternFormations: rawSignal.patternFormations || [],
-              supportLevels: Array.isArray(rawSignal.supportResistance?.support) ? rawSignal.supportResistance.support : [],
-              resistanceLevels: Array.isArray(rawSignal.supportResistance?.resistance) ? rawSignal.supportResistance.resistance : [],
+              supportLevels: [],
+              resistanceLevels: [],
               macroInsights: rawSignal.macroInsights || [],
               recommendedLeverage: typeof rawSignal.recommendedLeverage === 'number' ? {
                 conservative: rawSignal.recommendedLeverage,
@@ -1066,7 +1065,8 @@ export default function AdvancedSignalDashboard({
             try {
               const optimizedResult = calculateOptimizedSignal(
                 chartData[timeframe],
-                timeframe
+                timeframe,
+                symbol
               );
               
               // Enhance signal with optimized calculations while preserving structure
@@ -1079,9 +1079,9 @@ export default function AdvancedSignalDashboard({
               console.log(`[KeepingCalculated] ${timeframe}: SL=${signal.stopLoss}, TP=${signal.takeProfit}`);
               
               // Add optimized support/resistance levels if available
-              if (signal.indicators && optimizedResult.supports.length > 0) {
-                signal.indicators.supports = optimizedResult.supports;
-                signal.indicators.resistances = optimizedResult.resistances;
+              if (signal.indicators && optimizedResult.supports?.length > 0) {
+                signal.supportLevels = optimizedResult.supports;
+                signal.resistanceLevels = optimizedResult.resistances || [];
               }
             } catch (error) {
               console.log(`Optimization error for ${timeframe}, using base signal`);
@@ -1358,18 +1358,10 @@ export default function AdvancedSignalDashboard({
                              signal.confidence >= 50 ? 'Moderate' : 'Weak';
       
       if (signal.direction === 'LONG') {
-        const riskReward = signal.optimalRiskReward ? 
-          (typeof signal.optimalRiskReward === 'object' && signal.optimalRiskReward.ideal ? 
-            signal.optimalRiskReward.ideal.toFixed(1) : 
-            (typeof signal.optimalRiskReward === 'number' ? signal.optimalRiskReward.toFixed(1) : '1.5')
-          ) : '1.5';
+        const riskReward = typeof signal.riskRewardRatio === 'number' ? signal.riskRewardRatio.toFixed(1) : '1.5';
         return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else if (signal.direction === 'SHORT') {
-        const riskReward = signal.optimalRiskReward ? 
-          (typeof signal.optimalRiskReward === 'object' && signal.optimalRiskReward.ideal ? 
-            signal.optimalRiskReward.ideal.toFixed(1) : 
-            (typeof signal.optimalRiskReward === 'number' ? signal.optimalRiskReward.toFixed(1) : '1.5')
-          ) : '1.5';
+        const riskReward = typeof signal.riskRewardRatio === 'number' ? signal.riskRewardRatio.toFixed(1) : '1.5';
         return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else {
         return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals.`;
