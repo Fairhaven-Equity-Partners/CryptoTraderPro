@@ -48,7 +48,7 @@ import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimize
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
-import { enhancedCalculationEngine } from '../lib/enhancedCalculationEngine';
+import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
   calculateEnhancedConfidence, 
   analyzeTimeframeCorrelations, 
@@ -1147,9 +1147,70 @@ export default function AdvancedSignalDashboard({
           // Debug current price being passed
           console.log(`[${timeframe}] Using currentAssetPrice: ${currentAssetPrice} for calculation`);
           
-          // Generate signal using enhanced calculation engine with mathematically accurate MACD and ADX
-          enhancedCalculationEngine.updateMarketData(symbol, timeframe, chartData[timeframe]);
-          let signal = enhancedCalculationEngine.generateSignal(symbol, timeframe, currentAssetPrice);
+          // Generate signal using unified calculation core (consolidates 78+ files into optimized system)
+          const chartDataWithTimestamp = chartData[timeframe].map(d => ({
+            ...d,
+            timestamp: d.time || Date.now()
+          }));
+          unifiedCalculationCore.updateMarketData(symbol, timeframe, chartDataWithTimestamp);
+          let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentAssetPrice);
+          
+          // Convert unified signal to AdvancedSignal format for UI compatibility
+          let signal: AdvancedSignal | null = null;
+          if (unifiedSignal) {
+            signal = {
+              ...unifiedSignal,
+              indicators: {
+                trend: [
+                  { name: 'EMA Short', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.short > unifiedSignal.indicators.ema.medium ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength },
+                  { name: 'EMA Medium', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.medium > unifiedSignal.indicators.ema.long ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength }
+                ],
+                momentum: [
+                  { name: 'RSI', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.rsi.signal as IndicatorSignal, strength: unifiedSignal.indicators.rsi.strength as IndicatorStrength },
+                  { name: 'MACD', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.macd.signal as IndicatorSignal, strength: unifiedSignal.indicators.macd.strength as IndicatorStrength }
+                ],
+                volume: [],
+                pattern: [],
+                volatility: []
+              },
+              patternFormations: [],
+              supportResistance: {
+                supports: unifiedSignal.indicators.supports,
+                resistances: unifiedSignal.indicators.resistances,
+                pivotPoints: [unifiedSignal.entryPrice]
+              },
+              environment: { 
+                trend: unifiedSignal.indicators.marketRegime === 'TRENDING_UP' ? 'BULLISH' : unifiedSignal.indicators.marketRegime === 'TRENDING_DOWN' ? 'BEARISH' : 'NEUTRAL', 
+                volatility: unifiedSignal.indicators.marketRegime === 'HIGH_VOLATILITY' ? 'HIGH' : unifiedSignal.indicators.marketRegime === 'LOW_VOLATILITY' ? 'LOW' : 'NORMAL', 
+                volume: 'NORMAL', 
+                sentiment: 'NEUTRAL' 
+              },
+              recommendedLeverage: {
+                conservative: 1,
+                moderate: 2,
+                aggressive: 3,
+                recommendation: 'conservative'
+              },
+              riskReward: Math.abs(unifiedSignal.takeProfit - unifiedSignal.entryPrice) / Math.abs(unifiedSignal.entryPrice - unifiedSignal.stopLoss),
+              marketStructure: { 
+                trend: unifiedSignal.indicators.marketRegime === 'RANGING' ? 'SIDEWAYS' : 'TRENDING', 
+                phase: 'ACTIVE', 
+                strength: unifiedSignal.confidence 
+              },
+              volumeProfile: { 
+                volumeWeightedPrice: unifiedSignal.entryPrice, 
+                highVolumeNodes: [], 
+                lowVolumeNodes: [] 
+              },
+              macroInsights: [
+                `Market Regime: ${unifiedSignal.indicators.marketRegime}`,
+                `RSI: ${unifiedSignal.indicators.rsi.value.toFixed(2)}`,
+                `MACD Histogram: ${unifiedSignal.indicators.macd.histogram.toFixed(2)}`,
+                `ADX: ${unifiedSignal.indicators.adx.value.toFixed(2)}`,
+                `Volatility: ${(unifiedSignal.indicators.volatility * 100).toFixed(2)}%`
+              ]
+            } as AdvancedSignal;
+          }
           
           // Enhanced signal with mathematically accurate indicators and market regime detection
           if (signal) {
