@@ -313,6 +313,8 @@ export default function AdvancedSignalDashboard({
     const correct = correctTrades.length;
     const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
     
+    console.log(`Trade data: ${tradeSimulations.length} total, ${activeTrades.length} active, ${completedTrades.length} completed`);
+    
     return { correct, total, percentage, activeTrades: activeTrades.length };
   }, [tradeSimulations]);
   
