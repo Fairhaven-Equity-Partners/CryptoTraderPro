@@ -1686,8 +1686,8 @@ export default function AdvancedSignalDashboard({
                   <div className={`rounded-lg border p-4 ${getSignalBgClass(currentSignal.direction)}`}>
                     {/* Confidence Score and Direction */}
                     <div className="flex items-center justify-between mb-4">
-                      <div>
-                        <h3 className="text-white font-bold text-lg mb-1 flex items-center">
+                      <div className="flex items-center space-x-4">
+                        <h3 className="text-white font-bold text-lg flex items-center">
                           {currentSignal.direction === 'LONG' && (
                             <>
                               <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
@@ -1707,7 +1707,12 @@ export default function AdvancedSignalDashboard({
                             </>
                           )}
                         </h3>
-                        <div className="flex items-center space-x-2">
+                        
+                        {/* Current Price - Moved to right of signal */}
+                        <div className="text-right">
+                          <div className="text-lg font-bold text-cyan-300">
+                            {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
+                          </div>
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
                             {timeframe}
                           </Badge>
@@ -1727,21 +1732,13 @@ export default function AdvancedSignalDashboard({
                           {selectedTimeframe === '5m' && '5-Min Timeframe Analysis'}
                           {selectedTimeframe === '1m' && '1-Min Timeframe Analysis'}
                         </div>
-                        
-
                       </div>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Left column with signals and indicators */}
                       <div className="space-y-4">
-                        {/* Current Price Display - Using real-time price */}
-                        <div className="space-y-1 mb-3">
-                          <h3 className="text-white font-bold text-sm">Current Price</h3>
-                          <div className="text-lg font-bold text-cyan-300">
-                            {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
-                          </div>
-                        </div>
+
                         
                         {/* Success Probability Bar */}
                         <div className="space-y-2 mb-3">
