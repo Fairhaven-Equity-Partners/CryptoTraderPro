@@ -933,48 +933,28 @@ export default function AdvancedSignalDashboard({
           // Convert to proper AdvancedSignal format
           let signal: AdvancedSignal | null = null;
           if (rawSignal) {
-            // Ensure we have a valid entry price from current market data
+            // Use the optimized entry price and levels from the unified calculation core
+            const entryPrice = rawSignal.entryPrice;
+            const stopLoss = rawSignal.stopLoss;
+            const takeProfit = rawSignal.takeProfit;
+            
+            // Validate that we have realistic price levels
             const currentPrice = chartData[timeframe][chartData[timeframe].length - 1].close;
-            const entryPrice = rawSignal.entryPrice || currentPrice;
+            const isValidEntry = entryPrice && entryPrice > 0 && Math.abs(entryPrice - currentPrice) / currentPrice < 0.1; // Within 10%
+            const isValidSL = stopLoss && stopLoss > 0;
+            const isValidTP = takeProfit && takeProfit > 0;
             
-            // Calculate proper stop loss and take profit based on timeframe and direction
-            let stopLoss: number;
-            let takeProfit: number;
-            
-            // Timeframe-based risk percentages for realistic trading levels
-            const riskPercentages = {
-              '1m': { sl: 0.003, tp: 0.006 },   // 0.3% SL, 0.6% TP
-              '5m': { sl: 0.005, tp: 0.010 },   // 0.5% SL, 1.0% TP
-              '15m': { sl: 0.008, tp: 0.016 },  // 0.8% SL, 1.6% TP
-              '30m': { sl: 0.012, tp: 0.024 },  // 1.2% SL, 2.4% TP
-              '1h': { sl: 0.015, tp: 0.030 },   // 1.5% SL, 3.0% TP
-              '4h': { sl: 0.025, tp: 0.050 },   // 2.5% SL, 5.0% TP
-              '1d': { sl: 0.040, tp: 0.080 },   // 4.0% SL, 8.0% TP
-              '3d': { sl: 0.060, tp: 0.120 },   // 6.0% SL, 12.0% TP
-              '1w': { sl: 0.080, tp: 0.160 },   // 8.0% SL, 16.0% TP
-              '1M': { sl: 0.120, tp: 0.240 }    // 12.0% SL, 24.0% TP
-            };
-            
-            const risk = riskPercentages[timeframe] || riskPercentages['1h'];
-            
-            if (rawSignal.direction === 'LONG') {
-              stopLoss = entryPrice * (1 - risk.sl);
-              takeProfit = entryPrice * (1 + risk.tp);
-            } else if (rawSignal.direction === 'SHORT') {
-              stopLoss = entryPrice * (1 + risk.sl);
-              takeProfit = entryPrice * (1 - risk.tp);
-            } else {
-              // NEUTRAL - minimal movement
-              stopLoss = entryPrice * 0.99;
-              takeProfit = entryPrice * 1.01;
-            }
+            // If levels are invalid, use fallback calculation
+            let finalEntry = isValidEntry ? entryPrice : currentPrice;
+            let finalSL = isValidSL ? stopLoss : currentPrice * 0.98;
+            let finalTP = isValidTP ? takeProfit : currentPrice * 1.02;
             
             signal = {
               direction: rawSignal.direction,
               confidence: rawSignal.confidence,
-              entryPrice: entryPrice,
-              stopLoss: stopLoss,
-              takeProfit: takeProfit,
+              entryPrice: finalEntry,
+              stopLoss: finalSL,
+              takeProfit: finalTP,
               timeframe: timeframe,
               timestamp: Date.now(),
               successProbability: rawSignal.confidence || 75,
