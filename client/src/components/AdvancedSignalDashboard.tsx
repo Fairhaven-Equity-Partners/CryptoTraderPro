@@ -993,6 +993,9 @@ export default function AdvancedSignalDashboard({
           // Start calculation with realistic logging
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
+          // Debug current price being passed
+          console.log(`[${timeframe}] Using currentAssetPrice: ${currentAssetPrice} for calculation`);
+          
           // Generate signal using streamlined calculation engine (replaces 50+ fragmented files)
           let signal = generateStreamlinedSignal(
             chartData[timeframe],
@@ -1401,11 +1404,29 @@ export default function AdvancedSignalDashboard({
 
   // Handle timeframe selection
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
-    console.log(`Tab change to ${timeframe} with prices:`, {
-      entry: signals[timeframe]?.entryPrice,
-      tp: signals[timeframe]?.takeProfit,
-      sl: signals[timeframe]?.stopLoss
-    });
+    console.log(`Tab change to ${timeframe} - forcing price level calculation`);
+    
+    // Force immediate calculation for this timeframe with current live price
+    if (chartData[timeframe] && chartData[timeframe].length > 0 && currentAssetPrice > 0) {
+      console.log(`Force calculating ${timeframe} with live price: ${currentAssetPrice}`);
+      
+      const signal = generateStreamlinedSignal(
+        chartData[timeframe],
+        timeframe,
+        currentAssetPrice,
+        symbol
+      );
+      
+      if (signal) {
+        console.log(`[${timeframe}] IMMEDIATE CALC: Entry=${signal.entryPrice?.toFixed(2)}, SL=${signal.stopLoss?.toFixed(2)}, TP=${signal.takeProfit?.toFixed(2)}`);
+        
+        // Update signals state immediately to show new values
+        setSignals(prev => ({
+          ...prev,
+          [timeframe]: signal
+        }));
+      }
+    }
     
     setSelectedTimeframe(timeframe);
     updateRecommendationForTimeframe(timeframe);
@@ -1414,7 +1435,7 @@ export default function AdvancedSignalDashboard({
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  }, [updateRecommendationForTimeframe, onTimeframeSelect, signals]);
+  }, [updateRecommendationForTimeframe, onTimeframeSelect, chartData, currentAssetPrice, symbol]);
 
   // Format price for display, with appropriate decimal places
   function formatCurrency(price: number): string {
