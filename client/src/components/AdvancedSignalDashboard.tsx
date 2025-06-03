@@ -1214,7 +1214,7 @@ export default function AdvancedSignalDashboard({
           
           // Enhanced signal with mathematically accurate indicators and market regime detection
           if (signal) {
-            console.log(`[EnhancedEngine] ${timeframe}: Market Regime=${signal.indicators?.marketRegime}, MACD Signal=${signal.indicators?.macd?.signal}, ADX=${signal.indicators?.adx?.value}`);
+            console.log(`[UnifiedEngine] ${timeframe}: Market Regime=${signal.macroInsights?.[0]}, Direction=${signal.direction}, Confidence=${signal.confidence}%`);
             
             // Ensure the enhanced signal data is properly structured for UI display
             const enhancedSignalData = {

@@ -368,7 +368,17 @@ class UnifiedCalculationCore {
         : currentPrice - sizing.takeProfitDistance,
       timestamp: Date.now(),
       indicators,
-      successProbability: Math.min(confidence * 1.2, 95)
+      successProbability: Math.min(confidence * 1.2, 95),
+      patternFormations: [],
+      macroInsights: [
+        `Market Regime: ${indicators.marketRegime}`,
+        `RSI: ${indicators.rsi.value.toFixed(2)} (${indicators.rsi.signal})`,
+        `MACD: ${indicators.macd.value.toFixed(2)} (${indicators.macd.signal})`,
+        `ADX: ${indicators.adx.value.toFixed(2)}`,
+        `Volatility: ${(indicators.volatility * 100).toFixed(2)}%`,
+        `Trend Alignment: ${indicators.confidenceFactors.trendAlignment ? 'Yes' : 'No'}`,
+        `Momentum Confluence: ${indicators.confidenceFactors.momentumConfluence ? 'Yes' : 'No'}`
+      ]
     };
   }
 
