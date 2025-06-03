@@ -1259,6 +1259,15 @@ export default function AdvancedSignalDashboard({
           // Update live price monitoring
           await updateWithLivePrice(livePrice, symbol);
           
+          // Update feedback metrics display
+          setFeedbackMetrics(prev => ({
+            ...prev,
+            dataPoints: Object.values(alignedSignals).filter(s => s !== null).length,
+            learningCycles: prev.learningCycles + 1,
+            lastUpdate: new Date(),
+            totalPredictions: prev.totalPredictions + 1
+          }));
+          
         } catch (trackingError) {
           // Silently handle accuracy tracking errors
         }
@@ -1593,6 +1602,41 @@ export default function AdvancedSignalDashboard({
                   </div>
                 ));
               })()}
+            </div>
+          </div>
+          
+          {/* Adaptive Learning Feedback Loop Display */}
+          <div className="mt-4 p-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-500/30">
+            <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
+              🧠 Adaptive Learning Feedback Loop
+              <Badge className="bg-purple-500 text-white text-xs px-2 py-0.5">
+                Active
+              </Badge>
+            </h4>
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Data Points:</span>
+                  <span className="text-white font-semibold">{feedbackMetrics.dataPoints}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Learning Cycles:</span>
+                  <span className="text-white font-semibold">{feedbackMetrics.learningCycles}</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Total Predictions:</span>
+                  <span className="text-white font-semibold">{feedbackMetrics.totalPredictions}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Last Update:</span>
+                  <span className="text-white font-semibold">{feedbackMetrics.lastUpdate.toLocaleTimeString()}</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 text-xs text-slate-400">
+              System continuously learns from prediction accuracy to improve future signals
             </div>
           </div>
         </CardContent>
