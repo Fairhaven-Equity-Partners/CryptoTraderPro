@@ -1854,9 +1854,9 @@ export default function AdvancedSignalDashboard({
                               
                             return (
                               <>
-                                <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
+                                <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
                                   <div 
-                                    className={`h-4 rounded-full ${barColorClass}`}
+                                    className={`h-3 rounded-full ${barColorClass}`}
                                     style={{ width: `${probability}%` }}
                                   />
                                 </div>
@@ -1894,9 +1894,9 @@ export default function AdvancedSignalDashboard({
                         </div>
                         
                         {/* Macro Score */}
-                        <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Macro Score</h3>
-                          <div className="w-full bg-gray-800 rounded-full h-4 mb-1">
+                        <div className="space-y-1">
+                          <h3 className="text-white font-bold text-xs">Macro Score</h3>
+                          <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
                             <div 
                               className={`h-4 rounded-full ${
                                 (currentSignal.macroScore || 50) >= 70 ? 'bg-green-600' : 
@@ -1964,7 +1964,7 @@ export default function AdvancedSignalDashboard({
                           <h3 className="text-white font-bold text-xs">Pattern Formations</h3>
                           {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
                             currentSignal.patternFormations.map((pattern, i) => (
-                              <div key={i} className="flex justify-between items-center text-sm border-b border-gray-700/50 pb-1">
+                              <div key={i} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
                                 <div>
                                   <span className="text-gray-300 font-medium">{pattern.name}</span>
                                   <span className="text-xs text-gray-400 ml-2">({pattern.reliability}% reliability)</span>
