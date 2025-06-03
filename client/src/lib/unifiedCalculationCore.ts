@@ -100,15 +100,15 @@ class UnifiedCalculationCore {
     const slowEMA = this.calculateEMA(prices, slowPeriod);
     const macdLine = fastEMA - slowEMA;
     
-    // Calculate signal line using proper EMA (not oversimplified multiplication)
+    // Calculate signal line using proper EMA
     const macdValues = [];
     for (let i = slowPeriod - 1; i < data.length; i++) {
-      const fast = this.calculateEMASingle(prices.slice(0, i + 1), fastPeriod);
-      const slow = this.calculateEMASingle(prices.slice(0, i + 1), slowPeriod);
+      const fast = this.calculateEMA(prices.slice(0, i + 1), fastPeriod);
+      const slow = this.calculateEMA(prices.slice(0, i + 1), slowPeriod);
       macdValues.push(fast - slow);
     }
     
-    const signalLine = this.calculateEMASingle(macdValues, signalPeriod);
+    const signalLine = this.calculateEMA(macdValues, signalPeriod);
     const histogram = macdLine - signalLine;
     
     return { macdLine, signalLine, histogram };
@@ -130,18 +130,7 @@ class UnifiedCalculationCore {
     return ema;
   }
 
-  private calculateEMASingle(prices: number[], period: number): number {
-    if (prices.length < period) return prices[prices.length - 1] || 0;
-    
-    const multiplier = 2 / (period + 1);
-    let ema = prices.slice(0, period).reduce((sum, price) => sum + price, 0) / period;
-    
-    for (let i = period; i < prices.length; i++) {
-      ema = (prices[i] * multiplier) + (ema * (1 - multiplier));
-    }
-    
-    return ema;
-  }
+
 
   /**
    * Calculate ADX with proper +DI/-DI using Wilder's smoothing

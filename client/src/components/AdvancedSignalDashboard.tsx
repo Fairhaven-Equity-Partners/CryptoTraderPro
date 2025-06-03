@@ -418,27 +418,14 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Require: timer trigger AND minimum 170 seconds since last calculation (matches 3-minute cycle)
-        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 170) {
-          console.log(`💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
-          console.log(`Data status: ${Object.keys(chartData).length} timeframes loaded, allDataLoaded=${isAllDataLoaded}`);
-          
-          // Set calculation state
+        // Optimized calculation trigger: exact 180s interval
+        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 180) {
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
-          
-          // Calculate immediately to ensure perfect synchronization with the 3-minute timer
-          console.log(`🚀 CALLING calculateAllSignals() function now`);
           calculateAllSignals();
-          console.log(`🚀 calculateAllSignals() call completed`);
         } else {
           console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s`);
-          console.log(`Available timeframes: ${Object.keys(chartData).join(', ')}`);
-          
-          if (!isTimerTriggered) {
-            console.log(`❌ Ignoring non-timer price update to enforce 3-minute intervals`);
-          }
         }
       }
     };
@@ -555,22 +542,9 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // Log data status for debugging
-    console.log(`Data status for ${symbol}: loaded=${isAllDataLoaded}, timeframes=${Object.keys(chartData).length}`);
-    if (Object.keys(chartData).length > 0) {
-      // Check a sample timeframe to verify data
-      const sampleTf = Object.keys(chartData)[0] as TimeFrame;
-      console.log(`Sample data for ${symbol} (${sampleTf}): ${chartData[sampleTf]?.length || 0} points`);
-    }
-    
-    // DISABLED: Auto-calculation trigger to enforce 3-minute timer intervals only
-    // This was causing calculations every 15 seconds instead of every 3 minutes
+    // Streamlined data validation
     if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0) {
-      console.log(`Data ready for ${symbol} - but auto-calculation DISABLED to enforce 3-minute intervals`);
-      console.log(`⏰ Calculations will only occur via the synchronized 3-minute timer`);
-      
-      // All calculations now happen exclusively via the 3-minute synchronized timer
-      // in finalPriceSystem with forceCalculate=true events
+      // Data ready - calculations controlled by 3-minute timer
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
@@ -598,19 +572,15 @@ export default function AdvancedSignalDashboard({
   
   // All pairs use live data for analysis
   
-  // Function to generate chart patterns based on signal direction and confidence
+  // Optimized pattern formation generator
   const generatePatternFormations = (
     direction: 'LONG' | 'SHORT' | 'NEUTRAL', 
     confidence: number, 
     timeframe: TimeFrame, 
     currentPrice: number
   ): PatternFormation[] => {
-    // Enhanced market analysis with multiple advanced techniques
     const patterns: PatternFormation[] = [];
-    
-    // Different timeframes have different pattern prevalence
-    const timeframeWeight = 
-      timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M' ? 0.8 :
+    const timeframeWeight = ['1d', '3d', '1w', '1M'].includes(timeframe) ? 0.8 :
       timeframe === '4h' ? 0.7 :
       timeframe === '1h' ? 0.6 :
       timeframe === '30m' || timeframe === '15m' ? 0.5 : 0.3;
