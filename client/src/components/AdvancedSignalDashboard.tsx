@@ -1844,7 +1844,7 @@ export default function AdvancedSignalDashboard({
                                     <span>High</span>
                                   </div>
                                   <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
-                                    {probability}%
+                                    {Math.round(probability)}%
                                   </Badge>
                                 </div>
                               </>

@@ -584,7 +584,7 @@ function calculateSuccessProbability(confidence: number, timeframe: TimeFrame, d
     baseProbability += 5;
   }
   
-  return Math.max(30, Math.min(95, baseProbability));
+  return Math.round(Math.max(30, Math.min(95, baseProbability)));
 }
 
 function detectPatterns(data: ChartData[], indicators: CalculatedIndicators): PatternFormation[] {

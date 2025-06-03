@@ -472,7 +472,7 @@ function calculateSuccessProbability(confidence: number, timeframe: TimeFrame): 
   };
   
   probability += timeframeAdjustment[timeframe] || 0;
-  return Math.max(30, Math.min(95, probability));
+  return Math.round(Math.max(30, Math.min(95, probability)));
 }
 
 function formatIndicatorsForUI(indicators: TechnicalIndicators, currentPrice: number): any {
