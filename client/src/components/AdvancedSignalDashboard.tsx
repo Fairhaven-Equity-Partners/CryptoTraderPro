@@ -271,21 +271,12 @@ export default function AdvancedSignalDashboard({
   });
   const currentAssetPrice = (asset as any)?.lastPrice || 0;
   
-  // 3-minute timer synchronized with actual FinalPriceSystem cycle
+  // Simple countdown timer that resets when signals are updated
   useEffect(() => {
-    // Calculate seconds until next 3-minute mark based on current time
-    const now = Date.now();
-    const threeMinutesMs = 3 * 60 * 1000; // 180,000 ms
-    const secondsIntoCurrentCycle = Math.floor((now % threeMinutesMs) / 1000);
-    const initialTime = 180 - secondsIntoCurrentCycle;
-    
-    // Set initial synchronized time
-    setTimeUntilNextCalc(initialTime);
-    
     const timerInterval = setInterval(() => {
       setTimeUntilNextCalc(prev => {
         if (prev <= 1) {
-          return 180; // Reset to 3 minutes (180 seconds)
+          return 180; // Reset to 3 minutes
         }
         return prev - 1;
       });
@@ -293,6 +284,24 @@ export default function AdvancedSignalDashboard({
 
     return () => clearInterval(timerInterval);
   }, []);
+
+  // Track when signals actually get updated to sync timer
+  const prevSignalRef = useRef<string>('');
+  useEffect(() => {
+    // Create a signature of current signals to detect changes
+    const currentSignature = JSON.stringify(Object.entries(signals).map(([tf, signal]) => 
+      signal ? `${tf}:${signal.direction}:${signal.confidence}` : `${tf}:null`
+    ));
+    
+    // If signals changed meaningfully, reset timer
+    if (prevSignalRef.current && prevSignalRef.current !== currentSignature && 
+        Object.values(signals).some(s => s !== null)) {
+      console.log('🔄 Signals updated, resetting timer to 3:00');
+      setTimeUntilNextCalc(180);
+    }
+    
+    prevSignalRef.current = currentSignature;
+  }, [signals]);
 
   // Listen directly for the live price update custom event
   useEffect(() => {
@@ -310,8 +319,8 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Require: timer trigger AND minimum 150 seconds since last calculation (safety buffer)
-        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 150) {
+        // Require: timer trigger AND minimum 170 seconds since last calculation (matches 3-minute cycle)
+        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 170) {
           console.log(`💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for ${symbol} with price ${event.detail.price}`);
           console.log(`Data status: ${Object.keys(chartData).length} timeframes loaded, allDataLoaded=${isAllDataLoaded}`);
           
