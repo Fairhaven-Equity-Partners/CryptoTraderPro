@@ -974,20 +974,19 @@ export default function AdvancedSignalDashboard({
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
           // Generate signal using streamlined calculation engine (replaces 50+ fragmented files)
-          let rawSignal = generateStreamlinedSignal(
+          let signal = generateStreamlinedSignal(
             chartData[timeframe],
             timeframe,
             currentAssetPrice,
             symbol
           );
           
-          // Convert to proper AdvancedSignal format
-          let signal: AdvancedSignal | null = null;
-          if (rawSignal) {
-            // Use the optimized entry price and levels from the unified calculation core
-            const entryPrice = rawSignal.entryPrice;
-            const stopLoss = rawSignal.stopLoss;
-            const takeProfit = rawSignal.takeProfit;
+          // Signal is already in AdvancedSignal format from streamlined engine
+          if (signal) {
+            // Use the optimized entry price and levels from the streamlined calculation engine
+            const entryPrice = signal.entryPrice;
+            const stopLoss = signal.stopLoss;
+            const takeProfit = signal.takeProfit;
             
             // Validate that we have realistic price levels
             const currentPrice = chartData[timeframe][chartData[timeframe].length - 1].close;
@@ -1022,10 +1021,10 @@ export default function AdvancedSignalDashboard({
                 '1M': { sl: 0.120, tp: 0.240 }    // 12.0% SL, 24.0% TP
               }[timeframe] || { sl: 0.015, tp: 0.030 };
               
-              if (rawSignal.direction === 'LONG') {
+              if (signal.direction === 'LONG') {
                 finalSL = finalEntry * (1 - timeframeRisk.sl);
                 finalTP = finalEntry * (1 + timeframeRisk.tp);
-              } else if (rawSignal.direction === 'SHORT') {
+              } else if (signal.direction === 'SHORT') {
                 finalSL = finalEntry * (1 + timeframeRisk.sl);
                 finalTP = finalEntry * (1 - timeframeRisk.tp);
               } else {
@@ -1034,60 +1033,15 @@ export default function AdvancedSignalDashboard({
               }
             }
             
-            signal = {
-              direction: rawSignal.direction,
-              confidence: rawSignal.confidence,
-              entryPrice: finalEntry,
-              stopLoss: finalSL,
-              takeProfit: finalTP,
-              timeframe: timeframe,
-              timestamp: Date.now(),
-              successProbability: rawSignal.confidence || 75,
-              indicators: rawSignal.indicators || {},
-              patternFormations: rawSignal.patternFormations || [],
-              supportLevels: [],
-              resistanceLevels: [],
-              macroInsights: rawSignal.macroInsights || [],
-              recommendedLeverage: typeof rawSignal.recommendedLeverage === 'object' ? rawSignal.recommendedLeverage : {
-                conservative: 1,
-                moderate: 1.5,
-                aggressive: 2,
-                recommendation: 'moderate'
-              },
-              riskRewardRatio: typeof rawSignal.optimalRiskReward === 'number' ? rawSignal.optimalRiskReward : 2,
-              optimalRiskReward: typeof rawSignal.optimalRiskReward === 'number' ? {
-                ideal: rawSignal.optimalRiskReward,
-                range: [rawSignal.optimalRiskReward * 0.8, rawSignal.optimalRiskReward * 1.2]
-              } : rawSignal.optimalRiskReward
-            };
+            // Signal already contains all necessary data from streamlined engine
+            signal.entryPrice = finalEntry;
+            signal.stopLoss = finalSL;
+            signal.takeProfit = finalTP;
           }
           
-          // Apply optimized technical analysis if signal exists
+          // Signal is already optimized from streamlined engine
           if (signal) {
-            try {
-              const optimizedResult = calculateOptimizedSignal(
-                chartData[timeframe],
-                timeframe,
-                Number(currentAssetPrice)
-              );
-              
-              // Enhance signal with optimized calculations while preserving structure
-              if (optimizedResult.confidence > signal.confidence) {
-                signal.confidence = Math.min(optimizedResult.confidence, 95);
-              }
-              
-              // PRESERVE our calculated stop loss and take profit - optimization was returning null
-              // Keep the percentage-based calculations we set earlier
-              console.log(`[KeepingCalculated] ${timeframe}: SL=${signal.stopLoss}, TP=${signal.takeProfit}`);
-              
-              // Add optimized support/resistance levels if available
-              if (signal.indicators && optimizedResult.supports?.length > 0) {
-                signal.supportLevels = optimizedResult.supports;
-                signal.resistanceLevels = optimizedResult.resistances || [];
-              }
-            } catch (error) {
-              console.log(`Optimization error for ${timeframe}, using base signal`);
-            }
+            console.log(`[StreamlinedEngine] ${timeframe}: SL=${signal.stopLoss}, TP=${signal.takeProfit}`);
           }
           
           // Generate pattern formations based on signal direction and timeframe
