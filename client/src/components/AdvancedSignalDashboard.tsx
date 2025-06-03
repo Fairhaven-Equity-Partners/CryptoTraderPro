@@ -1983,14 +1983,14 @@ export default function AdvancedSignalDashboard({
                       </div>
                       
                       {/* Right column with trade setup and key indicators */}
-                      <div className="space-y-4">
+                      <div className="space-y-2">
                         {/* Trade Levels Section */}
-                        <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Trade Levels</h3>
+                        <div className="space-y-1">
+                          <h3 className="text-white font-bold text-xs">Trade Levels</h3>
                           
-                          <div className="flex justify-between items-center text-sm">
+                          <div className="flex justify-between items-center text-xs">
                             <span className="text-white font-semibold">Entry Price</span>
-                            <span className="font-bold text-amber-400 bg-amber-900/30 px-3 py-1 rounded border border-amber-800">
+                            <span className="font-bold text-amber-400 bg-amber-900/30 px-2 py-0.5 rounded border border-amber-800 text-xs">
                               {formatCurrency((currentSignal?.entryPrice || 0) * 
                                 (selectedTimeframe === '1h' ? 0.996 :
                                  selectedTimeframe === '4h' ? 0.992 :
@@ -2001,9 +2001,9 @@ export default function AdvancedSignalDashboard({
                             </span>
                           </div>
                           
-                          <div className="flex justify-between items-center text-sm">
+                          <div className="flex justify-between items-center text-xs">
                             <span className="text-white font-semibold">Take Profit</span>
-                            <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
+                            <span className="font-bold text-green-400 bg-green-900/30 px-2 py-0.5 rounded border border-green-800 text-xs">
                               {(() => {
                                 if (currentSignal?.takeProfit && currentSignal.takeProfit > 0) {
                                   return formatCurrency(currentSignal.takeProfit);
@@ -2030,9 +2030,9 @@ export default function AdvancedSignalDashboard({
                             </span>
                           </div>
                           
-                          <div className="flex justify-between items-center text-sm">
+                          <div className="flex justify-between items-center text-xs">
                             <span className="text-white font-semibold">Stop Loss</span>
-                            <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
+                            <span className="font-bold text-red-400 bg-red-900/30 px-2 py-0.5 rounded border border-red-800 text-xs">
                               {(() => {
                                 if (currentSignal?.stopLoss && currentSignal.stopLoss > 0) {
                                   return formatCurrency(currentSignal.stopLoss);
@@ -2061,12 +2061,12 @@ export default function AdvancedSignalDashboard({
                         </div>
                         
                         {/* Risk Management */}
-                        <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Risk Management</h3>
+                        <div className="space-y-1">
+                          <h3 className="text-white font-bold text-xs">Risk Management</h3>
                           
-                          <div className="flex justify-between items-center text-sm">
+                          <div className="flex justify-between items-center text-xs">
                             <span className="text-white font-semibold">Risk/Reward</span>
-                            <span className="font-bold text-blue-300 bg-blue-900/50 px-3 py-1 rounded border border-blue-700">
+                            <span className="font-bold text-blue-300 bg-blue-900/50 px-2 py-0.5 rounded border border-blue-700 text-xs">
                               {(() => {
                                 const riskReward = typeof currentSignal?.optimalRiskReward === 'object' ? 
                                   currentSignal?.optimalRiskReward?.ideal || 1.5 : 
@@ -2076,17 +2076,17 @@ export default function AdvancedSignalDashboard({
                             </span>
                           </div>
                           
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-white font-semibold">Recommended Leverage</span>
-                            <span className="font-bold text-purple-300 bg-purple-900/50 px-3 py-1 rounded border border-purple-700">
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="text-white font-semibold">Leverage</span>
+                            <span className="font-bold text-purple-300 bg-purple-900/50 px-2 py-0.5 rounded border border-purple-700 text-xs">
                               {Math.max(1, Math.min(10, Math.floor((currentSignal?.confidence || 50) / 10)))}x
                             </span>
                           </div>
                           
-                          <div className="flex justify-between items-center text-sm">
+                          <div className="flex justify-between items-center text-xs">
                             <span className="text-white font-semibold">Position Size</span>
-                            <span className="font-bold text-teal-300 bg-teal-900/50 px-3 py-1 rounded border border-teal-700">
-                              {Math.min(Math.max(Math.round(currentSignal?.confidence / 20), 1), 5)}% of capital
+                            <span className="font-bold text-teal-300 bg-teal-900/50 px-2 py-0.5 rounded border border-teal-700 text-xs">
+                              {Math.min(Math.max(Math.round(currentSignal?.confidence / 20), 1), 5)}%
                             </span>
                           </div>
                           
@@ -2094,19 +2094,19 @@ export default function AdvancedSignalDashboard({
                           
                           {/* Success Probability section removed as requested */}
                           
-                          <div className="flex justify-between items-center text-sm">
-                            <span className="text-white font-semibold">Expected Duration</span>
-                            <span className="font-bold text-amber-300 bg-amber-900/50 px-3 py-1 rounded border border-amber-700">
-                              {selectedTimeframe === '1M' && '3-12 months'}
-                              {selectedTimeframe === '1w' && '1-3 months'}
-                              {selectedTimeframe === '3d' && '2-8 weeks'}
-                              {selectedTimeframe === '1d' && '1-4 weeks'}
-                              {selectedTimeframe === '4h' && '3-10 days'}
-                              {selectedTimeframe === '1h' && '1-3 days'}
-                              {selectedTimeframe === '30m' && '6-24 hours'}
-                              {selectedTimeframe === '15m' && '3-12 hours'}
-                              {selectedTimeframe === '5m' && '1-4 hours'}
-                              {selectedTimeframe === '1m' && '10-30 minutes'}
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="text-white font-semibold">Duration</span>
+                            <span className="font-bold text-amber-300 bg-amber-900/50 px-2 py-0.5 rounded border border-amber-700 text-xs">
+                              {selectedTimeframe === '1M' && '3-12mo'}
+                              {selectedTimeframe === '1w' && '1-3mo'}
+                              {selectedTimeframe === '3d' && '2-8w'}
+                              {selectedTimeframe === '1d' && '1-4w'}
+                              {selectedTimeframe === '4h' && '3-10d'}
+                              {selectedTimeframe === '1h' && '1-3d'}
+                              {selectedTimeframe === '30m' && '6-24h'}
+                              {selectedTimeframe === '15m' && '3-12h'}
+                              {selectedTimeframe === '5m' && '1-4h'}
+                              {selectedTimeframe === '1m' && '10-30m'}
                             </span>
                           </div>
                         </div>
@@ -2117,50 +2117,50 @@ export default function AdvancedSignalDashboard({
                           
                           {/* Dynamic indicators that change based on timeframe */}
                           <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium">Moving Average</span>
+                            <span className="text-gray-100 font-medium text-xs">Moving Average</span>
                             <Badge variant="outline" className={`${
                               (selectedTimeframe === '15m' || selectedTimeframe === '1h')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-2 py-1 text-xs`}>
+                            } px-1 py-0.5 text-xs`}>
                               {(selectedTimeframe === '15m' || selectedTimeframe === '1h') ? 'BUY (M)' : 'BUY (S)'}
                             </Badge>
                           </div>
                           <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium">RSI</span>
+                            <span className="text-gray-100 font-medium text-xs">RSI</span>
                             <Badge variant="outline" className={`${
                               (selectedTimeframe === '15m')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-2 py-1 text-xs`}>
+                            } px-1 py-0.5 text-xs`}>
                               {selectedTimeframe === '15m' ? 'NEUTRAL (M)' : 'BUY (S)'}
                             </Badge>
                           </div>
                           <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-300 font-medium">MACD</span>
+                            <span className="text-gray-300 font-medium text-xs">MACD</span>
                             <Badge variant="outline" className={`${
                               (selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-2 py-1 text-xs`}>
+                            } px-1 py-0.5 text-xs`}>
                               {(selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h') 
                                 ? 'BUY (M)' : 'BUY (S)'}
                             </Badge>
                           </div>
                           <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium">Bollinger Bands</span>
+                            <span className="text-gray-100 font-medium text-xs">Bollinger Bands</span>
                             <Badge variant="outline" className={`${
                               (selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M')
                                 ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
                                 : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
-                            } px-2 py-1 text-xs`}>
+                            } px-1 py-0.5 text-xs`}>
                               {(selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M') 
                                 ? 'BUY (S)' : 'BUY (M)'}
                             </Badge>
                           </div>
                           <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium">Support/Resistance</span>
-                            <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-bold px-2 py-1 text-xs">
+                            <span className="text-gray-100 font-medium text-xs">Support/Resistance</span>
+                            <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-bold px-1 py-0.5 text-xs">
                               BUY (S)
                             </Badge>
                           </div>
@@ -2169,19 +2169,18 @@ export default function AdvancedSignalDashboard({
                         {/* Macro Insights */}
                         <div className="space-y-1">
                           <h3 className="text-white font-bold text-xs">Macro Insights</h3>
-                          <ul className="text-gray-100 text-xs list-disc list-inside">
+                          <div className="text-gray-100 text-xs space-y-0.5">
                             {currentSignal?.macroInsights && currentSignal.macroInsights.length > 0 ? (
-                              currentSignal.macroInsights.map((insight, i) => (
-                                <li key={i} className="text-gray-100 text-xs">{insight}</li>
+                              currentSignal.macroInsights.slice(0, 2).map((insight, i) => (
+                                <div key={i} className="text-gray-100 text-xs">• {insight}</div>
                               ))
                             ) : (
                               <>
-                                <li className="text-gray-100 text-xs">Current market sentiment is {currentSignal?.direction === 'LONG' ? 'bullish' : currentSignal?.direction === 'SHORT' ? 'bearish' : 'neutral'}.</li>
-                                <li className="text-gray-100 text-xs">Volume profile suggests {currentSignal?.confidence > 65 ? 'strong' : currentSignal?.confidence > 45 ? 'moderate' : 'weak'} directional pressure.</li>
-                                <li className="text-gray-100 text-xs">Recommended position sizing at {Math.min(5, Math.max(1, Math.floor((currentSignal?.confidence || 50) / 20)))}% of portfolio.</li>
+                                <div className="text-gray-100 text-xs">• Sentiment: {currentSignal?.direction === 'LONG' ? 'bullish' : currentSignal?.direction === 'SHORT' ? 'bearish' : 'neutral'}</div>
+                                <div className="text-gray-100 text-xs">• Volume: {currentSignal?.confidence > 65 ? 'strong' : currentSignal?.confidence > 45 ? 'moderate' : 'weak'} pressure</div>
                               </>
                             )}
-                          </ul>
+                          </div>
                         </div>
                       </div>
                     </div>
