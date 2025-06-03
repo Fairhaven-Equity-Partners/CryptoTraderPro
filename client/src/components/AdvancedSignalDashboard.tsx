@@ -271,8 +271,17 @@ export default function AdvancedSignalDashboard({
   });
   const currentAssetPrice = (asset as any)?.lastPrice || 0;
   
-  // 3-minute timer effect synchronized with calculation cycle
+  // 3-minute timer synchronized with actual FinalPriceSystem cycle
   useEffect(() => {
+    // Calculate seconds until next 3-minute mark based on current time
+    const now = Date.now();
+    const threeMinutesMs = 3 * 60 * 1000; // 180,000 ms
+    const secondsIntoCurrentCycle = Math.floor((now % threeMinutesMs) / 1000);
+    const initialTime = 180 - secondsIntoCurrentCycle;
+    
+    // Set initial synchronized time
+    setTimeUntilNextCalc(initialTime);
+    
     const timerInterval = setInterval(() => {
       setTimeUntilNextCalc(prev => {
         if (prev <= 1) {
@@ -284,14 +293,6 @@ export default function AdvancedSignalDashboard({
 
     return () => clearInterval(timerInterval);
   }, []);
-
-  // Reset timer when calculation completes
-  useEffect(() => {
-    if (!isCalculating && timeUntilNextCalc > 175) {
-      // A calculation just completed, reset timer
-      setTimeUntilNextCalc(180);
-    }
-  }, [isCalculating]);
 
   // Listen directly for the live price update custom event
   useEffect(() => {
