@@ -48,6 +48,7 @@ import { calculateStreamlinedSignal, enhancePatternRecognition, calculateDynamic
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { calculateUnifiedSignal } from '../lib/unifiedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
+import { learnFromAccuracy, applyAdaptiveWeights, calculateConfidenceAdjustment, startContinuousLearning } from '../lib/adaptiveLearningEngine';
 
 // Enhanced macro analysis functions
 function analyzeIndicatorConvergence(indicators: any[]): { confidence: number; description: string } {
@@ -271,6 +272,14 @@ export default function AdvancedSignalDashboard({
     enabled: !!symbol
   });
   const currentAssetPrice = (asset as any)?.lastPrice || 0;
+  
+  // Initialize continuous learning for this symbol
+  useEffect(() => {
+    console.log(`🧠 Initializing continuous learning feedback loop for ${symbol}`);
+    startContinuousLearning(symbol).catch(error => {
+      console.error(`Error starting continuous learning for ${symbol}:`, error);
+    });
+  }, [symbol]);
   
   // Simple countdown timer that resets when signals are updated
   useEffect(() => {
@@ -1205,6 +1214,43 @@ export default function AdvancedSignalDashboard({
         console.log(`📊 Sample 1d signal:`, cleanSignals['1d']);
         setSignals(cleanSignals);
         console.log(`📊 setSignals call completed successfully`);
+
+        // LIVE ACCURACY TRACKING: Record predictions for each timeframe
+        try {
+          const livePrice = currentAssetPrice || 105000; // Use current asset price
+          console.log(`🎯 Recording predictions using live price: ${livePrice}`);
+          
+          for (const [timeframe, signal] of Object.entries(cleanSignals)) {
+            if (signal && signal.direction !== 'NEUTRAL') {
+              const predictionSignal = {
+                symbol: symbol,
+                timeframe: signal.timeframe,
+                direction: signal.direction,
+                confidence: signal.confidence,
+                entryPrice: livePrice,
+                stopLoss: signal.stopLoss,
+                takeProfit: signal.takeProfit,
+                timestamp: Date.now(),
+                indicators: signal.indicators,
+                successProbability: signal.successProbability
+              };
+              
+              // Record prediction for accuracy tracking
+              await recordPrediction(predictionSignal, livePrice);
+              console.log(`📈 Recorded prediction: ${timeframe} ${signal.direction} @ ${livePrice}`);
+              
+              // Trigger learning from accumulated accuracy data
+              await learnFromAccuracy(symbol, signal.timeframe);
+            }
+          }
+          
+          // Update live price monitoring
+          await updateWithLivePrice(livePrice, symbol);
+          
+        } catch (trackingError) {
+          console.error('Error in live accuracy tracking:', trackingError);
+        }
+
       } catch (error) {
         console.error(`❌ Error updating signals state:`, error);
       }
