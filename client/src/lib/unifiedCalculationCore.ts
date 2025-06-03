@@ -223,6 +223,55 @@ class UnifiedCalculationCore {
   }
 
   /**
+   * Calculate support and resistance levels using pivot points and fractals
+   */
+  private calculateSupportResistance(data: OHLCData[], lookback = 20): { supports: number[]; resistances: number[] } {
+    const supports: number[] = [];
+    const resistances: number[] = [];
+    
+    if (data.length < lookback * 2) return { supports, resistances };
+    
+    // Find pivot highs and lows
+    for (let i = lookback; i < data.length - lookback; i++) {
+      const current = data[i];
+      let isResistance = true;
+      let isSupport = true;
+      
+      // Check if current point is a pivot high (resistance)
+      for (let j = i - lookback; j <= i + lookback; j++) {
+        if (j !== i && data[j].high >= current.high) {
+          isResistance = false;
+          break;
+        }
+      }
+      
+      // Check if current point is a pivot low (support)
+      for (let j = i - lookback; j <= i + lookback; j++) {
+        if (j !== i && data[j].low <= current.low) {
+          isSupport = false;
+          break;
+        }
+      }
+      
+      if (isResistance) {
+        resistances.push(current.high);
+      }
+      if (isSupport) {
+        supports.push(current.low);
+      }
+    }
+    
+    // Sort and filter to get most significant levels
+    const sortedResistances = resistances.sort((a, b) => b - a).slice(0, 5);
+    const sortedSupports = supports.sort((a, b) => b - a).slice(0, 5);
+    
+    return { 
+      supports: sortedSupports, 
+      resistances: sortedResistances 
+    };
+  }
+
+  /**
    * Detect market regime based on volatility and trend strength
    */
   private detectMarketRegime(data: OHLCData[], indicators: any): string {
@@ -284,6 +333,9 @@ class UnifiedCalculationCore {
     const returns = prices.slice(1).map((price, i) => Math.log(price / prices[i]));
     const volatility = Math.sqrt(returns.reduce((sum, ret) => sum + ret * ret, 0) / returns.length) * Math.sqrt(252);
     
+    // Calculate support and resistance levels
+    const supportResistance = this.calculateSupportResistance(data);
+    
     const indicators: TechnicalIndicators = {
       rsi: {
         value: rsi,
@@ -301,8 +353,8 @@ class UnifiedCalculationCore {
       bb,
       adx: { value: adx.adx, pdi: adx.pdi, ndi: adx.ndi },
       atr: { value: atr },
-      supports: [],
-      resistances: [],
+      supports: supportResistance.supports,
+      resistances: supportResistance.resistances,
       volatility,
       marketRegime: this.detectMarketRegime(data, { volatility, adx, rsi: { value: rsi } }) as any,
       confidenceFactors: {
