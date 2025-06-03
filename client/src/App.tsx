@@ -10,6 +10,7 @@ import Settings from "@/pages/Settings";
 import Forex from "@/pages/Forex";
 import NavigationBar from "@/components/NavigationBar";
 import GlobalNotifications from "@/components/GlobalNotifications";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import { AppTab } from "./types";
 
 
@@ -35,26 +36,52 @@ function Router() {
 }
 
 function App() {
-  // Initialize streamlined calculation system
+  // Initialize streamlined calculation system with error handling
   useEffect(() => {
-    // Import and initialize the optimized unified calculation system
-    import('./lib/streamlinedPriceManager').then(({ initPriceManager }) => {
-      console.log('✅ Initializing streamlined calculation system');
-      initPriceManager();
-    }).catch(error => {
-      console.error('Failed to initialize streamlined system:', error);
-    });
+    const initializeSystem = async () => {
+      try {
+        // Add global error handler for DOM exceptions
+        window.addEventListener('error', (event) => {
+          if (event.error?.name === 'DOMException') {
+            console.warn('DOMException caught and handled:', event.error.message);
+            event.preventDefault();
+            return false;
+          }
+        });
+
+        // Add unhandled promise rejection handler
+        window.addEventListener('unhandledrejection', (event) => {
+          if (event.reason?.name === 'DOMException') {
+            console.warn('Unhandled DOMException caught:', event.reason.message);
+            event.preventDefault();
+          }
+        });
+
+        // Import and initialize the optimized unified calculation system
+        const { initPriceManager } = await import('./lib/streamlinedPriceManager');
+        console.log('✅ Initializing streamlined calculation system');
+        initPriceManager();
+      } catch (error) {
+        console.error('Failed to initialize streamlined system:', error);
+      }
+    };
+
+    initializeSystem();
   }, []);
   
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        {/* Hidden element to store live price data for calculations - AUTO-ENABLED */}
-        <div id="live-price-data" style={{ display: 'none' }} data-calculation-mode="auto-enabled" />
-        <Router />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <ErrorBoundary>
+            <Toaster />
+            {/* Hidden element to store live price data for calculations - AUTO-ENABLED */}
+            <div id="live-price-data" style={{ display: 'none' }} data-calculation-mode="auto-enabled" />
+            <Router />
+          </ErrorBoundary>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 
