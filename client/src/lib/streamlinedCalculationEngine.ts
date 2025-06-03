@@ -35,14 +35,18 @@ export function generateStreamlinedSignal(
     // Calculate success probability
     const successProbability = calculateSuccessProbability(confidence, timeframe);
     
+    // Ensure valid price values
+    const validEntryPrice = currentPrice > 0 ? currentPrice : data[data.length - 1]?.close || 106000;
+    const validStopLoss = stopLoss > 0 ? stopLoss : validEntryPrice * 0.98;
+    const validTakeProfit = takeProfit > 0 ? takeProfit : validEntryPrice * 1.02;
+    
     // Build comprehensive signal
     const signal: AdvancedSignal = {
-      symbol,
       direction,
       confidence,
-      entryPrice: currentPrice,
-      stopLoss,
-      takeProfit,
+      entryPrice: validEntryPrice,
+      stopLoss: validStopLoss,
+      takeProfit: validTakeProfit,
       timeframe,
       timestamp: Date.now(),
       successProbability,
@@ -570,30 +574,32 @@ function generateMacroInsights(timeframe: TimeFrame, confidence: number): any {
 }
 
 function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): AdvancedSignal {
+  const validPrice = currentPrice > 0 ? currentPrice : 106000; // Use live price or reasonable fallback
   return {
     symbol,
     direction: 'NEUTRAL',
     confidence: 50,
-    entryPrice: currentPrice,
-    stopLoss: currentPrice,
-    takeProfit: currentPrice,
+    entryPrice: validPrice,
+    stopLoss: validPrice * 0.98,
+    takeProfit: validPrice * 1.02,
     timeframe,
     timestamp: Date.now(),
     successProbability: 50,
     indicators: {
       trend: [
-        { name: 'EMA', signal: 'NEUTRAL', strength: 'MODERATE', category: 'TREND', value: currentPrice }
+        { id: 'ema', name: 'EMA', signal: 'NEUTRAL', strength: 'MODERATE', category: 'TREND', value: validPrice }
       ],
       momentum: [
-        { name: 'RSI', signal: 'NEUTRAL', strength: 'MODERATE', category: 'MOMENTUM', value: 50 },
-        { name: 'MACD', signal: 'NEUTRAL', strength: 'MODERATE', category: 'MOMENTUM', value: 0 }
+        { id: 'rsi', name: 'RSI', signal: 'NEUTRAL', strength: 'MODERATE', category: 'MOMENTUM', value: 50 },
+        { id: 'macd', name: 'MACD', signal: 'NEUTRAL', strength: 'MODERATE', category: 'MOMENTUM', value: 0 }
       ],
       volume: [
-        { name: 'Volume', signal: 'NEUTRAL', strength: 'MODERATE', category: 'VOLUME', value: 1000 }
+        { id: 'volume', name: 'Volume', signal: 'NEUTRAL', strength: 'MODERATE', category: 'VOLUME', value: 1000 }
       ],
       pattern: [
-        { name: 'Pattern', signal: 'NEUTRAL', strength: 'MODERATE', category: 'PATTERN', value: 0 }
-      ]
+        { id: 'pattern', name: 'Pattern', signal: 'NEUTRAL', strength: 'MODERATE', category: 'PATTERN', value: 0 }
+      ],
+      volatility: []
     },
     patternFormations: [],
     supportResistance: {
