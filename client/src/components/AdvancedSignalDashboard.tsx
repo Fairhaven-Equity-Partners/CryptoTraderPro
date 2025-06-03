@@ -1940,45 +1940,7 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
-                        {/* Moon Phase Analysis - Smaller */}
-                        <div className="space-y-1">
-                          <h3 className="text-white font-bold text-xs">Moon Phase Analysis</h3>
-                          {(() => {
-                            const moonPhase = getCurrentMoonPhase();
-                            const moonEmoji = getMoonPhaseEmoji(moonPhase.phaseName);
-                            return (
-                              <div className="bg-gray-800/50 rounded-lg p-2 border border-gray-700">
-                                <div className="flex items-center justify-between mb-1">
-                                  <div className="flex items-center space-x-1">
-                                    <span className="text-lg">{moonEmoji}</span>
-                                    <span className="text-gray-300 font-medium text-xs">{moonPhase.phaseName}</span>
-                                  </div>
-                                  <Badge variant="outline" className="text-xs bg-purple-900/20 text-purple-400 border-purple-800">
-                                    {Math.round(moonPhase.illumination)}%
-                                  </Badge>
-                                </div>
-                                <div className="flex justify-between items-center mb-1">
-                                  <span className="text-xs text-gray-400">Bias:</span>
-                                  <span className={`text-xs font-medium ${
-                                    moonPhase.marketBias === 'BULLISH' ? 'text-green-400' : 
-                                    moonPhase.marketBias === 'BEARISH' ? 'text-red-400' : 'text-gray-400'
-                                  }`}>
-                                    {moonPhase.marketBias}
-                                  </span>
-                                </div>
-                                <div className="w-full bg-gray-700 rounded-full h-1">
-                                  <div 
-                                    className={`h-1 rounded-full ${
-                                      moonPhase.impactStrength > 1.05 ? 'bg-green-500' : 
-                                      moonPhase.impactStrength < 0.95 ? 'bg-red-500' : 'bg-gray-500'
-                                    }`}
-                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}%` }}
-                                  />
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
+
 
                       </div>
                       
@@ -2181,6 +2143,46 @@ export default function AdvancedSignalDashboard({
                               </>
                             )}
                           </div>
+                        </div>
+                        
+                        {/* Moon Phase Analysis - Moved under Macro Insights */}
+                        <div className="space-y-1">
+                          <h3 className="text-white font-bold text-xs">Moon Phase Analysis</h3>
+                          {(() => {
+                            const moonPhase = getCurrentMoonPhase();
+                            const moonEmoji = getMoonPhaseEmoji(moonPhase.phaseName);
+                            return (
+                              <div className="bg-gray-800/50 rounded-lg p-2 border border-gray-700">
+                                <div className="flex items-center justify-between mb-1">
+                                  <div className="flex items-center space-x-1">
+                                    <span className="text-lg">{moonEmoji}</span>
+                                    <span className="text-gray-300 font-medium text-xs">{moonPhase.phaseName}</span>
+                                  </div>
+                                  <Badge variant="outline" className="text-xs bg-purple-900/20 text-purple-400 border-purple-800">
+                                    {Math.round(moonPhase.illumination)}%
+                                  </Badge>
+                                </div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <span className="text-xs text-gray-400">Bias:</span>
+                                  <span className={`text-xs font-medium ${
+                                    moonPhase.marketBias === 'BULLISH' ? 'text-green-400' : 
+                                    moonPhase.marketBias === 'BEARISH' ? 'text-red-400' : 'text-gray-400'
+                                  }`}>
+                                    {moonPhase.marketBias}
+                                  </span>
+                                </div>
+                                <div className="w-full bg-gray-700 rounded-full h-1">
+                                  <div 
+                                    className={`h-1 rounded-full ${
+                                      moonPhase.impactStrength > 1.05 ? 'bg-green-500' : 
+                                      moonPhase.impactStrength < 0.95 ? 'bg-red-500' : 'bg-gray-500'
+                                    }`}
+                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}%` }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </div>
                       </div>
                     </div>
