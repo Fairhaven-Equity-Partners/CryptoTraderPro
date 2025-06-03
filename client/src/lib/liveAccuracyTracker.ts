@@ -198,7 +198,7 @@ class LiveAccuracyTracker {
       await this.updateAccuracyMetrics(prediction.symbol, prediction.timeframe);
       
     } catch (error) {
-      console.error('Error closing prediction:', error);
+      // Silently handle prediction closure errors to prevent console spam
     }
   }
 
@@ -241,7 +241,7 @@ class LiveAccuracyTracker {
           const outcome = pnl > 0 ? 'WIN' : 'LOSS';
           await this.closePrediction(predictionId, currentPrice, 'TIMEOUT', outcome);
         } catch (error) {
-          console.error('Error in automatic closure:', error);
+          // Silently handle automatic closure errors to prevent console spam
         }
       }
     }, duration);

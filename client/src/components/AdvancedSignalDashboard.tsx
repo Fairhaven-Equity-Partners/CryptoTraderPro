@@ -44,9 +44,9 @@ import {
   calculateSupportResistance
 } from '../lib/technicalIndicators';
 import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
-import { calculateStreamlinedSignal, enhancePatternRecognition, calculateDynamicLeverage } from '../lib/streamlinedCalculationEngine';
+
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
-import { calculateUnifiedSignal } from '../lib/unifiedCalculationEngine';
+import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { 
   calculateEnhancedConfidence, 
@@ -973,10 +973,12 @@ export default function AdvancedSignalDashboard({
           // Start calculation with realistic logging
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
-          // Generate signal using our technical analysis functions with optimization
-          let rawSignal = await generateSignal(
+          // Generate signal using streamlined calculation engine (replaces 50+ fragmented files)
+          let rawSignal = generateStreamlinedSignal(
             chartData[timeframe],
-            timeframe
+            timeframe,
+            currentAssetPrice,
+            symbol
           );
           
           // Convert to proper AdvancedSignal format
