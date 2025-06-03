@@ -98,7 +98,7 @@ export const tradeSimulations = pgTable("trade_simulations", {
   entryPrice: doublePrecision("entry_price").notNull(),
   stopLoss: doublePrecision("stop_loss").notNull(),
   takeProfit: doublePrecision("take_profit").notNull(),
-  confidence: integer("confidence").notNull(),
+  confidence: doublePrecision("confidence").notNull(),
   entryTime: timestamp("entry_time").defaultNow().notNull(),
   exitTime: timestamp("exit_time"),
   exitPrice: doublePrecision("exit_price"),
