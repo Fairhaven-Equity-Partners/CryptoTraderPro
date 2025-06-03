@@ -516,7 +516,7 @@ function determineSignal(indicators: CalculatedIndicators, data: ChartData[], ti
   // Timeframe adjustments
   const timeframeMultipliers: Record<TimeFrame, number> = {
     '1m': 0.7, '5m': 0.8, '15m': 0.85, '30m': 0.9,
-    '1h': 1.0, '4h': 1.1, '12h': 1.15, '1d': 1.2, '3d': 1.25, '1w': 1.3, '1M': 1.35
+    '1h': 1.0, '4h': 1.1, '1d': 1.2, '3d': 1.25, '1w': 1.3, '1M': 1.35
   };
   
   confidence *= timeframeMultipliers[timeframe] || 1.0;
@@ -537,7 +537,7 @@ function calculatePriceLevels(
   // Risk multipliers based on timeframe
   const riskMultipliers: Record<TimeFrame, number> = {
     '1m': 0.5, '5m': 0.7, '15m': 1.0, '30m': 1.2,
-    '1h': 1.5, '4h': 2.0, '12h': 2.2, '1d': 2.5, '3d': 3.0, '1w': 3.5, '1M': 4.0
+    '1h': 1.5, '4h': 2.0, '1d': 2.5, '3d': 3.0, '1w': 3.5, '1M': 4.0
   };
   
   const multiplier = riskMultipliers[timeframe] || 1.5;
@@ -572,7 +572,7 @@ function calculateSuccessProbability(confidence: number, timeframe: TimeFrame, d
   let baseProbability = confidence * 0.65; // Convert confidence to probability
   
   // Timeframe adjustments for success probability
-  const timeframeAdjustments: Record<string, number> = {
+  const timeframeAdjustments: Record<TimeFrame, number> = {
     '1m': -10, '5m': -5, '15m': 0, '30m': 2,
     '1h': 5, '4h': 8, '1d': 10, '3d': 12, '1w': 15, '1M': 18
   };
