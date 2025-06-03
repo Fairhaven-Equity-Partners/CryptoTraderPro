@@ -47,6 +47,7 @@ import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimize
 import { calculateStreamlinedSignal, enhancePatternRecognition, calculateDynamicLeverage } from '../lib/streamlinedCalculationEngine';
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { calculateUnifiedSignal } from '../lib/unifiedCalculationEngine';
+import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 
 // Enhanced macro analysis functions
 function analyzeIndicatorConvergence(indicators: any[]): { confidence: number; description: string } {
