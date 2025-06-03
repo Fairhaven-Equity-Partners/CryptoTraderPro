@@ -1860,13 +1860,18 @@ export default function AdvancedSignalDashboard({
                                 currentSignal.confidence >= 70 ? 'bg-green-600' : 
                                 currentSignal.confidence >= 45 ? 'bg-yellow-600' : 'bg-red-600'
                               }`}
-                              style={{ width: `${currentSignal.confidence}%` }}
+                              style={{ width: `${Math.round(currentSignal.confidence)}%` }}
                             />
                           </div>
-                          <div className="flex justify-between text-xs text-gray-400">
-                            <span>Weak</span>
-                            <span>Moderate</span>
-                            <span>Strong</span>
+                          <div className="flex justify-between items-center">
+                            <div className="flex justify-between text-xs text-gray-400 w-full">
+                              <span>Weak</span>
+                              <span>Moderate</span>
+                              <span>Strong</span>
+                            </div>
+                            <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
+                              {Math.round(currentSignal.confidence)}%
+                            </Badge>
                           </div>
                         </div>
                         
@@ -1875,17 +1880,17 @@ export default function AdvancedSignalDashboard({
                           <h3 className="text-white font-bold text-xs">Macro Score</h3>
                           <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
                             <div 
-                              className={`h-4 rounded-full ${
-                                (currentSignal.macroScore || 50) >= 70 ? 'bg-green-600' : 
-                                (currentSignal.macroScore || 50) >= 45 ? 'bg-yellow-600' : 'bg-red-600'
+                              className={`h-3 rounded-full ${
+                                Math.round(currentSignal.macroScore || 50) >= 70 ? 'bg-green-600' : 
+                                Math.round(currentSignal.macroScore || 50) >= 45 ? 'bg-yellow-600' : 'bg-red-600'
                               }`}
-                              style={{ width: `${currentSignal.macroScore || 50}%` }}
+                              style={{ width: `${Math.round(currentSignal.macroScore || 50)}%` }}
                             />
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-xs text-gray-400">{currentSignal.macroClassification}</span>
                             <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800">
-                              {currentSignal.macroScore}%
+                              {Math.round(currentSignal.macroScore || 50)}%
                             </Badge>
                           </div>
                         </div>
