@@ -113,7 +113,7 @@ class AdaptiveLearningEngine {
       this.updatePerformanceCache(symbol, timeframe, metric, indicatorScores);
       
     } catch (error) {
-      console.error('Error in adaptive learning:', error);
+      // Silently handle adaptive learning errors to prevent console spam
     }
   }
 
