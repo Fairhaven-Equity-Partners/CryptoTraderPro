@@ -1008,6 +1008,7 @@ export default function AdvancedSignalDashboard({
                 '30m': { sl: 0.012, tp: 0.024 },  // 1.2% SL, 2.4% TP
                 '1h': { sl: 0.015, tp: 0.030 },   // 1.5% SL, 3.0% TP
                 '4h': { sl: 0.025, tp: 0.050 },   // 2.5% SL, 5.0% TP
+                '12h': { sl: 0.030, tp: 0.060 },  // 3.0% SL, 6.0% TP
                 '1d': { sl: 0.040, tp: 0.080 },   // 4.0% SL, 8.0% TP
                 '3d': { sl: 0.060, tp: 0.120 },   // 6.0% SL, 12.0% TP
                 '1w': { sl: 0.080, tp: 0.160 },   // 8.0% SL, 16.0% TP
@@ -1488,6 +1489,52 @@ export default function AdvancedSignalDashboard({
         </div>
       </div>
       
+      {/* Live Accuracy Tracking Status Panel */}
+      <Card className="border border-green-700 bg-gradient-to-b from-green-900/20 to-green-950/40 shadow-lg mb-4">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-bold text-green-400 flex items-center">
+            🧠 Live Accuracy Feedback Loop
+            <Badge variant="outline" className="ml-2 text-xs bg-green-900/20 text-green-400 border-green-800">
+              ACTIVE
+            </Badge>
+          </CardTitle>
+          <CardDescription className="text-green-200">
+            Continuously learning from real market outcomes to improve predictions
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pb-3">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="bg-green-950/30 rounded-lg p-3 border border-green-800/50">
+              <div className="text-green-400 text-sm font-medium">Predictions Recorded</div>
+              <div className="text-green-200 text-lg font-bold">
+                {Object.values(signals).filter(s => s && s.direction !== 'NEUTRAL').length}
+              </div>
+              <div className="text-green-500 text-xs">Active Timeframes</div>
+            </div>
+            <div className="bg-blue-950/30 rounded-lg p-3 border border-blue-800/50">
+              <div className="text-blue-400 text-sm font-medium">Live Price Tracking</div>
+              <div className="text-blue-200 text-lg font-bold">${formatCurrency(currentAssetPrice)}</div>
+              <div className="text-blue-500 text-xs">Real-time Data</div>
+            </div>
+            <div className="bg-purple-950/30 rounded-lg p-3 border border-purple-800/50">
+              <div className="text-purple-400 text-sm font-medium">Learning Engine</div>
+              <div className="text-purple-200 text-lg font-bold">Adaptive</div>
+              <div className="text-purple-500 text-xs">Weight Optimization</div>
+            </div>
+            <div className="bg-orange-950/30 rounded-lg p-3 border border-orange-800/50">
+              <div className="text-orange-400 text-sm font-medium">Next Analysis</div>
+              <div className="text-orange-200 text-lg font-bold">
+                {Math.floor(timeUntilNextCalc / 60)}:{(timeUntilNextCalc % 60).toString().padStart(2, '0')}
+              </div>
+              <div className="text-orange-500 text-xs">Auto-calculation</div>
+            </div>
+          </div>
+          <div className="mt-3 text-xs text-gray-400">
+            System automatically records predictions → tracks outcomes → calculates accuracy → adjusts weights → improves future predictions
+          </div>
+        </CardContent>
+      </Card>
+
       <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
         <CardHeader className="pb-2">
           <CardTitle className="text-xl font-bold text-white flex items-center">
@@ -1908,8 +1955,8 @@ export default function AdvancedSignalDashboard({
                                 if (entryPrice > 0) {
                                   const tpPercentages = {
                                     '1m': 0.006, '5m': 0.010, '15m': 0.016, '30m': 0.024,
-                                    '1h': 0.030, '4h': 0.050, '1d': 0.080, '3d': 0.120,
-                                    '1w': 0.160, '1M': 0.240
+                                    '1h': 0.030, '4h': 0.050, '12h': 0.060, '1d': 0.080, 
+                                    '3d': 0.120, '1w': 0.160, '1M': 0.240
                                   };
                                   const percentage = tpPercentages[selectedTimeframe] || 0.030;
                                   if (currentSignal?.direction === 'LONG') {
