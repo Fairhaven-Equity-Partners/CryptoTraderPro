@@ -1844,7 +1844,31 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
-                        {/* Support/Resistance Levels - Moved here directly under Macro Score */}
+                        {/* Pattern Formations */}
+                        <div className="space-y-1">
+                          <h3 className="text-white font-bold text-xs">Pattern Formations</h3>
+                          {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
+                            currentSignal.patternFormations.map((pattern, i) => (
+                              <div key={i} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
+                                <div>
+                                  <span className="text-gray-300 font-medium text-xs">{pattern.name}</span>
+                                  <span className="text-xs text-gray-400 ml-1">({pattern.reliability}%)</span>
+                                </div>
+                                <Badge variant="outline" className={`
+                                  ${pattern.direction === 'bullish' ? 'text-green-400 border-green-500 bg-green-900/30' : 
+                                    pattern.direction === 'bearish' ? 'text-red-400 border-red-500 bg-red-900/30' :
+                                    'text-yellow-400 border-yellow-500 bg-yellow-900/30'} 
+                                  font-medium px-1 py-0.5 text-xs`}>
+                                  {pattern.direction.toUpperCase()}
+                                </Badge>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-gray-400 text-xs">No patterns detected</div>
+                          )}
+                        </div>
+                        
+                        {/* Support/Resistance Levels - Key Price Levels */}
                         <div className="space-y-1">
                           <h3 className="text-white font-bold text-xs">Key Price Levels</h3>
                           
@@ -1954,30 +1978,6 @@ export default function AdvancedSignalDashboard({
                               </div>
                             );
                           })()}
-                        </div>
-                        
-                        {/* Pattern Formations */}
-                        <div className="space-y-1">
-                          <h3 className="text-white font-bold text-xs">Pattern Formations</h3>
-                          {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
-                            currentSignal.patternFormations.map((pattern, i) => (
-                              <div key={i} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                                <div>
-                                  <span className="text-gray-300 font-medium text-xs">{pattern.name}</span>
-                                  <span className="text-xs text-gray-400 ml-1">({pattern.reliability}%)</span>
-                                </div>
-                                <Badge variant="outline" className={`
-                                  ${pattern.direction === 'bullish' ? 'text-green-400 border-green-500 bg-green-900/30' : 
-                                    pattern.direction === 'bearish' ? 'text-red-400 border-red-500 bg-red-900/30' :
-                                    'text-yellow-400 border-yellow-500 bg-yellow-900/30'} 
-                                  font-medium px-1 py-0.5 text-xs`}>
-                                  {pattern.direction.toUpperCase()}
-                                </Badge>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="text-gray-400 text-xs">No patterns detected</div>
-                          )}
                         </div>
 
                       </div>
