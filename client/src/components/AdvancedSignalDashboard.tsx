@@ -2147,7 +2147,7 @@ export default function AdvancedSignalDashboard({
                               <div className="space-y-0.5">
                                 {(() => {
                                   const supports = (currentSignal?.indicators as any)?.supports || [];
-                                  const currentPrice = asset?.currentPrice || 106000;
+                                  const currentPrice = (asset as any)?.currentPrice || 105872;
                                   const labels = ['Strong', 'Medium', 'Weak'];
                                   
                                   // Generate fallback support levels if none exist
