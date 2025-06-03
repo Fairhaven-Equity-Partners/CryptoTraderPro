@@ -1636,7 +1636,7 @@ export default function AdvancedSignalDashboard({
               })()}
             </div>
             <div className="space-y-3">
-              <h4 className="text-white font-semibold text-sm">Trading Recommendations</h4>
+              <h4 className="text-white font-semibold text-xs">Trading Recommendations</h4>
               {(() => {
                 const currentSignal = signals[selectedTimeframe];
                 const recommendations = [];
@@ -1985,7 +1985,7 @@ export default function AdvancedSignalDashboard({
                         
                         {/* Support/Resistance Levels */}
                         <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Key Price Levels</h3>
+                          <h3 className="text-white font-bold text-xs">Key Price Levels</h3>
                           
                           {/* Resistance Levels */}
                           <div>
