@@ -9,7 +9,6 @@ interface NavigationBarProps {
 
 const tabs: AppTab[] = [
   { id: 'analysis', label: 'Analysis', icon: 'analytics' },
-  { id: 'alerts', label: 'Alerts', icon: 'notifications' },
   { id: 'settings', label: 'Settings', icon: 'settings' }
 ];
 
