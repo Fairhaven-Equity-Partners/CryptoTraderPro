@@ -78,7 +78,7 @@ export default function ConsolidatedSignalDashboard({
         try {
           const timeframeData = chartData[timeframe];
           if (timeframeData && timeframeData.length >= 50) {
-            const signal = await calculateUnifiedSignal(symbol, timeframe, timeframeData);
+            const signal = await calculateUnifiedSignal(timeframeData, timeframe, currentAssetPrice || 0, symbol);
             if (signal) {
               newSignals[timeframe] = signal;
             }
@@ -135,7 +135,7 @@ export default function ConsolidatedSignalDashboard({
 
   // Trigger initial calculation when chart data is available
   useEffect(() => {
-    if (chartData && chartData.length >= 50 && !isCalculating) {
+    if (chartData && Object.keys(chartData).length > 0 && !isCalculating) {
       setTimeout(() => calculateSignalsForAllTimeframes(), 2000);
     }
   }, [chartData, calculateSignalsForAllTimeframes, isCalculating]);
