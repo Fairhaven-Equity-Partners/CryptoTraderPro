@@ -2,8 +2,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, TrendingDown, Minus, RefreshCw } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, RefreshCw, Target, DollarSign } from 'lucide-react';
 import { forexAnalysisEngine, ForexSignal } from '@/lib/forexAnalysis';
+import { liveForexTradeGenerator, LiveForexTrade } from '@/lib/liveForexSignals';
 
 interface ForexDashboardProps {
   pair: string;
@@ -11,6 +12,7 @@ interface ForexDashboardProps {
 
 export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps) {
   const [signals, setSignals] = useState<ForexSignal[]>([]);
+  const [trades, setTrades] = useState<LiveForexTrade[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
@@ -18,7 +20,9 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
     setIsLoading(true);
     try {
       const analysis = forexAnalysisEngine.generateMultiTimeframeAnalysis();
+      const liveTrades = await liveForexTradeGenerator.generateLiveForexTrades();
       setSignals(analysis);
+      setTrades(liveTrades);
       setLastUpdate(new Date());
     } catch (error) {
       console.error('Error generating forex analysis:', error);
@@ -86,6 +90,79 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
           </Button>
         </div>
       </div>
+
+      {/* Live Trade Recommendations */}
+      {trades.length > 0 && (
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Target className="w-5 h-5" />
+              Live EUR/USD Trade Recommendations
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {trades.map((trade, index) => (
+                <div key={trade.id} className="border rounded-lg p-4 bg-gradient-to-r from-blue-50 to-indigo-50">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h4 className="font-semibold text-lg">{trade.timeframe} Trade</h4>
+                      <div className="flex items-center gap-2 mt-1">
+                        {getDirectionIcon(trade.direction)}
+                        <Badge className={`${getDirectionColor(trade.direction)} border`}>
+                          {trade.direction}
+                        </Badge>
+                        <Badge variant="outline" className={getConfidenceColor(trade.confidence)}>
+                          {trade.confidence}% Confidence
+                        </Badge>
+                      </div>
+                    </div>
+                    <Badge variant={trade.status === 'ACTIVE' ? 'default' : 'secondary'}>
+                      {trade.status}
+                    </Badge>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Entry:</span>
+                        <span className="font-semibold">{formatPrice(trade.entryPrice)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Stop Loss:</span>
+                        <span className="font-semibold text-red-600">{formatPrice(trade.stopLoss)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Take Profit:</span>
+                        <span className="font-semibold text-green-600">{formatPrice(trade.takeProfit)}</span>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Leverage:</span>
+                        <span className="font-semibold">{trade.leverage}:1</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Position Size:</span>
+                        <span className="font-semibold">{trade.positionSize} lots</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Risk/Reward:</span>
+                        <span className="font-semibold text-blue-600">{trade.riskReward}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-3 rounded border-l-4 border-blue-500">
+                    <h5 className="text-sm font-semibold text-gray-800 mb-1">Analysis Summary</h5>
+                    <p className="text-xs text-gray-700">{trade.reasoning}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Multi-Timeframe Signals */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
