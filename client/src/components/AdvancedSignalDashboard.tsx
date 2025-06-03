@@ -1489,48 +1489,51 @@ export default function AdvancedSignalDashboard({
         </div>
       </div>
       
-      {/* Live Accuracy Tracking Status Panel */}
-      <Card className="border border-green-700 bg-gradient-to-b from-green-900/20 to-green-950/40 shadow-lg mb-4">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-bold text-green-400 flex items-center">
+      {/* Live Accuracy Feedback Loop - Improved Readability */}
+      <Card className="border-2 border-emerald-500/60 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4">
+        <CardHeader className="pb-3 bg-gradient-to-r from-emerald-600/20 to-blue-600/20 rounded-t-lg">
+          <CardTitle className="text-xl font-bold text-white flex items-center gap-3">
             🧠 Live Accuracy Feedback Loop
-            <Badge variant="outline" className="ml-2 text-xs bg-green-900/20 text-green-400 border-green-800">
+            <Badge className="bg-emerald-500 text-white font-semibold px-3 py-1 text-sm">
               ACTIVE
             </Badge>
           </CardTitle>
-          <CardDescription className="text-green-200">
-            Continuously learning from real market outcomes to improve predictions
+          <CardDescription className="text-slate-200 text-base">
+            AI system learns from real outcomes to continuously improve prediction accuracy
           </CardDescription>
         </CardHeader>
-        <CardContent className="pb-3">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="bg-green-950/30 rounded-lg p-3 border border-green-800/50">
-              <div className="text-green-400 text-sm font-medium">Predictions Recorded</div>
-              <div className="text-green-200 text-lg font-bold">
+        <CardContent className="pb-4 bg-slate-800/50">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-br from-emerald-600/30 to-emerald-700/40 rounded-xl p-4 border-2 border-emerald-400/40 shadow-lg">
+              <div className="text-emerald-300 text-sm font-semibold">Predictions Recorded</div>
+              <div className="text-white text-2xl font-bold mt-1">
                 {Object.values(signals).filter(s => s && s.direction !== 'NEUTRAL').length}
               </div>
-              <div className="text-green-500 text-xs">Active Timeframes</div>
+              <div className="text-emerald-200 text-xs mt-1">Active Timeframes</div>
             </div>
-            <div className="bg-blue-950/30 rounded-lg p-3 border border-blue-800/50">
-              <div className="text-blue-400 text-sm font-medium">Live Price Tracking</div>
-              <div className="text-blue-200 text-lg font-bold">${formatCurrency(currentAssetPrice)}</div>
-              <div className="text-blue-500 text-xs">Real-time Data</div>
+            <div className="bg-gradient-to-br from-blue-600/30 to-blue-700/40 rounded-xl p-4 border-2 border-blue-400/40 shadow-lg">
+              <div className="text-blue-300 text-sm font-semibold">Live Price Tracking</div>
+              <div className="text-white text-2xl font-bold mt-1">${formatCurrency(currentAssetPrice)}</div>
+              <div className="text-blue-200 text-xs mt-1">Real-time Data</div>
             </div>
-            <div className="bg-purple-950/30 rounded-lg p-3 border border-purple-800/50">
-              <div className="text-purple-400 text-sm font-medium">Learning Engine</div>
-              <div className="text-purple-200 text-lg font-bold">Adaptive</div>
-              <div className="text-purple-500 text-xs">Weight Optimization</div>
+            <div className="bg-gradient-to-br from-purple-600/30 to-purple-700/40 rounded-xl p-4 border-2 border-purple-400/40 shadow-lg">
+              <div className="text-purple-300 text-sm font-semibold">Learning Engine</div>
+              <div className="text-white text-2xl font-bold mt-1">Adaptive</div>
+              <div className="text-purple-200 text-xs mt-1">Weight Optimization</div>
             </div>
-            <div className="bg-orange-950/30 rounded-lg p-3 border border-orange-800/50">
-              <div className="text-orange-400 text-sm font-medium">Next Analysis</div>
-              <div className="text-orange-200 text-lg font-bold">
+            <div className="bg-gradient-to-br from-orange-600/30 to-orange-700/40 rounded-xl p-4 border-2 border-orange-400/40 shadow-lg">
+              <div className="text-orange-300 text-sm font-semibold">Next Analysis</div>
+              <div className="text-white text-2xl font-bold mt-1">
                 {Math.floor(timeUntilNextCalc / 60)}:{(timeUntilNextCalc % 60).toString().padStart(2, '0')}
               </div>
-              <div className="text-orange-500 text-xs">Auto-calculation</div>
+              <div className="text-orange-200 text-xs mt-1">Auto-calculation</div>
             </div>
           </div>
-          <div className="mt-3 text-xs text-gray-400">
-            System automatically records predictions → tracks outcomes → calculates accuracy → adjusts weights → improves future predictions
+          <div className="mt-4 p-3 bg-slate-700/50 rounded-lg border border-slate-600/50">
+            <div className="text-sm text-slate-100 font-medium mb-1">Feedback Loop Process:</div>
+            <div className="text-xs text-slate-300 leading-relaxed">
+              Record predictions → Track live outcomes → Calculate accuracy rates → Adjust indicator weights → Improve future predictions
+            </div>
           </div>
         </CardContent>
       </Card>
