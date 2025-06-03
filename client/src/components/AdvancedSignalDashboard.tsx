@@ -48,6 +48,7 @@ import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimize
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
+import { enhancedCalculationEngine } from '../lib/enhancedCalculationEngine';
 import { 
   calculateEnhancedConfidence, 
   analyzeTimeframeCorrelations, 
@@ -1146,13 +1147,9 @@ export default function AdvancedSignalDashboard({
           // Debug current price being passed
           console.log(`[${timeframe}] Using currentAssetPrice: ${currentAssetPrice} for calculation`);
           
-          // Generate signal using streamlined calculation engine (replaces 50+ fragmented files)
-          let signal = generateStreamlinedSignal(
-            chartData[timeframe],
-            timeframe,
-            currentAssetPrice,
-            symbol
-          );
+          // Generate signal using enhanced calculation engine with mathematically accurate MACD and ADX
+          enhancedCalculationEngine.updateMarketData(symbol, timeframe, chartData[timeframe]);
+          let signal = enhancedCalculationEngine.generateSignal(symbol, timeframe, currentAssetPrice);
           
           // Signal is already in AdvancedSignal format from streamlined engine
           if (signal) {
