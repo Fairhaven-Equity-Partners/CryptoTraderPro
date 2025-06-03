@@ -64,10 +64,9 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <AdvancedSignalDashboard 
+          <ConsolidatedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
-            onAnalysisComplete={() => setShouldRunAnalysis(false)}
           />
         </div>
         

@@ -79,12 +79,17 @@ export default function ConsolidatedSignalDashboard({
   }, [symbol]);
 
   useEffect(() => {
-    if (assetData && 'currentPrice' in assetData) {
-      setCurrentAssetPrice(assetData.currentPrice);
+    if (assetData && typeof assetData === 'object' && 'currentPrice' in assetData) {
+      const price = (assetData as any).currentPrice;
+      if (typeof price === 'number') {
+        setCurrentAssetPrice(price);
+      }
     }
   }, [assetData]);
 
-  const priceChange24h = (assetData && 'priceChange24h' in assetData) ? assetData.priceChange24h : 0;
+  const priceChange24h = (assetData && typeof assetData === 'object' && 'priceChange24h' in assetData) 
+    ? Number((assetData as any).priceChange24h) || 0 
+    : 0;
 
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
