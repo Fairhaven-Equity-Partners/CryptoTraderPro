@@ -282,6 +282,41 @@ export default function AdvancedSignalDashboard({
     queryKey: [`/api/crypto/${symbol}`],
     enabled: !!symbol
   });
+  
+  // Fetch accuracy metrics for current symbol
+  const { data: accuracyData } = useQuery({
+    queryKey: [`/api/accuracy/${symbol}`],
+    enabled: !!symbol,
+    refetchInterval: 30000 // Refresh every 30 seconds
+  });
+  
+  // Fetch trade simulations to calculate real accuracy
+  const { data: tradeSimulations } = useQuery({
+    queryKey: [`/api/trade-simulations/${symbol}`],
+    enabled: !!symbol,
+    refetchInterval: 30000 // Refresh every 30 seconds
+  });
+  
+  // Calculate real accuracy from trade simulations
+  const calculateRealAccuracy = useCallback(() => {
+    if (!tradeSimulations || !Array.isArray(tradeSimulations)) {
+      return { correct: 0, total: 0, percentage: 0 };
+    }
+    
+    const completedTrades = tradeSimulations.filter((trade: any) => !trade.isActive && trade.exitReason);
+    const correctTrades = completedTrades.filter((trade: any) => 
+      trade.profitLossPercent && trade.profitLossPercent > 0
+    );
+    
+    const total = completedTrades.length;
+    const correct = correctTrades.length;
+    const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
+    
+    return { correct, total, percentage };
+  }, [tradeSimulations]);
+  
+  const realAccuracy = calculateRealAccuracy();
+  
   // Get the current price from live data or asset data with proper fallback
   const currentAssetPrice = (() => {
     // First try to get from asset data
@@ -1610,9 +1645,11 @@ export default function AdvancedSignalDashboard({
             {/* Live Accuracy Metrics */}
             <div className="p-2 bg-emerald-600/20 rounded-lg text-center">
               <div className="text-xs font-bold text-green-400">
-                0/0
+                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total}` : 'Calculating...'}
               </div>
-              <div className="text-emerald-200 text-xs">Accuracy</div>
+              <div className="text-emerald-200 text-xs">
+                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accuracy` : 'Accuracy'}
+              </div>
             </div>
             <div className="p-2 bg-blue-600/20 rounded-lg text-center">
               <div className="text-xs font-bold text-white">{selectedTimeframe}</div>
