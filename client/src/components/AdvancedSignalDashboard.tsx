@@ -248,7 +248,9 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
-  // Timer display permanently removed - calculations happen automatically via 3-minute intervals
+  
+  // 3-minute timer state synchronized with calculation cycle
+  const [timeUntilNextCalc, setTimeUntilNextCalc] = useState<number>(180); // 3 minutes in seconds
   
   // Refs to track calculation status
   const lastSymbolRef = useRef<string>(symbol);
@@ -269,6 +271,28 @@ export default function AdvancedSignalDashboard({
   });
   const currentAssetPrice = (asset as any)?.lastPrice || 0;
   
+  // 3-minute timer effect synchronized with calculation cycle
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimeUntilNextCalc(prev => {
+        if (prev <= 1) {
+          return 180; // Reset to 3 minutes (180 seconds)
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timerInterval);
+  }, []);
+
+  // Reset timer when calculation completes
+  useEffect(() => {
+    if (!isCalculating && timeUntilNextCalc > 175) {
+      // A calculation just completed, reset timer
+      setTimeUntilNextCalc(180);
+    }
+  }, [isCalculating]);
+
   // Listen directly for the live price update custom event
   useEffect(() => {
     // Create a specific handler for the live price update event
@@ -1395,9 +1419,14 @@ export default function AdvancedSignalDashboard({
               Calculating...
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
-              Auto-calculations active
-            </Badge>
+            <>
+              <Badge variant="outline" className="text-xs bg-green-900/20 text-green-400 border-green-800 px-3 py-1">
+                Auto-calculations active
+              </Badge>
+              <Badge variant="outline" className="text-xs bg-purple-900/20 text-purple-400 border-purple-800 px-3 py-1">
+                Next: {Math.floor(timeUntilNextCalc / 60)}:{(timeUntilNextCalc % 60).toString().padStart(2, '0')}
+              </Badge>
+            </>
           )}
         </div>
       </div>
