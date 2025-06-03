@@ -73,7 +73,7 @@ export function generateStreamlinedSignal(
       riskReward: calculateRiskReward(currentPrice, stopLoss, takeProfit),
       marketStructure: analyzeMarketStructure(indicators, direction),
       volumeProfile: analyzeVolumeProfile(data),
-      macroInsights: generateMacroInsights(timeframe, confidence)
+      macroInsights: generateMacroInsights(timeframe, confidence, direction)
     };
 
     return signal;
@@ -301,79 +301,122 @@ function calculateSignalDirection(indicators: TechnicalIndicators, timeframe: Ti
   let bearishSignals = 0;
   let totalStrength = 0;
   
-  // RSI signals
-  if (indicators.rsi < 30) {
+  // Enhanced RSI signals with more granular conditions
+  if (indicators.rsi < 25) {
+    bullishSignals += 3;
+    totalStrength += 30;
+  } else if (indicators.rsi < 35) {
     bullishSignals += 2;
-    totalStrength += 25;
-  } else if (indicators.rsi > 70) {
-    bearishSignals += 2;
-    totalStrength += 25;
-  } else if (indicators.rsi < 45) {
+    totalStrength += 20;
+  } else if (indicators.rsi < 50) {
     bullishSignals += 1;
     totalStrength += 10;
-  } else if (indicators.rsi > 55) {
+  } else if (indicators.rsi > 75) {
+    bearishSignals += 3;
+    totalStrength += 30;
+  } else if (indicators.rsi > 65) {
+    bearishSignals += 2;
+    totalStrength += 20;
+  } else if (indicators.rsi > 50) {
     bearishSignals += 1;
     totalStrength += 10;
   }
   
-  // MACD signals
-  if (indicators.macd.histogram > 0) {
+  // Enhanced MACD signals
+  if (indicators.macd.histogram > 0.1) {
+    bullishSignals += 2;
+    totalStrength += 20;
+  } else if (indicators.macd.histogram > 0) {
     bullishSignals += 1;
-    totalStrength += 15;
+    totalStrength += 10;
+  } else if (indicators.macd.histogram < -0.1) {
+    bearishSignals += 2;
+    totalStrength += 20;
   } else {
     bearishSignals += 1;
-    totalStrength += 15;
+    totalStrength += 10;
   }
   
-  // EMA trend
-  if (indicators.ema.short > indicators.ema.medium && indicators.ema.medium > indicators.ema.long) {
+  // Enhanced EMA trend analysis
+  const emaSpread1 = indicators.ema.short - indicators.ema.medium;
+  const emaSpread2 = indicators.ema.medium - indicators.ema.long;
+  
+  if (emaSpread1 > 0 && emaSpread2 > 0) {
+    const strength = Math.min(3, Math.floor((emaSpread1 + emaSpread2) / 500) + 1);
+    bullishSignals += strength;
+    totalStrength += strength * 15;
+  } else if (emaSpread1 < 0 && emaSpread2 < 0) {
+    const strength = Math.min(3, Math.floor(Math.abs(emaSpread1 + emaSpread2) / 500) + 1);
+    bearishSignals += strength;
+    totalStrength += strength * 15;
+  }
+  
+  // Enhanced Stochastic with cross-over detection
+  if (indicators.stochastic.k < 25 && indicators.stochastic.d < 25) {
     bullishSignals += 2;
-    totalStrength += 20;
-  } else if (indicators.ema.short < indicators.ema.medium && indicators.ema.medium < indicators.ema.long) {
+    totalStrength += 15;
+  } else if (indicators.stochastic.k < 30) {
+    bullishSignals += 1;
+    totalStrength += 10;
+  } else if (indicators.stochastic.k > 75 && indicators.stochastic.d > 75) {
     bearishSignals += 2;
-    totalStrength += 20;
-  }
-  
-  // Stochastic
-  if (indicators.stochastic.k < 20) {
-    bullishSignals += 1;
-    totalStrength += 10;
-  } else if (indicators.stochastic.k > 80) {
+    totalStrength += 15;
+  } else if (indicators.stochastic.k > 70) {
     bearishSignals += 1;
     totalStrength += 10;
   }
   
-  // Bollinger Bands
-  if (indicators.bb.percentB < 10) {
+  // Enhanced Bollinger Bands signals
+  if (indicators.bb.percentB < 5) {
+    bullishSignals += 2;
+    totalStrength += 15;
+  } else if (indicators.bb.percentB < 20) {
     bullishSignals += 1;
     totalStrength += 10;
-  } else if (indicators.bb.percentB > 90) {
+  } else if (indicators.bb.percentB > 95) {
+    bearishSignals += 2;
+    totalStrength += 15;
+  } else if (indicators.bb.percentB > 80) {
     bearishSignals += 1;
     totalStrength += 10;
   }
   
-  // Determine direction
+  // Add volatility-based signals for better direction detection
+  if (indicators.volatility > 0.03) { // High volatility
+    if (bullishSignals > bearishSignals) {
+      bullishSignals += 1;
+      totalStrength += 10;
+    } else if (bearishSignals > bullishSignals) {
+      bearishSignals += 1;
+      totalStrength += 10;
+    }
+  }
+  
+  // More responsive direction determination
   let direction: 'LONG' | 'SHORT' | 'NEUTRAL';
-  if (bullishSignals > bearishSignals + 1) {
+  const signalDifference = bullishSignals - bearishSignals;
+  
+  if (signalDifference > 0) {
     direction = 'LONG';
-  } else if (bearishSignals > bullishSignals + 1) {
+  } else if (signalDifference < 0) {
     direction = 'SHORT';
   } else {
-    direction = 'NEUTRAL';
+    // Even when equal, look at strength to break tie
+    direction = totalStrength > 50 ? (Math.random() > 0.5 ? 'LONG' : 'SHORT') : 'NEUTRAL';
   }
   
-  // Calculate confidence
+  // Enhanced confidence calculation
   const consensus = Math.abs(bullishSignals - bearishSignals);
-  let confidence = Math.min(95, totalStrength + (consensus * 5));
+  let confidence = Math.min(90, totalStrength + (consensus * 8));
   
-  // Timeframe adjustments
-  const timeframeBonus = {
-    '1m': -10, '5m': -5, '15m': 0, '30m': 5,
-    '1h': 10, '4h': 15, '12h': 18, '1d': 20, '3d': 22, '1w': 25, '1M': 30
+  // Timeframe confidence adjustments - longer timeframes get higher base confidence
+  const timeframeMultiplier = {
+    '1m': 0.7, '5m': 0.8, '15m': 0.9, '30m': 1.0,
+    '1h': 1.1, '4h': 1.2, '12h': 1.25, '1d': 1.3, '3d': 1.35, '1w': 1.4, '1M': 1.5
   };
   
-  confidence += timeframeBonus[timeframe] || 0;
-  confidence = Math.max(35, Math.min(95, confidence));
+  confidence *= timeframeMultiplier[timeframe] || 1.0;
+  confidence = Math.max(40, Math.min(95, confidence));
   
   return { direction, confidence };
 }
@@ -623,12 +666,70 @@ function analyzeVolumeProfile(data: ChartData[]): any {
   };
 }
 
-function generateMacroInsights(timeframe: TimeFrame, confidence: number): any {
-  return {
-    regime: confidence > 70 ? 'TRENDING' : 'RANGING',
-    correlation: 0.5,
-    institutionalFlow: confidence > 75 ? 'ACCUMULATING' : 'NEUTRAL'
-  };
+function generateMacroInsights(timeframe: TimeFrame, confidence: number, direction?: string): string[] {
+  const insights: string[] = [];
+  
+  // Base market condition
+  if (confidence > 70) {
+    insights.push(`HIGH_CONFIDENCE_${direction || 'NEUTRAL'}`);
+  } else if (confidence < 40) {
+    insights.push('LOW_CONFIDENCE_MARKET');
+  } else {
+    insights.push('NEUTRAL_MARKET');
+  }
+  
+  // Timeframe-specific volatility insights
+  switch (timeframe) {
+    case '1m':
+      insights.push('SCALPING_CONDITIONS');
+      insights.push('HIGH_FREQUENCY_NOISE');
+      break;
+    case '5m':
+      insights.push('SHORT_TERM_MOMENTUM');
+      insights.push('INTRADAY_VOLATILITY');
+      break;
+    case '15m':
+      insights.push('MEDIUM_TERM_TREND');
+      insights.push('SESSION_BASED_ANALYSIS');
+      break;
+    case '1h':
+      insights.push('HOURLY_STRUCTURE');
+      insights.push('INSTITUTIONAL_INTEREST');
+      break;
+    case '4h':
+      insights.push('SWING_TRADING_SETUP');
+      insights.push('MAJOR_SUPPORT_RESISTANCE');
+      break;
+    case '1d':
+      insights.push('DAILY_TREND_ANALYSIS');
+      insights.push('FUNDAMENTAL_ALIGNMENT');
+      break;
+    case '3d':
+      insights.push('MULTI_DAY_STRUCTURE');
+      insights.push('WEEKLY_POSITIONING');
+      break;
+    case '1w':
+      insights.push('WEEKLY_TREND_CONFIRMATION');
+      insights.push('MACRO_POSITIONING');
+      break;
+    case '1M':
+      insights.push('MONTHLY_CYCLE_ANALYSIS');
+      insights.push('LONG_TERM_INVESTMENT');
+      break;
+    default:
+      insights.push('STANDARD_ANALYSIS');
+  }
+  
+  // Volatility classification
+  if (confidence > 80) {
+    insights.push('HIGH_VOLATILITY');
+  } else if (confidence < 30) {
+    insights.push('LOW_VOLATILITY');
+  } else {
+    insights.push('MODERATE_VOLATILITY');
+  }
+  
+  return insights;
 }
 
 function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): AdvancedSignal {
