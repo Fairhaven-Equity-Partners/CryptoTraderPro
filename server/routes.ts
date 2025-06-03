@@ -355,6 +355,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: 'Failed to record signal' });
     }
   });
+
+  // Trade simulation routes
+  app.post('/api/trade-simulations', async (req: Request, res: Response) => {
+    try {
+      const tradeData = insertTradeSimulationSchema.parse(req.body);
+      const trade = await storage.createTradeSimulation(tradeData);
+      
+      // Broadcast new trade simulation
+      broadcastUpdates({
+        type: 'trade_simulation_created',
+        data: trade
+      });
+      
+      res.status(201).json(trade);
+    } catch (error: any) {
+      console.error('Error creating trade simulation:', error);
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.get('/api/trade-simulations/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const trades = await storage.getActiveTradeSimulations(symbol);
+      res.json(trades);
+    } catch (error: any) {
+      console.error('Error fetching trade simulations:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.patch('/api/trade-simulations/:id/close', async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { exitPrice, exitReason } = req.body;
+      const trade = await storage.closeTradeSimulation(parseInt(id), exitPrice, exitReason);
+      if (!trade) {
+        return res.status(404).json({ error: 'Trade simulation not found' });
+      }
+      
+      // Broadcast trade closure
+      broadcastUpdates({
+        type: 'trade_simulation_closed',
+        data: trade
+      });
+      
+      res.json(trade);
+    } catch (error: any) {
+      console.error('Error closing trade simulation:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  // Accuracy metrics routes
+  app.get('/api/accuracy/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const { timeframe } = req.query;
+      const metrics = await storage.getAccuracyMetrics(symbol, timeframe as string);
+      res.json(metrics);
+    } catch (error: any) {
+      console.error('Error fetching accuracy metrics:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+  app.post('/api/accuracy/:symbol/:timeframe/calculate', async (req: Request, res: Response) => {
+    try {
+      const { symbol, timeframe } = req.params;
+      const metrics = await storage.calculateAccuracyMetrics(symbol, timeframe);
+      res.json(metrics);
+    } catch (error: any) {
+      console.error('Error calculating accuracy metrics:', error);
+      res.status(500).json({ error: error.message });
+    }
+  });
   
   // Advanced signals and calculations are now handled client-side
   // in the timeframeSuccessProbability and advancedSignalsNew modules
