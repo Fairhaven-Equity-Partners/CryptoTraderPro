@@ -1030,9 +1030,9 @@ export default function AdvancedSignalDashboard({
                 signal.confidence = Math.min(optimizedResult.confidence, 95);
               }
               
-              // Always use the mathematically accurate stop loss and take profit values
-              signal.stopLoss = optimizedResult.stopLoss;
-              signal.takeProfit = optimizedResult.takeProfit;
+              // PRESERVE our calculated stop loss and take profit - optimization was returning null
+              // Keep the percentage-based calculations we set earlier
+              console.log(`[KeepingCalculated] ${timeframe}: SL=${signal.stopLoss}, TP=${signal.takeProfit}`);
               
               // Add optimized support/resistance levels if available
               if (signal.indicators && optimizedResult.supports.length > 0) {
