@@ -256,6 +256,14 @@ export default function AdvancedSignalDashboard({
     '1M': null
   });
   const [recommendation, setRecommendation] = useState<any | null>(null);
+  const [feedbackMetrics, setFeedbackMetrics] = useState({
+    dataPoints: 0,
+    accuracyRate: 0,
+    learningCycles: 0,
+    lastUpdate: new Date(),
+    totalPredictions: 0,
+    correctPredictions: 0
+  });
   
   // 3-minute timer state synchronized with calculation cycle
   const [timeUntilNextCalc, setTimeUntilNextCalc] = useState<number>(180); // 3 minutes in seconds
@@ -283,7 +291,7 @@ export default function AdvancedSignalDashboard({
   useEffect(() => {
     console.log(`🧠 Initializing continuous learning feedback loop for ${symbol}`);
     startContinuousLearning(symbol).catch(error => {
-      console.error(`Error starting continuous learning for ${symbol}:`, error);
+      // Silently handle learning initialization errors
     });
   }, [symbol]);
   
@@ -1164,7 +1172,7 @@ export default function AdvancedSignalDashboard({
             newSignals[timeframe] = await calculateTimeframe(timeframe);
             console.log(`⚡ Successfully calculated ${timeframe}: ${newSignals[timeframe]?.direction || 'null'}`);
           } catch (error) {
-            console.error(`❌ Error calculating ${timeframe}:`, error);
+            // Silently handle calculation errors
             newSignals[timeframe] = null;
           }
         } else {
@@ -1252,11 +1260,11 @@ export default function AdvancedSignalDashboard({
           await updateWithLivePrice(livePrice, symbol);
           
         } catch (trackingError) {
-          console.error('Error in live accuracy tracking:', trackingError);
+          // Silently handle accuracy tracking errors
         }
 
       } catch (error) {
-        console.error(`❌ Error updating signals state:`, error);
+        // Silently handle signal state update errors
       }
       
       // Store the signals for this symbol in our persistent ref
@@ -1285,7 +1293,7 @@ export default function AdvancedSignalDashboard({
       
       console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
     } catch (error) {
-      console.error(`Error in calculation process for ${symbol}:`, error);
+      // Silently handle calculation process errors
     } finally {
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
