@@ -412,3 +412,20 @@ class UnifiedCalculationCore {
 }
 
 export const unifiedCalculationCore = new UnifiedCalculationCore();
+
+// Export the multi-timeframe calculation function for backward compatibility
+export function calculateMultiTimeframeSignals(symbol: string, currentPrice: number, chartData: any) {
+  const results = new Map();
+  
+  for (const timeframe of TIMEFRAMES) {
+    if (chartData[timeframe] && chartData[timeframe].length > 0) {
+      unifiedCalculationCore.updateMarketData(symbol, timeframe, chartData[timeframe]);
+      const signal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentPrice);
+      if (signal) {
+        results.set(timeframe, signal);
+      }
+    }
+  }
+  
+  return results;
+}
