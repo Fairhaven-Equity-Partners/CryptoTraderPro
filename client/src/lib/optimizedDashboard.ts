@@ -1,143 +1,194 @@
-/**
- * Optimized Dashboard Controller
- * 
- * Streamlined logic for the main signal dashboard
- * Eliminates redundant calculations and state management
- */
+import { TimeFrame, AdvancedSignal } from '../types';
+import { unifiedCalculationSystem } from './unifiedCalculationSystem';
+import { ALL_TIMEFRAMES, DISPLAY_TIMEFRAMES, createEmptySignalsObject } from './optimizedTypes';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { TimeFrame, AdvancedSignal, TradeRecommendation } from '../types';
-import { initPriceManager, subscribeToPrice, subscribeToCalculations, updateChartData } from './streamlinedPriceManager';
-import { calculateUnifiedSignal } from './unifiedCalculationCore';
+export class OptimizedDashboard {
+  private static instance: OptimizedDashboard;
+  private currentSymbol = '';
+  private signalCache = new Map<string, Record<TimeFrame, AdvancedSignal | null>>();
+  private lastCalculationTime = 0;
+  private calculationInProgress = false;
 
-// Simplified timeframes (removed 12h as it's causing indexing errors)
-export const OPTIMIZED_TIMEFRAMES: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+  static getInstance(): OptimizedDashboard {
+    if (!OptimizedDashboard.instance) {
+      OptimizedDashboard.instance = new OptimizedDashboard();
+    }
+    return OptimizedDashboard.instance;
+  }
 
-// Performance tracking
-let lastUpdateTime = 0;
-let calculationCount = 0;
-
-/**
- * Main dashboard hook - optimized version
- */
-export function useOptimizedDashboard(symbol: string) {
-  const [currentPrice, setCurrentPrice] = useState<number>(0);
-  const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({} as any);
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
-  const [tradeRecommendation, setTradeRecommendation] = useState<TradeRecommendation | null>(null);
-  
-  // Data storage
-  const chartDataRef = useRef<Record<TimeFrame, any[]>>({} as any);
-  const priceSubscriptionRef = useRef<(() => void) | null>(null);
-  const calculationSubscriptionRef = useRef<(() => void) | null>(null);
-  
-  // Initialize price manager
-  useEffect(() => {
-    initPriceManager();
+  async calculateSignalsForSymbol(symbol: string, currentPrice: number): Promise<Record<TimeFrame, AdvancedSignal | null>> {
+    const cacheKey = `${symbol}-${Math.floor(currentPrice / 100) * 100}`;
     
-    // Subscribe to price updates
-    priceSubscriptionRef.current = subscribeToPrice((price: number) => {
-      setCurrentPrice(price);
-      lastUpdateTime = Date.now();
-    });
-    
-    // Subscribe to calculation results
-    calculationSubscriptionRef.current = subscribeToCalculations((results: Record<TimeFrame, AdvancedSignal>) => {
-      setSignals(results);
-      setIsCalculating(false);
-      calculationCount++;
+    if (this.signalCache.has(cacheKey)) {
+      return this.signalCache.get(cacheKey)!;
+    }
+
+    if (this.calculationInProgress) {
+      return this.getEmptySignals();
+    }
+
+    this.calculationInProgress = true;
+
+    try {
+      const signals = await unifiedCalculationSystem.calculateAllTimeframes(symbol, currentPrice);
+      this.signalCache.set(cacheKey, signals);
+      this.cleanupCache();
+      this.lastCalculationTime = Date.now();
       
-      // Update trade recommendation for selected timeframe
-      if (results[selectedTimeframe]) {
-        updateTradeRecommendation(results[selectedTimeframe]);
-      }
-    });
-    
-    return () => {
-      priceSubscriptionRef.current?.();
-      calculationSubscriptionRef.current?.();
-    };
-  }, []);
-  
-  // Handle chart data updates
-  const handleChartDataUpdate = useCallback((timeframe: TimeFrame, data: any[]) => {
-    chartDataRef.current[timeframe] = data;
-    updateChartData(timeframe, data);
-  }, []);
-  
-  // Generate trade recommendation
-  const updateTradeRecommendation = useCallback((signal: AdvancedSignal) => {
-    if (!signal) return;
-    
-    const recommendation: TradeRecommendation = {
-      direction: signal.direction,
-      confidence: signal.confidence,
-      entry: signal.entryPrice,
-      stopLoss: signal.stopLoss || signal.entryPrice * 0.98,
-      takeProfits: [signal.takeProfit || signal.entryPrice * 1.02],
-      leverage: 2, // Conservative default
-      timeframe: signal.timeframe,
-      summary: `${signal.direction} signal with ${signal.confidence.toFixed(1)}% confidence`,
-      keyIndicators: ['RSI', 'MACD', 'Bollinger Bands']
-    };
-    
-    setTradeRecommendation(recommendation);
-  }, []);
-  
-  // Handle timeframe selection
-  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
-    setSelectedTimeframe(timeframe);
-    
-    // Update recommendation for new timeframe
-    if (signals[timeframe]) {
-      updateTradeRecommendation(signals[timeframe]);
+      return signals;
+    } finally {
+      this.calculationInProgress = false;
     }
-  }, [signals]);
-  
-  // Format currency
-  const formatCurrency = useCallback((price: number): string => {
-    if (!price || isNaN(price)) return '$0.00';
-    return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  }, []);
-  
-  // Get signal background class
-  const getSignalBgClass = useCallback((direction: string): string => {
-    switch (direction) {
-      case 'LONG': return 'bg-green-900/50 border-green-500';
-      case 'SHORT': return 'bg-red-900/50 border-red-500';
-      default: return 'bg-gray-900/50 border-gray-500';
+  }
+
+  async updateSignalForTimeframe(
+    symbol: string, 
+    timeframe: TimeFrame, 
+    currentPrice: number
+  ): Promise<AdvancedSignal> {
+    return await unifiedCalculationSystem.calculateSignalForTimeframe(symbol, timeframe, currentPrice);
+  }
+
+  generateTradeRecommendation(signals: Record<TimeFrame, AdvancedSignal | null>, selectedTimeframe: TimeFrame) {
+    const signal = signals[selectedTimeframe];
+    if (!signal || signal.direction === 'NEUTRAL') {
+      return null;
     }
-  }, []);
-  
-  // Performance metrics
-  const getPerformanceMetrics = useCallback(() => {
-    const timeSinceLastUpdate = Date.now() - lastUpdateTime;
+
+    const keyIndicators = this.extractKeyIndicators(signal);
+    const confluence = this.calculateTimeframeConfluence(signals, signal.direction);
+    
     return {
-      calculationCount,
-      timeSinceLastUpdate,
-      isRealTime: timeSinceLastUpdate < 30000 // Within 30 seconds
+      direction: signal.direction,
+      confidence: Math.round(signal.confidence * confluence),
+      entry: signal.entryPrice,
+      stopLoss: signal.stopLoss || signal.entryPrice * (signal.direction === 'LONG' ? 0.98 : 1.02),
+      takeProfits: this.calculateTakeProfitLevels(signal),
+      leverage: this.calculateRecommendedLeverage(signal),
+      timeframe: selectedTimeframe,
+      summary: this.generateSummary(signal, confluence),
+      keyIndicators
     };
-  }, []);
-  
-  return {
-    // State
-    currentPrice,
-    signals,
-    isCalculating,
-    selectedTimeframe,
-    tradeRecommendation,
+  }
+
+  private extractKeyIndicators(signal: AdvancedSignal): string[] {
+    const indicators: string[] = [];
+    const { indicators: signalIndicators } = signal;
+
+    if (!signalIndicators) return indicators;
+
+    // RSI analysis
+    const rsiValue = signalIndicators.rsi?.value;
+    if (rsiValue) {
+      if (rsiValue < 30) indicators.push('RSI Oversold');
+      else if (rsiValue > 70) indicators.push('RSI Overbought');
+      else if (rsiValue < 45) indicators.push('RSI Bullish');
+      else if (rsiValue > 55) indicators.push('RSI Bearish');
+    }
+
+    // MACD momentum
+    const macdHistogram = signalIndicators.macd?.histogram;
+    if (macdHistogram) {
+      if (macdHistogram > 0) indicators.push('MACD Bullish');
+      else indicators.push('MACD Bearish');
+    }
+
+    // EMA trend
+    const { short: emaShort, medium: emaMedium, long: emaLong } = signalIndicators.ema || {};
+    if (emaShort && emaMedium && emaLong) {
+      if (emaShort > emaMedium && emaMedium > emaLong) {
+        indicators.push('EMA Uptrend');
+      } else if (emaShort < emaMedium && emaMedium < emaLong) {
+        indicators.push('EMA Downtrend');
+      }
+    }
+
+    // ADX trend strength
+    const adxValue = signalIndicators.adx?.value;
+    if (adxValue && adxValue > 25) {
+      indicators.push('Strong Trend');
+    }
+
+    return indicators.slice(0, 4); // Limit to 4 key indicators
+  }
+
+  private calculateTimeframeConfluence(signals: Record<TimeFrame, AdvancedSignal | null>, direction: string): number {
+    const relevantTimeframes = DISPLAY_TIMEFRAMES;
+    let confluence = 0;
+    let validSignals = 0;
+
+    for (const timeframe of relevantTimeframes) {
+      const signal = signals[timeframe];
+      if (signal && signal.direction !== 'NEUTRAL') {
+        validSignals++;
+        if (signal.direction === direction) {
+          confluence += signal.confidence * 0.01;
+        }
+      }
+    }
+
+    return validSignals > 0 ? confluence / validSignals : 0.5;
+  }
+
+  private calculateTakeProfitLevels(signal: AdvancedSignal): number[] {
+    const entryPrice = signal.entryPrice;
+    const takeProfit = signal.takeProfit || entryPrice * 1.02;
+    const range = Math.abs(takeProfit - entryPrice);
+
+    return [
+      entryPrice + (range * 0.5),  // TP1: 50% of the way
+      entryPrice + (range * 0.8),  // TP2: 80% of the way
+      takeProfit                   // TP3: Full target
+    ];
+  }
+
+  private calculateRecommendedLeverage(signal: AdvancedSignal): number {
+    const baseConfidence = signal.confidence;
+    let leverage = 1;
+
+    if (baseConfidence > 80) leverage = 3;
+    else if (baseConfidence > 70) leverage = 2.5;
+    else if (baseConfidence > 60) leverage = 2;
+    else if (baseConfidence > 50) leverage = 1.5;
+
+    return Math.min(leverage, 5); // Cap at 5x for safety
+  }
+
+  private generateSummary(signal: AdvancedSignal, confluence: number): string {
+    const direction = signal.direction.toLowerCase();
+    const confidence = Math.round(signal.confidence);
+    const confluencePercent = Math.round(confluence * 100);
     
-    // Actions
-    handleChartDataUpdate,
-    handleTimeframeSelect,
-    
-    // Utilities
-    formatCurrency,
-    getSignalBgClass,
-    getPerformanceMetrics,
-    
-    // Constants
-    timeframes: OPTIMIZED_TIMEFRAMES
-  };
+    return `${confidence}% confidence ${direction} signal with ${confluencePercent}% timeframe confluence. ` +
+           `Success probability: ${signal.successProbability}%.`;
+  }
+
+  private getEmptySignals(): Record<TimeFrame, AdvancedSignal | null> {
+    const empty = createEmptySignalsObject();
+    return empty as Record<TimeFrame, AdvancedSignal | null>;
+  }
+
+  private cleanupCache(): void {
+    if (this.signalCache.size > 50) {
+      const entries = Array.from(this.signalCache.entries());
+      this.signalCache.clear();
+      entries.slice(-25).forEach(([key, value]) => {
+        this.signalCache.set(key, value);
+      });
+    }
+  }
+
+  clearCache(): void {
+    this.signalCache.clear();
+    unifiedCalculationSystem.clearCache();
+  }
+
+  getCalculationStatus(): { lastCalculation: number; inProgress: boolean } {
+    return {
+      lastCalculation: this.lastCalculationTime,
+      inProgress: this.calculationInProgress
+    };
+  }
 }
+
+export const optimizedDashboard = OptimizedDashboard.getInstance();

@@ -45,8 +45,16 @@ export class StreamlinedCore {
         return this.createNeutralSignal(symbol, timeframe, currentPrice);
       }
 
-      const indicators = calculateAllIndicators(data);
-      const signal = this.generateOptimizedSignal(symbol, timeframe, currentPrice, indicators);
+      const indicatorResults = {
+        rsi: indicators.calculateRSI(data, 14),
+        macd: indicators.calculateMACD(data, 12, 26, 9),
+        ema: indicators.calculateEMA(data, 20),
+        stochastic: indicators.calculateStochastic(data, 14, 3),
+        bb: indicators.calculateBollingerBands(data, 20, 2),
+        adx: indicators.calculateADX(data, 14),
+        atr: indicators.calculateATR(data, 14)
+      };
+      const signal = this.generateOptimizedSignal(symbol, timeframe, currentPrice, indicatorResults);
       
       this.calculationCache.set(cacheKey, signal);
       
