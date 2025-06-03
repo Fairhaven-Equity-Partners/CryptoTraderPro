@@ -67,11 +67,7 @@ export function generateStreamlinedSignal(
         moderate: Math.min(2, confidence / 50),
         aggressive: Math.min(3, confidence / 30),
         recommendation: confidence > 70 ? 'moderate' : 'conservative'
-      },
-      riskReward: calculateRiskReward(currentPrice, stopLoss, takeProfit),
-      marketStructure: analyzeMarketStructure(indicators, direction),
-      volumeProfile: analyzeVolumeProfile(data),
-      macroInsights: generateMacroInsights(timeframe, confidence, direction)
+      }
     };
 
     return signal;
@@ -758,16 +754,12 @@ function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice:
       volatility: []
     },
     patternFormations: [],
-    environment: { trend: 'NEUTRAL', volatility: 'NORMAL', volume: 'NORMAL', sentiment: 'NEUTRAL' },
+
     recommendedLeverage: {
       conservative: 1,
       moderate: 1.5,
       aggressive: 2,
       recommendation: 'moderate'
-    },
-    riskReward: 1,
-    marketStructure: { trend: 'SIDEWAYS', phase: 'CONSOLIDATION', strength: 50 },
-    volumeProfile: { volumeWeightedPrice: currentPrice, highVolumeNodes: [], lowVolumeNodes: [] },
-    macroInsights: ['NEUTRAL', 'STABLE_CORRELATION', 'BALANCED_FLOW']
+    }
   };
 }

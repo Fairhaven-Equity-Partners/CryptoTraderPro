@@ -572,7 +572,7 @@ function calculateSuccessProbability(confidence: number, timeframe: TimeFrame, d
   let baseProbability = confidence * 0.65; // Convert confidence to probability
   
   // Timeframe adjustments for success probability
-  const timeframeAdjustments = {
+  const timeframeAdjustments: Record<string, number> = {
     '1m': -10, '5m': -5, '15m': 0, '30m': 2,
     '1h': 5, '4h': 8, '1d': 10, '3d': 12, '1w': 15, '1M': 18
   };
@@ -806,7 +806,7 @@ function calculateOptimalLeverage(confidence: number, riskReward: number, timefr
   else if (riskReward < 1) leverage *= 0.8;
   
   // Adjust for timeframe (lower leverage for shorter timeframes)
-  const timeframeLeverage = {
+  const timeframeLeverage: Record<string, number> = {
     '1m': 0.5, '5m': 0.7, '15m': 0.8, '30m': 0.9,
     '1h': 1.0, '4h': 1.1, '1d': 1.2, '3d': 1.0, '1w': 0.8, '1M': 0.6
   };
