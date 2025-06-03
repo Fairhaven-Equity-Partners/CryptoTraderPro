@@ -576,7 +576,6 @@ function generateMacroInsights(timeframe: TimeFrame, confidence: number): any {
 function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): AdvancedSignal {
   const validPrice = currentPrice > 0 ? currentPrice : 106000; // Use live price or reasonable fallback
   return {
-    symbol,
     direction: 'NEUTRAL',
     confidence: 50,
     entryPrice: validPrice,

@@ -74,6 +74,27 @@ export interface AdvancedSignal {
   patternFormations?: PatternFormation[];
   supportLevels?: number[];
   resistanceLevels?: number[];
+  supportResistance?: {
+    supports: number[];
+    resistances: number[];
+    pivotPoints: number[];
+  };
+  environment?: {
+    trend: string;
+    volatility: string;
+    volume: string;
+    sentiment: string;
+  };
+  marketStructure?: {
+    trend: string;
+    phase: string;
+    strength: number;
+  };
+  volumeProfile?: {
+    volumeWeightedPrice: number;
+    highVolumeNodes: any[];
+    lowVolumeNodes: any[];
+  };
   expectedDuration?: string;
   riskRewardRatio?: number;
   optimalRiskReward?: {
