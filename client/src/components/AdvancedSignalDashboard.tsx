@@ -1844,77 +1844,7 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
-                        {/* Moon Phase Analysis */}
-                        <div className="space-y-2">
-                          <h3 className="text-white font-bold text-sm">Moon Phase Analysis</h3>
-                          {(() => {
-                            const moonPhase = getCurrentMoonPhase();
-                            const moonEmoji = getMoonPhaseEmoji(moonPhase.phaseName);
-                            return (
-                              <div className="bg-gray-800/50 rounded-lg p-3 border border-gray-700">
-                                <div className="flex items-center justify-between mb-2">
-                                  <div className="flex items-center space-x-2">
-                                    <span className="text-2xl">{moonEmoji}</span>
-                                    <span className="text-gray-300 font-medium">{moonPhase.phaseName}</span>
-                                  </div>
-                                  <Badge variant="outline" className="text-xs bg-purple-900/20 text-purple-400 border-purple-800">
-                                    {Math.round(moonPhase.illumination)}% lit
-                                  </Badge>
-                                </div>
-                                <div className="text-xs text-gray-400 mb-2">
-                                  {moonPhase.description}
-                                </div>
-                                <div className="flex justify-between items-center">
-                                  <span className="text-xs text-gray-400">Market Bias:</span>
-                                  <span className={`text-xs font-medium ${
-                                    moonPhase.marketBias === 'BULLISH' ? 'text-green-400' : 
-                                    moonPhase.marketBias === 'BEARISH' ? 'text-red-400' : 'text-gray-400'
-                                  }`}>
-                                    {moonPhase.marketBias}
-                                  </span>
-                                </div>
-                                <div className="mt-2 w-full bg-gray-700 rounded-full h-2">
-                                  <div 
-                                    className={`h-2 rounded-full ${
-                                      moonPhase.impactStrength > 1.05 ? 'bg-green-500' : 
-                                      moonPhase.impactStrength < 0.95 ? 'bg-red-500' : 'bg-gray-500'
-                                    }`}
-                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}%` }}
-                                  />
-                                </div>
-                                <div className="text-xs text-gray-400 mt-1">
-                                  Impact: {((moonPhase.impactStrength - 1) * 100).toFixed(1)}%
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
-                        
-                        {/* Pattern Formations */}
-                        <div className="space-y-2">
-                          <h3 className="text-white font-bold text-xs">Pattern Formations</h3>
-                          {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
-                            currentSignal.patternFormations.map((pattern, i) => (
-                              <div key={i} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                                <div>
-                                  <span className="text-gray-300 font-medium">{pattern.name}</span>
-                                  <span className="text-xs text-gray-400 ml-2">({pattern.reliability}% reliability)</span>
-                                </div>
-                                <Badge variant="outline" className={`
-                                  ${pattern.direction === 'bullish' ? 'text-green-400 border-green-500 bg-green-900/30' : 
-                                    pattern.direction === 'bearish' ? 'text-red-400 border-red-500 bg-red-900/30' :
-                                    'text-yellow-400 border-yellow-500 bg-yellow-900/30'} 
-                                  font-medium px-2 py-1 text-xs`}>
-                                  {pattern.direction.toUpperCase()}
-                                </Badge>
-                              </div>
-                            ))
-                          ) : (
-                            <div className="text-gray-400 text-sm">No significant patterns detected</div>
-                          )}
-                        </div>
-                        
-                        {/* Support/Resistance Levels - Side by Side */}
+                        {/* Support/Resistance Levels - Moved here directly under Macro Score */}
                         <div className="space-y-1">
                           <h3 className="text-white font-bold text-xs">Key Price Levels</h3>
                           
@@ -1985,6 +1915,71 @@ export default function AdvancedSignalDashboard({
                             </div>
                           </div>
                         </div>
+                        
+                        {/* Moon Phase Analysis - Smaller */}
+                        <div className="space-y-1">
+                          <h3 className="text-white font-bold text-xs">Moon Phase Analysis</h3>
+                          {(() => {
+                            const moonPhase = getCurrentMoonPhase();
+                            const moonEmoji = getMoonPhaseEmoji(moonPhase.phaseName);
+                            return (
+                              <div className="bg-gray-800/50 rounded-lg p-2 border border-gray-700">
+                                <div className="flex items-center justify-between mb-1">
+                                  <div className="flex items-center space-x-1">
+                                    <span className="text-lg">{moonEmoji}</span>
+                                    <span className="text-gray-300 font-medium text-xs">{moonPhase.phaseName}</span>
+                                  </div>
+                                  <Badge variant="outline" className="text-xs bg-purple-900/20 text-purple-400 border-purple-800">
+                                    {Math.round(moonPhase.illumination)}%
+                                  </Badge>
+                                </div>
+                                <div className="flex justify-between items-center mb-1">
+                                  <span className="text-xs text-gray-400">Bias:</span>
+                                  <span className={`text-xs font-medium ${
+                                    moonPhase.marketBias === 'BULLISH' ? 'text-green-400' : 
+                                    moonPhase.marketBias === 'BEARISH' ? 'text-red-400' : 'text-gray-400'
+                                  }`}>
+                                    {moonPhase.marketBias}
+                                  </span>
+                                </div>
+                                <div className="w-full bg-gray-700 rounded-full h-1">
+                                  <div 
+                                    className={`h-1 rounded-full ${
+                                      moonPhase.impactStrength > 1.05 ? 'bg-green-500' : 
+                                      moonPhase.impactStrength < 0.95 ? 'bg-red-500' : 'bg-gray-500'
+                                    }`}
+                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}%` }}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                        
+                        {/* Pattern Formations */}
+                        <div className="space-y-1">
+                          <h3 className="text-white font-bold text-xs">Pattern Formations</h3>
+                          {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
+                            currentSignal.patternFormations.map((pattern, i) => (
+                              <div key={i} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
+                                <div>
+                                  <span className="text-gray-300 font-medium text-xs">{pattern.name}</span>
+                                  <span className="text-xs text-gray-400 ml-1">({pattern.reliability}%)</span>
+                                </div>
+                                <Badge variant="outline" className={`
+                                  ${pattern.direction === 'bullish' ? 'text-green-400 border-green-500 bg-green-900/30' : 
+                                    pattern.direction === 'bearish' ? 'text-red-400 border-red-500 bg-red-900/30' :
+                                    'text-yellow-400 border-yellow-500 bg-yellow-900/30'} 
+                                  font-medium px-1 py-0.5 text-xs`}>
+                                  {pattern.direction.toUpperCase()}
+                                </Badge>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-gray-400 text-xs">No patterns detected</div>
+                          )}
+                        </div>
+
                       </div>
                       
                       {/* Right column with trade setup and key indicators */}
