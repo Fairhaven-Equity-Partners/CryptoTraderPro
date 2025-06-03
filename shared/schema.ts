@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb, doublePrecision } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, jsonb, doublePrecision, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -88,6 +88,81 @@ export type InsertAlert = z.infer<typeof insertAlertSchema>;
 
 export type SignalHistory = typeof signalHistory.$inferSelect;
 export type InsertSignalHistory = z.infer<typeof insertSignalHistorySchema>;
+
+// Trade Simulation and Accuracy Tracking Tables
+export const tradeSimulations = pgTable("trade_simulations", {
+  id: serial("id").primaryKey(),
+  symbol: text("symbol").notNull(),
+  timeframe: text("timeframe").notNull(),
+  direction: text("direction").notNull(), // LONG, SHORT
+  entryPrice: doublePrecision("entry_price").notNull(),
+  stopLoss: doublePrecision("stop_loss").notNull(),
+  takeProfit: doublePrecision("take_profit").notNull(),
+  confidence: integer("confidence").notNull(),
+  entryTime: timestamp("entry_time").defaultNow().notNull(),
+  exitTime: timestamp("exit_time"),
+  exitPrice: doublePrecision("exit_price"),
+  exitReason: text("exit_reason"), // TP, SL, TIMEOUT, MANUAL
+  profitLoss: doublePrecision("profit_loss"),
+  profitLossPercent: doublePrecision("profit_loss_percent"),
+  isActive: boolean("is_active").default(true),
+  signalData: text("signal_data"), // JSON string of original signal
+});
+
+export const insertTradeSimulationSchema = createInsertSchema(tradeSimulations).pick({
+  symbol: true,
+  timeframe: true,
+  direction: true,
+  entryPrice: true,
+  stopLoss: true,
+  takeProfit: true,
+  confidence: true,
+  signalData: true,
+});
+
+export const accuracyMetrics = pgTable("accuracy_metrics", {
+  id: serial("id").primaryKey(),
+  symbol: text("symbol").notNull(),
+  timeframe: text("timeframe").notNull(),
+  totalTrades: integer("total_trades").default(0),
+  winningTrades: integer("winning_trades").default(0),
+  losingTrades: integer("losing_trades").default(0),
+  averageProfit: doublePrecision("average_profit").default(0),
+  averageLoss: doublePrecision("average_loss").default(0),
+  winRate: doublePrecision("win_rate").default(0),
+  profitFactor: doublePrecision("profit_factor").default(0),
+  lastUpdated: timestamp("last_updated").defaultNow(),
+  // Indicator-specific accuracy
+  rsiAccuracy: doublePrecision("rsi_accuracy").default(0),
+  macdAccuracy: doublePrecision("macd_accuracy").default(0),
+  emaAccuracy: doublePrecision("ema_accuracy").default(0),
+  stochasticAccuracy: doublePrecision("stochastic_accuracy").default(0),
+  adxAccuracy: doublePrecision("adx_accuracy").default(0),
+  bbAccuracy: doublePrecision("bb_accuracy").default(0),
+});
+
+export const insertAccuracyMetricsSchema = createInsertSchema(accuracyMetrics).pick({
+  symbol: true,
+  timeframe: true,
+  totalTrades: true,
+  winningTrades: true,
+  losingTrades: true,
+  averageProfit: true,
+  averageLoss: true,
+  winRate: true,
+  profitFactor: true,
+  rsiAccuracy: true,
+  macdAccuracy: true,
+  emaAccuracy: true,
+  stochasticAccuracy: true,
+  adxAccuracy: true,
+  bbAccuracy: true,
+});
+
+export type TradeSimulation = typeof tradeSimulations.$inferSelect;
+export type InsertTradeSimulation = z.infer<typeof insertTradeSimulationSchema>;
+export type AccuracyMetrics = typeof accuracyMetrics.$inferSelect;
+export type InsertAccuracyMetrics = z.infer<typeof insertAccuracyMetricsSchema>;
 
 // Enums and constants that can be shared
 export const TIMEFRAMES = [

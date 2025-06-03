@@ -1,7 +1,8 @@
 import { 
-  users, cryptoAssets, alerts, signalHistory,
+  users, cryptoAssets, alerts, signalHistory, tradeSimulations, accuracyMetrics,
   type User, type InsertUser, type CryptoAsset, type InsertCryptoAsset,
-  type Alert, type InsertAlert, type SignalHistory, type InsertSignalHistory
+  type Alert, type InsertAlert, type SignalHistory, type InsertSignalHistory,
+  type TradeSimulation, type InsertTradeSimulation, type AccuracyMetrics, type InsertAccuracyMetrics
 } from "@shared/schema";
 
 export interface IStorage {
@@ -25,6 +26,17 @@ export interface IStorage {
   // Signal history operations
   recordSignal(signal: InsertSignalHistory): Promise<SignalHistory>;
   getSignalHistoryBySymbol(symbol: string, limit?: number): Promise<SignalHistory[]>;
+  
+  // Trade simulation operations
+  createTradeSimulation(trade: InsertTradeSimulation): Promise<TradeSimulation>;
+  getActiveTradeSimulations(symbol: string): Promise<TradeSimulation[]>;
+  updateTradeSimulation(id: number, data: Partial<TradeSimulation>): Promise<TradeSimulation | undefined>;
+  closeTradeSimulation(id: number, exitPrice: number, exitReason: string): Promise<TradeSimulation | undefined>;
+  
+  // Accuracy metrics operations
+  getAccuracyMetrics(symbol: string, timeframe?: string): Promise<AccuracyMetrics[]>;
+  updateAccuracyMetrics(symbol: string, timeframe: string, metrics: Partial<InsertAccuracyMetrics>): Promise<AccuracyMetrics | undefined>;
+  calculateAccuracyMetrics(symbol: string, timeframe: string): Promise<AccuracyMetrics | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -32,10 +44,14 @@ export class MemStorage implements IStorage {
   private cryptoAssets: Map<string, CryptoAsset>;
   private alerts: Map<number, Alert>;
   private signalHistory: Map<number, SignalHistory>;
+  private tradeSimulations: Map<number, TradeSimulation>;
+  private accuracyMetrics: Map<string, AccuracyMetrics>;
   
   private userIdCounter: number;
   private alertIdCounter: number;
   private signalIdCounter: number;
+  private tradeIdCounter: number;
+  private accuracyIdCounter: number;
 
   constructor() {
     this.users = new Map();
