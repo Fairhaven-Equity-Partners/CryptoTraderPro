@@ -449,27 +449,7 @@ export default function AdvancedSignalDashboard({
       clearInterval(recalcIntervalRef.current);
     }
     
-    const updateTimerDisplay = () => {
-      try {
-        // Timer display permanently removed - calculations happen automatically
-      }
-    };
-    
-    // Update immediately
-    updateTimerDisplay();
-    
-    // Set up countdown timer that updates every second
-    const timerInterval = setInterval(updateTimerDisplay, 1000);
-    
-    // Save interval reference for cleanup
-    recalcIntervalRef.current = timerInterval;
-    
-    // Cleanup function
-    return () => {
-      if (recalcIntervalRef.current) {
-        clearInterval(recalcIntervalRef.current);
-      }
-    };
+    // Timer display functionality completely removed - calculations happen automatically via 3-minute intervals
   }, [isCalculating, triggerCalculation]);
 
   // Store persistent signals across refreshes
@@ -1820,14 +1800,58 @@ export default function AdvancedSignalDashboard({
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Take Profit</span>
                             <span className="font-bold text-green-400 bg-green-900/30 px-3 py-1 rounded border border-green-800">
-                              {formatCurrency(currentSignal?.takeProfit || 0)}
+                              {(() => {
+                                if (currentSignal?.takeProfit && currentSignal.takeProfit > 0) {
+                                  return formatCurrency(currentSignal.takeProfit);
+                                }
+                                // Calculate fallback if null - use timeframe-based percentages
+                                const entryPrice = currentSignal?.entryPrice || 0;
+                                if (entryPrice > 0) {
+                                  const tpPercentages = {
+                                    '1m': 0.006, '5m': 0.010, '15m': 0.016, '30m': 0.024,
+                                    '1h': 0.030, '4h': 0.050, '1d': 0.080, '3d': 0.120,
+                                    '1w': 0.160, '1M': 0.240
+                                  };
+                                  const percentage = tpPercentages[selectedTimeframe] || 0.030;
+                                  if (currentSignal?.direction === 'LONG') {
+                                    return formatCurrency(entryPrice * (1 + percentage));
+                                  } else if (currentSignal?.direction === 'SHORT') {
+                                    return formatCurrency(entryPrice * (1 - percentage));
+                                  } else {
+                                    return formatCurrency(entryPrice * 1.01);
+                                  }
+                                }
+                                return formatCurrency(0);
+                              })()}
                             </span>
                           </div>
                           
                           <div className="flex justify-between items-center text-sm">
                             <span className="text-white font-semibold">Stop Loss</span>
                             <span className="font-bold text-red-400 bg-red-900/30 px-3 py-1 rounded border border-red-800">
-                              {formatCurrency(currentSignal?.stopLoss || 0)}
+                              {(() => {
+                                if (currentSignal?.stopLoss && currentSignal.stopLoss > 0) {
+                                  return formatCurrency(currentSignal.stopLoss);
+                                }
+                                // Calculate fallback if null - use timeframe-based percentages
+                                const entryPrice = currentSignal?.entryPrice || 0;
+                                if (entryPrice > 0) {
+                                  const slPercentages = {
+                                    '1m': 0.003, '5m': 0.005, '15m': 0.008, '30m': 0.012,
+                                    '1h': 0.015, '4h': 0.025, '1d': 0.040, '3d': 0.060,
+                                    '1w': 0.080, '1M': 0.120
+                                  };
+                                  const percentage = slPercentages[selectedTimeframe] || 0.015;
+                                  if (currentSignal?.direction === 'LONG') {
+                                    return formatCurrency(entryPrice * (1 - percentage));
+                                  } else if (currentSignal?.direction === 'SHORT') {
+                                    return formatCurrency(entryPrice * (1 + percentage));
+                                  } else {
+                                    return formatCurrency(entryPrice * 0.99);
+                                  }
+                                }
+                                return formatCurrency(0);
+                              })()}
                             </span>
                           </div>
                         </div>
