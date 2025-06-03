@@ -451,19 +451,7 @@ export default function AdvancedSignalDashboard({
     
     const updateTimerDisplay = () => {
       try {
-        // Get countdown values directly from the finalPriceSystem module
-        const remainingSeconds = getSecondsUntilNextRefresh();
-        const formattedTime = getFormattedCountdown();
-        
-        // Set the state with the values from finalPriceSystem
-        setNextRefreshIn(remainingSeconds);
-        setFormattedTimer(formattedTime);
-      } catch (err) {
-        console.error("Error getting timer from finalPriceSystem:", err);
-        // Fallback to internal timer if needed
-        const minutes = Math.floor(nextRefreshIn / 60);
-        const seconds = nextRefreshIn % 60;
-        setFormattedTimer(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+        // Timer display permanently removed - calculations happen automatically
       }
     };
     
@@ -965,12 +953,48 @@ export default function AdvancedSignalDashboard({
           // Convert to proper AdvancedSignal format
           let signal: AdvancedSignal | null = null;
           if (rawSignal) {
+            // Ensure we have a valid entry price from current market data
+            const currentPrice = chartData[timeframe][chartData[timeframe].length - 1].close;
+            const entryPrice = rawSignal.entryPrice || currentPrice;
+            
+            // Calculate proper stop loss and take profit based on timeframe and direction
+            let stopLoss: number;
+            let takeProfit: number;
+            
+            // Timeframe-based risk percentages for realistic trading levels
+            const riskPercentages = {
+              '1m': { sl: 0.003, tp: 0.006 },   // 0.3% SL, 0.6% TP
+              '5m': { sl: 0.005, tp: 0.010 },   // 0.5% SL, 1.0% TP
+              '15m': { sl: 0.008, tp: 0.016 },  // 0.8% SL, 1.6% TP
+              '30m': { sl: 0.012, tp: 0.024 },  // 1.2% SL, 2.4% TP
+              '1h': { sl: 0.015, tp: 0.030 },   // 1.5% SL, 3.0% TP
+              '4h': { sl: 0.025, tp: 0.050 },   // 2.5% SL, 5.0% TP
+              '1d': { sl: 0.040, tp: 0.080 },   // 4.0% SL, 8.0% TP
+              '3d': { sl: 0.060, tp: 0.120 },   // 6.0% SL, 12.0% TP
+              '1w': { sl: 0.080, tp: 0.160 },   // 8.0% SL, 16.0% TP
+              '1M': { sl: 0.120, tp: 0.240 }    // 12.0% SL, 24.0% TP
+            };
+            
+            const risk = riskPercentages[timeframe] || riskPercentages['1h'];
+            
+            if (rawSignal.direction === 'LONG') {
+              stopLoss = entryPrice * (1 - risk.sl);
+              takeProfit = entryPrice * (1 + risk.tp);
+            } else if (rawSignal.direction === 'SHORT') {
+              stopLoss = entryPrice * (1 + risk.sl);
+              takeProfit = entryPrice * (1 - risk.tp);
+            } else {
+              // NEUTRAL - minimal movement
+              stopLoss = entryPrice * 0.99;
+              takeProfit = entryPrice * 1.01;
+            }
+            
             signal = {
               direction: rawSignal.direction,
               confidence: rawSignal.confidence,
-              entryPrice: rawSignal.entryPrice,
-              stopLoss: rawSignal.stopLoss,
-              takeProfit: rawSignal.takeProfit,
+              entryPrice: entryPrice,
+              stopLoss: stopLoss,
+              takeProfit: takeProfit,
               timeframe: timeframe,
               timestamp: Date.now(),
               successProbability: rawSignal.confidence || 75,
