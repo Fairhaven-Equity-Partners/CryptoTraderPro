@@ -169,26 +169,76 @@ function generateTradingSignal(data: ChartData[], timeframe: TimeFrame): SignalD
 }
 
 /**
- * Calculate stop loss and take profit levels
+ * Calculate optimal entry price based on technical analysis
  */
-function calculateTradingLevels(currentPrice: number, direction: SignalDirection, timeframe: TimeFrame) {
+function calculateOptimalEntry(data: ChartData[], direction: SignalDirection, currentPrice: number): number {
+  if (!data || data.length < 20) return currentPrice;
+  
+  const recent = data.slice(-10);
+  const avg = recent.reduce((sum, candle) => sum + candle.close, 0) / recent.length;
+  
+  if (direction === 'LONG') {
+    // For LONG: Look for slight pullback entry (better than market price)
+    const supportLevel = Math.min(...recent.map(c => c.low));
+    return Math.max(supportLevel * 1.001, currentPrice * 0.999);
+  } else if (direction === 'SHORT') {
+    // For SHORT: Look for resistance level entry (better than market price)  
+    const resistanceLevel = Math.max(...recent.map(c => c.high));
+    return Math.min(resistanceLevel * 0.999, currentPrice * 1.001);
+  }
+  
+  return currentPrice;
+}
+
+/**
+ * Calculate stop loss and take profit levels based on ATR and technical levels
+ */
+function calculateTradingLevels(data: ChartData[], entryPrice: number, direction: SignalDirection, timeframe: TimeFrame) {
   const params = TIMEFRAME_PARAMS[timeframe];
+  
+  // Calculate ATR for dynamic stop loss sizing
+  let atr = 0;
+  if (data && data.length >= 14) {
+    const atrPeriod = Math.min(14, data.length - 1);
+    for (let i = data.length - atrPeriod; i < data.length; i++) {
+      const high = data[i].high;
+      const low = data[i].low;
+      const prevClose = i > 0 ? data[i-1].close : data[i].close;
+      const tr = Math.max(high - low, Math.abs(high - prevClose), Math.abs(low - prevClose));
+      atr += tr;
+    }
+    atr = atr / atrPeriod;
+  } else {
+    // Fallback ATR estimation
+    atr = entryPrice * 0.02; // 2% of price as estimated volatility
+  }
+  
+  // Use ATR-based calculations for more realistic levels
+  const atrMultiplier = timeframe === '1m' ? 1.5 : 
+                       timeframe === '5m' ? 2.0 :
+                       timeframe === '15m' ? 2.5 :
+                       timeframe === '30m' ? 3.0 :
+                       timeframe === '1h' ? 3.5 :
+                       timeframe === '4h' ? 4.0 :
+                       timeframe === '1d' ? 5.0 :
+                       timeframe === '3d' ? 6.0 :
+                       timeframe === '1w' ? 8.0 : 10.0;
   
   if (direction === 'LONG') {
     return {
-      stopLoss: currentPrice * (1 - params.stopLoss / 100),
-      takeProfit: currentPrice * (1 + params.takeProfit / 100)
+      stopLoss: entryPrice - (atr * atrMultiplier),
+      takeProfit: entryPrice + (atr * atrMultiplier * 2) // 1:2 risk/reward
     };
   } else if (direction === 'SHORT') {
     return {
-      stopLoss: currentPrice * (1 + params.stopLoss / 100),
-      takeProfit: currentPrice * (1 - params.takeProfit / 100)
+      stopLoss: entryPrice + (atr * atrMultiplier),
+      takeProfit: entryPrice - (atr * atrMultiplier * 2) // 1:2 risk/reward
     };
   }
   
   return {
-    stopLoss: currentPrice * 0.98,
-    takeProfit: currentPrice * 1.02
+    stopLoss: entryPrice * 0.98,
+    takeProfit: entryPrice * 1.02
   };
 }
 
@@ -210,7 +260,7 @@ export function calculateUnifiedSignal(
   
   // Validate data
   if (!data || data.length < 50) {
-    const fallbackLevels = calculateTradingLevels(currentPrice, 'NEUTRAL', timeframe);
+    const fallbackLevels = calculateTradingLevels(data || [], currentPrice, 'NEUTRAL', timeframe);
     return {
       direction: 'NEUTRAL',
       confidence: 50,
@@ -225,7 +275,12 @@ export function calculateUnifiedSignal(
   
   // Generate signal
   const direction = generateTradingSignal(data, timeframe);
-  const tradingLevels = calculateTradingLevels(currentPrice, direction, timeframe);
+  
+  // Calculate optimal entry price based on technical analysis
+  const optimalEntry = calculateOptimalEntry(data, direction, currentPrice);
+  
+  // Calculate trading levels using ATR and technical analysis
+  const tradingLevels = calculateTradingLevels(data, optimalEntry, direction, timeframe);
   
   // Calculate indicators for confidence
   const params = TIMEFRAME_PARAMS[timeframe];
@@ -249,10 +304,26 @@ export function calculateUnifiedSignal(
   
   confidence = Math.min(95, Math.max(5, confidence));
   
+  // Calculate real ATR for indicator data
+  let atr = 0;
+  if (data.length >= 14) {
+    const atrPeriod = Math.min(14, data.length - 1);
+    for (let i = data.length - atrPeriod; i < data.length; i++) {
+      const high = data[i].high;
+      const low = data[i].low;
+      const prevClose = i > 0 ? data[i-1].close : data[i].close;
+      const tr = Math.max(high - low, Math.abs(high - prevClose), Math.abs(low - prevClose));
+      atr += tr;
+    }
+    atr = atr / atrPeriod;
+  } else {
+    atr = bb.width * currentPrice;
+  }
+  
   const result: AdvancedSignal = {
     direction,
     confidence,
-    entryPrice: currentPrice,
+    entryPrice: optimalEntry,
     stopLoss: tradingLevels.stopLoss,
     takeProfit: tradingLevels.takeProfit,
     timeframe,
@@ -262,7 +333,7 @@ export function calculateUnifiedSignal(
       rsi,
       macd,
       bb,
-      atr: bb.width * currentPrice, // Simplified ATR approximation
+      atr,
       volatility: bb.width
     },
     patternFormations: [],
