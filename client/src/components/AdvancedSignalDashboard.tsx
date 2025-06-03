@@ -1381,39 +1381,23 @@ export default function AdvancedSignalDashboard({
     tfSummary.sort((a, b) => timeframeWeights[b.timeframe] - timeframeWeights[a.timeframe]);
     
     // Create recommendation object
-    const recommendation: TradeRecommendation = {
-      symbol,
+    const recommendation = {
       direction: signal.direction,
       confidence: signal.confidence,
-      timeframeSummary: tfSummary,
       entry: signal.entryPrice,
-      exit: {
-        takeProfit: [
-          (signal.takeProfit || signal.entryPrice * 1.05) * 0.8,
-          signal.takeProfit || signal.entryPrice * 1.05,
-          (signal.takeProfit || signal.entryPrice * 1.05) * 1.2
-        ],
-        stopLoss: signal.stopLoss,
-        trailingStopActivation: signal.direction === 'LONG' ? 
-          signal.entryPrice * 1.02 : 
-          signal.entryPrice * 0.98,
-        trailingStopPercent: 1.5
-      },
-      leverage: {
-        conservative: Math.max(1, Math.floor((typeof signal.recommendedLeverage === 'object' ? signal.recommendedLeverage.moderate : signal.recommendedLeverage || 1) * 0.5)),
-        moderate: Math.floor(typeof signal.recommendedLeverage === 'object' ? signal.recommendedLeverage.moderate : signal.recommendedLeverage || 1),
-        aggressive: Math.floor((typeof signal.recommendedLeverage === 'object' ? signal.recommendedLeverage.moderate : signal.recommendedLeverage || 1) * 1.5),
-        recommendation: signal.confidence > 65 ? 'moderate' : 'conservative'
-      },
-      riskManagement: {
-        positionSizeRecommendation: `${Math.min(5, Math.max(1, Math.floor(signal.confidence / 20)))}% of portfolio`,
-        maxRiskPercentage: Math.min(5, Math.max(1, Math.floor(signal.confidence / 20))),
-        potentialRiskReward: typeof signal.optimalRiskReward === 'object' ? signal.optimalRiskReward.ideal : (signal.optimalRiskReward || 1.5),
-        winProbability: signal.confidence / 100
-      },
-      keyIndicators: findInfluentialIndicators(signal),
-      summary: generateSummary(signal)
-    };
+      stopLoss: signal.stopLoss || signal.entryPrice * (signal.direction === 'LONG' ? 0.95 : 1.05),
+      takeProfits: [
+        (signal.takeProfit || signal.entryPrice * 1.05) * 0.8,
+        signal.takeProfit || signal.entryPrice * 1.05,
+        (signal.takeProfit || signal.entryPrice * 1.05) * 1.2
+      ],
+      leverage: typeof signal.recommendedLeverage === 'object' && signal.recommendedLeverage?.moderate ? 
+        signal.recommendedLeverage.moderate : 
+        (typeof signal.recommendedLeverage === 'number' ? signal.recommendedLeverage : 1),
+      timeframe: signal.timeframe,
+      summary: generateSummary(signal),
+      keyIndicators: findInfluentialIndicators(signal)
+    } as TradeRecommendation;
     
     return recommendation;
   }, [signals, symbol, selectedTimeframe]);
