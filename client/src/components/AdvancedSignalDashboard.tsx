@@ -1519,11 +1519,13 @@ export default function AdvancedSignalDashboard({
         <CardContent className="pb-4 bg-slate-800/50">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-gradient-to-br from-emerald-600/30 to-emerald-700/40 rounded-xl p-4 border-2 border-emerald-400/40 shadow-lg">
-              <div className="text-emerald-300 text-sm font-semibold">Predictions Recorded</div>
+              <div className="text-emerald-300 text-sm font-semibold">Current Timeframe</div>
               <div className="text-white text-2xl font-bold mt-1">
-                {Object.values(signals).filter(s => s && s.direction !== 'NEUTRAL').length}
+                {selectedTimeframe}
               </div>
-              <div className="text-emerald-200 text-xs mt-1">Active Timeframes</div>
+              <div className="text-emerald-200 text-xs mt-1">
+                {signals[selectedTimeframe] ? `${signals[selectedTimeframe]?.direction} Signal` : 'No Signal'}
+              </div>
             </div>
             <div className="bg-gradient-to-br from-blue-600/30 to-blue-700/40 rounded-xl p-4 border-2 border-blue-400/40 shadow-lg">
               <div className="text-blue-300 text-sm font-semibold">Live Price Tracking</div>
@@ -1531,9 +1533,16 @@ export default function AdvancedSignalDashboard({
               <div className="text-blue-200 text-xs mt-1">Real-time Data</div>
             </div>
             <div className="bg-gradient-to-br from-purple-600/30 to-purple-700/40 rounded-xl p-4 border-2 border-purple-400/40 shadow-lg">
-              <div className="text-purple-300 text-sm font-semibold">Learning Engine</div>
-              <div className="text-white text-2xl font-bold mt-1">Adaptive</div>
-              <div className="text-purple-200 text-xs mt-1">Weight Optimization</div>
+              <div className="text-purple-300 text-sm font-semibold">Confidence Score</div>
+              <div className="text-white text-2xl font-bold mt-1">
+                {signals[selectedTimeframe]?.confidence ? `${Math.round(signals[selectedTimeframe]?.confidence)}%` : 'N/A'}
+              </div>
+              <div className="text-purple-200 text-xs mt-1">
+                {(() => {
+                  const conf = signals[selectedTimeframe]?.confidence || 0;
+                  return conf >= 70 ? 'High Confidence' : conf >= 50 ? 'Medium Confidence' : 'Low Confidence';
+                })()}
+              </div>
             </div>
             <div className="bg-gradient-to-br from-orange-600/30 to-orange-700/40 rounded-xl p-4 border-2 border-orange-400/40 shadow-lg">
               <div className="text-orange-300 text-sm font-semibold">Next Analysis</div>
@@ -1562,41 +1571,100 @@ export default function AdvancedSignalDashboard({
             </Badge>
           </CardTitle>
           <CardDescription className="text-slate-200">
-            {getMarketConditionSummary(symbol) || 'Analyzing current market conditions...'}
+            {(() => {
+              const currentSignal = signals[selectedTimeframe];
+              if (currentSignal?.indicators) {
+                return getMarketConditionSummary(symbol) || `${selectedTimeframe} Analysis: ${currentSignal.direction} signal with ${Math.round(currentSignal.confidence)}% confidence`;
+              }
+              return `Analyzing ${selectedTimeframe} market conditions...`;
+            })()}
           </CardDescription>
         </CardHeader>
         <CardContent className="pb-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-3">
-              <h4 className="text-white font-semibold text-sm">Timeframe Correlations</h4>
+              <h4 className="text-white font-semibold text-sm">{selectedTimeframe} Analysis</h4>
               {(() => {
-                const correlations = analyzeTimeframeCorrelations(signals);
-                return correlations.slice(0, 3).map((corr, i) => (
-                  <div key={i} className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
-                    <span className="text-slate-300 text-sm">{corr.timeframe1} ↔ {corr.timeframe2}</span>
-                    <Badge variant="outline" className={`text-xs ${
-                      corr.strength === 'strong' ? 'text-green-400 border-green-500' :
-                      corr.strength === 'moderate' ? 'text-yellow-400 border-yellow-500' :
-                      'text-red-400 border-red-500'
-                    }`}>
-                      {corr.strength} ({Math.round(corr.correlation * 100)}%)
-                    </Badge>
-                  </div>
-                ));
+                const currentSignal = signals[selectedTimeframe];
+                if (!currentSignal) {
+                  return (
+                    <div className="p-2 bg-slate-700/30 rounded-lg">
+                      <p className="text-slate-400 text-xs">No signal data for {selectedTimeframe}</p>
+                    </div>
+                  );
+                }
+
+                const dataFrequency = ['1m', '5m', '15m', '30m'].includes(selectedTimeframe) ? 'High' : 
+                                    ['1h', '4h'].includes(selectedTimeframe) ? 'Medium' : 'Low';
+                const volatilityLevel = currentSignal.indicators?.atr ? 
+                  (currentSignal.indicators.atr / currentAssetPrice * 100 > 2 ? 'High' : 'Medium') : 'Unknown';
+
+                return (
+                  <>
+                    <div className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
+                      <span className="text-slate-300 text-sm">Data Frequency</span>
+                      <Badge variant="outline" className={`text-xs ${
+                        dataFrequency === 'High' ? 'text-green-400 border-green-500' :
+                        dataFrequency === 'Medium' ? 'text-yellow-400 border-yellow-500' :
+                        'text-blue-400 border-blue-500'
+                      }`}>
+                        {dataFrequency}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
+                      <span className="text-slate-300 text-sm">Market Volatility</span>
+                      <Badge variant="outline" className={`text-xs ${
+                        volatilityLevel === 'High' ? 'text-red-400 border-red-500' :
+                        volatilityLevel === 'Medium' ? 'text-yellow-400 border-yellow-500' :
+                        'text-green-400 border-green-500'
+                      }`}>
+                        {volatilityLevel}
+                      </Badge>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
+                      <span className="text-slate-300 text-sm">Signal Strength</span>
+                      <Badge variant="outline" className={`text-xs ${
+                        currentSignal.confidence >= 70 ? 'text-green-400 border-green-500' :
+                        currentSignal.confidence >= 50 ? 'text-yellow-400 border-yellow-500' :
+                        'text-red-400 border-red-500'
+                      }`}>
+                        {Math.round(currentSignal.confidence)}%
+                      </Badge>
+                    </div>
+                  </>
+                );
               })()}
             </div>
             <div className="space-y-3">
-              <h4 className="text-white font-semibold text-sm">Accuracy Recommendations</h4>
-              {getAccuracyRecommendations(symbol).slice(0, 3).map((rec, i) => (
-                <div key={i} className="p-2 bg-indigo-600/20 rounded-lg border border-indigo-500/30">
-                  <p className="text-indigo-200 text-xs leading-relaxed">{rec}</p>
-                </div>
-              ))}
-              {getAccuracyRecommendations(symbol).length === 0 && (
-                <div className="p-2 bg-slate-700/30 rounded-lg">
-                  <p className="text-slate-400 text-xs">No specific recommendations at this time</p>
-                </div>
-              )}
+              <h4 className="text-white font-semibold text-sm">Trading Recommendations</h4>
+              {(() => {
+                const currentSignal = signals[selectedTimeframe];
+                const recommendations = [];
+
+                if (['1m', '5m'].includes(selectedTimeframe)) {
+                  recommendations.push('High-frequency data: Use tighter stop losses and faster exits');
+                  recommendations.push('Scalping timeframe: Focus on quick momentum plays');
+                  recommendations.push('Noise filtering: Confirm with higher timeframes');
+                } else if (['15m', '30m', '1h'].includes(selectedTimeframe)) {
+                  recommendations.push('Swing trading optimal: Balance risk with profit potential');
+                  recommendations.push('Pattern recognition: Technical patterns more reliable');
+                  recommendations.push('Volume confirmation: Wait for volume spikes');
+                } else if (['4h', '1d'].includes(selectedTimeframe)) {
+                  recommendations.push('Position trading: Wider stops, higher profit targets');
+                  recommendations.push('Trend following: Strong directional moves expected');
+                  recommendations.push('Lower noise: Higher accuracy, fewer false signals');
+                } else {
+                  recommendations.push('Long-term analysis: Focus on major trend changes');
+                  recommendations.push('Macro factors: Consider fundamental analysis');
+                  recommendations.push('Patient approach: Hold positions longer');
+                }
+
+                return recommendations.map((rec, i) => (
+                  <div key={i} className="p-2 bg-indigo-600/20 rounded-lg border border-indigo-500/30">
+                    <p className="text-indigo-200 text-xs leading-relaxed">{rec}</p>
+                  </div>
+                ));
+              })()}
             </div>
           </div>
         </CardContent>
