@@ -1151,39 +1151,29 @@ export default function AdvancedSignalDashboard({
           enhancedCalculationEngine.updateMarketData(symbol, timeframe, chartData[timeframe]);
           let signal = enhancedCalculationEngine.generateSignal(symbol, timeframe, currentAssetPrice);
           
-          // Signal is already in AdvancedSignal format from streamlined engine
+          // Enhanced signal with mathematically accurate indicators and market regime detection
           if (signal) {
-            // Use the optimized entry price and levels from the streamlined calculation engine
-            const entryPrice = signal.entryPrice;
-            const stopLoss = signal.stopLoss;
-            const takeProfit = signal.takeProfit;
+            console.log(`[EnhancedEngine] ${timeframe}: Market Regime=${signal.indicators?.marketRegime}, MACD Signal=${signal.indicators?.macd?.signal}, ADX=${signal.indicators?.adx?.value}`);
             
-            // Validate that we have realistic price levels
-            const currentPrice = chartData[timeframe][chartData[timeframe].length - 1].close;
-            const isValidEntry = entryPrice && entryPrice > 0 && Math.abs(entryPrice - currentPrice) / currentPrice < 0.1; // Within 10%
-            const isValidSL = stopLoss && stopLoss > 0;
-            const isValidTP = takeProfit && takeProfit > 0;
+            // Ensure the enhanced signal data is properly structured for UI display
+            const enhancedSignalData = {
+              ...signal,
+              // Preserve enhanced calculation results
+              indicators: {
+                ...signal.indicators,
+                // Ensure market regime is accessible for UI
+                marketRegime: signal.indicators?.marketRegime || 'NORMAL',
+                // Enhanced confidence factors for display
+                confidenceFactors: signal.indicators?.confidenceFactors || {
+                  trendAlignment: false,
+                  momentumConfluence: false,
+                  volatilityLevel: 'NORMAL'
+                }
+              }
+            };
             
-            // If levels are invalid, calculate proper timeframe-specific fallback
-            let finalEntry = isValidEntry ? entryPrice : currentPrice;
-            let finalSL: number;
-            let finalTP: number;
-            
-            // Always use the timeframe-specific calculations from streamlined engine
-            // The engine already calculates proper levels based on timeframe
-            finalSL = stopLoss || finalEntry * 0.98;
-            finalTP = takeProfit || finalEntry * 1.02;
-            console.log(`[${timeframe}] Using streamlined engine: SL=${finalSL.toFixed(2)}, TP=${finalTP.toFixed(2)}`);
-            
-            // Signal already contains all necessary data from streamlined engine
-            signal.entryPrice = finalEntry;
-            signal.stopLoss = finalSL;
-            signal.takeProfit = finalTP;
-          }
-          
-          // Signal is already optimized from streamlined engine
-          if (signal) {
-            console.log(`[StreamlinedEngine] ${timeframe}: SL=${signal.stopLoss}, TP=${signal.takeProfit}`);
+            signal = enhancedSignalData;
+            console.log(`[EnhancedEngine] ${timeframe}: Enhanced signal ready - Direction=${signal.direction}, Confidence=${signal.confidence}%`);
           }
           
           // Generate pattern formations based on signal direction and timeframe
