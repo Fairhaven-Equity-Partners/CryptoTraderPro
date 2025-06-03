@@ -48,6 +48,12 @@ import { calculateStreamlinedSignal, enhancePatternRecognition, calculateDynamic
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { calculateUnifiedSignal } from '../lib/unifiedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
+import { 
+  calculateEnhancedConfidence, 
+  analyzeTimeframeCorrelations, 
+  getMarketConditionSummary,
+  getAccuracyRecommendations 
+} from '../lib/enhancedAccuracySystem';
 import { learnFromAccuracy, applyAdaptiveWeights, calculateConfidenceAdjustment, startContinuousLearning } from '../lib/adaptiveLearningEngine';
 
 // Enhanced macro analysis functions
@@ -1223,11 +1229,19 @@ export default function AdvancedSignalDashboard({
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
             if (signal && signal.direction !== 'NEUTRAL') {
+              // Calculate enhanced confidence based on market conditions
+              const enhancedConfidence = calculateEnhancedConfidence(
+                signal.confidence,
+                symbol,
+                signal.timeframe,
+                signal.indicators
+              );
+              
               const predictionSignal = {
                 symbol: symbol,
                 timeframe: signal.timeframe,
                 direction: signal.direction,
-                confidence: signal.confidence,
+                confidence: enhancedConfidence,
                 entryPrice: livePrice,
                 stopLoss: signal.stopLoss,
                 takeProfit: signal.takeProfit,
@@ -1533,6 +1547,56 @@ export default function AdvancedSignalDashboard({
             <div className="text-sm text-slate-100 font-medium mb-1">Feedback Loop Process:</div>
             <div className="text-xs text-slate-300 leading-relaxed">
               Record predictions → Track live outcomes → Calculate accuracy rates → Adjust indicator weights → Improve future predictions
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Market Condition Analysis Panel */}
+      <Card className="border-2 border-blue-500/50 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4">
+        <CardHeader className="pb-3 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-t-lg">
+          <CardTitle className="text-lg font-bold text-white flex items-center gap-3">
+            📊 Market Condition Analysis
+            <Badge className="bg-blue-500 text-white font-semibold px-2 py-1 text-xs">
+              ENHANCED
+            </Badge>
+          </CardTitle>
+          <CardDescription className="text-slate-200">
+            {getMarketConditionSummary(symbol) || 'Analyzing current market conditions...'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <h4 className="text-white font-semibold text-sm">Timeframe Correlations</h4>
+              {(() => {
+                const correlations = analyzeTimeframeCorrelations(signals);
+                return correlations.slice(0, 3).map((corr, i) => (
+                  <div key={i} className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
+                    <span className="text-slate-300 text-sm">{corr.timeframe1} ↔ {corr.timeframe2}</span>
+                    <Badge variant="outline" className={`text-xs ${
+                      corr.strength === 'strong' ? 'text-green-400 border-green-500' :
+                      corr.strength === 'moderate' ? 'text-yellow-400 border-yellow-500' :
+                      'text-red-400 border-red-500'
+                    }`}>
+                      {corr.strength} ({Math.round(corr.correlation * 100)}%)
+                    </Badge>
+                  </div>
+                ));
+              })()}
+            </div>
+            <div className="space-y-3">
+              <h4 className="text-white font-semibold text-sm">Accuracy Recommendations</h4>
+              {getAccuracyRecommendations(symbol).slice(0, 3).map((rec, i) => (
+                <div key={i} className="p-2 bg-indigo-600/20 rounded-lg border border-indigo-500/30">
+                  <p className="text-indigo-200 text-xs leading-relaxed">{rec}</p>
+                </div>
+              ))}
+              {getAccuracyRecommendations(symbol).length === 0 && (
+                <div className="p-2 bg-slate-700/30 rounded-lg">
+                  <p className="text-slate-400 text-xs">No specific recommendations at this time</p>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>
