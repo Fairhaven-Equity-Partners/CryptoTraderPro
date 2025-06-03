@@ -57,8 +57,8 @@ export function generateStreamlinedSignal(
       // Pattern analysis
       patternFormations: detectPatterns(data, indicators, direction),
       
-      // Support/Resistance levels
-      supportResistance: calculateSupportResistance(data, currentPrice),
+      // Support/Resistance levels (timeframe-specific)
+      supportResistance: calculateSupportResistance(data, currentPrice, timeframe),
       
       // Market environment
       environment: analyzeMarketEnvironment(indicators, timeframe),
@@ -502,17 +502,65 @@ function detectPatterns(data: ChartData[], indicators: TechnicalIndicators, dire
   return patterns.slice(0, 3);
 }
 
-function calculateSupportResistance(data: ChartData[], currentPrice: number): any {
+function calculateSupportResistance(data: ChartData[], currentPrice: number, timeframe?: string): any {
   const highs = data.map(d => d.high);
   const lows = data.map(d => d.low);
   
+  // Timeframe-specific volatility adjustments for support/resistance levels
+  const getTimeframeMultipliers = (tf?: string) => {
+    switch (tf) {
+      case '1m': return { support: 0.997, resistance: 1.003 }; // 0.3% range
+      case '5m': return { support: 0.995, resistance: 1.005 }; // 0.5% range
+      case '15m': return { support: 0.992, resistance: 1.008 }; // 0.8% range
+      case '30m': return { support: 0.990, resistance: 1.010 }; // 1% range
+      case '1h': return { support: 0.985, resistance: 1.015 }; // 1.5% range
+      case '4h': return { support: 0.975, resistance: 1.025 }; // 2.5% range
+      case '12h': return { support: 0.970, resistance: 1.030 }; // 3% range
+      case '1d': return { support: 0.960, resistance: 1.040 }; // 4% range
+      case '3d': return { support: 0.940, resistance: 1.060 }; // 6% range
+      case '1w': return { support: 0.920, resistance: 1.080 }; // 8% range
+      case '1M': return { support: 0.880, resistance: 1.120 }; // 12% range
+      default: return { support: 0.980, resistance: 1.020 }; // 2% default
+    }
+  };
+  
+  const multipliers = getTimeframeMultipliers(timeframe);
+  
+  // Find dynamic support and resistance based on actual price action
+  const supports = findSupports(lows, currentPrice);
+  const resistances = findResistances(highs, currentPrice);
+  
+  // Add timeframe-specific levels around current price
+  const timeframeSupports = [
+    currentPrice * multipliers.support,
+    currentPrice * (multipliers.support - 0.01),
+    currentPrice * (multipliers.support - 0.02)
+  ];
+  
+  const timeframeResistances = [
+    currentPrice * multipliers.resistance,
+    currentPrice * (multipliers.resistance + 0.01),
+    currentPrice * (multipliers.resistance + 0.02)
+  ];
+  
+  // Combine and sort levels
+  const allSupports = [...supports, ...timeframeSupports]
+    .filter(level => level < currentPrice)
+    .sort((a, b) => b - a)
+    .slice(0, 3);
+    
+  const allResistances = [...resistances, ...timeframeResistances]
+    .filter(level => level > currentPrice)
+    .sort((a, b) => a - b)
+    .slice(0, 3);
+  
   return {
-    supports: findSupports(lows, currentPrice),
-    resistances: findResistances(highs, currentPrice),
+    supports: allSupports,
+    resistances: allResistances,
     pivotPoints: [
-      currentPrice * 0.99,
+      allSupports[0] || currentPrice * multipliers.support,
       currentPrice,
-      currentPrice * 1.01
+      allResistances[0] || currentPrice * multipliers.resistance
     ]
   };
 }
