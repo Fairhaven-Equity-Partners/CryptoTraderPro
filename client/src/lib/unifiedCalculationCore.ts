@@ -91,27 +91,52 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Calculate MACD with proper EMA smoothing (fixes oversimplified macdLine * 0.9)
+   * Calculate MACD with mathematically accurate EMA progression
    */
   private calculateMACD(data: OHLCData[], fastPeriod = 12, slowPeriod = 26, signalPeriod = 9) {
+    if (data.length < slowPeriod) return { macdLine: 0, signalLine: 0, histogram: 0 };
+    
     const prices = data.map(d => d.close);
     
-    const fastEMA = this.calculateEMA(prices, fastPeriod);
-    const slowEMA = this.calculateEMA(prices, slowPeriod);
-    const macdLine = fastEMA - slowEMA;
+    // Calculate EMAs using progressive method for accuracy
+    const fastEMAs: number[] = [];
+    const slowEMAs: number[] = [];
+    const macdValues: number[] = [];
     
-    // Calculate signal line using proper EMA
-    const macdValues = [];
-    for (let i = slowPeriod - 1; i < data.length; i++) {
-      const fast = this.calculateEMA(prices.slice(0, i + 1), fastPeriod);
-      const slow = this.calculateEMA(prices.slice(0, i + 1), slowPeriod);
-      macdValues.push(fast - slow);
+    // Initialize first EMA values using SMA
+    const fastMultiplier = 2 / (fastPeriod + 1);
+    const slowMultiplier = 2 / (slowPeriod + 1);
+    
+    let fastEMA = prices.slice(0, fastPeriod).reduce((sum, price) => sum + price, 0) / fastPeriod;
+    let slowEMA = prices.slice(0, slowPeriod).reduce((sum, price) => sum + price, 0) / slowPeriod;
+    
+    // Calculate progressive EMAs and MACD values
+    for (let i = slowPeriod; i < prices.length; i++) {
+      if (i >= fastPeriod) {
+        fastEMA = (prices[i] * fastMultiplier) + (fastEMA * (1 - fastMultiplier));
+      }
+      slowEMA = (prices[i] * slowMultiplier) + (slowEMA * (1 - slowMultiplier));
+      
+      const macdValue = fastEMA - slowEMA;
+      macdValues.push(macdValue);
     }
     
-    const signalLine = this.calculateEMA(macdValues, signalPeriod);
-    const histogram = macdLine - signalLine;
+    // Calculate signal line using EMA of MACD values
+    if (macdValues.length < signalPeriod) {
+      return { macdLine: macdValues[macdValues.length - 1] || 0, signalLine: 0, histogram: 0 };
+    }
     
-    return { macdLine, signalLine, histogram };
+    const signalMultiplier = 2 / (signalPeriod + 1);
+    let signalEMA = macdValues.slice(0, signalPeriod).reduce((sum, val) => sum + val, 0) / signalPeriod;
+    
+    for (let i = signalPeriod; i < macdValues.length; i++) {
+      signalEMA = (macdValues[i] * signalMultiplier) + (signalEMA * (1 - signalMultiplier));
+    }
+    
+    const currentMACD = macdValues[macdValues.length - 1];
+    const histogram = currentMACD - signalEMA;
+    
+    return { macdLine: currentMACD, signalLine: signalEMA, histogram };
   }
 
   /**
@@ -133,15 +158,17 @@ class UnifiedCalculationCore {
 
 
   /**
-   * Calculate ADX with proper +DI/-DI using Wilder's smoothing
+   * Calculate ADX with precise Wilder's smoothing and accurate DX progression
    */
   private calculateADX(data: OHLCData[], period = 14) {
-    if (data.length < period + 1) return { adx: 0, pdi: 0, ndi: 0 };
+    if (data.length < period * 2) return { adx: 25, pdi: 50, ndi: 50 };
     
     const trueRanges: number[] = [];
     const plusDMs: number[] = [];
     const minusDMs: number[] = [];
+    const dxValues: number[] = [];
     
+    // Calculate TR, +DM, -DM for each period
     for (let i = 1; i < data.length; i++) {
       const high = data[i].high;
       const low = data[i].low;
@@ -149,7 +176,7 @@ class UnifiedCalculationCore {
       const prevLow = data[i - 1].low;
       const prevClose = data[i - 1].close;
       
-      // True Range
+      // True Range (most conservative approach)
       const tr = Math.max(
         high - low,
         Math.abs(high - prevClose),
@@ -157,31 +184,62 @@ class UnifiedCalculationCore {
       );
       trueRanges.push(tr);
       
-      // Directional Movement
-      const plusDM = high - prevHigh > prevLow - low ? Math.max(high - prevHigh, 0) : 0;
-      const minusDM = prevLow - low > high - prevHigh ? Math.max(prevLow - low, 0) : 0;
+      // Directional Movement (precise calculation)
+      const upMove = high - prevHigh;
+      const downMove = prevLow - low;
+      
+      const plusDM = (upMove > downMove && upMove > 0) ? upMove : 0;
+      const minusDM = (downMove > upMove && downMove > 0) ? downMove : 0;
       
       plusDMs.push(plusDM);
       minusDMs.push(minusDM);
     }
     
-    // Apply Wilder's smoothing
-    let atr = trueRanges.slice(0, period).reduce((sum, tr) => sum + tr, 0) / period;
-    let plusDI = plusDMs.slice(0, period).reduce((sum, dm) => sum + dm, 0) / period;
-    let minusDI = minusDMs.slice(0, period).reduce((sum, dm) => sum + dm, 0) / period;
+    // Initialize first smoothed values
+    let smoothedTR = trueRanges.slice(0, period).reduce((sum, tr) => sum + tr, 0);
+    let smoothedPlusDM = plusDMs.slice(0, period).reduce((sum, dm) => sum + dm, 0);
+    let smoothedMinusDM = minusDMs.slice(0, period).reduce((sum, dm) => sum + dm, 0);
     
+    // Calculate progressive DX values using Wilder's smoothing
     for (let i = period; i < trueRanges.length; i++) {
-      atr = ((atr * (period - 1)) + trueRanges[i]) / period;
-      plusDI = ((plusDI * (period - 1)) + plusDMs[i]) / period;
-      minusDI = ((minusDI * (period - 1)) + minusDMs[i]) / period;
+      // Apply Wilder's smoothing formula: Current Smoothed Value = ((Prior Smoothed Value * (n-1)) + Current Value) / n
+      smoothedTR = ((smoothedTR * (period - 1)) + trueRanges[i]);
+      smoothedPlusDM = ((smoothedPlusDM * (period - 1)) + plusDMs[i]);
+      smoothedMinusDM = ((smoothedMinusDM * (period - 1)) + minusDMs[i]);
+      
+      // Calculate +DI and -DI
+      const plusDI = smoothedTR > 0 ? (smoothedPlusDM / smoothedTR) * 100 : 0;
+      const minusDI = smoothedTR > 0 ? (smoothedMinusDM / smoothedTR) * 100 : 0;
+      
+      // Calculate DX
+      const diSum = plusDI + minusDI;
+      const dx = diSum > 0 ? (Math.abs(plusDI - minusDI) / diSum) * 100 : 0;
+      dxValues.push(dx);
     }
     
-    const pdi = (plusDI / atr) * 100;
-    const ndi = (minusDI / atr) * 100;
+    // Calculate ADX as smoothed average of DX values
+    if (dxValues.length < period) {
+      const lastDX = dxValues[dxValues.length - 1] || 25;
+      return { adx: lastDX, pdi: 50, ndi: 50 };
+    }
     
-    const dx = Math.abs(pdi - ndi) / (pdi + ndi) * 100;
+    // Initial ADX is simple average of first period DX values
+    let adx = dxValues.slice(0, period).reduce((sum, dx) => sum + dx, 0) / period;
     
-    return { adx: dx, pdi, ndi };
+    // Apply Wilder's smoothing to subsequent ADX values
+    for (let i = period; i < dxValues.length; i++) {
+      adx = ((adx * (period - 1)) + dxValues[i]) / period;
+    }
+    
+    // Final +DI and -DI calculation
+    const finalPlusDI = smoothedTR > 0 ? (smoothedPlusDM / smoothedTR) * 100 : 0;
+    const finalMinusDI = smoothedTR > 0 ? (smoothedMinusDM / smoothedTR) * 100 : 0;
+    
+    return { 
+      adx: Math.min(Math.max(adx, 0), 100), 
+      pdi: Math.min(Math.max(finalPlusDI, 0), 100), 
+      ndi: Math.min(Math.max(finalMinusDI, 0), 100) 
+    };
   }
 
   /**
@@ -223,88 +281,66 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Calculate support and resistance levels using multiple methods for robustness
+   * Optimized support and resistance calculation with intelligent pivot detection
    */
-  private calculateSupportResistance(data: OHLCData[], lookback = 15): { supports: number[]; resistances: number[] } {
-    const supports: number[] = [];
-    const resistances: number[] = [];
-    
-    if (data.length < 10) {
-      // Generate basic levels from current price if insufficient data
+  private calculateSupportResistance(data: OHLCData[], lookback = 12): { supports: number[]; resistances: number[] } {
+    if (data.length < 20) {
       const currentPrice = data[data.length - 1]?.close || 0;
-      if (currentPrice > 0) {
-        return {
-          supports: [
-            currentPrice * 0.985,
-            currentPrice * 0.970,
-            currentPrice * 0.955
-          ],
-          resistances: [
-            currentPrice * 1.015,
-            currentPrice * 1.030,
-            currentPrice * 1.045
-          ]
-        };
-      }
-      return { supports, resistances };
+      return currentPrice > 0 ? {
+        supports: [currentPrice * 0.985, currentPrice * 0.970, currentPrice * 0.955],
+        resistances: [currentPrice * 1.015, currentPrice * 1.030, currentPrice * 1.045]
+      } : { supports: [], resistances: [] };
     }
     
-    // Method 1: Find pivot highs and lows
-    const pivotLookback = Math.min(lookback, Math.floor(data.length / 3));
-    for (let i = pivotLookback; i < data.length - pivotLookback; i++) {
+    const currentPrice = data[data.length - 1].close;
+    const supports = new Set<number>();
+    const resistances = new Set<number>();
+    
+    // Optimized pivot detection with adaptive lookback
+    const adaptiveLookback = Math.max(5, Math.min(lookback, Math.floor(data.length / 4)));
+    const significanceThreshold = currentPrice * 0.008; // 0.8% minimum significance
+    
+    for (let i = adaptiveLookback; i < data.length - adaptiveLookback; i++) {
       const current = data[i];
-      let isResistance = true;
-      let isSupport = true;
+      const prevCandles = data.slice(i - adaptiveLookback, i);
+      const nextCandles = data.slice(i + 1, i + adaptiveLookback + 1);
       
-      // Check for pivot high (resistance)
-      for (let j = i - pivotLookback; j <= i + pivotLookback; j++) {
-        if (j !== i && data[j].high >= current.high) {
-          isResistance = false;
-          break;
-        }
-      }
+      // Pivot high detection (resistance)
+      const isPivotHigh = prevCandles.every(c => c.high <= current.high) && 
+                         nextCandles.every(c => c.high <= current.high) &&
+                         Math.abs(current.high - currentPrice) > significanceThreshold;
       
-      // Check for pivot low (support)
-      for (let j = i - pivotLookback; j <= i + pivotLookback; j++) {
-        if (j !== i && data[j].low <= current.low) {
-          isSupport = false;
-          break;
-        }
-      }
+      // Pivot low detection (support)  
+      const isPivotLow = prevCandles.every(c => c.low >= current.low) && 
+                        nextCandles.every(c => c.low >= current.low) &&
+                        Math.abs(current.low - currentPrice) > significanceThreshold;
       
-      if (isResistance) resistances.push(current.high);
-      if (isSupport) supports.push(current.low);
+      if (isPivotHigh && current.high > currentPrice) resistances.add(current.high);
+      if (isPivotLow && current.low < currentPrice) supports.add(current.low);
     }
     
-    // Method 2: Add psychological levels and recent highs/lows
-    const recentData = data.slice(-50);
+    // Add volume-weighted and psychological levels
+    const recentData = data.slice(-Math.min(100, data.length));
+    const volumeLevels = this.calculateVolumeWeightedLevels(recentData);
+    volumeLevels.supports.forEach(level => level < currentPrice && supports.add(level));
+    volumeLevels.resistances.forEach(level => level > currentPrice && resistances.add(level));
+    
+    // Add recent extremes if significant
     const recentHigh = Math.max(...recentData.map(d => d.high));
     const recentLow = Math.min(...recentData.map(d => d.low));
-    const currentPrice = data[data.length - 1].close;
+    if (recentHigh > currentPrice * 1.003) resistances.add(recentHigh);
+    if (recentLow < currentPrice * 0.997) supports.add(recentLow);
     
-    // Add recent extreme levels
-    if (recentHigh > currentPrice * 1.005) resistances.push(recentHigh);
-    if (recentLow < currentPrice * 0.995) supports.push(recentLow);
-    
-    // Method 3: Add volume-weighted levels (using close prices as proxy)
-    const volumeWeightedLevels = this.calculateVolumeWeightedLevels(data);
-    supports.push(...volumeWeightedLevels.supports);
-    resistances.push(...volumeWeightedLevels.resistances);
-    
-    // Clean and sort levels
-    const cleanSupports = Array.from(new Set(supports))
-      .filter(level => level > 0 && level < currentPrice)
-      .sort((a, b) => b - a)
-      .slice(0, 3);
-      
-    const cleanResistances = Array.from(new Set(resistances))
-      .filter(level => level > currentPrice)
-      .sort((a, b) => a - b)
-      .slice(0, 3);
-    
-    return { 
-      supports: cleanSupports, 
-      resistances: cleanResistances 
+    // Return top 3 most significant levels
+    return {
+      supports: Array.from(supports)
+        .filter(level => level > 0 && level < currentPrice * 0.98)
+        .sort((a, b) => b - a)
+        .slice(0, 3),
+      resistances: Array.from(resistances)
+        .filter(level => level > currentPrice * 1.02)
+        .sort((a, b) => a - b)
+        .slice(0, 3)
     };
   }
   
@@ -464,32 +500,62 @@ class UnifiedCalculationCore {
       }
     };
     
-    // Determine signal direction and confidence
+    // Advanced signal direction and confidence calculation with multiple confluence checks
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 50;
     
+    // Enhanced bullish signal scoring with momentum weighting
     const bullishSignals = [
-      rsi < 30 ? 20 : rsi < 50 ? 10 : 0,
-      macd.histogram > 0 ? 25 : 0,
-      ema.short > ema.medium ? 15 : 0,
-      bb.percentB < 20 ? 15 : 0,
-      adx.pdi > adx.ndi ? 10 : 0
+      // RSI momentum (oversold conditions)
+      rsi < 20 ? 30 : rsi < 30 ? 25 : rsi < 40 ? 15 : rsi < 50 ? 8 : 0,
+      // MACD trend confirmation
+      macd.histogram > 50 ? 35 : macd.histogram > 0 ? 25 : macd.histogram > -20 ? 10 : 0,
+      // EMA trend alignment (multiple timeframes)
+      ema.short > ema.medium && ema.medium > ema.long ? 25 : ema.short > ema.medium ? 15 : 0,
+      // Bollinger Band mean reversion
+      bb.percentB < 10 ? 20 : bb.percentB < 20 ? 15 : bb.percentB < 30 ? 8 : 0,
+      // ADX trend strength + directional movement
+      adx.adx > 30 && adx.pdi > adx.ndi ? 20 : adx.pdi > adx.ndi ? 12 : 0,
+      // Volatility environment bonus
+      volatility > 0.03 && volatility < 0.06 ? 8 : 0,
+      // Support level proximity
+      finalSupports.some(support => Math.abs(currentPrice - support) / currentPrice < 0.02) ? 12 : 0
     ].reduce((sum, score) => sum + score, 0);
     
+    // Enhanced bearish signal scoring with momentum weighting
     const bearishSignals = [
-      rsi > 70 ? 20 : rsi > 50 ? 10 : 0,
-      macd.histogram < 0 ? 25 : 0,
-      ema.short < ema.medium ? 15 : 0,
-      bb.percentB > 80 ? 15 : 0,
-      adx.ndi > adx.pdi ? 10 : 0
+      // RSI momentum (overbought conditions)
+      rsi > 80 ? 30 : rsi > 70 ? 25 : rsi > 60 ? 15 : rsi > 50 ? 8 : 0,
+      // MACD trend confirmation
+      macd.histogram < -50 ? 35 : macd.histogram < 0 ? 25 : macd.histogram < 20 ? 10 : 0,
+      // EMA trend alignment (multiple timeframes)
+      ema.short < ema.medium && ema.medium < ema.long ? 25 : ema.short < ema.medium ? 15 : 0,
+      // Bollinger Band mean reversion
+      bb.percentB > 90 ? 20 : bb.percentB > 80 ? 15 : bb.percentB > 70 ? 8 : 0,
+      // ADX trend strength + directional movement
+      adx.adx > 30 && adx.ndi > adx.pdi ? 20 : adx.ndi > adx.pdi ? 12 : 0,
+      // Volatility environment bonus
+      volatility > 0.03 && volatility < 0.06 ? 8 : 0,
+      // Resistance level proximity
+      finalResistances.some(resistance => Math.abs(currentPrice - resistance) / currentPrice < 0.02) ? 12 : 0
     ].reduce((sum, score) => sum + score, 0);
     
-    if (bullishSignals > bearishSignals + 20) {
+    // Multi-factor confluence analysis
+    const signalStrength = Math.abs(bullishSignals - bearishSignals);
+    const totalSignals = bullishSignals + bearishSignals;
+    const confluenceBonus = totalSignals > 80 ? 15 : totalSignals > 60 ? 10 : totalSignals > 40 ? 5 : 0;
+    
+    // Determine final direction with enhanced thresholds
+    if (bullishSignals > bearishSignals + 25 && bullishSignals > 45) {
       direction = 'LONG';
-      confidence = Math.min(50 + bullishSignals, 95);
-    } else if (bearishSignals > bullishSignals + 20) {
+      confidence = Math.min(50 + Math.floor(bullishSignals * 0.8) + confluenceBonus, 98);
+    } else if (bearishSignals > bullishSignals + 25 && bearishSignals > 45) {
       direction = 'SHORT';
-      confidence = Math.min(50 + bearishSignals, 95);
+      confidence = Math.min(50 + Math.floor(bearishSignals * 0.8) + confluenceBonus, 98);
+    } else if (signalStrength > 15) {
+      // Moderate signals
+      direction = bullishSignals > bearishSignals ? 'LONG' : 'SHORT';
+      confidence = Math.min(50 + Math.floor(signalStrength * 0.6), 85);
     }
     
     // Calculate position sizing
