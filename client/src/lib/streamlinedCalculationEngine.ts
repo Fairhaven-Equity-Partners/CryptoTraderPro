@@ -384,26 +384,36 @@ function calculatePriceLevels(
   atr: number,
   timeframe: TimeFrame
 ): { stopLoss: number; takeProfit: number } {
-  const riskMultiplier = {
-    '1m': 0.5, '5m': 0.7, '15m': 1.0, '30m': 1.2,
-    '1h': 1.5, '4h': 2.0, '12h': 2.5, '1d': 3.0, '3d': 3.5, '1w': 4.0, '1M': 5.0
+  // Timeframe-specific risk percentages for varying price levels
+  const timeframeRisk = {
+    '1m': { sl: 0.003, tp: 0.006 },   // 0.3% SL, 0.6% TP
+    '5m': { sl: 0.005, tp: 0.010 },   // 0.5% SL, 1.0% TP
+    '15m': { sl: 0.008, tp: 0.016 },  // 0.8% SL, 1.6% TP
+    '30m': { sl: 0.012, tp: 0.024 },  // 1.2% SL, 2.4% TP
+    '1h': { sl: 0.015, tp: 0.030 },   // 1.5% SL, 3.0% TP
+    '4h': { sl: 0.025, tp: 0.050 },   // 2.5% SL, 5.0% TP
+    '12h': { sl: 0.030, tp: 0.060 },  // 3.0% SL, 6.0% TP
+    '1d': { sl: 0.040, tp: 0.080 },   // 4.0% SL, 8.0% TP
+    '3d': { sl: 0.060, tp: 0.120 },   // 6.0% SL, 12.0% TP
+    '1w': { sl: 0.080, tp: 0.160 },   // 8.0% SL, 16.0% TP
+    '1M': { sl: 0.120, tp: 0.240 }    // 12.0% SL, 24.0% TP
   };
   
-  const multiplier = riskMultiplier[timeframe] || 1.5;
-  const riskAmount = atr * multiplier;
+  const risk = timeframeRisk[timeframe] || { sl: 0.015, tp: 0.030 };
   
   let stopLoss: number;
   let takeProfit: number;
   
   if (direction === 'LONG') {
-    stopLoss = currentPrice - riskAmount;
-    takeProfit = currentPrice + (riskAmount * 2);
+    stopLoss = currentPrice * (1 - risk.sl);
+    takeProfit = currentPrice * (1 + risk.tp);
   } else if (direction === 'SHORT') {
-    stopLoss = currentPrice + riskAmount;
-    takeProfit = currentPrice - (riskAmount * 2);
+    stopLoss = currentPrice * (1 + risk.sl);
+    takeProfit = currentPrice * (1 - risk.tp);
   } else {
-    stopLoss = currentPrice;
-    takeProfit = currentPrice;
+    // NEUTRAL: use small risk for both directions
+    stopLoss = currentPrice * (1 - risk.sl * 0.5);
+    takeProfit = currentPrice * (1 + risk.tp * 0.5);
   }
   
   return { stopLoss, takeProfit };
