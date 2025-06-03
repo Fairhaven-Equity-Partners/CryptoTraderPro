@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
-import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
+import ConsolidatedSignalDashboard from '../components/ConsolidatedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';

@@ -42,7 +42,6 @@ export default function ConsolidatedSignalDashboard({
   const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(0);
 
   const queryClient = useQueryClient();
-  const { currentPrice, priceChange24h } = useMarketData(symbol);
 
   // Fetch current asset data
   const { data: assetData } = useQuery({
@@ -80,10 +79,12 @@ export default function ConsolidatedSignalDashboard({
   }, [symbol]);
 
   useEffect(() => {
-    if (assetData?.currentPrice) {
+    if (assetData && 'currentPrice' in assetData) {
       setCurrentAssetPrice(assetData.currentPrice);
     }
   }, [assetData]);
+
+  const priceChange24h = (assetData && 'priceChange24h' in assetData) ? assetData.priceChange24h : 0;
 
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
@@ -122,8 +123,8 @@ export default function ConsolidatedSignalDashboard({
     return 'Low';
   };
 
-  const currentSignal = signalData[selectedTimeframe];
-  const currentAccuracy = accuracyData?.find((acc: any) => acc.timeframe === selectedTimeframe);
+  const currentSignal = signals[selectedTimeframe];
+  const currentAccuracy = Array.isArray(accuracyData) ? accuracyData.find((acc: any) => acc.timeframe === selectedTimeframe) : null;
 
   return (
     <Card className="w-full bg-gradient-to-br from-slate-900/95 to-slate-800/95 border-slate-700/50 shadow-2xl">
@@ -142,12 +143,12 @@ export default function ConsolidatedSignalDashboard({
           </div>
           <div className="text-right">
             <div className="text-white text-2xl font-bold">
-              ${formatCurrency(marketMetrics.price)}
+              ${formatCurrency(currentAssetPrice || 0)}
             </div>
             <div className={`text-sm font-medium ${
-              marketMetrics.change24h >= 0 ? 'text-green-400' : 'text-red-400'
+              priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
             }`}>
-              {marketMetrics.change24h >= 0 ? '+' : ''}{marketMetrics.change24h.toFixed(2)}%
+              {priceChange24h >= 0 ? '+' : ''}{priceChange24h.toFixed(2)}%
             </div>
           </div>
         </div>
@@ -207,7 +208,7 @@ export default function ConsolidatedSignalDashboard({
           <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/30 rounded-lg p-4 border border-blue-500/30">
             <div className="text-blue-300 text-xs font-medium mb-1">Entry Price</div>
             <div className="text-white text-lg font-bold">
-              ${formatCurrency(currentSignal?.entryPrice || marketMetrics.price)}
+              ${formatCurrency(currentSignal?.entryPrice || currentAssetPrice)}
             </div>
             <div className="text-blue-200 text-xs mt-1">
               {getTradingStrategy(selectedTimeframe)}
@@ -266,13 +267,13 @@ export default function ConsolidatedSignalDashboard({
               <div className="flex justify-between items-center text-xs">
                 <span className="text-slate-400">Volatility</span>
                 <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-500">
-                  {marketMetrics.volatility}
+                  Medium
                 </Badge>
               </div>
               <div className="flex justify-between items-center text-xs">
                 <span className="text-slate-400">Market Trend</span>
                 <Badge variant="outline" className="text-xs text-green-400 border-green-500">
-                  {marketMetrics.trend}
+                  {currentSignal?.direction || 'Neutral'}
                 </Badge>
               </div>
             </div>
