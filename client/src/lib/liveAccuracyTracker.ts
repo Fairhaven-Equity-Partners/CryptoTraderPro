@@ -80,11 +80,7 @@ class LiveAccuracyTracker {
         signalData: JSON.stringify(signal),
       };
 
-      const tradeSimulation = await apiRequest('/api/trade-simulations', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(tradeData),
-      });
+      const tradeSimulation = await apiRequest('/api/trade-simulations', tradeData);
 
       // Store prediction record locally for monitoring
       const prediction: PredictionRecord = {
@@ -186,9 +182,9 @@ class LiveAccuracyTracker {
       );
 
       if (activeTrade) {
-        await apiRequest(`/api/trade-simulations/${activeTrade.id}/close`, {
-          method: 'PATCH',
-          body: JSON.stringify({ exitPrice, exitReason }),
+        await apiRequest(`/api/trade-simulations/${activeTrade.id}/close`, { 
+          exitPrice, 
+          exitReason 
         });
       }
 
