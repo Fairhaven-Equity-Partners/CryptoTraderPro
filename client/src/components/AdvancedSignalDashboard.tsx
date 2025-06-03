@@ -1923,24 +1923,18 @@ export default function AdvancedSignalDashboard({
                             <div>
                               <div className="text-red-400 text-xs font-semibold mb-1">Resistance</div>
                               <div className="space-y-0.5">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-xs text-gray-400">Weak</span>
-                                  <span className="text-red-400 font-medium text-xs">
-                                    ${formatCurrency((currentSignal?.entryPrice || 0) * 1.03)}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                  <span className="text-xs text-gray-400">Medium</span>
-                                  <span className="text-red-400 font-medium text-xs">
-                                    ${formatCurrency((currentSignal?.entryPrice || 0) * 1.05)}
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center">
-                                  <span className="text-xs text-gray-400">Strong</span>
-                                  <span className="text-red-400 font-medium text-xs">
-                                    ${formatCurrency((currentSignal?.entryPrice || 0) * 1.08)}
-                                  </span>
-                                </div>
+                                {(() => {
+                                  const resistances = currentSignal?.supportResistance?.resistances || [];
+                                  const labels = ['Weak', 'Medium', 'Strong'];
+                                  return resistances.slice(0, 3).map((resistance, i) => (
+                                    <div key={`res-${i}`} className="flex justify-between items-center">
+                                      <span className="text-xs text-gray-400">{labels[i]}</span>
+                                      <span className="text-red-400 font-medium text-xs">
+                                        ${formatCurrency(resistance)}
+                                      </span>
+                                    </div>
+                                  ));
+                                })()}
                               </div>
                             </div>
                           
@@ -1948,39 +1942,18 @@ export default function AdvancedSignalDashboard({
                             <div>
                               <div className="text-green-400 text-xs font-semibold mb-1">Support</div>
                               <div className="space-y-0.5">
-                                {currentSignal?.supportLevels && currentSignal.supportLevels.length > 0
-                                  ? currentSignal.supportLevels.slice(0, 3).map((level: any, i: number) => (
+                                {(() => {
+                                  const supports = currentSignal?.supportResistance?.supports || [];
+                                  const labels = ['Strong', 'Medium', 'Weak'];
+                                  return supports.slice(0, 3).map((support, i) => (
                                     <div key={`supp-${i}`} className="flex justify-between items-center">
-                                      <span className="text-xs text-gray-400">
-                                        {i === 0 ? 'Strong' : i === 1 ? 'Medium' : 'Weak'}
-                                      </span>
+                                      <span className="text-xs text-gray-400">{labels[i]}</span>
                                       <span className="text-green-400 font-medium text-xs">
-                                        {formatCurrency(typeof level === 'number' ? level : level.price)}
+                                        ${formatCurrency(support)}
                                       </span>
                                     </div>
-                                  ))
-                                  : (
-                                  <>
-                                    <div className="flex justify-between items-center">
-                                      <span className="text-xs text-gray-400">Strong</span>
-                                      <span className="text-green-400 font-medium text-xs">
-                                        {formatCurrency((currentSignal?.entryPrice || 0) * 0.95)}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                      <span className="text-xs text-gray-400">Medium</span>
-                                      <span className="text-green-400 font-medium text-xs">
-                                        {formatCurrency((currentSignal?.entryPrice || 0) * 0.97)}
-                                      </span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                      <span className="text-xs text-gray-400">Weak</span>
-                                      <span className="text-green-400 font-medium text-xs">
-                                        {formatCurrency((currentSignal?.entryPrice || 0) * 0.98)}
-                                      </span>
-                                    </div>
-                                  </>
-                                )}
+                                  ));
+                                })()}
                               </div>
                             </div>
                           </div>
