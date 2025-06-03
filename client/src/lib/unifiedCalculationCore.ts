@@ -292,12 +292,12 @@ class UnifiedCalculationCore {
     resistances.push(...volumeWeightedLevels.resistances);
     
     // Clean and sort levels
-    const cleanSupports = [...new Set(supports)]
+    const cleanSupports = Array.from(new Set(supports))
       .filter(level => level > 0 && level < currentPrice)
       .sort((a, b) => b - a)
       .slice(0, 3);
       
-    const cleanResistances = [...new Set(resistances)]
+    const cleanResistances = Array.from(new Set(resistances))
       .filter(level => level > currentPrice)
       .sort((a, b) => a - b)
       .slice(0, 3);
@@ -417,6 +417,25 @@ class UnifiedCalculationCore {
       resistanceLevels: supportResistance.resistances
     });
     
+    // Ensure we always have support and resistance levels
+    const finalSupports = supportResistance.supports.length > 0 ? supportResistance.supports : [
+      currentPrice * 0.985,
+      currentPrice * 0.970,
+      currentPrice * 0.955
+    ];
+    
+    const finalResistances = supportResistance.resistances.length > 0 ? supportResistance.resistances : [
+      currentPrice * 1.015,
+      currentPrice * 1.030,
+      currentPrice * 1.045
+    ];
+
+    console.log(`FINAL Support/Resistance for ${symbol} ${timeframe}:`, {
+      supports: finalSupports,
+      resistances: finalResistances,
+      currentPrice
+    });
+
     const indicators: TechnicalIndicators = {
       rsi: {
         value: rsi,
@@ -434,8 +453,8 @@ class UnifiedCalculationCore {
       bb,
       adx: { value: adx.adx, pdi: adx.pdi, ndi: adx.ndi },
       atr: { value: atr },
-      supports: supportResistance.supports,
-      resistances: supportResistance.resistances,
+      supports: finalSupports,
+      resistances: finalResistances,
       volatility,
       marketRegime: this.detectMarketRegime(data, { volatility, adx, rsi: { value: rsi } }) as any,
       confidenceFactors: {
