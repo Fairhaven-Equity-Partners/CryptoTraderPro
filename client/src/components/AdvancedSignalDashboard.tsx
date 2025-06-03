@@ -944,10 +944,43 @@ export default function AdvancedSignalDashboard({
             const isValidSL = stopLoss && stopLoss > 0;
             const isValidTP = takeProfit && takeProfit > 0;
             
-            // If levels are invalid, use fallback calculation
+            // If levels are invalid, calculate proper timeframe-specific fallback
             let finalEntry = isValidEntry ? entryPrice : currentPrice;
-            let finalSL = isValidSL ? stopLoss : currentPrice * 0.98;
-            let finalTP = isValidTP ? takeProfit : currentPrice * 1.02;
+            let finalSL: number;
+            let finalTP: number;
+            
+            if (isValidSL && isValidTP) {
+              // Use the proper ATR-based calculations from unified core
+              finalSL = stopLoss;
+              finalTP = takeProfit;
+              console.log(`[${timeframe}] Using ATR-based: SL=${finalSL.toFixed(2)}, TP=${finalTP.toFixed(2)}`);
+            } else {
+              console.log(`[${timeframe}] Invalid ATR values (SL=${stopLoss}, TP=${takeProfit}), using fallback`);
+              // Calculate timeframe-appropriate fallback using percentage approach
+              const timeframeRisk = {
+                '1m': { sl: 0.003, tp: 0.006 },   // 0.3% SL, 0.6% TP
+                '5m': { sl: 0.005, tp: 0.010 },   // 0.5% SL, 1.0% TP
+                '15m': { sl: 0.008, tp: 0.016 },  // 0.8% SL, 1.6% TP
+                '30m': { sl: 0.012, tp: 0.024 },  // 1.2% SL, 2.4% TP
+                '1h': { sl: 0.015, tp: 0.030 },   // 1.5% SL, 3.0% TP
+                '4h': { sl: 0.025, tp: 0.050 },   // 2.5% SL, 5.0% TP
+                '1d': { sl: 0.040, tp: 0.080 },   // 4.0% SL, 8.0% TP
+                '3d': { sl: 0.060, tp: 0.120 },   // 6.0% SL, 12.0% TP
+                '1w': { sl: 0.080, tp: 0.160 },   // 8.0% SL, 16.0% TP
+                '1M': { sl: 0.120, tp: 0.240 }    // 12.0% SL, 24.0% TP
+              }[timeframe] || { sl: 0.015, tp: 0.030 };
+              
+              if (rawSignal.direction === 'LONG') {
+                finalSL = finalEntry * (1 - timeframeRisk.sl);
+                finalTP = finalEntry * (1 + timeframeRisk.tp);
+              } else if (rawSignal.direction === 'SHORT') {
+                finalSL = finalEntry * (1 + timeframeRisk.sl);
+                finalTP = finalEntry * (1 - timeframeRisk.tp);
+              } else {
+                finalSL = finalEntry * 0.99;
+                finalTP = finalEntry * 1.01;
+              }
+            }
             
             signal = {
               direction: rawSignal.direction,
