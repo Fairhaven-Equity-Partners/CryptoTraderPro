@@ -300,10 +300,11 @@ export default function AdvancedSignalDashboard({
   // Calculate real accuracy from trade simulations
   const calculateRealAccuracy = useCallback(() => {
     if (!tradeSimulations || !Array.isArray(tradeSimulations)) {
-      return { correct: 0, total: 0, percentage: 0 };
+      return { correct: 0, total: 0, percentage: 0, activeTrades: 0 };
     }
     
     const completedTrades = tradeSimulations.filter((trade: any) => !trade.isActive && trade.exitReason);
+    const activeTrades = tradeSimulations.filter((trade: any) => trade.isActive);
     const correctTrades = completedTrades.filter((trade: any) => 
       trade.profitLossPercent && trade.profitLossPercent > 0
     );
@@ -312,7 +313,7 @@ export default function AdvancedSignalDashboard({
     const correct = correctTrades.length;
     const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
     
-    return { correct, total, percentage };
+    return { correct, total, percentage, activeTrades: activeTrades.length };
   }, [tradeSimulations]);
   
   const realAccuracy = calculateRealAccuracy();
@@ -1645,10 +1646,12 @@ export default function AdvancedSignalDashboard({
             {/* Live Accuracy Metrics */}
             <div className="p-2 bg-emerald-600/20 rounded-lg text-center">
               <div className="text-xs font-bold text-green-400">
-                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total}` : 'Calculating...'}
+                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total}` : 
+                 realAccuracy.activeTrades > 0 ? `${realAccuracy.activeTrades} Active` : 'No Data'}
               </div>
               <div className="text-emerald-200 text-xs">
-                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accuracy` : 'Accuracy'}
+                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accuracy` : 
+                 realAccuracy.activeTrades > 0 ? 'Predictions' : 'Accuracy'}
               </div>
             </div>
             <div className="p-2 bg-blue-600/20 rounded-lg text-center">
