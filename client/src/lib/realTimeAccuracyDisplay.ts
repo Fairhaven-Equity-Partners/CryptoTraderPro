@@ -143,7 +143,7 @@ class RealTimeAccuracyDisplay {
     let bestTimeframe = '';
     let worstTimeframe = '';
 
-    for (const [timeframe, metric] of this.metrics) {
+    for (const [timeframe, metric] of Array.from(this.metrics.entries())) {
       totalPredictions += metric.totalPredictions;
       totalCorrect += metric.correctPredictions;
       totalProfitLoss += metric.profitLoss;
