@@ -2088,9 +2088,9 @@ export default function AdvancedSignalDashboard({
                               <div className="text-red-400 text-xs font-semibold mb-1">Resistance</div>
                               <div className="space-y-0.5">
                                 {(() => {
-                                  const resistances = currentSignal?.supportResistance?.resistances || [];
+                                  const resistances = (currentSignal?.indicators as any)?.resistances || [];
                                   const labels = ['Weak', 'Medium', 'Strong'];
-                                  return resistances.slice(0, 3).map((resistance, i) => (
+                                  return resistances.slice(0, 3).map((resistance: number, i: number) => (
                                     <div key={`res-${i}`} className="flex justify-between items-center">
                                       <span className="text-xs text-gray-400">{labels[i]}</span>
                                       <span className="text-red-400 font-medium text-xs">
@@ -2107,9 +2107,9 @@ export default function AdvancedSignalDashboard({
                               <div className="text-green-400 text-xs font-semibold mb-1">Support</div>
                               <div className="space-y-0.5">
                                 {(() => {
-                                  const supports = currentSignal?.supportResistance?.supports || [];
+                                  const supports = (currentSignal?.indicators as any)?.supports || [];
                                   const labels = ['Strong', 'Medium', 'Weak'];
-                                  return supports.slice(0, 3).map((support, i) => (
+                                  return supports.slice(0, 3).map((support: number, i: number) => (
                                     <div key={`supp-${i}`} className="flex justify-between items-center">
                                       <span className="text-xs text-gray-400">{labels[i]}</span>
                                       <span className="text-green-400 font-medium text-xs">

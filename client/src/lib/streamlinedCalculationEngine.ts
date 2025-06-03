@@ -57,11 +57,9 @@ export function generateStreamlinedSignal(
       // Pattern analysis
       patternFormations: detectPatterns(data, indicators, direction),
       
-      // Support/Resistance levels (timeframe-specific)
-      supportResistance: calculateSupportResistance(data, currentPrice, timeframe),
+      // Support/Resistance levels included in indicators
       
-      // Market environment
-      environment: analyzeMarketEnvironment(indicators, timeframe),
+      // Market environment data included in indicators
       
       // Additional analysis
       recommendedLeverage: {
@@ -760,11 +758,6 @@ function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice:
       volatility: []
     },
     patternFormations: [],
-    supportResistance: {
-      supports: [validPrice * 0.98, validPrice * 0.96],
-      resistances: [validPrice * 1.02, validPrice * 1.04],
-      pivotPoints: [validPrice * 0.99, validPrice, validPrice * 1.01]
-    },
     environment: { trend: 'NEUTRAL', volatility: 'NORMAL', volume: 'NORMAL', sentiment: 'NEUTRAL' },
     recommendedLeverage: {
       conservative: 1,
