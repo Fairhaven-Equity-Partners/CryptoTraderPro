@@ -612,9 +612,9 @@ function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice:
     },
     patternFormations: [],
     supportResistance: {
-      supports: [currentPrice * 0.98, currentPrice * 0.96],
-      resistances: [currentPrice * 1.02, currentPrice * 1.04],
-      pivotPoints: [currentPrice * 0.99, currentPrice, currentPrice * 1.01]
+      supports: [validPrice * 0.98, validPrice * 0.96],
+      resistances: [validPrice * 1.02, validPrice * 1.04],
+      pivotPoints: [validPrice * 0.99, validPrice, validPrice * 1.01]
     },
     environment: { trend: 'NEUTRAL', volatility: 'NORMAL', volume: 'NORMAL', sentiment: 'NEUTRAL' },
     recommendedLeverage: {

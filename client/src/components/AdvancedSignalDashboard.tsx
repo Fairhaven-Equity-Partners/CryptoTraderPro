@@ -184,11 +184,8 @@ interface PriceLevelDisplayProps {
   colorClass: string;
 }
 
-// Use memo to prevent unnecessary re-renders
-const PriceLevelDisplay = memo(({ label, value, timeframe, colorClass }: PriceLevelDisplayProps) => {
-  // Log for debugging
-  console.log(`Rendering ${label} for ${timeframe}: ${value}`);
-  
+// Remove memo to ensure proper re-renders when timeframe changes
+const PriceLevelDisplay = ({ label, value, timeframe, colorClass }: PriceLevelDisplayProps) => {
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-white font-semibold">{label}</span>
@@ -197,7 +194,7 @@ const PriceLevelDisplay = memo(({ label, value, timeframe, colorClass }: PriceLe
       </span>
     </div>
   );
-});
+};
 
 // List of timeframes to display
 const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d', '3d', '1w', '1M'];
@@ -1022,39 +1019,11 @@ export default function AdvancedSignalDashboard({
             let finalSL: number;
             let finalTP: number;
             
-            if (isValidSL && isValidTP) {
-              // Use the proper ATR-based calculations from unified core
-              finalSL = stopLoss;
-              finalTP = takeProfit;
-              console.log(`[${timeframe}] Using ATR-based: SL=${finalSL.toFixed(2)}, TP=${finalTP.toFixed(2)}`);
-            } else {
-              console.log(`[${timeframe}] Invalid ATR values (SL=${stopLoss}, TP=${takeProfit}), using fallback`);
-              // Calculate timeframe-appropriate fallback using percentage approach
-              const timeframeRisk = {
-                '1m': { sl: 0.003, tp: 0.006 },   // 0.3% SL, 0.6% TP
-                '5m': { sl: 0.005, tp: 0.010 },   // 0.5% SL, 1.0% TP
-                '15m': { sl: 0.008, tp: 0.016 },  // 0.8% SL, 1.6% TP
-                '30m': { sl: 0.012, tp: 0.024 },  // 1.2% SL, 2.4% TP
-                '1h': { sl: 0.015, tp: 0.030 },   // 1.5% SL, 3.0% TP
-                '4h': { sl: 0.025, tp: 0.050 },   // 2.5% SL, 5.0% TP
-                '12h': { sl: 0.030, tp: 0.060 },  // 3.0% SL, 6.0% TP
-                '1d': { sl: 0.040, tp: 0.080 },   // 4.0% SL, 8.0% TP
-                '3d': { sl: 0.060, tp: 0.120 },   // 6.0% SL, 12.0% TP
-                '1w': { sl: 0.080, tp: 0.160 },   // 8.0% SL, 16.0% TP
-                '1M': { sl: 0.120, tp: 0.240 }    // 12.0% SL, 24.0% TP
-              }[timeframe] || { sl: 0.015, tp: 0.030 };
-              
-              if (signal.direction === 'LONG') {
-                finalSL = finalEntry * (1 - timeframeRisk.sl);
-                finalTP = finalEntry * (1 + timeframeRisk.tp);
-              } else if (signal.direction === 'SHORT') {
-                finalSL = finalEntry * (1 + timeframeRisk.sl);
-                finalTP = finalEntry * (1 - timeframeRisk.tp);
-              } else {
-                finalSL = finalEntry * 0.99;
-                finalTP = finalEntry * 1.01;
-              }
-            }
+            // Always use the timeframe-specific calculations from streamlined engine
+            // The engine already calculates proper levels based on timeframe
+            finalSL = stopLoss || finalEntry * 0.98;
+            finalTP = takeProfit || finalEntry * 1.02;
+            console.log(`[${timeframe}] Using streamlined engine: SL=${finalSL.toFixed(2)}, TP=${finalTP.toFixed(2)}`);
             
             // Signal already contains all necessary data from streamlined engine
             signal.entryPrice = finalEntry;
