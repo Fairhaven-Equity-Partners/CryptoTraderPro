@@ -291,11 +291,13 @@ export default function AdvancedSignalDashboard({
   });
   
   // Fetch trade simulations to calculate real accuracy
-  const { data: tradeSimulations } = useQuery({
-    queryKey: [`/api/trade-simulations/${symbol}`],
+  const tradeSimulationsQuery = useQuery({
+    queryKey: [`/api/trade-simulations/${encodeURIComponent(symbol)}`],
     enabled: !!symbol,
     refetchInterval: 30000 // Refresh every 30 seconds
   });
+  
+  const { data: tradeSimulations } = tradeSimulationsQuery;
   
   // Calculate real accuracy from trade simulations
   const calculateRealAccuracy = useCallback(() => {
@@ -319,6 +321,17 @@ export default function AdvancedSignalDashboard({
   }, [tradeSimulations]);
   
   const realAccuracy = calculateRealAccuracy();
+  
+  // Debug trade simulations data
+  useEffect(() => {
+    console.log('Trade simulations query status:', {
+      isLoading: tradeSimulationsQuery.isLoading,
+      isError: tradeSimulationsQuery.isError,
+      error: tradeSimulationsQuery.error,
+      dataLength: Array.isArray(tradeSimulations) ? tradeSimulations.length : 0,
+      data: tradeSimulations
+    });
+  }, [tradeSimulations, tradeSimulationsQuery.isLoading, tradeSimulationsQuery.isError]);
   
   // Get the current price from live data or asset data with proper fallback
   const currentAssetPrice = (() => {
