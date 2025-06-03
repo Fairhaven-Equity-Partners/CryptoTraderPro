@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, memo } from 'react';
+import { useState, useEffect, useCallback, memo, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,6 +8,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TimeFrame, TIMEFRAMES } from '@shared/schema';
 import { useMarketData } from '../hooks/useMarketData';
 import { AdvancedSignal } from '../types';
+import { calculateUnifiedSignal } from '../lib/unifiedCalculationEngine';
+import { formatCurrency } from '../lib/calculations';
 
 interface ConsolidatedSignalDashboardProps {
   symbol: string;
@@ -40,8 +42,11 @@ export default function ConsolidatedSignalDashboard({
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
   const [signals, setSignals] = useState<Record<string, AdvancedSignal>>({});
   const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(0);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const calculationTriggeredRef = useRef(false);
 
   const queryClient = useQueryClient();
+  const { chartData } = useMarketData(symbol);
 
   // Fetch current asset data
   const { data: assetData } = useQuery({
@@ -55,11 +60,61 @@ export default function ConsolidatedSignalDashboard({
     refetchInterval: 30000,
   });
 
-  // Listen for live price and signal updates
+  // Core calculation engine to generate signals
+  const calculateSignalsForAllTimeframes = useCallback(async () => {
+    if (!chartData || Object.keys(chartData).length === 0 || isCalculating || calculationTriggeredRef.current) {
+      return;
+    }
+
+    console.log(`Starting signal calculation for ${symbol}`);
+    setIsCalculating(true);
+    calculationTriggeredRef.current = true;
+
+    try {
+      const newSignals: Record<string, AdvancedSignal> = {};
+      
+      // Calculate signals for all timeframes
+      for (const timeframe of TIMEFRAMES) {
+        try {
+          const timeframeData = chartData[timeframe];
+          if (timeframeData && timeframeData.length >= 50) {
+            const signal = await calculateUnifiedSignal(symbol, timeframe, timeframeData);
+            if (signal) {
+              newSignals[timeframe] = signal;
+            }
+          }
+        } catch (error) {
+          console.error(`Error calculating signal for ${timeframe}:`, error);
+        }
+      }
+
+      if (Object.keys(newSignals).length > 0) {
+        setSignals(newSignals);
+        console.log(`Generated ${Object.keys(newSignals).length} signals for ${symbol}`);
+        
+        // Dispatch signal update event
+        window.dispatchEvent(new CustomEvent('signalUpdate', {
+          detail: { symbol, signals: newSignals }
+        }));
+      }
+    } catch (error) {
+      console.error('Signal calculation error:', error);
+    } finally {
+      setIsCalculating(false);
+      calculationTriggeredRef.current = false;
+    }
+  }, [chartData, isCalculating, symbol, currentAssetPrice]);
+
+  // Listen for live price and calculation triggers
   useEffect(() => {
     const handleLivePriceUpdate = (event: CustomEvent) => {
       if (event.detail?.symbol === symbol && event.detail?.price) {
         setCurrentAssetPrice(event.detail.price);
+        
+        // Trigger calculation on price updates
+        if (event.detail.forceCalculate && chartData && Object.keys(chartData).length > 0) {
+          setTimeout(() => calculateSignalsForAllTimeframes(), 1000);
+        }
       }
     };
 
@@ -76,7 +131,14 @@ export default function ConsolidatedSignalDashboard({
       window.removeEventListener('livePriceUpdate', handleLivePriceUpdate as EventListener);
       window.removeEventListener('signalUpdate', handleSignalUpdate as EventListener);
     };
-  }, [symbol]);
+  }, [symbol, chartData, calculateSignalsForAllTimeframes]);
+
+  // Trigger initial calculation when chart data is available
+  useEffect(() => {
+    if (chartData && chartData.length >= 50 && !isCalculating) {
+      setTimeout(() => calculateSignalsForAllTimeframes(), 2000);
+    }
+  }, [chartData, calculateSignalsForAllTimeframes, isCalculating]);
 
   useEffect(() => {
     if (assetData && typeof assetData === 'object' && 'currentPrice' in assetData) {
