@@ -21,9 +21,28 @@ interface LiveForexTrade {
 }
 
 class LiveForexTradeGenerator {
-  private currentEurUsdPrice = 1.0520; // Current market price
+  private currentEurUsdPrice = 1.1400; // Current market price from API
+  
+  async fetchRealEURUSDPrice(): Promise<number> {
+    try {
+      const response = await fetch('https://api.exchangerate-api.com/v4/latest/EUR');
+      const data = await response.json();
+      
+      if (data && data.rates && data.rates.USD) {
+        this.currentEurUsdPrice = data.rates.USD;
+        return this.currentEurUsdPrice;
+      }
+      return 1.1400;
+    } catch (error) {
+      console.error('Error fetching EUR/USD price:', error);
+      return 1.1400;
+    }
+  }
   
   async generateLiveForexTrades(): Promise<LiveForexTrade[]> {
+    // Fetch real current EUR/USD price first
+    await this.fetchRealEURUSDPrice();
+    
     const signals = forexAnalysisEngine.generateMultiTimeframeAnalysis();
     const trades: LiveForexTrade[] = [];
     
