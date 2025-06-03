@@ -223,52 +223,124 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Calculate support and resistance levels using pivot points and fractals
+   * Calculate support and resistance levels using multiple methods for robustness
    */
-  private calculateSupportResistance(data: OHLCData[], lookback = 20): { supports: number[]; resistances: number[] } {
+  private calculateSupportResistance(data: OHLCData[], lookback = 15): { supports: number[]; resistances: number[] } {
     const supports: number[] = [];
     const resistances: number[] = [];
     
-    if (data.length < lookback * 2) return { supports, resistances };
+    if (data.length < 10) {
+      // Generate basic levels from current price if insufficient data
+      const currentPrice = data[data.length - 1]?.close || 0;
+      if (currentPrice > 0) {
+        return {
+          supports: [
+            currentPrice * 0.985,
+            currentPrice * 0.970,
+            currentPrice * 0.955
+          ],
+          resistances: [
+            currentPrice * 1.015,
+            currentPrice * 1.030,
+            currentPrice * 1.045
+          ]
+        };
+      }
+      return { supports, resistances };
+    }
     
-    // Find pivot highs and lows
-    for (let i = lookback; i < data.length - lookback; i++) {
+    // Method 1: Find pivot highs and lows
+    const pivotLookback = Math.min(lookback, Math.floor(data.length / 3));
+    for (let i = pivotLookback; i < data.length - pivotLookback; i++) {
       const current = data[i];
       let isResistance = true;
       let isSupport = true;
       
-      // Check if current point is a pivot high (resistance)
-      for (let j = i - lookback; j <= i + lookback; j++) {
+      // Check for pivot high (resistance)
+      for (let j = i - pivotLookback; j <= i + pivotLookback; j++) {
         if (j !== i && data[j].high >= current.high) {
           isResistance = false;
           break;
         }
       }
       
-      // Check if current point is a pivot low (support)
-      for (let j = i - lookback; j <= i + lookback; j++) {
+      // Check for pivot low (support)
+      for (let j = i - pivotLookback; j <= i + pivotLookback; j++) {
         if (j !== i && data[j].low <= current.low) {
           isSupport = false;
           break;
         }
       }
       
-      if (isResistance) {
-        resistances.push(current.high);
-      }
-      if (isSupport) {
-        supports.push(current.low);
-      }
+      if (isResistance) resistances.push(current.high);
+      if (isSupport) supports.push(current.low);
     }
     
-    // Sort and filter to get most significant levels
-    const sortedResistances = resistances.sort((a, b) => b - a).slice(0, 5);
-    const sortedSupports = supports.sort((a, b) => b - a).slice(0, 5);
+    // Method 2: Add psychological levels and recent highs/lows
+    const recentData = data.slice(-50);
+    const recentHigh = Math.max(...recentData.map(d => d.high));
+    const recentLow = Math.min(...recentData.map(d => d.low));
+    const currentPrice = data[data.length - 1].close;
+    
+    // Add recent extreme levels
+    if (recentHigh > currentPrice * 1.005) resistances.push(recentHigh);
+    if (recentLow < currentPrice * 0.995) supports.push(recentLow);
+    
+    // Method 3: Add volume-weighted levels (using close prices as proxy)
+    const volumeWeightedLevels = this.calculateVolumeWeightedLevels(data);
+    supports.push(...volumeWeightedLevels.supports);
+    resistances.push(...volumeWeightedLevels.resistances);
+    
+    // Clean and sort levels
+    const cleanSupports = [...new Set(supports)]
+      .filter(level => level > 0 && level < currentPrice)
+      .sort((a, b) => b - a)
+      .slice(0, 3);
+      
+    const cleanResistances = [...new Set(resistances)]
+      .filter(level => level > currentPrice)
+      .sort((a, b) => a - b)
+      .slice(0, 3);
     
     return { 
-      supports: sortedSupports, 
-      resistances: sortedResistances 
+      supports: cleanSupports, 
+      resistances: cleanResistances 
     };
+  }
+  
+  /**
+   * Calculate volume-weighted support and resistance levels
+   */
+  private calculateVolumeWeightedLevels(data: OHLCData[]): { supports: number[]; resistances: number[] } {
+    const supports: number[] = [];
+    const resistances: number[] = [];
+    const currentPrice = data[data.length - 1].close;
+    
+    // Group price levels by volume
+    const priceVolumeMap = new Map<number, number>();
+    const recentData = data.slice(-100);
+    
+    recentData.forEach(candle => {
+      const priceLevel = Math.round(candle.close / 10) * 10; // Round to nearest 10
+      const currentVolume = priceVolumeMap.get(priceLevel) || 0;
+      priceVolumeMap.set(priceLevel, currentVolume + candle.volume);
+    });
+    
+    // Sort by volume and extract significant levels
+    const sortedLevels = Array.from(priceVolumeMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(entry => entry[0]);
+    
+    sortedLevels.forEach(level => {
+      if (level < currentPrice) {
+        supports.push(level);
+      } else if (level > currentPrice) {
+        resistances.push(level);
+      }
+    });
+    
+    return { supports, resistances };
   }
 
   /**
@@ -335,6 +407,15 @@ class UnifiedCalculationCore {
     
     // Calculate support and resistance levels
     const supportResistance = this.calculateSupportResistance(data);
+    
+    // Debug logging
+    console.log(`Support/Resistance calculation for ${symbol} ${timeframe}:`, {
+      dataLength: data.length,
+      supports: supportResistance.supports.length,
+      resistances: supportResistance.resistances.length,
+      supportLevels: supportResistance.supports,
+      resistanceLevels: supportResistance.resistances
+    });
     
     const indicators: TechnicalIndicators = {
       rsi: {
