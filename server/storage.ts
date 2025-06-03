@@ -58,10 +58,14 @@ export class MemStorage implements IStorage {
     this.cryptoAssets = new Map();
     this.alerts = new Map();
     this.signalHistory = new Map();
+    this.tradeSimulations = new Map();
+    this.accuracyMetrics = new Map();
     
     this.userIdCounter = 1;
     this.alertIdCounter = 1;
     this.signalIdCounter = 1;
+    this.tradeIdCounter = 1;
+    this.accuracyIdCounter = 1;
     
     // Initialize with some crypto assets
     this.initializeCryptoAssets();
@@ -279,6 +283,149 @@ export class MemStorage implements IStorage {
       .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
     
     return signals.slice(0, limit);
+  }
+
+  // Trade simulation methods
+  async createTradeSimulation(insertTrade: InsertTradeSimulation): Promise<TradeSimulation> {
+    const id = this.tradeIdCounter++;
+    const trade: TradeSimulation = {
+      ...insertTrade,
+      id,
+      entryTime: new Date(),
+      exitTime: null,
+      exitPrice: null,
+      exitReason: null,
+      profitLoss: null,
+      profitLossPercent: null,
+      isActive: true,
+    };
+    
+    this.tradeSimulations.set(id, trade);
+    console.log(`📈 Created trade simulation: ${trade.symbol} ${trade.timeframe} ${trade.direction} @ ${trade.entryPrice}`);
+    return trade;
+  }
+
+  async getActiveTradeSimulations(symbol: string): Promise<TradeSimulation[]> {
+    return Array.from(this.tradeSimulations.values())
+      .filter(trade => trade.symbol === symbol && trade.isActive);
+  }
+
+  async updateTradeSimulation(id: number, data: Partial<TradeSimulation>): Promise<TradeSimulation | undefined> {
+    const trade = this.tradeSimulations.get(id);
+    if (!trade) return undefined;
+
+    const updatedTrade: TradeSimulation = { ...trade, ...data };
+    this.tradeSimulations.set(id, updatedTrade);
+    return updatedTrade;
+  }
+
+  async closeTradeSimulation(id: number, exitPrice: number, exitReason: string): Promise<TradeSimulation | undefined> {
+    const trade = this.tradeSimulations.get(id);
+    if (!trade) return undefined;
+
+    const profitLoss = trade.direction === 'LONG' 
+      ? (exitPrice - trade.entryPrice) 
+      : (trade.entryPrice - exitPrice);
+    
+    const profitLossPercent = (profitLoss / trade.entryPrice) * 100;
+
+    const updatedTrade: TradeSimulation = {
+      ...trade,
+      exitTime: new Date(),
+      exitPrice,
+      exitReason,
+      profitLoss,
+      profitLossPercent,
+      isActive: false,
+    };
+
+    this.tradeSimulations.set(id, updatedTrade);
+    
+    // Update accuracy metrics after closing trade
+    await this.calculateAccuracyMetrics(trade.symbol, trade.timeframe);
+    
+    console.log(`📊 Closed trade: ${trade.symbol} ${trade.timeframe} ${exitReason} P&L: ${profitLossPercent.toFixed(2)}%`);
+    return updatedTrade;
+  }
+
+  // Accuracy metrics methods
+  async getAccuracyMetrics(symbol: string, timeframe?: string): Promise<AccuracyMetrics[]> {
+    const results = Array.from(this.accuracyMetrics.values())
+      .filter(metric => metric.symbol === symbol && (!timeframe || metric.timeframe === timeframe));
+    return results;
+  }
+
+  async updateAccuracyMetrics(symbol: string, timeframe: string, metrics: Partial<InsertAccuracyMetrics>): Promise<AccuracyMetrics | undefined> {
+    const key = `${symbol}_${timeframe}`;
+    const existing = this.accuracyMetrics.get(key);
+    
+    if (existing) {
+      const updated: AccuracyMetrics = { 
+        ...existing, 
+        ...metrics, 
+        lastUpdated: new Date() 
+      };
+      this.accuracyMetrics.set(key, updated);
+      return updated;
+    } else {
+      const id = this.accuracyIdCounter++;
+      const newMetric: AccuracyMetrics = {
+        id,
+        symbol,
+        timeframe,
+        totalTrades: 0,
+        winningTrades: 0,
+        losingTrades: 0,
+        averageProfit: 0,
+        averageLoss: 0,
+        winRate: 0,
+        profitFactor: 0,
+        lastUpdated: new Date(),
+        rsiAccuracy: 0,
+        macdAccuracy: 0,
+        emaAccuracy: 0,
+        stochasticAccuracy: 0,
+        adxAccuracy: 0,
+        bbAccuracy: 0,
+        ...metrics,
+      };
+      this.accuracyMetrics.set(key, newMetric);
+      return newMetric;
+    }
+  }
+
+  async calculateAccuracyMetrics(symbol: string, timeframe: string): Promise<AccuracyMetrics | undefined> {
+    // Get all closed trades for this symbol/timeframe
+    const trades = Array.from(this.tradeSimulations.values())
+      .filter(trade => 
+        trade.symbol === symbol && 
+        trade.timeframe === timeframe && 
+        !trade.isActive && 
+        trade.profitLossPercent !== null
+      );
+
+    if (trades.length === 0) return undefined;
+
+    const winningTrades = trades.filter(t => (t.profitLossPercent || 0) > 0);
+    const losingTrades = trades.filter(t => (t.profitLossPercent || 0) <= 0);
+    
+    const totalProfit = winningTrades.reduce((sum, t) => sum + (t.profitLossPercent || 0), 0);
+    const totalLoss = Math.abs(losingTrades.reduce((sum, t) => sum + (t.profitLossPercent || 0), 0));
+    
+    const averageProfit = winningTrades.length > 0 ? totalProfit / winningTrades.length : 0;
+    const averageLoss = losingTrades.length > 0 ? totalLoss / losingTrades.length : 0;
+    const winRate = (winningTrades.length / trades.length) * 100;
+    const profitFactor = totalLoss > 0 ? totalProfit / totalLoss : totalProfit > 0 ? 999 : 0;
+
+    return await this.updateAccuracyMetrics(symbol, timeframe, {
+      totalTrades: trades.length,
+      winningTrades: winningTrades.length,
+      losingTrades: losingTrades.length,
+      averageProfit,
+      averageLoss,
+      winRate,
+      profitFactor,
+    });
   }
 }
 
