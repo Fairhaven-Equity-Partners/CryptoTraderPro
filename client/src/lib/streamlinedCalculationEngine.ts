@@ -60,7 +60,12 @@ export function generateStreamlinedSignal(
       environment: analyzeMarketEnvironment(indicators, timeframe),
       
       // Additional analysis
-      recommendedLeverage: calculateRecommendedLeverage(confidence, timeframe),
+      recommendedLeverage: {
+        conservative: 1,
+        moderate: Math.min(2, confidence / 50),
+        aggressive: Math.min(3, confidence / 30),
+        recommendation: confidence > 70 ? 'moderate' : 'conservative'
+      },
       riskReward: calculateRiskReward(currentPrice, stopLoss, takeProfit),
       marketStructure: analyzeMarketStructure(indicators, direction),
       volumeProfile: analyzeVolumeProfile(data),
@@ -576,16 +581,19 @@ function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice:
     timestamp: Date.now(),
     successProbability: 50,
     indicators: {
-      rsi: { value: 50, signal: 'NEUTRAL', strength: 'MODERATE', name: 'RSI', category: 'MOMENTUM' },
-      macd: { value: 0, signal: 'NEUTRAL', strength: 'MODERATE', name: 'MACD', category: 'MOMENTUM', histogram: 0, signalLine: 0 },
-      ema: { short: currentPrice, medium: currentPrice, long: currentPrice },
-      stochastic: { k: 50, d: 50 },
-      adx: { value: 20, pdi: 20, ndi: 20 },
-      bb: { middle: currentPrice, upper: currentPrice * 1.02, lower: currentPrice * 0.98, width: 0.04, percentB: 50 },
-      supports: [currentPrice * 0.98, currentPrice * 0.96, currentPrice * 0.94],
-      resistances: [currentPrice * 1.02, currentPrice * 1.04, currentPrice * 1.06],
-      atr: currentPrice * 0.02,
-      volatility: 1
+      trend: [
+        { name: 'EMA', signal: 'NEUTRAL', strength: 'MODERATE', category: 'TREND', value: currentPrice }
+      ],
+      momentum: [
+        { name: 'RSI', signal: 'NEUTRAL', strength: 'MODERATE', category: 'MOMENTUM', value: 50 },
+        { name: 'MACD', signal: 'NEUTRAL', strength: 'MODERATE', category: 'MOMENTUM', value: 0 }
+      ],
+      volume: [
+        { name: 'Volume', signal: 'NEUTRAL', strength: 'MODERATE', category: 'VOLUME', value: 1000 }
+      ],
+      pattern: [
+        { name: 'Pattern', signal: 'NEUTRAL', strength: 'MODERATE', category: 'PATTERN', value: 0 }
+      ]
     },
     patternFormations: [],
     supportResistance: {
@@ -594,10 +602,15 @@ function createNeutralSignal(symbol: string, timeframe: TimeFrame, currentPrice:
       pivotPoints: [currentPrice * 0.99, currentPrice, currentPrice * 1.01]
     },
     environment: { trend: 'NEUTRAL', volatility: 'NORMAL', volume: 'NORMAL', sentiment: 'NEUTRAL' },
-    recommendedLeverage: 1,
+    recommendedLeverage: {
+      conservative: 1,
+      moderate: 1.5,
+      aggressive: 2,
+      recommendation: 'moderate'
+    },
     riskReward: 1,
     marketStructure: { trend: 'SIDEWAYS', phase: 'CONSOLIDATION', strength: 50 },
     volumeProfile: { volumeWeightedPrice: currentPrice, highVolumeNodes: [], lowVolumeNodes: [] },
-    macroInsights: { regime: 'NEUTRAL', correlation: 0.5, institutionalFlow: 'NEUTRAL' }
+    macroInsights: ['NEUTRAL', 'STABLE_CORRELATION', 'BALANCED_FLOW']
   };
 }
