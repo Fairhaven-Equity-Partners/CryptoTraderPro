@@ -1984,8 +1984,8 @@ export default function AdvancedSignalDashboard({
                                 if (entryPrice > 0) {
                                   const slPercentages = {
                                     '1m': 0.003, '5m': 0.005, '15m': 0.008, '30m': 0.012,
-                                    '1h': 0.015, '4h': 0.025, '1d': 0.040, '3d': 0.060,
-                                    '1w': 0.080, '1M': 0.120
+                                    '1h': 0.015, '4h': 0.025, '12h': 0.030, '1d': 0.040, 
+                                    '3d': 0.060, '1w': 0.080, '1M': 0.120
                                   };
                                   const percentage = slPercentages[selectedTimeframe] || 0.015;
                                   if (currentSignal?.direction === 'LONG') {
