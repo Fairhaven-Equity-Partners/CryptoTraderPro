@@ -380,18 +380,20 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Detect market regime based on volatility and trend strength
+   * Optimized market regime detection with enhanced volatility analysis
    */
   private detectMarketRegime(data: OHLCData[], indicators: any): string {
     const volatility = indicators.volatility;
-    const adx = indicators.adx.value;
-    const rsi = indicators.rsi.value;
+    const adx = indicators.adx?.adx || indicators.adx?.value || 25;
+    const rsi = indicators.rsi?.value || 50;
     
-    if (volatility > 0.04) return 'HIGH_VOLATILITY';
-    if (volatility < 0.015) return 'LOW_VOLATILITY';
-    if (adx > 25 && rsi > 60) return 'TRENDING_UP';
-    if (adx > 25 && rsi < 40) return 'TRENDING_DOWN';
-    return 'RANGING';
+    // Enhanced regime classification with multiple factors
+    if (volatility > 0.05) return 'HIGH_VOLATILITY';
+    if (volatility < 0.012) return 'LOW_VOLATILITY';
+    if (adx > 28 && rsi > 65) return 'TRENDING_UP';
+    if (adx > 28 && rsi < 35) return 'TRENDING_DOWN';
+    if (adx < 20 && volatility < 0.025) return 'RANGING';
+    return 'NORMAL';
   }
 
   /**
