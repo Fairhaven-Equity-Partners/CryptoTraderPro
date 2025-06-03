@@ -1503,87 +1503,42 @@ export default function AdvancedSignalDashboard({
         </div>
       </div>
       
-      {/* Live Accuracy Feedback Loop - Improved Readability */}
-      <Card className="border-2 border-emerald-500/60 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4">
-        <CardHeader className="pb-3 bg-gradient-to-r from-emerald-600/20 to-blue-600/20 rounded-t-lg">
-          <CardTitle className="text-xl font-bold text-white flex items-center gap-3">
-            🧠 Live Accuracy Feedback Loop
-            <Badge className="bg-emerald-500 text-white font-semibold px-3 py-1 text-sm">
-              ACTIVE
-            </Badge>
-          </CardTitle>
-          <CardDescription className="text-slate-200 text-base">
-            AI system learns from real outcomes to continuously improve prediction accuracy
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pb-4 bg-slate-800/50">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-emerald-600/30 to-emerald-700/40 rounded-xl p-4 border-2 border-emerald-400/40 shadow-lg">
-              <div className="text-emerald-300 text-sm font-semibold">Current Timeframe</div>
-              <div className="text-white text-2xl font-bold mt-1">
-                {selectedTimeframe}
-              </div>
-              <div className="text-emerald-200 text-xs mt-1">
-                {signals[selectedTimeframe] ? `${signals[selectedTimeframe]?.direction} Signal` : 'No Signal'}
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-blue-600/30 to-blue-700/40 rounded-xl p-4 border-2 border-blue-400/40 shadow-lg">
-              <div className="text-blue-300 text-sm font-semibold">Live Price Tracking</div>
-              <div className="text-white text-2xl font-bold mt-1">${formatCurrency(currentAssetPrice)}</div>
-              <div className="text-blue-200 text-xs mt-1">Real-time Data</div>
-            </div>
-            <div className="bg-gradient-to-br from-purple-600/30 to-purple-700/40 rounded-xl p-4 border-2 border-purple-400/40 shadow-lg">
-              <div className="text-purple-300 text-sm font-semibold">Confidence Score</div>
-              <div className="text-white text-2xl font-bold mt-1">
-                {signals[selectedTimeframe]?.confidence ? `${Math.round(signals[selectedTimeframe]?.confidence)}%` : 'N/A'}
-              </div>
-              <div className="text-purple-200 text-xs mt-1">
-                {(() => {
-                  const conf = signals[selectedTimeframe]?.confidence || 0;
-                  return conf >= 70 ? 'High Confidence' : conf >= 50 ? 'Medium Confidence' : 'Low Confidence';
-                })()}
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-orange-600/30 to-orange-700/40 rounded-xl p-4 border-2 border-orange-400/40 shadow-lg">
-              <div className="text-orange-300 text-sm font-semibold">Next Analysis</div>
-              <div className="text-white text-2xl font-bold mt-1">
-                {Math.floor(timeUntilNextCalc / 60)}:{(timeUntilNextCalc % 60).toString().padStart(2, '0')}
-              </div>
-              <div className="text-orange-200 text-xs mt-1">Auto-calculation</div>
-            </div>
-          </div>
-          <div className="mt-4 p-3 bg-slate-700/50 rounded-lg border border-slate-600/50">
-            <div className="text-sm text-slate-100 font-medium mb-1">Feedback Loop Process:</div>
-            <div className="text-xs text-slate-300 leading-relaxed">
-              Record predictions → Track live outcomes → Calculate accuracy rates → Adjust indicator weights → Improve future predictions
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Market Condition Analysis Panel */}
+      {/* Combined Market Analysis & Live Accuracy Panel */}
       <Card className="border-2 border-blue-500/50 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4">
-        <CardHeader className="pb-3 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-t-lg">
-          <CardTitle className="text-lg font-bold text-white flex items-center gap-3">
-            📊 Market Condition Analysis
-            <Badge className="bg-blue-500 text-white font-semibold px-2 py-1 text-xs">
+        <CardHeader className="pb-2 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-t-lg">
+          <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
+            📊 Market Analysis & Live Accuracy
+            <Badge className="bg-blue-500 text-white font-semibold px-1 py-0.5 text-xs">
               ENHANCED
             </Badge>
           </CardTitle>
-          <CardDescription className="text-slate-200">
-            {(() => {
-              const currentSignal = signals[selectedTimeframe];
-              if (currentSignal?.indicators) {
-                return getMarketConditionSummary(symbol) || `${selectedTimeframe} Analysis: ${currentSignal.direction} signal with ${Math.round(currentSignal.confidence)}% confidence`;
-              }
-              return `Analyzing ${selectedTimeframe} market conditions...`;
-            })()}
+          <CardDescription className="text-slate-200 text-xs">
+            Combined real-time analysis and accuracy tracking for {selectedTimeframe}
           </CardDescription>
         </CardHeader>
-        <CardContent className="pb-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-3">
-              <h4 className="text-white font-semibold text-sm">{selectedTimeframe} Analysis</h4>
+        <CardContent className="pb-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
+            {/* Live Accuracy Metrics */}
+            <div className="p-2 bg-emerald-600/20 rounded-lg text-center">
+              <div className="text-xs font-bold text-green-400">
+                0/0
+              </div>
+              <div className="text-emerald-200 text-xs">Accuracy</div>
+            </div>
+            <div className="p-2 bg-blue-600/20 rounded-lg text-center">
+              <div className="text-xs font-bold text-white">{selectedTimeframe}</div>
+              <div className="text-blue-200 text-xs">Timeframe</div>
+            </div>
+            <div className="p-2 bg-orange-600/20 rounded-lg text-center">
+              <div className="text-xs font-bold text-orange-400">
+                {Math.floor(timeUntilNextCalc / 60)}:{(timeUntilNextCalc % 60).toString().padStart(2, '0')}
+              </div>
+              <div className="text-orange-200 text-xs">Next</div>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="space-y-1">
+              <h4 className="text-white font-semibold text-xs">{selectedTimeframe} Analysis</h4>
               {(() => {
                 const currentSignal = signals[selectedTimeframe];
                 if (!currentSignal) {
@@ -1635,7 +1590,7 @@ export default function AdvancedSignalDashboard({
                 );
               })()}
             </div>
-            <div className="space-y-3">
+            <div className="space-y-1">
               <h4 className="text-white font-semibold text-xs">Trading Recommendations</h4>
               {(() => {
                 const currentSignal = signals[selectedTimeframe];
