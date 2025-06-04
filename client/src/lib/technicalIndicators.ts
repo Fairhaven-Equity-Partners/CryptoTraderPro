@@ -920,7 +920,7 @@ export function determineMarketEnvironment(indicators: any): {
  * @param data Price data
  * @param timeframe The timeframe of the data
  */
-export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
+export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol?: string, livePrice?: number): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,
