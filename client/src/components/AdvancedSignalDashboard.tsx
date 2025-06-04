@@ -760,12 +760,14 @@ export default function AdvancedSignalDashboard({
         priceTarget = currentPrice * 0.88;
         description = 'Confirmed downtrend structure with sequential lower highs and lower lows. Strong trend continuation signal.';
       } else if (structureName === 'Market Structure Break') {
-        const breakDirection = Math.random() < 0.5 ? 'bullish' : 'bearish';
+        // Use deterministic direction based on timeframe and current price for consistency
+        const breakDirection = (currentPrice + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
         structureDirection = breakDirection;
         priceTarget = breakDirection === 'bullish' ? currentPrice * 1.15 : currentPrice * 0.85;
         description = `${breakDirection === 'bullish' ? 'Bullish' : 'Bearish'} market structure break indicating potential trend reversal. High-probability turning point.`;
       } else {
-        const chochDirection = Math.random() < 0.5 ? 'bullish' : 'bearish';
+        // Use deterministic direction based on timeframe and current price for consistency
+        const chochDirection = (Math.floor(currentPrice / 1000) + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
         structureDirection = chochDirection;
         priceTarget = chochDirection === 'bullish' ? currentPrice * 1.10 : currentPrice * 0.90;
         description = `Change of character detected in price action, suggesting ${chochDirection === 'bullish' ? 'bullish' : 'bearish'} momentum shift. Watch for confirmation.`;
@@ -781,10 +783,10 @@ export default function AdvancedSignalDashboard({
     }
     
     // Liquidity Analysis
-    if ((timeframe === '4h' || timeframe === '1d' || timeframe === '1w') && Math.random() < 0.4) {
-      const liquidityType = Math.random() < 0.5 ? 'Stop Hunt' : 'Liquidity Pool';
-      const isLong = Math.random() < 0.5;
-      const reliability = 75 + Math.floor(Math.random() * 15);
+    if ((timeframe === '4h' || timeframe === '1d' || timeframe === '1w') && (Math.floor(currentPrice / 100) % 5) < 2) {
+      const liquidityType = (Math.floor(currentPrice / 1000) + timeframe.length) % 2 === 0 ? 'Stop Hunt' : 'Liquidity Pool';
+      const isLong = (Math.floor(currentPrice / 500) + timeframe.charCodeAt(0)) % 2 === 0;
+      const reliability = 75 + ((Math.floor(currentPrice / 100) + timeframe.length) % 16);
       
       patterns.push({
         name: `Liquidity ${liquidityType}`,
@@ -798,11 +800,11 @@ export default function AdvancedSignalDashboard({
     }
     
     // Wyckoff Method
-    if ((timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M') && Math.random() < 0.35) {
+    if ((timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M') && (Math.floor(currentPrice / 200) % 5) < 2) {
       const wyckoffPhases = ['Accumulation', 'Distribution', 'Spring', 'Upthrust', 'Secondary Test'];
-      const phaseIndex = Math.floor(Math.random() * wyckoffPhases.length);
+      const phaseIndex = (Math.floor(currentPrice / 1000) + timeframe.length) % wyckoffPhases.length;
       const wyckoffPhase = wyckoffPhases[phaseIndex];
-      const reliability = 70 + Math.floor(Math.random() * 20);
+      const reliability = 70 + ((Math.floor(currentPrice / 500) + timeframe.charCodeAt(0)) % 21);
       let wyckoffDirection = 'neutral';
       let priceTarget = currentPrice;
       let description = '';
@@ -829,7 +831,7 @@ export default function AdvancedSignalDashboard({
           description = 'Wyckoff Upthrust: False breakout before markdown. Strong bearish signal with high probability of downward movement.';
           break;
         case 'Secondary Test':
-          wyckoffDirection = Math.random() < 0.5 ? 'bullish' : 'bearish';
+          wyckoffDirection = (Math.floor(currentPrice / 1000) + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
           priceTarget = wyckoffDirection === 'bullish' ? currentPrice * 1.10 : currentPrice * 0.90;
           description = `Wyckoff Secondary Test: ${wyckoffDirection === 'bullish' ? 'Bullish' : 'Bearish'} retest of critical level. Watch for ${wyckoffDirection === 'bullish' ? 'strength' : 'weakness'} on this test.`;
           break;
@@ -845,13 +847,13 @@ export default function AdvancedSignalDashboard({
     }
     
     // Ichimoku Cloud Analysis
-    if ((timeframe === '4h' || timeframe === '1d' || timeframe === '1w') && Math.random() < 0.4) {
+    if ((timeframe === '4h' || timeframe === '1d' || timeframe === '1w') && (Math.floor(currentPrice / 300) % 5) < 2) {
       const ichimokuComponents = ['TK Cross', 'Price-Kumo Relationship', 'Kumo Twist', 'Chikou Span Cross'];
-      const componentIndex = Math.floor(Math.random() * ichimokuComponents.length);
+      const componentIndex = (Math.floor(currentPrice / 2000) + timeframe.length) % ichimokuComponents.length;
       const component = ichimokuComponents[componentIndex];
-      const isStrong = Math.random() < 0.6; // 60% chance of strong signal
-      const isBullish = Math.random() < 0.5;
-      const reliability = isStrong ? 75 + Math.floor(Math.random() * 15) : 60 + Math.floor(Math.random() * 15);
+      const isStrong = (Math.floor(currentPrice / 1000) + timeframe.charCodeAt(0)) % 10 < 6; // 60% chance of strong signal
+      const isBullish = (Math.floor(currentPrice / 500) + timeframe.length) % 2 === 0;
+      const reliability = isStrong ? 75 + ((Math.floor(currentPrice / 100) + timeframe.length) % 16) : 60 + ((Math.floor(currentPrice / 200) + timeframe.charCodeAt(0)) % 16);
       
       patterns.push({
         name: `Ichimoku ${component}`,
@@ -868,12 +870,12 @@ export default function AdvancedSignalDashboard({
     }
     
     // Intermarket Analysis
-    if ((timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M') && Math.random() < 0.35) {
+    if ((timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M') && (Math.floor(currentPrice / 400) % 5) < 2) {
       const intermarketRelations = ['DXY Correlation', 'Stock Market Correlation', 'BTC Dominance', 'Sector Rotation', 'Risk-On/Risk-Off'];
-      const relationIndex = Math.floor(Math.random() * intermarketRelations.length);
+      const relationIndex = (Math.floor(currentPrice / 3000) + timeframe.length) % intermarketRelations.length;
       const relation = intermarketRelations[relationIndex];
-      const isBullish = Math.random() < 0.5;
-      const reliability = 65 + Math.floor(Math.random() * 20);
+      const isBullish = (Math.floor(currentPrice / 800) + timeframe.charCodeAt(0)) % 2 === 0;
+      const reliability = 65 + ((Math.floor(currentPrice / 300) + timeframe.length) % 21);
       
       patterns.push({
         name: `Intermarket: ${relation}`,
@@ -891,12 +893,12 @@ export default function AdvancedSignalDashboard({
     }
     
     // Order Flow Analysis
-    if ((timeframe === '15m' || timeframe === '30m' || timeframe === '1h' || timeframe === '4h') && Math.random() < 0.4) {
+    if ((timeframe === '15m' || timeframe === '30m' || timeframe === '1h' || timeframe === '4h') && (Math.floor(currentPrice / 250) % 5) < 2) {
       const orderFlowTypes = ['Absorption', 'Imbalance', 'Delta Divergence', 'Block Order'];
-      const typeIndex = Math.floor(Math.random() * orderFlowTypes.length);
+      const typeIndex = (Math.floor(currentPrice / 1500) + timeframe.length) % orderFlowTypes.length;
       const orderFlowType = orderFlowTypes[typeIndex];
-      const isBullish = Math.random() < 0.5;
-      const reliability = 70 + Math.floor(Math.random() * 20);
+      const isBullish = (Math.floor(currentPrice / 750) + timeframe.charCodeAt(0)) % 2 === 0;
+      const reliability = 70 + ((Math.floor(currentPrice / 400) + timeframe.length) % 21);
       
       patterns.push({
         name: `Order Flow: ${orderFlowType}`,
