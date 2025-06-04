@@ -1402,6 +1402,23 @@ export default function AdvancedSignalDashboard({
         console.log(`📊 Sample 1d signal:`, cleanSignals['1d']);
         setSignals(cleanSignals);
         console.log(`📊 setSignals call completed successfully`);
+        
+        // AUTOMATIC UI REFRESH: Force component re-render to show latest calculations
+        // This triggers immediate UI updates for all timeframes without manual clicks
+        const triggerUIRefresh = () => {
+          // Force state updates to refresh all UI components
+          setFeedbackMetrics(prev => ({ ...prev, lastUpdate: new Date() }));
+          
+          // Trigger query invalidation to refresh all data
+          queryClient.invalidateQueries({ queryKey: [`/api/accuracy/${symbol}`] });
+          queryClient.invalidateQueries({ queryKey: [`/api/trade-simulations/${encodeURIComponent(symbol)}`] });
+          
+          // Update calculation timestamp to show fresh data
+          setActualLastCalculationTime(Date.now() / 1000);
+        };
+        
+        // Execute UI refresh after state update completes
+        setTimeout(triggerUIRefresh, 50);
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
