@@ -1821,14 +1821,17 @@ export default function AdvancedSignalDashboard({
                   <span className="text-white font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
+                      console.log(`[Enhanced Debug] TF=${selectedTimeframe}, Available TFs:`, Object.keys(signals));
                       
                       if (!currentSignal) {
+                        console.log(`[Enhanced Debug] No signal for ${selectedTimeframe}`);
                         return 'CONSOLIDATION';
                       }
                       
                       // Generate timeframe-specific fractal analysis from live signal data
                       const direction = currentSignal.direction;
                       const confidence = currentSignal.confidence;
+                      console.log(`[Enhanced Debug] TF=${selectedTimeframe}: ${direction} @ ${confidence}%`);
                       
                       // Timeframe-specific fractal patterns
                       if (['1m', '5m', '15m'].includes(selectedTimeframe)) {
