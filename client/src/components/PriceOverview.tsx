@@ -120,33 +120,20 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     <ArrowDown className="h-4 w-4 text-red-500" />;
   
   return (
-    <div className="px-4 py-3 bg-secondary mb-2 border-b border-gray-700">
-      <div className="flex justify-between items-start">
+    <div className="px-4 py-2 bg-secondary mb-2 border-b border-gray-700">
+      <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-lg font-medium text-white mb-3">BTC/USDT</h3>
-          <div className="ml-1">
-            <div className="flex items-center mb-3">
-              <span className={`text-3xl font-bold text-white transition-colors duration-300 ${flashClass}`}>
-                ${parseFloat(priceState.price.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
-              </span>
-              {priceState.flash && priceDirection}
-            </div>
-            <div className="flex items-center space-x-3 mb-1">
-              <span className={`${priceChangeClass} text-base font-medium`}>
-                {formatPercentage(price.change24h)}
-              </span>
-              <span className="text-neutral text-sm">(24h)</span>
-            </div>
-          </div>
+          <h3 className="text-sm font-medium text-white">BTC/USDT</h3>
         </div>
-        <div className="text-right">
-          <div className="text-white text-sm font-medium">Signal Strength</div>
-          <div className="mt-1 flex items-center justify-end">
-            <span className={`${directionColor} text-sm font-medium mr-1`}>{direction}</span>
-            <div className="bg-gray-700 w-16 h-2 rounded-full overflow-hidden">
-              <Progress value={strength} className={progressColor} />
-            </div>
-          </div>
+        <div className="flex items-center space-x-2">
+          <span className={`text-sm font-medium text-white transition-colors duration-300 ${flashClass}`}>
+            ${parseFloat(priceState.price.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+          </span>
+          {priceState.flash && priceDirection}
+          <span className={`${priceChangeClass} text-xs font-medium`}>
+            {formatPercentage(price.change24h)}
+          </span>
+          <span className="text-neutral text-xs">24h</span>
         </div>
       </div>
     </div>
