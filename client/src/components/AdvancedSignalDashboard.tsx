@@ -1730,7 +1730,7 @@ export default function AdvancedSignalDashboard({
                 if (!currentSignal) {
                   return (
                     <div className="p-2 bg-slate-700/30 rounded-lg">
-                      <p className="text-slate-400 text-xs">No signal data for {selectedTimeframe}</p>
+                      <p className={typography.description}>No signal data for {selectedTimeframe}</p>
                     </div>
                   );
                 }
