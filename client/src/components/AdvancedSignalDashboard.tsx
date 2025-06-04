@@ -422,15 +422,15 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Always run calculations when explicitly triggered by timer events
-        if (hasMinimumData && !isCalculating && isTimerTriggered) {
-          console.log(`🚀 STARTING CALCULATION: Timer triggered with ${timeSinceLastCalc}s since last calc`);
+        // Only run calculations every 3 minutes (180 seconds) when timer triggered
+        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 180) {
+          console.log(`🚀 STARTING CALCULATION: Timer triggered with ${timeSinceLastCalc}s since last calc (3-minute interval reached)`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals();
         } else {
-          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s`);
+          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s (need 180s)`);
         }
       }
     };
@@ -486,26 +486,27 @@ export default function AdvancedSignalDashboard({
       return;
     }
     
-    // For data-loaded triggers, we want to be less restrictive
+    // For data-loaded triggers, also enforce 3-minute timing
     if (trigger === 'data-loaded') {
-      if (isCalculating) {
-        console.log(`Already calculating for ${symbol}, will retry when complete`);
+      if (isCalculating || timeSinceLastCalc < 180) {
+        console.log(`Data-loaded calculation blocked - isCalculating: ${isCalculating}, timeSinceLastCalc: ${timeSinceLastCalc}s (need 180s)`);
         return;
       }
       
-      // Proceed with calculation regardless of other conditions
+      // Proceed with calculation only if 3 minutes have passed
       calculationTriggeredRef.current = true;
       calculateAllSignals();
       return;
     }
     
-    // For other automated triggers, enforce throttling rules
+    // For other automated triggers, enforce strict 3-minute throttling
     if (
       calculationTriggeredRef.current || 
       isCalculating || 
-      (timeSinceLastCalc < 30) || 
+      (timeSinceLastCalc < 180) || 
       !isAllDataLoaded
     ) {
+      console.log(`Other trigger blocked - calculationTriggered: ${calculationTriggeredRef.current}, isCalculating: ${isCalculating}, timeSinceLastCalc: ${timeSinceLastCalc}s (need 180s)`);
       return;
     }
     
@@ -519,7 +520,14 @@ export default function AdvancedSignalDashboard({
     
     // Wait a second to allow any other trigger events to settle
     calculationTimeoutRef.current = setTimeout(() => {
-      calculateAllSignals();
+      // Double-check timing before executing
+      const finalTimeSinceLastCalc = (Date.now() - lastCalculationTimeRef.current * 1000) / 1000;
+      if (finalTimeSinceLastCalc >= 180) {
+        calculateAllSignals();
+      } else {
+        console.log(`Final timing check failed: ${finalTimeSinceLastCalc}s < 180s required`);
+        calculationTriggeredRef.current = false;
+      }
     }, 1000);
     
   }, [symbol, isCalculating, isAllDataLoaded, toast]);
