@@ -5,7 +5,6 @@ import { formatPrice, formatPercentage, getPriceChangeClass } from '../lib/calcu
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown } from 'lucide-react';
-import { typography, specializedTypography } from '../lib/typography';
 import { 
   startTracking, 
   stopTracking,
@@ -123,16 +122,16 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   return (
     <div className="px-4 py-2 bg-secondary mb-2 border-b border-gray-700">
       <div className="flex items-center space-x-4">
-        <h3 className={typography.cardTitle}>BTC/USDT</h3>
+        <h3 className="text-base font-medium text-white">BTC/USDT</h3>
         <div className="flex items-center space-x-3">
-          <span className={`${specializedTypography.priceLarge} transition-colors duration-300 ${flashClass}`}>
+          <span className={`text-lg font-bold text-white transition-colors duration-300 ${flashClass}`}>
             ${parseFloat(priceState.price.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </span>
           {priceState.flash && priceDirection}
-          <span className={`${priceChangeClass} ${specializedTypography.percentagePositive}`}>
+          <span className={`${priceChangeClass} text-sm font-medium`}>
             {formatPercentage(price.change24h)}
           </span>
-          <span className={typography.label}>24h</span>
+          <span className="text-neutral text-sm">24h</span>
         </div>
       </div>
     </div>

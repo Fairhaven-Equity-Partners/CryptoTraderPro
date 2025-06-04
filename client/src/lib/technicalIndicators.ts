@@ -8,109 +8,6 @@
 import { ChartData, TimeFrame } from '../types';
 
 /**
- * Calculate institutional market structure including VWAP, supply/demand zones, psychological levels
- */
-function calculateMarketStructure(data: ChartData[], currentPrice: number, timeframe: TimeFrame) {
-  // Calculate VWAP with institutional precision
-  let cumulativePV = 0;
-  let cumulativeVolume = 0;
-  const sessionData = data.slice(-100); // Last 100 periods
-  
-  for (const candle of sessionData) {
-    const typicalPrice = (candle.high + candle.low + candle.close) / 3;
-    const volume = candle.volume || 1000;
-    cumulativePV += typicalPrice * volume;
-    cumulativeVolume += volume;
-  }
-  
-  const vwap = cumulativePV / cumulativeVolume;
-  const vwapStdDev = currentPrice * 0.02; // 2% standard deviation
-  
-  // Identify supply and demand zones using swing analysis
-  const swingHighs: number[] = [];
-  const swingLows: number[] = [];
-  const lookback = 5;
-  
-  for (let i = lookback; i < data.length - lookback; i++) {
-    const current = data[i];
-    let isSwingHigh = true;
-    let isSwingLow = true;
-    
-    for (let j = i - lookback; j <= i + lookback; j++) {
-      if (j !== i) {
-        if (data[j].high >= current.high) isSwingHigh = false;
-        if (data[j].low <= current.low) isSwingLow = false;
-      }
-    }
-    
-    if (isSwingHigh) swingHighs.push(current.high);
-    if (isSwingLow) swingLows.push(current.low);
-  }
-  
-  // Psychological levels - round numbers and Fibonacci
-  const baseLevel = Math.round(currentPrice / 1000) * 1000;
-  const psychLevels = [
-    baseLevel,
-    baseLevel + 500,
-    baseLevel - 500,
-    currentPrice * 1.618, // Fibonacci extension
-    currentPrice * 0.618  // Fibonacci retracement
-  ];
-  
-  // Candlestick pattern analysis
-  const lastCandle = data[data.length - 1];
-  const prevCandle = data[data.length - 2];
-  let candlestickPattern = 'Continuation';
-  let candlestickDirection: 'bullish' | 'bearish' | 'neutral' = 'neutral';
-  
-  if (lastCandle && prevCandle) {
-    const bodySize = Math.abs(lastCandle.close - lastCandle.open);
-    const range = lastCandle.high - lastCandle.low;
-    const bodyRatio = bodySize / range;
-    
-    if (bodyRatio > 0.7) {
-      if (lastCandle.close > lastCandle.open) {
-        candlestickPattern = 'Strong Bullish';
-        candlestickDirection = 'bullish';
-      } else {
-        candlestickPattern = 'Strong Bearish';
-        candlestickDirection = 'bearish';
-      }
-    } else if (bodyRatio < 0.3) {
-      candlestickPattern = 'Doji/Indecision';
-      candlestickDirection = 'neutral';
-    }
-  }
-  
-  return {
-    vwap: {
-      value: vwap,
-      upperBand: vwap + (2 * vwapStdDev),
-      lowerBand: vwap - (2 * vwapStdDev),
-      position: currentPrice > vwap + vwapStdDev ? 'above' : 
-                currentPrice < vwap - vwapStdDev ? 'below' : 'inside'
-    },
-    supplyDemandZones: {
-      supply: swingHighs.slice(-3),
-      demand: swingLows.slice(-3),
-      strength: swingHighs.length > 3 && swingLows.length > 3 ? 'strong' : 'moderate'
-    },
-    psychologicalLevels: {
-      levels: psychLevels,
-      fibonacciConfluence: true,
-      roundNumberProximity: Math.abs(currentPrice - baseLevel) / currentPrice
-    },
-    candlestickSignal: {
-      pattern: candlestickPattern,
-      reliability: lastCandle && prevCandle ? 
-        (Math.abs(lastCandle.close - lastCandle.open) / (lastCandle.high - lastCandle.low) > 0.7 ? 85 : 
-         Math.abs(lastCandle.close - lastCandle.open) / (lastCandle.high - lastCandle.low) < 0.3 ? 45 : 65) : 65,
-      direction: candlestickDirection
-    }
-  };
-}
-
-/**
  * Calculate Simple Moving Average (SMA)
  * @param data Array of price data points
  * @param period Number of periods to average
@@ -1023,7 +920,7 @@ export function determineMarketEnvironment(indicators: any): {
  * @param data Price data
  * @param timeframe The timeframe of the data
  */
-export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol?: string, livePrice?: number): {
+export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,
@@ -1104,18 +1001,6 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol?:
     
     // Calculate technical indicators
     const indicators = calculateIndicatorsForTimeframe(data);
-    
-    // Calculate institutional market structure data
-    const liveCurrentPrice = livePrice || data[data.length - 1].close;
-    const marketStructure = calculateMarketStructure(data, liveCurrentPrice, timeframe);
-    
-    console.log(`[${timeframe}] Market structure calculated:`, {
-      vwap: marketStructure.vwap.value.toFixed(2),
-      position: marketStructure.vwap.position,
-      supplyZones: marketStructure.supplyDemandZones.supply.length,
-      demandZones: marketStructure.supplyDemandZones.demand.length,
-      candlestick: marketStructure.candlestickSignal.pattern
-    });
     
     // Determine market environment
     const environment = determineMarketEnvironment(indicators);
@@ -1553,17 +1438,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
   stopLoss: number,
   takeProfit: number,
   indicators: any,
-  environment: any,
-  timeframe: TimeFrame,
-  patternFormations: any[],
-  supportResistance: any,
-  recommendedLeverage: any,
-  optimalRiskReward: any,
-  predictedMovement: any,
-  macroScore: number,
-  macroClassification: string,
-  macroInsights: string[],
-  marketStructure: any
+  environment: any
 } {
   // Default to neutral with moderate confidence
   let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
@@ -1572,9 +1447,6 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
   try {
     if (data && data.length > 5) {
       const currentPrice = data[data.length - 1].close;
-      
-      // Calculate market structure for institutional analysis
-      const marketStructure = calculateMarketStructure(data, currentPrice, timeframe);
       const prices = data.map(candle => candle.close);
       
       // Simple price trend: compare current price with average of last 5 candles
@@ -1868,117 +1740,15 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
         },
         macroScore: macroScore,
         macroClassification: macroClassification,
-        macroInsights: macroInsights,
-        marketStructure: marketStructure
+        macroInsights: macroInsights
       };
     }
   } catch (err) {
     console.error("Error in simplified signal generation:", err);
-    
-    // Return a complete signal object even in error case
-    const currentPrice = data && data.length > 0 ? data[data.length - 1].close : 1000;
-    const fallbackMarketStructure = {
-      vwap: {
-        value: currentPrice,
-        upperBand: currentPrice * 1.02,
-        lowerBand: currentPrice * 0.98,
-        position: 'inside'
-      },
-      supplyDemandZones: {
-        supply: [currentPrice * 1.025],
-        demand: [currentPrice * 0.975],
-        strength: 'moderate'
-      },
-      psychologicalLevels: {
-        levels: [currentPrice, currentPrice * 1.05, currentPrice * 0.95],
-        fibonacciConfluence: false,
-        roundNumberProximity: 0.01
-      },
-      candlestickSignal: {
-        pattern: 'Continuation',
-        reliability: 50,
-        direction: 'neutral'
-      }
-    };
-    
-    return {
-      direction: 'NEUTRAL',
-      confidence: 50,
-      entryPrice: currentPrice,
-      stopLoss: currentPrice * 0.95,
-      takeProfit: currentPrice * 1.05,
-      indicators: {
-        rsi: 50,
-        macd: { value: 0, signal: 0, histogram: 0 },
-        ema: { short: currentPrice, medium: currentPrice, long: currentPrice },
-        stochastic: { k: 50, d: 50 },
-        adx: { value: 20, pdi: 20, ndi: 20 },
-        bb: { middle: currentPrice, upper: currentPrice * 1.02, lower: currentPrice * 0.98, width: 0.04, percentB: 50 },
-        supports: [currentPrice * 0.95, currentPrice * 0.9],
-        resistances: [currentPrice * 1.05, currentPrice * 1.1],
-        atr: currentPrice * 0.01,
-        volatility: 3
-      },
-      environment: {
-        trend: 'NEUTRAL',
-        volatility: 'MODERATE',
-        momentum: 'NEUTRAL'
-      },
-      timeframe: timeframe,
-      patternFormations: [],
-      supportResistance: {
-        support: [currentPrice * 0.95, currentPrice * 0.9],
-        resistance: [currentPrice * 1.05, currentPrice * 1.1]
-      },
-      recommendedLeverage: {
-        conservative: 2,
-        moderate: 3,
-        aggressive: 5,
-        recommendation: 'conservative'
-      },
-      optimalRiskReward: {
-        ideal: 2.0,
-        range: [1.5, 3.0]
-      },
-      predictedMovement: {
-        percentChange: 0,
-        timeEstimate: '1-2 hours'
-      },
-      macroScore: 50,
-      macroClassification: 'NEUTRAL',
-      macroInsights: ['Market in neutral state', 'No clear directional bias'],
-      marketStructure: fallbackMarketStructure
-    };
   }
   
   // If all else fails, create a truly default signal
   const currentPrice = data && data.length > 0 ? data[data.length - 1].close : 1000;
-  
-  // Calculate default market structure for institutional analysis
-  const defaultMarketStructure = data && data.length > 0 ? 
-    calculateMarketStructure(data, currentPrice, timeframe) : {
-      vwap: {
-        value: currentPrice,
-        upperBand: currentPrice * 1.02,
-        lowerBand: currentPrice * 0.98,
-        position: 'inside'
-      },
-      supplyDemandZones: {
-        supply: [currentPrice * 1.025],
-        demand: [currentPrice * 0.975],
-        strength: 'moderate'
-      },
-      psychologicalLevels: {
-        levels: [currentPrice, currentPrice * 1.05, currentPrice * 0.95],
-        fibonacciConfluence: false,
-        roundNumberProximity: 0.01
-      },
-      candlestickSignal: {
-        pattern: 'Continuation',
-        reliability: 50,
-        direction: 'neutral'
-      }
-    };
   
   return {
     direction: 'NEUTRAL',
@@ -2002,31 +1772,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
       trend: 'NEUTRAL',
       volatility: 'MODERATE',
       momentum: 'NEUTRAL'
-    },
-    timeframe: timeframe,
-    patternFormations: [],
-    supportResistance: {
-      support: [currentPrice * 0.95, currentPrice * 0.9],
-      resistance: [currentPrice * 1.05, currentPrice * 1.1]
-    },
-    recommendedLeverage: {
-      conservative: 2,
-      moderate: 3,
-      aggressive: 5,
-      recommendation: 'conservative'
-    },
-    optimalRiskReward: {
-      ideal: 2.0,
-      range: [1.5, 3.0]
-    },
-    predictedMovement: {
-      percentChange: 0,
-      timeEstimate: '1-2 hours'
-    },
-    macroScore: 50,
-    macroClassification: 'NEUTRAL',
-    macroInsights: ['Market in neutral state', 'No clear directional bias'],
-    marketStructure: defaultMarketStructure
+    }
   };
 }
 

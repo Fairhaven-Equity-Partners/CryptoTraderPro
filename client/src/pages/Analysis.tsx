@@ -3,7 +3,6 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
-import InstitutionalAnalysisDashboard from '../components/InstitutionalAnalysisDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -21,7 +20,6 @@ const Analysis: React.FC = () => {
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
   const [isHeatMapOpen, setIsHeatMapOpen] = useState(true);
   const { price } = useAssetPrice(currentAsset);
-  const [signals, setSignals] = useState<Map<string, any>>(new Map());
   // Keep track if this is first load or a user-initiated change
   const [assetChangeCounter, setAssetChangeCounter] = useState(0);
   const [shouldRunAnalysis, setShouldRunAnalysis] = useState(false);
@@ -51,16 +49,6 @@ const Analysis: React.FC = () => {
     setCurrentTimeframe(timeframe);
   };
 
-  const handleSignalsUpdate = (newSignals: Map<string, any>) => {
-    setSignals(newSignals);
-  };
-
-  const getCurrentPrice = (): number => {
-    if (typeof price === 'number') return price;
-    if (price && typeof price === 'object' && 'price' in price) return price.price;
-    return 0;
-  };
-
   return (
     <div className="flex flex-col h-screen">
       <StatusBar />
@@ -79,16 +67,6 @@ const Analysis: React.FC = () => {
           <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
-            onSignalsUpdate={handleSignalsUpdate}
-          />
-        </div>
-        
-        {/* Institutional Analysis Section */}
-        <div className="px-4 py-2">
-          <InstitutionalAnalysisDashboard 
-            signals={signals} 
-            currentPrice={getCurrentPrice()} 
-            symbol={currentAsset}
           />
         </div>
         
