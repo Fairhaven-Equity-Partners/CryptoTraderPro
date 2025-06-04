@@ -1919,37 +1919,37 @@ export default function AdvancedSignalDashboard({
                   <div className={`rounded-md border p-2 ${getSignalBgClass(currentSignal.direction)}`}>
                     {/* Compact Header with Direction and Price Info */}
                     <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center space-x-3">
-                        <h3 className="text-white font-bold text-sm flex items-center">
+                      <div className="flex items-center space-x-2">
+                        <h3 className="text-white font-semibold text-xs flex items-center">
                           {currentSignal.direction === 'LONG' && (
                             <>
-                              <TrendingUp className="mr-1 h-4 w-4 text-green-400" />
-                              <span className="text-green-400">Long Signal</span>
+                              <TrendingUp className="mr-1 h-3 w-3 text-green-400" />
+                              <span className="text-green-400">Long</span>
                             </>
                           )}
                           {currentSignal.direction === 'SHORT' && (
                             <>
-                              <TrendingDown className="mr-1 h-4 w-4 text-red-400" />
-                              <span className="text-red-400">Short Signal</span>
+                              <TrendingDown className="mr-1 h-3 w-3 text-red-400" />
+                              <span className="text-red-400">Short</span>
                             </>
                           )}
                           {currentSignal.direction === 'NEUTRAL' && (
                             <>
-                              <Minus className="mr-1 h-4 w-4 text-gray-400" />
+                              <Minus className="mr-1 h-3 w-3 text-gray-400" />
                               <span className="text-gray-400">Neutral</span>
                             </>
                           )}
                         </h3>
                         
                         {/* Price Information - Left to Right: Price, Percent, 24hr */}
-                        <div className="flex items-center space-x-2">
-                          <span className="text-cyan-300 text-sm font-bold">
+                        <div className="flex items-center space-x-1">
+                          <span className="text-cyan-300 text-xs font-bold">
                             {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
                           </span>
                           <span className={`text-xs font-medium ${
-                            (asset?.priceChange24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'
+                            ((asset as any)?.priceChange24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'
                           }`}>
-                            {(asset?.priceChange24h || 0) >= 0 ? '+' : ''}{(asset?.priceChange24h || 0).toFixed(2)}%
+                            {((asset as any)?.priceChange24h || 0) >= 0 ? '+' : ''}{((asset as any)?.priceChange24h || 0).toFixed(2)}%
                           </span>
                           <span className="text-xs text-gray-400">24h</span>
                         </div>
@@ -1962,14 +1962,13 @@ export default function AdvancedSignalDashboard({
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       {/* Left column with signals and indicators */}
-                      <div className="space-y-2">
-
+                      <div className="space-y-1">
                         
                         {/* Success Probability Bar */}
-                        <div className="space-y-1 mb-2">
-                          <h3 className="text-white font-bold text-xs">Success Probability</h3>
+                        <div className="space-y-1">
+                          <h3 className="text-white font-semibold text-xs">Success Probability</h3>
                           {(() => {
                             // Calculate success probability inline based on timeframe and direction
                             const baseProbabilities: Record<string, number> = {
@@ -2009,19 +2008,19 @@ export default function AdvancedSignalDashboard({
                               
                             return (
                               <>
-                                <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
+                                <div className="w-full bg-gray-800 rounded-full h-1.5 mb-1">
                                   <div 
-                                    className={`h-3 rounded-full ${barColorClass}`}
+                                    className={`h-1.5 rounded-full ${barColorClass}`}
                                     style={{ width: `${probability}%` }}
                                   />
                                 </div>
                                 <div className="flex justify-between items-center">
                                   <div className="flex justify-between text-xs text-gray-400 w-full">
-                                    <span>Low</span>
-                                    <span>Medium</span>
-                                    <span>High</span>
+                                    <span className="text-xs">Low</span>
+                                    <span className="text-xs">Med</span>
+                                    <span className="text-xs">High</span>
                                   </div>
-                                  <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
+                                  <Badge variant="outline" className="ml-1 text-xs bg-blue-900/20 text-blue-400 border-blue-800 px-1 py-0">
                                     {Math.round(probability)}%
                                   </Badge>
                                 </div>
@@ -2034,10 +2033,10 @@ export default function AdvancedSignalDashboard({
                         
                         {/* Macro Score */}
                         <div className="space-y-1">
-                          <h3 className="text-white font-bold text-xs">Macro Score</h3>
-                          <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
+                          <h3 className="text-white font-semibold text-xs">Macro Score</h3>
+                          <div className="w-full bg-gray-800 rounded-full h-1.5 mb-1">
                             <div 
-                              className={`h-3 rounded-full ${
+                              className={`h-1.5 rounded-full ${
                                 Math.round(currentSignal.macroScore || 50) >= 70 ? 'bg-green-600' : 
                                 Math.round(currentSignal.macroScore || 50) >= 45 ? 'bg-yellow-600' : 'bg-red-600'
                               }`}
@@ -2046,7 +2045,7 @@ export default function AdvancedSignalDashboard({
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-xs text-gray-400">{currentSignal.macroClassification}</span>
-                            <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800">
+                            <Badge variant="outline" className="text-xs bg-blue-900/20 text-blue-400 border-blue-800 px-1 py-0">
                               {Math.round(currentSignal.macroScore || 50)}%
                             </Badge>
                           </div>
@@ -2054,8 +2053,8 @@ export default function AdvancedSignalDashboard({
                         
                         {/* Pattern Formations */}
                         <div className="space-y-1">
-                          <h3 className="text-white font-bold text-xs">Pattern Formations</h3>
-                          <div className="max-h-32 overflow-y-auto space-y-0.5">
+                          <h3 className="text-white font-semibold text-xs">Pattern Formations</h3>
+                          <div className="max-h-20 overflow-y-auto space-y-0.5">
                             {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
                               currentSignal.patternFormations.map((pattern, i) => (
                                 <div key={i} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
