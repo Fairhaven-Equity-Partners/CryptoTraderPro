@@ -1393,7 +1393,12 @@ export default function AdvancedSignalDashboard({
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          const livePrice = currentAssetPrice || 105000; // Use current asset price
+          // Ensure we use the exact same live price being displayed
+          const livePrice = currentAssetPrice > 0 ? currentAssetPrice : 0;
+          if (livePrice === 0) {
+            console.warn(`🎯 Cannot record predictions - no valid live price available`);
+            return;
+          }
           console.log(`🎯 Recording predictions using live price: ${livePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
