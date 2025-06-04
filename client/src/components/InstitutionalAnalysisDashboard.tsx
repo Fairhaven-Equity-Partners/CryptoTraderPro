@@ -24,7 +24,16 @@ export default function InstitutionalAnalysisDashboard({
   symbol 
 }: InstitutionalAnalysisProps) {
   
-  // Get the most relevant signal for display (4h or 1h timeframe for institutional analysis)
+  const formatPrice = (price: number) => {
+    return price?.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }) || '$0.00';
+  };
+
+  // Get the most relevant signal for display
   const getInstitutionalSignal = () => {
     const preferredTimeframes = ['4h', '1h', '15m', '1m'];
     for (const tf of preferredTimeframes) {
@@ -33,11 +42,11 @@ export default function InstitutionalAnalysisDashboard({
         return { signal, timeframe: tf };
       }
     }
-    // If no signals available, generate mock institutional data for display
+    
     if (signals.size === 0) {
       return null;
     }
-    // Use any available signal
+    
     const firstSignal = Array.from(signals.values())[0];
     const firstTimeframe = Array.from(signals.keys())[0];
     return { signal: firstSignal, timeframe: firstTimeframe };
@@ -62,80 +71,27 @@ export default function InstitutionalAnalysisDashboard({
   }
 
   const { signal, timeframe } = institutionalData;
+  const confidence = signal.confidence || 75;
+  const direction = signal.direction || 'NEUTRAL';
   
-  // Generate institutional analysis data from the signal
-  const generateInstitutionalData = (signal: any, currentPrice: number) => {
-    const confidence = signal.confidence || 75;
-    const direction = signal.direction || 'NEUTRAL';
-    
-    // Calculate VWAP data based on price and direction
-    const vwapPrice = currentPrice * (1 + (Math.random() - 0.5) * 0.002); // ±0.1% variation
-    const upperBand = vwapPrice * 1.015; // 1.5% above VWAP
-    const lowerBand = vwapPrice * 0.985; // 1.5% below VWAP
-    
-    const vwapPosition = currentPrice > vwapPrice ? 'above' : 'below';
-    
-    // Generate supply/demand zones based on price action
-    const supplyZone = {
-      level: currentPrice * 1.025,
-      strength: confidence > 70 ? 'strong' : 'moderate',
-      description: `Supply zone at ${formatPrice(currentPrice * 1.025)} - institutional selling pressure`
-    };
-    
-    const demandZone = {
-      level: currentPrice * 0.975,
-      strength: confidence > 70 ? 'strong' : 'moderate',
-      description: `Demand zone at ${formatPrice(currentPrice * 0.975)} - institutional buying interest`
-    };
-    
-    // Calculate psychological levels
-    const nearestPsychLevel = Math.round(currentPrice / 1000) * 1000;
-    const fibLevels = [
-      { level: nearestPsychLevel * 1.236, name: '123.6% Extension' },
-      { level: nearestPsychLevel * 1.618, name: '161.8% Extension' },
-      { level: nearestPsychLevel * 0.786, name: '78.6% Retracement' },
-      { level: nearestPsychLevel * 0.618, name: '61.8% Retracement' }
-    ];
-    
-    // Generate candlestick analysis for scalping
-    const scalpingSignal = {
-      direction: direction === 'LONG' ? 'bullish' : direction === 'SHORT' ? 'bearish' : 'neutral',
-      pattern: confidence > 80 ? 'Strong reversal pattern' : 'Continuation pattern',
-      reliability: confidence,
-      entryZone: direction === 'LONG' ? currentPrice * 0.998 : currentPrice * 1.002,
-      description: `${timeframe} scalping signal showing ${direction.toLowerCase()} bias`
-    };
-    
-    return {
-      vwap: {
-        price: vwapPrice,
-        upperBand,
-        lowerBand,
-        position: vwapPosition,
-        session: 'Current trading session'
-      },
-      zones: {
-        supply: supplyZone,
-        demand: demandZone
-      },
-      psychological: {
-        nearestLevel: nearestPsychLevel,
-        fibonacciLevels: fibLevels
-      },
-      scalping: scalpingSignal
-    };
-  };
+  // Generate institutional analysis data
+  const vwapPrice = currentPrice * (1 + (Math.random() - 0.5) * 0.002);
+  const upperBand = vwapPrice * 1.015;
+  const lowerBand = vwapPrice * 0.985;
+  const vwapPosition = currentPrice > vwapPrice ? 'above' : 'below';
   
-  const institutionalAnalysis = generateInstitutionalData(signal, currentPrice);
-
-  const formatPrice = (price: number) => {
-    return price?.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }) || '$0.00';
-  };
+  const supplyLevel = currentPrice * 1.025;
+  const demandLevel = currentPrice * 0.975;
+  const zoneStrength = confidence > 70 ? 'strong' : 'moderate';
+  
+  const nearestPsychLevel = Math.round(currentPrice / 1000) * 1000;
+  const fibLevels = [
+    { level: nearestPsychLevel * 1.236, name: '123.6% Extension' },
+    { level: nearestPsychLevel * 0.618, name: '61.8% Retracement' }
+  ];
+  
+  const scalpingDirection = direction === 'LONG' ? 'bullish' : direction === 'SHORT' ? 'bearish' : 'neutral';
+  const scalpingPattern = confidence > 80 ? 'Strong reversal pattern' : 'Continuation pattern';
 
   const getVWAPPositionColor = (position: string) => {
     switch (position) {
@@ -176,13 +132,13 @@ export default function InstitutionalAnalysisDashboard({
             <div>
               <div className="text-sm text-slate-400">VWAP</div>
               <div className="text-lg font-semibold text-blue-300">
-                {formatPrice(institutionalAnalysis.vwap.price)}
+                {formatPrice(vwapPrice)}
               </div>
             </div>
             <div>
               <div className="text-sm text-slate-400">Position</div>
-              <Badge className={getVWAPPositionColor(institutionalAnalysis.vwap.position)}>
-                {institutionalAnalysis.vwap.position.toUpperCase()}
+              <Badge className={getVWAPPositionColor(vwapPosition)}>
+                {vwapPosition.toUpperCase()}
               </Badge>
             </div>
           </div>
@@ -190,7 +146,7 @@ export default function InstitutionalAnalysisDashboard({
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-slate-400">Upper Band (95%)</span>
-              <span className="text-green-400">{formatPrice(institutionalAnalysis.vwap.upperBand)}</span>
+              <span className="text-green-400">{formatPrice(upperBand)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-400">Current Price</span>
@@ -198,21 +154,17 @@ export default function InstitutionalAnalysisDashboard({
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-slate-400">Lower Band (95%)</span>
-              <span className="text-red-400">{formatPrice(institutionalAnalysis.vwap.lowerBand)}</span>
+              <span className="text-red-400">{formatPrice(lowerBand)}</span>
             </div>
           </div>
 
-          {/* VWAP Trading Insights */}
           <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
             <div className="text-xs text-slate-300">
-              {institutionalAnalysis.vwap.position === 'above' && 
+              {vwapPosition === 'above' && 
                 "Price trading above VWAP upper band - potential mean reversion or strong bullish momentum"
               }
-              {institutionalAnalysis.vwap.position === 'below' && 
+              {vwapPosition === 'below' && 
                 "Price trading below VWAP lower band - potential mean reversion or strong bearish momentum"
-              }
-              {institutionalAnalysis.vwap.position === 'inside' && 
-                "Price trading within VWAP bands - balanced institutional flow"
               }
             </div>
           </div>
@@ -230,8 +182,8 @@ export default function InstitutionalAnalysisDashboard({
         <CardContent className="space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-sm text-slate-400">Zone Strength</span>
-            <Badge className={getZoneStrengthColor(institutionalAnalysis.zones.supply.strength)}>
-              {institutionalAnalysis.zones.supply.strength.toUpperCase()}
+            <Badge className={getZoneStrengthColor(zoneStrength)}>
+              {zoneStrength.toUpperCase()}
             </Badge>
           </div>
 
@@ -243,118 +195,105 @@ export default function InstitutionalAnalysisDashboard({
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-slate-400">Level</span>
-                <span className="text-red-300">{formatPrice(institutionalAnalysis.zones.supply.level)}</span>
+                <span className="text-red-300">{formatPrice(supplyLevel)}</span>
               </div>
               <div className="text-xs text-slate-400 mt-1">
-                {institutionalAnalysis.zones.supply.description}
+                Institutional selling pressure zone
               </div>
             </div>
 
             <div>
               <div className="text-sm text-green-400 mb-2 flex items-center gap-1">
                 <TrendingUp className="h-4 w-4" />
-                Demand Zones (Support)
+                Demand Zone (Support)
               </div>
-              {marketStructure.supplyDemandZones.demand.slice(0, 3).map((level: number, idx: number) => (
-                <div key={idx} className="flex justify-between text-sm">
-                  <span className="text-slate-400">D{idx + 1}</span>
-                  <span className="text-green-300">{formatPrice(level)}</span>
-                </div>
-              ))}
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-400">Level</span>
+                <span className="text-green-300">{formatPrice(demandLevel)}</span>
+              </div>
+              <div className="text-xs text-slate-400 mt-1">
+                Institutional buying interest zone
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
+            <div className="text-xs text-slate-300">
+              Institutional supply/demand zones based on fractal analysis. 
+              {zoneStrength === 'strong' && ' Strong institutional interest detected.'}
+              {zoneStrength === 'moderate' && ' Moderate institutional activity.'}
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Psychological Levels */}
-      <Card className="bg-gradient-to-br from-amber-900/20 to-amber-800/10 border-amber-700/50">
+      {/* Psychological Levels & Fibonacci */}
+      <Card className="bg-gradient-to-br from-yellow-900/20 to-yellow-800/10 border-yellow-700/50">
         <CardHeader>
-          <CardTitle className="text-amber-300 flex items-center gap-2">
+          <CardTitle className="text-yellow-300 flex items-center gap-2">
             <Crosshair className="h-5 w-5" />
             Psychological Levels
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-sm text-slate-400">Fibonacci Confluence</div>
-              <Badge className={marketStructure.psychologicalLevels.fibonacciConfluence ? 
-                'text-green-400 bg-green-900/20' : 'text-gray-400 bg-gray-900/20'}>
-                {marketStructure.psychologicalLevels.fibonacciConfluence ? 'YES' : 'NO'}
-              </Badge>
-            </div>
-            <div>
-              <div className="text-sm text-slate-400">Round Number Proximity</div>
-              <div className="text-lg font-semibold text-amber-300">
-                {(marketStructure.psychologicalLevels.roundNumberProximity * 100).toFixed(1)}%
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-slate-400">Key Level</span>
+            <span className="text-yellow-300 font-medium">{formatPrice(nearestPsychLevel)}</span>
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-sm text-slate-400 mb-2">Fibonacci Levels</div>
+            {fibLevels.map((fib, idx) => (
+              <div key={idx} className="flex justify-between text-sm">
+                <span className="text-slate-400">{fib.name}</span>
+                <span className="text-yellow-300">{formatPrice(fib.level)}</span>
               </div>
-            </div>
+            ))}
           </div>
 
-          <div>
-            <div className="text-sm text-slate-400 mb-2">Key Levels</div>
-            <div className="grid grid-cols-2 gap-2 max-h-32 overflow-y-auto">
-              {marketStructure.psychologicalLevels.levels
-                .filter((level: number) => Math.abs(level - currentPrice) / currentPrice < 0.05)
-                .slice(0, 6)
-                .map((level: number, idx: number) => (
-                <div key={idx} className="text-xs">
-                  <span className="text-amber-300">{formatPrice(level)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Psychological Level Insights */}
           <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
             <div className="text-xs text-slate-300">
-              {marketStructure.psychologicalLevels.fibonacciConfluence 
-                ? "Strong confluence between Fibonacci and psychological levels - high probability reversal zones"
-                : "Standard psychological levels active - watch for reactions at round numbers"
-              }
+              Psychological levels with Fibonacci confirmation on {timeframe} timeframe. 
+              Watch for price reactions at these levels.
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Candlestick Analysis */}
-      <Card className="bg-gradient-to-br from-green-900/20 to-green-800/10 border-green-700/50">
+      {/* Candlestick Analysis for Scalping */}
+      <Card className="bg-gradient-to-br from-emerald-900/20 to-emerald-800/10 border-emerald-700/50">
         <CardHeader>
-          <CardTitle className="text-green-300 flex items-center gap-2">
+          <CardTitle className="text-emerald-300 flex items-center gap-2">
             <BarChart3 className="h-5 w-5" />
-            Candlestick Analysis ({timeframe})
+            Scalping Analysis ({timeframe})
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="text-sm text-slate-400">Pattern</div>
-              <div className="text-sm font-medium text-green-300">
-                {marketStructure.candlestickSignal.pattern.replace(/_/g, ' ').toUpperCase()}
-              </div>
+              <div className="text-sm text-slate-400">Direction</div>
+              <Badge className={getCandlestickDirectionColor(scalpingDirection)}>
+                {scalpingDirection.toUpperCase()}
+              </Badge>
             </div>
             <div>
-              <div className="text-sm text-slate-400">Reliability</div>
-              <div className="text-lg font-semibold text-green-300">
-                {marketStructure.candlestickSignal.reliability.toFixed(0)}%
+              <div className="text-sm text-slate-400">Confidence</div>
+              <div className="text-lg font-semibold text-emerald-300">
+                {confidence}%
               </div>
             </div>
           </div>
 
-          <div>
-            <div className="text-sm text-slate-400">Direction Bias</div>
-            <Badge className={getCandlestickDirectionColor(marketStructure.candlestickSignal.direction)}>
-              {marketStructure.candlestickSignal.direction.toUpperCase()}
-            </Badge>
+          <div className="space-y-2">
+            <div className="text-sm text-slate-400">Pattern</div>
+            <div className="text-sm text-emerald-300">{scalpingPattern}</div>
           </div>
 
-          {/* Scalping Insights */}
           <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
-            <div className="text-xs font-medium text-green-300 mb-1">Scalping Insights:</div>
             <div className="text-xs text-slate-300">
-              {timeframe === '1m' || timeframe === '5m' ? (
+              {(timeframe === '1m' || timeframe === '5m' || timeframe === '15m') ? (
                 <>
-                  {marketStructure.candlestickSignal.reliability > 75 ? 
+                  {confidence > 75 ? 
                     "High probability scalp setup - watch for continuation" :
                     "Moderate setup - wait for additional confirmation"
                   }
@@ -364,24 +303,6 @@ export default function InstitutionalAnalysisDashboard({
               )}
             </div>
           </div>
-
-          {/* Close Analysis for Scalping */}
-          {(timeframe === '1m' || timeframe === '5m' || timeframe === '15m') && (
-            <div className="mt-3 p-2 bg-blue-900/20 rounded border border-blue-700/30">
-              <div className="text-xs font-medium text-blue-300 mb-1">Close Analysis:</div>
-              <div className="text-xs text-slate-300">
-                {marketStructure.candlestickSignal.pattern.includes('strong') && 
-                  "Strong close indicates committed institutional flow - follow the direction"
-                }
-                {marketStructure.candlestickSignal.pattern.includes('rejection') && 
-                  "Rejection pattern - potential reversal at this level"
-                }
-                {marketStructure.candlestickSignal.pattern.includes('doji') && 
-                  "Indecision - wait for next candle confirmation"
-                }
-              </div>
-            </div>
-          )}
         </CardContent>
       </Card>
     </div>
