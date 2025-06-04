@@ -813,11 +813,27 @@ class UnifiedCalculationCore {
         ? Math.min(currentPrice + sizing.takeProfitDistance, currentPrice * 1.30)
         : Math.max(currentPrice - sizing.takeProfitDistance, currentPrice * 0.70),
       timestamp: Date.now(),
-      indicators,
+      indicators: {
+        ...indicators,
+        marketStructure: {
+          vwap: vwapAnalysis,
+          supplyDemandZones,
+          psychologicalLevels,
+          candlestickSignal
+        }
+      },
       successProbability: Math.min(confidence, 85),
       patternFormations: [],
+      marketStructure: {
+        vwap: vwapAnalysis,
+        supplyDemandZones,
+        psychologicalLevels,
+        candlestickSignal
+      },
       macroInsights: [
         `Market Regime: ${indicators.marketRegime}`,
+        `VWAP: ${vwapAnalysis.value.toFixed(2)} (${vwapAnalysis.position})`,
+        `Candlestick: ${candlestickSignal.pattern}`,
         `RSI: ${indicators.rsi.value.toFixed(2)} (${indicators.rsi.signal})`,
         `MACD: ${indicators.macd.value.toFixed(2)} (${indicators.macd.signal})`,
         `ADX: ${indicators.adx.value.toFixed(2)}`,
