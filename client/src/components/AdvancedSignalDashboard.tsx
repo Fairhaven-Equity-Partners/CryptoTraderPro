@@ -1631,39 +1631,60 @@ export default function AdvancedSignalDashboard({
   }, [generateTradeRecommendation]);
 
   // Handle timeframe selection
-  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
-    console.log(`Tab change to ${timeframe} - forcing price level calculation`);
-    
-    // Force immediate calculation for this timeframe with current live price
-    if (chartData[timeframe] && chartData[timeframe].length > 0 && currentAssetPrice > 0) {
-      console.log(`Force calculating ${timeframe} with live price: ${currentAssetPrice}`);
-      
-      const signal = generateStreamlinedSignal(
-        chartData[timeframe],
-        timeframe,
-        currentAssetPrice,
-        symbol
-      );
-      
-      if (signal) {
-        console.log(`[${timeframe}] IMMEDIATE CALC: Entry=${signal.entryPrice?.toFixed(2)}, SL=${signal.stopLoss?.toFixed(2)}, TP=${signal.takeProfit?.toFixed(2)}`);
-        
-        // Update signals state immediately to show new values
-        setSignals(prev => ({
-          ...prev,
-          [timeframe]: signal
-        }));
-      }
-    }
+  const handleTimeframeSelect = useCallback(async (timeframe: TimeFrame) => {
+    console.log(`🎯 Manual timeframe selection: ${timeframe} - triggering immediate calculation`);
     
     setSelectedTimeframe(timeframe);
     updateRecommendationForTimeframe(timeframe);
+    
+    // Trigger immediate calculation for the selected timeframe
+    if (chartData[timeframe] && chartData[timeframe].length > 0 && currentAssetPrice > 0 && !isCalculating) {
+      console.log(`⚡ Triggering immediate calculation for ${timeframe} with live price: ${currentAssetPrice}`);
+      setIsCalculating(true);
+      
+      try {
+        // Import the calculation function
+        const { calculateAdvancedSignal } = await import('../lib/unifiedCalculationCore');
+        
+        // Calculate signal for the specific timeframe
+        const signal = await calculateAdvancedSignal(symbol, timeframe, chartData[timeframe], currentAssetPrice);
+        
+        if (signal) {
+          console.log(`✅ Manual calculation complete for ${timeframe}: ${signal.direction} (${signal.confidence}%)`);
+          console.log(`[${timeframe}] IMMEDIATE CALC: Entry=${signal.entryPrice?.toFixed(2)}, SL=${signal.stopLoss?.toFixed(2)}, TP=${signal.takeProfit?.toFixed(2)}`);
+          
+          // Update only this specific timeframe
+          setSignals(prev => ({
+            ...prev,
+            [timeframe]: signal
+          }));
+          
+          // Show notification for manual calculation
+          toast({
+            title: "Manual Calculation Complete",
+            description: `${timeframe} signal updated: ${signal.direction} (${signal.confidence}% confidence)`,
+            variant: "default",
+            duration: 3000
+          });
+        }
+      } catch (error) {
+        console.error(`Error in manual calculation for ${timeframe}:`, error);
+        toast({
+          title: "Calculation Error",
+          description: `Failed to calculate ${timeframe} signal. Please try again.`,
+          variant: "destructive",
+          duration: 3000
+        });
+      } finally {
+        setIsCalculating(false);
+      }
+    }
     
     // Notify parent component if callback is provided
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  }, [updateRecommendationForTimeframe, onTimeframeSelect, chartData, currentAssetPrice, symbol]);
+  }, [updateRecommendationForTimeframe, onTimeframeSelect, chartData, currentAssetPrice, symbol, isCalculating, toast]);
 
   // Format price for display, with appropriate decimal places
   function formatCurrency(price: number): string {
