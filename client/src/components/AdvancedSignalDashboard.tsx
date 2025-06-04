@@ -1916,9 +1916,9 @@ export default function AdvancedSignalDashboard({
                 )}
                 
                 {currentSignal && (
-                  <div className={`rounded-lg border p-3 ${getSignalBgClass(currentSignal.direction)}`}>
+                  <div className={`rounded-md border p-2 ${getSignalBgClass(currentSignal.direction)}`}>
                     {/* Compact Header with Direction and Price Info */}
-                    <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center space-x-3">
                         <h3 className="text-white font-bold text-sm flex items-center">
                           {currentSignal.direction === 'LONG' && (
