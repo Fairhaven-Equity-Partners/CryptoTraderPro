@@ -54,102 +54,105 @@ class UnifiedCalculationCore {
   private indicatorCache = new Map<string, any>();
 
   /**
-   * Calculate RSI using Wilder's smoothing method (mathematically accurate)
+   * Calculate RSI using Wilder's smoothing method - Optimized
    */
   private calculateRSI(data: OHLCData[], period = 14): number {
     if (data.length < period + 1) return 50;
     
-    const changes = data.slice(1).map((d, i) => d.close - data[i].close);
-    
-    // Initial average gain/loss
     let avgGain = 0;
     let avgLoss = 0;
+    const periodF = period;
+    const alpha = 1 / period;
+    const oneMinusAlpha = 1 - alpha;
     
-    for (let i = 0; i < period; i++) {
-      if (changes[i] > 0) avgGain += changes[i];
-      else avgLoss += Math.abs(changes[i]);
+    // Calculate initial gains/losses
+    for (let i = 1; i <= period; i++) {
+      const change = data[i].close - data[i - 1].close;
+      if (change > 0) avgGain += change;
+      else avgLoss -= change;
     }
     
-    avgGain /= period;
-    avgLoss /= period;
+    avgGain /= periodF;
+    avgLoss /= periodF;
     
-    // Apply Wilder's smoothing for remaining values
-    for (let i = period; i < changes.length; i++) {
-      const change = changes[i];
-      if (change > 0) {
-        avgGain = ((avgGain * (period - 1)) + change) / period;
-        avgLoss = (avgLoss * (period - 1)) / period;
-      } else {
-        avgGain = (avgGain * (period - 1)) / period;
-        avgLoss = ((avgLoss * (period - 1)) + Math.abs(change)) / period;
-      }
+    // Apply Wilder's smoothing
+    for (let i = period + 1; i < data.length; i++) {
+      const change = data[i].close - data[i - 1].close;
+      avgGain = change > 0 ? (avgGain * oneMinusAlpha) + (change * alpha) : avgGain * oneMinusAlpha;
+      avgLoss = change < 0 ? (avgLoss * oneMinusAlpha) + (-change * alpha) : avgLoss * oneMinusAlpha;
     }
     
-    if (avgLoss === 0) return 100;
-    const rs = avgGain / avgLoss;
-    return 100 - (100 / (1 + rs));
+    return avgLoss === 0 ? 100 : 100 - (100 / (1 + (avgGain / avgLoss)));
   }
 
   /**
-   * Calculate MACD with mathematically accurate EMA progression
+   * Calculate MACD with optimized EMA progression
    */
   private calculateMACD(data: OHLCData[], fastPeriod = 12, slowPeriod = 26, signalPeriod = 9) {
     if (data.length < slowPeriod) return { macdLine: 0, signalLine: 0, histogram: 0 };
     
-    const prices = data.map(d => d.close);
+    const fastK = 2 / (fastPeriod + 1);
+    const slowK = 2 / (slowPeriod + 1);
+    const signalK = 2 / (signalPeriod + 1);
     
-    // Calculate EMAs using progressive method for accuracy
-    const fastEMAs: number[] = [];
-    const slowEMAs: number[] = [];
+    // Initialize EMAs with SMA
+    let fastEMA = 0;
+    let slowEMA = 0;
+    
+    for (let i = 0; i < slowPeriod; i++) {
+      const price = data[i].close;
+      if (i < fastPeriod) fastEMA += price;
+      slowEMA += price;
+    }
+    
+    fastEMA /= fastPeriod;
+    slowEMA /= slowPeriod;
+    
     const macdValues: number[] = [];
     
-    // Initialize first EMA values using SMA
-    const fastMultiplier = 2 / (fastPeriod + 1);
-    const slowMultiplier = 2 / (slowPeriod + 1);
-    
-    let fastEMA = prices.slice(0, fastPeriod).reduce((sum, price) => sum + price, 0) / fastPeriod;
-    let slowEMA = prices.slice(0, slowPeriod).reduce((sum, price) => sum + price, 0) / slowPeriod;
-    
-    // Calculate progressive EMAs and MACD values
-    for (let i = slowPeriod; i < prices.length; i++) {
-      if (i >= fastPeriod) {
-        fastEMA = (prices[i] * fastMultiplier) + (fastEMA * (1 - fastMultiplier));
-      }
-      slowEMA = (prices[i] * slowMultiplier) + (slowEMA * (1 - slowMultiplier));
-      
-      const macdValue = fastEMA - slowEMA;
-      macdValues.push(macdValue);
+    // Calculate MACD values
+    for (let i = slowPeriod; i < data.length; i++) {
+      const price = data[i].close;
+      fastEMA = (price * fastK) + (fastEMA * (1 - fastK));
+      slowEMA = (price * slowK) + (slowEMA * (1 - slowK));
+      macdValues.push(fastEMA - slowEMA);
     }
     
-    // Calculate signal line using EMA of MACD values
     if (macdValues.length < signalPeriod) {
-      return { macdLine: macdValues[macdValues.length - 1] || 0, signalLine: 0, histogram: 0 };
+      const macdLine = macdValues[macdValues.length - 1] || 0;
+      return { macdLine, signalLine: 0, histogram: macdLine };
     }
     
-    const signalMultiplier = 2 / (signalPeriod + 1);
-    let signalEMA = macdValues.slice(0, signalPeriod).reduce((sum, val) => sum + val, 0) / signalPeriod;
+    // Calculate signal line
+    let signalEMA = macdValues.slice(0, signalPeriod).reduce((a, b) => a + b) / signalPeriod;
     
     for (let i = signalPeriod; i < macdValues.length; i++) {
-      signalEMA = (macdValues[i] * signalMultiplier) + (signalEMA * (1 - signalMultiplier));
+      signalEMA = (macdValues[i] * signalK) + (signalEMA * (1 - signalK));
     }
     
-    const currentMACD = macdValues[macdValues.length - 1];
-    const histogram = currentMACD - signalEMA;
-    
-    return { macdLine: currentMACD, signalLine: signalEMA, histogram };
+    const macdLine = macdValues[macdValues.length - 1];
+    return { macdLine, signalLine: signalEMA, histogram: macdLine - signalEMA };
   }
 
   /**
-   * Calculate EMA (Exponential Moving Average)
+   * Calculate EMA (Exponential Moving Average) - Optimized
    */
   private calculateEMA(prices: number[], period: number): number {
     if (prices.length < period) return prices[prices.length - 1] || 0;
     
-    const multiplier = 2 / (period + 1);
-    let ema = prices.slice(0, period).reduce((sum, price) => sum + price, 0) / period;
+    const k = 2 / (period + 1);
+    const oneMinusK = 1 - k;
+    let ema = 0;
     
+    // SMA for first value
+    for (let i = 0; i < period; i++) {
+      ema += prices[i];
+    }
+    ema /= period;
+    
+    // EMA for remaining values
     for (let i = period; i < prices.length; i++) {
-      ema = (prices[i] * multiplier) + (ema * (1 - multiplier));
+      ema = (prices[i] * k) + (ema * oneMinusK);
     }
     
     return ema;

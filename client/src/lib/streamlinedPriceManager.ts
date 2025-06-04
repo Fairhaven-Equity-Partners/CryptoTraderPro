@@ -1,145 +1,117 @@
 /**
- * Streamlined Price Manager - Optimized Data Flow
- * 
- * Single source for price updates and calculation triggers
- * Eliminates redundant API calls and calculation overlaps
+ * Streamlined Price Manager - Ultra-Optimized Data Flow
  */
 
 import { calculateMultiTimeframeSignals } from './unifiedCalculationCore';
 import { ChartData, TimeFrame } from '../types';
 
-// Global state management
+// Optimized state management with minimal overhead
 let currentPrice = 0;
-let lastCalculationTime = 0;
-let isCalculating = false;
+let lastCalcTime = 0;
+let calculating = false;
 let priceData: Record<TimeFrame, ChartData[]> = {} as any;
 
-// Calculation throttling - 3 minutes
-const CALCULATION_INTERVAL = 180000;
-
-// Price update handlers
-const priceUpdateHandlers = new Set<(price: number) => void>();
-const calculationCompleteHandlers = new Set<(results: any) => void>();
+// Optimized constants
+const CALC_THROTTLE = 180000; // 3 minutes
+const PRICE_HANDLERS = new Set<(price: number) => void>();
+const CALC_HANDLERS = new Set<(results: any) => void>();
 
 /**
- * Initialize the streamlined price manager
+ * Initialize optimized price management
  */
 export function initPriceManager(): void {
   console.log('[StreamlinedPriceManager] Initializing optimized price management');
   
-  // Listen for price updates from the server
-  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('price-update', handlePriceUpdate as EventListener);
+  const handleUpdate = (event: CustomEvent) => {
+    const { symbol, price } = event.detail;
+    if (symbol === 'BTC/USDT') {
+      currentPrice = price;
+      console.log(`[StreamlinedPriceManager] Price update: ${price}`);
+      PRICE_HANDLERS.forEach(h => h(price));
+      checkCalculationTrigger();
+    }
+  };
+  
+  window.addEventListener('live-price-update', handleUpdate as EventListener);
+  window.addEventListener('price-update', handleUpdate as EventListener);
 }
 
 /**
- * Handle incoming price updates
- */
-function handlePriceUpdate(event: CustomEvent): void {
-  const { symbol, price } = event.detail;
-  
-  if (symbol !== 'BTC/USDT') return;
-  
-  currentPrice = price;
-  console.log(`[StreamlinedPriceManager] Price update: ${price}`);
-  
-  // Notify price update handlers
-  priceUpdateHandlers.forEach(handler => handler(price));
-  
-  // Check if calculation is needed
-  checkCalculationTrigger();
-}
-
-/**
- * Check if calculation should be triggered
+ * Optimized calculation trigger check
  */
 function checkCalculationTrigger(): void {
   const now = Date.now();
-  const timeSinceLastCalc = now - lastCalculationTime;
-  
-  // Only calculate if enough time has passed and we're not already calculating
-  if (timeSinceLastCalc >= CALCULATION_INTERVAL && !isCalculating) {
-    triggerCalculation();
+  if (!calculating && (now - lastCalcTime) >= CALC_THROTTLE) {
+    lastCalcTime = now;
+    calculating = true;
+    triggerCalculations();
   }
 }
 
 /**
- * Trigger calculation with current data
+ * Trigger optimized calculations
  */
-async function triggerCalculation(): Promise<void> {
-  if (isCalculating || !currentPrice || Object.keys(priceData).length === 0) {
-    return;
-  }
-  
-  isCalculating = true;
-  lastCalculationTime = Date.now();
-  
-  console.log('[StreamlinedPriceManager] Starting calculation cycle');
-  
+async function triggerCalculations(): Promise<void> {
   try {
-    // Calculate signals for all timeframes
-    const results = calculateMultiTimeframeSignals(priceData, 'BTC/USDT', currentPrice);
-    
-    // Notify calculation complete handlers
-    calculationCompleteHandlers.forEach(handler => handler(results));
-    
-    console.log('[StreamlinedPriceManager] Calculation cycle complete');
+    console.log('🔄 Starting optimized calculations');
+    const results = await calculateMultiTimeframeSignals('BTC/USDT', currentPrice);
+    CALC_HANDLERS.forEach(h => h(results));
   } catch (error) {
-    console.error('[StreamlinedPriceManager] Calculation error:', error);
+    console.error('Calculation error:', error);
   } finally {
-    isCalculating = false;
+    calculating = false;
   }
 }
 
 /**
- * Update chart data for a specific timeframe
+ * Subscribe to price updates - Optimized
+ */
+export function subscribeToPriceUpdates(handler: (price: number) => void): () => void {
+  PRICE_HANDLERS.add(handler);
+  return () => PRICE_HANDLERS.delete(handler);
+}
+
+/**
+ * Subscribe to calculation results - Optimized
+ */
+export function subscribeToCalculations(handler: (results: any) => void): () => void {
+  CALC_HANDLERS.add(handler);
+  return () => CALC_HANDLERS.delete(handler);
+}
+
+/**
+ * Update chart data - Optimized
  */
 export function updateChartData(timeframe: TimeFrame, data: ChartData[]): void {
   priceData[timeframe] = data;
 }
 
 /**
- * Get current price
+ * Get current price - Optimized
  */
 export function getCurrentPrice(): number {
   return currentPrice;
 }
 
 /**
- * Subscribe to price updates
- */
-export function subscribeToPrice(handler: (price: number) => void): () => void {
-  priceUpdateHandlers.add(handler);
-  return () => priceUpdateHandlers.delete(handler);
-}
-
-/**
- * Subscribe to calculation results
- */
-export function subscribeToCalculations(handler: (results: any) => void): () => void {
-  calculationCompleteHandlers.add(handler);
-  return () => calculationCompleteHandlers.delete(handler);
-}
-
-/**
- * Force a calculation (for manual triggers)
+ * Force calculation trigger - Optimized
  */
 export function forceCalculation(): void {
-  const now = Date.now();
-  const timeSinceLastCalc = now - lastCalculationTime;
-  
-  // Allow forced calculation if at least 30 seconds have passed
-  if (timeSinceLastCalc >= 30000 && !isCalculating) {
-    triggerCalculation();
+  if (!calculating) {
+    lastCalcTime = 0; // Reset to allow immediate calculation
+    checkCalculationTrigger();
   }
 }
 
 /**
- * Get calculation status
+ * Get system status - Optimized
  */
-export function getCalculationStatus(): { isCalculating: boolean; timeSinceLastCalc: number } {
+export function getSystemStatus() {
   return {
-    isCalculating,
-    timeSinceLastCalc: Date.now() - lastCalculationTime
+    calculating,
+    currentPrice,
+    lastCalcTime: new Date(lastCalcTime),
+    timeSinceLastCalc: Date.now() - lastCalcTime,
+    dataLoaded: Object.keys(priceData).length > 0
   };
 }
