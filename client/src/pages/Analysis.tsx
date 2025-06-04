@@ -3,6 +3,7 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
+import InstitutionalAnalysisDashboard from '../components/InstitutionalAnalysisDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -67,6 +68,15 @@ const Analysis: React.FC = () => {
           <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
+          />
+        </div>
+        
+        {/* Institutional Analysis Section */}
+        <div className="px-4 py-2">
+          <InstitutionalAnalysisDashboard 
+            signals={new Map()} 
+            currentPrice={price || 0} 
+            symbol={currentAsset}
           />
         </div>
         
