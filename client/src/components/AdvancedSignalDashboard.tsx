@@ -422,8 +422,9 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Optimized calculation trigger: exact 180s interval
-        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 180) {
+        // Always run calculations when explicitly triggered by timer events
+        if (hasMinimumData && !isCalculating && isTimerTriggered) {
+          console.log(`🚀 STARTING CALCULATION: Timer triggered with ${timeSinceLastCalc}s since last calc`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
