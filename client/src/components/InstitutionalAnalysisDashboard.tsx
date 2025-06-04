@@ -11,6 +11,7 @@ import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown, Target, Activity, BarChart3, Crosshair } from 'lucide-react';
+import { typography } from '@/lib/typography';
 
 interface InstitutionalAnalysisProps {
   signals: Map<string, any>;
@@ -140,29 +141,29 @@ export default function InstitutionalAnalysisDashboard({
       {/* VWAP Analysis */}
       <Card className="bg-slate-900/80 border-slate-700">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
-            <Activity className="h-3 w-3" />
+          <CardTitle className={`${typography.cardTitle} flex items-center gap-1`}>
+            <Activity className={typography.iconSmall} />
             VWAP ({timeframe})
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 pt-0">
           <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Upper</span>
-              <span className="text-green-300 font-mono">{formatPrice(vwapData.upperBand)}</span>
+            <div className="flex justify-between">
+              <span className={typography.label}>Upper</span>
+              <span className={typography.valuePositive}>{formatPrice(vwapData.upperBand)}</span>
             </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">VWAP</span>
-              <span className="text-blue-300 font-mono font-medium">{formatPrice(vwapData.value)}</span>
+            <div className="flex justify-between">
+              <span className={typography.label}>VWAP</span>
+              <span className={typography.valueNeutral}>{formatPrice(vwapData.value)}</span>
             </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Lower</span>
-              <span className="text-red-300 font-mono">{formatPrice(vwapData.lowerBand)}</span>
+            <div className="flex justify-between">
+              <span className={typography.label}>Lower</span>
+              <span className={typography.valueNegative}>{formatPrice(vwapData.lowerBand)}</span>
             </div>
           </div>
           
           <div className="mt-2">
-            <Badge className={`text-xs px-2 py-0.5 ${getVWAPPositionColor(vwapData.position)}`}>
+            <Badge className={`${typography.badge} px-2 py-0.5 ${getVWAPPositionColor(vwapData.position)}`}>
               {vwapData.position.toUpperCase()}
             </Badge>
           </div>
@@ -172,25 +173,25 @@ export default function InstitutionalAnalysisDashboard({
       {/* Supply & Demand Zones */}
       <Card className="bg-slate-900/80 border-slate-700">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
-            <Target className="h-3 w-3" />
+          <CardTitle className={`${typography.cardTitle} flex items-center gap-1`}>
+            <Target className={typography.iconSmall} />
             S&D Zones
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 pt-0">
           <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Supply</span>
-              <span className="text-red-300 font-mono">{formatPrice(zones.supply[0] || currentPrice * 1.025)}</span>
+            <div className="flex justify-between">
+              <span className={typography.label}>Supply</span>
+              <span className={typography.valueNegative}>{formatPrice(zones.supply[0] || currentPrice * 1.025)}</span>
             </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Demand</span>
-              <span className="text-green-300 font-mono">{formatPrice(zones.demand[0] || currentPrice * 0.975)}</span>
+            <div className="flex justify-between">
+              <span className={typography.label}>Demand</span>
+              <span className={typography.valuePositive}>{formatPrice(zones.demand[0] || currentPrice * 0.975)}</span>
             </div>
           </div>
           
           <div className="mt-2">
-            <Badge className={`text-xs px-2 py-0.5 ${getZoneStrengthColor(zones.strength)}`}>
+            <Badge className={`${typography.badge} px-2 py-0.5 ${getZoneStrengthColor(zones.strength)}`}>
               {zones.strength.toUpperCase()}
             </Badge>
           </div>
@@ -200,21 +201,21 @@ export default function InstitutionalAnalysisDashboard({
       {/* Psychological Levels & Fibonacci */}
       <Card className="bg-slate-900/80 border-slate-700">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
-            <Crosshair className="h-3 w-3" />
+          <CardTitle className={`${typography.cardTitle} flex items-center gap-1`}>
+            <Crosshair className={typography.iconSmall} />
             Key Levels
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 pt-0">
           <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Psych</span>
-              <span className="text-yellow-300 font-mono">{formatPrice(psychLevels.levels[0])}</span>
+            <div className="flex justify-between">
+              <span className={typography.label}>Psych</span>
+              <span className={typography.valueWarning}>{formatPrice(psychLevels.levels[0])}</span>
             </div>
             {fibLevels.map((fib, idx) => (
-              <div key={idx} className="flex justify-between text-xs">
-                <span className="text-slate-400">{fib.name.split(' ')[0]}</span>
-                <span className="text-yellow-300 font-mono">{formatPrice(fib.level)}</span>
+              <div key={idx} className="flex justify-between">
+                <span className={typography.label}>{fib.name.split(' ')[0]}</span>
+                <span className={typography.valueWarning}>{formatPrice(fib.level)}</span>
               </div>
             ))}
           </div>
@@ -224,24 +225,24 @@ export default function InstitutionalAnalysisDashboard({
       {/* Candlestick Analysis for Scalping */}
       <Card className="bg-slate-900/80 border-slate-700">
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
-            <BarChart3 className="h-3 w-3" />
+          <CardTitle className={`${typography.cardTitle} flex items-center gap-1`}>
+            <BarChart3 className={typography.iconSmall} />
             Scalping ({timeframe})
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2 pt-0">
           <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Direction</span>
-              <Badge className={`text-xs px-2 py-0.5 ${getCandlestickDirectionColor(candlestickData.direction)}`}>
+            <div className="flex justify-between">
+              <span className={typography.label}>Direction</span>
+              <Badge className={`${typography.badge} px-2 py-0.5 ${getCandlestickDirectionColor(candlestickData.direction)}`}>
                 {candlestickData.direction.charAt(0).toUpperCase() + candlestickData.direction.slice(1)}
               </Badge>
             </div>
-            <div className="flex justify-between text-xs">
-              <span className="text-slate-400">Confidence</span>
-              <span className="text-slate-200 font-mono">{candlestickData.reliability}%</span>
+            <div className="flex justify-between">
+              <span className={typography.label}>Confidence</span>
+              <span className={typography.value}>{candlestickData.reliability}%</span>
             </div>
-            <div className="text-xs text-slate-400 mt-1">
+            <div className={`${typography.description} mt-1`}>
               {candlestickData.pattern}
             </div>
           </div>

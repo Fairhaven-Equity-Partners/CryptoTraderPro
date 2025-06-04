@@ -36,6 +36,7 @@ import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indic
 import { formatCurrency, formatPercentage } from '../lib/calculations';
 import { useToast } from '../hooks/use-toast';
 import { useMarketData } from '../hooks/useMarketData';
+import { typography, specializedTypography } from '../lib/typography';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { queryClient } from '../lib/queryClient';
 import { 
@@ -1701,29 +1702,29 @@ export default function AdvancedSignalDashboard({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
             {/* Live Accuracy Metrics */}
             <div className="p-2 bg-emerald-600/20 rounded-lg text-center">
-              <div className="text-xs font-bold text-green-400">
+              <div className={typography.value}>
                 {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total}` : 
                  realAccuracy.activeTrades > 0 ? `${realAccuracy.activeTrades} Active` : 'No Data'}
               </div>
-              <div className="text-emerald-200 text-xs">
+              <div className={typography.label}>
                 {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accuracy` : 
                  realAccuracy.activeTrades > 0 ? 'Predictions' : 'Accuracy'}
               </div>
             </div>
             <div className="p-2 bg-blue-600/20 rounded-lg text-center">
-              <div className="text-xs font-bold text-white">{selectedTimeframe}</div>
-              <div className="text-blue-200 text-xs">Timeframe</div>
+              <div className={typography.value}>{selectedTimeframe}</div>
+              <div className={typography.label}>Timeframe</div>
             </div>
             <div className="p-2 bg-orange-600/20 rounded-lg text-center">
-              <div className="text-xs font-bold text-orange-400">
+              <div className={typography.value}>
                 {Math.floor(timeUntilNextCalc / 60)}:{(timeUntilNextCalc % 60).toString().padStart(2, '0')}
               </div>
-              <div className="text-orange-200 text-xs">Next</div>
+              <div className={typography.label}>Next</div>
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div className="space-y-1">
-              <h4 className="text-white font-semibold text-xs">{selectedTimeframe} Analysis</h4>
+              <h4 className={typography.cardTitle}>{selectedTimeframe} Analysis</h4>
               {(() => {
                 const currentSignal = signals[selectedTimeframe];
                 if (!currentSignal) {
