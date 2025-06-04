@@ -1864,13 +1864,16 @@ export default function AdvancedSignalDashboard({
                       const confidence = currentSignal.confidence;
                       const direction = currentSignal.direction;
                       
+                      let result;
                       if (['1m', '5m', '15m'].includes(selectedTimeframe)) {
-                        return direction === 'SHORT' && confidence > 60 ? Math.floor(confidence / 15) : 1;
+                        result = direction === 'SHORT' && confidence > 60 ? Math.floor(confidence / 15) : 1;
                       } else if (['30m', '1h', '4h'].includes(selectedTimeframe)) {
-                        return direction === 'SHORT' && confidence > 55 ? Math.floor(confidence / 12) : 2;
+                        result = direction === 'SHORT' && confidence > 55 ? Math.floor(confidence / 12) : 2;
                       } else {
-                        return direction === 'SHORT' && confidence > 50 ? Math.floor(confidence / 10) : 3;
+                        result = direction === 'SHORT' && confidence > 50 ? Math.floor(confidence / 10) : 3;
                       }
+                      console.log(`[Supply Debug] TF=${selectedTimeframe}, DIR=${direction}, CONF=${confidence}%, RESULT=${result}`);
+                      return result;
                     })()}
                   </span>
                 </div>
