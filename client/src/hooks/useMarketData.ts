@@ -1,18 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { 
-  fetchAllAssets, 
-  fetchAssetBySymbol, 
-  fetchChartData, 
-  connectWebSocket, 
-  registerMessageHandler, 
-  subscribeToSymbols,
-  registerChartUpdateListener,
-  startRealTimeUpdates
-} from '../lib/api';
+import { fetchAssetBySymbol, fetchChartData, registerMessageHandler } from '../lib/api';
 import { AssetPrice, ChartData, TimeFrame } from '../types';
 
-// Combined hook for market data
+// Optimized market data hook
 export function useMarketData(symbol: string) {
   const [chartData, setChartData] = useState<Record<TimeFrame, ChartData[]>>({} as any);
   const [isAllDataLoaded, setIsAllDataLoaded] = useState(false);
@@ -29,60 +20,33 @@ export function useMarketData(symbol: string) {
     setIsLiveDataReady(false);
     liveDataTimestamp.current = 0;
     
-    // Define all timeframes we want to load
     const timeframesNeeded: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
     
-    // Function to load data for a specific timeframe
     const loadTimeframeData = async (tf: TimeFrame) => {
       try {
-        console.log(`Loading chart data for ${symbol} (${tf})`);
         const data = await fetchChartData(symbol, tf);
         setChartData(prev => ({ ...prev, [tf]: data }));
         loadedTimeframes.current.add(tf);
         checkAllLoaded();
       } catch (err) {
-        console.error(`Error loading ${tf} data for ${symbol}:`, err);
-        // Even if there's an error, mark this timeframe as attempted
+        console.error(`Error loading ${tf} data:`, err);
         loadedTimeframes.current.add(tf);
         checkAllLoaded();
       }
     };
     
-    // Start loading all timeframes in parallel
-    for (const tf of timeframesNeeded) {
-      loadTimeframeData(tf);
-    }
+    timeframesNeeded.forEach(loadTimeframeData);
     
-    // We MUST create a direct way to detect price updates and trigger calculations
-
-    // Function to directly handle the price update events that come from the server
     function handlePriceUpdate(data: any) {
-      // Only respond to updates for our specific symbol
       if (data && data.symbol === symbol && data.price) {
         console.log(`✅ LIVE PRICE RECEIVED for ${symbol}: ${data.price}`);
-        
-        // Update timestamp and set the flag to trigger calculations
         liveDataTimestamp.current = Date.now();
-        
-        // We need to force this to be true to trigger calculations
         setIsLiveDataReady(true);
-        
-        // Disabled this event dispatch to prevent duplicate calculations
-        // The AdvancedSignalDashboard will track isLiveDataReady state directly
-        
-        // Log for debugging only
         console.log(`[useMarketData] Price update for ${symbol}: ${data.price} - NOT dispatching extra event`);
-        
-        /* DISABLED TO PREVENT DUPLICATE CALCULATIONS
-        document.dispatchEvent(new CustomEvent('live-price-update', { 
-          detail: { symbol, price: data.price, timestamp: Date.now() }
-        }));
-        */
       }
     }
     
-    // Register our price update listener - we'll subscribe to ALL messages and filter for price updates
-    registerMessageHandler('priceUpdate', (data: any) => handlePriceUpdate(data));
+    registerMessageHandler('priceUpdate', handlePriceUpdate);
     
     // Cleanup function
     return () => {
@@ -93,13 +57,11 @@ export function useMarketData(symbol: string) {
     };
   }, [symbol]);
   
-  // Check if all timeframes are loaded
   const checkAllLoaded = useCallback(() => {
     const allTimeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
     const allLoaded = allTimeframes.every(tf => loadedTimeframes.current.has(tf));
     
     if (allLoaded && !isAllDataLoaded) {
-      console.log(`All timeframe data loaded for ${symbol}`);
       setIsAllDataLoaded(true);
     }
   }, [isAllDataLoaded, symbol]);
@@ -107,51 +69,42 @@ export function useMarketData(symbol: string) {
   return { chartData, isAllDataLoaded, isLiveDataReady, liveDataTimestamp: liveDataTimestamp.current };
 }
 
-// Hook for getting real-time asset price data
+// Optimized asset price hook
 export function useAssetPrice(symbol: string) {
   const [realtimePrice, setRealtimePrice] = useState<AssetPrice | null>(null);
   const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
   
-  // Fetch initial price data (we still need this for the other fields like change24h)
   const { data: initialPrice, isLoading, error } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],
     queryFn: () => fetchAssetBySymbol(symbol),
-    staleTime: 30000, // 30 seconds
+    staleTime: 30000,
   });
   
-  // Use live prices from authentic data sources
   useEffect(() => {
-    // Clear realtime price when symbol changes
     setRealtimePrice(null);
     setIsLiveDataConnected(false);
     
-    // Use live price data from the API response
     if (initialPrice && initialPrice.price > 0) {
-      // Create a price object with live price data
       const livePrice: AssetPrice = {
         ...initialPrice,
-        lastPrice: initialPrice.price  // Use authentic price data
+        lastPrice: initialPrice.price
       };
       
       setRealtimePrice(livePrice);
       setIsLiveDataConnected(true);
-      console.log(`[useMarketData] Using live price for ${symbol}: ${initialPrice.price}`);
     }
   }, [symbol, initialPrice]);
   
-  // Subscribe to price updates (reduced frequency - 3 minutes)
   useEffect(() => {
-    // Listen for price update events
     const handlePriceUpdate = (event: any) => {
       if (event.detail?.symbol === symbol && event.detail?.price) {
         const price = event.detail.price;
         
         setRealtimePrice(prevPrice => {
-          // Always update both price fields to ensure they match perfectly
           const syncedPrice = {
             ...(prevPrice || initialPrice || {}),
             price: price,
-            lastPrice: price  // Critical: both must be identical
+            lastPrice: price
           };
           
           return syncedPrice as AssetPrice;
@@ -311,63 +264,13 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   };
 }
 
-// Hook for getting asset list with live updates
+// Simplified asset list hook
 export function useAssetList() {
-  const [assets, setAssets] = useState<AssetPrice[]>([]);
-  const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
-  
-  // Fetch asset list
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/crypto'],
-    queryFn: fetchAllAssets,
-    staleTime: 60000, // 1 minute
+    queryFn: () => fetch('/api/crypto').then(res => res.json()),
+    staleTime: 60000,
   });
   
-  useEffect(() => {
-    if (data) {
-      setAssets(data);
-    }
-  }, [data]);
-  
-  // Register for live price updates
-  useEffect(() => {
-    if (data && data.length > 0) {
-      // Get all symbols
-      const symbols = data.map(asset => asset.symbol);
-      
-      // Connect to WebSocket for all assets
-      connectWebSocket(symbols);
-      
-      // Register for price updates
-      const unsubscribe = registerMessageHandler('priceUpdate', (updatedAsset) => {
-        setAssets(prevAssets => {
-          return prevAssets.map(asset => {
-            if (asset.symbol === updatedAsset.symbol) {
-              setIsLiveDataConnected(true);
-              return {
-                ...asset,
-                price: updatedAsset.price,
-                change24h: updatedAsset.change24h
-              };
-            }
-            return asset;
-          });
-        });
-      });
-      
-      // Subscribe to updates for all symbols
-      subscribeToSymbols(symbols);
-      
-      return () => {
-        unsubscribe();
-      };
-    }
-  }, [data]);
-  
-  return {
-    assets: assets.length > 0 ? assets : (data || []),
-    isLoading,
-    error,
-    isLiveDataConnected
-  };
+  return { assets: data || [], isLoading, error };
 }
