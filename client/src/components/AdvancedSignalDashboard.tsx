@@ -1743,8 +1743,8 @@ export default function AdvancedSignalDashboard({
                 return (
                   <>
                     <div className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
-                      <span className="text-slate-300 text-sm">Data Frequency</span>
-                      <Badge variant="outline" className={`text-xs ${
+                      <span className={typography.label}>Data Frequency</span>
+                      <Badge variant="outline" className={`${typography.badge} ${
                         dataFrequency === 'High' ? 'text-green-400 border-green-500' :
                         dataFrequency === 'Medium' ? 'text-yellow-400 border-yellow-500' :
                         'text-blue-400 border-blue-500'
@@ -1753,8 +1753,8 @@ export default function AdvancedSignalDashboard({
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
-                      <span className="text-slate-300 text-sm">Market Volatility</span>
-                      <Badge variant="outline" className={`text-xs ${
+                      <span className={typography.label}>Market Volatility</span>
+                      <Badge variant="outline" className={`${typography.badge} ${
                         volatilityLevel === 'High' ? 'text-red-400 border-red-500' :
                         volatilityLevel === 'Medium' ? 'text-yellow-400 border-yellow-500' :
                         'text-green-400 border-green-500'
@@ -1763,8 +1763,8 @@ export default function AdvancedSignalDashboard({
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-slate-700/50 rounded-lg">
-                      <span className="text-slate-300 text-sm">Signal Strength</span>
-                      <Badge variant="outline" className={`text-xs ${
+                      <span className={typography.label}>Signal Strength</span>
+                      <Badge variant="outline" className={`${typography.value} ${
                         currentSignal.confidence >= 70 ? 'text-green-400 border-green-500' :
                         currentSignal.confidence >= 50 ? 'text-yellow-400 border-yellow-500' :
                         'text-red-400 border-red-500'
