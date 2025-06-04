@@ -27,10 +27,41 @@ interface TechnicalIndicators {
   resistances: number[];
   volatility: number;
   marketRegime: 'TRENDING_UP' | 'TRENDING_DOWN' | 'RANGING' | 'HIGH_VOLATILITY' | 'LOW_VOLATILITY';
+  // Enhanced Market Structure Analysis
+  marketStructure: {
+    fractalStructure: 'BULLISH_FRACTAL' | 'BEARISH_FRACTAL' | 'CONSOLIDATION';
+    supplyZones: { price: number; strength: number; volume: number }[];
+    demandZones: { price: number; strength: number; volume: number }[];
+    orderBlocks: { price: number; type: 'BULLISH' | 'BEARISH'; strength: number }[];
+  };
+  // VWAP Analysis
+  vwap: {
+    daily: number;
+    innerBands: { upper: number; lower: number };
+    outerBands: { upper: number; lower: number };
+    deviation: number;
+  };
+  // Fibonacci & Psychological Levels
+  fibonacciLevels: {
+    levels: { ratio: number; price: number; strength: number }[];
+    psychologicalLevels: { price: number; type: 'ROUND_NUMBER' | 'HISTORICAL_HIGH' | 'HISTORICAL_LOW' }[];
+    confluence: number;
+  };
+  // Candlestick Pattern Analysis
+  candlestickPatterns: {
+    pattern: string;
+    reliability: number;
+    direction: 'BULLISH' | 'BEARISH' | 'NEUTRAL';
+    strength: 'WEAK' | 'MODERATE' | 'STRONG';
+  }[];
   confidenceFactors: {
     trendAlignment: boolean;
     momentumConfluence: boolean;
     volatilityLevel: string;
+    structureConfirmation: boolean;
+    vwapAlignment: boolean;
+    fibonacciConfluence: boolean;
+    candlestickConfirmation: boolean;
   };
 }
 
@@ -52,6 +83,414 @@ interface UnifiedSignal {
 class UnifiedCalculationCore {
   private dataCache = new Map<string, OHLCData[]>();
   private indicatorCache = new Map<string, any>();
+
+  /**
+   * Enhanced Market Structure Analysis - Fractal Structures & Supply/Demand Zones
+   */
+  private analyzeMarketStructure(data: OHLCData[]): any {
+    const fractals = this.identifyFractals(data);
+    const supplyZones = this.identifySupplyZones(data);
+    const demandZones = this.identifyDemandZones(data);
+    const orderBlocks = this.identifyOrderBlocks(data);
+    
+    return {
+      fractalStructure: this.determineFractalTrend(fractals),
+      supplyZones,
+      demandZones,
+      orderBlocks
+    };
+  }
+
+  private identifyFractals(data: OHLCData[], lookback = 5): any[] {
+    const fractals = [];
+    for (let i = lookback; i < data.length - lookback; i++) {
+      const current = data[i];
+      const leftBars = data.slice(i - lookback, i);
+      const rightBars = data.slice(i + 1, i + lookback + 1);
+      
+      // Bullish fractal - highest high surrounded by lower highs
+      const isBullishFractal = leftBars.every(bar => bar.high < current.high) && 
+                              rightBars.every(bar => bar.high < current.high);
+      
+      // Bearish fractal - lowest low surrounded by higher lows
+      const isBearishFractal = leftBars.every(bar => bar.low > current.low) && 
+                              rightBars.every(bar => bar.low > current.low);
+      
+      if (isBullishFractal) {
+        fractals.push({ type: 'BULLISH', price: current.high, index: i, timestamp: current.timestamp });
+      }
+      if (isBearishFractal) {
+        fractals.push({ type: 'BEARISH', price: current.low, index: i, timestamp: current.timestamp });
+      }
+    }
+    return fractals;
+  }
+
+  private identifySupplyZones(data: OHLCData[]): any[] {
+    const zones = [];
+    for (let i = 20; i < data.length - 5; i++) {
+      const current = data[i];
+      const prev = data.slice(i - 20, i);
+      const next = data.slice(i + 1, i + 6);
+      
+      // Supply zone: strong rejection from high with volume
+      const hasRejection = next.some(bar => bar.close < current.high * 0.98);
+      const highVolume = current.volume > prev.reduce((sum, bar) => sum + bar.volume, 0) / prev.length * 1.5;
+      
+      if (hasRejection && highVolume) {
+        zones.push({
+          price: current.high,
+          strength: this.calculateZoneStrength(data, i, 'SUPPLY'),
+          volume: current.volume
+        });
+      }
+    }
+    return zones.slice(-10); // Keep last 10 zones
+  }
+
+  private identifyDemandZones(data: OHLCData[]): any[] {
+    const zones = [];
+    for (let i = 20; i < data.length - 5; i++) {
+      const current = data[i];
+      const prev = data.slice(i - 20, i);
+      const next = data.slice(i + 1, i + 6);
+      
+      // Demand zone: strong bounce from low with volume
+      const hasBounce = next.some(bar => bar.close > current.low * 1.02);
+      const highVolume = current.volume > prev.reduce((sum, bar) => sum + bar.volume, 0) / prev.length * 1.5;
+      
+      if (hasBounce && highVolume) {
+        zones.push({
+          price: current.low,
+          strength: this.calculateZoneStrength(data, i, 'DEMAND'),
+          volume: current.volume
+        });
+      }
+    }
+    return zones.slice(-10); // Keep last 10 zones
+  }
+
+  private identifyOrderBlocks(data: OHLCData[]): any[] {
+    const blocks = [];
+    for (let i = 10; i < data.length - 3; i++) {
+      const current = data[i];
+      const next3 = data.slice(i + 1, i + 4);
+      
+      // Bullish order block: strong move up after consolidation
+      const isBullishBlock = next3.every(bar => bar.close > current.close) &&
+                            next3[2].close > current.close * 1.015;
+      
+      // Bearish order block: strong move down after consolidation
+      const isBearishBlock = next3.every(bar => bar.close < current.close) &&
+                            next3[2].close < current.close * 0.985;
+      
+      if (isBullishBlock) {
+        blocks.push({
+          price: current.low,
+          type: 'BULLISH',
+          strength: this.calculateOrderBlockStrength(data, i, 'BULLISH')
+        });
+      }
+      if (isBearishBlock) {
+        blocks.push({
+          price: current.high,
+          type: 'BEARISH',
+          strength: this.calculateOrderBlockStrength(data, i, 'BEARISH')
+        });
+      }
+    }
+    return blocks.slice(-8); // Keep last 8 order blocks
+  }
+
+  /**
+   * VWAP with Double Bands (95% price action coverage)
+   */
+  private calculateVWAP(data: OHLCData[]): any {
+    if (data.length === 0) return { daily: 0, innerBands: { upper: 0, lower: 0 }, outerBands: { upper: 0, lower: 0 }, deviation: 0 };
+    
+    // Calculate VWAP for current day
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayData = data.filter(d => d.timestamp >= todayStart.getTime());
+    
+    if (todayData.length === 0) return { daily: 0, innerBands: { upper: 0, lower: 0 }, outerBands: { upper: 0, lower: 0 }, deviation: 0 };
+    
+    let cumulativeVolumePrice = 0;
+    let cumulativeVolume = 0;
+    let squaredDeviations = 0;
+    
+    for (const bar of todayData) {
+      const typicalPrice = (bar.high + bar.low + bar.close) / 3;
+      cumulativeVolumePrice += typicalPrice * bar.volume;
+      cumulativeVolume += bar.volume;
+    }
+    
+    const vwap = cumulativeVolume > 0 ? cumulativeVolumePrice / cumulativeVolume : data[data.length - 1].close;
+    
+    // Calculate standard deviation for bands
+    for (const bar of todayData) {
+      const typicalPrice = (bar.high + bar.low + bar.close) / 3;
+      squaredDeviations += Math.pow(typicalPrice - vwap, 2) * bar.volume;
+    }
+    
+    const variance = cumulativeVolume > 0 ? squaredDeviations / cumulativeVolume : 0;
+    const stdDev = Math.sqrt(variance);
+    
+    return {
+      daily: vwap,
+      innerBands: {
+        upper: vwap + stdDev,
+        lower: vwap - stdDev
+      },
+      outerBands: {
+        upper: vwap + (stdDev * 2.5), // 95% coverage
+        lower: vwap - (stdDev * 2.5)
+      },
+      deviation: stdDev
+    };
+  }
+
+  /**
+   * Fibonacci Levels & Psychological Level Confluence
+   */
+  private calculateFibonacciLevels(data: OHLCData[], currentPrice: number): any {
+    if (data.length < 50) return { levels: [], psychologicalLevels: [], confluence: 0 };
+    
+    // Find significant swing high and low
+    const recent = data.slice(-100);
+    const swingHigh = Math.max(...recent.map(d => d.high));
+    const swingLow = Math.min(...recent.map(d => d.low));
+    
+    const fibRatios = [0.236, 0.382, 0.5, 0.618, 0.786];
+    const levels = fibRatios.map(ratio => ({
+      ratio,
+      price: swingLow + (swingHigh - swingLow) * ratio,
+      strength: this.calculateFibStrength(currentPrice, swingLow + (swingHigh - swingLow) * ratio)
+    }));
+    
+    // Psychological levels (round numbers, historical significant levels)
+    const psychLevels = this.identifyPsychologicalLevels(data, currentPrice);
+    
+    // Calculate confluence score
+    const confluence = this.calculateLevelConfluence(levels, psychLevels, currentPrice);
+    
+    return { levels, psychologicalLevels: psychLevels, confluence };
+  }
+
+  /**
+   * Candlestick Pattern Recognition for Short Timeframes
+   */
+  private analyzeCandlestickPatterns(data: OHLCData[], timeframe: TimeFrame): any[] {
+    if (data.length < 5) return [];
+    
+    const patterns = [];
+    const recent = data.slice(-5);
+    
+    // Applicable mainly for 1m-15m timeframes
+    if (['1m', '5m', '15m'].includes(timeframe)) {
+      patterns.push(...this.identifyScalpingPatterns(recent));
+    }
+    
+    // General patterns for all timeframes
+    patterns.push(...this.identifyGeneralPatterns(recent));
+    
+    return patterns;
+  }
+
+  private identifyScalpingPatterns(data: OHLCData[]): any[] {
+    const patterns: any[] = [];
+    const current = data[data.length - 1];
+    const prev = data[data.length - 2];
+    
+    if (!current || !prev) return patterns;
+    
+    // Hammer at support
+    const bodySize = Math.abs(current.close - current.open);
+    const lowerShadow = current.open < current.close ? current.open - current.low : current.close - current.low;
+    const upperShadow = current.open > current.close ? current.high - current.open : current.high - current.close;
+    
+    if (lowerShadow > bodySize * 2 && upperShadow < bodySize * 0.5) {
+      patterns.push({
+        pattern: 'Hammer',
+        reliability: 75,
+        direction: 'BULLISH',
+        strength: 'MODERATE'
+      });
+    }
+    
+    // Shooting star at resistance
+    if (upperShadow > bodySize * 2 && lowerShadow < bodySize * 0.5) {
+      patterns.push({
+        pattern: 'Shooting Star',
+        reliability: 75,
+        direction: 'BEARISH',
+        strength: 'MODERATE'
+      });
+    }
+    
+    // Engulfing patterns
+    if (current.close > prev.open && current.open < prev.close && prev.close < prev.open) {
+      patterns.push({
+        pattern: 'Bullish Engulfing',
+        reliability: 85,
+        direction: 'BULLISH',
+        strength: 'STRONG'
+      });
+    }
+    
+    return patterns;
+  }
+
+  // Helper methods
+  private determineFractalTrend(fractals: any[]): string {
+    if (fractals.length < 2) return 'CONSOLIDATION';
+    const recent = fractals.slice(-4);
+    const bullish = recent.filter(f => f.type === 'BULLISH').length;
+    const bearish = recent.filter(f => f.type === 'BEARISH').length;
+    
+    if (bullish > bearish) return 'BULLISH_FRACTAL';
+    if (bearish > bullish) return 'BEARISH_FRACTAL';
+    return 'CONSOLIDATION';
+  }
+
+  private calculateZoneStrength(data: OHLCData[], index: number, type: string): number {
+    // Calculate zone strength based on volume, touches, and time
+    const zone = data[index];
+    const future = data.slice(index + 1, index + 20);
+    
+    let touches = 0;
+    let bounces = 0;
+    
+    for (const bar of future) {
+      if (type === 'SUPPLY' && Math.abs(bar.high - zone.high) / zone.high < 0.005) {
+        touches++;
+        if (bar.close < bar.open) bounces++;
+      } else if (type === 'DEMAND' && Math.abs(bar.low - zone.low) / zone.low < 0.005) {
+        touches++;
+        if (bar.close > bar.open) bounces++;
+      }
+    }
+    
+    return Math.min(100, (bounces / Math.max(1, touches)) * 100);
+  }
+
+  private calculateOrderBlockStrength(data: OHLCData[], index: number, type: string): number {
+    const block = data[index];
+    const future = data.slice(index + 1, index + 10);
+    
+    let momentum = 0;
+    for (const bar of future) {
+      if (type === 'BULLISH') {
+        momentum += (bar.close - bar.open) / bar.open;
+      } else {
+        momentum += (bar.open - bar.close) / bar.open;
+      }
+    }
+    
+    return Math.min(100, Math.max(0, momentum * 1000));
+  }
+
+  private calculateFibStrength(currentPrice: number, fibPrice: number): number {
+    const distance = Math.abs(currentPrice - fibPrice) / currentPrice;
+    return Math.max(0, 100 - (distance * 10000)); // Closer = stronger
+  }
+
+  private identifyPsychologicalLevels(data: OHLCData[], currentPrice: number): any[] {
+    const levels = [];
+    
+    // Round number levels
+    const roundLevels = [100000, 105000, 110000, 115000, 120000];
+    for (const level of roundLevels) {
+      if (Math.abs(level - currentPrice) / currentPrice < 0.1) {
+        levels.push({ price: level, type: 'ROUND_NUMBER' });
+      }
+    }
+    
+    // Historical significant levels
+    const highs = data.slice(-200).map(d => d.high).sort((a, b) => b - a).slice(0, 5);
+    const lows = data.slice(-200).map(d => d.low).sort((a, b) => a - b).slice(0, 5);
+    
+    highs.forEach(high => levels.push({ price: high, type: 'HISTORICAL_HIGH' }));
+    lows.forEach(low => levels.push({ price: low, type: 'HISTORICAL_LOW' }));
+    
+    return levels;
+  }
+
+  private calculateLevelConfluence(fibLevels: any[], psychLevels: any[], currentPrice: number): number {
+    let confluence = 0;
+    const tolerance = currentPrice * 0.01; // 1% tolerance
+    
+    for (const fibLevel of fibLevels) {
+      for (const psychLevel of psychLevels) {
+        if (Math.abs(fibLevel.price - psychLevel.price) < tolerance) {
+          confluence += 20; // Each confluence adds 20 points
+        }
+      }
+    }
+    
+    return Math.min(100, confluence);
+  }
+
+  private identifyGeneralPatterns(data: OHLCData[]): any[] {
+    const patterns: any[] = [];
+    if (data.length < 3) return patterns;
+    
+    const [candle1, candle2, candle3] = data.slice(-3);
+    
+    // Doji patterns
+    const bodySize = Math.abs(candle3.close - candle3.open);
+    const range = candle3.high - candle3.low;
+    
+    if (bodySize / range < 0.1) {
+      patterns.push({
+        pattern: 'Doji',
+        reliability: 60,
+        direction: 'NEUTRAL',
+        strength: 'WEAK'
+      });
+    }
+    
+    return patterns;
+  }
+
+  // Enhanced validation methods
+  private validateStructureConfirmation(marketStructure: any, direction: string): boolean {
+    const { fractalStructure, supplyZones, demandZones, orderBlocks } = marketStructure;
+    
+    if (direction === 'LONG') {
+      return fractalStructure === 'BULLISH_FRACTAL' || 
+             demandZones.length > supplyZones.length ||
+             orderBlocks.filter((block: any) => block.type === 'BULLISH').length > 0;
+    } else if (direction === 'SHORT') {
+      return fractalStructure === 'BEARISH_FRACTAL' || 
+             supplyZones.length > demandZones.length ||
+             orderBlocks.filter((block: any) => block.type === 'BEARISH').length > 0;
+    }
+    return false;
+  }
+
+  private validateVWAPAlignment(vwapAnalysis: any, currentPrice: number, direction: string): boolean {
+    const { daily, innerBands } = vwapAnalysis;
+    
+    if (direction === 'LONG') {
+      return currentPrice > daily && currentPrice > innerBands.lower;
+    } else if (direction === 'SHORT') {
+      return currentPrice < daily && currentPrice < innerBands.upper;
+    }
+    return false;
+  }
+
+  private validateCandlestickConfirmation(patterns: any[], direction: string): boolean {
+    if (patterns.length === 0) return false;
+    
+    const relevantPatterns = patterns.filter(pattern => {
+      if (direction === 'LONG') return pattern.direction === 'BULLISH';
+      if (direction === 'SHORT') return pattern.direction === 'BEARISH';
+      return false;
+    });
+    
+    return relevantPatterns.some(pattern => pattern.reliability > 70);
+  }
 
   /**
    * Calculate RSI using Wilder's smoothing method (mathematically accurate)
@@ -563,11 +1002,44 @@ class UnifiedCalculationCore {
     // Calculate position sizing
     const sizing = this.calculatePositionSizing(timeframe, atr, currentPrice);
     
+    // Enhanced analysis integration
+    const marketStructure = this.analyzeMarketStructure(data);
+    const vwapAnalysis = this.calculateVWAP(data);
+    const fibonacciLevels = this.calculateFibonacciLevels(data, currentPrice);
+    const candlestickPatterns = this.analyzeCandlestickPatterns(data, timeframe);
+
+    // Enhanced confidence factors
+    const structureConfirmation = this.validateStructureConfirmation(marketStructure, direction);
+    const vwapAlignment = this.validateVWAPAlignment(vwapAnalysis, currentPrice, direction);
+    const fibonacciConfluence = fibonacciLevels.confluence > 40;
+    const candlestickConfirmation = this.validateCandlestickConfirmation(candlestickPatterns, direction);
+
+    // Apply enhanced confidence adjustments
+    if (structureConfirmation) confidence += 5;
+    if (vwapAlignment) confidence += 5;
+    if (fibonacciConfluence) confidence += 8;
+    if (candlestickConfirmation) confidence += 7;
+
+    // Update indicators with enhanced data
+    indicators.marketStructure = marketStructure;
+    indicators.vwap = vwapAnalysis;
+    indicators.fibonacciLevels = fibonacciLevels;
+    indicators.candlestickPatterns = candlestickPatterns;
+    indicators.confidenceFactors = {
+      trendAlignment: indicators.confidenceFactors.trendAlignment,
+      momentumConfluence: indicators.confidenceFactors.momentumConfluence,
+      volatilityLevel: indicators.confidenceFactors.volatilityLevel,
+      structureConfirmation,
+      vwapAlignment,
+      fibonacciConfluence,
+      candlestickConfirmation
+    };
+
     return {
       symbol,
       timeframe,
       direction,
-      confidence,
+      confidence: Math.min(confidence, 98),
       entryPrice: currentPrice,
       stopLoss: direction === 'LONG' 
         ? currentPrice - sizing.stopLossDistance 
@@ -578,15 +1050,21 @@ class UnifiedCalculationCore {
       timestamp: Date.now(),
       indicators,
       successProbability: Math.min(confidence * 1.2, 95),
-      patternFormations: [],
+      patternFormations: candlestickPatterns,
       macroInsights: [
         `Market Regime: ${indicators.marketRegime}`,
+        `Fractal Structure: ${marketStructure.fractalStructure}`,
+        `VWAP Position: ${currentPrice > vwapAnalysis.daily ? 'Above' : 'Below'} Daily VWAP`,
+        `Supply Zones: ${marketStructure.supplyZones.length}`,
+        `Demand Zones: ${marketStructure.demandZones.length}`,
+        `Fib Confluence: ${fibonacciLevels.confluence.toFixed(0)}%`,
         `RSI: ${indicators.rsi.value.toFixed(2)} (${indicators.rsi.signal})`,
         `MACD: ${indicators.macd.value.toFixed(2)} (${indicators.macd.signal})`,
         `ADX: ${indicators.adx.value.toFixed(2)}`,
         `Volatility: ${(indicators.volatility * 100).toFixed(2)}%`,
-        `Trend Alignment: ${indicators.confidenceFactors.trendAlignment ? 'Yes' : 'No'}`,
-        `Momentum Confluence: ${indicators.confidenceFactors.momentumConfluence ? 'Yes' : 'No'}`
+        `Structure Confirmed: ${structureConfirmation ? 'Yes' : 'No'}`,
+        `VWAP Aligned: ${vwapAlignment ? 'Yes' : 'No'}`,
+        `Candlestick Patterns: ${candlestickPatterns.length}`
       ]
     };
   }
