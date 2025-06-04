@@ -1101,6 +1101,10 @@ export default function AdvancedSignalDashboard({
     return patterns;
   };
 
+  // Cache for consistent signals across timeframe switches
+  const signalCacheRef = useRef<Record<TimeFrame, AdvancedSignal | null>>({} as any);
+  const lastCalculationSignalsRef = useRef<Record<TimeFrame, AdvancedSignal | null>>({} as any);
+
   // Function to calculate signals for all timeframes
   const calculateAllSignals = useCallback(async () => {
     if (isCalculating) {
@@ -1374,6 +1378,9 @@ export default function AdvancedSignalDashboard({
         Object.keys(alignedSignals).forEach(tf => {
           const signal = alignedSignals[tf as TimeFrame];
           if (signal) {
+            // Cache the signal for consistency across timeframe switches
+            signalCacheRef.current[tf as TimeFrame] = signal;
+            
             // Ensure all required properties exist
             cleanSignals[tf as TimeFrame] = {
               ...signal,
@@ -1384,6 +1391,9 @@ export default function AdvancedSignalDashboard({
             cleanSignals[tf as TimeFrame] = null;
           }
         });
+        
+        // Store the calculated signals for consistency
+        lastCalculationSignalsRef.current = { ...cleanSignals };
         
         console.log(`📊 About to call setSignals with:`, Object.keys(cleanSignals));
         console.log(`📊 Sample signal structure:`, cleanSignals['1d'] ? Object.keys(cleanSignals['1d']!) : 'no 1d signal');
