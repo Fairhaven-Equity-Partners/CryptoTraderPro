@@ -5,14 +5,45 @@
  */
 
 import { TimeFrame } from '../types';
+import { 
+  advancedMarketStructureAnalyzer, 
+  MarketStructureData, 
+  VWAPData, 
+  PsychologicalLevel, 
+  CandlestickAnalysis 
+} from './advancedMarketStructure';
 
-interface OHLCData {
+export interface OHLCData {
   timestamp: number;
   open: number;
   high: number;
   low: number;
   close: number;
   volume: number;
+}
+
+interface MarketStructureInsights {
+  vwap: {
+    value: number;
+    upperBand: number;
+    lowerBand: number;
+    position: 'above' | 'inside' | 'below';
+  };
+  supplyDemandZones: {
+    supply: number[];
+    demand: number[];
+    strength: 'weak' | 'moderate' | 'strong';
+  };
+  psychologicalLevels: {
+    levels: number[];
+    fibonacciConfluence: boolean;
+    roundNumberProximity: number;
+  };
+  candlestickSignal: {
+    pattern: string;
+    reliability: number;
+    direction: 'bullish' | 'bearish' | 'neutral';
+  };
 }
 
 interface TechnicalIndicators {
@@ -32,6 +63,8 @@ interface TechnicalIndicators {
     momentumConfluence: boolean;
     volatilityLevel: string;
   };
+  // Advanced institutional features
+  marketStructure: MarketStructureInsights;
 }
 
 interface UnifiedSignal {
@@ -420,7 +453,207 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Generate unified signal with all indicators
+   * Calculate VWAP with institutional-grade precision
+   */
+  private calculateInstitutionalVWAP(data: OHLCData[]): MarketStructureInsights['vwap'] {
+    if (data.length === 0) {
+      return {
+        value: 0,
+        upperBand: 0,
+        lowerBand: 0,
+        position: 'inside'
+      };
+    }
+    
+    let cumulativePV = 0;
+    let cumulativeVolume = 0;
+    let cumulativePV2 = 0;
+    
+    // Calculate session VWAP (daily reset for intraday timeframes)
+    const sessionData = data.slice(-100); // Last 100 periods for session
+    
+    for (const candle of sessionData) {
+      const typicalPrice = (candle.high + candle.low + candle.close) / 3;
+      const volume = candle.volume || 1000;
+      
+      cumulativePV += typicalPrice * volume;
+      cumulativeVolume += volume;
+      cumulativePV2 += typicalPrice * typicalPrice * volume;
+    }
+    
+    const vwap = cumulativePV / cumulativeVolume;
+    const variance = (cumulativePV2 / cumulativeVolume) - (vwap * vwap);
+    const stdDev = Math.sqrt(Math.max(variance, 0));
+    
+    // Double bands for 95% price coverage
+    const upperBand = vwap + (2 * stdDev);
+    const lowerBand = vwap - (2 * stdDev);
+    
+    const currentPrice = data[data.length - 1].close;
+    let position: 'above' | 'inside' | 'below';
+    
+    if (currentPrice > upperBand) position = 'above';
+    else if (currentPrice < lowerBand) position = 'below';
+    else position = 'inside';
+    
+    return { value: vwap, upperBand, lowerBand, position };
+  }
+
+  /**
+   * Identify supply and demand zones using fractal analysis
+   */
+  private identifySupplyDemandZones(data: OHLCData[]): MarketStructureInsights['supplyDemandZones'] {
+    const supply: number[] = [];
+    const demand: number[] = [];
+    
+    // Find swing highs (supply zones) and swing lows (demand zones)
+    const lookback = 5;
+    
+    for (let i = lookback; i < data.length - lookback; i++) {
+      const current = data[i];
+      
+      // Check for swing high (supply zone)
+      let isSwingHigh = true;
+      for (let j = i - lookback; j <= i + lookback; j++) {
+        if (j !== i && data[j].high >= current.high) {
+          isSwingHigh = false;
+          break;
+        }
+      }
+      
+      // Check for swing low (demand zone)
+      let isSwingLow = true;
+      for (let j = i - lookback; j <= i + lookback; j++) {
+        if (j !== i && data[j].low <= current.low) {
+          isSwingLow = false;
+          break;
+        }
+      }
+      
+      if (isSwingHigh) supply.push(current.high);
+      if (isSwingLow) demand.push(current.low);
+    }
+    
+    // Keep only recent significant levels
+    const recentSupply = supply.slice(-5);
+    const recentDemand = demand.slice(-5);
+    
+    // Determine zone strength based on volume and touches
+    let strength: 'weak' | 'moderate' | 'strong' = 'moderate';
+    if (recentSupply.length >= 3 && recentDemand.length >= 3) strength = 'strong';
+    else if (recentSupply.length <= 1 || recentDemand.length <= 1) strength = 'weak';
+    
+    return { supply: recentSupply, demand: recentDemand, strength };
+  }
+
+  /**
+   * Identify psychological levels with Fibonacci confirmation
+   */
+  private identifyPsychologicalLevels(data: OHLCData[], currentPrice: number): MarketStructureInsights['psychologicalLevels'] {
+    const levels: number[] = [];
+    
+    // Generate round number levels
+    const magnitude = Math.pow(10, Math.floor(Math.log10(currentPrice)));
+    const roundBase = Math.round(currentPrice / magnitude) * magnitude;
+    
+    for (let i = -2; i <= 2; i++) {
+      levels.push(roundBase + (i * magnitude * 0.5));
+    }
+    
+    // Calculate Fibonacci levels from recent high/low
+    const recentData = data.slice(-50);
+    const high = Math.max(...recentData.map(d => d.high));
+    const low = Math.min(...recentData.map(d => d.low));
+    const range = high - low;
+    
+    const fibRatios = [0.236, 0.382, 0.5, 0.618, 0.786];
+    const fibLevels = fibRatios.map(ratio => low + (range * ratio));
+    
+    // Check for Fibonacci confluence with round numbers
+    let fibonacciConfluence = false;
+    const tolerance = currentPrice * 0.002; // 0.2% tolerance
+    
+    for (const fibLevel of fibLevels) {
+      for (const roundLevel of levels) {
+        if (Math.abs(fibLevel - roundLevel) < tolerance) {
+          fibonacciConfluence = true;
+          break;
+        }
+      }
+      if (fibonacciConfluence) break;
+    }
+    
+    // Calculate proximity to nearest round number
+    const nearestRound = levels.reduce((prev, curr) => 
+      Math.abs(curr - currentPrice) < Math.abs(prev - currentPrice) ? curr : prev
+    );
+    const roundNumberProximity = Math.abs(currentPrice - nearestRound) / currentPrice;
+    
+    return {
+      levels: [...levels, ...fibLevels].sort((a, b) => a - b),
+      fibonacciConfluence,
+      roundNumberProximity
+    };
+  }
+
+  /**
+   * Analyze candlestick patterns for scalping precision
+   */
+  private analyzeCandlestickPattern(data: OHLCData[], timeframe: TimeFrame): MarketStructureInsights['candlestickSignal'] {
+    if (data.length < 3) {
+      return { pattern: 'insufficient_data', reliability: 0, direction: 'neutral' };
+    }
+    
+    const current = data[data.length - 1];
+    const previous = data[data.length - 2];
+    
+    const bodySize = Math.abs(current.close - current.open);
+    const totalRange = current.high - current.low;
+    const upperWick = current.high - Math.max(current.open, current.close);
+    const lowerWick = Math.min(current.open, current.close) - current.low;
+    
+    // Pattern identification with close analysis
+    let pattern = 'neutral';
+    let reliability = 50;
+    let direction: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+    
+    // Strong bullish close (price closes in upper 80% of range)
+    const closePosition = (current.close - current.low) / totalRange;
+    
+    if (closePosition > 0.8 && current.close > current.open) {
+      pattern = 'strong_bullish_close';
+      direction = 'bullish';
+      reliability = 85;
+    } else if (closePosition < 0.2 && current.close < current.open) {
+      pattern = 'strong_bearish_close';
+      direction = 'bearish';
+      reliability = 85;
+    } else if (upperWick > bodySize * 2) {
+      pattern = 'rejection_from_high';
+      direction = 'bearish';
+      reliability = 75;
+    } else if (lowerWick > bodySize * 2) {
+      pattern = 'rejection_from_low';
+      direction = 'bullish';
+      reliability = 75;
+    } else if (bodySize < totalRange * 0.3) {
+      pattern = 'indecision_doji';
+      direction = 'neutral';
+      reliability = 60;
+    }
+    
+    // Adjust reliability for timeframe (shorter timeframes less reliable)
+    const timeframeMultiplier = timeframe === '1m' ? 0.6 : 
+                               timeframe === '5m' ? 0.8 : 
+                               timeframe === '15m' ? 1.0 : 1.1;
+    
+    reliability *= timeframeMultiplier;
+    
+    return { pattern, reliability, direction };
+  }
+
+  /**
+   * Generate unified signal with advanced institutional analysis
    */
   public generateSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): UnifiedSignal | null {
     const cacheKey = `${symbol}_${timeframe}`;
@@ -428,7 +661,7 @@ class UnifiedCalculationCore {
     
     if (!data || data.length < 50) return null;
     
-    // Calculate all indicators
+    // Calculate traditional indicators
     const rsi = this.calculateRSI(data);
     const macd = this.calculateMACD(data);
     const ema = {
@@ -446,19 +679,9 @@ class UnifiedCalculationCore {
     const returns = prices.slice(1).map((price, i) => Math.log(price / prices[i]));
     const volatility = Math.sqrt(returns.reduce((sum, ret) => sum + ret * ret, 0) / returns.length) * Math.sqrt(252);
     
-    // Calculate support and resistance levels
+    // Calculate traditional support and resistance
     const supportResistance = this.calculateSupportResistance(data);
     
-    // Debug logging
-    console.log(`Support/Resistance calculation for ${symbol} ${timeframe}:`, {
-      dataLength: data.length,
-      supports: supportResistance.supports.length,
-      resistances: supportResistance.resistances.length,
-      supportLevels: supportResistance.supports,
-      resistanceLevels: supportResistance.resistances
-    });
-    
-    // Ensure we always have support and resistance levels
     const finalSupports = supportResistance.supports.length > 0 ? supportResistance.supports : [
       currentPrice * 0.985,
       currentPrice * 0.970,
@@ -471,11 +694,11 @@ class UnifiedCalculationCore {
       currentPrice * 1.045
     ];
 
-    console.log(`FINAL Support/Resistance for ${symbol} ${timeframe}:`, {
-      supports: finalSupports,
-      resistances: finalResistances,
-      currentPrice
-    });
+    // Calculate advanced market structure features
+    const vwapAnalysis = this.calculateInstitutionalVWAP(data);
+    const supplyDemandZones = this.identifySupplyDemandZones(data);
+    const psychologicalLevels = this.identifyPsychologicalLevels(data, currentPrice);
+    const candlestickSignal = this.analyzeCandlestickPattern(data, timeframe);
 
     const indicators: TechnicalIndicators = {
       rsi: {
@@ -502,6 +725,13 @@ class UnifiedCalculationCore {
         trendAlignment: ema.short > ema.medium && ema.medium > ema.long,
         momentumConfluence: (rsi > 50 && macd.histogram > 0) || (rsi < 50 && macd.histogram < 0),
         volatilityLevel: volatility > 0.04 ? 'HIGH_VOLATILITY' : volatility < 0.015 ? 'LOW_VOLATILITY' : 'NORMAL'
+      },
+      // Advanced institutional market structure features
+      marketStructure: {
+        vwap: vwapAnalysis,
+        supplyDemandZones,
+        psychologicalLevels,
+        candlestickSignal
       }
     };
     
