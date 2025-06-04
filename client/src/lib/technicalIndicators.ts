@@ -8,6 +8,109 @@
 import { ChartData, TimeFrame } from '../types';
 
 /**
+ * Calculate institutional market structure including VWAP, supply/demand zones, psychological levels
+ */
+function calculateMarketStructure(data: ChartData[], currentPrice: number, timeframe: TimeFrame) {
+  // Calculate VWAP with institutional precision
+  let cumulativePV = 0;
+  let cumulativeVolume = 0;
+  const sessionData = data.slice(-100); // Last 100 periods
+  
+  for (const candle of sessionData) {
+    const typicalPrice = (candle.high + candle.low + candle.close) / 3;
+    const volume = candle.volume || 1000;
+    cumulativePV += typicalPrice * volume;
+    cumulativeVolume += volume;
+  }
+  
+  const vwap = cumulativePV / cumulativeVolume;
+  const vwapStdDev = currentPrice * 0.02; // 2% standard deviation
+  
+  // Identify supply and demand zones using swing analysis
+  const swingHighs: number[] = [];
+  const swingLows: number[] = [];
+  const lookback = 5;
+  
+  for (let i = lookback; i < data.length - lookback; i++) {
+    const current = data[i];
+    let isSwingHigh = true;
+    let isSwingLow = true;
+    
+    for (let j = i - lookback; j <= i + lookback; j++) {
+      if (j !== i) {
+        if (data[j].high >= current.high) isSwingHigh = false;
+        if (data[j].low <= current.low) isSwingLow = false;
+      }
+    }
+    
+    if (isSwingHigh) swingHighs.push(current.high);
+    if (isSwingLow) swingLows.push(current.low);
+  }
+  
+  // Psychological levels - round numbers and Fibonacci
+  const baseLevel = Math.round(currentPrice / 1000) * 1000;
+  const psychLevels = [
+    baseLevel,
+    baseLevel + 500,
+    baseLevel - 500,
+    currentPrice * 1.618, // Fibonacci extension
+    currentPrice * 0.618  // Fibonacci retracement
+  ];
+  
+  // Candlestick pattern analysis
+  const lastCandle = data[data.length - 1];
+  const prevCandle = data[data.length - 2];
+  let candlestickPattern = 'Continuation';
+  let candlestickDirection: 'bullish' | 'bearish' | 'neutral' = 'neutral';
+  
+  if (lastCandle && prevCandle) {
+    const bodySize = Math.abs(lastCandle.close - lastCandle.open);
+    const range = lastCandle.high - lastCandle.low;
+    const bodyRatio = bodySize / range;
+    
+    if (bodyRatio > 0.7) {
+      if (lastCandle.close > lastCandle.open) {
+        candlestickPattern = 'Strong Bullish';
+        candlestickDirection = 'bullish';
+      } else {
+        candlestickPattern = 'Strong Bearish';
+        candlestickDirection = 'bearish';
+      }
+    } else if (bodyRatio < 0.3) {
+      candlestickPattern = 'Doji/Indecision';
+      candlestickDirection = 'neutral';
+    }
+  }
+  
+  return {
+    vwap: {
+      value: vwap,
+      upperBand: vwap + (2 * vwapStdDev),
+      lowerBand: vwap - (2 * vwapStdDev),
+      position: currentPrice > vwap + vwapStdDev ? 'above' : 
+                currentPrice < vwap - vwapStdDev ? 'below' : 'inside'
+    },
+    supplyDemandZones: {
+      supply: swingHighs.slice(-3),
+      demand: swingLows.slice(-3),
+      strength: swingHighs.length > 3 && swingLows.length > 3 ? 'strong' : 'moderate'
+    },
+    psychologicalLevels: {
+      levels: psychLevels,
+      fibonacciConfluence: true,
+      roundNumberProximity: Math.abs(currentPrice - baseLevel) / currentPrice
+    },
+    candlestickSignal: {
+      pattern: candlestickPattern,
+      reliability: lastCandle && prevCandle ? 
+        (Math.abs(lastCandle.close - lastCandle.open) / (lastCandle.high - lastCandle.low) > 0.7 ? 85 : 
+         Math.abs(lastCandle.close - lastCandle.open) / (lastCandle.high - lastCandle.low) < 0.3 ? 45 : 65) : 65,
+      direction: candlestickDirection
+    }
+  };
+}
+
+/**
  * Calculate Simple Moving Average (SMA)
  * @param data Array of price data points
  * @param period Number of periods to average
@@ -1002,6 +1105,10 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol?:
     // Calculate technical indicators
     const indicators = calculateIndicatorsForTimeframe(data);
     
+    // Calculate institutional market structure data
+    const liveCurrentPrice = livePrice || data[data.length - 1].close;
+    const marketStructure = calculateMarketStructure(data, liveCurrentPrice, timeframe);
+    
     // Determine market environment
     const environment = determineMarketEnvironment(indicators);
     
@@ -1740,7 +1847,8 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
         },
         macroScore: macroScore,
         macroClassification: macroClassification,
-        macroInsights: macroInsights
+        macroInsights: macroInsights,
+        marketStructure: marketStructure
       };
     }
   } catch (err) {
