@@ -1,7 +1,6 @@
 /**
- * Unified Calculation Core - Consolidated mathematical engine
- * Replaces 78+ fragmented files with single optimized system
- * Implements mathematically accurate indicators with proper algorithms
+ * Unified Calculation Core - Optimized mathematical engine
+ * Single consolidated system for all technical analysis
  */
 
 import { TimeFrame } from '../types';
@@ -27,27 +26,23 @@ interface TechnicalIndicators {
   resistances: number[];
   volatility: number;
   marketRegime: 'TRENDING_UP' | 'TRENDING_DOWN' | 'RANGING' | 'HIGH_VOLATILITY' | 'LOW_VOLATILITY';
-  // Enhanced Market Structure Analysis
   marketStructure: {
     fractalStructure: 'BULLISH_FRACTAL' | 'BEARISH_FRACTAL' | 'CONSOLIDATION';
     supplyZones: { price: number; strength: number; volume: number }[];
     demandZones: { price: number; strength: number; volume: number }[];
     orderBlocks: { price: number; type: 'BULLISH' | 'BEARISH'; strength: number }[];
   };
-  // VWAP Analysis
   vwap: {
     daily: number;
     innerBands: { upper: number; lower: number };
     outerBands: { upper: number; lower: number };
     deviation: number;
   };
-  // Fibonacci & Psychological Levels
   fibonacciLevels: {
     levels: { ratio: number; price: number; strength: number }[];
     psychologicalLevels: { price: number; type: 'ROUND_NUMBER' | 'HISTORICAL_HIGH' | 'HISTORICAL_LOW' }[];
     confluence: number;
   };
-  // Candlestick Pattern Analysis
   candlestickPatterns: {
     pattern: string;
     reliability: number;

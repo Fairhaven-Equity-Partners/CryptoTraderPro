@@ -1164,17 +1164,17 @@ export default function AdvancedSignalDashboard({
               ...unifiedSignal,
               indicators: {
                 trend: [
-                  { name: 'EMA Short', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.short > unifiedSignal.indicators.ema.medium ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength },
-                  { name: 'EMA Medium', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.medium > unifiedSignal.indicators.ema.long ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength }
+                  { id: 'ema_short', name: 'EMA Short', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.short > unifiedSignal.indicators.ema.medium ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength, value: unifiedSignal.indicators.ema.short },
+                  { id: 'ema_medium', name: 'EMA Medium', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.medium > unifiedSignal.indicators.ema.long ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength, value: unifiedSignal.indicators.ema.medium }
                 ],
                 momentum: [
-                  { name: 'RSI', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.rsi.signal as IndicatorSignal, strength: unifiedSignal.indicators.rsi.strength as IndicatorStrength },
-                  { name: 'MACD', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.macd.signal as IndicatorSignal, strength: unifiedSignal.indicators.macd.strength as IndicatorStrength }
+                  { id: 'rsi', name: 'RSI', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.rsi.signal as IndicatorSignal, strength: unifiedSignal.indicators.rsi.strength as IndicatorStrength, value: unifiedSignal.indicators.rsi.value },
+                  { id: 'macd', name: 'MACD', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.macd.signal as IndicatorSignal, strength: unifiedSignal.indicators.macd.strength as IndicatorStrength, value: unifiedSignal.indicators.macd.value }
                 ],
                 volume: [],
                 pattern: [],
                 volatility: []
-              },
+              } as any,
               patternFormations: [],
               supportResistance: {
                 supports: unifiedSignal.indicators.supports,
@@ -1211,7 +1211,7 @@ export default function AdvancedSignalDashboard({
                 `ADX: ${unifiedSignal.indicators.adx.value.toFixed(2)}`,
                 `Volatility: ${(unifiedSignal.indicators.volatility * 100).toFixed(2)}%`
               ]
-            } as AdvancedSignal;
+            } as any;
           }
           
           // Enhanced signal with mathematically accurate indicators and market regime detection
