@@ -1,12 +1,13 @@
-import React, { useState, useCallback, useEffect, memo } from 'react';
+import React, { useState, useCallback, useRef, useEffect, useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUp, TrendingDown, Minus, Target, Activity, BarChart3, Calculator, Zap } from 'lucide-react';
+import { AlertTriangle, TrendingUp, TrendingDown, Minus, Target, Activity, DollarSign, Clock, BarChart3, Calculator, Zap } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
+import { toast } from '@/hooks/use-toast';
 import { unifiedCalculationCore } from '@/lib/unifiedCalculationCore';
 import { formatCurrency } from '@/lib/utils';
-import { TimeFrame, TIMEFRAMES } from '@/types';
+import { TimeFrame, TIMEFRAMES } from '../types';
 
 // Type definitions
 interface AdvancedSignal {
@@ -19,6 +20,13 @@ interface AdvancedSignal {
   timestamp: number;
   successProbability: number;
   indicators: IndicatorGroups;
+  patternFormations?: any[];
+  supportResistance?: any;
+  environment?: any;
+  recommendedLeverage?: any;
+  riskReward?: number;
+  marketStructure?: any;
+  volumeProfile?: any;
   macroInsights?: string[];
 }
 
@@ -70,46 +78,42 @@ export default function AdvancedSignalDashboard({
   });
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
   const [isCalculating, setIsCalculating] = useState(false);
-  const [lastCalculationTime, setLastCalculationTime] = useState(0);
+  const [lastCalculationRef] = useState({ current: 0 });
 
-  // Data fetching with proper type handling
+  // Data fetching
   const { data: chartData } = useQuery({
     queryKey: [`/api/crypto/${symbol}/chart`, symbol],
     refetchInterval: 30000,
   });
 
-  const { data: currentAssetData, isLoading: priceLoading } = useQuery({
+  const { data: currentAssetData } = useQuery({
     queryKey: [`/api/crypto/${symbol}`, symbol],
     refetchInterval: 15000,
   });
 
-  // Extract current price with fallback
-  const currentAssetPrice = currentAssetData?.currentPrice || currentAssetData?.lastPrice || 0;
+  const currentAssetPrice = currentAssetData?.currentPrice || 0;
+  
+  // Debug logging to track price values
+  console.log(`[AdvancedSignalDashboard] Current asset price: ${currentAssetPrice}`);
   
   // Calculate signals when data changes
   const calculateAllSignals = useCallback(async () => {
-    if (isCalculating || !chartData || !currentAssetPrice || currentAssetPrice === 0) {
-      console.log(`Calculation blocked: isCalculating=${isCalculating}, hasChartData=${!!chartData}, currentPrice=${currentAssetPrice}`);
-      return;
-    }
+    if (isCalculating || !chartData || !currentAssetPrice) return;
     
     setIsCalculating(true);
-    setLastCalculationTime(Date.now());
+    lastCalculationRef.current = Date.now();
     
     try {
-      console.log(`⚡ Starting calculation for ${symbol} with price ${currentAssetPrice}`);
       const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
       
       for (const timeframe of TIMEFRAMES) {
         try {
-          const timeframeData = chartData[timeframe];
-          if (timeframeData && Array.isArray(timeframeData) && timeframeData.length > 20) {
-            const chartDataWithTimestamp = timeframeData.map((d: any) => ({
+          if (chartData[timeframe] && Array.isArray(chartData[timeframe]) && chartData[timeframe].length > 20) {
+            const chartDataWithTimestamp = chartData[timeframe].map(d => ({
               ...d,
               timestamp: d.time || Date.now()
             }));
             
-            console.log(`Calculating ${timeframe} with ${chartDataWithTimestamp.length} data points`);
             unifiedCalculationCore.updateMarketData(symbol, timeframe, chartDataWithTimestamp);
             const unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentAssetPrice);
             
@@ -157,14 +161,42 @@ export default function AdvancedSignalDashboard({
                   pattern: [],
                   volatility: []
                 },
+                patternFormations: [],
+                supportResistance: {
+                  supports: unifiedSignal.indicators.supports,
+                  resistances: unifiedSignal.indicators.resistances,
+                  pivotPoints: [unifiedSignal.entryPrice]
+                },
+                environment: { 
+                  trend: unifiedSignal.indicators.marketRegime === 'TRENDING_UP' ? 'BULLISH' : 
+                         unifiedSignal.indicators.marketRegime === 'TRENDING_DOWN' ? 'BEARISH' : 'NEUTRAL',
+                  volatility: unifiedSignal.indicators.marketRegime === 'HIGH_VOLATILITY' ? 'HIGH' : 
+                             unifiedSignal.indicators.marketRegime === 'LOW_VOLATILITY' ? 'LOW' : 'NORMAL',
+                  volume: 'NORMAL',
+                  sentiment: 'NEUTRAL'
+                },
+                recommendedLeverage: {
+                  conservative: 1,
+                  moderate: 2,
+                  aggressive: 3,
+                  recommendation: 'conservative'
+                },
+                riskReward: Math.abs(unifiedSignal.takeProfit - unifiedSignal.entryPrice) / Math.abs(unifiedSignal.entryPrice - unifiedSignal.stopLoss),
+                marketStructure: { 
+                  trend: 'ACTIVE', 
+                  phase: 'ACTIVE', 
+                  strength: unifiedSignal.confidence 
+                },
+                volumeProfile: { 
+                  volumeWeightedPrice: unifiedSignal.entryPrice, 
+                  highVolumeNodes: [], 
+                  lowVolumeNodes: [] 
+                },
                 macroInsights: unifiedSignal.macroInsights || []
               };
               
               newSignals[timeframe] = signal;
-              console.log(`✅ Successfully calculated ${timeframe}: ${signal.direction} (${signal.confidence}%)`);
             }
-          } else {
-            console.log(`❌ Insufficient data for ${timeframe}: ${timeframeData?.length || 0} points`);
           }
         } catch (error) {
           console.error(`Error calculating ${timeframe}:`, error);
@@ -183,14 +215,10 @@ export default function AdvancedSignalDashboard({
 
   // Auto-calculate on data changes
   useEffect(() => {
-    if (chartData && currentAssetPrice && currentAssetPrice > 0 && !isCalculating) {
-      // Debounce calculations to avoid excessive updates
-      const timeSinceLastCalc = Date.now() - lastCalculationTime;
-      if (timeSinceLastCalc > 5000) { // 5 second minimum between calculations
-        calculateAllSignals();
-      }
+    if (chartData && currentAssetPrice && !isCalculating) {
+      calculateAllSignals();
     }
-  }, [chartData, currentAssetPrice, calculateAllSignals, isCalculating, lastCalculationTime]);
+  }, [chartData, currentAssetPrice, calculateAllSignals, isCalculating]);
 
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
     setSelectedTimeframe(timeframe);
@@ -221,16 +249,6 @@ export default function AdvancedSignalDashboard({
             </Badge>
           </div>
           <div className="flex items-center space-x-2">
-            {priceLoading && (
-              <Badge variant="outline" className="text-yellow-400 border-yellow-500">
-                Loading Price...
-              </Badge>
-            )}
-            {currentAssetPrice > 0 && (
-              <Badge variant="outline" className="text-green-400 border-green-500">
-                ${currentAssetPrice.toLocaleString()}
-              </Badge>
-            )}
             {isCalculating && (
               <div className="flex items-center space-x-1">
                 <Zap className="h-4 w-4 text-yellow-400 animate-pulse" />
@@ -320,7 +338,7 @@ export default function AdvancedSignalDashboard({
                         Key Indicators
                       </h3>
                       <div className="space-y-1">
-                        {signals[timeframe]?.indicators?.trend?.slice(0, 2).map((indicator, idx) => (
+                        {currentSignal?.indicators?.trend?.slice(0, 2).map((indicator, idx) => (
                           <div key={idx} className="flex justify-between items-center text-xs">
                             <span className="text-gray-300">{indicator.name}</span>
                             <Badge variant="outline" className={`${
@@ -328,11 +346,11 @@ export default function AdvancedSignalDashboard({
                               indicator.signal === 'SELL' ? 'text-red-400 border-red-500 bg-red-900/30' :
                               'text-yellow-400 border-yellow-500 bg-yellow-900/30'
                             } text-xs px-1 py-0`}>
-                              {indicator.signal}
+                              {indicator.signal} ({indicator.strength?.charAt(0) || 'M'})
                             </Badge>
                           </div>
                         ))}
-                        {signals[timeframe]?.indicators?.momentum?.slice(0, 2).map((indicator, idx) => (
+                        {currentSignal?.indicators?.momentum?.slice(0, 2).map((indicator, idx) => (
                           <div key={idx} className="flex justify-between items-center text-xs">
                             <span className="text-gray-300">{indicator.name}</span>
                             <Badge variant="outline" className={`${
@@ -340,7 +358,7 @@ export default function AdvancedSignalDashboard({
                               indicator.signal === 'SELL' ? 'text-red-400 border-red-500 bg-red-900/30' :
                               'text-yellow-400 border-yellow-500 bg-yellow-900/30'
                             } text-xs px-1 py-0`}>
-                              {indicator.signal}
+                              {indicator.signal} ({indicator.strength?.charAt(0) || 'M'})
                             </Badge>
                           </div>
                         ))}
@@ -364,11 +382,7 @@ export default function AdvancedSignalDashboard({
                 <div className="text-center py-8 text-gray-400">
                   <Calculator className="h-8 w-8 mx-auto mb-2 opacity-50" />
                   <p>No signal data available for {timeframe}</p>
-                  {currentAssetPrice === 0 ? (
-                    <p className="text-xs mt-1 text-red-400">Waiting for price data...</p>
-                  ) : (
-                    <p className="text-xs mt-1">Waiting for sufficient market data...</p>
-                  )}
+                  <p className="text-xs mt-1">Waiting for sufficient market data...</p>
                 </div>
               )}
             </TabsContent>
@@ -377,12 +391,7 @@ export default function AdvancedSignalDashboard({
       </CardContent>
       
       <CardFooter className="text-xs text-gray-500 pt-2">
-        {currentAssetPrice > 0 ? (
-          <>Current Price: ${currentAssetPrice.toLocaleString()} • </>
-        ) : (
-          <>Loading price data... • </>
-        )}
-        Data updated {lastCalculationTime > 0 ? new Date(lastCalculationTime).toLocaleTimeString() : 'never'} 
+        Data updated {lastCalculationRef.current > 0 ? new Date(lastCalculationRef.current).toLocaleTimeString() : 'never'} 
         • Live market analysis with institutional-grade indicators
       </CardFooter>
     </Card>
