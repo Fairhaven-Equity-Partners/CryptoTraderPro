@@ -626,17 +626,28 @@ class UnifiedCalculationCore {
 export const unifiedCalculationCore = new UnifiedCalculationCore();
 
 // Export the multi-timeframe calculation function for backward compatibility
-export function calculateMultiTimeframeSignals(symbol: string, currentPrice: number, chartData: any) {
+export function calculateMultiTimeframeSignals(symbol: string, currentPrice: number, chartData?: any) {
   const results = new Map();
   const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
   
+  // If no chart data provided, return empty results
+  if (!chartData || typeof chartData !== 'object') {
+    console.log('No valid chart data provided for calculations');
+    return results;
+  }
+  
   for (const timeframe of timeframes) {
-    if (chartData[timeframe] && chartData[timeframe].length > 0) {
-      unifiedCalculationCore.updateMarketData(symbol, timeframe, chartData[timeframe]);
-      const signal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentPrice);
-      if (signal) {
-        results.set(timeframe, signal);
+    try {
+      if (chartData[timeframe] && Array.isArray(chartData[timeframe]) && chartData[timeframe].length > 0) {
+        unifiedCalculationCore.updateMarketData(symbol, timeframe, chartData[timeframe]);
+        const signal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentPrice);
+        if (signal) {
+          results.set(timeframe, signal);
+        }
       }
+    } catch (error) {
+      console.error(`Error calculating signal for ${timeframe}:`, error);
+      continue;
     }
   }
   

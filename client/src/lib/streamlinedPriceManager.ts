@@ -54,7 +54,13 @@ function checkCalculationTrigger(): void {
 async function triggerCalculations(): Promise<void> {
   try {
     console.log('🔄 Starting optimized calculations');
-    const results = await calculateMultiTimeframeSignals('BTC/USDT', currentPrice);
+    // Check if we have chart data available
+    if (Object.keys(priceData).length === 0) {
+      console.log('No chart data available for calculations');
+      return;
+    }
+    
+    const results = await calculateMultiTimeframeSignals('BTC/USDT', currentPrice, priceData);
     CALC_HANDLERS.forEach(h => h(results));
   } catch (error) {
     console.error('Calculation error:', error);
