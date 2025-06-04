@@ -1916,69 +1916,60 @@ export default function AdvancedSignalDashboard({
                 )}
                 
                 {currentSignal && (
-                  <div className={`rounded-lg border p-4 ${getSignalBgClass(currentSignal.direction)}`}>
-                    {/* Confidence Score and Direction */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-4">
-                        <h3 className="text-white font-bold text-lg flex items-center">
+                  <div className={`rounded-lg border p-3 ${getSignalBgClass(currentSignal.direction)}`}>
+                    {/* Compact Header with Direction and Price Info */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-3">
+                        <h3 className="text-white font-bold text-sm flex items-center">
                           {currentSignal.direction === 'LONG' && (
                             <>
-                              <TrendingUp className="mr-2 h-5 w-5 text-green-400" />
+                              <TrendingUp className="mr-1 h-4 w-4 text-green-400" />
                               <span className="text-green-400">Long Signal</span>
                             </>
                           )}
                           {currentSignal.direction === 'SHORT' && (
                             <>
-                              <TrendingDown className="mr-2 h-5 w-5 text-red-400" />
+                              <TrendingDown className="mr-1 h-4 w-4 text-red-400" />
                               <span className="text-red-400">Short Signal</span>
                             </>
                           )}
                           {currentSignal.direction === 'NEUTRAL' && (
                             <>
-                              <Minus className="mr-2 h-5 w-5 text-gray-400" />
+                              <Minus className="mr-1 h-4 w-4 text-gray-400" />
                               <span className="text-gray-400">Neutral</span>
                             </>
                           )}
                         </h3>
                         
-                        {/* Timeframe Badge */}
-                        <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
-                          {timeframe}
-                        </Badge>
-                        
-                        {/* Current Price Label */}
-                        <span className="text-white text-sm font-medium">Current Price:</span>
-                        
-                        {/* Current Price Value */}
-                        <div className="text-lg font-bold text-cyan-300">
-                          {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
+                        {/* Price Information - Left to Right: Price, Percent, 24hr */}
+                        <div className="flex items-center space-x-2">
+                          <span className="text-cyan-300 text-sm font-bold">
+                            {formatCurrency(currentAssetPrice || currentSignal?.entryPrice || 0)}
+                          </span>
+                          <span className={`text-xs font-medium ${
+                            (asset?.priceChange24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'
+                          }`}>
+                            {(asset?.priceChange24h || 0) >= 0 ? '+' : ''}{(asset?.priceChange24h || 0).toFixed(2)}%
+                          </span>
+                          <span className="text-xs text-gray-400">24h</span>
                         </div>
                       </div>
                       
                       <div className="text-right">
-                        <div className="text-sm text-gray-400 mb-1 mt-2">
-                          {selectedTimeframe === '1M' && 'Monthly Timeframe Analysis'}
-                          {selectedTimeframe === '1w' && 'Weekly Timeframe Analysis'}
-                          {selectedTimeframe === '3d' && '3-Day Timeframe Analysis'}
-                          {selectedTimeframe === '1d' && 'Daily Timeframe Analysis'}
-                          {selectedTimeframe === '4h' && '4-Hour Timeframe Analysis'}
-                          {selectedTimeframe === '1h' && 'Hourly Timeframe Analysis'}
-                          {selectedTimeframe === '30m' && '30-Min Timeframe Analysis'}
-                          {selectedTimeframe === '15m' && '15-Min Timeframe Analysis'}
-                          {selectedTimeframe === '5m' && '5-Min Timeframe Analysis'}
-                          {selectedTimeframe === '1m' && '1-Min Timeframe Analysis'}
-                        </div>
+                        <Badge variant="outline" className="text-xs text-gray-300 border-gray-600">
+                          {timeframe}
+                        </Badge>
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {/* Left column with signals and indicators */}
-                      <div className="space-y-4">
+                      <div className="space-y-2">
 
                         
                         {/* Success Probability Bar */}
-                        <div className="space-y-2 mb-3">
-                          <h3 className="text-white font-bold text-sm">Success Probability</h3>
+                        <div className="space-y-1 mb-2">
+                          <h3 className="text-white font-bold text-xs">Success Probability</h3>
                           {(() => {
                             // Calculate success probability inline based on timeframe and direction
                             const baseProbabilities: Record<string, number> = {
@@ -2039,28 +2030,7 @@ export default function AdvancedSignalDashboard({
                           })()}
                         </div>
                         
-                        <div className="space-y-1">
-                          <h3 className="text-white font-bold text-xs">Signal Strength</h3>
-                          <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
-                            <div 
-                              className={`h-3 rounded-full ${
-                                currentSignal.confidence >= 70 ? 'bg-green-600' : 
-                                currentSignal.confidence >= 45 ? 'bg-yellow-600' : 'bg-red-600'
-                              }`}
-                              style={{ width: `${Math.round(currentSignal.confidence)}%` }}
-                            />
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <div className="flex justify-between text-xs text-gray-400 w-full">
-                              <span>Weak</span>
-                              <span>Moderate</span>
-                              <span>Strong</span>
-                            </div>
-                            <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
-                              {Math.round(currentSignal.confidence)}%
-                            </Badge>
-                          </div>
-                        </div>
+
                         
                         {/* Macro Score */}
                         <div className="space-y-1">
