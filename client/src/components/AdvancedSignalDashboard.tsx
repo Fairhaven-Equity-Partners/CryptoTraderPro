@@ -1806,6 +1806,91 @@ export default function AdvancedSignalDashboard({
           
 
 
+          {/* Enhanced Market Analysis - All 4 Improvements */}
+          <div className="mt-4 p-3 bg-gradient-to-r from-emerald-900/20 to-cyan-900/20 rounded-lg border border-emerald-500/30">
+            <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
+              🔬 Enhanced Market Structure Analysis
+              <Badge className="bg-emerald-500 text-white text-xs px-2 py-0.5">
+                Active
+              </Badge>
+            </h4>
+            <div className="grid grid-cols-2 gap-3 text-xs">
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Fractal Structure:</span>
+                  <span className="text-white font-semibold">
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      const fractal = currentSignal?.indicators?.marketStructure?.fractalStructure || 'CONSOLIDATION';
+                      return fractal.replace('_', ' ');
+                    })()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Supply Zones:</span>
+                  <span className="text-emerald-400 font-semibold">
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      return currentSignal?.indicators?.marketStructure?.supplyZones?.length || 0;
+                    })()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Demand Zones:</span>
+                  <span className="text-cyan-400 font-semibold">
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      return currentSignal?.indicators?.marketStructure?.demandZones?.length || 0;
+                    })()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">VWAP Position:</span>
+                  <span className={`font-semibold ${currentAssetPrice > (signals[selectedTimeframe]?.indicators?.vwap?.daily || 0) ? 'text-green-400' : 'text-red-400'}`}>
+                    {currentAssetPrice > (signals[selectedTimeframe]?.indicators?.vwap?.daily || 0) ? 'Above' : 'Below'}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Fib Confluence:</span>
+                  <span className="text-yellow-400 font-semibold">
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      const confluence = currentSignal?.indicators?.fibonacciLevels?.confluence || 0;
+                      return `${Math.round(confluence)}%`;
+                    })()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Candlestick Patterns:</span>
+                  <span className="text-purple-400 font-semibold">
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      return currentSignal?.indicators?.candlestickPatterns?.length || 0;
+                    })()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">Structure Confirmed:</span>
+                  <span className={`font-semibold ${signals[selectedTimeframe]?.indicators?.confidenceFactors?.structureConfirmation ? 'text-green-400' : 'text-red-400'}`}>
+                    {signals[selectedTimeframe]?.indicators?.confidenceFactors?.structureConfirmation ? 'Yes' : 'No'}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-300">VWAP Aligned:</span>
+                  <span className={`font-semibold ${signals[selectedTimeframe]?.indicators?.confidenceFactors?.vwapAlignment ? 'text-green-400' : 'text-red-400'}`}>
+                    {signals[selectedTimeframe]?.indicators?.confidenceFactors?.vwapAlignment ? 'Yes' : 'No'}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 text-xs text-slate-400">
+              Enhanced analysis includes: Market structure fractals, Supply/demand zones, Daily VWAP with bands, 
+              Fibonacci confluences, and Candlestick pattern recognition for {['1m', '5m', '15m'].includes(selectedTimeframe) ? 'scalping' : 'swing trading'} optimization.
+            </div>
+          </div>
+
           {/* Adaptive Learning Feedback Loop Display */}
           <div className="mt-4 p-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-lg border border-purple-500/30">
             <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
