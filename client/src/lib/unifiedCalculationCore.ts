@@ -1,9 +1,3 @@
-/**
- * Unified Calculation Core - Consolidated mathematical engine
- * Replaces 78+ fragmented files with single optimized system
- * Implements mathematically accurate indicators with proper algorithms
- */
-
 import { TimeFrame } from '../types';
 import { 
   advancedMarketStructureAnalyzer, 

@@ -1,53 +1,18 @@
-import React, { useState, useEffect, useCallback, useRef, memo } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from "./ui/card";
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Badge } from "./ui/badge";
-import { Separator } from "./ui/separator";
 import { Progress } from "./ui/progress";
-import { getSecondsUntilNextRefresh, getFormattedCountdown } from '../lib/finalPriceSystem';
-import { getTimeframeSuccessProbability } from '../lib/timeframeSuccessProbability';
-import { getCurrentMoonPhase, getMoonPhaseEmoji } from '../lib/moonPhase';
-import { 
-  AlertTriangle, 
-  TrendingUp, 
-  TrendingDown, 
-  BarChart2, 
-  Scale, 
-  ArrowUpRight, 
-  ArrowDownRight, 
-  Minus, 
-  Info, 
-  Target, 
-  DollarSign,
-  RefreshCcw,
-  Clock,
-  CheckCircle2,
-} from "lucide-react";
-import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
-import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
-import { formatCurrency, formatPercentage } from '../lib/calculations';
+import { TrendingUp, TrendingDown, BarChart2, ArrowUpRight, ArrowDownRight, Minus, RefreshCcw, Clock } from "lucide-react";
+import { AdvancedSignal, TradeRecommendation } from '../lib/advancedSignals';
+import { TimeFrame } from '../types';
 import { useToast } from '../hooks/use-toast';
 import { useMarketData } from '../hooks/useMarketData';
-import { typography, specializedTypography } from '../lib/typography';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { queryClient } from '../lib/queryClient';
-import { 
-  generateSignal, 
-  alignSignalsWithTimeframeHierarchy,
-  calculateSupportResistance
-} from '../lib/technicalIndicators';
-import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
-
-import { generateAccurateSignal } from '../lib/accurateSignalEngine';
+import { typography } from '../lib/typography';
+import { useQuery } from '@tanstack/react-query';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
+import { formatCurrency, formatPercentage } from '../lib/calculations';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 

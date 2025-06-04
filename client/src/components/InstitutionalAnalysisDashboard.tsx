@@ -1,12 +1,3 @@
-/**
- * Institutional Analysis Dashboard
- * Displays advanced market structure features including:
- * - VWAP with double bands (95% coverage)
- * - Supply/Demand zones from fractal analysis
- * - Psychological levels with Fibonacci confirmation
- * - Candlestick close analysis for scalping
- */
-
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';

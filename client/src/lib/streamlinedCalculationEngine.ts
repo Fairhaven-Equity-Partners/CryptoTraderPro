@@ -1,12 +1,6 @@
 import { ChartData, TimeFrame } from '../types/index';
 import { AdvancedSignal } from './advancedSignals';
 
-/**
- * Streamlined Calculation Engine
- * Replaces all fragmented calculation files with one optimized system
- * Direct integration with existing AdvancedSignal interface
- */
-
 export function generateStreamlinedSignal(
   data: ChartData[],
   timeframe: TimeFrame,
@@ -18,29 +12,15 @@ export function generateStreamlinedSignal(
       return createNeutralSignal(symbol, timeframe, currentPrice);
     }
 
-    // Calculate technical indicators efficiently
     const indicators = calculateTechnicalIndicators(data, currentPrice);
-    
-    // Determine signal direction and confidence
     const { direction, confidence } = calculateSignalDirection(indicators, timeframe);
-    
-    // Calculate price levels
-    const { stopLoss, takeProfit } = calculatePriceLevels(
-      currentPrice, 
-      direction, 
-      indicators.atr, 
-      timeframe
-    );
-    
-    // Calculate success probability
+    const { stopLoss, takeProfit } = calculatePriceLevels(currentPrice, direction, indicators.atr, timeframe);
     const successProbability = calculateSuccessProbability(confidence, timeframe);
     
-    // Ensure valid price values
     const validEntryPrice = currentPrice > 0 ? currentPrice : data[data.length - 1]?.close || 106000;
     const validStopLoss = stopLoss > 0 ? stopLoss : validEntryPrice * 0.98;
     const validTakeProfit = takeProfit > 0 ? takeProfit : validEntryPrice * 1.02;
     
-    // Build comprehensive signal
     const signal: AdvancedSignal = {
       direction,
       confidence,
