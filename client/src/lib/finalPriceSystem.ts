@@ -87,16 +87,10 @@ function triggerPriceFetch() {
   });
 }
 
-/**
- * Fetch the latest price for a specific symbol
- * @param symbol Asset symbol to fetch
- * @returns The fetched price
- */
 export async function fetchLatestPrice(symbol: string): Promise<number> {
   try {
     console.log(`[FinalPriceSystem] Fetching fresh price for ${symbol}`);
     
-    // Broadcast that we're fetching
     const fetchingEvent = new CustomEvent('price-fetching', {
       detail: { symbol }
     });

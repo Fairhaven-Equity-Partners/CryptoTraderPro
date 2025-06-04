@@ -11,9 +11,7 @@ export function useMarketData(symbol: string) {
   const loadedTimeframes = useRef<Set<TimeFrame>>(new Set());
   const liveDataTimestamp = useRef<number>(0);
   
-  // Load chart data for all timeframes
   useEffect(() => {
-    // Reset data state when symbol changes
     setChartData({} as any);
     loadedTimeframes.current.clear();
     setIsAllDataLoaded(false);
@@ -48,7 +46,6 @@ export function useMarketData(symbol: string) {
     
     registerMessageHandler('priceUpdate', handlePriceUpdate);
     
-    // Cleanup function
     return () => {
       loadedTimeframes.current.clear();
       setIsAllDataLoaded(false);
@@ -109,52 +106,17 @@ export function useAssetPrice(symbol: string) {
           
           return syncedPrice as AssetPrice;
         });
+        
         setIsLiveDataConnected(true);
       }
     };
     
-    // Set up a price update on a 3-minute interval
-    let priceUpdateInterval: NodeJS.Timeout | null = null;
-    
-    const setupPriceUpdates = () => {
-      // Initial update
-      fetchAssetBySymbol(symbol)
-        .then(data => {
-          if (data) {
-            handlePriceUpdate({ detail: { symbol, price: data.price } });
-          }
-        })
-        .catch(err => console.error("Error fetching initial price:", err));
-      
-      // Set up a dummy interval that doesn't actually do anything
-    // We now use the centralized stable price system instead 
-    // This is kept for backward compatibility
-      priceUpdateInterval = setInterval(() => {
-        console.log(`Using centralized stable price system (3-minute update interval)`);
-        // No actual price fetch happens here anymore
-      }, 999999999);
-    };
-    
-    // Start the price updates
-    setupPriceUpdates();
-    
-    // Also connect to traditional sources for backward compatibility
-    connectWebSocket([symbol]);
-    subscribeToSymbols([symbol]);
-    
-    // Add event listeners
     window.addEventListener('price-update', handlePriceUpdate);
     document.addEventListener('live-price-update', handlePriceUpdate);
     
     return () => {
-      // Clean up event listeners
       window.removeEventListener('price-update', handlePriceUpdate);
       document.removeEventListener('live-price-update', handlePriceUpdate);
-      
-      // Clear interval
-      if (priceUpdateInterval) {
-        clearInterval(priceUpdateInterval);
-      }
     };
   }, [symbol, initialPrice]);
   
@@ -166,102 +128,30 @@ export function useAssetPrice(symbol: string) {
   };
 }
 
-// Hook for getting chart data with live updates
+// Optimized chart data hook
 export function useChartData(symbol: string, timeframe: TimeFrame) {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const [isLiveDataConnected, setIsLiveDataConnected] = useState(false);
   
-  // Use a ref to store previous data to avoid showing loading state during transitions
-  const previousDataRef = useRef<{[key: string]: ChartData[]}>({});
-  
-  // Reference to track if the component is mounted
-  const isMounted = useRef(true);
-  
-  // Fetch chart data with optimization
   const fetchData = useCallback(async () => {
     try {
-      // Don't show loading state if we have previous data for this symbol
-      const cacheKey = `${symbol}_${timeframe}`;
-      const hasPreviousData = previousDataRef.current[cacheKey]?.length > 0;
-      
-      if (!hasPreviousData) {
-        setIsLoading(true);
-      }
-      
-      // Fetch new data
+      setIsLoading(true);
       const data = await fetchChartData(symbol, timeframe);
-      
-      if (isMounted.current) {
-        setChartData(data);
-        setIsLoading(false);
-        setError(null);
-        
-        // Store this data for future symbol switches
-        previousDataRef.current[cacheKey] = data;
-      }
+      setChartData(data);
+      setError(null);
+      setIsLoading(false);
     } catch (err) {
-      if (isMounted.current) {
-        setError(err instanceof Error ? err : new Error('Failed to fetch chart data'));
-        setIsLoading(false);
-      }
+      setError(err instanceof Error ? err : new Error('Failed to fetch chart data'));
+      setIsLoading(false);
     }
   }, [symbol, timeframe]);
   
-  // Initial fetch
   useEffect(() => {
-    // Check cache first to prevent flickering
-    const cacheKey = `${symbol}_${timeframe}`;
-    if (previousDataRef.current[cacheKey]?.length > 0) {
-      // Use cached data immediately to avoid loading state
-      setChartData(previousDataRef.current[cacheKey]);
-      setIsLoading(false);
-    }
-    
-    // Fetch fresh data in any case
-    fetchData();
-    
-    // Register for live updates with optimized error handling
-    const unsubscribe = registerChartUpdateListener(symbol, timeframe, () => {
-      fetchChartData(symbol, timeframe)
-        .then(newData => {
-          if (isMounted.current) {
-            setChartData(newData);
-            previousDataRef.current[cacheKey] = newData;
-            setIsLiveDataConnected(true);
-          }
-        })
-        .catch(() => {
-          // Silent fail to avoid console spam
-        });
-    });
-    
-    // Set up cleanup
-    return () => {
-      isMounted.current = false;
-      unsubscribe();
-    };
-  }, [symbol, timeframe, fetchData]);
-  
-  // Reset mounted flag on cleanup
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-  
-  const refetch = useCallback(() => {
     fetchData();
   }, [fetchData]);
   
-  return {
-    chartData,
-    isLoading,
-    error,
-    refetch,
-    isLiveDataConnected
-  };
+  return { chartData, isLoading, error, refetch: fetchData };
 }
 
 // Simplified asset list hook
