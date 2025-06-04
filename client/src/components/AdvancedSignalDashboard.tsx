@@ -228,12 +228,14 @@ interface AdvancedSignalDashboardProps {
   symbol: string;
   onTimeframeSelect?: (timeframe: TimeFrame) => void;
   onAnalysisComplete?: () => void;
+  onSignalsUpdate?: (signals: Map<string, any>) => void;
 }
 
 // Main component
 export default function AdvancedSignalDashboard({ 
   symbol, 
-  onTimeframeSelect 
+  onTimeframeSelect,
+  onSignalsUpdate
 }: AdvancedSignalDashboardProps) {
   // State for the selected timeframe
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('1d');
@@ -1386,6 +1388,17 @@ export default function AdvancedSignalDashboard({
         console.log(`📊 Sample 1d signal:`, cleanSignals['1d']);
         setSignals(cleanSignals);
         console.log(`📊 setSignals call completed successfully`);
+        
+        // Pass signals to Institutional Analysis Dashboard
+        if (onSignalsUpdate) {
+          const signalsMap = new Map<string, any>();
+          Object.entries(cleanSignals).forEach(([timeframe, signal]) => {
+            if (signal) {
+              signalsMap.set(timeframe, signal);
+            }
+          });
+          onSignalsUpdate(signalsMap);
+        }
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
