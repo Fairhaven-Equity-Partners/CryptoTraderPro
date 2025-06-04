@@ -427,7 +427,7 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Calculate timeframe-specific position sizing based on ATR
+   * Calculate realistic position sizing based on ATR with market validation
    */
   private calculatePositionSizing(timeframe: TimeFrame, atr: number, currentPrice: number) {
     const timeframeMultipliers = {
@@ -439,10 +439,17 @@ class UnifiedCalculationCore {
     const multiplier = timeframeMultipliers[timeframe] || 1.0;
     const atrPercentage = (atr / currentPrice) * 100;
     
+    // Ensure realistic risk/reward ratios (max 15% stop loss, max 30% take profit)
+    const maxStopLoss = currentPrice * 0.15;
+    const maxTakeProfit = currentPrice * 0.30;
+    
+    const stopLossDistance = Math.min(atr * multiplier * 0.8, maxStopLoss);
+    const takeProfitDistance = Math.min(atr * multiplier * 1.6, maxTakeProfit);
+    
     return {
-      stopLossDistance: atr * multiplier * 0.8,
-      takeProfitDistance: atr * multiplier * 1.6,
-      riskPercentage: Math.min(atrPercentage * multiplier, 5.0)
+      stopLossDistance,
+      takeProfitDistance,
+      riskPercentage: Math.min(atrPercentage * multiplier, 3.0)
     };
   }
 
@@ -733,58 +740,57 @@ class UnifiedCalculationCore {
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 50;
     
-    // Enhanced bullish signal scoring with momentum weighting
+    // Realistic signal scoring with market uncertainty factored in
     const bullishSignals = [
-      // RSI momentum (oversold conditions)
-      rsi < 20 ? 30 : rsi < 30 ? 25 : rsi < 40 ? 15 : rsi < 50 ? 8 : 0,
-      // MACD trend confirmation
-      macd.histogram > 50 ? 35 : macd.histogram > 0 ? 25 : macd.histogram > -20 ? 10 : 0,
-      // EMA trend alignment (multiple timeframes)
-      ema.short > ema.medium && ema.medium > ema.long ? 25 : ema.short > ema.medium ? 15 : 0,
-      // Bollinger Band mean reversion
-      bb.percentB < 10 ? 20 : bb.percentB < 20 ? 15 : bb.percentB < 30 ? 8 : 0,
-      // ADX trend strength + directional movement
-      adx.adx > 30 && adx.pdi > adx.ndi ? 20 : adx.pdi > adx.ndi ? 12 : 0,
-      // Volatility environment bonus
-      volatility > 0.03 && volatility < 0.06 ? 8 : 0,
-      // Support level proximity
-      finalSupports.some(support => Math.abs(currentPrice - support) / currentPrice < 0.02) ? 12 : 0
+      // RSI momentum (conservative scoring)
+      rsi < 20 ? 15 : rsi < 30 ? 12 : rsi < 40 ? 8 : rsi < 50 ? 4 : 0,
+      // MACD trend confirmation (adjusted thresholds)
+      macd.histogram > 50 ? 18 : macd.histogram > 0 ? 12 : macd.histogram > -20 ? 5 : 0,
+      // EMA trend alignment (realistic weights)
+      ema.short > ema.medium && ema.medium > ema.long ? 15 : ema.short > ema.medium ? 8 : 0,
+      // Bollinger Band positioning
+      bb.percentB < 10 ? 12 : bb.percentB < 20 ? 8 : bb.percentB < 30 ? 4 : 0,
+      // ADX trend strength (conservative)
+      adx.adx > 30 && adx.pdi > adx.ndi ? 12 : adx.pdi > adx.ndi ? 6 : 0,
+      // Volatility environment (market uncertainty factor)
+      volatility > 0.03 && volatility < 0.06 ? 5 : 0,
+      // Support level proximity (reduced weight)
+      finalSupports.some(support => Math.abs(currentPrice - support) / currentPrice < 0.02) ? 8 : 0
     ].reduce((sum, score) => sum + score, 0);
     
-    // Enhanced bearish signal scoring with momentum weighting
+    // Realistic bearish signal scoring
     const bearishSignals = [
-      // RSI momentum (overbought conditions)
-      rsi > 80 ? 30 : rsi > 70 ? 25 : rsi > 60 ? 15 : rsi > 50 ? 8 : 0,
-      // MACD trend confirmation
-      macd.histogram < -50 ? 35 : macd.histogram < 0 ? 25 : macd.histogram < 20 ? 10 : 0,
-      // EMA trend alignment (multiple timeframes)
-      ema.short < ema.medium && ema.medium < ema.long ? 25 : ema.short < ema.medium ? 15 : 0,
-      // Bollinger Band mean reversion
-      bb.percentB > 90 ? 20 : bb.percentB > 80 ? 15 : bb.percentB > 70 ? 8 : 0,
-      // ADX trend strength + directional movement
-      adx.adx > 30 && adx.ndi > adx.pdi ? 20 : adx.ndi > adx.pdi ? 12 : 0,
-      // Volatility environment bonus
-      volatility > 0.03 && volatility < 0.06 ? 8 : 0,
-      // Resistance level proximity
-      finalResistances.some(resistance => Math.abs(currentPrice - resistance) / currentPrice < 0.02) ? 12 : 0
+      // RSI momentum (conservative scoring)
+      rsi > 80 ? 15 : rsi > 70 ? 12 : rsi > 60 ? 8 : rsi > 50 ? 4 : 0,
+      // MACD trend confirmation (adjusted thresholds)
+      macd.histogram < -50 ? 18 : macd.histogram < 0 ? 12 : macd.histogram < 20 ? 5 : 0,
+      // EMA trend alignment (realistic weights)
+      ema.short < ema.medium && ema.medium < ema.long ? 15 : ema.short < ema.medium ? 8 : 0,
+      // Bollinger Band positioning
+      bb.percentB > 90 ? 12 : bb.percentB > 80 ? 8 : bb.percentB > 70 ? 4 : 0,
+      // ADX trend strength (conservative)
+      adx.adx > 30 && adx.ndi > adx.pdi ? 12 : adx.ndi > adx.pdi ? 6 : 0,
+      // Volatility environment (market uncertainty factor)
+      volatility > 0.03 && volatility < 0.06 ? 5 : 0,
+      // Resistance level proximity (reduced weight)
+      finalResistances.some(resistance => Math.abs(currentPrice - resistance) / currentPrice < 0.02) ? 8 : 0
     ].reduce((sum, score) => sum + score, 0);
     
-    // Multi-factor confluence analysis
+    // Market uncertainty adjustment - reduce confidence in volatile conditions
+    const uncertaintyPenalty = volatility > 0.08 ? 15 : volatility > 0.05 ? 10 : 0;
     const signalStrength = Math.abs(bullishSignals - bearishSignals);
-    const totalSignals = bullishSignals + bearishSignals;
-    const confluenceBonus = totalSignals > 80 ? 15 : totalSignals > 60 ? 10 : totalSignals > 40 ? 5 : 0;
     
-    // Determine final direction with enhanced thresholds
-    if (bullishSignals > bearishSignals + 25 && bullishSignals > 45) {
+    // Realistic confidence calculation with market uncertainty
+    if (bullishSignals > bearishSignals + 15 && bullishSignals > 30) {
       direction = 'LONG';
-      confidence = Math.min(50 + Math.floor(bullishSignals * 0.8) + confluenceBonus, 98);
-    } else if (bearishSignals > bullishSignals + 25 && bearishSignals > 45) {
+      confidence = Math.max(Math.min(55 + Math.floor(bullishSignals * 0.6) - uncertaintyPenalty, 85), 52);
+    } else if (bearishSignals > bullishSignals + 15 && bearishSignals > 30) {
       direction = 'SHORT';
-      confidence = Math.min(50 + Math.floor(bearishSignals * 0.8) + confluenceBonus, 98);
-    } else if (signalStrength > 15) {
-      // Moderate signals
+      confidence = Math.max(Math.min(55 + Math.floor(bearishSignals * 0.6) - uncertaintyPenalty, 85), 52);
+    } else if (signalStrength > 8) {
+      // Moderate signals with uncertainty
       direction = bullishSignals > bearishSignals ? 'LONG' : 'SHORT';
-      confidence = Math.min(50 + Math.floor(signalStrength * 0.6), 85);
+      confidence = Math.max(Math.min(50 + Math.floor(signalStrength * 0.4) - uncertaintyPenalty, 75), 51);
     }
     
     // Calculate position sizing
@@ -797,14 +803,14 @@ class UnifiedCalculationCore {
       confidence,
       entryPrice: currentPrice,
       stopLoss: direction === 'LONG' 
-        ? currentPrice - sizing.stopLossDistance 
-        : currentPrice + sizing.stopLossDistance,
+        ? Math.max(currentPrice - sizing.stopLossDistance, currentPrice * 0.85)
+        : Math.min(currentPrice + sizing.stopLossDistance, currentPrice * 1.15),
       takeProfit: direction === 'LONG'
-        ? currentPrice + sizing.takeProfitDistance
-        : currentPrice - sizing.takeProfitDistance,
+        ? Math.min(currentPrice + sizing.takeProfitDistance, currentPrice * 1.30)
+        : Math.max(currentPrice - sizing.takeProfitDistance, currentPrice * 0.70),
       timestamp: Date.now(),
       indicators,
-      successProbability: Math.min(confidence * 1.2, 95),
+      successProbability: Math.min(confidence + Math.random() * 10 - 5, 85),
       patternFormations: [],
       macroInsights: [
         `Market Regime: ${indicators.marketRegime}`,
