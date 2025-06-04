@@ -242,12 +242,12 @@ export default function ConsolidatedSignalDashboard({
         {/* Main Analytics Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {/* Signal Direction & Confidence */}
-          <div className="col-span-2 bg-gradient-to-br from-slate-800/60 to-slate-700/40 rounded-lg p-4 border border-slate-600/40">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-slate-300 text-sm font-medium">Signal</span>
+          <div className="col-span-2 bg-gradient-to-br from-slate-800/60 to-slate-700/40 rounded-lg p-3 border border-slate-600/40">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-slate-300 text-xs font-medium">Signal</span>
               <Badge 
                 variant="outline" 
-                className={`text-xs font-bold ${getSignalColor(
+                className={`text-xs font-medium ${getSignalColor(
                   currentSignal?.direction || 'NEUTRAL', 
                   currentSignal?.confidence || 0
                 )}`}
@@ -255,24 +255,24 @@ export default function ConsolidatedSignalDashboard({
                 {currentSignal?.direction || 'NEUTRAL'}
               </Badge>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <span className="text-slate-400 text-xs">Confidence</span>
-                <span className={`text-sm font-bold ${getConfidenceColor(currentSignal?.confidence || 0)}`}>
+                <span className={`text-xs font-medium ${getConfidenceColor(currentSignal?.confidence || 0)}`}>
                   {currentSignal?.confidence?.toFixed(1) || '0'}%
                 </span>
               </div>
               <Progress 
                 value={currentSignal?.confidence || 0} 
-                className="h-2"
+                className="h-1"
               />
             </div>
           </div>
 
           {/* Entry Price */}
-          <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/30 rounded-lg p-4 border border-blue-500/30">
+          <div className="bg-gradient-to-br from-blue-600/20 to-blue-700/30 rounded-lg p-3 border border-blue-500/30">
             <div className="text-blue-300 text-xs font-medium mb-1">Entry Price</div>
-            <div className="text-white text-lg font-bold">
+            <div className="text-white text-sm font-bold">
               ${formatCurrency(currentSignal?.entryPrice || currentAssetPrice)}
             </div>
             <div className="text-blue-200 text-xs mt-1">
@@ -281,9 +281,9 @@ export default function ConsolidatedSignalDashboard({
           </div>
 
           {/* Accuracy Metrics */}
-          <div className="bg-gradient-to-br from-purple-600/20 to-purple-700/30 rounded-lg p-4 border border-purple-500/30">
+          <div className="bg-gradient-to-br from-purple-600/20 to-purple-700/30 rounded-lg p-3 border border-purple-500/30">
             <div className="text-purple-300 text-xs font-medium mb-1">Accuracy</div>
-            <div className="text-white text-lg font-bold">
+            <div className="text-white text-sm font-bold">
               {currentAccuracy?.accuracy?.toFixed(1) || '0'}%
             </div>
             <div className="text-purple-200 text-xs mt-1">

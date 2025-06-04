@@ -2062,9 +2062,9 @@ export default function AdvancedSignalDashboard({
                         </div>
                         
                         {/* Pattern Formations */}
-                        <div className="space-y-1">
-                          <h3 className="text-white font-semibold text-xs">Pattern Formations</h3>
-                          <div className="max-h-20 overflow-y-auto space-y-0.5">
+                        <div className="space-y-2">
+                          <h3 className="text-white font-bold text-sm">Pattern Formations</h3>
+                          <div className="max-h-40 overflow-y-auto space-y-1">
                             {currentSignal?.patternFormations && currentSignal.patternFormations.length > 0 ? (
                               currentSignal.patternFormations.map((pattern, i) => (
                                 <div key={i} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
