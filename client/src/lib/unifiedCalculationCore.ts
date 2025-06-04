@@ -928,6 +928,24 @@ class UnifiedCalculationCore {
       ema,
       stochastic,
       bb,
+      marketStructure: {
+        fractalStructure: 'CONSOLIDATION' as any,
+        supplyZones: [],
+        demandZones: [],
+        orderBlocks: []
+      },
+      vwap: {
+        daily: currentPrice,
+        innerBands: { upper: currentPrice * 1.01, lower: currentPrice * 0.99 },
+        outerBands: { upper: currentPrice * 1.02, lower: currentPrice * 0.98 },
+        deviation: 0.015
+      },
+      fibonacciLevels: {
+        levels: [],
+        confluence: 0,
+        psychologicalLevels: []
+      },
+      candlestickPatterns: [],
       adx: { value: adx.adx, pdi: adx.pdi, ndi: adx.ndi },
       atr: { value: atr },
       supports: finalSupports,

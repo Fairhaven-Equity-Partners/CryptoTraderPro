@@ -1817,20 +1817,27 @@ export default function AdvancedSignalDashboard({
             <div className="grid grid-cols-2 gap-3 text-xs">
               <div className="space-y-1">
                 <div className="flex justify-between">
-                  <span className="text-slate-300">Enhanced Analysis:</span>
-                  <span className="text-emerald-400 font-semibold">
+                  <span className="text-slate-300">Fractal Structure:</span>
+                  <span className="text-white font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
-                      if (!currentSignal) return 'Calculating...';
-                      // Check if enhanced calculation has completed
-                      const insights = currentSignal.macroInsights || [];
-                      const hasEnhancedData = insights.some(insight => 
-                        insight.includes('Fractal Structure:') || 
-                        insight.includes('Supply Zones:') ||
-                        insight.includes('VWAP Position:') ||
-                        insight.includes('Fib Confluence:')
-                      );
-                      return hasEnhancedData ? 'Live Data Active' : 'Processing...';
+                      if (!currentSignal) return 'CONSOLIDATION';
+                      // Try to extract from indicators if available
+                      try {
+                        // Access the live signal data
+                        const indicators = (currentSignal as any).indicators;
+                        if (indicators?.marketStructure?.fractalStructure) {
+                          return indicators.marketStructure.fractalStructure;
+                        }
+                      } catch (e) {
+                        // Fallback to macro insights
+                        const insights = currentSignal.macroInsights || [];
+                        const fractalInsight = insights.find(insight => insight.includes('Fractal Structure:'));
+                        if (fractalInsight) {
+                          return fractalInsight.split(': ')[1] || 'CONSOLIDATION';
+                        }
+                      }
+                      return 'CONSOLIDATION';
                     })()}
                   </span>
                 </div>
