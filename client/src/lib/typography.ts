@@ -14,22 +14,22 @@ export const typography = {
   label: 'text-xs text-slate-400',
   
   // Primary data values (prices, percentages, etc.)
-  value: 'text-xs font-mono font-medium text-white',
+  value: 'text-xs font-medium text-white',
   
   // Secondary data values
-  valueSecondary: 'text-xs font-mono font-medium text-slate-300',
+  valueSecondary: 'text-xs font-medium text-slate-300',
   
   // Success/positive values
-  valuePositive: 'text-xs font-mono font-medium text-green-300',
+  valuePositive: 'text-xs font-medium text-green-300',
   
   // Error/negative values
-  valueNegative: 'text-xs font-mono font-medium text-red-300',
+  valueNegative: 'text-xs font-medium text-red-300',
   
   // Warning values
-  valueWarning: 'text-xs font-mono font-medium text-yellow-300',
+  valueWarning: 'text-xs font-medium text-yellow-300',
   
   // Neutral values
-  valueNeutral: 'text-xs font-mono font-medium text-blue-300',
+  valueNeutral: 'text-xs font-medium text-blue-300',
   
   // Small descriptive text
   description: 'text-xs text-slate-400',
@@ -54,24 +54,24 @@ export function getTypographyClass(type: keyof typeof typography): string {
 // Specialized classes for specific use cases
 export const specializedTypography = {
   // Price display
-  priceMain: 'text-sm font-mono font-medium text-white',
-  priceLarge: 'text-base font-mono font-semibold text-white',
+  priceMain: 'text-sm font-medium text-white',
+  priceLarge: 'text-base font-semibold text-white',
   
   // Percentage changes
-  percentagePositive: 'text-xs font-mono font-medium text-green-300',
-  percentageNegative: 'text-xs font-mono font-medium text-red-300',
+  percentagePositive: 'text-xs font-medium text-green-300',
+  percentageNegative: 'text-xs font-medium text-red-300',
   
   // Signal confidence
-  confidenceHigh: 'text-xs font-mono font-medium text-green-300',
-  confidenceMedium: 'text-xs font-mono font-medium text-yellow-300',
-  confidenceLow: 'text-xs font-mono font-medium text-red-300',
+  confidenceHigh: 'text-xs font-medium text-green-300',
+  confidenceMedium: 'text-xs font-medium text-yellow-300',
+  confidenceLow: 'text-xs font-medium text-red-300',
   
   // Timeframe labels
-  timeframe: 'text-xs font-mono font-medium text-slate-300',
+  timeframe: 'text-xs font-medium text-slate-300',
   
   // Status indicators
-  statusActive: 'text-xs font-mono font-medium text-green-300',
-  statusInactive: 'text-xs font-mono font-medium text-slate-400',
-  statusWarning: 'text-xs font-mono font-medium text-yellow-300',
-  statusError: 'text-xs font-mono font-medium text-red-300',
+  statusActive: 'text-xs font-medium text-green-300',
+  statusInactive: 'text-xs font-medium text-slate-400',
+  statusWarning: 'text-xs font-medium text-yellow-300',
+  statusError: 'text-xs font-medium text-red-300',
 } as const;
