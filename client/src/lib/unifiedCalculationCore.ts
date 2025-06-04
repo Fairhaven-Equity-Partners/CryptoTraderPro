@@ -937,7 +937,11 @@ class UnifiedCalculationCore {
       confidenceFactors: {
         trendAlignment: ema.short > ema.medium && ema.medium > ema.long,
         momentumConfluence: (rsi > 50 && macd.histogram > 0) || (rsi < 50 && macd.histogram < 0),
-        volatilityLevel: volatility > 0.04 ? 'HIGH_VOLATILITY' : volatility < 0.015 ? 'LOW_VOLATILITY' : 'NORMAL'
+        volatilityLevel: volatility > 0.04 ? 'HIGH_VOLATILITY' : volatility < 0.015 ? 'LOW_VOLATILITY' : 'NORMAL',
+        structureConfirmation: false,
+        vwapAlignment: false,
+        fibonacciConfluence: false,
+        candlestickConfirmation: false
       }
     };
     

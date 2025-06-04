@@ -182,3 +182,40 @@ export const TECHNICAL_INDICATORS = [
   "Bollinger Bands", "ATR", "Chaikin", "OBV", "MFI", "Volume",
   "Parabolic SAR", "CCI", "Williams %R", "Awesome Oscillator"
 ] as const;
+
+// Enhanced Market Analysis Types
+export interface MarketStructure {
+  fractalStructure: 'BULLISH_FRACTAL' | 'BEARISH_FRACTAL' | 'CONSOLIDATION';
+  supplyZones: Array<{ level: number; strength: number }>;
+  demandZones: Array<{ level: number; strength: number }>;
+  orderBlocks: Array<{ type: 'BULLISH' | 'BEARISH'; level: number; strength: number }>;
+}
+
+export interface VWAPAnalysis {
+  daily: number;
+  innerBands: { upper: number; lower: number };
+  outerBands: { upper: number; lower: number };
+}
+
+export interface FibonacciLevels {
+  levels: Array<{ level: number; type: string }>;
+  confluence: number;
+  psychologicalLevels: number[];
+}
+
+export interface CandlestickPattern {
+  pattern: string;
+  reliability: number;
+  direction: 'BULLISH' | 'BEARISH' | 'NEUTRAL';
+  strength: 'WEAK' | 'MODERATE' | 'STRONG';
+}
+
+export interface EnhancedConfidenceFactors {
+  trendAlignment: boolean;
+  momentumConfluence: boolean;
+  volatilityLevel: string;
+  structureConfirmation: boolean;
+  vwapAlignment: boolean;
+  fibonacciConfluence: boolean;
+  candlestickConfirmation: boolean;
+}

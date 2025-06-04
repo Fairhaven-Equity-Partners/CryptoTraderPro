@@ -1821,8 +1821,14 @@ export default function AdvancedSignalDashboard({
                   <span className="text-white font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
-                      const fractal = currentSignal?.indicators?.marketStructure?.fractalStructure || 'CONSOLIDATION';
-                      return fractal.replace('_', ' ');
+                      if (!currentSignal) return 'CONSOLIDATION';
+                      // Extract from macro insights which contain the enhanced data
+                      const insights = currentSignal.macroInsights || [];
+                      const fractalInsight = insights.find(insight => insight.includes('Fractal Structure:'));
+                      if (fractalInsight) {
+                        return fractalInsight.split(': ')[1] || 'CONSOLIDATION';
+                      }
+                      return 'CONSOLIDATION';
                     })()}
                   </span>
                 </div>
@@ -1831,7 +1837,13 @@ export default function AdvancedSignalDashboard({
                   <span className="text-emerald-400 font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
-                      return currentSignal?.indicators?.marketStructure?.supplyZones?.length || 0;
+                      if (!currentSignal) return 0;
+                      const insights = currentSignal.macroInsights || [];
+                      const supplyInsight = insights.find(insight => insight.includes('Supply Zones:'));
+                      if (supplyInsight) {
+                        return supplyInsight.split(': ')[1] || '0';
+                      }
+                      return '0';
                     })()}
                   </span>
                 </div>
@@ -1840,14 +1852,35 @@ export default function AdvancedSignalDashboard({
                   <span className="text-cyan-400 font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
-                      return currentSignal?.indicators?.marketStructure?.demandZones?.length || 0;
+                      if (!currentSignal) return 0;
+                      const insights = currentSignal.macroInsights || [];
+                      const demandInsight = insights.find(insight => insight.includes('Demand Zones:'));
+                      if (demandInsight) {
+                        return demandInsight.split(': ')[1] || '0';
+                      }
+                      return '0';
                     })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-300">VWAP Position:</span>
-                  <span className={`font-semibold ${currentAssetPrice > (signals[selectedTimeframe]?.indicators?.vwap?.daily || 0) ? 'text-green-400' : 'text-red-400'}`}>
-                    {currentAssetPrice > (signals[selectedTimeframe]?.indicators?.vwap?.daily || 0) ? 'Above' : 'Below'}
+                  <span className={`font-semibold ${(() => {
+                    const currentSignal = signals[selectedTimeframe];
+                    if (!currentSignal) return false;
+                    const insights = currentSignal.macroInsights || [];
+                    const vwapInsight = insights.find(insight => insight.includes('VWAP Position:'));
+                    return vwapInsight ? vwapInsight.includes('Above') : false;
+                  })() ? 'text-green-400' : 'text-red-400'}`}>
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      if (!currentSignal) return 'Below';
+                      const insights = currentSignal.macroInsights || [];
+                      const vwapInsight = insights.find(insight => insight.includes('VWAP Position:'));
+                      if (vwapInsight) {
+                        return vwapInsight.split(': ')[1] || 'Below';
+                      }
+                      return 'Below';
+                    })()}
                   </span>
                 </div>
               </div>
@@ -1857,8 +1890,13 @@ export default function AdvancedSignalDashboard({
                   <span className="text-yellow-400 font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
-                      const confluence = currentSignal?.indicators?.fibonacciLevels?.confluence || 0;
-                      return `${Math.round(confluence)}%`;
+                      if (!currentSignal) return '0%';
+                      const insights = currentSignal.macroInsights || [];
+                      const fibInsight = insights.find(insight => insight.includes('Fib Confluence:'));
+                      if (fibInsight) {
+                        return fibInsight.split(': ')[1] || '0%';
+                      }
+                      return '0%';
                     })()}
                   </span>
                 </div>
@@ -1867,20 +1905,56 @@ export default function AdvancedSignalDashboard({
                   <span className="text-purple-400 font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
-                      return currentSignal?.indicators?.candlestickPatterns?.length || 0;
+                      if (!currentSignal) return 0;
+                      const insights = currentSignal.macroInsights || [];
+                      const patternInsight = insights.find(insight => insight.includes('Candlestick Patterns:'));
+                      if (patternInsight) {
+                        return patternInsight.split(': ')[1] || '0';
+                      }
+                      return '0';
                     })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-300">Structure Confirmed:</span>
-                  <span className={`font-semibold ${signals[selectedTimeframe]?.indicators?.confidenceFactors?.structureConfirmation ? 'text-green-400' : 'text-red-400'}`}>
-                    {signals[selectedTimeframe]?.indicators?.confidenceFactors?.structureConfirmation ? 'Yes' : 'No'}
+                  <span className={`font-semibold ${(() => {
+                    const currentSignal = signals[selectedTimeframe];
+                    if (!currentSignal) return false;
+                    const insights = currentSignal.macroInsights || [];
+                    const structureInsight = insights.find(insight => insight.includes('Structure Confirmed:'));
+                    return structureInsight ? structureInsight.includes('Yes') : false;
+                  })() ? 'text-green-400' : 'text-red-400'}`}>
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      if (!currentSignal) return 'No';
+                      const insights = currentSignal.macroInsights || [];
+                      const structureInsight = insights.find(insight => insight.includes('Structure Confirmed:'));
+                      if (structureInsight) {
+                        return structureInsight.split(': ')[1] || 'No';
+                      }
+                      return 'No';
+                    })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-slate-300">VWAP Aligned:</span>
-                  <span className={`font-semibold ${signals[selectedTimeframe]?.indicators?.confidenceFactors?.vwapAlignment ? 'text-green-400' : 'text-red-400'}`}>
-                    {signals[selectedTimeframe]?.indicators?.confidenceFactors?.vwapAlignment ? 'Yes' : 'No'}
+                  <span className={`font-semibold ${(() => {
+                    const currentSignal = signals[selectedTimeframe];
+                    if (!currentSignal) return false;
+                    const insights = currentSignal.macroInsights || [];
+                    const vwapAlignedInsight = insights.find(insight => insight.includes('VWAP Aligned:'));
+                    return vwapAlignedInsight ? vwapAlignedInsight.includes('Yes') : false;
+                  })() ? 'text-green-400' : 'text-red-400'}`}>
+                    {(() => {
+                      const currentSignal = signals[selectedTimeframe];
+                      if (!currentSignal) return 'No';
+                      const insights = currentSignal.macroInsights || [];
+                      const vwapAlignedInsight = insights.find(insight => insight.includes('VWAP Aligned:'));
+                      if (vwapAlignedInsight) {
+                        return vwapAlignedInsight.split(': ')[1] || 'No';
+                      }
+                      return 'No';
+                    })()}
                   </span>
                 </div>
               </div>
