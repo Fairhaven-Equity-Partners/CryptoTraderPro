@@ -103,18 +103,23 @@ class UnifiedCalculationCore {
 
   private identifyFractals(data: OHLCData[], lookback = 5): any[] {
     const fractals = [];
-    for (let i = lookback; i < data.length - lookback; i++) {
+    const len = data.length;
+    
+    // Optimized loop with pre-computed boundaries
+    for (let i = lookback; i < len - lookback; i++) {
       const current = data[i];
-      const leftBars = data.slice(i - lookback, i);
-      const rightBars = data.slice(i + 1, i + lookback + 1);
+      let isBullishFractal = true, isBearishFractal = true;
       
-      // Bullish fractal - highest high surrounded by lower highs
-      const isBullishFractal = leftBars.every(bar => bar.high < current.high) && 
-                              rightBars.every(bar => bar.high < current.high);
-      
-      // Bearish fractal - lowest low surrounded by higher lows
-      const isBearishFractal = leftBars.every(bar => bar.low > current.low) && 
-                              rightBars.every(bar => bar.low > current.low);
+      // Single pass comparison for both fractal types
+      for (let j = i - lookback; j <= i + lookback; j++) {
+        if (j === i) continue;
+        
+        if (data[j].high >= current.high) isBullishFractal = false;
+        if (data[j].low <= current.low) isBearishFractal = false;
+        
+        // Early termination if both fractal types are false
+        if (!isBullishFractal && !isBearishFractal) break;
+      }
       
       if (isBullishFractal) {
         fractals.push({ type: 'BULLISH', price: current.high, index: i, timestamp: current.timestamp });
@@ -203,34 +208,35 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * VWAP with Double Bands (95% price action coverage)
+   * Optimized VWAP calculation with single-pass algorithm
    */
   private calculateVWAP(data: OHLCData[]): any {
     if (data.length === 0) return { daily: 0, innerBands: { upper: 0, lower: 0 }, outerBands: { upper: 0, lower: 0 }, deviation: 0 };
     
-    // Calculate VWAP for current day
-    const todayStart = new Date();
-    todayStart.setHours(0, 0, 0, 0);
-    const todayData = data.filter(d => d.timestamp >= todayStart.getTime());
-    
-    if (todayData.length === 0) return { daily: 0, innerBands: { upper: 0, lower: 0 }, outerBands: { upper: 0, lower: 0 }, deviation: 0 };
+    // Use recent data for VWAP calculation (last 24 hours worth)
+    const recentData = data.slice(-Math.min(1440, data.length)); // Assume 1-minute candles for daily VWAP
     
     let cumulativeVolumePrice = 0;
     let cumulativeVolume = 0;
-    let squaredDeviations = 0;
+    const typicalPrices: number[] = [];
     
-    for (const bar of todayData) {
+    // Single pass for VWAP and typical price collection
+    for (const bar of recentData) {
       const typicalPrice = (bar.high + bar.low + bar.close) / 3;
-      cumulativeVolumePrice += typicalPrice * bar.volume;
+      const volumePrice = typicalPrice * bar.volume;
+      
+      cumulativeVolumePrice += volumePrice;
       cumulativeVolume += bar.volume;
+      typicalPrices.push(typicalPrice);
     }
     
-    const vwap = cumulativeVolume > 0 ? cumulativeVolumePrice / cumulativeVolume : data[data.length - 1].close;
+    const vwap = cumulativeVolume > 0 ? cumulativeVolumePrice / cumulativeVolume : recentData[recentData.length - 1].close;
     
-    // Calculate standard deviation for bands
-    for (const bar of todayData) {
-      const typicalPrice = (bar.high + bar.low + bar.close) / 3;
-      squaredDeviations += Math.pow(typicalPrice - vwap, 2) * bar.volume;
+    // Optimized variance calculation
+    let squaredDeviations = 0;
+    for (let i = 0; i < recentData.length; i++) {
+      const deviation = typicalPrices[i] - vwap;
+      squaredDeviations += deviation * deviation * recentData[i].volume;
     }
     
     const variance = cumulativeVolume > 0 ? squaredDeviations / cumulativeVolume : 0;
@@ -243,8 +249,8 @@ class UnifiedCalculationCore {
         lower: vwap - stdDev
       },
       outerBands: {
-        upper: vwap + (stdDev * 2.5), // 95% coverage
-        lower: vwap - (stdDev * 2.5)
+        upper: vwap + stdDev * 2.5,
+        lower: vwap - stdDev * 2.5
       },
       deviation: stdDev
     };
@@ -597,87 +603,73 @@ class UnifiedCalculationCore {
 
 
   /**
-   * Calculate ADX with precise Wilder's smoothing and accurate DX progression
+   * Optimized ADX calculation with memory efficiency and performance improvements
    */
   private calculateADX(data: OHLCData[], period = 14) {
-    if (data.length < period * 2) return { adx: 25, pdi: 50, ndi: 50 };
+    if (data.length < period + 1) return { adx: 25, pdi: 50, ndi: 50 };
     
-    const trueRanges: number[] = [];
-    const plusDMs: number[] = [];
-    const minusDMs: number[] = [];
-    const dxValues: number[] = [];
+    // Pre-allocate arrays for better memory performance
+    const len = data.length - 1;
+    let smoothedTR = 0, smoothedPlusDM = 0, smoothedMinusDM = 0;
+    let adx = 0;
     
-    // Calculate TR, +DM, -DM for each period
-    for (let i = 1; i < data.length; i++) {
-      const high = data[i].high;
-      const low = data[i].low;
-      const prevHigh = data[i - 1].high;
-      const prevLow = data[i - 1].low;
-      const prevClose = data[i - 1].close;
+    // First pass: calculate initial smoothed values
+    for (let i = 1; i <= period; i++) {
+      const curr = data[i], prev = data[i - 1];
       
-      // True Range (most conservative approach)
-      const tr = Math.max(
-        high - low,
-        Math.abs(high - prevClose),
-        Math.abs(low - prevClose)
-      );
-      trueRanges.push(tr);
+      // Optimized True Range calculation
+      const tr = Math.max(curr.high - curr.low, 
+                         Math.abs(curr.high - prev.close), 
+                         Math.abs(curr.low - prev.close));
       
-      // Directional Movement (precise calculation)
-      const upMove = high - prevHigh;
-      const downMove = prevLow - low;
-      
+      // Optimized Directional Movement
+      const upMove = curr.high - prev.high;
+      const downMove = prev.low - curr.low;
       const plusDM = (upMove > downMove && upMove > 0) ? upMove : 0;
       const minusDM = (downMove > upMove && downMove > 0) ? downMove : 0;
       
-      plusDMs.push(plusDM);
-      minusDMs.push(minusDM);
+      smoothedTR += tr;
+      smoothedPlusDM += plusDM;
+      smoothedMinusDM += minusDM;
     }
     
-    // Initialize first smoothed values
-    let smoothedTR = trueRanges.slice(0, period).reduce((sum, tr) => sum + tr, 0);
-    let smoothedPlusDM = plusDMs.slice(0, period).reduce((sum, dm) => sum + dm, 0);
-    let smoothedMinusDM = minusDMs.slice(0, period).reduce((sum, dm) => sum + dm, 0);
+    // Calculate initial DI values and DX
+    let plusDI = smoothedTR > 0 ? (smoothedPlusDM / smoothedTR) * 100 : 0;
+    let minusDI = smoothedTR > 0 ? (smoothedMinusDM / smoothedTR) * 100 : 0;
+    let dx = (plusDI + minusDI) > 0 ? Math.abs(plusDI - minusDI) / (plusDI + minusDI) * 100 : 0;
+    adx = dx;
     
-    // Calculate progressive DX values using Wilder's smoothing
-    for (let i = period; i < trueRanges.length; i++) {
-      // Apply Wilder's smoothing formula: Current Smoothed Value = ((Prior Smoothed Value * (n-1)) + Current Value) / n
-      smoothedTR = ((smoothedTR * (period - 1)) + trueRanges[i]);
-      smoothedPlusDM = ((smoothedPlusDM * (period - 1)) + plusDMs[i]);
-      smoothedMinusDM = ((smoothedMinusDM * (period - 1)) + minusDMs[i]);
+    // Progressive smoothing for remaining data
+    const factor = (period - 1) / period;
+    for (let i = period + 1; i < data.length; i++) {
+      const curr = data[i], prev = data[i - 1];
       
-      // Calculate +DI and -DI
-      const plusDI = smoothedTR > 0 ? (smoothedPlusDM / smoothedTR) * 100 : 0;
-      const minusDI = smoothedTR > 0 ? (smoothedMinusDM / smoothedTR) * 100 : 0;
+      const tr = Math.max(curr.high - curr.low, 
+                         Math.abs(curr.high - prev.close), 
+                         Math.abs(curr.low - prev.close));
       
-      // Calculate DX
+      const upMove = curr.high - prev.high;
+      const downMove = prev.low - curr.low;
+      const plusDM = (upMove > downMove && upMove > 0) ? upMove : 0;
+      const minusDM = (downMove > upMove && downMove > 0) ? downMove : 0;
+      
+      // Wilder's smoothing optimization
+      smoothedTR = smoothedTR * factor + tr / period;
+      smoothedPlusDM = smoothedPlusDM * factor + plusDM / period;
+      smoothedMinusDM = smoothedMinusDM * factor + minusDM / period;
+      
+      plusDI = smoothedTR > 0 ? (smoothedPlusDM / smoothedTR) * 100 : 0;
+      minusDI = smoothedTR > 0 ? (smoothedMinusDM / smoothedTR) * 100 : 0;
+      
       const diSum = plusDI + minusDI;
-      const dx = diSum > 0 ? (Math.abs(plusDI - minusDI) / diSum) * 100 : 0;
-      dxValues.push(dx);
+      dx = diSum > 0 ? Math.abs(plusDI - minusDI) / diSum * 100 : 0;
+      adx = adx * factor + dx / period;
     }
-    
-    // Calculate ADX as smoothed average of DX values
-    if (dxValues.length < period) {
-      const lastDX = dxValues[dxValues.length - 1] || 25;
-      return { adx: lastDX, pdi: 50, ndi: 50 };
-    }
-    
-    // Initial ADX is simple average of first period DX values
-    let adx = dxValues.slice(0, period).reduce((sum, dx) => sum + dx, 0) / period;
-    
-    // Apply Wilder's smoothing to subsequent ADX values
-    for (let i = period; i < dxValues.length; i++) {
-      adx = ((adx * (period - 1)) + dxValues[i]) / period;
-    }
-    
-    // Final +DI and -DI calculation
-    const finalPlusDI = smoothedTR > 0 ? (smoothedPlusDM / smoothedTR) * 100 : 0;
-    const finalMinusDI = smoothedTR > 0 ? (smoothedMinusDM / smoothedTR) * 100 : 0;
     
     return { 
       adx: Math.min(Math.max(adx, 0), 100), 
-      pdi: Math.min(Math.max(finalPlusDI, 0), 100), 
-      ndi: Math.min(Math.max(finalMinusDI, 0), 100) 
+      pdi: Math.min(Math.max(plusDI, 0), 100), 
+      ndi: Math.min(Math.max(minusDI, 0), 100) 
     };
   }
 
@@ -967,41 +959,70 @@ class UnifiedCalculationCore {
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 50;
     
-    // Enhanced bullish signal scoring with momentum weighting
-    const bullishSignals = [
-      // RSI momentum (oversold conditions)
-      rsi < 20 ? 30 : rsi < 30 ? 25 : rsi < 40 ? 15 : rsi < 50 ? 8 : 0,
-      // MACD trend confirmation
-      macd.histogram > 50 ? 35 : macd.histogram > 0 ? 25 : macd.histogram > -20 ? 10 : 0,
-      // EMA trend alignment (multiple timeframes)
-      ema.short > ema.medium && ema.medium > ema.long ? 25 : ema.short > ema.medium ? 15 : 0,
-      // Bollinger Band mean reversion
-      bb.percentB < 10 ? 20 : bb.percentB < 20 ? 15 : bb.percentB < 30 ? 8 : 0,
-      // ADX trend strength + directional movement
-      adx.adx > 30 && adx.pdi > adx.ndi ? 20 : adx.pdi > adx.ndi ? 12 : 0,
-      // Volatility environment bonus
-      volatility > 0.03 && volatility < 0.06 ? 8 : 0,
-      // Support level proximity
-      finalSupports.some(support => Math.abs(currentPrice - support) / currentPrice < 0.02) ? 12 : 0
-    ].reduce((sum, score) => sum + score, 0);
+    // Optimized signal scoring with vectorized calculations
+    let bullishSignals = 0, bearishSignals = 0;
     
-    // Enhanced bearish signal scoring with momentum weighting
-    const bearishSignals = [
-      // RSI momentum (overbought conditions)
-      rsi > 80 ? 30 : rsi > 70 ? 25 : rsi > 60 ? 15 : rsi > 50 ? 8 : 0,
-      // MACD trend confirmation
-      macd.histogram < -50 ? 35 : macd.histogram < 0 ? 25 : macd.histogram < 20 ? 10 : 0,
-      // EMA trend alignment (multiple timeframes)
-      ema.short < ema.medium && ema.medium < ema.long ? 25 : ema.short < ema.medium ? 15 : 0,
-      // Bollinger Band mean reversion
-      bb.percentB > 90 ? 20 : bb.percentB > 80 ? 15 : bb.percentB > 70 ? 8 : 0,
-      // ADX trend strength + directional movement
-      adx.adx > 30 && adx.ndi > adx.pdi ? 20 : adx.ndi > adx.pdi ? 12 : 0,
-      // Volatility environment bonus
-      volatility > 0.03 && volatility < 0.06 ? 8 : 0,
-      // Resistance level proximity
-      finalResistances.some(resistance => Math.abs(currentPrice - resistance) / currentPrice < 0.02) ? 12 : 0
-    ].reduce((sum, score) => sum + score, 0);
+    // RSI momentum scoring (optimized conditions)
+    if (rsi < 20) bullishSignals += 30;
+    else if (rsi < 30) bullishSignals += 25;
+    else if (rsi < 40) bullishSignals += 15;
+    else if (rsi < 50) bullishSignals += 8;
+    
+    if (rsi > 80) bearishSignals += 30;
+    else if (rsi > 70) bearishSignals += 25;
+    else if (rsi > 60) bearishSignals += 15;
+    else if (rsi > 50) bearishSignals += 8;
+    
+    // MACD histogram momentum (optimized)
+    const histogramAbs = Math.abs(macd.histogram);
+    if (macd.histogram > 50) bullishSignals += 35;
+    else if (macd.histogram > 0) bullishSignals += 25;
+    else if (macd.histogram > -20) bullishSignals += 10;
+    
+    if (macd.histogram < -50) bearishSignals += 35;
+    else if (macd.histogram < 0) bearishSignals += 25;
+    else if (macd.histogram < 20) bearishSignals += 10;
+    
+    // EMA trend alignment (vectorized)
+    const shortAboveMedium = ema.short > ema.medium;
+    const mediumAboveLong = ema.medium > ema.long;
+    if (shortAboveMedium && mediumAboveLong) bullishSignals += 25;
+    else if (shortAboveMedium) bullishSignals += 15;
+    
+    if (!shortAboveMedium && !mediumAboveLong) bearishSignals += 25;
+    else if (!shortAboveMedium) bearishSignals += 15;
+    
+    // Bollinger Band positions (optimized)
+    if (bb.percentB < 10) bullishSignals += 20;
+    else if (bb.percentB < 20) bullishSignals += 15;
+    else if (bb.percentB < 30) bullishSignals += 8;
+    
+    if (bb.percentB > 90) bearishSignals += 20;
+    else if (bb.percentB > 80) bearishSignals += 15;
+    else if (bb.percentB > 70) bearishSignals += 8;
+    
+    // ADX directional strength (optimized)
+    const strongTrend = adx.adx > 30;
+    if (strongTrend && adx.pdi > adx.ndi) bullishSignals += 20;
+    else if (adx.pdi > adx.ndi) bullishSignals += 12;
+    
+    if (strongTrend && adx.ndi > adx.pdi) bearishSignals += 20;
+    else if (adx.ndi > adx.pdi) bearishSignals += 12;
+    
+    // Volatility environment (single check)
+    const optimalVolatility = volatility > 0.03 && volatility < 0.06;
+    if (optimalVolatility) {
+      bullishSignals += 8;
+      bearishSignals += 8;
+    }
+    
+    // Support/Resistance proximity (optimized)
+    const priceThreshold = currentPrice * 0.02;
+    const nearSupport = finalSupports.some(support => Math.abs(currentPrice - support) < priceThreshold);
+    const nearResistance = finalResistances.some(resistance => Math.abs(currentPrice - resistance) < priceThreshold);
+    
+    if (nearSupport) bullishSignals += 12;
+    if (nearResistance) bearishSignals += 12;
     
     // Multi-factor confluence analysis
     const signalStrength = Math.abs(bullishSignals - bearishSignals);

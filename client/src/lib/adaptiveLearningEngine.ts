@@ -132,49 +132,48 @@ class AdaptiveLearningEngine {
   }
 
   /**
-   * Adapt weights based on performance scores
+   * Optimized weight adaptation with vectorized calculations
    */
   private adaptWeights(
     currentWeights: AdaptiveWeights, 
     indicatorScores: Record<string, number>, 
     overallWinRate: number | null
   ): AdaptiveWeights {
+    // Early return for poor performance
+    if (!overallWinRate || overallWinRate < 30) return currentWeights;
+    
     const newWeights = { ...currentWeights };
+    const baseline = 0.5;
+    const learningRate = this.LEARNING_RATE;
     
-    // Only adapt if we have meaningful win rate data
-    if (!overallWinRate || overallWinRate < 30) {
-      return newWeights; // Don't adapt on very poor performance
-    }
+    // Vectorized weight updates
+    const indicatorKeys = Object.keys(indicatorScores);
+    let bestScore = 0;
+    let bestIndicator = '';
     
-    // Adaptive learning formula: adjust based on performance vs baseline
-    const baseline = 0.5; // 50% baseline performance
-    
-    for (const [indicator, score] of Object.entries(indicatorScores)) {
-      if (indicator in newWeights) {
-        const currentWeight = currentWeights[indicator as keyof AdaptiveWeights];
-        const performance = score - baseline;
-        
-        // Apply learning rate and performance adjustment
-        const adjustment = this.LEARNING_RATE * performance;
-        let newWeight = currentWeight + adjustment;
-        
-        // Constrain weights to reasonable bounds
-        newWeight = Math.max(0.1, Math.min(2.0, newWeight));
-        
-        (newWeights as any)[indicator] = newWeight;
-      }
-    }
-    
-    // Boost weights for high-performing indicators
-    if (overallWinRate > 70) {
-      // Find best performing indicator
-      const bestIndicator = Object.entries(indicatorScores)
-        .reduce((best, [name, score]) => score > best.score ? { name, score } : best, 
-                { name: '', score: 0 });
+    for (const indicator of indicatorKeys) {
+      if (!(indicator in newWeights)) continue;
       
-      if (bestIndicator.name && bestIndicator.name in newWeights) {
-        (newWeights as any)[bestIndicator.name] *= 1.1; // 10% boost
+      const score = indicatorScores[indicator];
+      const currentWeight = currentWeights[indicator as keyof AdaptiveWeights];
+      const performance = score - baseline;
+      
+      // Optimized weight calculation
+      const adjustment = learningRate * performance;
+      const newWeight = Math.max(0.1, Math.min(2.0, currentWeight + adjustment));
+      
+      (newWeights as any)[indicator] = newWeight;
+      
+      // Track best performing indicator
+      if (score > bestScore) {
+        bestScore = score;
+        bestIndicator = indicator;
       }
+    }
+    
+    // Performance boost for high win rates
+    if (overallWinRate > 70 && bestIndicator && bestIndicator in newWeights) {
+      (newWeights as any)[bestIndicator] *= 1.1;
     }
     
     return newWeights;
