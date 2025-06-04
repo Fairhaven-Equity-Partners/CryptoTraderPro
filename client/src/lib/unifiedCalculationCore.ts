@@ -1138,6 +1138,22 @@ class UnifiedCalculationCore {
 
 export const unifiedCalculationCore = new UnifiedCalculationCore();
 
+// Export individual signal calculation function for manual timeframe selection
+export function calculateAdvancedSignal(symbol: string, timeframe: TimeFrame, chartData: any[], currentPrice: number) {
+  try {
+    // Update market data for this specific timeframe
+    unifiedCalculationCore.updateMarketData(symbol, timeframe, chartData);
+    
+    // Generate signal for the specific timeframe
+    const signal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentPrice);
+    
+    return signal;
+  } catch (error) {
+    console.error(`Error calculating signal for ${timeframe}:`, error);
+    return null;
+  }
+}
+
 // Export the multi-timeframe calculation function for backward compatibility
 export function calculateMultiTimeframeSignals(symbol: string, currentPrice: number, chartData: any) {
   const results = new Map();

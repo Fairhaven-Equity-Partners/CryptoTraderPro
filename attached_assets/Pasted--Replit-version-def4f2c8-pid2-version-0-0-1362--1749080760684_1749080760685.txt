@@ -1,0 +1,713 @@
+ Replit version def4f2c8, pid2 version 0.0.1362
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-00e0f99389f7204c.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-00e0f99389f7204c.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-00e0f99389f7204c.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-00e0f99389f7204c.js:1
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=VOnhtM8aW8uM' failed: 
+t @ eruda.js:2
+setupWebSocket @ client:536
+(anonymous) @ client:531
+eruda.js:2 Uncaught (in promise) 
+t @ eruda.js:2
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+ Technical indicators module initialized
+ 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+ 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+ Technical indicators module initialized
+ Establishing data connection...
+ Technical indicators module initialized
+ [FinalPriceSystem] Initialized with 60s refresh interval
+ ===================================================
+ Cryptocurrency Analysis Platform Initialized
+ All subsystems ready for signal generation
+ ===================================================
+ [AdvancedSignalDashboard] No valid price found for BTC/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:287
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:289
+renderWithHooks @ chunk-276SZO74.js:11548
+mountIndeterminateComponent @ chunk-276SZO74.js:14926
+beginWork @ chunk-276SZO74.js:15914
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performConcurrentWorkOnRoot @ chunk-276SZO74.js:18678
+workLoop @ chunk-276SZO74.js:197
+flushWork @ chunk-276SZO74.js:176
+performWorkUntilDeadline @ chunk-276SZO74.js:384
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ Loading chart with 500 data points for BTC/USDT (4h)
+ [PriceOverview] Setting up price updates for BTC/USDT
+ [FinalPriceSystem] Initialized with 180s refresh interval
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Started tracking BTC/USDT
+ [FinalPriceSystem] Subscribed to price updates for BTC/USDT
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart with 200 data points for BTC/USDT (1w)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Trade simulations query status: Object
+ 🧠 Initializing continuous learning feedback loop for BTC/USDT
+ 🧠 Starting continuous learning for BTC/USDT
+ [AdvancedSignalDashboard] Using chart data price: 131481.33366714048
+ ⚡ Starting synchronized calculation system
+ ⚡ Starting synchronized price & calculation system
+ ✅ Synchronized calculation system ready
+ Trade data: 7 total, 7 active, 0 completed
+ [AdvancedSignalDashboard] Using chart data price: 131481.33366714048
+ Trade simulations query status: Object
+ Data connection established
+ ✅ Initializing streamlined calculation system
+ [StreamlinedPriceManager] Initializing optimized price management
+ Trade data: 7 total, 7 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 7 total, 7 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 104804.23
+ 💰 PRICE UPDATE: BTC/USDT = 104804.23 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [PriceOverview] Price update received: 104804.23
+ [StreamlinedPriceManager] Price update: 104804.23
+ 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104804.23
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ 🚀 STARTING CALCULATION: Timer triggered with 1749080704.077s since last calc (3-minute interval reached)
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: TRENDING_UP, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 4 patterns for 1m timeframe
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 104804.23
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 104804.23
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=83%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=LONG, Confidence=83%
+ Generated 3 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: LONG
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: NORMAL, Direction=SHORT, Confidence=60%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=60%
+ Generated 6 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=75%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=LONG, Confidence=75%
+ Generated 6 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: LONG
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: NEUTRAL
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 6 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 6 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 6 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 8 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 131481.33366714048 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: NEUTRAL
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Recording predictions using live price: 131481.33366714048
+ Trade data: 7 total, 7 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Data connection established
+ Subscribed to symbols: BTC/USDT
+ Trade data: 7 total, 7 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 📈 Prediction recorded: BTC/USDT 1m SHORT @ 131481.33366714048
+ 🎯 Stop Loss: 131685.66, Take Profit: 131072.69
+ 📈 Recorded prediction: 1m SHORT @ 131481.33366714048
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade simulations query status: Object
+ 📈 Prediction recorded: BTC/USDT 5m LONG @ 131481.33366714048
+ 🎯 Stop Loss: 131157.51, Take Profit: 132128.97
+ 📈 Recorded prediction: 5m LONG @ 131481.33366714048
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 131481.33366714048
+ 🎯 Stop Loss: 132040.75, Take Profit: 130362.49
+ 📈 Recorded prediction: 15m SHORT @ 131481.33366714048
+ 📈 Prediction recorded: BTC/USDT 30m LONG @ 131481.33366714048
+ 🎯 Stop Loss: 130751.79, Take Profit: 132940.43
+ 📈 Recorded prediction: 30m LONG @ 131481.33366714048
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 📈 Prediction recorded: BTC/USDT 4h LONG @ 131481.33366714048
+ 🎯 Stop Loss: 128985.47, Take Profit: 136473.06
+ 📈 Recorded prediction: 4h LONG @ 131481.33366714048
+ 📈 Prediction recorded: BTC/USDT 3d LONG @ 131481.33366714048
+ 🎯 Stop Loss: 119831.30, Take Profit: 154781.40
+ 📈 Recorded prediction: 3d LONG @ 131481.33366714048
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ No signal available for BTC/USDT on 4h
+ Calculation process complete for BTC/USDT - 10 signals generated
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ [FinalPriceSystem] Next fetch in 50s
+ [FinalPriceSystem] Next fetch in 170s
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Scheduled price update check (15-second interval) at 5:45:18 PM
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 133108.76 → 104809.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 104809
+ [StreamlinedPriceManager] Price update: 104809
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104809
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=14.78s (need 180s)
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 104809
+ [useMarketData] Price update for BTC/USDT: 104809 - NOT dispatching extra event
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ [FinalPriceSystem] Next fetch in 40s
+ [FinalPriceSystem] Next fetch in 160s
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 🎯 Manual timeframe selection: 15m - triggering immediate calculation
+ Updating trade recommendation for 15m timeframe
+ ⚡ Triggering immediate calculation for 15m with live price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Error in manual calculation for 15m: 
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:1238
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 🎯 Manual timeframe selection: 1h - triggering immediate calculation
+ Updating trade recommendation for 1h timeframe
+ ⚡ Triggering immediate calculation for 1h with live price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Error in manual calculation for 1h: 
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:1238
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 🎯 Manual timeframe selection: 4h - triggering immediate calculation
+ Updating trade recommendation for 4h timeframe
+ ⚡ Triggering immediate calculation for 4h with live price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Error in manual calculation for 4h: 
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:1238
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Loading chart with 500 data points for BTC/USDT (4h)
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ [FinalPriceSystem] Next fetch in 30s
+ Scheduled price update check (15-second interval) at 5:45:33 PM
+ [FinalPriceSystem] Next fetch in 150s
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 104809.00 → 104807.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 104807
+ [StreamlinedPriceManager] Price update: 104807
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104807
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=29.823s (need 180s)
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 104807
+ [useMarketData] Price update for BTC/USDT: 104807 - NOT dispatching extra event
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 8 total, 8 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade simulations query status: Object
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 🎯 Manual timeframe selection: 15m - triggering immediate calculation
+ Updating trade recommendation for 15m timeframe
+ ⚡ Triggering immediate calculation for 15m with live price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Error in manual calculation for 15m: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 🎯 Manual timeframe selection: 1h - triggering immediate calculation
+ Updating trade recommendation for 1h timeframe
+ ⚡ Triggering immediate calculation for 1h with live price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Error in manual calculation for 1h: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 🎯 Manual timeframe selection: 4h - triggering immediate calculation
+ Updating trade recommendation for 4h timeframe
+ ⚡ Triggering immediate calculation for 4h with live price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Error in manual calculation for 4h: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Loading chart with 500 data points for BTC/USDT (4h)
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104804.23
+ 🎯 Manual timeframe selection: 1d - triggering immediate calculation
+ Updating trade recommendation for 1d timeframe
+ ⚡ Triggering immediate calculation for 1d with live price: 104804.23
+ Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Error in manual calculation for 1d: TypeError: calculateAdvancedSignal is not a function
+    at AdvancedSignalDashboard.tsx:1650:30
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 🎯 Manual timeframe selection: 3d - triggering immediate calculation
+Console.js:61 Updating trade recommendation for 3d timeframe
+Console.js:61 ⚡ Triggering immediate calculation for 3d with live price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Error in manual calculation for 3d: TypeError: calculateAdvancedSignal is not a function
+    at AdvancedSignalDashboard.tsx:1650:30
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 [FinalPriceSystem] Next fetch in 20s
+Console.js:61 [FinalPriceSystem] Next fetch in 140s
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 🎯 Manual timeframe selection: 1w - triggering immediate calculation
+Console.js:61 Updating trade recommendation for 1w timeframe
+Console.js:61 ⚡ Triggering immediate calculation for 1w with live price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Error in manual calculation for 1w: TypeError: calculateAdvancedSignal is not a function
+    at AdvancedSignalDashboard.tsx:1650:30
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Loading chart with 200 data points for BTC/USDT (1w)
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 🎯 Manual timeframe selection: 1M - triggering immediate calculation
+Console.js:61 Updating trade recommendation for 1M timeframe
+Console.js:61 ⚡ Triggering immediate calculation for 1M with live price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Error in manual calculation for 1M: TypeError: calculateAdvancedSignal is not a function
+    at AdvancedSignalDashboard.tsx:1650:30
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Loading chart with 60 data points for BTC/USDT (1M)
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Scheduled price update check (15-second interval) at 5:45:48 PM
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 CoinGecko real-time price data: Object
+Console.js:61 Price update for BTC/USDT: 104807.00 → 104807.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [PriceOverview] Price update received: 104807
+Console.js:61 [StreamlinedPriceManager] Price update: 104807
+Console.js:61 🔥 RAW LIVE PRICE EVENT: Object
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104807
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=44.746s (need 180s)
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 104807
+Console.js:61 [useMarketData] Price update for BTC/USDT: 104807 - NOT dispatching extra event
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 [FinalPriceSystem] Next fetch in 10s
+Console.js:61 [FinalPriceSystem] Next fetch in 130s
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
+Console.js:61 Trade data: 13 total, 13 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104804.23
