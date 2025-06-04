@@ -422,15 +422,24 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Only run calculations every 3 minutes (180 seconds) when timer triggered
-        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 180) {
-          console.log(`🚀 STARTING CALCULATION: Timer triggered with ${timeSinceLastCalc}s since last calc (3-minute interval reached)`);
+        // Autonomous calculation logic: More flexible for full automation
+        const shouldCalculate = hasMinimumData && !isCalculating && isTimerTriggered && (
+          // Always calculate if it's been 3+ minutes (normal interval)
+          timeSinceLastCalc >= 180 ||
+          // OR if it's been at least 60 seconds and we have significant price movement
+          (timeSinceLastCalc >= 60 && event.detail.forceCalculate === true) ||
+          // OR if this is the first calculation after system startup
+          lastCalculationRef.current === 0
+        );
+
+        if (shouldCalculate) {
+          console.log(`🚀 AUTONOMOUS CALCULATION: Timer triggered with ${timeSinceLastCalc}s since last calc (autonomous mode)`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals();
         } else {
-          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s (need 180s)`);
+          console.log(`Calculation deferred: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s (autonomous mode active)`);
         }
       }
     };
@@ -555,9 +564,13 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // Streamlined data validation
-    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0) {
-      // Data ready - calculations controlled by 3-minute timer
+    // Autonomous startup calculation
+    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0 && lastCalculationRef.current === 0 && !isCalculating) {
+      console.log(`🚀 AUTONOMOUS STARTUP: Triggering initial calculation for ${symbol}`);
+      setIsCalculating(true);
+      lastCalculationRef.current = Date.now();
+      lastCalculationTimeRef.current = Date.now() / 1000;
+      calculateAllSignals();
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
