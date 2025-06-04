@@ -74,233 +74,175 @@ export default function InstitutionalAnalysisDashboard({
   const confidence = signal.confidence || 75;
   const direction = signal.direction || 'NEUTRAL';
   
-  // Generate institutional analysis data
-  const vwapPrice = currentPrice * (1 + (Math.random() - 0.5) * 0.002);
-  const upperBand = vwapPrice * 1.015;
-  const lowerBand = vwapPrice * 0.985;
-  const vwapPosition = currentPrice > vwapPrice ? 'above' : 'below';
+  // Extract real institutional analysis data from signal
+  const marketStructure = signal.indicators?.marketStructure || signal.marketStructure;
   
-  const supplyLevel = currentPrice * 1.025;
-  const demandLevel = currentPrice * 0.975;
-  const zoneStrength = confidence > 70 ? 'strong' : 'moderate';
+  // Use authentic VWAP data if available, otherwise calculate from current price
+  const vwapData = marketStructure?.vwap || {
+    value: currentPrice,
+    upperBand: currentPrice * 1.015,
+    lowerBand: currentPrice * 0.985,
+    position: 'inside'
+  };
   
-  const nearestPsychLevel = Math.round(currentPrice / 1000) * 1000;
+  // Use authentic supply/demand zones if available
+  const zones = marketStructure?.supplyDemandZones || {
+    supply: [currentPrice * 1.025],
+    demand: [currentPrice * 0.975],
+    strength: confidence > 70 ? 'strong' : 'moderate'
+  };
+  
+  // Use authentic psychological levels if available
+  const psychLevels = marketStructure?.psychologicalLevels || {
+    levels: [Math.round(currentPrice / 1000) * 1000],
+    fibonacciConfluence: true,
+    roundNumberProximity: 0.05
+  };
+  
+  // Use authentic candlestick analysis if available
+  const candlestickData = marketStructure?.candlestickSignal || {
+    pattern: confidence > 80 ? 'Strong reversal pattern' : 'Continuation pattern',
+    direction: direction === 'LONG' ? 'bullish' : direction === 'SHORT' ? 'bearish' : 'neutral',
+    reliability: confidence
+  };
+  
   const fibLevels = [
-    { level: nearestPsychLevel * 1.236, name: '123.6% Extension' },
-    { level: nearestPsychLevel * 0.618, name: '61.8% Retracement' }
+    { level: psychLevels.levels[0] * 1.236, name: '123.6% Extension' },
+    { level: psychLevels.levels[0] * 0.618, name: '61.8% Retracement' }
   ];
-  
-  const scalpingDirection = direction === 'LONG' ? 'bullish' : direction === 'SHORT' ? 'bearish' : 'neutral';
-  const scalpingPattern = confidence > 80 ? 'Strong reversal pattern' : 'Continuation pattern';
 
   const getVWAPPositionColor = (position: string) => {
     switch (position) {
-      case 'above': return 'text-green-400 bg-green-900/20';
-      case 'below': return 'text-red-400 bg-red-900/20';
-      default: return 'text-yellow-400 bg-yellow-900/20';
+      case 'above': return 'text-green-200 bg-green-800/40 border-green-600';
+      case 'below': return 'text-red-200 bg-red-800/40 border-red-600';
+      default: return 'text-yellow-200 bg-yellow-800/40 border-yellow-600';
     }
   };
 
   const getZoneStrengthColor = (strength: string) => {
     switch (strength) {
-      case 'strong': return 'text-purple-400 bg-purple-900/20';
-      case 'moderate': return 'text-blue-400 bg-blue-900/20';
-      default: return 'text-gray-400 bg-gray-900/20';
+      case 'strong': return 'text-purple-200 bg-purple-800/40 border-purple-600';
+      case 'moderate': return 'text-blue-200 bg-blue-800/40 border-blue-600';
+      default: return 'text-gray-200 bg-gray-800/40 border-gray-600';
     }
   };
 
   const getCandlestickDirectionColor = (direction: string) => {
     switch (direction) {
-      case 'bullish': return 'text-green-400 bg-green-900/20';
-      case 'bearish': return 'text-red-400 bg-red-900/20';
-      default: return 'text-gray-400 bg-gray-900/20';
+      case 'bullish': return 'text-green-200 bg-green-800/40 border-green-600';
+      case 'bearish': return 'text-red-200 bg-red-800/40 border-red-600';
+      default: return 'text-gray-200 bg-gray-800/40 border-gray-600';
     }
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
       {/* VWAP Analysis */}
-      <Card className="bg-gradient-to-br from-blue-900/20 to-blue-800/10 border-blue-700/50">
-        <CardHeader>
-          <CardTitle className="text-blue-300 flex items-center gap-2">
-            <Activity className="h-5 w-5" />
-            VWAP Analysis ({timeframe})
+      <Card className="bg-slate-900/80 border-slate-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
+            <Activity className="h-3 w-3" />
+            VWAP ({timeframe})
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-sm text-slate-400">VWAP</div>
-              <div className="text-lg font-semibold text-blue-300">
-                {formatPrice(vwapPrice)}
-              </div>
+        <CardContent className="space-y-2 pt-0">
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Upper</span>
+              <span className="text-green-300 font-mono">{formatPrice(vwapData.upperBand)}</span>
             </div>
-            <div>
-              <div className="text-sm text-slate-400">Position</div>
-              <Badge className={getVWAPPositionColor(vwapPosition)}>
-                {vwapPosition.toUpperCase()}
-              </Badge>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">VWAP</span>
+              <span className="text-blue-300 font-mono font-medium">{formatPrice(vwapData.value)}</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Lower</span>
+              <span className="text-red-300 font-mono">{formatPrice(vwapData.lowerBand)}</span>
             </div>
           </div>
           
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Upper Band (95%)</span>
-              <span className="text-green-400">{formatPrice(upperBand)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Current Price</span>
-              <span className="text-white font-medium">{formatPrice(currentPrice)}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-slate-400">Lower Band (95%)</span>
-              <span className="text-red-400">{formatPrice(lowerBand)}</span>
-            </div>
-          </div>
-
-          <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
-            <div className="text-xs text-slate-300">
-              {vwapPosition === 'above' && 
-                "Price trading above VWAP upper band - potential mean reversion or strong bullish momentum"
-              }
-              {vwapPosition === 'below' && 
-                "Price trading below VWAP lower band - potential mean reversion or strong bearish momentum"
-              }
-            </div>
+          <div className="mt-2">
+            <Badge className={`text-xs px-2 py-0.5 ${getVWAPPositionColor(vwapData.position)}`}>
+              {vwapData.position.toUpperCase()}
+            </Badge>
           </div>
         </CardContent>
       </Card>
 
       {/* Supply & Demand Zones */}
-      <Card className="bg-gradient-to-br from-purple-900/20 to-purple-800/10 border-purple-700/50">
-        <CardHeader>
-          <CardTitle className="text-purple-300 flex items-center gap-2">
-            <Target className="h-5 w-5" />
-            Supply & Demand Zones
+      <Card className="bg-slate-900/80 border-slate-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
+            <Target className="h-3 w-3" />
+            S&D Zones
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-400">Zone Strength</span>
-            <Badge className={getZoneStrengthColor(zoneStrength)}>
-              {zoneStrength.toUpperCase()}
+        <CardContent className="space-y-2 pt-0">
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Supply</span>
+              <span className="text-red-300 font-mono">{formatPrice(zones.supply[0] || currentPrice * 1.025)}</span>
+            </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Demand</span>
+              <span className="text-green-300 font-mono">{formatPrice(zones.demand[0] || currentPrice * 0.975)}</span>
+            </div>
+          </div>
+          
+          <div className="mt-2">
+            <Badge className={`text-xs px-2 py-0.5 ${getZoneStrengthColor(zones.strength)}`}>
+              {zones.strength.toUpperCase()}
             </Badge>
-          </div>
-
-          <div className="space-y-3">
-            <div>
-              <div className="text-sm text-red-400 mb-2 flex items-center gap-1">
-                <TrendingDown className="h-4 w-4" />
-                Supply Zone (Resistance)
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Level</span>
-                <span className="text-red-300">{formatPrice(supplyLevel)}</span>
-              </div>
-              <div className="text-xs text-slate-400 mt-1">
-                Institutional selling pressure zone
-              </div>
-            </div>
-
-            <div>
-              <div className="text-sm text-green-400 mb-2 flex items-center gap-1">
-                <TrendingUp className="h-4 w-4" />
-                Demand Zone (Support)
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-400">Level</span>
-                <span className="text-green-300">{formatPrice(demandLevel)}</span>
-              </div>
-              <div className="text-xs text-slate-400 mt-1">
-                Institutional buying interest zone
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
-            <div className="text-xs text-slate-300">
-              Institutional supply/demand zones based on fractal analysis. 
-              {zoneStrength === 'strong' && ' Strong institutional interest detected.'}
-              {zoneStrength === 'moderate' && ' Moderate institutional activity.'}
-            </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Psychological Levels & Fibonacci */}
-      <Card className="bg-gradient-to-br from-yellow-900/20 to-yellow-800/10 border-yellow-700/50">
-        <CardHeader>
-          <CardTitle className="text-yellow-300 flex items-center gap-2">
-            <Crosshair className="h-5 w-5" />
-            Psychological Levels
+      <Card className="bg-slate-900/80 border-slate-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
+            <Crosshair className="h-3 w-3" />
+            Key Levels
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-400">Key Level</span>
-            <span className="text-yellow-300 font-medium">{formatPrice(nearestPsychLevel)}</span>
-          </div>
-
-          <div className="space-y-2">
-            <div className="text-sm text-slate-400 mb-2">Fibonacci Levels</div>
+        <CardContent className="space-y-2 pt-0">
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Psych</span>
+              <span className="text-yellow-300 font-mono">{formatPrice(psychLevels.levels[0])}</span>
+            </div>
             {fibLevels.map((fib, idx) => (
-              <div key={idx} className="flex justify-between text-sm">
-                <span className="text-slate-400">{fib.name}</span>
-                <span className="text-yellow-300">{formatPrice(fib.level)}</span>
+              <div key={idx} className="flex justify-between text-xs">
+                <span className="text-slate-400">{fib.name.split(' ')[0]}</span>
+                <span className="text-yellow-300 font-mono">{formatPrice(fib.level)}</span>
               </div>
             ))}
-          </div>
-
-          <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
-            <div className="text-xs text-slate-300">
-              Psychological levels with Fibonacci confirmation on {timeframe} timeframe. 
-              Watch for price reactions at these levels.
-            </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Candlestick Analysis for Scalping */}
-      <Card className="bg-gradient-to-br from-emerald-900/20 to-emerald-800/10 border-emerald-700/50">
-        <CardHeader>
-          <CardTitle className="text-emerald-300 flex items-center gap-2">
-            <BarChart3 className="h-5 w-5" />
-            Scalping Analysis ({timeframe})
+      <Card className="bg-slate-900/80 border-slate-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm text-slate-200 flex items-center gap-1">
+            <BarChart3 className="h-3 w-3" />
+            Scalping ({timeframe})
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <div className="text-sm text-slate-400">Direction</div>
-              <Badge className={getCandlestickDirectionColor(scalpingDirection)}>
-                {scalpingDirection.toUpperCase()}
+        <CardContent className="space-y-2 pt-0">
+          <div className="space-y-1">
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Direction</span>
+              <Badge className={`text-xs px-2 py-0.5 ${getCandlestickDirectionColor(candlestickData.direction)}`}>
+                {candlestickData.direction.charAt(0).toUpperCase() + candlestickData.direction.slice(1)}
               </Badge>
             </div>
-            <div>
-              <div className="text-sm text-slate-400">Confidence</div>
-              <div className="text-lg font-semibold text-emerald-300">
-                {confidence}%
-              </div>
+            <div className="flex justify-between text-xs">
+              <span className="text-slate-400">Confidence</span>
+              <span className="text-slate-200 font-mono">{candlestickData.reliability}%</span>
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <div className="text-sm text-slate-400">Pattern</div>
-            <div className="text-sm text-emerald-300">{scalpingPattern}</div>
-          </div>
-
-          <div className="mt-4 p-3 bg-slate-800/50 rounded-lg">
-            <div className="text-xs text-slate-300">
-              {(timeframe === '1m' || timeframe === '5m' || timeframe === '15m') ? (
-                <>
-                  {confidence > 75 ? 
-                    "High probability scalp setup - watch for continuation" :
-                    "Moderate setup - wait for additional confirmation"
-                  }
-                </>
-              ) : (
-                "Use 1m-15m timeframes for optimal scalping signals"
-              )}
+            <div className="text-xs text-slate-400 mt-1">
+              {candlestickData.pattern}
             </div>
           </div>
         </CardContent>
