@@ -155,9 +155,9 @@ export default function AdvancedSignalDashboard({
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           
-          // Directly calculate with a short delay, but without showing alerts
+          // Directly calculate with live price from event
           setTimeout(() => {
-            calculateAllSignals();
+            calculateAllSignals(event.detail.price);
             // Toast notification removed as requested
           }, 100);
         }
@@ -793,7 +793,7 @@ export default function AdvancedSignalDashboard({
   };
 
   // Function to calculate signals for all timeframes
-  const calculateAllSignals = useCallback(async () => {
+  const calculateAllSignals = useCallback(async (livePrice?: number) => {
     if (isCalculating) {
       console.log(`Calculation already in progress for ${symbol}, skipping new request`);
       return;
@@ -822,11 +822,16 @@ export default function AdvancedSignalDashboard({
           // Start calculation with realistic logging
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
-          // Generate signal using our technical analysis functions
+          // Use live price if available, otherwise fall back to current price
+          const priceToUse = livePrice || currentAssetPrice;
+          console.log(`🔍 Using price for ${symbol} calculation: ${priceToUse} (live: ${livePrice}, cached: ${currentAssetPrice})`);
+          
+          // Generate signal using our technical analysis functions with live price
           let signal = await generateSignal(
             chartData[timeframe],
             timeframe,
-            symbol
+            symbol,
+            priceToUse
           );
           
           // Generate pattern formations based on signal direction and timeframe

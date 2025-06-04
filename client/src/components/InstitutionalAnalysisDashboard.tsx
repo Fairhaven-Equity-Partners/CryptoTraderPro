@@ -67,6 +67,9 @@ export default function InstitutionalAnalysisDashboard({
   // Extract real institutional analysis data from signal
   const marketStructure = signal.indicators?.marketStructure || signal.marketStructure;
   
+  console.log(`[InstitutionalAnalysis] Signal data:`, signal);
+  console.log(`[InstitutionalAnalysis] Market structure:`, marketStructure);
+  
   // Use authentic VWAP data if available, otherwise calculate from current price
   const vwapData = marketStructure?.vwap || {
     value: currentPrice,
@@ -74,6 +77,8 @@ export default function InstitutionalAnalysisDashboard({
     lowerBand: currentPrice * 0.985,
     position: 'inside'
   };
+  
+  console.log(`[InstitutionalAnalysis] VWAP data:`, vwapData);
   
   // Use authentic supply/demand zones if available
   const zones = marketStructure?.supplyDemandZones || {
