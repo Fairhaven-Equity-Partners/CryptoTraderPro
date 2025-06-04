@@ -662,6 +662,8 @@ class UnifiedCalculationCore {
     
     if (!data || data.length < 50) return null;
     
+    console.log(`[${timeframe}] Using currentAssetPrice: ${currentPrice} for calculation`);
+    
     // Calculate traditional indicators
     const rsi = this.calculateRSI(data);
     const macd = this.calculateMACD(data);

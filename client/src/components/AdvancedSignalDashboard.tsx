@@ -93,6 +93,9 @@ export default function AdvancedSignalDashboard({
 
   const currentAssetPrice = currentAssetData?.currentPrice || 0;
   
+  // Debug logging to track price values
+  console.log(`[AdvancedSignalDashboard] Current asset price: ${currentAssetPrice}`);
+  
   // Calculate signals when data changes
   const calculateAllSignals = useCallback(async () => {
     if (isCalculating || !chartData || !currentAssetPrice) return;
