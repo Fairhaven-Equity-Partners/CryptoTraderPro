@@ -195,28 +195,26 @@ export default function ConsolidatedSignalDashboard({
 
   return (
     <Card className="w-full bg-gradient-to-br from-slate-900/95 to-slate-800/95 border-slate-700/50 shadow-2xl">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="text-white text-xl font-bold flex items-center gap-2">
-              {symbol} Signal Analysis
-              <Badge className="bg-blue-500 text-white font-semibold px-2 py-1 text-xs">
+            <CardTitle className="text-white text-sm font-medium flex items-center gap-2">
+              {symbol}
+              <Badge className="bg-blue-500 text-white font-medium px-1 py-0.5 text-xs">
                 LIVE
               </Badge>
             </CardTitle>
-            <CardDescription className="text-slate-300 text-sm mt-1">
-              Real-time market analysis with predictive accuracy tracking
-            </CardDescription>
           </div>
-          <div className="text-right">
-            <div className="text-white text-2xl font-bold">
+          <div className="flex items-center space-x-2 text-right">
+            <div className="text-white text-sm font-medium">
               ${formatCurrency(currentAssetPrice || 0)}
             </div>
-            <div className={`text-sm font-medium ${
+            <div className={`text-xs font-medium ${
               priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
             }`}>
               {priceChange24h >= 0 ? '+' : ''}{priceChange24h.toFixed(2)}%
             </div>
+            <div className="text-xs text-gray-400">24h</div>
           </div>
         </div>
       </CardHeader>
