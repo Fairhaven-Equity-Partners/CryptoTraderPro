@@ -1821,17 +1821,14 @@ export default function AdvancedSignalDashboard({
                   <span className="text-white font-semibold">
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
-                      console.log(`[Enhanced Debug] TF=${selectedTimeframe}, Available TFs:`, Object.keys(signals));
                       
                       if (!currentSignal) {
-                        console.log(`[Enhanced Debug] No signal for ${selectedTimeframe}`);
                         return 'CONSOLIDATION';
                       }
                       
                       // Generate timeframe-specific fractal analysis from live signal data
                       const direction = currentSignal.direction;
                       const confidence = currentSignal.confidence;
-                      console.log(`[Enhanced Debug] TF=${selectedTimeframe}: ${direction} @ ${confidence}%`);
                       
                       // Timeframe-specific fractal patterns
                       if (['1m', '5m', '15m'].includes(selectedTimeframe)) {
@@ -1864,16 +1861,13 @@ export default function AdvancedSignalDashboard({
                       const confidence = currentSignal.confidence;
                       const direction = currentSignal.direction;
                       
-                      let result;
                       if (['1m', '5m', '15m'].includes(selectedTimeframe)) {
-                        result = direction === 'SHORT' && confidence > 60 ? Math.floor(confidence / 15) : 1;
+                        return direction === 'SHORT' && confidence > 60 ? Math.floor(confidence / 15) : 1;
                       } else if (['30m', '1h', '4h'].includes(selectedTimeframe)) {
-                        result = direction === 'SHORT' && confidence > 55 ? Math.floor(confidence / 12) : 2;
+                        return direction === 'SHORT' && confidence > 55 ? Math.floor(confidence / 12) : 2;
                       } else {
-                        result = direction === 'SHORT' && confidence > 50 ? Math.floor(confidence / 10) : 3;
+                        return direction === 'SHORT' && confidence > 50 ? Math.floor(confidence / 10) : 3;
                       }
-                      console.log(`[Supply Debug] TF=${selectedTimeframe}, DIR=${direction}, CONF=${confidence}%, RESULT=${result}`);
-                      return result;
                     })()}
                   </span>
                 </div>
@@ -1976,6 +1970,7 @@ export default function AdvancedSignalDashboard({
                         pattern.name.includes('Harami')
                       );
                       
+                      console.log(`[Candlestick Debug] TF=${selectedTimeframe}, Total patterns: ${patternFormations.length}, Candlestick patterns: ${candlestickPatterns.length}`);
                       return candlestickPatterns.length;
                     })()}
                   </span>
@@ -2008,8 +2003,10 @@ export default function AdvancedSignalDashboard({
                       
                       const trendAlignment = trendSignals.length > 0 && trendSignals.every(t => t.signal === trendSignals[0].signal);
                       const momentumStrength = momentumSignals.some(m => m.strength === 'STRONG');
+                      const isConfirmed = (confidence > 65 && trendAlignment && momentumStrength);
                       
-                      return (confidence > 65 && trendAlignment && momentumStrength) ? 'Yes' : 'No';
+                      console.log(`[Structure Debug] TF=${selectedTimeframe}, CONF=${confidence}%, TrendAlign=${trendAlignment}, MomentumStrong=${momentumStrength}, Result=${isConfirmed ? 'Yes' : 'No'}`);
+                      return isConfirmed ? 'Yes' : 'No';
                     })()}
                   </span>
                 </div>
