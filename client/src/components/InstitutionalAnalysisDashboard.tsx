@@ -27,11 +27,9 @@ export default function InstitutionalAnalysisDashboard({
   
   const formatPrice = (price: number) => {
     return price?.toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
-    }) || '$0.00';
+    }) || '0.00';
   };
 
   // Get the most relevant signal for display
@@ -150,15 +148,15 @@ export default function InstitutionalAnalysisDashboard({
           <div className="space-y-1">
             <div className="flex justify-between">
               <span className={typography.label}>Upper</span>
-              <span className={typography.valuePositive}>{formatPrice(vwapData.upperBand)}</span>
+              <span className={typography.valuePositive}>${formatPrice(vwapData.upperBand)}</span>
             </div>
             <div className="flex justify-between">
               <span className={typography.label}>VWAP</span>
-              <span className={typography.valueNeutral}>{formatPrice(vwapData.value)}</span>
+              <span className={typography.valueNeutral}>${formatPrice(vwapData.value)}</span>
             </div>
             <div className="flex justify-between">
               <span className={typography.label}>Lower</span>
-              <span className={typography.valueNegative}>{formatPrice(vwapData.lowerBand)}</span>
+              <span className={typography.valueNegative}>${formatPrice(vwapData.lowerBand)}</span>
             </div>
           </div>
           
@@ -182,11 +180,11 @@ export default function InstitutionalAnalysisDashboard({
           <div className="space-y-1">
             <div className="flex justify-between">
               <span className={typography.label}>Supply</span>
-              <span className={typography.valueNegative}>{formatPrice(zones.supply[0] || currentPrice * 1.025)}</span>
+              <span className={typography.valueNegative}>${formatPrice(zones.supply[0] || currentPrice * 1.025)}</span>
             </div>
             <div className="flex justify-between">
               <span className={typography.label}>Demand</span>
-              <span className={typography.valuePositive}>{formatPrice(zones.demand[0] || currentPrice * 0.975)}</span>
+              <span className={typography.valuePositive}>${formatPrice(zones.demand[0] || currentPrice * 0.975)}</span>
             </div>
           </div>
           
@@ -210,12 +208,12 @@ export default function InstitutionalAnalysisDashboard({
           <div className="space-y-1">
             <div className="flex justify-between">
               <span className={typography.label}>Psych</span>
-              <span className={typography.valueWarning}>{formatPrice(psychLevels.levels[0])}</span>
+              <span className={typography.valueWarning}>${formatPrice(psychLevels.levels[0])}</span>
             </div>
             {fibLevels.map((fib, idx) => (
               <div key={idx} className="flex justify-between">
                 <span className={typography.label}>{fib.name.split(' ')[0]}</span>
-                <span className={typography.valueWarning}>{formatPrice(fib.level)}</span>
+                <span className={typography.valueWarning}>${formatPrice(fib.level)}</span>
               </div>
             ))}
           </div>
