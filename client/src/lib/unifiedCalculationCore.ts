@@ -702,6 +702,8 @@ class UnifiedCalculationCore {
     const supplyDemandZones = this.identifySupplyDemandZones(data);
     const psychologicalLevels = this.identifyPsychologicalLevels(data, currentPrice);
     const candlestickSignal = this.analyzeCandlestickPattern(data, timeframe);
+    
+    console.log(`[${timeframe}] Institutional Analysis: VWAP=${vwapAnalysis.value.toFixed(2)}, Position=${vwapAnalysis.position}, Candlestick=${candlestickSignal.pattern}`);
 
     const indicators: TechnicalIndicators = {
       rsi: {
