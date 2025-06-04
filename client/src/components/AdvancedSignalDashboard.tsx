@@ -1269,41 +1269,15 @@ export default function AdvancedSignalDashboard({
           
           return signal;
         } catch (error) {
-          // Return neutral signal instead of null to prevent console errors
-          return {
-            direction: 'NEUTRAL' as const,
-            confidence: 50,
-            entryPrice: currentAssetPrice,
-            stopLoss: currentAssetPrice * 0.98,
-            takeProfit: currentAssetPrice * 1.02,
-            timeframe: timeframe,
-            timestamp: Date.now(),
-            successProbability: 50,
-            indicators: {
-              trend: [],
-              momentum: [],
-              volume: [],
-              pattern: [],
-              volatility: []
-            },
-            patternFormations: [],
-            supportResistance: {
-              supports: [currentAssetPrice * 0.98],
-              resistances: [currentAssetPrice * 1.02],
-              pivotPoints: [currentAssetPrice]
-            },
-            environment: { trend: 'NEUTRAL', volatility: 'NORMAL', volume: 'NORMAL', sentiment: 'NEUTRAL' },
-            recommendedLeverage: {
-              conservative: 1,
-              moderate: 1,
-              aggressive: 1,
-              recommendation: 'conservative'
-            },
-            riskReward: 1,
-            marketStructure: { trend: 'SIDEWAYS', phase: 'CONSOLIDATION', strength: 50 },
-            volumeProfile: { volumeWeightedPrice: currentAssetPrice, highVolumeNodes: [], lowVolumeNodes: [] },
-            macroInsights: ['NEUTRAL_MARKET', 'LOW_VOLATILITY']
-          };
+          // Only return signal if we have valid live price data
+          if (!currentAssetPrice || !chartData[timeframe] || chartData[timeframe].length === 0) {
+            console.warn(`No valid data for ${timeframe} calculation - skipping signal generation`);
+            return null;
+          }
+          
+          // Log calculation error but don't generate synthetic signals
+          console.error(`Calculation error for ${timeframe}:`, error);
+          return null;
         }
       };
       
@@ -1379,7 +1353,11 @@ export default function AdvancedSignalDashboard({
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          const livePrice = currentAssetPrice || 105000; // Use current asset price
+          const livePrice = currentAssetPrice; // Only use actual live price data
+          if (!livePrice) {
+            console.warn('No live price available - skipping prediction recording');
+            return;
+          }
           console.log(`🎯 Recording predictions using live price: ${livePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
@@ -2273,59 +2251,70 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
-                        {/* Key Indicators Table */}
+                        {/* Key Indicators Table - Using Real Signal Data */}
                         <div className="space-y-1">
                           <h3 className="text-white font-bold text-xs">Key Indicators</h3>
                           
-                          {/* Dynamic indicators that change based on timeframe */}
-                          <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium text-xs">Moving Average</span>
-                            <Badge variant="outline" className={`${
-                              (selectedTimeframe === '15m' || selectedTimeframe === '1h')
-                                ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
-                                : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-xs`}>
-                              {(selectedTimeframe === '15m' || selectedTimeframe === '1h') ? 'BUY (M)' : 'BUY (S)'}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium text-xs">RSI</span>
-                            <Badge variant="outline" className={`${
-                              (selectedTimeframe === '15m')
-                                ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
-                                : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-xs`}>
-                              {selectedTimeframe === '15m' ? 'NEUTRAL (M)' : 'BUY (S)'}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-300 font-medium text-xs">MACD</span>
-                            <Badge variant="outline" className={`${
-                              (selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h')
-                                ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
-                                : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-xs`}>
-                              {(selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h') 
-                                ? 'BUY (M)' : 'BUY (S)'}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium text-xs">Bollinger Bands</span>
-                            <Badge variant="outline" className={`${
-                              (selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M')
-                                ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                                : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
-                            } px-1 py-0.5 text-xs`}>
-                              {(selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M') 
-                                ? 'BUY (S)' : 'BUY (M)'}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
-                            <span className="text-gray-100 font-medium text-xs">Support/Resistance</span>
-                            <Badge variant="outline" className="text-green-400 border-green-500 bg-green-900/30 font-bold px-1 py-0.5 text-xs">
-                              BUY (S)
-                            </Badge>
-                          </div>
+                          {/* Real indicators from calculated signal data */}
+                          {currentSignal?.indicators ? (
+                            <>
+                              {/* Trend Indicators */}
+                              {currentSignal.indicators.trend && currentSignal.indicators.trend.length > 0 && (
+                                <>
+                                  {currentSignal.indicators.trend.slice(0, 2).map((indicator, idx) => (
+                                    <div key={idx} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
+                                      <span className="text-gray-100 font-medium text-xs">{indicator.name}</span>
+                                      <Badge variant="outline" className={`${
+                                        indicator.signal === 'BUY'
+                                          ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
+                                          : indicator.signal === 'SELL'
+                                          ? 'text-red-400 border-red-500 bg-red-900/30 font-bold'
+                                          : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
+                                      } px-1 py-0.5 text-xs`}>
+                                        {indicator.signal} ({indicator.strength?.charAt(0) || 'M'})
+                                      </Badge>
+                                    </div>
+                                  ))}
+                                </>
+                              )}
+                              
+                              {/* Momentum Indicators */}
+                              {currentSignal.indicators.momentum && currentSignal.indicators.momentum.length > 0 && (
+                                <>
+                                  {currentSignal.indicators.momentum.slice(0, 2).map((indicator, idx) => (
+                                    <div key={idx} className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
+                                      <span className="text-gray-100 font-medium text-xs">{indicator.name}</span>
+                                      <Badge variant="outline" className={`${
+                                        indicator.signal === 'BUY'
+                                          ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
+                                          : indicator.signal === 'SELL'
+                                          ? 'text-red-400 border-red-500 bg-red-900/30 font-bold'
+                                          : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
+                                      } px-1 py-0.5 text-xs`}>
+                                        {indicator.signal} ({indicator.strength?.charAt(0) || 'M'})
+                                      </Badge>
+                                    </div>
+                                  ))}
+                                </>
+                              )}
+
+                              {/* Overall Signal Direction */}
+                              <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
+                                <span className="text-white font-bold text-xs">Overall Signal</span>
+                                <Badge variant="outline" className={`${
+                                  currentSignal.direction === 'LONG'
+                                    ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
+                                    : currentSignal.direction === 'SHORT'
+                                    ? 'text-red-400 border-red-500 bg-red-900/30 font-bold'
+                                    : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
+                                } px-1 py-0.5 text-xs`}>
+                                  {currentSignal.direction} ({Math.round(currentSignal.confidence)}%)
+                                </Badge>
+                              </div>
+                            </>
+                          ) : (
+                            <div className="text-gray-400 text-xs">Loading indicators...</div>
+                          )}
                         </div>
                         
                         {/* Macro Insights */}

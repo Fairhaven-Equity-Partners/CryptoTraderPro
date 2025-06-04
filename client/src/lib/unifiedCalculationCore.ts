@@ -810,7 +810,7 @@ class UnifiedCalculationCore {
         : Math.max(currentPrice - sizing.takeProfitDistance, currentPrice * 0.70),
       timestamp: Date.now(),
       indicators,
-      successProbability: Math.min(confidence + Math.random() * 10 - 5, 85),
+      successProbability: Math.min(confidence, 85),
       patternFormations: [],
       macroInsights: [
         `Market Regime: ${indicators.marketRegime}`,
