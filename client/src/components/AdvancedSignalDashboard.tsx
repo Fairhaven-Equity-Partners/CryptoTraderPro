@@ -333,21 +333,25 @@ export default function AdvancedSignalDashboard({
     });
   }, [tradeSimulations, tradeSimulationsQuery.isLoading, tradeSimulationsQuery.isError]);
   
-  // Get the current price from live data or asset data with proper fallback
+  // Get the current price from live data or asset data (NO FALLBACKS - use authentic data only)
   const currentAssetPrice = (() => {
-    // First try to get from asset data
-    const assetPrice = (asset as any)?.lastPrice;
-    if (assetPrice && assetPrice > 0) return assetPrice;
+    // First try to get from asset data (live price)
+    const assetPrice = (asset as any)?.price || (asset as any)?.lastPrice;
+    if (assetPrice && assetPrice > 0) {
+      console.log(`[AdvancedSignalDashboard] Using live asset price: ${assetPrice}`);
+      return assetPrice;
+    }
     
     // Fallback to chart data latest close price
     const latestData = chartData['1m']?.[chartData['1m'].length - 1]?.close;
-    if (latestData && latestData > 0) return latestData;
+    if (latestData && latestData > 0) {
+      console.log(`[AdvancedSignalDashboard] Using chart data price: ${latestData}`);
+      return latestData;
+    }
     
-    // Default fallback based on symbol
-    if (symbol === 'BTC/USDT') return 106131;
-    if (symbol === 'ETH/USDT') return 2619;
-    if (symbol === 'SOL/USDT') return 161;
-    return 100000; // Generic fallback
+    // No hardcoded fallbacks - return 0 to indicate no valid price available
+    console.warn(`[AdvancedSignalDashboard] No valid price found for ${symbol}`);
+    return 0;
   })();
   
   // Initialize continuous learning for this symbol

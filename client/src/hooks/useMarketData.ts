@@ -119,37 +119,23 @@ export function useAssetPrice(symbol: string) {
     staleTime: 30000, // 30 seconds
   });
   
-  // Use fixed prices to ensure all components show the same values
+  // Use live prices from authentic data sources
   useEffect(() => {
     // Clear realtime price when symbol changes
     setRealtimePrice(null);
     setIsLiveDataConnected(false);
     
-    // Use fixed reference prices directly (must match AdvancedSignalDashboard.tsx values)
-    const getFixedPrice = (sym: string): number => {
-      if (sym === 'BTC/USDT') return 107063.00;
-      if (sym === 'ETH/USDT') return 2549.17;
-      if (sym === 'SOL/USDT') return 170.33;
-      if (sym === 'BNB/USDT') return 657.12;
-      if (sym === 'XRP/USDT') return 2.36;
-      if (sym === 'DOGE/USDT') return 0.13;
-      if (sym === 'ADA/USDT') return 0.48;
-      return 0;
-    };
-    
-    // Get fixed price from our reference set
-    const fixedPrice = getFixedPrice(symbol);
-    
-    if (fixedPrice > 0 && initialPrice) {
-      // Create a price object with our fixed price
-      const syncedPrice: AssetPrice = {
+    // Use live price data from the API response
+    if (initialPrice && initialPrice.price > 0) {
+      // Create a price object with live price data
+      const livePrice: AssetPrice = {
         ...initialPrice,
-        price: fixedPrice,
-        lastPrice: fixedPrice  // Critical: both price fields must match exactly
+        lastPrice: initialPrice.price  // Use authentic price data
       };
       
-      setRealtimePrice(syncedPrice);
+      setRealtimePrice(livePrice);
       setIsLiveDataConnected(true);
+      console.log(`[useMarketData] Using live price for ${symbol}: ${initialPrice.price}`);
     }
   }, [symbol, initialPrice]);
   
