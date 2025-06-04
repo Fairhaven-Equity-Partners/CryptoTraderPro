@@ -121,19 +121,17 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   
   return (
     <div className="px-4 py-2 bg-secondary mb-2 border-b border-gray-700">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-sm font-medium text-white">BTC/USDT</h3>
-        </div>
-        <div className="flex items-center space-x-2">
-          <span className={`text-sm font-medium text-white transition-colors duration-300 ${flashClass}`}>
+      <div className="flex items-center space-x-4">
+        <h3 className="text-base font-medium text-white">BTC/USDT</h3>
+        <div className="flex items-center space-x-3">
+          <span className={`text-lg font-bold text-white transition-colors duration-300 ${flashClass}`}>
             ${parseFloat(priceState.price.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </span>
           {priceState.flash && priceDirection}
-          <span className={`${priceChangeClass} text-xs font-medium`}>
+          <span className={`${priceChangeClass} text-sm font-medium`}>
             {formatPercentage(price.change24h)}
           </span>
-          <span className="text-neutral text-xs">24h</span>
+          <span className="text-neutral text-sm">24h</span>
         </div>
       </div>
     </div>
