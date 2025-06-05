@@ -9,16 +9,16 @@ import { ChartData, TimeFrame, AdvancedSignal } from '../types';
 const TIMEFRAMES: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
 
 const TIMEFRAME_CONFIDENCE_MULTIPLIERS: Record<TimeFrame, number> = {
-  '1m': 0.85,
-  '5m': 0.90,
-  '15m': 0.95,
-  '30m': 1.00,
-  '1h': 1.05,
-  '4h': 1.10,
-  '1d': 1.15,
-  '3d': 1.20,
-  '1w': 1.25,
-  '1M': 1.30
+  '1m': 0.75,   // Lower weight for high noise
+  '5m': 0.82,   // Reduced noise but still short-term
+  '15m': 0.90,  // Better signal quality
+  '30m': 0.95,  // Good balance of signal/noise
+  '1h': 1.00,   // Baseline timeframe
+  '4h': 1.15,   // Higher reliability for trend analysis
+  '1d': 1.25,   // Strong trend signals
+  '3d': 1.35,   // Very reliable medium-term trends
+  '1w': 1.45,   // Excellent long-term trend accuracy
+  '1M': 1.55    // Maximum weight for strongest trends
 };
 
 const RISK_MULTIPLIERS: Record<TimeFrame, number> = {
@@ -38,6 +38,8 @@ export class UltimateCalculationEngine {
   private static instance: UltimateCalculationEngine;
   private cache = new Map<string, any>();
   private dataStore = new Map<string, Map<TimeFrame, ChartData[]>>();
+  private predictionAccuracy = new Map<string, { correct: number; total: number; winRate: number }>();
+  private adaptiveWeights = new Map<string, number>();
 
   static getInstance(): UltimateCalculationEngine {
     if (!UltimateCalculationEngine.instance) {
@@ -52,6 +54,28 @@ export class UltimateCalculationEngine {
       this.dataStore.set(symbol, new Map());
     }
     this.dataStore.get(symbol)!.set(timeframe, data);
+  }
+
+  // Update prediction accuracy for feedback loop
+  updatePredictionAccuracy(symbol: string, timeframe: TimeFrame, wasCorrect: boolean): void {
+    const key = `${symbol}_${timeframe}`;
+    const current = this.predictionAccuracy.get(key) || { correct: 0, total: 0, winRate: 0 };
+    
+    current.total += 1;
+    if (wasCorrect) current.correct += 1;
+    current.winRate = (current.correct / current.total) * 100;
+    
+    this.predictionAccuracy.set(key, current);
+    
+    // Adaptive weight adjustment based on accuracy
+    const weight = Math.max(0.5, Math.min(1.5, current.winRate / 70)); // Target 70% accuracy
+    this.adaptiveWeights.set(key, weight);
+  }
+
+  // Get adaptive weight for symbol-timeframe combination
+  private getAdaptiveWeight(symbol: string, timeframe: TimeFrame): number {
+    const key = `${symbol}_${timeframe}`;
+    return this.adaptiveWeights.get(key) || 1.0;
   }
 
   // Calculate RSI with Wilder's smoothing
@@ -261,52 +285,108 @@ export class UltimateCalculationEngine {
     let bearishScore = 0;
     let confidence = 50;
 
-    // RSI analysis
-    if (rsi < 30) {
-      bullishScore += 20;
-      confidence += 15;
+    // RSI analysis with enhanced weighting
+    if (rsi < 20) {
+      bullishScore += 35;  // Extremely oversold - strong buy signal
+      confidence += 25;
+    } else if (rsi < 30) {
+      bullishScore += 25;  // Oversold condition
+      confidence += 18;
+    } else if (rsi > 80) {
+      bearishScore += 35;  // Extremely overbought - strong sell signal
+      confidence += 25;
     } else if (rsi > 70) {
-      bearishScore += 20;
-      confidence += 15;
-    } else if (rsi < 45) {
-      bullishScore += 10;
-    } else if (rsi > 55) {
-      bearishScore += 10;
+      bearishScore += 25;  // Overbought condition
+      confidence += 18;
+    } else if (rsi < 40) {
+      bullishScore += 12;  // Slightly bearish momentum
+    } else if (rsi > 60) {
+      bearishScore += 12;  // Slightly bullish momentum
     }
 
-    // MACD analysis
+    // MACD analysis with momentum consideration
+    const macdStrength = Math.abs(macd.histogram);
     if (macd.histogram > 0) {
-      bullishScore += 25;
-      confidence += 12;
-    } else if (macd.histogram < 0) {
-      bearishScore += 25;
-      confidence += 12;
-    }
-
-    // EMA trend analysis
-    if (ema.short > ema.medium && ema.medium > ema.long) {
-      bullishScore += 30;
-      confidence += 18;
-    } else if (ema.short < ema.medium && ema.medium < ema.long) {
-      bearishScore += 30;
-      confidence += 18;
-    }
-
-    // ADX strength
-    if (adx.value > 25) {
-      confidence += 10;
-      if (adx.pdi > adx.ndi) {
-        bullishScore += 15;
+      if (macdStrength > currentPrice * 0.005) {  // Strong momentum
+        bullishScore += 35;
+        confidence += 20;
       } else {
-        bearishScore += 15;
+        bullishScore += 20;
+        confidence += 12;
+      }
+    } else if (macd.histogram < 0) {
+      if (macdStrength > currentPrice * 0.005) {  // Strong momentum
+        bearishScore += 35;
+        confidence += 20;
+      } else {
+        bearishScore += 20;
+        confidence += 12;
       }
     }
 
-    // Stochastic
-    if (stochastic.k < 20) {
-      bullishScore += 10;
+    // EMA trend analysis with price proximity weighting
+    const priceToShortEMA = Math.abs(currentPrice - ema.short) / currentPrice;
+    const trendStrength = priceToShortEMA < 0.02 ? 1.5 : 1.0;  // Stronger signal when price is close to EMA
+    
+    if (ema.short > ema.medium && ema.medium > ema.long) {
+      const trendScore = Math.floor(30 * trendStrength);
+      bullishScore += trendScore;
+      confidence += Math.floor(18 * trendStrength);
+    } else if (ema.short < ema.medium && ema.medium < ema.long) {
+      const trendScore = Math.floor(30 * trendStrength);
+      bearishScore += trendScore;
+      confidence += Math.floor(18 * trendStrength);
+    }
+
+    // ADX strength with enhanced trend confirmation
+    if (adx.value > 30) {
+      confidence += 18;  // Strong trend
+      if (adx.pdi > adx.ndi) {
+        bullishScore += 25;
+      } else {
+        bearishScore += 25;
+      }
+    } else if (adx.value > 20) {
+      confidence += 10;  // Moderate trend
+      if (adx.pdi > adx.ndi) {
+        bullishScore += 12;
+      } else {
+        bearishScore += 12;
+      }
+    }
+
+    // Bollinger Bands position analysis
+    if (bb.percentB < 5) {
+      bullishScore += 20;  // Extreme oversold
+      confidence += 15;
+    } else if (bb.percentB < 20) {
+      bullishScore += 10;  // Oversold
+    } else if (bb.percentB > 95) {
+      bearishScore += 20;  // Extreme overbought
+      confidence += 15;
+    } else if (bb.percentB > 80) {
+      bearishScore += 10;  // Overbought
+    }
+
+    // Volatility analysis for risk adjustment
+    const volatilityRatio = atr / currentPrice;
+    if (volatilityRatio > 0.03) {
+      confidence -= 10;  // High volatility reduces confidence
+    } else if (volatilityRatio < 0.01) {
+      confidence += 8;   // Low volatility increases confidence
+    }
+
+    // Stochastic with momentum confirmation
+    if (stochastic.k < 20 && stochastic.d < 20) {
+      bullishScore += 15;  // Double confirmation oversold
+      confidence += 10;
+    } else if (stochastic.k < 20) {
+      bullishScore += 8;
+    } else if (stochastic.k > 80 && stochastic.d > 80) {
+      bearishScore += 15;  // Double confirmation overbought
+      confidence += 10;
     } else if (stochastic.k > 80) {
-      bearishScore += 10;
+      bearishScore += 8;
     }
 
     // Determine direction
@@ -317,8 +397,9 @@ export class UltimateCalculationEngine {
     else if (scoreDiff <= -15) direction = 'SHORT';
     else direction = 'NEUTRAL';
 
-    // Apply timeframe multiplier
-    confidence *= TIMEFRAME_CONFIDENCE_MULTIPLIERS[timeframe];
+    // Apply timeframe multiplier and adaptive weight
+    const adaptiveWeight = this.getAdaptiveWeight(symbol, timeframe);
+    confidence *= TIMEFRAME_CONFIDENCE_MULTIPLIERS[timeframe] * adaptiveWeight;
     confidence = Math.min(95, Math.max(30, confidence));
 
     // Calculate risk levels
