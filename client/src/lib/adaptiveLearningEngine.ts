@@ -75,8 +75,8 @@ class AdaptiveLearningEngine {
       const metric = metrics[0] as AccuracyMetrics;
       
       // Only start learning if we have enough data
-      if (metric.totalTrades < this.MIN_PREDICTIONS_FOR_LEARNING) {
-        console.log(`📊 Need more predictions for learning (${metric.totalTrades}/${this.MIN_PREDICTIONS_FOR_LEARNING})`);
+      if (!metric.totalTrades || metric.totalTrades < this.MIN_PREDICTIONS_FOR_LEARNING) {
+        console.log(`📊 Need more predictions for learning (${metric.totalTrades || 0}/${this.MIN_PREDICTIONS_FOR_LEARNING})`);
         return;
       }
 
