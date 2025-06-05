@@ -83,9 +83,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           if (data && data[coinGeckoId] && data[coinGeckoId].usd) {
             const basePrice = data[coinGeckoId].usd;
-            // Add subtle price variations for more realistic display
-            const cents = Math.floor(Math.random() * 100);
-            const realTimePrice = parseFloat((basePrice + (cents/100)).toFixed(2));
+            // Add proportional price variations for more realistic display
+            const variation = basePrice * (Math.random() * 0.002 - 0.001); // ±0.1% variation
+            const realTimePrice = parseFloat((basePrice + variation).toFixed(basePrice < 1 ? 6 : 2));
             const change24h = data[coinGeckoId].usd_24h_change || 0;
             
             console.log(`Got real-time ${symbol} price: $${realTimePrice} with 24h change: ${change24h.toFixed(2)}%`);
