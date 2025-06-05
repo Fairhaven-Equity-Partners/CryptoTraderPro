@@ -70,8 +70,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
       console.log(`Fetching crypto asset with symbol: ${symbol}`);
       
-      // Import data providers for multi-source price feeds
-      const { getCoinGeckoId } = await import('./symbolMapping.js');
+      // Import optimized data providers for top 50 cryptocurrencies
+      const { getCoinGeckoId } = await import('./optimizedSymbolMapping.js');
       const { tradingViewProvider } = await import('./tradingViewData.js');
       const coinGeckoId = getCoinGeckoId(symbol);
       

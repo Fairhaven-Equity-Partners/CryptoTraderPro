@@ -73,11 +73,11 @@ export class MemStorage implements IStorage {
 
   private async initializeCryptoAssets() {
     try {
-      // Import symbol mappings for comprehensive multi-cryptocurrency support
-      const { SYMBOL_MAPPINGS } = await import('./symbolMapping.js');
+      // Import optimized symbol mappings for top 50 cryptocurrencies (CoinGecko free tier)
+      const { TOP_50_SYMBOL_MAPPINGS } = await import('./optimizedSymbolMapping.js');
       
-      // Initialize all supported cryptocurrencies from symbol mapping
-      for (const mapping of SYMBOL_MAPPINGS) {
+      // Initialize top 50 cryptocurrencies for optimal rate limiting
+      for (const mapping of TOP_50_SYMBOL_MAPPINGS) {
         // Set realistic initial prices based on category and known values
         let initialPrice = this.getInitialPrice(mapping.symbol, mapping.category);
         
