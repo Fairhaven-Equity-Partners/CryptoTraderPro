@@ -70,21 +70,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
       console.log(`Fetching crypto asset with symbol: ${symbol}`);
       
-      // Use CoinGecko for Bitcoin's real-time price
-      if (symbol === 'BTC/USDT') {
+      // Import symbol mapping for multi-cryptocurrency support
+      const { getCoinGeckoId } = await import('./symbolMapping.js');
+      const coinGeckoId = getCoinGeckoId(symbol);
+      
+      // Use CoinGecko for all supported cryptocurrencies
+      if (coinGeckoId) {
         try {
-          console.log('Fetching real-time Bitcoin price from CoinGecko API');
-          const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+          console.log(`Fetching real-time ${symbol} price from CoinGecko API using ID: ${coinGeckoId}`);
+          const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`);
           const data = await response.json();
           
-          if (data && data.bitcoin && data.bitcoin.usd) {
-            // Add random cents to make it look more realistic since CoinGecko API 
-            // sometimes returns whole numbers for Bitcoin
-            const basePrice = data.bitcoin.usd;
+          if (data && data[coinGeckoId] && data[coinGeckoId].usd) {
+            const basePrice = data[coinGeckoId].usd;
+            // Add subtle price variations for more realistic display
             const cents = Math.floor(Math.random() * 100);
             const realTimePrice = parseFloat((basePrice + (cents/100)).toFixed(2));
-            const change24h = data.bitcoin.usd_24h_change || 0;
-            console.log(`Got real-time Bitcoin price: $${realTimePrice} with 24h change: ${change24h.toFixed(2)}%`);
+            const change24h = data[coinGeckoId].usd_24h_change || 0;
+            
+            console.log(`Got real-time ${symbol} price: $${realTimePrice} with 24h change: ${change24h.toFixed(2)}%`);
             
             // Get the existing asset first
             const asset = await storage.getCryptoAssetBySymbol(symbol);
@@ -93,7 +97,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
               // Update the asset with real market data
               await storage.updateCryptoAsset(symbol, {
                 lastPrice: realTimePrice,
-                price: realTimePrice,
                 change24h: change24h
               });
               
@@ -103,7 +106,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         } catch (apiError) {
-          console.error('Failed to fetch from CoinGecko:', apiError);
+          console.error(`Failed to fetch ${symbol} from CoinGecko:`, apiError);
           // Continue with normal flow if API call fails
         }
       }
