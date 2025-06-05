@@ -422,24 +422,24 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Autonomous calculation logic: More flexible for full automation
+        // Autonomous calculation logic: Fully autonomous with priority for 3-minute intervals
         const shouldCalculate = hasMinimumData && !isCalculating && isTimerTriggered && (
-          // Always calculate if it's been 3+ minutes (normal interval)
+          // ALWAYS calculate when 3-minute timer triggers (from FinalPriceSystem)
+          event.detail.timestamp && Date.now() - event.detail.timestamp < 2000 ||
+          // OR calculate if it's been 3+ minutes since last calculation  
           timeSinceLastCalc >= 180 ||
-          // OR if it's been at least 60 seconds and we have significant price movement
-          (timeSinceLastCalc >= 60 && event.detail.forceCalculate === true) ||
           // OR if this is the first calculation after system startup
           lastCalculationRef.current === 0
         );
 
         if (shouldCalculate) {
-          console.log(`🚀 AUTONOMOUS CALCULATION: Timer triggered with ${timeSinceLastCalc}s since last calc (autonomous mode)`);
+          console.log(`🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals();
         } else {
-          console.log(`Calculation deferred: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s (autonomous mode active)`);
+          console.log(`Calculation scheduled: Next calculation in ${Math.max(0, 180 - timeSinceLastCalc).toFixed(0)}s (autonomous mode)`);
         }
       }
     };

@@ -823,22 +823,26 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Calculate timeframe-specific position sizing based on ATR
+   * Calculate timeframe-specific position sizing with realistic risk management
    */
   private calculatePositionSizing(timeframe: TimeFrame, atr: number, currentPrice: number) {
-    const timeframeMultipliers = {
-      '1m': 0.5, '5m': 0.75, '15m': 1.0, '30m': 1.25,
-      '1h': 1.5, '4h': 2.0, '1d': 3.0, '3d': 4.0,
-      '1w': 5.0, '1M': 8.0
+    // Use percentage-based risk management instead of extreme ATR multipliers
+    const riskPercentages = {
+      '1m': 0.5, '5m': 0.8, '15m': 1.2, '30m': 1.5,
+      '1h': 2.0, '4h': 2.8, '1d': 3.5, '3d': 4.2,
+      '1w': 5.0, '1M': 6.5
     };
     
-    const multiplier = timeframeMultipliers[timeframe] || 1.0;
-    const atrPercentage = (atr / currentPrice) * 100;
+    const riskPercent = riskPercentages[timeframe] || 2.0;
+    
+    // Calculate reasonable stop loss and take profit based on percentage risk
+    const stopLossDistance = currentPrice * (riskPercent / 100);
+    const takeProfitDistance = currentPrice * (riskPercent * 1.8 / 100); // 1.8:1 reward/risk ratio
     
     return {
-      stopLossDistance: atr * multiplier * 0.8,
-      takeProfitDistance: atr * multiplier * 1.6,
-      riskPercentage: Math.min(atrPercentage * multiplier, 5.0)
+      stopLossDistance,
+      takeProfitDistance,
+      riskPercentage: riskPercent
     };
   }
 
