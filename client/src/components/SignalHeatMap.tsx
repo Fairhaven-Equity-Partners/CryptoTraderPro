@@ -53,7 +53,6 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
   const [sortBy, setSortBy] = useState<'confidence' | 'marketCap' | 'change24h'>('confidence');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [filterMinMarketCap, setFilterMinMarketCap] = useState<number>(100000000); // $100M
   const [filterDirection, setFilterDirection] = useState<'ALL' | 'LONG' | 'SHORT' | 'NEUTRAL'>('ALL');
   
   // Fetch all crypto assets
@@ -67,7 +66,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
     if (!cryptoAssets) return [];
     
     return cryptoAssets
-      .filter((asset: CryptoAsset) => asset.marketCap >= filterMinMarketCap)
+      .filter((asset: CryptoAsset) => asset.marketCap >= 100000000) // $100M minimum
       .map((asset: CryptoAsset) => {
         // For demonstration, generate signals based on asset properties
         const price = asset.lastPrice;
@@ -113,7 +112,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
           change24h
         };
       });
-  }, [cryptoAssets, filterMinMarketCap, selectedTimeframe]);
+  }, [cryptoAssets, selectedTimeframe]);
 
   // Apply sorting and filtering
   const sortedAndFilteredSignals = useMemo(() => {
@@ -222,84 +221,122 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
       </CardHeader>
       
       <CardContent>
-        {/* Streamlined Market Overview - Table Only */}
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-gray-900 rounded-lg overflow-hidden">
-            <thead>
-              <tr className="bg-gray-800 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                <th className="px-4 py-2">Asset</th>
-                <th className="px-4 py-2">Price</th>
-                <th className="px-4 py-2">
-                  <div className="flex items-center cursor-pointer" onClick={() => toggleSort('change24h')}>
-                    24h Change
-                    {sortBy === 'change24h' && (
-                      sortDirection === 'desc' ? <ChevronDown className="h-4 w-4 ml-1" /> : <ChevronUp className="h-4 w-4 ml-1" />
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-2">
-                  <div className="flex items-center cursor-pointer" onClick={() => toggleSort('marketCap')}>
-                    Market Cap
-                    {sortBy === 'marketCap' && (
-                      sortDirection === 'desc' ? <ChevronDown className="h-4 w-4 ml-1" /> : <ChevronUp className="h-4 w-4 ml-1" />
-                    )}
-                  </div>
-                </th>
-                <th className="px-4 py-2">
-                  <div className="flex items-center cursor-pointer" onClick={() => toggleSort('confidence')}>
-                    Signal
-                    {sortBy === 'confidence' && (
-                      sortDirection === 'desc' ? <ChevronDown className="h-4 w-4 ml-1" /> : <ChevronUp className="h-4 w-4 ml-1" />
-                    )}
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-800">
-              {sortedAndFilteredSignals.map((signal) => (
-                <tr 
-                  key={signal.symbol} 
-                  className="hover:bg-gray-800 transition-colors cursor-pointer" 
-                  onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
-                  title={`Click to analyze ${signal.name}`}
-                >
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <div className="ml-2">
-                        <div className="font-medium text-white">{signal.name}</div>
-                        <div className="text-xs text-gray-400">{signal.symbol}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <div className="text-sm text-white">${signal.price.toLocaleString(undefined, { maximumFractionDigits: 2 })}</div>
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <div className={`text-sm ${signal.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {signal.change24h >= 0 ? '+' : ''}{signal.change24h.toFixed(2)}%
-                    </div>
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <div className="text-sm text-white">
-                      ${(signal.marketCap / 1000000000).toFixed(1)}B
-                    </div>
-                  </td>
-                  <td className="px-4 py-2 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <span className={`
-                        px-2 py-1 rounded-md text-xs font-medium
-                        ${signal.direction === 'LONG' ? 'bg-green-800/50 text-green-300' : 
-                          signal.direction === 'SHORT' ? 'bg-red-800/50 text-red-300' : 
-                          'bg-gray-700 text-gray-300'}
-                      `}>
-                        {getSignalText(signal.direction, signal.confidence)}
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Heat Map Visualization */}
+        <div className="mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* LONG Signals */}
+            <div className="space-y-2">
+              <h3 className="text-green-400 font-semibold border-b border-green-900 pb-1">LONG Signals</h3>
+              
+              {/* High confidence LONG */}
+              <div className="bg-green-900/20 p-2 rounded-md">
+                <div className="text-sm font-medium text-green-400 mb-2">High Confidence (80-100%)</div>
+                <div className="flex flex-wrap gap-2">
+                  {groupedByConfidence.high_long.map(signal => (
+                    <Badge 
+                      key={signal.symbol} 
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                    >
+                      {signal.name.split(' ')[0]} {signal.confidence}%
+                    </Badge>
+                  ))}
+                  {groupedByConfidence.high_long.length === 0 && (
+                    <span className="text-xs text-gray-500">No high confidence signals</span>
+                  )}
+                </div>
+              </div>
+              
+              {/* Medium confidence LONG */}
+              <div className="bg-green-900/10 p-2 rounded-md">
+                <div className="text-sm font-medium text-green-300 mb-2">Medium Confidence (65-79%)</div>
+                <div className="flex flex-wrap gap-2">
+                  {groupedByConfidence.medium_long.map(signal => (
+                    <Badge 
+                      key={signal.symbol} 
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                    >
+                      {signal.name.split(' ')[0]} {signal.confidence}%
+                    </Badge>
+                  ))}
+                  {groupedByConfidence.medium_long.length === 0 && (
+                    <span className="text-xs text-gray-500">No medium confidence signals</span>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            {/* NEUTRAL Signals */}
+            <div className="space-y-2">
+              <h3 className="text-gray-400 font-semibold border-b border-gray-700 pb-1">NEUTRAL Signals</h3>
+              <div className="bg-gray-800/30 p-2 rounded-md h-[90%]">
+                <div className="text-sm font-medium text-gray-400 mb-2">50% Confidence</div>
+                <div className="flex flex-wrap gap-2">
+                  {groupedByConfidence.neutral.map(signal => (
+                    <Badge 
+                      key={signal.symbol} 
+                      className="bg-gray-600 text-white hover:bg-gray-500 cursor-pointer"
+                      title={`50% confidence (Neutral) - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                    >
+                      {signal.name.split(' ')[0]}
+                    </Badge>
+                  ))}
+                  {groupedByConfidence.neutral.length === 0 && (
+                    <span className="text-xs text-gray-500">No neutral signals</span>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            {/* SHORT Signals */}
+            <div className="space-y-2">
+              <h3 className="text-red-400 font-semibold border-b border-red-900 pb-1">SHORT Signals</h3>
+              
+              {/* High confidence SHORT */}
+              <div className="bg-red-900/20 p-2 rounded-md">
+                <div className="text-sm font-medium text-red-400 mb-2">High Confidence (80-100%)</div>
+                <div className="flex flex-wrap gap-2">
+                  {groupedByConfidence.high_short.map(signal => (
+                    <Badge 
+                      key={signal.symbol} 
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                    >
+                      {signal.name.split(' ')[0]} {signal.confidence}%
+                    </Badge>
+                  ))}
+                  {groupedByConfidence.high_short.length === 0 && (
+                    <span className="text-xs text-gray-500">No high confidence signals</span>
+                  )}
+                </div>
+              </div>
+              
+              {/* Medium confidence SHORT */}
+              <div className="bg-red-900/10 p-2 rounded-md">
+                <div className="text-sm font-medium text-red-300 mb-2">Medium Confidence (65-79%)</div>
+                <div className="flex flex-wrap gap-2">
+                  {groupedByConfidence.medium_short.map(signal => (
+                    <Badge 
+                      key={signal.symbol} 
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
+                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
+                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                    >
+                      {signal.name.split(' ')[0]} {signal.confidence}%
+                    </Badge>
+                  ))}
+                  {groupedByConfidence.medium_short.length === 0 && (
+                    <span className="text-xs text-gray-500">No medium confidence signals</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>
