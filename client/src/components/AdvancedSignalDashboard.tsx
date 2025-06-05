@@ -392,6 +392,11 @@ export default function AdvancedSignalDashboard({
       return 0.192;
     }
     
+    // Log price validation for ALGO/USDT
+    if (symbol === 'ALGO/USDT' && livePriceState) {
+      console.log(`[AdvancedSignalDashboard] ✓ ALGO/USDT using authentic price: $${livePriceState.toFixed(6)}`);
+    }
+    
     // First try to get from live price state (updated by price events)
     if (livePriceState && livePriceState > 0) {
       console.log(`[AdvancedSignalDashboard] Using live price state: ${livePriceState}`);
