@@ -1,145 +1,270 @@
 /**
- * Streamlined Price Manager - Optimized Data Flow
- * 
- * Single source for price updates and calculation triggers
- * Eliminates redundant API calls and calculation overlaps
+ * Streamlined Client Price Manager
+ * Optimized for all 50 cryptocurrency pairs with efficient caching and real-time updates
  */
 
-import { calculateMultiTimeframeSignals } from './unifiedCalculationCore';
-import { ChartData, TimeFrame } from '../types';
+import { useState, useEffect, useCallback } from 'react';
 
-// Global state management
-let currentPrice = 0;
-let lastCalculationTime = 0;
-let isCalculating = false;
-let priceData: Record<TimeFrame, ChartData[]> = {} as any;
-
-// Calculation throttling - 3 minutes
-const CALCULATION_INTERVAL = 180000;
-
-// Price update handlers
-const priceUpdateHandlers = new Set<(price: number) => void>();
-const calculationCompleteHandlers = new Set<(results: any) => void>();
-
-/**
- * Initialize the streamlined price manager
- */
-export function initPriceManager(): void {
-  console.log('[StreamlinedPriceManager] Initializing optimized price management');
-  
-  // Listen for price updates from the server
-  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('price-update', handlePriceUpdate as EventListener);
+interface PriceData {
+  price: number;
+  change24h: number;
+  timestamp: number;
+  symbol: string;
 }
 
-/**
- * Handle incoming price updates
- */
-function handlePriceUpdate(event: CustomEvent): void {
-  const { symbol, price } = event.detail;
-  
-  if (symbol !== 'BTC/USDT') return;
-  
-  currentPrice = price;
-  console.log(`[StreamlinedPriceManager] Price update: ${price}`);
-  
-  // Notify price update handlers
-  priceUpdateHandlers.forEach(handler => handler(price));
-  
-  // Check if calculation is needed
-  checkCalculationTrigger();
+interface CacheEntry {
+  data: PriceData;
+  lastFetch: number;
+  subscribers: Set<(data: PriceData) => void>;
 }
 
-/**
- * Check if calculation should be triggered
- */
-function checkCalculationTrigger(): void {
-  const now = Date.now();
-  const timeSinceLastCalc = now - lastCalculationTime;
-  
-  // Only calculate if enough time has passed and we're not already calculating
-  if (timeSinceLastCalc >= CALCULATION_INTERVAL && !isCalculating) {
-    triggerCalculation();
+export class StreamlinedPriceManager {
+  private cache = new Map<string, CacheEntry>();
+  private fetchTimeout = 30 * 1000; // 30 seconds cache timeout
+  private isInitialized = false;
+
+  constructor() {
+    this.initialize();
   }
-}
 
-/**
- * Trigger calculation with current data
- */
-async function triggerCalculation(): Promise<void> {
-  if (isCalculating || !currentPrice || Object.keys(priceData).length === 0) {
-    return;
-  }
-  
-  isCalculating = true;
-  lastCalculationTime = Date.now();
-  
-  console.log('[StreamlinedPriceManager] Starting calculation cycle');
-  
-  try {
-    // Calculate signals for all timeframes
-    const results = calculateMultiTimeframeSignals(priceData, 'BTC/USDT', currentPrice);
+  private initialize(): void {
+    if (this.isInitialized) return;
     
-    // Notify calculation complete handlers
-    calculationCompleteHandlers.forEach(handler => handler(results));
+    // Supported symbols for all 50 cryptocurrency pairs
+    const supportedSymbols = [
+      "BTC/USDT", "ETH/USDT", "BNB/USDT", "XRP/USDT", "SOL/USDT", "USDC/USD", "ADA/USDT", "AVAX/USDT", "DOGE/USDT", "TRX/USDT",
+      "TON/USDT", "LINK/USDT", "MATIC/USDT", "SHIB/USDT", "LTC/USDT", "BCH/USDT", "UNI/USDT", "DOT/USDT", "XLM/USDT", "ATOM/USDT",
+      "XMR/USDT", "ETC/USDT", "HBAR/USDT", "FIL/USDT", "ICP/USDT", "VET/USDT", "APT/USDT", "NEAR/USDT", "AAVE/USDT", "ARB/USDT",
+      "OP/USDT", "MKR/USDT", "GRT/USDT", "STX/USDT", "INJ/USDT", "ALGO/USDT", "LDO/USDT", "THETA/USDT", "SUI/USDT", "RUNE/USDT",
+      "MANA/USDT", "SAND/USDT", "FET/USDT", "RNDR/USDT", "KAVA/USDT", "MINA/USDT", "FLOW/USDT", "XTZ/USDT", "BLUR/USDT", "QNT/USDT"
+    ];
+
+    // Initialize cache for all supported symbols
+    supportedSymbols.forEach(symbol => {
+      this.cache.set(symbol, {
+        data: { price: 0, change24h: 0, timestamp: 0, symbol },
+        lastFetch: 0,
+        subscribers: new Set()
+      });
+    });
+
+    this.isInitialized = true;
+    console.log(`[StreamlinedPriceManager] Initialized for ${supportedSymbols.length} cryptocurrency pairs`);
+  }
+
+  /**
+   * Subscribe to price updates for a symbol
+   */
+  subscribe(symbol: string, callback: (data: PriceData) => void): () => void {
+    const entry = this.cache.get(symbol);
+    if (!entry) {
+      console.warn(`[StreamlinedPriceManager] Symbol ${symbol} not supported`);
+      return () => {};
+    }
+
+    entry.subscribers.add(callback);
+
+    // Fetch fresh data if needed and emit current data
+    this.fetchPriceIfNeeded(symbol).then(data => {
+      if (data && data.price > 0) {
+        callback(data);
+      }
+    });
+
+    // Return unsubscribe function
+    return () => {
+      entry.subscribers.delete(callback);
+    };
+  }
+
+  /**
+   * Get current price for a symbol
+   */
+  getPrice(symbol: string): PriceData | null {
+    const entry = this.cache.get(symbol);
+    return entry?.data || null;
+  }
+
+  /**
+   * Fetch price if cache is stale
+   */
+  private async fetchPriceIfNeeded(symbol: string): Promise<PriceData | null> {
+    const entry = this.cache.get(symbol);
+    if (!entry) return null;
+
+    const now = Date.now();
+    const isStale = now - entry.lastFetch > this.fetchTimeout;
     
-    console.log('[StreamlinedPriceManager] Calculation cycle complete');
-  } catch (error) {
-    console.error('[StreamlinedPriceManager] Calculation error:', error);
-  } finally {
-    isCalculating = false;
+    if (!isStale && entry.data.price > 0) {
+      return entry.data;
+    }
+
+    try {
+      const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
+      if (response.ok) {
+        const asset = await response.json();
+        if (asset.lastPrice) {
+          const priceData: PriceData = {
+            price: asset.lastPrice,
+            change24h: asset.change24h || 0,
+            timestamp: now,
+            symbol
+          };
+
+          // Update cache
+          entry.data = priceData;
+          entry.lastFetch = now;
+
+          // Notify subscribers
+          entry.subscribers.forEach(callback => {
+            try {
+              callback(priceData);
+            } catch (error) {
+              console.error(`[StreamlinedPriceManager] Subscriber error for ${symbol}:`, error);
+            }
+          });
+
+          return priceData;
+        }
+      }
+    } catch (error) {
+      console.error(`[StreamlinedPriceManager] Fetch error for ${symbol}:`, error);
+    }
+
+    return null;
+  }
+
+  /**
+   * Force refresh price for a symbol
+   */
+  async refreshPrice(symbol: string): Promise<PriceData | null> {
+    const entry = this.cache.get(symbol);
+    if (entry) {
+      entry.lastFetch = 0; // Force refresh
+    }
+    return this.fetchPriceIfNeeded(symbol);
+  }
+
+  /**
+   * Get all supported symbols
+   */
+  getSupportedSymbols(): string[] {
+    return Array.from(this.cache.keys());
+  }
+
+  /**
+   * Clear cache for a symbol
+   */
+  clearCache(symbol?: string): void {
+    if (symbol) {
+      const entry = this.cache.get(symbol);
+      if (entry) {
+        entry.lastFetch = 0;
+      }
+    } else {
+      this.cache.forEach(entry => {
+        entry.lastFetch = 0;
+      });
+    }
   }
 }
 
-/**
- * Update chart data for a specific timeframe
- */
-export function updateChartData(timeframe: TimeFrame, data: ChartData[]): void {
-  priceData[timeframe] = data;
-}
+// Singleton instance
+export const streamlinedPriceManager = new StreamlinedPriceManager();
 
 /**
- * Get current price
+ * React hook for streamlined price data
  */
-export function getCurrentPrice(): number {
-  return currentPrice;
-}
+export function useStreamlinedPrice(symbol: string) {
+  const [priceData, setPriceData] = useState<PriceData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-/**
- * Subscribe to price updates
- */
-export function subscribeToPrice(handler: (price: number) => void): () => void {
-  priceUpdateHandlers.add(handler);
-  return () => priceUpdateHandlers.delete(handler);
-}
+  useEffect(() => {
+    if (!symbol) return;
 
-/**
- * Subscribe to calculation results
- */
-export function subscribeToCalculations(handler: (results: any) => void): () => void {
-  calculationCompleteHandlers.add(handler);
-  return () => calculationCompleteHandlers.delete(handler);
-}
+    setLoading(true);
+    setError(null);
 
-/**
- * Force a calculation (for manual triggers)
- */
-export function forceCalculation(): void {
-  const now = Date.now();
-  const timeSinceLastCalc = now - lastCalculationTime;
-  
-  // Allow forced calculation if at least 30 seconds have passed
-  if (timeSinceLastCalc >= 30000 && !isCalculating) {
-    triggerCalculation();
-  }
-}
+    const unsubscribe = streamlinedPriceManager.subscribe(symbol, (data) => {
+      setPriceData(data);
+      setLoading(false);
+      setError(null);
+    });
 
-/**
- * Get calculation status
- */
-export function getCalculationStatus(): { isCalculating: boolean; timeSinceLastCalc: number } {
+    // Check if we have cached data immediately
+    const cachedData = streamlinedPriceManager.getPrice(symbol);
+    if (cachedData && cachedData.price > 0) {
+      setPriceData(cachedData);
+      setLoading(false);
+    }
+
+    return unsubscribe;
+  }, [symbol]);
+
+  const refresh = useCallback(async () => {
+    if (!symbol) return;
+    
+    setLoading(true);
+    try {
+      const data = await streamlinedPriceManager.refreshPrice(symbol);
+      if (data) {
+        setPriceData(data);
+        setError(null);
+      } else {
+        setError('Failed to fetch price data');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      setLoading(false);
+    }
+  }, [symbol]);
+
   return {
-    isCalculating,
-    timeSinceLastCalc: Date.now() - lastCalculationTime
+    price: priceData?.price || null,
+    change24h: priceData?.change24h || null,
+    timestamp: priceData?.timestamp || null,
+    loading,
+    error,
+    refresh
+  };
+}
+
+/**
+ * React hook for multiple symbols at once
+ */
+export function useMultipleStreamlinedPrices(symbols: string[]) {
+  const [pricesData, setPricesData] = useState<Map<string, PriceData>>(new Map());
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!symbols.length) return;
+
+    const unsubscribers: (() => void)[] = [];
+    const prices = new Map<string, PriceData>();
+    let loadingCount = symbols.length;
+
+    symbols.forEach(symbol => {
+      const unsubscribe = streamlinedPriceManager.subscribe(symbol, (data) => {
+        prices.set(symbol, data);
+        setPricesData(new Map(prices));
+        
+        loadingCount--;
+        if (loadingCount <= 0) {
+          setLoading(false);
+        }
+      });
+      unsubscribers.push(unsubscribe);
+    });
+
+    return () => {
+      unsubscribers.forEach(unsubscribe => unsubscribe());
+    };
+  }, [symbols]);
+
+  return {
+    prices: pricesData,
+    loading
   };
 }

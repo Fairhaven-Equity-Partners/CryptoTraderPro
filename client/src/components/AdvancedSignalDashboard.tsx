@@ -395,8 +395,8 @@ export default function AdvancedSignalDashboard({
     }
   }, [centralizedPrice, symbol]);
   
-  // Get the current price from centralized manager
-  const currentAssetPrice = centralizedPrice;
+  // Get the current price from centralized manager with null safety
+  const currentAssetPrice = centralizedPrice || 0;
   
   // Initialize continuous learning for this symbol
   useEffect(() => {
@@ -617,7 +617,7 @@ export default function AdvancedSignalDashboard({
     }
     
     // Streamlined data validation
-    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0) {
+    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice && currentAssetPrice > 0) {
       // Data ready - calculations controlled by 3-minute timer
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
