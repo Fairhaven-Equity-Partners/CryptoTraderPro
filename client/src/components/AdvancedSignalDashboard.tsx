@@ -1217,14 +1217,18 @@ export default function AdvancedSignalDashboard({
               // Preserve enhanced calculation results
               indicators: {
                 ...signal.indicators,
-                // Ensure market regime is accessible for UI
-                marketRegime: signal.indicators?.marketRegime || 'NORMAL',
-                // Enhanced confidence factors for display
-                confidenceFactors: signal.indicators?.confidenceFactors || {
-                  trendAlignment: false,
-                  momentumConfluence: false,
-                  volatilityLevel: 'NORMAL'
-                }
+                // Additional properties for enhanced display
+                rsi: unifiedSignal.indicators.rsi,
+                macd: unifiedSignal.indicators.macd,
+                ema: unifiedSignal.indicators.ema,
+                adx: unifiedSignal.indicators.adx,
+                bb: unifiedSignal.indicators.bb,
+                atr: unifiedSignal.indicators.atr,
+                supports: unifiedSignal.indicators.supports,
+                resistances: unifiedSignal.indicators.resistances,
+                volatility: unifiedSignal.indicators.volatility,
+                marketRegime: unifiedSignal.indicators.marketRegime,
+                confidenceFactors: unifiedSignal.indicators.confidenceFactors
               }
             };
             
