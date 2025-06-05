@@ -49,13 +49,12 @@ import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { 
-  initializeMasterSystem, 
-  subscribeToPrice, 
-  subscribeToCalculations, 
-  forceCalculation,
-  getCurrentPrice,
-  getSystemStatus
-} from '../lib/masterCalculationSystem';
+  initFinalUnifiedSystem, 
+  getFinalPrice,
+  getFinalSystemStatus,
+  cleanupFinalSystem,
+  forceFinalCalculation
+} from '../lib/finalUnifiedSystem';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
   calculateEnhancedConfidence, 
@@ -341,38 +340,40 @@ export default function AdvancedSignalDashboard({
     });
   }, [tradeSimulations, tradeSimulationsQuery.isLoading, tradeSimulationsQuery.isError]);
   
-  // Get the current price from live asset data (prioritize fresh API data)
-  const currentAssetPrice = (() => {
-    // First prioritize asset data from API (fresh price)
-    const assetPrice = (asset as any)?.price || (asset as any)?.lastPrice;
-    if (assetPrice && assetPrice > 0) {
-      console.log(`[AdvancedSignalDashboard] Using live asset price: ${assetPrice}`);
-      // Update global price registry for consistency
-      if (typeof window !== 'undefined') {
-        window.cryptoPrices = window.cryptoPrices || {};
-        window.cryptoPrices[symbol] = assetPrice;
+  // Get synchronized price from master system
+  const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(0);
+  
+  useEffect(() => {
+    // Initialize final unified system
+    initFinalUnifiedSystem();
+    
+    // Listen for synchronized price updates
+    const handleFinalPriceUpdate = (event: CustomEvent) => {
+      const { price } = event.detail;
+      if (price > 0) {
+        setCurrentAssetPrice(price);
+        console.log(`[FinalUnified] Price synchronized in dashboard: ${price}`);
       }
-      return assetPrice;
-    }
+    };
     
-    // Fallback to global price registry
-    const globalPrice = window.cryptoPrices?.[symbol];
-    if (globalPrice && globalPrice > 0) {
-      console.log(`[AdvancedSignalDashboard] Using synchronized global price: ${globalPrice}`);
-      return globalPrice;
-    }
+    // Listen for 3-minute calculation triggers only
+    const handleFinalCalculation = (event: CustomEvent) => {
+      const { price, type } = event.detail;
+      console.log(`[FinalUnified] ${type} calculation triggered with price: ${price}`);
+      if (isAllDataLoaded && !isCalculating) {
+        triggerCalculation(type);
+      }
+    };
     
-    // Final fallback to chart data latest close price
-    const latestData = chartData['1m']?.[chartData['1m'].length - 1]?.close;
-    if (latestData && latestData > 0) {
-      console.log(`[AdvancedSignalDashboard] Using chart data price: ${latestData}`);
-      return latestData;
-    }
+    window.addEventListener('finalPriceUpdate', handleFinalPriceUpdate as EventListener);
+    window.addEventListener('finalCalculationTrigger', handleFinalCalculation as EventListener);
     
-    // No valid price available
-    console.warn(`[AdvancedSignalDashboard] No valid price found for ${symbol}`);
-    return 0;
-  })();
+    return () => {
+      window.removeEventListener('finalPriceUpdate', handleFinalPriceUpdate as EventListener);
+      window.removeEventListener('finalCalculationTrigger', handleFinalCalculation as EventListener);
+      cleanupFinalSystem();
+    };
+  }, [symbol, isAllDataLoaded, isCalculating]);
   
   // Initialize continuous learning for this symbol
   useEffect(() => {
