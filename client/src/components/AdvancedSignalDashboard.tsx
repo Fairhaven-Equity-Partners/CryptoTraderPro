@@ -333,23 +333,35 @@ export default function AdvancedSignalDashboard({
     });
   }, [tradeSimulations, tradeSimulationsQuery.isLoading, tradeSimulationsQuery.isError]);
   
-  // Get the current price from live data or asset data (NO FALLBACKS - use authentic data only)
+  // Get the current price from live asset data (prioritize fresh API data)
   const currentAssetPrice = (() => {
-    // First try to get from asset data (live price)
+    // First prioritize asset data from API (fresh price)
     const assetPrice = (asset as any)?.price || (asset as any)?.lastPrice;
     if (assetPrice && assetPrice > 0) {
       console.log(`[AdvancedSignalDashboard] Using live asset price: ${assetPrice}`);
+      // Update global price registry for consistency
+      if (typeof window !== 'undefined') {
+        window.cryptoPrices = window.cryptoPrices || {};
+        window.cryptoPrices[symbol] = assetPrice;
+      }
       return assetPrice;
     }
     
-    // Fallback to chart data latest close price
+    // Fallback to global price registry
+    const globalPrice = window.cryptoPrices?.[symbol];
+    if (globalPrice && globalPrice > 0) {
+      console.log(`[AdvancedSignalDashboard] Using synchronized global price: ${globalPrice}`);
+      return globalPrice;
+    }
+    
+    // Final fallback to chart data latest close price
     const latestData = chartData['1m']?.[chartData['1m'].length - 1]?.close;
     if (latestData && latestData > 0) {
       console.log(`[AdvancedSignalDashboard] Using chart data price: ${latestData}`);
       return latestData;
     }
     
-    // No hardcoded fallbacks - return 0 to indicate no valid price available
+    // No valid price available
     console.warn(`[AdvancedSignalDashboard] No valid price found for ${symbol}`);
     return 0;
   })();
@@ -435,6 +447,14 @@ export default function AdvancedSignalDashboard({
 
         if (shouldCalculate) {
           console.log(`🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle`);
+          
+          // Update price registry with current price before calculation
+          if (event.detail.price && event.detail.price > 0) {
+            window.cryptoPrices = window.cryptoPrices || {};
+            window.cryptoPrices[symbol] = event.detail.price;
+            console.log(`💰 Updated price registry: ${symbol} = ${event.detail.price}`);
+          }
+          
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
