@@ -15,6 +15,7 @@ import { Progress } from "./ui/progress";
 import { getSecondsUntilNextRefresh, getFormattedCountdown } from '../lib/finalPriceSystem';
 import { getTimeframeSuccessProbability } from '../lib/timeframeSuccessProbability';
 import { getCurrentMoonPhase, getMoonPhaseEmoji } from '../lib/moonPhase';
+import { useCentralizedPrice } from '../lib/centralizedPriceManager';
 import { 
   AlertTriangle, 
   TrendingUp, 
@@ -384,39 +385,18 @@ export default function AdvancedSignalDashboard({
     };
   }, [symbol]);
   
-  // State for real-time authentic CoinGecko price
-  const [authenticPrice, setAuthenticPrice] = useState<number | null>(null);
+  // Use centralized price manager for consistent 4-minute intervals
+  const centralizedPrice = useCentralizedPrice(symbol);
   
-  // Fetch authentic CoinGecko price directly (same as PriceOverview)
+  // Update when centralized price changes
   useEffect(() => {
-    const fetchAuthenticPrice = async () => {
-      try {
-        const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
-        if (response.ok) {
-          const data = await response.json();
-          const realPrice = data.lastPrice;
-          
-          if (realPrice && realPrice > 0) {
-            console.log(`[AdvancedSignalDashboard] Using authentic CoinGecko price for ${symbol}: $${realPrice}`);
-            setAuthenticPrice(realPrice);
-          }
-        }
-      } catch (error) {
-        console.error(`[AdvancedSignalDashboard] Error fetching authentic price for ${symbol}:`, error);
-      }
-    };
-    
-    // Initial fetch
-    fetchAuthenticPrice();
-    
-    // Set up polling every 3 seconds to match PriceOverview
-    const interval = setInterval(fetchAuthenticPrice, 3000);
-    
-    return () => clearInterval(interval);
-  }, [symbol]);
+    if (centralizedPrice && centralizedPrice > 0) {
+      console.log(`[AdvancedSignalDashboard] Centralized price update for ${symbol}: $${centralizedPrice}`);
+    }
+  }, [centralizedPrice, symbol]);
   
-  // Get the current price from authentic CoinGecko API
-  const currentAssetPrice = authenticPrice;
+  // Get the current price from centralized manager
+  const currentAssetPrice = centralizedPrice;
   
   // Initialize continuous learning for this symbol
   useEffect(() => {

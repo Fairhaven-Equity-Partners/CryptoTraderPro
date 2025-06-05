@@ -5,6 +5,7 @@ import { formatPrice, formatPercentage, getPriceChangeClass } from '../lib/calcu
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown } from 'lucide-react';
+import { useCentralizedPrice } from '../lib/centralizedPriceManager';
 
 interface PriceOverviewProps {
   symbol: string;
@@ -27,67 +28,40 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   // Ref for flash animation timer
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Use the same authentic CoinGecko price that calculations use
+  // Use centralized price manager for consistent 4-minute intervals
+  const centralizedPrice = useCentralizedPrice(symbol);
+  
+  // Update price state when centralized price changes
   useEffect(() => {
-    console.log(`[PriceOverview] Setting up authentic CoinGecko price updates for ${symbol}`);
-    
-    // Fetch authentic price directly from API endpoint
-    const fetchAuthenticPrice = async () => {
-      try {
-        const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
-        if (response.ok) {
-          const data = await response.json();
-          const authenticPrice = data.lastPrice;
-          
-          if (authenticPrice && authenticPrice > 0) {
-            console.log(`[PriceOverview] Authentic CoinGecko price for ${symbol}: $${authenticPrice}`);
-            
-            setPriceState(prev => {
-              const hasChanged = prev.price !== authenticPrice && prev.price > 0;
-              return {
-                previousPrice: prev.price,
-                price: authenticPrice,
-                flash: hasChanged,
-                lastUpdate: new Date()
-              };
-            });
-            
-            // Clear any existing flash timer
-            if (flashTimerRef.current) {
-              clearTimeout(flashTimerRef.current);
-            }
-            
-            // Set timer to remove flash effect after 2 seconds
-            const currentState = priceState;
-            if (currentState.price !== authenticPrice && currentState.price > 0) {
-              flashTimerRef.current = setTimeout(() => {
-                setPriceState(current => ({
-                  ...current,
-                  flash: false
-                }));
-              }, 2000);
-            }
-          }
-        }
-      } catch (error) {
-        console.error(`[PriceOverview] Error fetching authentic price for ${symbol}:`, error);
-      }
-    };
-    
-    // Initial fetch
-    fetchAuthenticPrice();
-    
-    // Set up polling every 3 seconds to match calculation frequency
-    const interval = setInterval(fetchAuthenticPrice, 3000);
-    
-    // Cleanup
-    return () => {
+    if (centralizedPrice && centralizedPrice > 0) {
+      console.log(`[PriceOverview] Centralized price update for ${symbol}: $${centralizedPrice}`);
+      
+      setPriceState(prev => {
+        const hasChanged = prev.price !== centralizedPrice && prev.price > 0;
+        return {
+          previousPrice: prev.price,
+          price: centralizedPrice,
+          flash: hasChanged,
+          lastUpdate: new Date()
+        };
+      });
+      
+      // Clear any existing flash timer
       if (flashTimerRef.current) {
         clearTimeout(flashTimerRef.current);
       }
-      clearInterval(interval);
-    };
-  }, [symbol]);
+      
+      // Set timer to remove flash effect after 2 seconds
+      if (priceState.price !== centralizedPrice && priceState.price > 0) {
+        flashTimerRef.current = setTimeout(() => {
+          setPriceState(current => ({
+            ...current,
+            flash: false
+          }));
+        }, 2000);
+      }
+    }
+  }, [centralizedPrice, symbol]);
   
   if (isLoading || !price) {
     return (
