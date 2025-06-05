@@ -422,11 +422,9 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Autonomous calculation logic: Fully autonomous with priority for 3-minute intervals
+        // Autonomous calculation logic: STRICT 3-minute intervals only
         const shouldCalculate = hasMinimumData && !isCalculating && isTimerTriggered && (
-          // ALWAYS calculate when 3-minute timer triggers (from FinalPriceSystem)
-          event.detail.timestamp && Date.now() - event.detail.timestamp < 2000 ||
-          // OR calculate if it's been 3+ minutes since last calculation  
+          // ONLY calculate if it's been 3+ minutes since last calculation
           timeSinceLastCalc >= 180 ||
           // OR if this is the first calculation after system startup
           lastCalculationRef.current === 0
@@ -564,14 +562,8 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // Autonomous startup calculation
-    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0 && lastCalculationRef.current === 0 && !isCalculating) {
-      console.log(`🚀 AUTONOMOUS STARTUP: Triggering initial calculation for ${symbol}`);
-      setIsCalculating(true);
-      lastCalculationRef.current = Date.now();
-      lastCalculationTimeRef.current = Date.now() / 1000;
-      calculateAllSignals();
-    }
+    // Autonomous mode: Only 3-minute timer triggers calculations
+    // No automatic startup calculations to maintain strict timing
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
@@ -1650,48 +1642,8 @@ export default function AdvancedSignalDashboard({
     setSelectedTimeframe(timeframe);
     updateRecommendationForTimeframe(timeframe);
     
-    // Trigger immediate calculation for the selected timeframe
-    if (chartData[timeframe] && chartData[timeframe].length > 0 && currentAssetPrice > 0 && !isCalculating) {
-      console.log(`⚡ Triggering immediate calculation for ${timeframe} with live price: ${currentAssetPrice}`);
-      setIsCalculating(true);
-      
-      try {
-        // Import the calculation function
-        const { calculateAdvancedSignal } = await import('../lib/unifiedCalculationCore');
-        
-        // Calculate signal for the specific timeframe
-        const signal = await calculateAdvancedSignal(symbol, timeframe, chartData[timeframe], currentAssetPrice);
-        
-        if (signal) {
-          console.log(`✅ Manual calculation complete for ${timeframe}: ${signal.direction} (${signal.confidence}%)`);
-          console.log(`[${timeframe}] IMMEDIATE CALC: Entry=${signal.entryPrice?.toFixed(2)}, SL=${signal.stopLoss?.toFixed(2)}, TP=${signal.takeProfit?.toFixed(2)}`);
-          
-          // Update only this specific timeframe
-          setSignals(prev => ({
-            ...prev,
-            [timeframe]: signal
-          }));
-          
-          // Show notification for manual calculation
-          toast({
-            title: "Manual Calculation Complete",
-            description: `${timeframe} signal updated: ${signal.direction} (${signal.confidence}% confidence)`,
-            variant: "default",
-            duration: 3000
-          });
-        }
-      } catch (error) {
-        console.error(`Error in manual calculation for ${timeframe}:`, error);
-        toast({
-          title: "Calculation Error",
-          description: `Failed to calculate ${timeframe} signal. Please try again.`,
-          variant: "destructive",
-          duration: 3000
-        });
-      } finally {
-        setIsCalculating(false);
-      }
-    }
+    // Autonomous mode: No manual calculation triggers
+    // System operates on strict 3-minute intervals only
     
     // Notify parent component if callback is provided
     if (onTimeframeSelect) {

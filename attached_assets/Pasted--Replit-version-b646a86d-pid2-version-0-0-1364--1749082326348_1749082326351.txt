@@ -1,0 +1,1081 @@
+ Replit version b646a86d, pid2 version 0.0.1364
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-597af9470722161d.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-597af9470722161d.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-597af9470722161d.js:1
+workspace_iframe.html:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=gxegC6xWv-2U' failed: 
+t @ eruda.js:2
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104817
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ 🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=80%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=80%
+ Generated 3 patterns for 1m timeframe
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 104817
+ [useMarketData] Price update for BTC/USDT: 104817 - NOT dispatching extra event
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 2 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 3 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=72%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=72%
+ Generated 2 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: SHORT
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=81%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=81%
+ Generated 6 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=65%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=65%
+ Generated 6 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 6 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 7 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: NEUTRAL
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=75%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=SHORT, Confidence=75%
+ Generated 3 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: SHORT
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Recording predictions using live price: 104809.06
+ Trade data: 176 total, 176 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 📈 Prediction recorded: BTC/USDT 1m SHORT @ 104809.06
+ 🎯 Stop Loss: 105333.11, Take Profit: 103865.78
+ 📈 Recorded prediction: 1m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 104809.06
+ 🎯 Stop Loss: 106066.77, Take Profit: 102545.18
+ 📈 Recorded prediction: 15m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 30m SHORT @ 104809.06
+ 🎯 Stop Loss: 106381.20, Take Profit: 101979.22
+ 📈 Recorded prediction: 30m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104809.06
+ 🎯 Stop Loss: 106905.24, Take Profit: 101035.93
+ 📈 Recorded prediction: 1h SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 4h LONG @ 104809.06
+ 🎯 Stop Loss: 101874.41, Take Profit: 110091.44
+ 📈 Recorded prediction: 4h LONG @ 104809.06
+ Trade data: 176 total, 176 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 📈 Prediction recorded: BTC/USDT 1M SHORT @ 104809.06
+ 🎯 Stop Loss: 111621.65, Take Profit: 92546.40
+ 📈 Recorded prediction: 1M SHORT @ 104809.06
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ Calculation process complete for BTC/USDT - 10 signals generated
+ Trade data: 176 total, 176 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade simulations query status: Object
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 🎯 Manual timeframe selection: 15m - triggering immediate calculation
+ Updating trade recommendation for 15m timeframe
+ ⚡ Triggering immediate calculation for 15m with live price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ ✅ Manual calculation complete for 15m: SHORT (98%)
+ [15m] IMMEDIATE CALC: Entry=104809.06, SL=106066.77, TP=102545.18
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 🔄 Signals updated, syncing timer with actual calculation time
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ [FinalPriceSystem] Next fetch in 110s
+ [FinalPriceSystem] Next fetch in 50s
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Scheduled price update check (15-second interval) at 6:11:05 PM
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 104817.00 → 104817.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 104817
+ [StreamlinedPriceManager] Price update: 104817
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104817
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ 🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=80%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=80%
+ Generated 1 patterns for 1m timeframe
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 104817
+ [useMarketData] Price update for BTC/USDT: 104817 - NOT dispatching extra event
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 3 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 4 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=72%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=72%
+ Generated 4 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: SHORT
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=81%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=81%
+ Generated 5 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=65%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=65%
+ Generated 7 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 10 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 8 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: NEUTRAL
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 7 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=75%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=SHORT, Confidence=75%
+ Generated 4 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: SHORT
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Recording predictions using live price: 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 📈 Prediction recorded: BTC/USDT 1m SHORT @ 104809.06
+ 🎯 Stop Loss: 105333.11, Take Profit: 103865.78
+ 📈 Recorded prediction: 1m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 104809.06
+ 🎯 Stop Loss: 106066.77, Take Profit: 102545.18
+ 📈 Recorded prediction: 15m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 30m SHORT @ 104809.06
+ 🎯 Stop Loss: 106381.20, Take Profit: 101979.22
+ 📈 Recorded prediction: 30m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104809.06
+ 🎯 Stop Loss: 106905.24, Take Profit: 101035.93
+ 📈 Recorded prediction: 1h SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 4h LONG @ 104809.06
+ 🎯 Stop Loss: 101874.41, Take Profit: 110091.44
+ 📈 Recorded prediction: 4h LONG @ 104809.06
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 📈 Prediction recorded: BTC/USDT 1M SHORT @ 104809.06
+ 🎯 Stop Loss: 111621.65, Take Profit: 92546.40
+ 📈 Recorded prediction: 1M SHORT @ 104809.06
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ Calculation process complete for BTC/USDT - 10 signals generated
+ Trade data: 183 total, 183 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade simulations query status: Object
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ [FinalPriceSystem] Next fetch in 100s
+ [FinalPriceSystem] Next fetch in 40s
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ [FinalPriceSystem] Next fetch in 90s
+ Scheduled price update check (15-second interval) at 6:11:20 PM
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ [FinalPriceSystem] Next fetch in 30s
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 104817.00 → 104817.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 104817
+ [StreamlinedPriceManager] Price update: 104817
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104817
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ 🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=80%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=80%
+ Generated 4 patterns for 1m timeframe
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 104817
+ [useMarketData] Price update for BTC/USDT: 104817 - NOT dispatching extra event
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 3 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 2 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=72%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=72%
+ Generated 2 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: SHORT
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=81%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=81%
+ Generated 5 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=65%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=65%
+ Generated 5 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 8 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 8 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: NEUTRAL
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 6 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=75%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=SHORT, Confidence=75%
+ Generated 5 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: SHORT
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Recording predictions using live price: 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 📈 Prediction recorded: BTC/USDT 1m SHORT @ 104809.06
+ 🎯 Stop Loss: 105333.11, Take Profit: 103865.78
+ 📈 Recorded prediction: 1m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 104809.06
+ 🎯 Stop Loss: 106066.77, Take Profit: 102545.18
+ 📈 Recorded prediction: 15m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 30m SHORT @ 104809.06
+ 🎯 Stop Loss: 106381.20, Take Profit: 101979.22
+ 📈 Recorded prediction: 30m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104809.06
+ 🎯 Stop Loss: 106905.24, Take Profit: 101035.93
+ 📈 Recorded prediction: 1h SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 4h LONG @ 104809.06
+ 🎯 Stop Loss: 101874.41, Take Profit: 110091.44
+ 📈 Recorded prediction: 4h LONG @ 104809.06
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 📈 Prediction recorded: BTC/USDT 1M SHORT @ 104809.06
+ 🎯 Stop Loss: 111621.65, Take Profit: 92546.40
+ 📈 Recorded prediction: 1M SHORT @ 104809.06
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ Calculation process complete for BTC/USDT - 10 signals generated
+ Trade data: 189 total, 189 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade simulations query status: Object
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ [FinalPriceSystem] Next fetch in 80s
+ [FinalPriceSystem] Next fetch in 20s
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Scheduled price update check (15-second interval) at 6:11:35 PM
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 104817.00 → 104817.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 104817
+ [StreamlinedPriceManager] Price update: 104817
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104817
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ 🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=80%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=80%
+ Generated 3 patterns for 1m timeframe
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 104817
+ [useMarketData] Price update for BTC/USDT: 104817 - NOT dispatching extra event
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 3 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 6 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=72%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=72%
+ Generated 7 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: SHORT
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=81%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=81%
+ Generated 7 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=65%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=65%
+ Generated 8 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 6 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: NEUTRAL
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 2 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=75%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=SHORT, Confidence=75%
+ Generated 5 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: SHORT
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Recording predictions using live price: 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ 📈 Prediction recorded: BTC/USDT 1m SHORT @ 104809.06
+ 🎯 Stop Loss: 105333.11, Take Profit: 103865.78
+ 📈 Recorded prediction: 1m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 104809.06
+ 🎯 Stop Loss: 106066.77, Take Profit: 102545.18
+ 📈 Recorded prediction: 15m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 30m SHORT @ 104809.06
+ 🎯 Stop Loss: 106381.20, Take Profit: 101979.22
+ 📈 Recorded prediction: 30m SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104809.06
+ 🎯 Stop Loss: 106905.24, Take Profit: 101035.93
+ 📈 Recorded prediction: 1h SHORT @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 4h LONG @ 104809.06
+ 🎯 Stop Loss: 101874.41, Take Profit: 110091.44
+ 📈 Recorded prediction: 4h LONG @ 104809.06
+ 📈 Prediction recorded: BTC/USDT 1M SHORT @ 104809.06
+ 🎯 Stop Loss: 111621.65, Take Profit: 92546.40
+ 📈 Recorded prediction: 1M SHORT @ 104809.06
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ Calculation process complete for BTC/USDT - 10 signals generated
+ Trade data: 195 total, 195 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade simulations query status: Object
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ [FinalPriceSystem] Next fetch in 70s
+ [FinalPriceSystem] Next fetch in 10s
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ [FinalPriceSystem] Next fetch in 60s
+ Scheduled price update check (15-second interval) at 6:11:50 PM
+ [FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Next fetch in 180s
+ Trade data: 201 total, 201 active, 0 completed
+ [AdvancedSignalDashboard] Using live asset price: 104809.06
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 104817.00 → 104819.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 104819
+ [StreamlinedPriceManager] Price update: 104819
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104819
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ 🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=80%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=80%
+ Generated 1 patterns for 1m timeframe
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 104819
+ [useMarketData] Price update for BTC/USDT: 104819 - NOT dispatching extra event
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 1 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 3 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=72%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=72%
+ Generated 6 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: SHORT
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=81%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=81%
+ Generated 6 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=65%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=65%
+ Generated 4 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 7 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 104809.06 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+Console.js:61 [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 6 patterns for 3d timeframe
+Console.js:61 ⚡ Successfully calculated 3d: NEUTRAL
+Console.js:61 ⚡ About to calculate 1w timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1w timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1w)
+Console.js:61 [1w] Using currentAssetPrice: 104809.06 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1w: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1w: Object
+Console.js:61 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 5 patterns for 1w timeframe
+Console.js:61 ⚡ Successfully calculated 1w: NEUTRAL
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1M timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1M)
+Console.js:61 [1M] Using currentAssetPrice: 104809.06 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1M: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1M: Object
+Console.js:61 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=75%
+Console.js:61 [EnhancedEngine] 1M: Enhanced signal ready - Direction=SHORT, Confidence=75%
+Console.js:61 Generated 8 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: SHORT
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: Array(18)
+Console.js:61 📊 Sample 1d signal: Object
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 🎯 Recording predictions using live price: 104809.06
+Console.js:61 Trade data: 201 total, 201 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 📈 Prediction recorded: BTC/USDT 1m SHORT @ 104809.06
+Console.js:61 🎯 Stop Loss: 105333.11, Take Profit: 103865.78
+Console.js:61 📈 Recorded prediction: 1m SHORT @ 104809.06
+Console.js:61 [FinalPriceSystem] Successfully fetched price for BTC/USDT: 104813.54
+Console.js:61 💰 PRICE UPDATE: BTC/USDT = 104813.54 💰
+Console.js:61 💰 CALCULATIONS COMING SOON 💰
+Console.js:61 [PriceOverview] Price update received: 104813.54
+Console.js:61 [StreamlinedPriceManager] Price update: 104813.54
+Console.js:61 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+Console.js:61 🔥 RAW LIVE PRICE EVENT: Object
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=104813.54
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation scheduled: Next calculation in 180s (autonomous mode)
+Console.js:61 [FinalPriceSystem] Price update broadcast for BTC/USDT: 104813.54
+Console.js:61 [FinalPriceSystem] Price fetch completed for BTC/USDT: 104813.54
+Console.js:61 [FinalPriceSystem] Price updated to 104813.54 - calculation will follow automatically
+Console.js:61 Trade data: 201 total, 201 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 📈 Prediction recorded: BTC/USDT 15m SHORT @ 104809.06
+Console.js:61 🎯 Stop Loss: 106066.77, Take Profit: 102545.18
+Console.js:61 📈 Recorded prediction: 15m SHORT @ 104809.06
+Console.js:61 📈 Prediction recorded: BTC/USDT 30m SHORT @ 104809.06
+Console.js:61 🎯 Stop Loss: 106381.20, Take Profit: 101979.22
+Console.js:61 📈 Recorded prediction: 30m SHORT @ 104809.06
+Console.js:61 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104809.06
+Console.js:61 🎯 Stop Loss: 106905.24, Take Profit: 101035.93
+Console.js:61 📈 Recorded prediction: 1h SHORT @ 104809.06
+Console.js:61 📈 Prediction recorded: BTC/USDT 4h LONG @ 104809.06
+Console.js:61 🎯 Stop Loss: 101874.41, Take Profit: 110091.44
+Console.js:61 📈 Recorded prediction: 4h LONG @ 104809.06
+Console.js:61 Trade data: 201 total, 201 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 📈 Prediction recorded: BTC/USDT 1M SHORT @ 104809.06
+Console.js:61 🎯 Stop Loss: 111621.65, Take Profit: 92546.40
+Console.js:61 📈 Recorded prediction: 1M SHORT @ 104809.06
+Console.js:61 Found 10 valid signals for recommendation for BTC/USDT
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Calculation process complete for BTC/USDT - 10 signals generated
+Console.js:61 Trade data: 201 total, 201 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade simulations query status: Object
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 [FinalPriceSystem] Next fetch in 50s
+Console.js:61 [FinalPriceSystem] Next fetch in 170s
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
+Console.js:61 Trade data: 207 total, 207 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live asset price: 104809.06
