@@ -384,36 +384,39 @@ export default function AdvancedSignalDashboard({
     };
   }, [symbol]);
   
-  // Get the current price from authentic CoinGecko API data only
-  const currentAssetPrice = (() => {
-    // ALWAYS use asset.lastPrice from API which contains real CoinGecko data
-    if (asset && typeof asset.lastPrice === 'number' && asset.lastPrice > 0) {
-      console.log(`[AdvancedSignalDashboard] Using authentic CoinGecko price for ${symbol}: $${asset.lastPrice}`);
-      return asset.lastPrice;
-    }
+  // State for real-time authentic CoinGecko price
+  const [authenticPrice, setAuthenticPrice] = useState<number | null>(null);
+  
+  // Fetch authentic CoinGecko price directly (same as PriceOverview)
+  useEffect(() => {
+    const fetchAuthenticPrice = async () => {
+      try {
+        const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
+        if (response.ok) {
+          const data = await response.json();
+          const realPrice = data.lastPrice;
+          
+          if (realPrice && realPrice > 0) {
+            console.log(`[AdvancedSignalDashboard] Using authentic CoinGecko price for ${symbol}: $${realPrice}`);
+            setAuthenticPrice(realPrice);
+          }
+        }
+      } catch (error) {
+        console.error(`[AdvancedSignalDashboard] Error fetching authentic price for ${symbol}:`, error);
+      }
+    };
     
-    // If API data not available, return null to prevent calculations with invalid data
-    console.warn(`[AdvancedSignalDashboard] No authentic price data available for ${symbol}`);
-    return null;
+    // Initial fetch
+    fetchAuthenticPrice();
     
-    // Fallback to asset API data if live price not available yet
-    const assetPrice = (asset as any)?.price || (asset as any)?.lastPrice;
-    if (assetPrice && assetPrice > 0) {
-      console.log(`[AdvancedSignalDashboard] Using asset API price: ${assetPrice}`);
-      return assetPrice;
-    }
+    // Set up polling every 3 seconds to match PriceOverview
+    const interval = setInterval(fetchAuthenticPrice, 3000);
     
-    // Fallback to chart data latest close price
-    const latestData = chartData['1m']?.[chartData['1m'].length - 1]?.close;
-    if (latestData && latestData > 0) {
-      console.log(`[AdvancedSignalDashboard] Using chart data price: ${latestData}`);
-      return latestData;
-    }
-    
-    // No hardcoded fallbacks - return 0 to indicate no valid price available
-    console.warn(`[AdvancedSignalDashboard] No valid price found for ${symbol}`);
-    return 0;
-  })();
+    return () => clearInterval(interval);
+  }, [symbol]);
+  
+  // Get the current price from authentic CoinGecko API
+  const currentAssetPrice = authenticPrice;
   
   // Initialize continuous learning for this symbol
   useEffect(() => {
