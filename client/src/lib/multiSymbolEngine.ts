@@ -60,7 +60,24 @@ export class MultiSymbolEngine {
     const batches = this.createBatches(this.config.symbols, this.config.batchSize);
 
     for (const batch of batches) {
-      const batchPromises = batch.map(symbol => this.processSymbol(symbol, currentPrices.get(symbol) || 0));
+      // Fetch authentic API prices for each symbol in the batch
+      const batchPromises = batch.map(async symbol => {
+        let authenticPrice = 0;
+        try {
+          // Get authentic price from API endpoint
+          const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
+          if (response.ok) {
+            const data = await response.json();
+            authenticPrice = data.lastPrice || 0;
+          }
+        } catch (error) {
+          console.warn(`Failed to fetch authentic price for ${symbol}, using cached:`, error);
+          authenticPrice = currentPrices.get(symbol) || 0;
+        }
+        
+        return this.processSymbol(symbol, authenticPrice);
+      });
+      
       const batchResults = await Promise.all(batchPromises);
       
       batchResults.forEach((result, index) => {
