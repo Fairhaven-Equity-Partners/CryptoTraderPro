@@ -107,13 +107,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           await new Promise(resolve => setTimeout(resolve, 100));
           
           const apiKey = process.env.COINGECKO_API_KEY;
-          const apiUrl = apiKey 
-            ? `https://pro-api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`
-            : `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`;
+          // Always use standard API endpoint - pro endpoints require paid subscription
+          const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`;
           
           const headers: Record<string, string> = {};
           if (apiKey) {
-            headers['x-cg-pro-api-key'] = apiKey;
+            headers['x-cg-demo-api-key'] = apiKey; // Use demo header for free tier
           }
           const response = await fetch(apiUrl, { headers });
           const data = await response.json();

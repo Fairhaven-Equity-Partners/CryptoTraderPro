@@ -115,9 +115,8 @@ export class MultiPriceFetcher {
       try {
         const idsString = coinGeckoIds.join(',');
         const apiKey = process.env.COINGECKO_API_KEY;
-        const url = apiKey 
-          ? `https://pro-api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd&include_24hr_change=true`
-          : `https://api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd&include_24hr_change=true`;
+        // Always use standard API endpoint - pro endpoints require paid subscription
+        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd&include_24hr_change=true`;
         
         console.log(`Fetching batch of ${coinGeckoIds.length} cryptocurrencies (attempt ${retries + 1})`);
         
@@ -127,7 +126,7 @@ export class MultiPriceFetcher {
         };
         
         if (apiKey) {
-          headers['x-cg-pro-api-key'] = apiKey;
+          headers['x-cg-demo-api-key'] = apiKey; // Use demo header for free tier
         }
         
         const response = await fetch(url, { headers });
