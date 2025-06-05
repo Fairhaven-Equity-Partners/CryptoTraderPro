@@ -1,0 +1,1338 @@
+ Replit version 14013599, pid2 version 0.0.1365
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-4569be7fa572565e.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-4569be7fa572565e.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-4569be7fa572565e.js:1
+r.stripe.com/b:1  Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED
+r.stripe.com/b:1  Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED
+ stallwart: failed ping 1
+ stallwart: failed ping 2
+ stallwart: failed ping 3
+ stallwart: failed ping 1
+ stallwart: failed ping 1
+ stallwart: failed ping 1
+ stallwart: failed ping 1
+ stallwart: failed ping 2
+ stallwart: failed ping 3
+ stallwart: failed ping 4
+ stallwart: failed ping 5
+ stallwart: session stalled
+ WebSocket connection to 'wss://eval.worf.platform.replit.com/wsv2/v2.public.Q2dZSTNiMkV3Z1lTQmdqODJZVENCaUlFZDI5eVpqQUFPc3NCQ2lReU5EZ3hOVFExT0MwM01HRXdMVFJrWWpJdFlUTTNaUzFqTmpJeU1HRXdaR0V4TldFU0EyNXBlQm9XY21Wd2JHbDBMWEpsY0d3dFptbHNaWE10ZDI5eVppSVBRM0o1Y0hSdlZISmhaR1Z5VUhKdktnZGtaSFZ5WVdWelFrNEtGM0psY0d4cGRDMXlaWEJzTFdKc2IyTnJjeTEzYjNKbUVoVnlaWEJzYVhRdGNtVndiQzF0WlhSaExYZHZjbVlhSEhKbGNHeHBkQzF0WVhKbllYSnBibVV0WW14dlkydHpMWGR2Y21aS0J3aThwSm9VRUFGUUFGb1BhVzUwWlc1MFgzQmxjbk52Ym1Gc2VBQlNKUWdCRUlDQWdJQUlHUUFBQUFBQUFQQS9JUUFBQUFBQUFQQS9LSUNBZ0lESUFUQUJPQUJnQUdvT0NMeWttaFFTQjJSa2RYSmhaWE9DQVFJcUFJb0JJd2dCRUlDQWdJQWdHUUFBQUFBQUFCQkFJUUFBQUFBQUFCQkFLSUNBZ0lESUFUQUFtZ0VLQ2dnd0xqQXVNVE0yTmFBQkFRPT3xwth2o-Oh2ZsqZSUe3ZlofijeNgc_S_awdX2uqlC7S-VzV14g6Tk56zdVDH4cCyJtBEvkPtkVHq7Jpt7h6E4J.Q2dad2NtOWtPak1pQ25KbGNHeHBkQzVqYjIwPQ' failed: WebSocket is closed before the connection is established.
+cleanupSocket @ 4899-4f8cb4e8ff6b60dd.js:1
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=qJqZvUS9i3B8' failed: 
+t @ eruda.js:2
+setupWebSocket @ client:536
+(anonymous) @ client:531
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=qJqZvUS9i3B8' failed: 
+t @ eruda.js:2
+setupWebSocket @ client:536
+(anonymous) @ client:531
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ Loading chart with 500 data points for BTC/USDT (4h)
+ [PriceOverview] Setting up price updates for BTC/USDT
+ [FinalPriceSystem] Initialized with 180s refresh interval
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Started tracking BTC/USDT
+ [FinalPriceSystem] Subscribed to price updates for BTC/USDT
+ Loading chart data for BTC/USDT (1m)
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart data for BTC/USDT (5m)
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart data for BTC/USDT (15m)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart data for BTC/USDT (30m)
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart data for BTC/USDT (1h)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart data for BTC/USDT (4h)
+ Loading chart data for BTC/USDT (1d)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart data for BTC/USDT (3d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart data for BTC/USDT (1w)
+ Loading chart with 200 data points for BTC/USDT (1w)
+ Loading chart data for BTC/USDT (1M)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Trade simulations query status: Object
+ 🧠 Initializing continuous learning feedback loop for BTC/USDT
+ 🧠 Starting continuous learning for BTC/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ All timeframe data loaded for BTC/USDT
+ [AdvancedSignalDashboard] No authentic price data available for BTC/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performConcurrentWorkOnRoot @ chunk-276SZO74.js:18678
+workLoop @ chunk-276SZO74.js:197
+flushWork @ chunk-276SZO74.js:176
+performWorkUntilDeadline @ chunk-276SZO74.js:384
+ ⚡ Starting synchronized calculation system
+ ⚡ Starting synchronized price & calculation system
+ ✅ Synchronized calculation system ready
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] No authentic price data available for BTC/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js:18874
+flushSyncCallbacks @ chunk-276SZO74.js:9119
+(anonymous) @ chunk-276SZO74.js:18627
+ Trade simulations query status: Object
+ ✅ Initializing streamlined calculation system
+ [StreamlinedPriceManager] Initializing optimized price management
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 100931.59
+ 💰 PRICE UPDATE: BTC/USDT = 100931.59 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [PriceOverview] Price update received: 100931.59
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ [AdvancedSignalDashboard] Price updated via price-update event: 100931.59
+ 🔄 Real-time calculation triggered for BTC/USDT after 1749157183.503s
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: NORMAL, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 2 patterns for 1m timeframe
+ [StreamlinedPriceManager] Price update: 100931.59
+ [useMarketData] Price updated to 100931.59 for BTC/USDT - display only
+ [useMarketData] Price updated to 100931.59 for BTC/USDT - display only
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ [AdvancedSignalDashboard] Price updated via price-update event: 100931.59
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ [AdvancedSignalDashboard] Crypto price updated to: 100931.59
+ [FinalPriceSystem] Price fetch completed - no calculation trigger (not timer-triggered)
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 100931.59
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 100931.59
+ ⚡ Successfully calculated 1m: LONG
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 1 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: NEUTRAL
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 7 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 6 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: LONG
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 10 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 13 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: SHORT
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 8 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 9 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 8 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: LONG
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Cannot record predictions - no valid live price available
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:1134
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ 🔄 Signals updated, syncing timer with actual calculation time
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ [FinalPriceSystem] Next fetch in 50s
+ [FinalPriceSystem] Next fetch in 170s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ [FinalPriceSystem] Next fetch in 40s
+ [FinalPriceSystem] Next fetch in 160s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ [FinalPriceSystem] Next fetch in 30s
+ [FinalPriceSystem] Next fetch in 150s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ [FinalPriceSystem] Next fetch in 20s
+ [FinalPriceSystem] Next fetch in 140s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 [FinalPriceSystem] Next fetch in 10s
+Console.js:61 [FinalPriceSystem] Next fetch in 130s
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 [FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation
+Console.js:61 [FinalPriceSystem] Fetching fresh price for BTC/USDT
+Console.js:61 [FinalPriceSystem] Next fetch in 180s
+Console.js:61 [FinalPriceSystem] Next fetch in 120s
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+Console.js:61 [FinalPriceSystem] Successfully fetched price for BTC/USDT: 100957.83
+Console.js:61 💰 PRICE UPDATE: BTC/USDT = 100957.83 💰
+Console.js:61 💰 CALCULATIONS COMING SOON 💰
+Console.js:61 [PriceOverview] Price update received: 100957.83
+Console.js:61 [AdvancedSignalDashboard] Price updated via price-update event: 100957.83
+Console.js:61 [StreamlinedPriceManager] Price update: 100957.83
+Console.js:61 [useMarketData] Price updated to 100957.83 for BTC/USDT - display only
+Console.js:61 [useMarketData] Price updated to 100957.83 for BTC/USDT - display only
+Console.js:61 🔄 Real-time calculation triggered for BTC/USDT after 59.659s
+Console.js:61 ⚡ Starting calculation loop for 10 timeframes
+Console.js:61 ⚡ About to calculate 1m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1m)
+Console.js:61 [1m] Using currentAssetPrice: 100931.59 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1m: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1m: Object
+Console.js:61 [UnifiedEngine] 1m: Market Regime=Market Regime: NORMAL, Direction=LONG, Confidence=98%
+Console.js:61 [EnhancedEngine] 1m: Enhanced signal ready - Direction=LONG, Confidence=98%
+Console.js:61 Generated 2 patterns for 1m timeframe
+Console.js:61 [AdvancedSignalDashboard] Price updated via price-update event: 100957.83
+Console.js:61 [AdvancedSignalDashboard] Crypto price updated to: 100957.83
+Console.js:61 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, timeSinceLastCalc=0.009s
+Console.js:61 [AdvancedSignalDashboard] Live price updated to: 100957.83
+Console.js:61 [useMarketData] Price updated to 100957.83 for BTC/USDT - display only
+Console.js:61 [useMarketData] Price updated to 100957.83 for BTC/USDT - display only
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 100957.83
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 100957.83
+ ⚡ Successfully calculated 1m: LONG
+ [FinalPriceSystem] Price updated to 100957.83 - calculation will follow automatically
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=70%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=SHORT, Confidence=70%
+ Generated 1 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: SHORT
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 4 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: NEUTRAL
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=70%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=70%
+ Generated 2 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: SHORT
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=75%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=LONG, Confidence=75%
+ Generated 6 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: LONG
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 9 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: NEUTRAL
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 8 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: SHORT
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 7 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 100931.59 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 7 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: LONG
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Recording predictions using live price: 100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ 📈 Prediction recorded: BTC/USDT 1m LONG @ 100931.59
+ 🎯 Stop Loss: 100477.40, Take Profit: 101839.97
+ 📈 Recorded prediction: 1m LONG @ 100931.59
+ 📈 Prediction recorded: BTC/USDT 5m SHORT @ 100931.59
+ 🎯 Stop Loss: 101537.18, Take Profit: 99720.41
+ 📈 Recorded prediction: 5m SHORT @ 100931.59
+ 📈 Prediction recorded: BTC/USDT 30m SHORT @ 100931.59
+ 🎯 Stop Loss: 101839.97, Take Profit: 99114.82
+ 📈 Recorded prediction: 30m SHORT @ 100931.59
+ 📈 Prediction recorded: BTC/USDT 1h LONG @ 100931.59
+ 🎯 Stop Loss: 99720.41, Take Profit: 103353.95
+ 📈 Recorded prediction: 1h LONG @ 100931.59
+ 📈 Prediction recorded: BTC/USDT 1d SHORT @ 100931.59
+ 🎯 Stop Loss: 102748.36, Take Profit: 97298.05
+ 📈 Recorded prediction: 1d SHORT @ 100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ 📈 Prediction recorded: BTC/USDT 3d LONG @ 100931.59
+ 🎯 Stop Loss: 98660.63, Take Profit: 105473.51
+ 📈 Recorded prediction: 3d LONG @ 100931.59
+ 📈 Prediction recorded: BTC/USDT 1M LONG @ 100931.59
+ 🎯 Stop Loss: 97903.64, Take Profit: 106987.49
+ 📈 Recorded prediction: 1M LONG @ 100931.59
+ 🔄 Signals updated, syncing timer with actual calculation time
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for BTC/USDT: $100931.59
+ Selected new asset: AVAX/USDT - analysis will run automatically
+ [AdvancedSignalDashboard] No authentic price data available for AVAX/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js:18874
+flushSyncCallbacks @ chunk-276SZO74.js:9119
+(anonymous) @ chunk-276SZO74.js:18627
+ [FinalPriceSystem] Unsubscribed from price updates for BTC/USDT
+ [FinalPriceSystem] Stopped tracking BTC/USDT
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 500 data points for AVAX/USDT (4h)
+ [PriceOverview] Setting up price updates for AVAX/USDT
+ [FinalPriceSystem] Fetching fresh price for AVAX/USDT
+ [FinalPriceSystem] Started tracking AVAX/USDT
+ [FinalPriceSystem] Subscribed to price updates for AVAX/USDT
+ Loading chart data for AVAX/USDT (1m)
+ Loading chart with 1000 data points for AVAX/USDT (1m)
+ Loading chart data for AVAX/USDT (5m)
+ Loading chart with 1000 data points for AVAX/USDT (5m)
+ Loading chart data for AVAX/USDT (15m)
+ Loading chart with 800 data points for AVAX/USDT (15m)
+ Loading chart data for AVAX/USDT (30m)
+ Loading chart with 800 data points for AVAX/USDT (30m)
+ Loading chart data for AVAX/USDT (1h)
+ Loading chart with 720 data points for AVAX/USDT (1h)
+ Loading chart data for AVAX/USDT (4h)
+ Loading chart data for AVAX/USDT (1d)
+ Loading chart with 365 data points for AVAX/USDT (1d)
+ Loading chart data for AVAX/USDT (3d)
+ Loading chart with 150 data points for AVAX/USDT (3d)
+ Loading chart data for AVAX/USDT (1w)
+ Loading chart with 200 data points for AVAX/USDT (1w)
+ Loading chart data for AVAX/USDT (1M)
+ Loading chart with 60 data points for AVAX/USDT (1M)
+ Trade simulations query status: Object
+ 🧠 Initializing continuous learning feedback loop for AVAX/USDT
+ 🧠 Starting continuous learning for AVAX/USDT
+ Symbol changed from BTC/USDT to AVAX/USDT - resetting calculation status
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Automatically running analysis for AVAX/USDT
+ [AdvancedSignalDashboard] No authentic price data available for AVAX/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js:18874
+flushSyncCallbacks @ chunk-276SZO74.js:9119
+(anonymous) @ chunk-276SZO74.js:18627
+ [AdvancedSignalDashboard] No authentic price data available for AVAX/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js:18874
+flushSyncCallbacks @ chunk-276SZO74.js:9119
+(anonymous) @ chunk-276SZO74.js:18627
+ [AdvancedSignalDashboard] No authentic price data available for AVAX/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performConcurrentWorkOnRoot @ chunk-276SZO74.js:18678
+workLoop @ chunk-276SZO74.js:197
+flushWork @ chunk-276SZO74.js:176
+performWorkUntilDeadline @ chunk-276SZO74.js:384
+ [AdvancedSignalDashboard] No authentic price data available for AVAX/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performConcurrentWorkOnRoot @ chunk-276SZO74.js:18678
+workLoop @ chunk-276SZO74.js:197
+flushWork @ chunk-276SZO74.js:176
+performWorkUntilDeadline @ chunk-276SZO74.js:384
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] No authentic price data available for AVAX/USDT
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:319
+AdvancedSignalDashboard @ AdvancedSignalDashboard.tsx:333
+renderWithHooks @ chunk-276SZO74.js:11548
+updateFunctionComponent @ chunk-276SZO74.js:14582
+beginWork @ chunk-276SZO74.js:15924
+beginWork$1 @ chunk-276SZO74.js:19753
+performUnitOfWork @ chunk-276SZO74.js:19198
+workLoopSync @ chunk-276SZO74.js:19137
+renderRootSync @ chunk-276SZO74.js:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js:18874
+flushSyncCallbacks @ chunk-276SZO74.js:9119
+(anonymous) @ chunk-276SZO74.js:18627
+ Trade simulations query status: Object
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [FinalPriceSystem] Successfully fetched price for AVAX/USDT: 18.74
+ 💰 PRICE UPDATE: AVAX/USDT = 18.74 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [PriceOverview] Price update received: 18.74
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ [AdvancedSignalDashboard] Price updated via price-update event: 18.74
+ 🔄 Real-time calculation triggered for AVAX/USDT after 1749157249.661s
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for AVAX/USDT on 1m timeframe
+ DATA CHECK: AVAX/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for AVAX/USDT (1m)
+ [1m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 1m: Object
+ FINAL Support/Resistance for AVAX/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: TRENDING_UP, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 1 patterns for 1m timeframe
+ [useMarketData] Price updated to 18.74 for AVAX/USDT - display only
+ [useMarketData] Price updated to 18.74 for AVAX/USDT - display only
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ [AdvancedSignalDashboard] Price updated via price-update event: 18.74
+ Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+ [AdvancedSignalDashboard] Crypto price updated to: 18.74
+ [FinalPriceSystem] Price fetch completed - no calculation trigger (not timer-triggered)
+ [FinalPriceSystem] Price update broadcast for AVAX/USDT: 18.74
+ [FinalPriceSystem] Price fetch completed for AVAX/USDT: 18.74
+ ⚡ Successfully calculated 1m: NEUTRAL
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for AVAX/USDT on 5m timeframe
+ DATA CHECK: AVAX/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for AVAX/USDT (5m)
+ [5m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 5m: Object
+ FINAL Support/Resistance for AVAX/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 3 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: LONG
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for AVAX/USDT on 15m timeframe
+ DATA CHECK: AVAX/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for AVAX/USDT (15m)
+ [15m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 15m: Object
+ FINAL Support/Resistance for AVAX/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=73%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=73%
+ Generated 7 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for AVAX/USDT on 30m timeframe
+ DATA CHECK: AVAX/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for AVAX/USDT (30m)
+ [30m] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 30m: Object
+ FINAL Support/Resistance for AVAX/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 3 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for AVAX/USDT on 1h timeframe
+ DATA CHECK: AVAX/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for AVAX/USDT (1h)
+ [1h] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 1h: Object
+ FINAL Support/Resistance for AVAX/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: NEUTRAL
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for AVAX/USDT on 4h timeframe
+ DATA CHECK: AVAX/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for AVAX/USDT (4h)
+ [4h] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 4h: Object
+ FINAL Support/Resistance for AVAX/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 7 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: SHORT
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for AVAX/USDT on 1d timeframe
+ DATA CHECK: AVAX/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for AVAX/USDT (1d)
+ [1d] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 1d: Object
+ FINAL Support/Resistance for AVAX/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 13 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: LONG
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for AVAX/USDT on 3d timeframe
+ DATA CHECK: AVAX/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for AVAX/USDT (3d)
+ [3d] Using currentAssetPrice: null for calculation
+ Support/Resistance calculation for AVAX/USDT 3d: Object
+ FINAL Support/Resistance for AVAX/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 10 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: NEUTRAL
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for AVAX/USDT on 1w timeframe
+ DATA CHECK: AVAX/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for AVAX/USDT (1w)
+ [1w] Using currentAssetPrice: null for calculation
+Console.js:61 Support/Resistance calculation for AVAX/USDT 1w: Object
+Console.js:61 FINAL Support/Resistance for AVAX/USDT 1w: Object
+Console.js:61 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 12 patterns for 1w timeframe
+Console.js:61 ⚡ Successfully calculated 1w: NEUTRAL
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for AVAX/USDT on 1M timeframe
+Console.js:61 DATA CHECK: AVAX/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for AVAX/USDT (1M)
+Console.js:61 [1M] Using currentAssetPrice: null for calculation
+Console.js:61 Support/Resistance calculation for AVAX/USDT 1M: Object
+Console.js:61 FINAL Support/Resistance for AVAX/USDT 1M: Object
+Console.js:61 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+Console.js:61 [EnhancedEngine] 1M: Enhanced signal ready - Direction=LONG, Confidence=98%
+Console.js:61 Generated 12 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: LONG
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: Array(18)
+Console.js:61 📊 Sample 1d signal: Object
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 🎯 Cannot record predictions - no valid live price available
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ AdvancedSignalDashboard.tsx:1519
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Fetching data for symbol: AVAX/USDT, encoded as: AVAX%2FUSDT
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 🔄 Signals updated, syncing timer with actual calculation time
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 [FinalPriceSystem] Next fetch in 170s
+Console.js:61 [FinalPriceSystem] Next fetch in 110s
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Selected new asset: AVAX/USDT - analysis will run automatically
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Automatically running analysis for AVAX/USDT
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 [FinalPriceSystem] Next fetch in 160s
+Console.js:61 [FinalPriceSystem] Next fetch in 100s
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using authentic CoinGecko price for AVAX/USDT: $18.74
+Console.js:61 Tab change to 15m - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 15m timeframe
+chunk-276SZO74.js?v=dad7364a:16670 Uncaught TypeError: Cannot read properties of null (reading 'toFixed')
+    at formatCurrency2 (AdvancedSignalDashboard.tsx:1735:36)
+    at generateSummary (AdvancedSignalDashboard.tsx:1668:143)
+    at AdvancedSignalDashboard.tsx:1701:16
+    at AdvancedSignalDashboard.tsx:1711:31
+    at AdvancedSignalDashboard.tsx:1722:5
+    at Object.onValueChange [as current] (AdvancedSignalDashboard.tsx:2222:39)
+    at chunk-TBKYLSU5.js?v=dad7364a:27:61
+    at chunk-TBKYLSU5.js?v=dad7364a:67:7
+    at commitHookEffectListMount (chunk-276SZO74.js?v=dad7364a:16915:34)
+    at commitPassiveMountOnFiber (chunk-276SZO74.js?v=dad7364a:18156:19)
+formatCurrency2 @ AdvancedSignalDashboard.tsx:1735
+generateSummary @ AdvancedSignalDashboard.tsx:1668
+(anonymous) @ AdvancedSignalDashboard.tsx:1701
+(anonymous) @ AdvancedSignalDashboard.tsx:1711
+(anonymous) @ AdvancedSignalDashboard.tsx:1722
+onValueChange @ AdvancedSignalDashboard.tsx:2222
+(anonymous) @ chunk-TBKYLSU5.js?v=dad7364a:27
+(anonymous) @ chunk-TBKYLSU5.js?v=dad7364a:67
+commitHookEffectListMount @ chunk-276SZO74.js?v=dad7364a:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=dad7364a:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=dad7364a:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=dad7364a:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=dad7364a:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=dad7364a:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=dad7364a:19447
+commitRootImpl @ chunk-276SZO74.js?v=dad7364a:19416
+commitRoot @ chunk-276SZO74.js?v=dad7364a:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=dad7364a:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=dad7364a:9119
+(anonymous) @ chunk-276SZO74.js?v=dad7364a:18627
+Console.js:61 The above error occurred in the <Tabs> component:
+
+    at https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=dad7364a:51:7
+    at div
+    at _c9 (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/components/ui/card.tsx:20:11)
+    at div
+    at AdvancedSignalDashboard (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/components/AdvancedSignalDashboard.tsx:197:3)
+    at div
+    at main
+    at div
+    at Analysis (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/pages/Analysis.tsx:34:43)
+    at component
+    at Route (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=dad7364a:323:16)
+    at Switch (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=dad7364a:379:17)
+    at div
+    at Router (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/App.tsx?v=EsiDYommK-fx6M5B3_Dos:33:39)
+    at ErrorBoundary (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/components/ErrorBoundary.tsx:7:5)
+    at Provider (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=dad7364a:38:15)
+    at TooltipProvider (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=dad7364a:61:5)
+    at QueryClientProvider (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=dad7364a:2805:3)
+    at ErrorBoundary (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/components/ErrorBoundary.tsx:7:5)
+    at App (https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/App.tsx?v=EsiDYommK-fx6M5B3_Dos:96:3)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+Mt.forEach.n.<computed> @ Console.js:61
+logCapturedError @ chunk-276SZO74.js?v=dad7364a:14032
+callback @ chunk-276SZO74.js?v=dad7364a:14078
+callCallback @ chunk-276SZO74.js?v=dad7364a:11248
+commitUpdateQueue @ chunk-276SZO74.js?v=dad7364a:11265
+commitLayoutEffectOnFiber @ chunk-276SZO74.js?v=dad7364a:17075
+commitLayoutMountEffects_complete @ chunk-276SZO74.js?v=dad7364a:17980
+commitLayoutEffects_begin @ chunk-276SZO74.js?v=dad7364a:17969
+commitLayoutEffects @ chunk-276SZO74.js?v=dad7364a:17920
+commitRootImpl @ chunk-276SZO74.js?v=dad7364a:19353
+commitRoot @ chunk-276SZO74.js?v=dad7364a:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=dad7364a:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=dad7364a:9119
+(anonymous) @ chunk-276SZO74.js?v=dad7364a:18627
+Console.js:61 Error boundary caught an error: TypeError: Cannot read properties of null (reading 'toFixed')
+    at formatCurrency2 (AdvancedSignalDashboard.tsx:1735:36)
+    at generateSummary (AdvancedSignalDashboard.tsx:1668:143)
+    at AdvancedSignalDashboard.tsx:1701:16
+    at AdvancedSignalDashboard.tsx:1711:31
+    at AdvancedSignalDashboard.tsx:1722:5
+    at Object.onValueChange [as current] (AdvancedSignalDashboard.tsx:2222:39)
+    at chunk-TBKYLSU5.js?v=dad7364a:27:61
+    at chunk-TBKYLSU5.js?v=dad7364a:67:7
+    at commitHookEffectListMount (chunk-276SZO74.js?v=dad7364a:16915:34)
+    at commitPassiveMountOnFiber (chunk-276SZO74.js?v=dad7364a:18156:19) Object
+Mt.forEach.n.<computed> @ Console.js:61
+componentDidCatch @ ErrorBoundary.tsx:24
+callback @ chunk-276SZO74.js?v=dad7364a:14084
+callCallback @ chunk-276SZO74.js?v=dad7364a:11248
+commitUpdateQueue @ chunk-276SZO74.js?v=dad7364a:11265
+commitLayoutEffectOnFiber @ chunk-276SZO74.js?v=dad7364a:17075
+commitLayoutMountEffects_complete @ chunk-276SZO74.js?v=dad7364a:17980
+commitLayoutEffects_begin @ chunk-276SZO74.js?v=dad7364a:17969
+commitLayoutEffects @ chunk-276SZO74.js?v=dad7364a:17920
+commitRootImpl @ chunk-276SZO74.js?v=dad7364a:19353
+commitRoot @ chunk-276SZO74.js?v=dad7364a:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=dad7364a:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=dad7364a:9119
+(anonymous) @ chunk-276SZO74.js?v=dad7364a:18627
+Console.js:61 [FinalPriceSystem] Unsubscribed from price updates for AVAX/USDT
+Console.js:61 [FinalPriceSystem] Stopped tracking AVAX/USDT
+Console.js:61 [FinalPriceSystem] Next fetch in 150s
+Console.js:61 [FinalPriceSystem] Next fetch in 90s
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+Console.js:61 [FinalPriceSystem] Next fetch in 140s
+Console.js:61 [FinalPriceSystem] Next fetch in 80s

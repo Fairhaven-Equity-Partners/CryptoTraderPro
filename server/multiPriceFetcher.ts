@@ -53,8 +53,11 @@ export class MultiPriceFetcher {
       const coinGeckoIds: string[] = [];
       const symbolToIdMap = new Map<string, string>();
 
-      for (const mapping of SYMBOL_MAPPINGS) {
-        const coinGeckoId = getCoinGeckoId(mapping.symbol);
+      // Import optimized mapping for top 50 cryptocurrencies
+      const { TOP_50_SYMBOL_MAPPINGS, getCoinGeckoId: getOptimizedId } = await import('./optimizedSymbolMapping.js');
+      
+      for (const mapping of TOP_50_SYMBOL_MAPPINGS) {
+        const coinGeckoId = getOptimizedId(mapping.symbol);
         if (coinGeckoId) {
           coinGeckoIds.push(coinGeckoId);
           symbolToIdMap.set(coinGeckoId, mapping.symbol);
@@ -111,16 +114,23 @@ export class MultiPriceFetcher {
     while (retries < this.config.maxRetries) {
       try {
         const idsString = coinGeckoIds.join(',');
-        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd&include_24hr_change=true`;
+        const apiKey = process.env.COINGECKO_API_KEY;
+        const url = apiKey 
+          ? `https://pro-api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd&include_24hr_change=true`
+          : `https://api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd&include_24hr_change=true`;
         
         console.log(`Fetching batch of ${coinGeckoIds.length} cryptocurrencies (attempt ${retries + 1})`);
         
-        const response = await fetch(url, {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'CryptoTraderPro/1.0'
-          }
-        });
+        const headers: Record<string, string> = {
+          'Accept': 'application/json',
+          'User-Agent': 'CryptoTraderPro/1.0'
+        };
+        
+        if (apiKey) {
+          headers['x-cg-pro-api-key'] = apiKey;
+        }
+        
+        const response = await fetch(url, { headers });
 
         if (!response.ok) {
           throw new Error(`CoinGecko API error: ${response.status} ${response.statusText}`);
