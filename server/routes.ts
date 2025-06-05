@@ -80,6 +80,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`Fetching real-time ${symbol} price from CoinGecko API using ID: ${coinGeckoId}`);
           const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`);
           const data = await response.json();
+          console.log(`CoinGecko API response for ${symbol}:`, data);
           
           if (data && data[coinGeckoId] && data[coinGeckoId].usd) {
             const basePrice = data[coinGeckoId].usd;

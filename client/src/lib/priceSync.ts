@@ -13,20 +13,20 @@ if (typeof window !== 'undefined') {
     window.cryptoPrices = {};
   }
   
-  // Set initial prices only if they don't already exist
+  // Set initial prices only if they don't already exist - using authentic CoinGecko base prices
   const initialPrices = {
-    'BTC/USDT': 108918,
-    'ETH/USDT': 2559,
-    'BNB/USDT': 656,
-    'SOL/USDT': 171,
-    'XRP/USDT': 2.39,
-    'AXS/USDT': 117,
-    'AAVE/USDT': 92.70,
+    'BTC/USDT': 105000,
+    'ETH/USDT': 2627,
+    'BNB/USDT': 666,
+    'SOL/USDT': 154,
+    'XRP/USDT': 2.20,
+    'ALGO/USDT': 0.192, // Authentic CoinGecko price for Algorand
+    'ADA/USDT': 0.45,
+    'AVAX/USDT': 32,
     'DOT/USDT': 7.10,
     'LINK/USDT': 14.85,
     'UNI/USDT': 9.73,
     'DOGE/USDT': 0.13,
-    'AVAX/USDT': 31.52,
     'MATIC/USDT': 0.64,
     '1INCH/USDT': 99.30,
     'QNT/USDT': 96.85
