@@ -63,11 +63,11 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
 
   // Generate mock signals for demonstration
   const cryptoSignals = useMemo(() => {
-    if (!cryptoAssets) return [];
+    if (!cryptoAssets || !Array.isArray(cryptoAssets)) return [];
     
     return cryptoAssets
-      .filter((asset: CryptoAsset) => asset.marketCap >= 100000000) // $100M minimum
-      .map((asset: CryptoAsset) => {
+      .filter((asset: any) => asset.marketCap && asset.marketCap >= 100000000) // $100M minimum
+      .map((asset: any) => {
         // For demonstration, generate signals based on asset properties
         const price = asset.lastPrice;
         const change24h = asset.change24h || 0;
@@ -114,40 +114,17 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
       });
   }, [cryptoAssets, selectedTimeframe]);
 
-  // Apply sorting and filtering
+  // Apply direction filtering only (removed sorting for simplified interface)
   const sortedAndFilteredSignals = useMemo(() => {
     if (!cryptoSignals) return [];
     
     // Apply direction filtering
-    let filtered = cryptoSignals;
     if (filterDirection !== 'ALL') {
-      filtered = cryptoSignals.filter(signal => signal.direction === filterDirection);
+      return cryptoSignals.filter((signal: any) => signal.direction === filterDirection);
     }
     
-    // Apply sorting
-    return [...filtered].sort((a, b) => {
-      let comparison = 0;
-      
-      if (sortBy === 'confidence') {
-        comparison = b.confidence - a.confidence;
-      } else if (sortBy === 'marketCap') {
-        comparison = b.marketCap - a.marketCap;
-      } else if (sortBy === 'change24h') {
-        comparison = b.change24h - a.change24h;
-      }
-      
-      return sortDirection === 'asc' ? -comparison : comparison;
-    });
-  }, [cryptoSignals, sortBy, sortDirection, filterDirection]);
-
-  const toggleSort = (field: 'confidence' | 'marketCap' | 'change24h') => {
-    if (sortBy === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(field);
-      setSortDirection('desc');
-    }
-  };
+    return cryptoSignals;
+  }, [cryptoSignals, filterDirection]);
 
   // Group signals by confidence ranges for the heat map
   const groupedByConfidence = useMemo(() => {
