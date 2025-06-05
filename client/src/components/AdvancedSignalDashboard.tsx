@@ -48,13 +48,6 @@ import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimize
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
-import { 
-  initMasterUnifiedSystem, 
-  getMasterPrice,
-  getMasterSystemStatus,
-  cleanupMasterSystem,
-  forceMasterCalculation
-} from '../lib/masterUnifiedSystem';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
   calculateEnhancedConfidence, 
@@ -340,49 +333,26 @@ export default function AdvancedSignalDashboard({
     });
   }, [tradeSimulations, tradeSimulationsQuery.isLoading, tradeSimulationsQuery.isError]);
   
-  // Get synchronized price from master system
-  const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(0);
-  
-  useEffect(() => {
-    // Initialize master unified system
-    initMasterUnifiedSystem();
-    
-    // Get initial price from master system
-    const initialPrice = getMasterPrice();
-    if (initialPrice > 0) {
-      setCurrentAssetPrice(initialPrice);
+  // Get the current price from live data or asset data (NO FALLBACKS - use authentic data only)
+  const currentAssetPrice = (() => {
+    // First try to get from asset data (live price)
+    const assetPrice = (asset as any)?.price || (asset as any)?.lastPrice;
+    if (assetPrice && assetPrice > 0) {
+      console.log(`[AdvancedSignalDashboard] Using live asset price: ${assetPrice}`);
+      return assetPrice;
     }
     
-    // Listen for synchronized price updates
-    const handleMasterPriceUpdate = (event: CustomEvent) => {
-      const { price, source } = event.detail;
-      if (price > 0 && source === 'master_unified') {
-        setCurrentAssetPrice(price);
-        console.log(`[MasterUnified] Dashboard price synchronized: ${price}`);
-      }
-    };
+    // Fallback to chart data latest close price
+    const latestData = chartData['1m']?.[chartData['1m'].length - 1]?.close;
+    if (latestData && latestData > 0) {
+      console.log(`[AdvancedSignalDashboard] Using chart data price: ${latestData}`);
+      return latestData;
+    }
     
-    // Listen for 3-minute calculation triggers only
-    const handleMasterCalculation = (event: CustomEvent) => {
-      const { price, type, source } = event.detail;
-      if (source === 'master_unified' && type === 'autonomous_3min') {
-        console.log(`[MasterUnified] 3-minute calculation triggered with price: ${price}`);
-        if (isAllDataLoaded && !isCalculating && price > 0) {
-          setCurrentAssetPrice(price); // Ensure price is synchronized before calculation
-          triggerCalculation('autonomous');
-        }
-      }
-    };
-    
-    window.addEventListener('masterPriceUpdate', handleMasterPriceUpdate as EventListener);
-    window.addEventListener('masterCalculationTrigger', handleMasterCalculation as EventListener);
-    
-    return () => {
-      window.removeEventListener('masterPriceUpdate', handleMasterPriceUpdate as EventListener);
-      window.removeEventListener('masterCalculationTrigger', handleMasterCalculation as EventListener);
-      cleanupMasterSystem();
-    };
-  }, [symbol, isAllDataLoaded, isCalculating]);
+    // No hardcoded fallbacks - return 0 to indicate no valid price available
+    console.warn(`[AdvancedSignalDashboard] No valid price found for ${symbol}`);
+    return 0;
+  })();
   
   // Initialize continuous learning for this symbol
   useEffect(() => {
@@ -452,33 +422,14 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Autonomous calculation logic: Proper 3-minute autonomous operation
-        const isAutonomousEvent = event.detail.autonomousMode === true;
-        const shouldCalculate = hasMinimumData && !isCalculating && isTimerTriggered && (
-          // Always calculate for autonomous 3-minute timer events
-          isAutonomousEvent ||
-          // OR if it's been 3+ minutes since last calculation
-          timeSinceLastCalc >= 180 ||
-          // OR if this is the first calculation after system startup
-          lastCalculationRef.current === 0
-        );
-
-        if (shouldCalculate) {
-          console.log(`🚀 AUTONOMOUS CALCULATION: 3-minute timer triggered - running full calculation cycle`);
-          
-          // Update price registry with current price before calculation
-          if (event.detail.price && event.detail.price > 0) {
-            window.cryptoPrices = window.cryptoPrices || {};
-            window.cryptoPrices[symbol] = event.detail.price;
-            console.log(`💰 Updated price registry: ${symbol} = ${event.detail.price}`);
-          }
-          
+        // Optimized calculation trigger: exact 180s interval
+        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 180) {
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals();
         } else {
-          console.log(`Calculation scheduled: Next calculation in ${Math.max(0, 180 - timeSinceLastCalc).toFixed(0)}s (autonomous mode)`);
+          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s`);
         }
       }
     };
@@ -534,27 +485,26 @@ export default function AdvancedSignalDashboard({
       return;
     }
     
-    // For data-loaded triggers, also enforce 3-minute timing
+    // For data-loaded triggers, we want to be less restrictive
     if (trigger === 'data-loaded') {
-      if (isCalculating || timeSinceLastCalc < 180) {
-        console.log(`Data-loaded calculation blocked - isCalculating: ${isCalculating}, timeSinceLastCalc: ${timeSinceLastCalc}s (need 180s)`);
+      if (isCalculating) {
+        console.log(`Already calculating for ${symbol}, will retry when complete`);
         return;
       }
       
-      // Proceed with calculation only if 3 minutes have passed
+      // Proceed with calculation regardless of other conditions
       calculationTriggeredRef.current = true;
       calculateAllSignals();
       return;
     }
     
-    // For other automated triggers, enforce strict 3-minute throttling
+    // For other automated triggers, enforce throttling rules
     if (
       calculationTriggeredRef.current || 
       isCalculating || 
-      (timeSinceLastCalc < 180) || 
+      (timeSinceLastCalc < 30) || 
       !isAllDataLoaded
     ) {
-      console.log(`Other trigger blocked - calculationTriggered: ${calculationTriggeredRef.current}, isCalculating: ${isCalculating}, timeSinceLastCalc: ${timeSinceLastCalc}s (need 180s)`);
       return;
     }
     
@@ -568,14 +518,7 @@ export default function AdvancedSignalDashboard({
     
     // Wait a second to allow any other trigger events to settle
     calculationTimeoutRef.current = setTimeout(() => {
-      // Double-check timing before executing
-      const finalTimeSinceLastCalc = (Date.now() - lastCalculationTimeRef.current * 1000) / 1000;
-      if (finalTimeSinceLastCalc >= 180) {
-        calculateAllSignals();
-      } else {
-        console.log(`Final timing check failed: ${finalTimeSinceLastCalc}s < 180s required`);
-        calculationTriggeredRef.current = false;
-      }
+      calculateAllSignals();
     }, 1000);
     
   }, [symbol, isCalculating, isAllDataLoaded, toast]);
@@ -603,8 +546,10 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // Autonomous mode: Only 3-minute timer triggers calculations
-    // No automatic startup calculations to maintain strict timing
+    // Streamlined data validation
+    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice > 0) {
+      // Data ready - calculations controlled by 3-minute timer
+    }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
@@ -1201,45 +1146,31 @@ export default function AdvancedSignalDashboard({
             timestamp: d.time || Date.now()
           }));
           unifiedCalculationCore.updateMarketData(symbol, timeframe, chartDataWithTimestamp);
-          
-          // Get synchronized price from master system
-          const masterPrice = getMasterPrice();
-          const calculationPrice = masterPrice > 0 ? masterPrice : (currentAssetPrice > 0 ? currentAssetPrice : 0);
-          console.log(`[${timeframe}] Using price for calculation: ${calculationPrice} (master: ${masterPrice}, current: ${currentAssetPrice})`);
-          
-          let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, calculationPrice);
+          let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentAssetPrice);
           
           // Convert unified signal to AdvancedSignal format for UI compatibility
           let signal: AdvancedSignal | null = null;
           if (unifiedSignal) {
-            // Update all price-related fields with the synchronized calculation price
             signal = {
               ...unifiedSignal,
-              entryPrice: calculationPrice,
-              stopLoss: unifiedSignal.direction === 'LONG' 
-                ? calculationPrice * 0.97 
-                : calculationPrice * 1.03,
-              takeProfit: unifiedSignal.direction === 'LONG' 
-                ? calculationPrice * 1.05 
-                : calculationPrice * 0.95,
               indicators: {
                 trend: [
-                  { id: 'ema_short', name: 'EMA Short', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.short > unifiedSignal.indicators.ema.medium ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength, value: unifiedSignal.indicators.ema.short },
-                  { id: 'ema_medium', name: 'EMA Medium', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.medium > unifiedSignal.indicators.ema.long ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength, value: unifiedSignal.indicators.ema.medium }
+                  { name: 'EMA Short', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.short > unifiedSignal.indicators.ema.medium ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength },
+                  { name: 'EMA Medium', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.medium > unifiedSignal.indicators.ema.long ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength }
                 ],
                 momentum: [
-                  { id: 'rsi', name: 'RSI', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.rsi.signal as IndicatorSignal, strength: unifiedSignal.indicators.rsi.strength as IndicatorStrength, value: unifiedSignal.indicators.rsi.value },
-                  { id: 'macd', name: 'MACD', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.macd.signal as IndicatorSignal, strength: unifiedSignal.indicators.macd.strength as IndicatorStrength, value: unifiedSignal.indicators.macd.value }
+                  { name: 'RSI', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.rsi.signal as IndicatorSignal, strength: unifiedSignal.indicators.rsi.strength as IndicatorStrength },
+                  { name: 'MACD', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.macd.signal as IndicatorSignal, strength: unifiedSignal.indicators.macd.strength as IndicatorStrength }
                 ],
                 volume: [],
                 pattern: [],
                 volatility: []
-              } as any,
+              },
               patternFormations: [],
               supportResistance: {
                 supports: unifiedSignal.indicators.supports,
                 resistances: unifiedSignal.indicators.resistances,
-                pivotPoints: [calculationPrice]
+                pivotPoints: [unifiedSignal.entryPrice]
               },
               environment: { 
                 trend: unifiedSignal.indicators.marketRegime === 'TRENDING_UP' ? 'BULLISH' : unifiedSignal.indicators.marketRegime === 'TRENDING_DOWN' ? 'BEARISH' : 'NEUTRAL', 
@@ -1253,14 +1184,14 @@ export default function AdvancedSignalDashboard({
                 aggressive: 3,
                 recommendation: 'conservative'
               },
-              riskReward: Math.abs(signal.takeProfit - calculationPrice) / Math.abs(calculationPrice - signal.stopLoss),
+              riskReward: Math.abs(unifiedSignal.takeProfit - unifiedSignal.entryPrice) / Math.abs(unifiedSignal.entryPrice - unifiedSignal.stopLoss),
               marketStructure: { 
                 trend: unifiedSignal.indicators.marketRegime === 'RANGING' ? 'SIDEWAYS' : 'TRENDING', 
                 phase: 'ACTIVE', 
                 strength: unifiedSignal.confidence 
               },
               volumeProfile: { 
-                volumeWeightedPrice: calculationPrice, 
+                volumeWeightedPrice: unifiedSignal.entryPrice, 
                 highVolumeNodes: [], 
                 lowVolumeNodes: [] 
               },
@@ -1271,7 +1202,7 @@ export default function AdvancedSignalDashboard({
                 `ADX: ${unifiedSignal.indicators.adx.value.toFixed(2)}`,
                 `Volatility: ${(unifiedSignal.indicators.volatility * 100).toFixed(2)}%`
               ]
-            } as any;
+            } as AdvancedSignal;
           }
           
           // Enhanced signal with mathematically accurate indicators and market regime detection
@@ -1471,48 +1402,15 @@ export default function AdvancedSignalDashboard({
         console.log(`📊 Sample 1d signal:`, cleanSignals['1d']);
         setSignals(cleanSignals);
         console.log(`📊 setSignals call completed successfully`);
-        
-        // AUTOMATIC UI REFRESH: Force component re-render to show latest calculations
-        // This triggers immediate UI updates for all timeframes without manual clicks
-        const triggerUIRefresh = () => {
-          // Force state updates to refresh all UI components
-          setFeedbackMetrics(prev => ({ ...prev, lastUpdate: new Date() }));
-          
-          // Trigger query invalidation to refresh all data
-          queryClient.invalidateQueries({ queryKey: [`/api/accuracy/${symbol}`] });
-          queryClient.invalidateQueries({ queryKey: [`/api/trade-simulations/${encodeURIComponent(symbol)}`] });
-          
-          // Update calculation timestamp to show fresh data
-          setActualLastCalculationTime(Date.now() / 1000);
-        };
-        
-        // Execute UI refresh after state update completes
-        setTimeout(triggerUIRefresh, 50);
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          // Get synchronized price from master system
-          const masterPrice = getMasterPrice();
-          const livePrice = masterPrice > 0 ? masterPrice : (currentAssetPrice > 0 ? currentAssetPrice : 0);
-          
+          // Ensure we use the exact same live price being displayed
+          const livePrice = currentAssetPrice > 0 ? currentAssetPrice : 0;
           if (livePrice === 0) {
-            console.warn(`🎯 Cannot record predictions - no valid live price available (master: ${masterPrice}, current: ${currentAssetPrice})`);
+            console.warn(`🎯 Cannot record predictions - no valid live price available`);
             return;
           }
-          
-          // Update the calculation entry prices with live price
-          Object.values(cleanSignals).forEach(signal => {
-            if (signal) {
-              signal.entryPrice = livePrice;
-              signal.stopLoss = signal.direction === 'LONG' 
-                ? livePrice * 0.97 
-                : livePrice * 1.03;
-              signal.takeProfit = signal.direction === 'LONG' 
-                ? livePrice * 1.05 
-                : livePrice * 0.95;
-            }
-          });
-          
           console.log(`🎯 Recording predictions using live price: ${livePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
@@ -1540,8 +1438,6 @@ export default function AdvancedSignalDashboard({
               
               // Record prediction for accuracy tracking
               await recordPrediction(predictionSignal, livePrice);
-              console.log(`📈 Prediction recorded: ${symbol} ${timeframe} ${signal.direction} @ ${livePrice}`);
-              console.log(`🎯 Stop Loss: ${signal.stopLoss}, Take Profit: ${signal.takeProfit}`);
               console.log(`📈 Recorded prediction: ${timeframe} ${signal.direction} @ ${livePrice}`);
               
               // Trigger learning from accumulated accuracy data
@@ -1709,20 +1605,39 @@ export default function AdvancedSignalDashboard({
   }, [generateTradeRecommendation]);
 
   // Handle timeframe selection
-  const handleTimeframeSelect = useCallback(async (timeframe: TimeFrame) => {
-    console.log(`🎯 Manual timeframe selection: ${timeframe} - triggering immediate calculation`);
+  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
+    console.log(`Tab change to ${timeframe} - forcing price level calculation`);
+    
+    // Force immediate calculation for this timeframe with current live price
+    if (chartData[timeframe] && chartData[timeframe].length > 0 && currentAssetPrice > 0) {
+      console.log(`Force calculating ${timeframe} with live price: ${currentAssetPrice}`);
+      
+      const signal = generateStreamlinedSignal(
+        chartData[timeframe],
+        timeframe,
+        currentAssetPrice,
+        symbol
+      );
+      
+      if (signal) {
+        console.log(`[${timeframe}] IMMEDIATE CALC: Entry=${signal.entryPrice?.toFixed(2)}, SL=${signal.stopLoss?.toFixed(2)}, TP=${signal.takeProfit?.toFixed(2)}`);
+        
+        // Update signals state immediately to show new values
+        setSignals(prev => ({
+          ...prev,
+          [timeframe]: signal
+        }));
+      }
+    }
     
     setSelectedTimeframe(timeframe);
     updateRecommendationForTimeframe(timeframe);
-    
-    // Autonomous mode: No manual calculation triggers
-    // System operates on strict 3-minute intervals only
     
     // Notify parent component if callback is provided
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  }, [updateRecommendationForTimeframe, onTimeframeSelect, chartData, currentAssetPrice, symbol, isCalculating, toast]);
+  }, [updateRecommendationForTimeframe, onTimeframeSelect, chartData, currentAssetPrice, symbol]);
 
   // Format price for display, with appropriate decimal places
   function formatCurrency(price: number): string {

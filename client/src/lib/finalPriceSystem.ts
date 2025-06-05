@@ -60,24 +60,12 @@ function updateCountdown() {
     // Reset the timer to exactly 3 minutes (180 seconds)
     countdownSeconds = 180; // Fixed 3-minute interval
     
-    // At zero, fetch price AND trigger calculation for autonomous operation
+    // At zero, fetch price AND trigger a synchronized calculation
     console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation`);
     
     fetchLatestPrice('BTC/USDT')
       .then(price => {
-        console.log(`[FinalPriceSystem] Price updated to ${price} - triggering autonomous calculation`);
-        
-        // Dispatch calculation event for autonomous operation
-        const calculationEvent = new CustomEvent('live-price-update', {
-          detail: { 
-            symbol: 'BTC/USDT', 
-            price, 
-            timestamp: Date.now(), 
-            forceCalculate: true,
-            autonomousMode: true
-          }
-        });
-        document.dispatchEvent(calculationEvent);
+        console.log(`[FinalPriceSystem] Price updated to ${price} - calculation will follow automatically`);
       })
       .catch(error => {
         console.error('[FinalPriceSystem] Error fetching price:', error);
@@ -99,10 +87,16 @@ function triggerPriceFetch() {
   });
 }
 
+/**
+ * Fetch the latest price for a specific symbol
+ * @param symbol Asset symbol to fetch
+ * @returns The fetched price
+ */
 export async function fetchLatestPrice(symbol: string): Promise<number> {
   try {
     console.log(`[FinalPriceSystem] Fetching fresh price for ${symbol}`);
     
+    // Broadcast that we're fetching
     const fetchingEvent = new CustomEvent('price-fetching', {
       detail: { symbol }
     });
@@ -147,8 +141,15 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
     });
     window.dispatchEvent(cryptoUpdateEvent);
     
-    // AUTONOMOUS MODE: No calculation triggers from price system
-    // Only price updates, no calculation events
+    // Only trigger a live-price-update event when the countdown timer hits zero
+    // This ensures calculations only happen at the 3-minute mark
+    if (countdownSeconds === 180) {
+      console.log(`💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark`);
+      const liveUpdateEvent = new CustomEvent('live-price-update', {
+        detail: { symbol, price, timestamp, forceCalculate: true }
+      });
+      document.dispatchEvent(liveUpdateEvent);
+    }
     
     console.log(`[FinalPriceSystem] Price update broadcast for ${symbol}: ${price}`);
     

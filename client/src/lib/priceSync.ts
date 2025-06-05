@@ -13,8 +13,31 @@ if (typeof window !== 'undefined') {
     window.cryptoPrices = {};
   }
   
-  // Initialize empty registry - prices will be populated by API calls
-  // Do not set hardcoded initial prices to prevent stale data issues
+  // Set initial prices only if they don't already exist
+  const initialPrices = {
+    'BTC/USDT': 108918,
+    'ETH/USDT': 2559,
+    'BNB/USDT': 656,
+    'SOL/USDT': 171,
+    'XRP/USDT': 2.39,
+    'AXS/USDT': 117,
+    'AAVE/USDT': 92.70,
+    'DOT/USDT': 7.10,
+    'LINK/USDT': 14.85,
+    'UNI/USDT': 9.73,
+    'DOGE/USDT': 0.13,
+    'AVAX/USDT': 31.52,
+    'MATIC/USDT': 0.64,
+    '1INCH/USDT': 99.30,
+    'QNT/USDT': 96.85
+  };
+  
+  // Initialize with initial values only if not already set
+  Object.entries(initialPrices).forEach(([symbol, price]) => {
+    if (!window.cryptoPrices[symbol]) {
+      window.cryptoPrices[symbol] = price;
+    }
+  });
   
   // Initialize other global state
   if (!window.latestPrices) {
@@ -40,7 +63,6 @@ export function getPrice(symbol: string): number {
  */
 export function setPrice(symbol: string, price: number): void {
   if (price > 0) {
-    const oldPrice = window.cryptoPrices[symbol] || 0;
     window.cryptoPrices[symbol] = price;
     
     // Also broadcast an update event when price changes
@@ -52,7 +74,7 @@ export function setPrice(symbol: string, price: number): void {
       }
     });
     window.dispatchEvent(updateEvent);
-    console.log(`Price update for ${symbol}: ${oldPrice.toFixed(2)} → ${price.toFixed(2)}`);
+    console.log(`Price update for ${symbol}: ${price.toFixed(2)}`);
   }
 }
 

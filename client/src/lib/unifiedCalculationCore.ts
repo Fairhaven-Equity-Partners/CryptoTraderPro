@@ -1,6 +1,7 @@
 /**
- * Unified Calculation Core - Optimized mathematical engine
- * Single consolidated system for all technical analysis
+ * Unified Calculation Core - Consolidated mathematical engine
+ * Replaces 78+ fragmented files with single optimized system
+ * Implements mathematically accurate indicators with proper algorithms
  */
 
 import { TimeFrame } from '../types';
@@ -26,23 +27,27 @@ interface TechnicalIndicators {
   resistances: number[];
   volatility: number;
   marketRegime: 'TRENDING_UP' | 'TRENDING_DOWN' | 'RANGING' | 'HIGH_VOLATILITY' | 'LOW_VOLATILITY';
+  // Enhanced Market Structure Analysis
   marketStructure: {
     fractalStructure: 'BULLISH_FRACTAL' | 'BEARISH_FRACTAL' | 'CONSOLIDATION';
     supplyZones: { price: number; strength: number; volume: number }[];
     demandZones: { price: number; strength: number; volume: number }[];
     orderBlocks: { price: number; type: 'BULLISH' | 'BEARISH'; strength: number }[];
   };
+  // VWAP Analysis
   vwap: {
     daily: number;
     innerBands: { upper: number; lower: number };
     outerBands: { upper: number; lower: number };
     deviation: number;
   };
+  // Fibonacci & Psychological Levels
   fibonacciLevels: {
     levels: { ratio: number; price: number; strength: number }[];
     psychologicalLevels: { price: number; type: 'ROUND_NUMBER' | 'HISTORICAL_HIGH' | 'HISTORICAL_LOW' }[];
     confluence: number;
   };
+  // Candlestick Pattern Analysis
   candlestickPatterns: {
     pattern: string;
     reliability: number;
@@ -823,26 +828,22 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Calculate timeframe-specific position sizing with realistic risk management
+   * Calculate timeframe-specific position sizing based on ATR
    */
   private calculatePositionSizing(timeframe: TimeFrame, atr: number, currentPrice: number) {
-    // Use percentage-based risk management instead of extreme ATR multipliers
-    const riskPercentages = {
-      '1m': 0.5, '5m': 0.8, '15m': 1.2, '30m': 1.5,
-      '1h': 2.0, '4h': 2.8, '1d': 3.5, '3d': 4.2,
-      '1w': 5.0, '1M': 6.5
+    const timeframeMultipliers = {
+      '1m': 0.5, '5m': 0.75, '15m': 1.0, '30m': 1.25,
+      '1h': 1.5, '4h': 2.0, '1d': 3.0, '3d': 4.0,
+      '1w': 5.0, '1M': 8.0
     };
     
-    const riskPercent = riskPercentages[timeframe] || 2.0;
-    
-    // Calculate reasonable stop loss and take profit based on percentage risk
-    const stopLossDistance = currentPrice * (riskPercent / 100);
-    const takeProfitDistance = currentPrice * (riskPercent * 1.8 / 100); // 1.8:1 reward/risk ratio
+    const multiplier = timeframeMultipliers[timeframe] || 1.0;
+    const atrPercentage = (atr / currentPrice) * 100;
     
     return {
-      stopLossDistance,
-      takeProfitDistance,
-      riskPercentage: riskPercent
+      stopLossDistance: atr * multiplier * 0.8,
+      takeProfitDistance: atr * multiplier * 1.6,
+      riskPercentage: Math.min(atrPercentage * multiplier, 5.0)
     };
   }
 
@@ -1141,22 +1142,6 @@ class UnifiedCalculationCore {
 }
 
 export const unifiedCalculationCore = new UnifiedCalculationCore();
-
-// Export individual signal calculation function for manual timeframe selection
-export function calculateAdvancedSignal(symbol: string, timeframe: TimeFrame, chartData: any[], currentPrice: number) {
-  try {
-    // Update market data for this specific timeframe
-    unifiedCalculationCore.updateMarketData(symbol, timeframe, chartData);
-    
-    // Generate signal for the specific timeframe
-    const signal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentPrice);
-    
-    return signal;
-  } catch (error) {
-    console.error(`Error calculating signal for ${timeframe}:`, error);
-    return null;
-  }
-}
 
 // Export the multi-timeframe calculation function for backward compatibility
 export function calculateMultiTimeframeSignals(symbol: string, currentPrice: number, chartData: any) {

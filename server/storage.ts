@@ -37,9 +37,6 @@ export interface IStorage {
   getAccuracyMetrics(symbol: string, timeframe?: string): Promise<AccuracyMetrics[]>;
   updateAccuracyMetrics(symbol: string, timeframe: string, metrics: Partial<InsertAccuracyMetrics>): Promise<AccuracyMetrics | undefined>;
   calculateAccuracyMetrics(symbol: string, timeframe: string): Promise<AccuracyMetrics | undefined>;
-  
-  // Portfolio operations
-  getAllActiveTradeSimulations(): Promise<TradeSimulation[]>;
 }
 
 export class MemStorage implements IStorage {
