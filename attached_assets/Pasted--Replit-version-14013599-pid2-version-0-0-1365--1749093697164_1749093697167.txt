@@ -1,0 +1,1098 @@
+ Replit version 14013599, pid2 version 0.0.1365
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-4569be7fa572565e.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-4569be7fa572565e.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-4569be7fa572565e.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-4569be7fa572565e.js:1
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=xebmDlTPNUNq' failed: 
+t @ eruda.js:2
+ [StreamlinedPriceManager] Price update: 105044
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105044
+ [useMarketData] Price update for BTC/USDT: 105044 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.60 → 2622.59
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.59
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.59
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.59
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ Loading chart with 800 data points for ETH/USDT (15m)
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.59
+ [useMarketData] Price update for ETH/USDT: 2622.59 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 80s
+ [FinalPriceSystem] Next fetch in 20s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Scheduled price update check (15-second interval) at 9:19:10 PM
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105044.00 → 105044.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105044
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105044
+ [useMarketData] Price update for BTC/USDT: 105044 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.59 → 2622.59
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.59
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.59
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.59
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.59
+ [useMarketData] Price update for ETH/USDT: 2622.59 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 70s
+ [FinalPriceSystem] Next fetch in 10s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 60s
+ Scheduled price update check (15-second interval) at 9:19:25 PM
+ [FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Next fetch in 180s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105044.00 → 105044.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105044
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105044
+ [useMarketData] Price update for BTC/USDT: 105044 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.59 → 2622.59
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.59
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.59
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.59
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.59
+ [useMarketData] Price update for ETH/USDT: 2622.59 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 105044.65
+ 💰 PRICE UPDATE: BTC/USDT = 105044.65 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [StreamlinedPriceManager] Price update: 105044.65
+ 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 105044.65
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 105044.65
+ [FinalPriceSystem] Price updated to 105044.65 - calculation will follow automatically
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 50s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 170s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Scheduled price update check (15-second interval) at 9:19:40 PM
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105044.00 → 105044.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105044
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105044
+ [useMarketData] Price update for BTC/USDT: 105044 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.59 → 2622.59
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.59
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.59
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.59
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.59
+ [useMarketData] Price update for ETH/USDT: 2622.59 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 40s
+ [FinalPriceSystem] Next fetch in 160s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 30s
+ Scheduled price update check (15-second interval) at 9:19:55 PM
+ [FinalPriceSystem] Next fetch in 150s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105044.00 → 105044.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105044
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105044
+ [useMarketData] Price update for BTC/USDT: 105044 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.59 → 2622.59
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.59
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.59
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.59
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.59 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.59
+ [useMarketData] Price update for ETH/USDT: 2622.59 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ [FinalPriceSystem] Next fetch in 20s
+ [FinalPriceSystem] Next fetch in 140s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ Scheduled price update check (15-second interval) at 9:20:10 PM
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.59
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105044.00 → 105043.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105043
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105043
+ [useMarketData] Price update for BTC/USDT: 105043 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.59 → 2622.75
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.75
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.75
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.75
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ Loading chart with 800 data points for ETH/USDT (15m)
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.75
+ [useMarketData] Price update for ETH/USDT: 2622.75 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ [FinalPriceSystem] Next fetch in 10s
+ [FinalPriceSystem] Next fetch in 130s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ [FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Next fetch in 180s
+ Scheduled price update check (15-second interval) at 9:20:25 PM
+ [FinalPriceSystem] Next fetch in 120s
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105043.00 → 105043.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105043
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105043
+ [useMarketData] Price update for BTC/USDT: 105043 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.75 → 2622.75
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.75
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.75
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.75
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.75
+ [useMarketData] Price update for ETH/USDT: 2622.75 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 105045.24
+ 💰 PRICE UPDATE: BTC/USDT = 105045.24 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [StreamlinedPriceManager] Price update: 105045.24
+ 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 105045.24
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 105045.24
+ [FinalPriceSystem] Price updated to 105045.24 - calculation will follow automatically
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ [FinalPriceSystem] Next fetch in 170s
+ [FinalPriceSystem] Next fetch in 110s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Scheduled price update check (15-second interval) at 9:20:40 PM
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105043.00 → 105043.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105043
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105043
+ [useMarketData] Price update for BTC/USDT: 105043 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.75 → 2622.75
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.75
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.75
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.75
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.75
+ [useMarketData] Price update for ETH/USDT: 2622.75 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ [FinalPriceSystem] Next fetch in 160s
+ [FinalPriceSystem] Next fetch in 100s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ [FinalPriceSystem] Next fetch in 150s
+ Scheduled price update check (15-second interval) at 9:20:55 PM
+ [FinalPriceSystem] Next fetch in 90s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105043.00 → 105043.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105043
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105043
+ [useMarketData] Price update for BTC/USDT: 105043 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.75 → 2622.75
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.75
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.75
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.75
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.75
+ [useMarketData] Price update for ETH/USDT: 2622.75 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ [FinalPriceSystem] Next fetch in 140s
+ [FinalPriceSystem] Next fetch in 80s
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Scheduled price update check (15-second interval) at 9:21:10 PM
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105043.00 → 105043.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [StreamlinedPriceManager] Price update: 105043
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105043
+ [useMarketData] Price update for BTC/USDT: 105043 - NOT dispatching extra event
+ Price update for ETH/USDT: 2622.75 → 2622.75
+ [API] Price update received for ETH/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 2622.75
+ [AdvancedSignalDashboard] Price updated via price-update event: 2622.75
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [AdvancedSignalDashboard] Live price updated to: 2622.75
+ ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ [useMarketData] Price updated to 2622.75 for ETH/USDT - display only
+ ✅ LIVE PRICE RECEIVED for ETH/USDT: 2622.75
+ [useMarketData] Price update for ETH/USDT: 2622.75 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+ Trade data: 0 total, 0 active, 0 completed
+ [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 [FinalPriceSystem] Next fetch in 130s
+Console.js:61 [FinalPriceSystem] Next fetch in 70s
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 [FinalPriceSystem] Next fetch in 120s
+Console.js:61 Scheduled price update check (15-second interval) at 9:21:25 PM
+Console.js:61 [FinalPriceSystem] Next fetch in 60s
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2622.75
+Console.js:61 CoinGecko real-time price data: Object
+Console.js:61 Price update for BTC/USDT: 105043.00 → 105046.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [StreamlinedPriceManager] Price update: 105046
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 105046
+Console.js:61 [useMarketData] Price update for BTC/USDT: 105046 - NOT dispatching extra event
+Console.js:61 Price update for ETH/USDT: 2622.75 → 2623.35
+Console.js:61 [API] Price update received for ETH/USDT - dispatching calculation event
+Console.js:61 [PriceOverview] Price update received: 2623.35
+Console.js:61 [AdvancedSignalDashboard] Price updated via price-update event: 2623.35
+Console.js:61 [useMarketData] Price updated to 2623.35 for ETH/USDT - display only
+Console.js:61 [useMarketData] Price updated to 2623.35 for ETH/USDT - display only
+Console.js:61 [AdvancedSignalDashboard] Live price updated to: 2623.35
+Console.js:61 ❌ Ignoring non-3-minute price update for ETH/USDT (isThreeMinuteMark=undefined)
+Console.js:61 [useMarketData] Price updated to 2623.35 for ETH/USDT - display only
+Console.js:61 [useMarketData] Price updated to 2623.35 for ETH/USDT - display only
+Console.js:61 Loading chart with 800 data points for ETH/USDT (15m)
+Console.js:61 ✅ LIVE PRICE RECEIVED for ETH/USDT: 2623.35
+Console.js:61 [useMarketData] Price update for ETH/USDT: 2623.35 - NOT dispatching extra event
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [AdvancedSignalDashboard] Using live price state: 2623.35

@@ -79,11 +79,31 @@ function updateCountdown() {
 }
 
 /**
- * Trigger a price fetch for the default symbol
+ * Trigger price fetch for all supported symbols with batch processing
  */
 function triggerPriceFetch() {
-  fetchLatestPrice('BTC/USDT').catch(error => {
-    console.error('[FinalPriceSystem] Error fetching price:', error);
+  // Get supported symbols from multi-symbol engine
+  const supportedSymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT', 'ADA/USDT', 'AVAX/USDT', 'DOT/USDT', 'MATIC/USDT', 'UNI/USDT'];
+  
+  // Process symbols in batches to avoid overwhelming the API
+  const batchSize = 3;
+  const batches = [];
+  
+  for (let i = 0; i < supportedSymbols.length; i += batchSize) {
+    batches.push(supportedSymbols.slice(i, i + batchSize));
+  }
+  
+  // Process each batch with delays
+  batches.forEach((batch, index) => {
+    setTimeout(() => {
+      batch.forEach((symbol, symbolIndex) => {
+        setTimeout(() => {
+          fetchLatestPrice(symbol, true).catch(error => {
+            console.error(`[FinalPriceSystem] Error fetching price for ${symbol}:`, error);
+          });
+        }, symbolIndex * 200); // 200ms delay between symbols in batch
+      });
+    }, index * 1000); // 1 second delay between batches
   });
 }
 

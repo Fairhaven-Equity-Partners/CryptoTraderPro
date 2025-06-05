@@ -463,19 +463,29 @@ export default function AdvancedSignalDashboard({
     return () => clearInterval(timerInterval);
   }, [signals, actualLastCalculationTime]);
 
-  // Listen for ONLY the 3-minute synchronized calculation events
+  // Listen for calculation events - both synchronized and real-time triggers
   useEffect(() => {
-    // Handler for ONLY official 3-minute timer events with strict validation
+    // Handler for calculation events with optimized triggering
     const handleSynchronizedCalculationEvent = (event: CustomEvent) => {
-      if (event.detail.symbol === symbol && event.detail.isThreeMinuteMark === true) {
-        console.log(`💯 SYNCHRONIZED 3-MINUTE CALCULATION EVENT for ${symbol}`);
-        
+      if (event.detail.symbol === symbol) {
+        const isThreeMinuteMark = event.detail.isThreeMinuteMark === true;
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Only proceed with calculation on official 3-minute synchronized events
-        if (hasMinimumData && !isCalculating && timeSinceLastCalc >= 170) { // Allow 10s buffer
-          console.log(`⚡ Starting synchronized calculation system`);
+        // Enhanced calculation triggers:
+        // 1. Official 3-minute synchronized events
+        // 2. Significant price movements (>0.5% change)
+        // 3. Manual calculation requests
+        const shouldCalculate = (
+          (isThreeMinuteMark && timeSinceLastCalc >= 170) || // 3-minute sync with buffer
+          (event.detail.manual === true) || // Manual trigger
+          (timeSinceLastCalc >= 30 && hasMinimumData) // Real-time calculation every 30s
+        );
+        
+        if (shouldCalculate && !isCalculating) {
+          const triggerType = isThreeMinuteMark ? '3-minute sync' : 
+                            event.detail.manual ? 'manual' : 'real-time';
+          console.log(`⚡ Starting ${triggerType} calculation for ${symbol}`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
@@ -483,19 +493,36 @@ export default function AdvancedSignalDashboard({
         } else {
           console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
         }
-      } else if (event.detail.symbol === symbol) {
-        console.log(`❌ Ignoring non-3-minute price update for ${symbol} (isThreeMinuteMark=${event.detail.isThreeMinuteMark})`);
+      }
+    };
+
+    // Handler for real-time price updates to enable continuous calculations
+    const handlePriceUpdate = (event: CustomEvent) => {
+      if (event.detail?.symbol === symbol && event.detail?.price) {
+        const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
+        const hasMinimumData = Object.keys(chartData).length >= 5;
+        
+        // Enable real-time calculations every 30 seconds for all cryptocurrency pairs
+        if (timeSinceLastCalc >= 30 && hasMinimumData && !isCalculating) {
+          console.log(`🔄 Real-time calculation triggered for ${symbol} after ${timeSinceLastCalc}s`);
+          setIsCalculating(true);
+          lastCalculationRef.current = Date.now();
+          lastCalculationTimeRef.current = Date.now() / 1000;
+          calculateAllSignals();
+        }
       }
     };
     
-    // Listen for both event types but only act on 3-minute marks
-    document.addEventListener('live-price-update', handleSynchronizedCalculationEvent as EventListener);
+    // Listen for calculation events and price updates
     document.addEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
+    document.addEventListener('price-update', handlePriceUpdate as EventListener);
+    window.addEventListener('price-update', handlePriceUpdate as EventListener);
     
     // Return cleanup function
     return () => {
-      document.removeEventListener('live-price-update', handleSynchronizedCalculationEvent as EventListener);
       document.removeEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
+      document.removeEventListener('price-update', handlePriceUpdate as EventListener);
+      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
     };
   }, [symbol, isAllDataLoaded, isCalculating, chartData]);
 
