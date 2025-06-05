@@ -408,9 +408,9 @@ export default function AdvancedSignalDashboard({
 
   // Listen for ONLY the 3-minute synchronized calculation events
   useEffect(() => {
-    // Handler for ONLY the official 3-minute timer events
+    // Handler for ONLY official 3-minute timer events with strict validation
     const handleSynchronizedCalculationEvent = (event: CustomEvent) => {
-      if (event.detail.symbol === symbol) {
+      if (event.detail.symbol === symbol && event.detail.isThreeMinuteMark === true) {
         console.log(`💯 SYNCHRONIZED 3-MINUTE CALCULATION EVENT for ${symbol}`);
         
         const hasMinimumData = Object.keys(chartData).length >= 5;
@@ -426,17 +426,21 @@ export default function AdvancedSignalDashboard({
         } else {
           console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
         }
+      } else if (event.detail.symbol === symbol) {
+        console.log(`❌ Ignoring non-3-minute price update for ${symbol} (isThreeMinuteMark=${event.detail.isThreeMinuteMark})`);
       }
     };
     
-    // Add the event listener for ONLY synchronized 3-minute events
+    // Listen for both event types but only act on 3-minute marks
     document.addEventListener('live-price-update', handleSynchronizedCalculationEvent as EventListener);
+    document.addEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
     
     // Return cleanup function
     return () => {
       document.removeEventListener('live-price-update', handleSynchronizedCalculationEvent as EventListener);
+      document.removeEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
     };
-  }, [symbol, isAllDataLoaded, isCalculating]);
+  }, [symbol, isAllDataLoaded, isCalculating, chartData]);
 
   // This hook block was moved to maintain the correct hook order
   // No price tracking here anymore, we'll use the isLiveDataReady flag from useMarketData

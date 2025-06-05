@@ -141,12 +141,24 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
     });
     window.dispatchEvent(cryptoUpdateEvent);
     
-    // Only trigger a live-price-update event when the countdown timer hits zero
-    // This ensures calculations only happen at the 3-minute mark
-    if (countdownSeconds === 180) {
+    // CRITICAL FIX: Only trigger calculation events at exact 3-minute intervals
+    // when the countdown timer completes its full 180-second cycle
+    if (countdownSeconds <= 5) { // Trigger when countdown reaches 5 seconds or less
       console.log(`💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark`);
+      const synchronizedCalculationEvent = new CustomEvent('synchronized-calculation-trigger', {
+        detail: { 
+          symbol, 
+          price, 
+          timestamp, 
+          isThreeMinuteMark: true,
+          countdownSeconds 
+        }
+      });
+      document.dispatchEvent(synchronizedCalculationEvent);
+      
+      // Also dispatch the legacy event for backward compatibility
       const liveUpdateEvent = new CustomEvent('live-price-update', {
-        detail: { symbol, price, timestamp, forceCalculate: true }
+        detail: { symbol, price, timestamp, forceCalculate: true, isThreeMinuteMark: true }
       });
       document.dispatchEvent(liveUpdateEvent);
     }
