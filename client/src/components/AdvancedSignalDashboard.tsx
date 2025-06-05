@@ -1290,28 +1290,11 @@ export default function AdvancedSignalDashboard({
             console.log(`[UnifiedEngine] ${timeframe}: Market Regime=${signal.macroInsights?.[0]}, Direction=${signal.direction}, Confidence=${signal.confidence}%`);
             
             // Ensure the enhanced signal data is properly structured for UI display
-            const enhancedSignalData = {
-              ...signal,
-              // Preserve enhanced calculation results
-              indicators: {
-                ...signal.indicators,
-                // Additional properties for enhanced display
-                rsi: unifiedSignal.indicators.rsi,
-                macd: unifiedSignal.indicators.macd,
-                ema: unifiedSignal.indicators.ema,
-                adx: unifiedSignal.indicators.adx,
-                bb: unifiedSignal.indicators.bb,
-                atr: unifiedSignal.indicators.atr,
-                supports: unifiedSignal.indicators.supports,
-                resistances: unifiedSignal.indicators.resistances,
-                volatility: unifiedSignal.indicators.volatility,
-                marketRegime: unifiedSignal.indicators.marketRegime,
-                confidenceFactors: unifiedSignal.indicators.confidenceFactors
-              }
-            };
-            
-            signal = enhancedSignalData;
-            console.log(`[EnhancedEngine] ${timeframe}: Enhanced signal ready - Direction=${signal.direction}, Confidence=${signal.confidence}%`);
+            // Use the unified signal directly if available, otherwise keep original
+            if (unifiedSignal) {
+              signal = unifiedSignal;
+            }
+            console.log(`[EnhancedEngine] ${timeframe}: Enhanced signal ready - Direction=${signal?.direction || 'NEUTRAL'}, Confidence=${signal?.confidence || 0}%`);
           }
           
           // Generate pattern formations based on signal direction and timeframe
