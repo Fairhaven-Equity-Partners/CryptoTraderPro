@@ -25,8 +25,8 @@ export const REFRESH_INTERVALS: Record<TimeFrame, number> = {
   '1M': 7200000    // 2 hours
 };
 
-// Current price data refresh interval (in milliseconds)
-export const PRICE_REFRESH_INTERVAL = 15000; // 15 seconds
+// Current price data refresh interval (in milliseconds) - Optimized for CoinGecko free tier
+export const PRICE_REFRESH_INTERVAL = 240000; // 4 minutes = supports 200+ pairs on free tier
 
 // Cache validity duration for each timeframe (in milliseconds)
 export const CACHE_VALIDITY: Record<TimeFrame, number> = {

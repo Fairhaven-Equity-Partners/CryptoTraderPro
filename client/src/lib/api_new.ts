@@ -203,7 +203,7 @@ export function startRealTimeUpdates() {
   // Register handler for price updates
   registerMessageHandler('priceUpdate', handlePriceUpdate);
   
-  // Update prices every 15 seconds with real data from CoinGecko
+  // Update prices every 4 minutes with real data from CoinGecko (optimized for 200+ pairs)
   const updateInterval = setInterval(() => {
     try {
       // Fetch real-time price data from CoinGecko
@@ -271,7 +271,7 @@ export function startRealTimeUpdates() {
     } catch (error) {
       console.error('Error in price update:', error);
     }
-  }, 240000); // 4 minutes for optimal CoinGecko free tier usage
+  }, 240000); // 4 minutes = 15 requests/hour = supports 200+ pairs on free tier
   
   // Return the interval ID so it can be cleared if needed
   return updateInterval;
