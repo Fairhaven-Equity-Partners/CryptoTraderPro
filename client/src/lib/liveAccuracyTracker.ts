@@ -68,19 +68,42 @@ class LiveAccuracyTracker {
     try {
       const predictionId = `${signal.symbol}_${signal.timeframe}_${Date.now()}`;
       
+      // Validate inputs before creating trade simulation
+      if (!signal.symbol || !signal.timeframe || !signal.direction) {
+        console.error('Invalid signal data for prediction recording:', signal);
+        return;
+      }
+      
+      if (!currentPrice || currentPrice <= 0) {
+        console.error('Invalid current price for prediction recording:', currentPrice);
+        return;
+      }
+      
       // Create trade simulation in backend
       const tradeData: InsertTradeSimulation = {
         symbol: signal.symbol,
         timeframe: signal.timeframe,
         direction: signal.direction,
         entryPrice: currentPrice,
-        stopLoss: signal.stopLoss || (currentPrice * (signal.direction === 'LONG' ? 0.95 : 1.05)),
+        stopLoss: signal.stopLoss || (currentPrice * (signal.direction === 'LONG' ? 0.97 : 1.03)),
         takeProfit: signal.takeProfit || (currentPrice * (signal.direction === 'LONG' ? 1.05 : 0.95)),
-        confidence: signal.confidence,
+        confidence: signal.confidence || 50,
         signalData: JSON.stringify(signal),
       };
 
+      console.log('🔧 Creating trade simulation with data:', {
+        symbol: tradeData.symbol,
+        timeframe: tradeData.timeframe,
+        direction: tradeData.direction,
+        entryPrice: tradeData.entryPrice,
+        stopLoss: tradeData.stopLoss,
+        takeProfit: tradeData.takeProfit,
+        confidence: tradeData.confidence
+      });
+
       const tradeSimulation = await apiRequest('/api/trade-simulations', tradeData);
+
+      console.log('✅ Trade simulation created successfully:', tradeSimulation);
 
       // Store prediction record locally for monitoring
       const prediction: PredictionRecord = {
@@ -91,7 +114,7 @@ class LiveAccuracyTracker {
         entryPrice: currentPrice,
         stopLoss: tradeData.stopLoss,
         takeProfit: tradeData.takeProfit,
-        confidence: signal.confidence,
+        confidence: signal.confidence || 50,
         timestamp: Date.now(),
         signalData: JSON.stringify(signal),
         actualOutcome: 'PENDING',
@@ -107,6 +130,7 @@ class LiveAccuracyTracker {
       
     } catch (error) {
       console.error('Error recording prediction:', error);
+      console.error('Error details:', error);
     }
   }
 

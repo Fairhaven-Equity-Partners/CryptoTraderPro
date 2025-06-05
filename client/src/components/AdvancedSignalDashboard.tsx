@@ -1477,12 +1477,28 @@ export default function AdvancedSignalDashboard({
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          // Ensure we use the exact same live price being displayed
-          const livePrice = currentAssetPrice > 0 ? currentAssetPrice : 0;
+          // Get synchronized price from master system
+          const masterPrice = getMasterPrice();
+          const livePrice = masterPrice > 0 ? masterPrice : (currentAssetPrice > 0 ? currentAssetPrice : 0);
+          
           if (livePrice === 0) {
-            console.warn(`🎯 Cannot record predictions - no valid live price available`);
+            console.warn(`🎯 Cannot record predictions - no valid live price available (master: ${masterPrice}, current: ${currentAssetPrice})`);
             return;
           }
+          
+          // Update the calculation entry prices with live price
+          Object.values(cleanSignals).forEach(signal => {
+            if (signal) {
+              signal.entryPrice = livePrice;
+              signal.stopLoss = signal.direction === 'LONG' 
+                ? livePrice * 0.97 
+                : livePrice * 1.03;
+              signal.takeProfit = signal.direction === 'LONG' 
+                ? livePrice * 1.05 
+                : livePrice * 0.95;
+            }
+          });
+          
           console.log(`🎯 Recording predictions using live price: ${livePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
@@ -1510,6 +1526,8 @@ export default function AdvancedSignalDashboard({
               
               // Record prediction for accuracy tracking
               await recordPrediction(predictionSignal, livePrice);
+              console.log(`📈 Prediction recorded: ${symbol} ${timeframe} ${signal.direction} @ ${livePrice}`);
+              console.log(`🎯 Stop Loss: ${signal.stopLoss}, Take Profit: ${signal.takeProfit}`);
               console.log(`📈 Recorded prediction: ${timeframe} ${signal.direction} @ ${livePrice}`);
               
               // Trigger learning from accumulated accuracy data

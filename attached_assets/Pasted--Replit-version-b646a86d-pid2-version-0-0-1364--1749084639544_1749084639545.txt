@@ -1,0 +1,366 @@
+ Replit version b646a86d, pid2 version 0.0.1364
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-597af9470722161d.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-597af9470722161d.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-597af9470722161d.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-597af9470722161d.js:1
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=8ovx1qpS_bHj' failed: 
+t @ eruda.js:2
+eruda.js:2 Uncaught (in promise) 
+ Technical indicators module initialized
+ 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+ 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+ Technical indicators module initialized
+ Establishing data connection...
+ Technical indicators module initialized
+ [FinalPriceSystem] Initialized with 60s refresh interval
+ ===================================================
+ Cryptocurrency Analysis Platform Initialized
+ All subsystems ready for signal generation
+ ===================================================
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ Loading chart with 500 data points for BTC/USDT (4h)
+ [PriceOverview] Setting up price updates for BTC/USDT
+ [FinalPriceSystem] Initialized with 180s refresh interval
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Started tracking BTC/USDT
+ [FinalPriceSystem] Subscribed to price updates for BTC/USDT
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart with 200 data points for BTC/USDT (1w)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Trade simulations query status: Object
+ [MasterUnified] Initializing complete unified system
+ [MasterUnified] Stopped all conflicting systems
+ [MasterUnified] Next calculation in 5s
+ 🧠 Initializing continuous learning feedback loop for BTC/USDT
+ 🧠 Starting continuous learning for BTC/USDT
+ [MasterUnified] Cleaning up system
+ [MasterUnified] Initializing complete unified system
+ [MasterUnified] Stopped all conflicting systems
+ [MasterUnified] Next calculation in 5s
+ ⚡ Starting synchronized calculation system
+ ⚡ Starting synchronized price & calculation system
+ ✅ Synchronized calculation system ready
+ Trade data: 0 total, 0 active, 0 completed
+ Trade simulations query status: Object
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ ✅ Initializing streamlined calculation system
+ [StreamlinedPriceManager] Initializing optimized price management
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 104939.17
+ 💰 PRICE UPDATE: BTC/USDT = 104939.17 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [PriceOverview] Price update received: 104939.17
+ [StreamlinedPriceManager] Price update: 104939.17
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 104939.17
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 104939.17
+ Trade data: 0 total, 0 active, 0 completed
+ [MasterUnified] Dashboard price synchronized: 104939.17
+ [MasterUnified] Price updated: 104939.17
+ Trade data: 0 total, 0 active, 0 completed
+ [MasterUnified] Executing 3-minute calculation with price: 104939.17
+ [MasterUnified] 3-minute calculation triggered with price: 104939.17
+ Attempt to trigger calculation (autonomous) for BTC/USDT:
+      - Already triggered: false
+      - Currently calculating: false
+      - Last calculation: 1749084559.44s ago
+      - All data loaded: true
+      - Live data ready: false
+ [MasterUnified] Next calculation in 180s
+ Trade data: 0 total, 0 active, 0 completed
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 0 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 2 patterns for 1m timeframe
+ ⚡ Successfully calculated 1m: NEUTRAL
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 0 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 0 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 8 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: NEUTRAL
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 0 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 6 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: LONG
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+Console.js:61 [1h] Using currentAssetPrice: 0 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1h: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1h: Object
+Console.js:61 [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1h: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 8 patterns for 1h timeframe
+Console.js:61 ⚡ Successfully calculated 1h: NEUTRAL
+Console.js:61 ⚡ About to calculate 4h timeframe
+Console.js:61 Calculating signal for BTC/USDT on 4h timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (4h)
+Console.js:61 [4h] Using currentAssetPrice: 0 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 4h: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 4h: Object
+Console.js:61 [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+Console.js:61 [EnhancedEngine] 4h: Enhanced signal ready - Direction=SHORT, Confidence=98%
+Console.js:61 Generated 8 patterns for 4h timeframe
+Console.js:61 ⚡ Successfully calculated 4h: SHORT
+Console.js:61 ⚡ About to calculate 1d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1d timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1d)
+Console.js:61 [1d] Using currentAssetPrice: 0 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1d: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1d: Object
+Console.js:61 [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=69%
+Console.js:61 [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=69%
+Console.js:61 Generated 10 patterns for 1d timeframe
+Console.js:61 ⚡ Successfully calculated 1d: SHORT
+Console.js:61 ⚡ About to calculate 3d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 3d timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (3d)
+Console.js:61 [3d] Using currentAssetPrice: 0 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 3d: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 3d: Object
+Console.js:61 [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=73%
+Console.js:61 [EnhancedEngine] 3d: Enhanced signal ready - Direction=SHORT, Confidence=73%
+Console.js:61 Generated 7 patterns for 3d timeframe
+Console.js:61 ⚡ Successfully calculated 3d: SHORT
+Console.js:61 ⚡ About to calculate 1w timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1w timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1w)
+Console.js:61 [1w] Using currentAssetPrice: 0 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1w: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1w: Object
+Console.js:61 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+Console.js:61 [EnhancedEngine] 1w: Enhanced signal ready - Direction=LONG, Confidence=98%
+Console.js:61 Generated 9 patterns for 1w timeframe
+Console.js:61 ⚡ Successfully calculated 1w: LONG
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1M timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1M)
+Console.js:61 [1M] Using currentAssetPrice: 0 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1M: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1M: Object
+Console.js:61 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=70%
+Console.js:61 [EnhancedEngine] 1M: Enhanced signal ready - Direction=SHORT, Confidence=70%
+Console.js:61 Generated 8 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: SHORT
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: Array(18)
+Console.js:61 📊 Sample 1d signal: Object
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 🎯 Cannot record predictions - no valid live price available
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [MasterUnified] Dashboard price synchronized: 104939.01
+Console.js:61 [MasterUnified] Price updated: 104939.01
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [MasterUnified] Dashboard price synchronized: 104939.05
+Console.js:61 [MasterUnified] Price updated: 104939.05
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [MasterUnified] Dashboard price synchronized: 104939.56
+Console.js:61 [MasterUnified] Price updated: 104939.56
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [MasterUnified] Dashboard price synchronized: 104939.02
+Console.js:61 [MasterUnified] Price updated: 104939.02
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [MasterUnified] Dashboard price synchronized: 104935.86
+Console.js:61 [MasterUnified] Price updated: 104935.86
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [MasterUnified] Dashboard price synchronized: 104934.13
+Console.js:61 [MasterUnified] Price updated: 104934.13
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 [MasterUnified] Dashboard price synchronized: 104934.41
+Console.js:61 [MasterUnified] Price updated: 104934.41
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
+Console.js:61 Trade data: 0 total, 0 active, 0 completed
