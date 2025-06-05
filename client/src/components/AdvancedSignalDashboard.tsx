@@ -1626,32 +1626,12 @@ export default function AdvancedSignalDashboard({
     setRecommendation(newRecommendation);
   }, [generateTradeRecommendation]);
 
-  // Handle timeframe selection
+  // Handle timeframe selection - FIXED to preserve synchronized signals
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
-    console.log(`Tab change to ${timeframe} - forcing price level calculation`);
+    console.log(`Tab change to ${timeframe} - using synchronized auto-calculated signal`);
     
-    // Force immediate calculation for this timeframe with current live price
-    if (chartData[timeframe] && chartData[timeframe].length > 0 && currentAssetPrice > 0) {
-      console.log(`Force calculating ${timeframe} with live price: ${currentAssetPrice}`);
-      
-      const signal = generateStreamlinedSignal(
-        chartData[timeframe],
-        timeframe,
-        currentAssetPrice,
-        symbol
-      );
-      
-      if (signal) {
-        console.log(`[${timeframe}] IMMEDIATE CALC: Entry=${signal.entryPrice?.toFixed(2)}, SL=${signal.stopLoss?.toFixed(2)}, TP=${signal.takeProfit?.toFixed(2)}`);
-        
-        // Update signals state immediately to show new values
-        setSignals(prev => ({
-          ...prev,
-          [timeframe]: signal
-        }));
-      }
-    }
-    
+    // Use existing synchronized signal instead of forcing immediate calculation
+    // This preserves the auto-calculated signals from the 3-minute timer system
     setSelectedTimeframe(timeframe);
     updateRecommendationForTimeframe(timeframe);
     
@@ -1659,7 +1639,7 @@ export default function AdvancedSignalDashboard({
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
     }
-  }, [updateRecommendationForTimeframe, onTimeframeSelect, chartData, currentAssetPrice, symbol]);
+  }, [updateRecommendationForTimeframe, onTimeframeSelect]);
 
   // Format price for display, with appropriate decimal places
   function formatCurrency(price: number): string {
