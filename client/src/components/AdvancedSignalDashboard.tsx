@@ -1479,13 +1479,13 @@ export default function AdvancedSignalDashboard({
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          // Ensure we use the exact same live price being displayed
-          const livePrice = currentAssetPrice > 0 ? currentAssetPrice : 0;
-          if (livePrice === 0) {
-            console.warn(`🎯 Cannot record predictions - no valid live price available`);
+          // Use authenticated live price from CentralizedPriceManager or asset data
+          const authenticLivePrice = (asset as any)?.lastPrice || centralizedPrice || currentAssetPrice;
+          if (!authenticLivePrice || authenticLivePrice <= 0) {
+            console.warn(`Cannot record predictions - no valid live price available`);
             return;
           }
-          console.log(`🎯 Recording predictions using live price: ${livePrice}`);
+          console.log(`Recording predictions using live price: ${authenticLivePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
             if (signal && signal.direction !== 'NEUTRAL') {
@@ -1502,7 +1502,7 @@ export default function AdvancedSignalDashboard({
                 timeframe: signal.timeframe,
                 direction: signal.direction,
                 confidence: enhancedConfidence,
-                entryPrice: livePrice,
+                entryPrice: authenticLivePrice,
                 stopLoss: signal.stopLoss,
                 takeProfit: signal.takeProfit,
                 timestamp: Date.now(),
@@ -1511,8 +1511,8 @@ export default function AdvancedSignalDashboard({
               };
               
               // Record prediction for accuracy tracking
-              await recordPrediction(predictionSignal, livePrice);
-              console.log(`📈 Recorded prediction: ${timeframe} ${signal.direction} @ ${livePrice}`);
+              await recordPrediction(predictionSignal, authenticLivePrice);
+              console.log(`Recorded prediction: ${timeframe} ${signal.direction} @ ${authenticLivePrice}`);
               
               // Trigger learning from accumulated accuracy data
               await learnFromAccuracy(symbol, signal.timeframe);
@@ -1520,7 +1520,7 @@ export default function AdvancedSignalDashboard({
           }
           
           // Update live price monitoring
-          await updateWithLivePrice(livePrice, symbol);
+          await updateWithLivePrice(authenticLivePrice, symbol);
           
           // Update feedback metrics display
           setFeedbackMetrics(prev => ({
