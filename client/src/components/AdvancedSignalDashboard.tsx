@@ -422,8 +422,9 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Optimized calculation trigger: exact 180s interval
-        if (hasMinimumData && !isCalculating && isTimerTriggered && timeSinceLastCalc >= 180) {
+        // PHASE 1: Enable immediate calculation on all timer triggers for full synchronization
+        if (hasMinimumData && !isCalculating && isTimerTriggered) {
+          console.log(`⚡ Starting synchronized calculation system`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
@@ -1119,10 +1120,18 @@ export default function AdvancedSignalDashboard({
     lastCalculationRef.current = Date.now();
     lastCalculationTimeRef.current = Date.now() / 1000;
     
+    console.log(`⚡ Starting calculation loop for 10 timeframes`);
+    
     // Use promise to allow proper async calculation
     try {
       // Helper to process one timeframe
-      const calculateTimeframe = async (timeframe: TimeFrame) => {
+      const calculateTimeframe = async (timeframe: TimeFrame, delay: number = 0) => {
+        // Staggered start times for resource management
+        if (delay > 0) {
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
+        
+        console.log(`⚡ About to calculate ${timeframe} timeframe`);
         console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
         
         try {
@@ -1344,25 +1353,32 @@ export default function AdvancedSignalDashboard({
         }
       };
       
-      // Calculate signals for all timeframes
+      // PHASE 2: Parallel timeframe processing for synchronized calculations
       const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
+      const timeframes = Object.keys(timeframeWeights) as TimeFrame[];
       
-      // Calculate each timeframe sequentially to prevent overwhelming the browser
-      console.log(`⚡ Starting calculation loop for ${Object.keys(timeframeWeights).length} timeframes`);
-      for (const timeframe of Object.keys(timeframeWeights) as TimeFrame[]) {
-        if (chartData[timeframe]) {
-          console.log(`⚡ About to calculate ${timeframe} timeframe`);
-          try {
-            newSignals[timeframe] = await calculateTimeframe(timeframe);
-            console.log(`⚡ Successfully calculated ${timeframe}: ${newSignals[timeframe]?.direction || 'null'}`);
-          } catch (error) {
-            // Silently handle calculation errors
-            newSignals[timeframe] = null;
-          }
-        } else {
-          console.log(`⚡ No chart data available for ${timeframe}`);
-        }
-      }
+      // Create parallel promises with staggered delays for resource management
+      const calculationPromises = timeframes.map((timeframe, index) => {
+        const delay = index * 100; // 100ms stagger between each timeframe
+        return calculateTimeframe(timeframe, delay)
+          .then(result => {
+            console.log(`⚡ Successfully calculated ${timeframe}: ${result?.direction || 'null'}`);
+            return { timeframe, result };
+          })
+          .catch(error => {
+            console.log(`⚡ Error calculating ${timeframe}, using neutral signal`);
+            return { timeframe, result: null };
+          });
+      });
+      
+      // Execute all timeframes in parallel
+      const results = await Promise.all(calculationPromises);
+      
+      // Apply results to signals object
+      results.forEach(({ timeframe, result }) => {
+        newSignals[timeframe] = result;
+      });
+      
       console.log(`⚡ Calculation loop completed`);  
       
       console.log(`🔧 Raw signals before alignment:`, Object.keys(newSignals).map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'}`));
