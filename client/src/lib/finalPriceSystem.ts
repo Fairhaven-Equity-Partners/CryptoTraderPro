@@ -63,7 +63,7 @@ function updateCountdown() {
     // At zero, fetch price AND trigger a synchronized calculation
     console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation`);
     
-    fetchLatestPrice('BTC/USDT')
+    fetchLatestPrice('BTC/USDT', true) // Pass true to indicate this is timer-triggered
       .then(price => {
         console.log(`[FinalPriceSystem] Price updated to ${price} - calculation will follow automatically`);
       })
@@ -90,9 +90,10 @@ function triggerPriceFetch() {
 /**
  * Fetch the latest price for a specific symbol
  * @param symbol Asset symbol to fetch
+ * @param isTimerTriggered Whether this fetch was triggered by the 3-minute timer
  * @returns The fetched price
  */
-export async function fetchLatestPrice(symbol: string): Promise<number> {
+export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean = false): Promise<number> {
   try {
     console.log(`[FinalPriceSystem] Fetching fresh price for ${symbol}`);
     
@@ -141,9 +142,8 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
     });
     window.dispatchEvent(cryptoUpdateEvent);
     
-    // CRITICAL FIX: Only trigger calculation events at exact 3-minute intervals
-    // when the countdown timer completes its full 180-second cycle
-    if (countdownSeconds <= 5) { // Trigger when countdown reaches 5 seconds or less
+    // CRITICAL FIX: Only trigger calculation events when explicitly called by 3-minute timer
+    if (isTimerTriggered) {
       console.log(`💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark`);
       const synchronizedCalculationEvent = new CustomEvent('synchronized-calculation-trigger', {
         detail: { 
@@ -151,7 +151,7 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
           price, 
           timestamp, 
           isThreeMinuteMark: true,
-          countdownSeconds 
+          timerTriggered: true
         }
       });
       document.dispatchEvent(synchronizedCalculationEvent);
@@ -161,6 +161,8 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
         detail: { symbol, price, timestamp, forceCalculate: true, isThreeMinuteMark: true }
       });
       document.dispatchEvent(liveUpdateEvent);
+    } else {
+      console.log(`[FinalPriceSystem] Price fetch completed - no calculation trigger (not timer-triggered)`);
     }
     
     console.log(`[FinalPriceSystem] Price update broadcast for ${symbol}: ${price}`);
