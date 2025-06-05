@@ -384,24 +384,17 @@ export default function AdvancedSignalDashboard({
     };
   }, [symbol]);
   
-  // Get the current price from live data (NO FALLBACKS - use authentic data only)
+  // Get the current price from authentic CoinGecko API data only
   const currentAssetPrice = (() => {
-    // Force authentic API price for ALGO/USDT to prevent synthetic values
-    if (symbol === 'ALGO/USDT' && livePriceState && livePriceState > 0.3) {
-      console.log(`[AdvancedSignalDashboard] Correcting synthetic ALGO/USDT price ${livePriceState} to authentic range`);
-      return 0.192;
+    // ALWAYS use asset.lastPrice from API which contains real CoinGecko data
+    if (asset && typeof asset.lastPrice === 'number' && asset.lastPrice > 0) {
+      console.log(`[AdvancedSignalDashboard] Using authentic CoinGecko price for ${symbol}: $${asset.lastPrice}`);
+      return asset.lastPrice;
     }
     
-    // Log price validation for ALGO/USDT
-    if (symbol === 'ALGO/USDT' && livePriceState) {
-      console.log(`[AdvancedSignalDashboard] ✓ ALGO/USDT using authentic price: $${livePriceState.toFixed(6)}`);
-    }
-    
-    // First try to get from live price state (updated by price events)
-    if (livePriceState && livePriceState > 0) {
-      console.log(`[AdvancedSignalDashboard] Using live price state: ${livePriceState}`);
-      return livePriceState;
-    }
+    // If API data not available, return null to prevent calculations with invalid data
+    console.warn(`[AdvancedSignalDashboard] No authentic price data available for ${symbol}`);
+    return null;
     
     // Fallback to asset API data if live price not available yet
     const assetPrice = (asset as any)?.price || (asset as any)?.lastPrice;
