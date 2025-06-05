@@ -70,11 +70,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
       console.log(`Fetching crypto asset with symbol: ${symbol}`);
       
-      // Import symbol mapping for multi-cryptocurrency support
+      // Import data providers for multi-source price feeds
       const { getCoinGeckoId } = await import('./symbolMapping.js');
+      const { tradingViewProvider } = await import('./tradingViewData.js');
       const coinGeckoId = getCoinGeckoId(symbol);
       
-      // Use CoinGecko for all supported cryptocurrencies
+      // Try TradingView first for enhanced data capabilities
+      if (tradingViewProvider.isAvailable()) {
+        try {
+          const tvData = await tradingViewProvider.fetchPrice(symbol);
+          if (tvData) {
+            console.log(`TradingView price data for ${symbol}:`, tvData.price);
+            const updatedAsset = await storage.updateCryptoAsset(symbol, {
+              lastPrice: tvData.price,
+              change24h: tvData.change24h,
+              volume24h: tvData.volume,
+              updatedAt: new Date()
+            });
+            
+            if (updatedAsset) {
+              broadcastUpdates({ type: 'price_update', symbol, price: tvData.price });
+              return res.json(updatedAsset);
+            }
+          }
+        } catch (tvError) {
+          console.error(`TradingView fetch failed for ${symbol}:`, tvError);
+        }
+      }
+      
+      // Fallback to CoinGecko for supported cryptocurrencies
       if (coinGeckoId) {
         try {
           console.log(`Fetching real-time ${symbol} price from CoinGecko API using ID: ${coinGeckoId}`);
