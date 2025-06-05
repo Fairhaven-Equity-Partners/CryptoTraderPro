@@ -1,4 +1,5 @@
 import { ChartData, TimeFrame, AdvancedSignal } from '../types';
+import { marketStructureEngine } from './marketStructureEngine';
 
 /**
  * Ultimate Calculation Engine - Final optimized system
@@ -389,12 +390,40 @@ export class UltimateCalculationEngine {
       bearishScore += 8;
     }
 
-    // Determine direction
+    // Market structure analysis using authentic data
+    const marketStructure = marketStructureEngine.analyzeMarketStructure(data, symbol, timeframe);
+    
+    // Apply market structure bias
+    if (marketStructure.bias === 'BULLISH') {
+      bullishScore += Math.floor(marketStructure.strength * 0.3);
+      confidence += Math.floor(marketStructure.strength * 0.15);
+    } else if (marketStructure.bias === 'BEARISH') {
+      bearishScore += Math.floor(marketStructure.strength * 0.3);
+      confidence += Math.floor(marketStructure.strength * 0.15);
+    }
+
+    // Volume profile confirmation
+    if (marketStructure.volumeProfile === 'STRONG') {
+      confidence += 12;
+      if (marketStructure.bias === 'BULLISH') bullishScore += 15;
+      else if (marketStructure.bias === 'BEARISH') bearishScore += 15;
+    } else if (marketStructure.volumeProfile === 'WEAK') {
+      confidence -= 8;
+    }
+
+    // Market regime adjustment
+    if (marketStructure.regime === 'TRENDING') {
+      confidence += 10;
+    } else if (marketStructure.regime === 'VOLATILE') {
+      confidence -= 15; // Reduce confidence in volatile markets
+    }
+
+    // Determine direction with enhanced thresholds
     const scoreDiff = bullishScore - bearishScore;
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL';
     
-    if (scoreDiff >= 15) direction = 'LONG';
-    else if (scoreDiff <= -15) direction = 'SHORT';
+    if (scoreDiff >= 20) direction = 'LONG';
+    else if (scoreDiff <= -20) direction = 'SHORT';
     else direction = 'NEUTRAL';
 
     // Apply timeframe multiplier and adaptive weight
@@ -402,10 +431,37 @@ export class UltimateCalculationEngine {
     confidence *= TIMEFRAME_CONFIDENCE_MULTIPLIERS[timeframe] * adaptiveWeight;
     confidence = Math.min(95, Math.max(30, confidence));
 
-    // Calculate risk levels
+    // Calculate risk levels with support/resistance integration
+    const supportResistance = this.analyzeSupportResistance(data, currentPrice);
     const riskAmount = atr * RISK_MULTIPLIERS[timeframe];
-    const stopLoss = currentPrice - riskAmount;
-    const takeProfit = currentPrice + (riskAmount * 2);
+    
+    let stopLoss: number;
+    let takeProfit: number;
+    
+    if (direction === 'LONG') {
+      // Use nearest support for stop loss if available
+      const nearestSupport = supportResistance.supports[0];
+      stopLoss = nearestSupport && nearestSupport > currentPrice * 0.95 ? 
+        nearestSupport * 0.998 : currentPrice - riskAmount;
+      
+      // Use nearest resistance for take profit if available
+      const nearestResistance = supportResistance.resistances[0];
+      takeProfit = nearestResistance && nearestResistance < currentPrice * 1.1 ? 
+        nearestResistance * 0.998 : currentPrice + (riskAmount * 2);
+    } else if (direction === 'SHORT') {
+      // Use nearest resistance for stop loss if available
+      const nearestResistance = supportResistance.resistances[0];
+      stopLoss = nearestResistance && nearestResistance < currentPrice * 1.05 ? 
+        nearestResistance * 1.002 : currentPrice + riskAmount;
+      
+      // Use nearest support for take profit if available
+      const nearestSupport = supportResistance.supports[0];
+      takeProfit = nearestSupport && nearestSupport > currentPrice * 0.9 ? 
+        nearestSupport * 1.002 : currentPrice - (riskAmount * 2);
+    } else {
+      stopLoss = currentPrice * 0.98;
+      takeProfit = currentPrice * 1.04;
+    }
 
     // Success probability
     let successProbability = confidence * 0.85;
@@ -443,9 +499,15 @@ export class UltimateCalculationEngine {
         bb,
         adx,
         atr: { value: atr },
-        supports: [],
-        resistances: [],
-        volatility: atr / currentPrice
+        supports: supportResistance.supports,
+        resistances: supportResistance.resistances,
+        volatility: atr / currentPrice,
+        marketStructure: {
+          regime: marketStructure.regime,
+          bias: marketStructure.bias,
+          strength: marketStructure.strength,
+          volumeProfile: marketStructure.volumeProfile
+        }
       }
     };
   }
@@ -481,6 +543,47 @@ export class UltimateCalculationEngine {
     this.cache.clear();
   }
 
+  // Support and resistance analysis for risk management
+  private analyzeSupportResistance(data: ChartData[], currentPrice: number): { supports: number[]; resistances: number[] } {
+    if (data.length < 50) return { supports: [], resistances: [] };
+    
+    const period = Math.min(100, data.length);
+    const recent = data.slice(-period);
+    
+    const supports: number[] = [];
+    const resistances: number[] = [];
+    
+    // Find swing highs and lows with volume confirmation
+    for (let i = 3; i < recent.length - 3; i++) {
+      const current = recent[i];
+      const avgVolume = recent.slice(i-3, i+4).reduce((sum, candle) => sum + candle.volume, 0) / 7;
+      
+      // Swing high with volume
+      if (current.high > recent[i-1].high && current.high > recent[i-2].high && current.high > recent[i-3].high &&
+          current.high > recent[i+1].high && current.high > recent[i+2].high && current.high > recent[i+3].high &&
+          current.volume > avgVolume * 1.2) {
+        resistances.push(current.high);
+      }
+      
+      // Swing low with volume
+      if (current.low < recent[i-1].low && current.low < recent[i-2].low && current.low < recent[i-3].low &&
+          current.low < recent[i+1].low && current.low < recent[i+2].low && current.low < recent[i+3].low &&
+          current.volume > avgVolume * 1.2) {
+        supports.push(current.low);
+      }
+    }
+
+    // Filter levels near current price (within 5%)
+    const priceRange = currentPrice * 0.05;
+    const nearSupports = supports.filter(level => Math.abs(currentPrice - level) <= priceRange && level < currentPrice);
+    const nearResistances = resistances.filter(level => Math.abs(currentPrice - level) <= priceRange && level > currentPrice);
+
+    return {
+      supports: nearSupports.sort((a, b) => b - a).slice(0, 3),
+      resistances: nearResistances.sort((a, b) => a - b).slice(0, 3)
+    };
+  }
+
   // Get system statistics
   getStats() {
     let dataPoints = 0;
@@ -493,7 +596,9 @@ export class UltimateCalculationEngine {
     return {
       cacheSize: this.cache.size,
       dataPoints,
-      symbols: this.dataStore.size
+      symbols: this.dataStore.size,
+      accuracyTracking: this.predictionAccuracy.size,
+      adaptiveWeights: this.adaptiveWeights.size
     };
   }
 }
