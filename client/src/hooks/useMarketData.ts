@@ -139,9 +139,9 @@ export function useAssetPrice(symbol: string) {
     }
   }, [symbol, initialPrice]);
   
-  // Subscribe to price updates (reduced frequency - 3 minutes)
+  // Subscribe to price updates with proper 3-minute synchronization
   useEffect(() => {
-    // Listen for price update events
+    // Listen for price update events - but DON'T dispatch calculation events
     const handlePriceUpdate = (event: any) => {
       if (event.detail?.symbol === symbol && event.detail?.price) {
         const price = event.detail.price;
@@ -157,10 +157,13 @@ export function useAssetPrice(symbol: string) {
           return syncedPrice as AssetPrice;
         });
         setIsLiveDataConnected(true);
+        
+        // CRITICAL FIX: Only update price display, never trigger calculations here
+        console.log(`[useMarketData] Price updated to ${price} for ${symbol} - display only`);
       }
     };
     
-    // Set up a price update on a 3-minute interval
+    // Set up synchronized 3-minute price fetching without calculation triggers
     let priceUpdateInterval: NodeJS.Timeout | null = null;
     
     const setupPriceUpdates = () => {

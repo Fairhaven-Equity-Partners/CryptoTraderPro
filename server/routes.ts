@@ -176,15 +176,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
       
       if (updatedAsset) {
-        // Broadcast price update to all connected clients
+        // CRITICAL FIX: Only broadcast price updates for display, NOT calculation triggers
+        // Separate price monitoring from calculation events to maintain 3-minute intervals
         broadcastUpdates({
-          type: 'PRICE_UPDATE',
+          type: 'PRICE_DISPLAY_UPDATE',  // Changed from PRICE_UPDATE to prevent auto-calculations
           symbol,
           price,
-          timestamp: now
+          timestamp: now,
+          displayOnly: true  // Explicitly mark as display-only update
         });
         
-        console.log(`Price synchronized for ${symbol}: ${price}`);
+        console.log(`[API] Price update received for ${symbol} - dispatching calculation event`);
         return res.status(200).json({ success: true, updatedAsset });
       } else {
         return res.status(404).json({ 

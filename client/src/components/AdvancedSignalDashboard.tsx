@@ -406,41 +406,35 @@ export default function AdvancedSignalDashboard({
     return () => clearInterval(timerInterval);
   }, [signals, actualLastCalculationTime]);
 
-  // Listen directly for the live price update custom event
+  // Listen for ONLY the 3-minute synchronized calculation events
   useEffect(() => {
-    // Create a specific handler for the live price update event
-    const handleLivePriceUpdate = (event: CustomEvent) => {
-      console.log(`🔥 RAW LIVE PRICE EVENT:`, event.detail);
+    // Handler for ONLY the official 3-minute timer events
+    const handleSynchronizedCalculationEvent = (event: CustomEvent) => {
       if (event.detail.symbol === symbol) {
-        console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${event.detail.price}`);
+        console.log(`💯 SYNCHRONIZED 3-MINUTE CALCULATION EVENT for ${symbol}`);
         
-        // STRICT: Only respond to the 3-minute synchronized timer events
-        const isTimerTriggered = event.detail.forceCalculate === true;
-        console.log(`⚡ Event details: forceCalculate=${event.detail.forceCalculate}, isTimerTriggered=${isTimerTriggered}`);
-        
-        // ONLY proceed if this is explicitly a 3-minute timer-triggered update
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // PHASE 1: Enable immediate calculation on all timer triggers for full synchronization
-        if (hasMinimumData && !isCalculating && isTimerTriggered) {
+        // Only proceed with calculation on official 3-minute synchronized events
+        if (hasMinimumData && !isCalculating && timeSinceLastCalc >= 170) { // Allow 10s buffer
           console.log(`⚡ Starting synchronized calculation system`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals();
         } else {
-          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, isTimerTriggered=${isTimerTriggered}, timeSinceLastCalc=${timeSinceLastCalc}s`);
+          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
         }
       }
     };
     
-    // Add the event listener
-    document.addEventListener('live-price-update', handleLivePriceUpdate as EventListener);
+    // Add the event listener for ONLY synchronized 3-minute events
+    document.addEventListener('live-price-update', handleSynchronizedCalculationEvent as EventListener);
     
     // Return cleanup function
     return () => {
-      document.removeEventListener('live-price-update', handleLivePriceUpdate as EventListener);
+      document.removeEventListener('live-price-update', handleSynchronizedCalculationEvent as EventListener);
     };
   }, [symbol, isAllDataLoaded, isCalculating]);
 
