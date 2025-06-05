@@ -271,7 +271,7 @@ export function startRealTimeUpdates() {
     } catch (error) {
       console.error('Error in price update:', error);
     }
-  }, 15000);
+  }, 240000); // 4 minutes for optimal CoinGecko free tier usage
   
   // Return the interval ID so it can be cleared if needed
   return updateInterval;

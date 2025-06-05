@@ -143,6 +143,9 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
 // Import optimized refresh intervals from our scheduler
 import { CACHE_VALIDITY, REFRESH_INTERVALS, PRICE_REFRESH_INTERVAL } from './refreshScheduler';
 
+// Updated to 4-minute intervals for optimal CoinGecko free tier usage
+const OPTIMIZED_PRICE_REFRESH_INTERVAL = 240000; // 4 minutes (240 seconds)
+
 // Use the optimized cache expiration times from refreshScheduler
 const CACHE_EXPIRATION = CACHE_VALIDITY;
 
@@ -432,7 +435,7 @@ export function startRealTimeUpdates() {
     } catch (error) {
       console.error('Error in price update:', error);
     }
-  }, PRICE_REFRESH_INTERVAL);
+  }, OPTIMIZED_PRICE_REFRESH_INTERVAL);
   
   // Return the interval ID so it can be cleared if needed
   return updateInterval;
