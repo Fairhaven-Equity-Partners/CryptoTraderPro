@@ -25,19 +25,14 @@ export function initFinalUnifiedSystem(): void {
   
   console.log('[FinalUnified] Starting unified price and calculation system');
   
-  // Disable old system logs by overriding console.log temporarily
-  const originalLog = console.log;
-  console.log = (...args) => {
-    const message = args.join(' ');
-    if (message.includes('[FinalPriceSystem]') ||
-        message.includes('[StreamlinedPriceManager]') ||
-        message.includes('LIVE PRICE EVENT') ||
-        message.includes('RAW LIVE PRICE EVENT') ||
-        message.includes('Calculation scheduled')) {
-      return; // Block old system noise
+  // Stop all old system processes
+  if (typeof window !== 'undefined') {
+    // Clear all timers from old systems
+    for (let i = 1; i < 10000; i++) {
+      clearTimeout(i);
+      clearInterval(i);
     }
-    originalLog.apply(console, args);
-  };
+  }
   
   systemActive = true;
   startPriceUpdates();
@@ -49,13 +44,18 @@ export function initFinalUnifiedSystem(): void {
  */
 async function startPriceUpdates(): Promise<void> {
   try {
-    const response = await fetch('/api/crypto/BTC/USDT');
+    const response = await fetch('/api/crypto/BTC%2FUSDT');
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    
     const data = await response.json();
     
-    if (data && data.price) {
-      const newPrice = data.price;
+    if (data && (data.price || data.lastPrice)) {
+      const newPrice = Number(data.price || data.lastPrice);
       
-      if (newPrice !== currentBTCPrice) {
+      if (newPrice > 0 && newPrice !== currentBTCPrice) {
         currentBTCPrice = newPrice;
         
         // Dispatch synchronized price update
@@ -66,6 +66,8 @@ async function startPriceUpdates(): Promise<void> {
         
         console.log(`[FinalUnified] Price synchronized: ${currentBTCPrice}`);
       }
+    } else {
+      console.warn('[FinalUnified] No valid price data received');
     }
   } catch (error) {
     console.error('[FinalUnified] Price fetch error:', error);

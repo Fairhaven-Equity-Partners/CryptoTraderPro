@@ -49,12 +49,12 @@ import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { 
-  initFinalUnifiedSystem, 
-  getFinalPrice,
-  getFinalSystemStatus,
-  cleanupFinalSystem,
-  forceFinalCalculation
-} from '../lib/finalUnifiedSystem';
+  initMasterUnifiedSystem, 
+  getMasterPrice,
+  getMasterSystemStatus,
+  cleanupMasterSystem,
+  forceMasterCalculation
+} from '../lib/masterUnifiedSystem';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
   calculateEnhancedConfidence, 
@@ -344,34 +344,43 @@ export default function AdvancedSignalDashboard({
   const [currentAssetPrice, setCurrentAssetPrice] = useState<number>(0);
   
   useEffect(() => {
-    // Initialize final unified system
-    initFinalUnifiedSystem();
+    // Initialize master unified system
+    initMasterUnifiedSystem();
+    
+    // Get initial price from master system
+    const initialPrice = getMasterPrice();
+    if (initialPrice > 0) {
+      setCurrentAssetPrice(initialPrice);
+    }
     
     // Listen for synchronized price updates
-    const handleFinalPriceUpdate = (event: CustomEvent) => {
-      const { price } = event.detail;
-      if (price > 0) {
+    const handleMasterPriceUpdate = (event: CustomEvent) => {
+      const { price, source } = event.detail;
+      if (price > 0 && source === 'master_unified') {
         setCurrentAssetPrice(price);
-        console.log(`[FinalUnified] Price synchronized in dashboard: ${price}`);
+        console.log(`[MasterUnified] Dashboard price synchronized: ${price}`);
       }
     };
     
     // Listen for 3-minute calculation triggers only
-    const handleFinalCalculation = (event: CustomEvent) => {
-      const { price, type } = event.detail;
-      console.log(`[FinalUnified] ${type} calculation triggered with price: ${price}`);
-      if (isAllDataLoaded && !isCalculating) {
-        triggerCalculation(type);
+    const handleMasterCalculation = (event: CustomEvent) => {
+      const { price, type, source } = event.detail;
+      if (source === 'master_unified' && type === 'autonomous_3min') {
+        console.log(`[MasterUnified] 3-minute calculation triggered with price: ${price}`);
+        if (isAllDataLoaded && !isCalculating && price > 0) {
+          setCurrentAssetPrice(price); // Ensure price is synchronized before calculation
+          triggerCalculation('autonomous');
+        }
       }
     };
     
-    window.addEventListener('finalPriceUpdate', handleFinalPriceUpdate as EventListener);
-    window.addEventListener('finalCalculationTrigger', handleFinalCalculation as EventListener);
+    window.addEventListener('masterPriceUpdate', handleMasterPriceUpdate as EventListener);
+    window.addEventListener('masterCalculationTrigger', handleMasterCalculation as EventListener);
     
     return () => {
-      window.removeEventListener('finalPriceUpdate', handleFinalPriceUpdate as EventListener);
-      window.removeEventListener('finalCalculationTrigger', handleFinalCalculation as EventListener);
-      cleanupFinalSystem();
+      window.removeEventListener('masterPriceUpdate', handleMasterPriceUpdate as EventListener);
+      window.removeEventListener('masterCalculationTrigger', handleMasterCalculation as EventListener);
+      cleanupMasterSystem();
     };
   }, [symbol, isAllDataLoaded, isCalculating]);
   
