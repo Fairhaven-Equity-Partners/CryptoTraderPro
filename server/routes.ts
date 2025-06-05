@@ -78,6 +78,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (coinGeckoId) {
         try {
           console.log(`Fetching real-time ${symbol} price from CoinGecko API using ID: ${coinGeckoId}`);
+          
+          // Add delay to respect rate limits
+          await new Promise(resolve => setTimeout(resolve, 100));
+          
           const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`);
           const data = await response.json();
           console.log(`CoinGecko API response for ${symbol}:`, data);
@@ -108,6 +112,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         } catch (apiError) {
           console.error(`Failed to fetch ${symbol} from CoinGecko:`, apiError);
+          // If rate limited, use cached data or fallback to storage
+          if (apiError.toString().includes('429')) {
+            console.log(`Rate limited for ${symbol}, using cached data`);
+          }
           // Continue with normal flow if API call fails
         }
       }
