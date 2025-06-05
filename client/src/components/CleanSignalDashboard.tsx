@@ -50,7 +50,17 @@ export default function CleanSignalDashboard({ symbol, onTimeframeSelect }: Clea
 
   // Simple calculation function
   const calculateSignal = useCallback((timeframe: string): SimpleSignal => {
-    const price = getMasterPrice() || currentAssetPrice || 0;
+    // Get price from multiple sources
+    let price = getMasterPrice();
+    if (!price || price === 0) {
+      price = currentAssetPrice;
+    }
+    if (!price || price === 0) {
+      // Get from global price registry
+      price = (window as any).cryptoPrices?.['BTC/USDT'] || 0;
+    }
+    
+    console.log(`Calculating ${timeframe} with price: ${price}`);
     
     if (price === 0) {
       return {
