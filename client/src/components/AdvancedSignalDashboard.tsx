@@ -48,6 +48,14 @@ import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimize
 import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
+import { 
+  initializeMasterSystem, 
+  subscribeToPrice, 
+  subscribeToCalculations, 
+  forceCalculation,
+  getCurrentPrice,
+  getSystemStatus
+} from '../lib/masterCalculationSystem';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
   calculateEnhancedConfidence, 
