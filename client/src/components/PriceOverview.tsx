@@ -5,11 +5,6 @@ import { formatPrice, formatPercentage, getPriceChangeClass } from '../lib/calcu
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ArrowUp, ArrowDown } from 'lucide-react';
-import { 
-  startTracking, 
-  stopTracking,
-  subscribeToPriceUpdates
-} from '../lib/finalPriceSystem';
 
 interface PriceOverviewProps {
   symbol: string;
@@ -21,7 +16,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   const { price, isLoading } = useAssetPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
   
-  // Track price state with animation
+  // Track price state with animation - use authentic CoinGecko price
   const [priceState, setPriceState] = useState({
     price: 0,
     previousPrice: 0,
@@ -32,57 +27,65 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   // Ref for flash animation timer
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Connect to our final price system
+  // Use the same authentic CoinGecko price that calculations use
   useEffect(() => {
-    console.log(`[PriceOverview] Setting up price updates for ${symbol}`);
+    console.log(`[PriceOverview] Setting up authentic CoinGecko price updates for ${symbol}`);
     
-    // Start tracking this symbol
-    startTracking(symbol);
-    
-    // Get initial price if available
-    const initialPrice = price?.lastPrice || 0;
-    if (initialPrice > 0) {
-      setPriceState({
-        price: initialPrice,
-        previousPrice: 0,
-        flash: false,
-        lastUpdate: new Date()
-      });
-    }
-    
-    // Subscribe to price updates
-    const unsubscribe = subscribeToPriceUpdates(symbol, (newPrice) => {
-      console.log(`[PriceOverview] Price update received: ${newPrice}`);
-      
-      // Update the price state with animation
-      setPriceState(prev => ({
-        previousPrice: prev.price,
-        price: newPrice,
-        flash: true,
-        lastUpdate: new Date()
-      }));
-      
-      // Clear any existing flash timer
-      if (flashTimerRef.current) {
-        clearTimeout(flashTimerRef.current);
+    // Fetch authentic price directly from API endpoint
+    const fetchAuthenticPrice = async () => {
+      try {
+        const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
+        if (response.ok) {
+          const data = await response.json();
+          const authenticPrice = data.lastPrice;
+          
+          if (authenticPrice && authenticPrice > 0) {
+            console.log(`[PriceOverview] Authentic CoinGecko price for ${symbol}: $${authenticPrice}`);
+            
+            setPriceState(prev => {
+              const hasChanged = prev.price !== authenticPrice && prev.price > 0;
+              return {
+                previousPrice: prev.price,
+                price: authenticPrice,
+                flash: hasChanged,
+                lastUpdate: new Date()
+              };
+            });
+            
+            // Clear any existing flash timer
+            if (flashTimerRef.current) {
+              clearTimeout(flashTimerRef.current);
+            }
+            
+            // Set timer to remove flash effect after 2 seconds
+            const currentState = priceState;
+            if (currentState.price !== authenticPrice && currentState.price > 0) {
+              flashTimerRef.current = setTimeout(() => {
+                setPriceState(current => ({
+                  ...current,
+                  flash: false
+                }));
+              }, 2000);
+            }
+          }
+        }
+      } catch (error) {
+        console.error(`[PriceOverview] Error fetching authentic price for ${symbol}:`, error);
       }
-      
-      // Set timer to remove flash effect after 2 seconds
-      flashTimerRef.current = setTimeout(() => {
-        setPriceState(prev => ({
-          ...prev,
-          flash: false
-        }));
-      }, 2000);
-    });
+    };
+    
+    // Initial fetch
+    fetchAuthenticPrice();
+    
+    // Set up polling every 3 seconds to match calculation frequency
+    const interval = setInterval(fetchAuthenticPrice, 3000);
     
     // Cleanup
     return () => {
       if (flashTimerRef.current) {
         clearTimeout(flashTimerRef.current);
       }
-      unsubscribe();
-      stopTracking(symbol);
+      clearInterval(interval);
     };
   }, [symbol]);
   
