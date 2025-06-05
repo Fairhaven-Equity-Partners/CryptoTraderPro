@@ -422,9 +422,12 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Autonomous calculation logic: STRICT 3-minute intervals only
+        // Autonomous calculation logic: Proper 3-minute autonomous operation
+        const isAutonomousEvent = event.detail.autonomousMode === true;
         const shouldCalculate = hasMinimumData && !isCalculating && isTimerTriggered && (
-          // ONLY calculate if it's been 3+ minutes since last calculation
+          // Always calculate for autonomous 3-minute timer events
+          isAutonomousEvent ||
+          // OR if it's been 3+ minutes since last calculation
           timeSinceLastCalc >= 180 ||
           // OR if this is the first calculation after system startup
           lastCalculationRef.current === 0

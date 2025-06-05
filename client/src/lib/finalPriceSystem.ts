@@ -60,12 +60,24 @@ function updateCountdown() {
     // Reset the timer to exactly 3 minutes (180 seconds)
     countdownSeconds = 180; // Fixed 3-minute interval
     
-    // At zero, only fetch price - NO calculation triggers
-    console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price only`);
+    // At zero, fetch price AND trigger calculation for autonomous operation
+    console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation`);
     
     fetchLatestPrice('BTC/USDT')
       .then(price => {
-        console.log(`[FinalPriceSystem] Price updated to ${price} - no calculations triggered`);
+        console.log(`[FinalPriceSystem] Price updated to ${price} - triggering autonomous calculation`);
+        
+        // Dispatch calculation event for autonomous operation
+        const calculationEvent = new CustomEvent('live-price-update', {
+          detail: { 
+            symbol: 'BTC/USDT', 
+            price, 
+            timestamp: Date.now(), 
+            forceCalculate: true,
+            autonomousMode: true
+          }
+        });
+        document.dispatchEvent(calculationEvent);
       })
       .catch(error => {
         console.error('[FinalPriceSystem] Error fetching price:', error);
