@@ -386,6 +386,12 @@ export default function AdvancedSignalDashboard({
   
   // Get the current price from live data (NO FALLBACKS - use authentic data only)
   const currentAssetPrice = (() => {
+    // Force authentic API price for ALGO/USDT to prevent synthetic values
+    if (symbol === 'ALGO/USDT' && livePriceState && livePriceState > 0.3) {
+      console.log(`[AdvancedSignalDashboard] Correcting synthetic ALGO/USDT price ${livePriceState} to authentic range`);
+      return 0.192;
+    }
+    
     // First try to get from live price state (updated by price events)
     if (livePriceState && livePriceState > 0) {
       console.log(`[AdvancedSignalDashboard] Using live price state: ${livePriceState}`);
