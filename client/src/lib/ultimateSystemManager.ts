@@ -47,7 +47,10 @@ export async function initializeUltimateSystem(): Promise<void> {
     console.log('[UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay');
     await performScheduledPriceFetch();
     
-    // Force immediate signal generation for all components
+    // Force immediate signal generation for all components with chart data pre-loading
+    await preloadChartDataForImmediate(['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT']);
+    
+    // Trigger immediate technical analysis calculation
     setTimeout(() => {
       document.dispatchEvent(new CustomEvent('synchronized-calculation-trigger', {
         detail: { 
@@ -194,6 +197,29 @@ async function performScheduledPriceFetch(): Promise<void> {
   } catch (error) {
     console.warn('[UltimateManager] Price fetch temporarily unavailable');
   }
+}
+
+/**
+ * Preload chart data for immediate analysis - eliminates 2-cycle delay
+ */
+async function preloadChartDataForImmediate(symbols: string[]): Promise<void> {
+  console.log('[UltimateManager] Preloading chart data for immediate analysis');
+  
+  const { fetchChartData } = await import('./api');
+  const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+  
+  // Preload data for all symbols and timeframes in parallel
+  const preloadPromises = symbols.flatMap(symbol =>
+    timeframes.map(timeframe =>
+      fetchChartData(symbol, timeframe as any).catch(error => {
+        console.warn(`Failed to preload ${symbol} ${timeframe}:`, error);
+        return null;
+      })
+    )
+  );
+  
+  await Promise.all(preloadPromises);
+  console.log('[UltimateManager] Chart data preloading completed');
 }
 
 /**
