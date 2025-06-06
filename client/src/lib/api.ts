@@ -296,6 +296,11 @@ export function addChartUpdateListener(symbol: string, timeframe: TimeFrame, cal
   };
 }
 
+// Register chart update listener (alias for addChartUpdateListener)
+export function registerChartUpdateListener(symbol: string, timeframe: TimeFrame, callback: () => void): () => void {
+  return addChartUpdateListener(symbol, timeframe, callback);
+}
+
 // Fetch alerts
 export async function fetchAlerts(userId?: number): Promise<Alert[]> {
   const url = userId 
