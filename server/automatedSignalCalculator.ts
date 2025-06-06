@@ -260,7 +260,8 @@ export class AutomatedSignalCalculator {
       : 0;
 
     let totalSignals = 0;
-    for (const [, signals] of this.signalCache) {
+    const cacheEntries = Array.from(this.signalCache.values());
+    for (const signals of cacheEntries) {
       totalSignals += signals.length;
     }
 
