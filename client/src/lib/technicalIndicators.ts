@@ -943,7 +943,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
 } {
   // Prevent errors for weekly and monthly timeframes by using simplified signal
   if (['1w', '1M'].includes(timeframe)) {
-    return generateSimplifiedSignal(data, timeframe);
+    return generateSimplifiedSignal(data, timeframe, symbol);
   }
   
   try {
@@ -1182,8 +1182,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         patternFormations: [],
         supportResistance: [calculatedPrice * 0.95, calculatedPrice * 0.90, calculatedPrice * 0.85, calculatedPrice * 1.05, calculatedPrice * 1.10, calculatedPrice * 1.15],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : 2,
-        riskReward: direction === 'LONG' ? 2.5 : (direction === 'SHORT' ? 2.0 : 1.0),
-        marketStructure: direction === 'NEUTRAL' ? 'RANGING' : 'TRENDING',
+
         volumeProfile: 'AVERAGE',
         successProbability: confidence,
         macroInsights: direction === 'LONG' 
@@ -1283,8 +1282,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         patternFormations: [],
         supportResistance: [calculatedPrice * 0.97, calculatedPrice * 0.94, calculatedPrice * 0.90, calculatedPrice * 1.03, calculatedPrice * 1.07, calculatedPrice * 1.12],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : (direction === 'LONG' ? 3 : 2),
-        riskReward: direction === 'LONG' ? 2.0 : (direction === 'SHORT' ? 1.5 : 1.0),
-        marketStructure: direction === 'NEUTRAL' ? 'RANGING' : 'TRENDING',
+
         volumeProfile: 'AVERAGE',
         successProbability: confidence,
         macroInsights: direction === 'LONG' 
@@ -1413,11 +1411,27 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
       stopLoss,
       takeProfit,
       indicators,
-      environment
+      environment,
+      timeframe: timeframe,
+      patternFormations: [],
+      supportResistance: [currentPrice * 0.95, currentPrice * 0.90, currentPrice * 0.85, currentPrice * 1.05, currentPrice * 1.10, currentPrice * 1.15],
+      recommendedLeverage: direction === 'NEUTRAL' ? 1 : 2,
+      riskReward: direction === 'LONG' ? 2.5 : (direction === 'SHORT' ? 2.0 : 1.0),
+      marketStructure: direction === 'NEUTRAL' ? 'RANGING' : 'TRENDING',
+      volumeProfile: 'AVERAGE',
+      successProbability: Math.round(confidence),
+      macroInsights: direction === 'LONG' 
+        ? ['Bullish technical setup', 'Favorable momentum indicators'] 
+        : (direction === 'SHORT' 
+          ? ['Bearish technical setup', 'Momentum turning negative'] 
+          : ['Neutral market conditions', 'Consolidation phase']),
+      timestamp: Date.now(),
+      macroScore: Math.round(confidence),
+      macroClassification: direction === 'LONG' ? 'bullish' : (direction === 'SHORT' ? 'bearish' : 'neutral')
     };
   } catch (error) {
     console.error(`Error generating signal for ${timeframe}:`, error);
-    return generateSimplifiedSignal(data, timeframe);
+    return generateSimplifiedSignal(data, timeframe, symbol);
   }
 }
 
@@ -1425,7 +1439,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
  * Generate a simplified signal when full technical analysis isn't possible
  * This serves as a fallback when we don't have enough data
  */
-function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
+function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,
