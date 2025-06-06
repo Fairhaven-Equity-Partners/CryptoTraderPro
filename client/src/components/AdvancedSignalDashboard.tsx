@@ -633,7 +633,17 @@ export default function AdvancedSignalDashboard({
     if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
       console.log(`[SignalDashboard] All data ready for ${symbol} - triggering immediate calculation`);
       calculationTriggeredRef.current = true;
-      calculateAllSignals(); // Trigger immediate calculation when all data is ready
+      
+      // Wrap in try-catch to handle any async errors
+      try {
+        calculateAllSignals().catch(error => {
+          console.error('[SignalDashboard] Error in immediate calculation:', error);
+          setIsCalculating(false); // Reset calculation state on error
+        });
+      } catch (error) {
+        console.error('[SignalDashboard] Sync error in immediate calculation:', error);
+        setIsCalculating(false);
+      }
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady]);
   

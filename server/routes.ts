@@ -207,10 +207,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
               return res.json(updatedAsset);
             }
           }
-        } catch (apiError) {
+        } catch (apiError: any) {
           console.error(`Failed to fetch ${symbol} from CoinGecko:`, apiError);
           // If rate limited, use cached data or fallback to storage
-          if (apiError.toString().includes('429')) {
+          if (apiError && String(apiError).includes('429')) {
             console.log(`Rate limited for ${symbol}, using cached data`);
           }
           // Continue with normal flow if API call fails

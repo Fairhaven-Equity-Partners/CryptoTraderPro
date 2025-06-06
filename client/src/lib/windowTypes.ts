@@ -12,11 +12,11 @@ import { ChartData, TimeFrame, SignalDirection, TechnicalIndicators, SignalStabi
 declare global {
   interface Window {
     // Price synchronization utilities
-    latestPriceEvents: Record<string, PriceEvent>;
-    syncGlobalPrice: (symbol: string, price: number, timestamp?: number) => number;
+    latestPriceEvents?: Record<string, PriceEvent>;
+    syncGlobalPrice?: (symbol: string, price: number, timestamp?: number) => number;
     
     // Ultimate system manager status
-    getUltimateSystemStatus: () => {
+    getUltimateSystemStatus?: () => {
       initialized: boolean;
       timerActive: boolean;
       nextFetch: number;
