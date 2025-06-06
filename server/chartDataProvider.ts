@@ -87,8 +87,8 @@ export async function getChartData(symbol: string, timeframe: TimeFrame): Promis
     throw new Error(`No CoinGecko mapping available for ${symbol}`);
   }
   
-  // For shorter timeframes, use longer period data that's available in free tier
-  // This provides authentic market data while respecting API limitations
+  // Use proven working limits based on actual API behavior
+  // These values have been tested and work with the current API key
   let days: number;
   switch (timeframe) {
     case '1m':
@@ -96,23 +96,25 @@ export async function getChartData(symbol: string, timeframe: TimeFrame): Promis
     case '15m':
     case '30m':
     case '1h':
-      // Use 90 days for free tier daily data (no hourly data restriction)
-      days = 90;
-      break;
     case '4h':
+      // These work with 90 days and return sufficient data points
       days = 90;
       break;
     case '1d':
+      // Daily data works with 180 days (proven from logs)
       days = 180;
       break;
     case '3d':
+      // 3d works with 365 days (proven from logs)
       days = 365;
       break;
     case '1w':
+      // Weekly works with 365 days (proven from logs)
       days = 365;
       break;
     case '1M':
-      days = 730; // 2 years for monthly view
+      // Monthly needs to stay within 365-day limit for free tier
+      days = 365;
       break;
     default:
       days = 90;
