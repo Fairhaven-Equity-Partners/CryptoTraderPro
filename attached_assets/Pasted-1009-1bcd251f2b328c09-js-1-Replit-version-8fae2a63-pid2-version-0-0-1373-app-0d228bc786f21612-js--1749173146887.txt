@@ -1,0 +1,1250 @@
+1009-1bcd251f2b328c09.js:1 Replit version 8fae2a63, pid2 version 0.0.1373
+_app-0d228bc786f21612.js:37 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-0d228bc786f21612.js:37 [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-32f8b2d115a7bb7e.js:1
+workspace_iframe.html:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=aOehkHoPevZv' failed: 
+t @ eruda.js:2
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 170s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 160s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 150s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 140s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 130s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 120s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 110s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 100s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 90s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 80s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 70s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 60s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 50s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 40s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 30s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 20s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Next fetch in 10s
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Next fetch in 180s
+ Scheduled price update check (240-second interval) at 7:22:41 PM
+ [CentralizedPriceManager] Fetching prices for 1 symbols
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 101936.89
+ 💰 PRICE UPDATE: BTC/USDT = 101936.89 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [AdvancedSignalDashboard] Price updated via price-update event: 101936.89
+ [useMarketData] Price updated to 101936.89 for BTC/USDT - display only
+ [useMarketData] Price updated to 101936.89 for BTC/USDT - display only
+ 🔄 Real-time calculation triggered for BTC/USDT after 180.007s
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [UnifiedEngine] 1m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 2 patterns for 1m timeframe
+ [AdvancedSignalDashboard] Price updated via price-update event: 101936.89
+ [AdvancedSignalDashboard] Crypto price updated to: 101936.89
+ 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+ Calculation blocked: hasMinimumData=true, isCalculating=false, timeSinceLastCalc=0.009s
+ [AdvancedSignalDashboard] Live price updated to: 101936.89
+ [useMarketData] Price updated to 101936.89 for BTC/USDT - display only
+ [useMarketData] Price updated to 101936.89 for BTC/USDT - display only
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 101936.89
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 101936.89
+ ⚡ Successfully calculated 1m: NEUTRAL
+ [FinalPriceSystem] Price updated to 101936.89 - calculation will follow automatically
+ Trade data: 0 total, 0 active, 0 completed
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [UnifiedEngine] 5m: Market Regime=Market Regime: NORMAL, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 1 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: SHORT
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 119583.60 → 101846.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ [AdvancedSignalDashboard] Price updated via price-update event: 101846
+ [useMarketData] Price updated to 101846 for BTC/USDT - display only
+ [useMarketData] Price updated to 101846 for BTC/USDT - display only
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ [AdvancedSignalDashboard] Live price updated to: 101846
+ [useMarketData] Price updated to 101846 for BTC/USDT - display only
+ [useMarketData] Price updated to 101846 for BTC/USDT - display only
+ Loading chart with 500 data points for BTC/USDT (4h)
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 101846
+ [useMarketData] Price update for BTC/USDT: 101846 - NOT dispatching extra event
+ Trade data: 0 total, 0 active, 0 completed
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 5 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ [CentralizedPriceManager] Updated price for BTC/USDT: $101815.95
+ Trade data: 0 total, 0 active, 0 completed
+ [PriceOverview] Centralized price update for BTC/USDT: $101815.95
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $101815.95
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 6 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 3 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: LONG
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=67%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=SHORT, Confidence=67%
+ Generated 7 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: SHORT
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 8 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: SHORT
+ Trade data: 0 total, 0 active, 0 completed
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Trade data: 0 total, 0 active, 0 completed
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: NEUTRAL
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 8 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 101923.76 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=72%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=LONG, Confidence=72%
+ Generated 6 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: LONG
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(12)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ Recording predictions using live price: 101801.76
+ Trade data: 0 total, 0 active, 0 completed
+ Trade data: 0 total, 0 active, 0 completed
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ 📈 Prediction recorded: BTC/USDT 5m SHORT @ 101801.76
+ 🎯 Stop Loss: 102535.30, Take Profit: 100700.67
+ Recorded prediction: 5m SHORT @ 101801.76
+ Trade data: 1 total, 1 active, 0 completed
+ Trade simulations query status: Object
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 101801.76
+ 🎯 Stop Loss: 102688.19, Take Profit: 100394.90
+ Recorded prediction: 15m SHORT @ 101801.76
+ 📈 Prediction recorded: BTC/USDT 1h LONG @ 101801.76
+ 🎯 Stop Loss: 100700.67, Take Profit: 104369.93
+ Recorded prediction: 1h LONG @ 101801.76
+ 📈 Prediction recorded: BTC/USDT 4h SHORT @ 101801.76
+ 🎯 Stop Loss: 103452.62, Take Profit: 98866.05
+ Recorded prediction: 4h SHORT @ 101801.76
+ 📈 Prediction recorded: BTC/USDT 1d SHORT @ 101801.76
+ 🎯 Stop Loss: 103758.39, Take Profit: 98254.50
+ Recorded prediction: 1d SHORT @ 101801.76
+ 📈 Prediction recorded: BTC/USDT 1M LONG @ 101801.76
+ 🎯 Stop Loss: 98866.05, Take Profit: 108039.19
+Console.js:61 Recorded prediction: 1M LONG @ 101801.76
+Console.js:61 🔄 Signals updated, syncing timer with actual calculation time
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Found 10 valid signals for recommendation for BTC/USDT
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Calculation process complete for BTC/USDT - 10 signals generated
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 170s
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 160s
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Tab change to 15m - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 15m timeframe
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 150s
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 1 total, 1 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade simulations query status: Object
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 140s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 1h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1h timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 130s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 4h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 120s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 1d - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1d timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 4h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 3d - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 3d timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 110s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 1w - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1w timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 200 data points for BTC/USDT (1w)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 1M - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1M timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 60 data points for BTC/USDT (1M)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 100s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 15m - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 15m timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 90s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Tab change to 1h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1h timeframe
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 80s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 70s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 60s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 50s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 40s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 30s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 20s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 10s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation
+Console.js:61 [FinalPriceSystem] Fetching fresh price for BTC/USDT
+Console.js:61 [FinalPriceSystem] Next fetch in 180s
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 [FinalPriceSystem] Successfully fetched price for BTC/USDT: 101777.74
+Console.js:61 💰 PRICE UPDATE: BTC/USDT = 101777.74 💰
+Console.js:61 💰 CALCULATIONS COMING SOON 💰
+Console.js:61 [AdvancedSignalDashboard] Price updated via price-update event: 101777.74
+Console.js:61 [useMarketData] Price updated to 101777.74 for BTC/USDT - display only
+Console.js:61 [useMarketData] Price updated to 101777.74 for BTC/USDT - display only
+Console.js:61 🔄 Real-time calculation triggered for BTC/USDT after 180.029s
+Console.js:61 ⚡ Starting calculation loop for 10 timeframes
+Console.js:61 ⚡ About to calculate 1m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1m)
+Console.js:61 [1m] Using currentAssetPrice: 101815.95 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 1m: {dataLength: 1000, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1m: {supports: Array(3), resistances: Array(3), currentPrice: 101815.95}
+Console.js:61 [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 1 patterns for 1m timeframe
+Console.js:61 [AdvancedSignalDashboard] Price updated via price-update event: 101777.74
+Console.js:61 [AdvancedSignalDashboard] Crypto price updated to: 101777.74
+Console.js:61 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, timeSinceLastCalc=0.012s
+Console.js:61 [AdvancedSignalDashboard] Live price updated to: 101777.74
+Console.js:61 [useMarketData] Price updated to 101777.74 for BTC/USDT - display only
+Console.js:61 [useMarketData] Price updated to 101777.74 for BTC/USDT - display only
+Console.js:61 [FinalPriceSystem] Price update broadcast for BTC/USDT: 101777.74
+Console.js:61 [FinalPriceSystem] Price fetch completed for BTC/USDT: 101777.74
+Console.js:61 ⚡ Successfully calculated 1m: NEUTRAL
+Console.js:61 [FinalPriceSystem] Price updated to 101777.74 - calculation will follow automatically
+Console.js:61 Trade data: 6 total, 6 active, 0 completed
+Console.js:61 ⚡ About to calculate 5m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 5m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (5m)
+Console.js:61 [5m] Using currentAssetPrice: 101815.95 for calculation
+Console.js:61 Support/Resistance calculation for BTC/USDT 5m: {dataLength: 1000, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 5m: {supports: Array(3), resistances: Array(3), currentPrice: 101815.95}
+Console.js:61 [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+Console.js:61 [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+Console.js:61 Generated 2 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 15m: {dataLength: 800, supports: 1, resistances: 3, supportLevels: Array(1), resistanceLevels: Array(3)}
+ FINAL Support/Resistance for BTC/USDT 15m: {supports: Array(1), resistances: Array(3), currentPrice: 101815.95}
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=72%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=72%
+ Generated 5 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 30m: {dataLength: 800, supports: 0, resistances: 3, supportLevels: Array(0), resistanceLevels: Array(3)}
+ FINAL Support/Resistance for BTC/USDT 30m: {supports: Array(3), resistances: Array(3), currentPrice: 101815.95}
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 6 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 1h: {dataLength: 720, supports: 3, resistances: 2, supportLevels: Array(3), resistanceLevels: Array(2)}
+ FINAL Support/Resistance for BTC/USDT 1h: {supports: Array(3), resistances: Array(2), currentPrice: 101815.95}
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 5 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: LONG
+ Trade data: 6 total, 6 active, 0 completed
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 4h: {dataLength: 500, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+ FINAL Support/Resistance for BTC/USDT 4h: {supports: Array(3), resistances: Array(3), currentPrice: 101815.95}
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=67%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=SHORT, Confidence=67%
+ Generated 4 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: SHORT
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 1d: {dataLength: 365, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+ FINAL Support/Resistance for BTC/USDT 1d: {supports: Array(3), resistances: Array(3), currentPrice: 101815.95}
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 3 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: SHORT
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 3d: {dataLength: 150, supports: 0, resistances: 3, supportLevels: Array(0), resistanceLevels: Array(3)}
+ FINAL Support/Resistance for BTC/USDT 3d: {supports: Array(3), resistances: Array(3), currentPrice: 101815.95}
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 6 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: NEUTRAL
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 1w: {dataLength: 200, supports: 2, resistances: 3, supportLevels: Array(2), resistanceLevels: Array(3)}
+ FINAL Support/Resistance for BTC/USDT 1w: {supports: Array(2), resistances: Array(3), currentPrice: 101815.95}
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 4 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: NEUTRAL
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 101815.95 for calculation
+ Support/Resistance calculation for BTC/USDT 1M: {dataLength: 60, supports: 3, resistances: 1, supportLevels: Array(3), resistanceLevels: Array(1)}
+ FINAL Support/Resistance for BTC/USDT 1M: {supports: Array(3), resistances: Array(1), currentPrice: 101815.95}
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=72%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=LONG, Confidence=72%
+ Generated 2 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: LONG
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: (10) ['1m: NEUTRAL', '5m: NEUTRAL', '15m: SHORT', '30m: NEUTRAL', '1h: LONG', '4h: SHORT', '1d: SHORT', '3d: NEUTRAL', '1w: NEUTRAL', '1M: LONG']
+ 🔧 Aligned signals after processing: (10) ['1m: NEUTRAL', '5m: NEUTRAL', '15m: SHORT', '30m: NEUTRAL', '1h: LONG', '4h: SHORT', '1d: SHORT', '3d: NEUTRAL', '1w: NEUTRAL', '1M: LONG']
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: (10) ['1m: NEUTRAL', '5m: NEUTRAL', '15m: SHORT', '30m: NEUTRAL', '1h: LONG', '4h: SHORT', '1d: SHORT', '3d: NEUTRAL', '1w: NEUTRAL', '1M: LONG']
+ 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+ 📊 Sample signal structure: (12) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'indicators', 'successProbability', 'patternFormations', 'macroInsights']
+ 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'SHORT', confidence: 95.75, entryPrice: 101815.95, …}
+ 📊 setSignals call completed successfully
+ Recording predictions using live price: 101810.42
+ Trade data: 6 total, 6 active, 0 completed
+ Trade data: 6 total, 6 active, 0 completed
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 101810.42
+ 🎯 Stop Loss: 102579.57, Take Profit: 100288.71
+ Recorded prediction: 15m SHORT @ 101810.42
+ 📈 Prediction recorded: BTC/USDT 1h LONG @ 101810.42
+ 🎯 Stop Loss: 100594.16, Take Profit: 104259.53
+ Recorded prediction: 1h LONG @ 101810.42
+ 📈 Prediction recorded: BTC/USDT 4h SHORT @ 101810.42
+ 🎯 Stop Loss: 103343.19, Take Profit: 98761.47
+ Recorded prediction: 4h SHORT @ 101810.42
+ 📈 Prediction recorded: BTC/USDT 1d SHORT @ 101810.42
+ 🎯 Stop Loss: 103648.64, Take Profit: 98150.58
+ Recorded prediction: 1d SHORT @ 101810.42
+ 📈 Prediction recorded: BTC/USDT 1M LONG @ 101810.42
+ 🎯 Stop Loss: 98761.47, Take Profit: 107924.91
+ Recorded prediction: 1M LONG @ 101810.42
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ Calculation process complete for BTC/USDT - 10 signals generated
+ Trade data: 6 total, 6 active, 0 completed

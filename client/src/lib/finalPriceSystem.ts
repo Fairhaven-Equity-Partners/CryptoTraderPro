@@ -14,7 +14,7 @@ import { TimeFrame } from './advancedSignals';
 import { PriceEvent } from '../types';
 
 // Configuration
-const DEFAULT_REFRESH_INTERVAL = 180; // Exactly 3 minutes in seconds as requested
+const DEFAULT_REFRESH_INTERVAL = 240; // Exactly 4 minutes in seconds to respect CoinGecko rate limits
 const PREFETCH_OFFSET = 5; // Fetch price 5 seconds before countdown ends
 const CHECK_INTERVAL = 10; // Check every 10 seconds - reduced log frequency
 
@@ -57,11 +57,11 @@ function updateCountdown() {
   
   // Are we at zero?
   if (countdownSeconds <= 0) {
-    // Reset the timer to exactly 3 minutes (180 seconds)
-    countdownSeconds = 180; // Fixed 3-minute interval
+    // Reset the timer to exactly 4 minutes (240 seconds) to match CoinGecko rate limits
+    countdownSeconds = 240; // Fixed 4-minute interval
     
     // At zero, fetch price AND trigger a synchronized calculation
-    console.log(`[FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation`);
+    console.log(`[FinalPriceSystem] 4-minute interval reached - fetching fresh price and triggering calculation`);
     
     fetchLatestPrice('BTC/USDT', true) // Pass true to indicate this is timer-triggered
       .then(price => {

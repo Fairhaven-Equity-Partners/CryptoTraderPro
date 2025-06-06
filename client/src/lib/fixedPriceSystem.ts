@@ -153,7 +153,7 @@ export function startPricePolling(symbol: string): () => void {
   
   // Setup the global timer if it doesn't exist yet
   if (!globalTimer) {
-    console.log(`[PriceSystem] Starting master 3-minute price polling timer`);
+    console.log(`[PriceSystem] Starting master 4-minute price polling timer`);
     
     // Check every minute if we need to fetch prices
     globalTimer = setInterval(() => {
@@ -162,9 +162,9 @@ export function startPricePolling(symbol: string): () => void {
       
       console.log(`[PriceSystem] Timer check: ${secondsSinceLastFetch}s since last fetch`);
       
-      // If 3 minutes (180 seconds) have passed, fetch for all active symbols
-      if (secondsSinceLastFetch >= 180) {
-        console.log(`[PriceSystem] 3-MINUTE MARK REACHED - Fetching fresh prices`);
+      // If 4 minutes (240 seconds) have passed, fetch for all active symbols
+      if (secondsSinceLastFetch >= 240) {
+        console.log(`[PriceSystem] 4-MINUTE MARK REACHED - Fetching fresh prices`);
         
         // Fetch prices for all tracked symbols
         activeSymbols.forEach(trackedSymbol => {

@@ -191,7 +191,7 @@ export function startPricePolling(symbol: string): () => void {
   
   // Setup the global timer if it doesn't exist
   if (!globalPriceTimer) {
-    console.log(`[Price] Setting up master 3-minute price polling timer`);
+    console.log(`[Price] Setting up master 4-minute price polling timer`);
     
     // Check every minute if we need to fetch prices
     globalPriceTimer = setInterval(() => {
@@ -200,9 +200,9 @@ export function startPricePolling(symbol: string): () => void {
       
       console.log(`[Price] Timer check: ${secondsSinceLastFetch}s since last fetch`);
       
-      // If 10 minutes have passed, fetch for all active symbols (increased from 3 minutes)
-      if (secondsSinceLastFetch >= 600) {
-        console.log(`[Price] 10-MINUTE MARK REACHED - Fetching ALL prices`);
+      // If 4 minutes have passed, fetch for all active symbols to match CoinGecko rate limits
+      if (secondsSinceLastFetch >= 240) {
+        console.log(`[Price] 4-MINUTE MARK REACHED - Fetching ALL prices`);
         
         // Fetch prices for all tracked symbols
         for (const trackedSymbol of activeSymbols) {
