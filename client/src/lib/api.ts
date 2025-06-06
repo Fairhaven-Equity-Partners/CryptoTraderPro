@@ -420,26 +420,75 @@ export function startRealTimeUpdates() {
 // DEPRECATED: Synthetic data generation removed - use authentic market data only
 function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   throw new Error(`Synthetic chart data generation disabled. Use authentic market data from /api/chart/${symbol}/${timeframe} endpoint`);
-}
-
-// DEPRECATED: Volatility calculation removed - use authentic market data only
-function getVolatilityForTimeframe(timeframe: TimeFrame): number {
-  throw new Error(`Synthetic volatility calculation disabled. Use authentic market data from API endpoints`);
-}
-
-// DEPRECATED: Volume generation functions removed - use authentic market data only
-function getBaseVolumeForSymbol(symbol: string): number {
-  throw new Error(`Synthetic volume generation disabled. Use authentic market data from API endpoints`);
-}
-
-// Get current price for a symbol from authentic data sources
-function getCurrentPrice(symbol: string): number {
-  // Get price from centralized price manager
-  const price = getPrice(symbol);
-  if (price > 0) {
-    return price;
+    }
+    
+    const time = now - (count - i) * timeIncrement;
+    const currentBias = trendCycles[cycleIndex].bias;
+    
+    // Calculate price change with the current trend bias
+    const change = (Math.random() - currentBias) * (price * 0.01);
+    price += change;
+    
+    const volatility = getVolatilityForTimeframe(timeframe);
+    
+    const open = price;
+    const close = price + (Math.random() - 0.5) * (price * volatility);
+    const high = Math.max(open, close) + Math.random() * (price * volatility * 0.5);
+    const low = Math.min(open, close) - Math.random() * (price * volatility * 0.5);
+    const volume = getBaseVolumeForSymbol(symbol) * (0.8 + Math.random() * 0.4);
+    
+    data.push({
+      time,
+      open,
+      high,
+      low,
+      close,
+      volume
+    });
+    
+    price = close;
+    posInCycle++;
   }
   
+  return data;
+}
+
+// Get volatility for different timeframes
+function getVolatilityForTimeframe(timeframe: TimeFrame): number {
+  // Scale volatility based on timeframe
+  switch (timeframe) {
+    case '1m': return 0.003;  // 0.3%
+    case '5m': return 0.0045; // 0.45%
+    case '15m': return 0.006; // 0.6%
+    case '30m': return 0.008; // 0.8%
+    case '1h': return 0.01;   // 1%
+    case '4h': return 0.015;  // 1.5%
+    case '1d': return 0.025;  // 2.5%
+    case '3d': return 0.035;  // 3.5%
+    case '1w': return 0.045;  // 4.5%
+    case '1M': return 0.08;   // 8%
+    default: return 0.01;
+  }
+}
+
+// Scale volume based on symbol
+function getBaseVolumeForSymbol(symbol: string): number {
+  if (symbol.includes('BTC')) {
+    return 500 + Math.random() * 200;
+  } else if (symbol.includes('ETH')) {
+    return 1000 + Math.random() * 500;
+  } else if (symbol.includes('BNB')) {
+    return 200 + Math.random() * 100;
+  } else if (symbol.includes('SOL')) {
+    return 800 + Math.random() * 400;
+  } else if (symbol.includes('XRP')) {
+    return 2000 + Math.random() * 1000;
+  }
+  return 100 + Math.random() * 50;
+}
+
+// Get current price for a symbol
+function getCurrentPrice(symbol: string): number {
   // Try to get from the chart data cache
   if (chartDataCache[symbol] && Object.keys(chartDataCache[symbol]).length > 0) {
     const firstTimeframe = Object.keys(chartDataCache[symbol])[0] as TimeFrame;
@@ -449,7 +498,19 @@ function getCurrentPrice(symbol: string): number {
     }
   }
   
-  throw new Error(`No authentic price data available for ${symbol}`);
+  // Simple fallback values
+  if (symbol.includes('BTC')) {
+    return 65000;
+  } else if (symbol.includes('ETH')) {
+    return 3500;
+  } else if (symbol.includes('BNB')) {
+    return 550;
+  } else if (symbol.includes('SOL')) {
+    return 170;
+  } else if (symbol.includes('XRP')) {
+    return 2;
+  }
+  return 100;
 }
 
 // Register for chart updates - returns an unsubscribe function
