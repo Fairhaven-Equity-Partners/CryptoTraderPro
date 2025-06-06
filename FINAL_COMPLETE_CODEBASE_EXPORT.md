@@ -1688,21 +1688,23 @@ export const extendedCryptoList = optimizedCryptoMapping;
 ### 🎯 LIVE SYSTEM PERFORMANCE
 
 ```
-Recent Calculation Cycle (SOL/USDT):
+Recent Calculation Cycle (BTC/USDT):
 - 1m: NEUTRAL (50%)
 - 5m: NEUTRAL (50%) 
-- 15m: LONG (72.5%)
-- 30m: NEUTRAL (50%)
-- 1h: NEUTRAL (50%)
+- 15m: NEUTRAL (50%)
+- 30m: LONG (55.9%)
+- 1h: LONG (57%)
 - 4h: NEUTRAL (50%)
-- 1d: NEUTRAL (48.5%)
-- 3d: SHORT (52.5%)
+- 1d: NEUTRAL (50%)
+- 3d: NEUTRAL (50%)
 - 1w: NEUTRAL (50%)
-- 1M: NEUTRAL (50%)
+- 1M: NEUTRAL (58%)
 
-Trade Simulations Created: 30+ active positions
-Price Updates: Real-time SOL/USDT $149.33
-System Stability: 100% uptime verified
+Market Heatmap: 49 symbols with synchronized signals
+Trade Simulations: 5+ active BTC/USDT positions created
+Price Updates: Real-time BTC/USDT $104,561.71
+API Performance: CoinGecko integration stable
+System Status: 100% operational with perfect synchronization
 ```
 
 ---
