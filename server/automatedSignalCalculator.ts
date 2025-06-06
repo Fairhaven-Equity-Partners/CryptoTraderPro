@@ -133,6 +133,12 @@ export class AutomatedSignalCalculator {
             timeframe,
             mapping.category
           );
+          
+          // Log samples of LONG signals for debugging
+          if (signal.direction === 'LONG' && Math.random() < 0.1) {
+            console.log(`[AutomatedSignalCalculator] LONG signal found: ${signal.symbol} ${signal.timeframe} - Change: ${change24h}%, Confidence: ${signal.confidence}%`);
+          }
+          
           allCalculatedSignals[signalIndex++] = signal;
         }
       }
@@ -147,8 +153,15 @@ export class AutomatedSignalCalculator {
       const duration = Date.now() - startTime;
       const signalsPerSecond = Math.round(allCalculatedSignals.length / (duration / 1000));
       
+      // Log signal distribution for analysis
+      const signalCounts = { LONG: 0, SHORT: 0, NEUTRAL: 0 };
+      allCalculatedSignals.forEach(signal => {
+        signalCounts[signal.direction]++;
+      });
+      
       console.log(`[AutomatedSignalCalculator] ✅ Calculated ${allCalculatedSignals.length} signals in ${duration}ms (${signalsPerSecond} signals/sec)`);
       console.log(`[AutomatedSignalCalculator] 📊 Cache updated with ${this.signalCache.size} symbols across ${this.timeframes.length} timeframes`);
+      console.log(`[AutomatedSignalCalculator] 📈 Signal Distribution: LONG=${signalCounts.LONG}, SHORT=${signalCounts.SHORT}, NEUTRAL=${signalCounts.NEUTRAL}`);
 
     } catch (error) {
       console.error('[AutomatedSignalCalculator] ❌ Critical error in signal calculation:', error);
