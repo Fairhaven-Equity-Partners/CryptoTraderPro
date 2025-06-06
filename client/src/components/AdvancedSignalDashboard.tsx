@@ -1561,11 +1561,12 @@ export default function AdvancedSignalDashboard({
           }));
           
         } catch (trackingError) {
-          // Silently handle accuracy tracking errors
+          console.error('[SignalDashboard] Accuracy tracking error:', trackingError);
         }
 
       } catch (error) {
-        // Silently handle signal state update errors
+        console.error('[SignalDashboard] Signal state update error:', error);
+        setIsCalculating(false); // Reset calculation state on error
       }
       
       // Store the signals for this symbol in our persistent ref
@@ -1594,7 +1595,8 @@ export default function AdvancedSignalDashboard({
       
       console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
     } catch (error) {
-      // Silently handle calculation process errors
+      console.error('[SignalDashboard] Calculation process error:', error);
+      setIsCalculating(false); // Reset calculation state on error
     } finally {
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
