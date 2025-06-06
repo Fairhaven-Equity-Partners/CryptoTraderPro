@@ -397,19 +397,15 @@ export default function AdvancedSignalDashboard({
     });
   }, [symbol]);
   
-  // Simple countdown timer that resets when signals are updated
+  // Initialize timer to 4 minutes on component mount
+  const [isTimerInitialized, setIsTimerInitialized] = useState(false);
+  
   useEffect(() => {
-    const timerInterval = setInterval(() => {
-      setTimeUntilNextCalc(prev => {
-        if (prev <= 1) {
-          return 180; // Reset to 3 minutes
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timerInterval);
-  }, []);
+    if (!isTimerInitialized) {
+      setTimeUntilNextCalc(240); // Initialize to 4 minutes
+      setIsTimerInitialized(true);
+    }
+  }, [isTimerInitialized]);
 
   // Synchronized timer system using UltimateManager's 4-minute intervals
   useEffect(() => {
