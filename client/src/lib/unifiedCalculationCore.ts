@@ -856,100 +856,13 @@ class UnifiedCalculationCore {
   }
 
   /**
-   * Generate basic signal for timeframes with limited data
-   */
-  private generateBasicSignal(symbol: string, timeframe: TimeFrame, currentPrice: number, data: OHLCData[]): UnifiedSignal {
-    // Simple analysis with available data
-    const recentPrices = data.slice(-5).map(d => d.close);
-    const priceChange = recentPrices[recentPrices.length - 1] - recentPrices[0];
-    const percentChange = (priceChange / recentPrices[0]) * 100;
-    
-    // Basic direction determination
-    let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
-    let confidence = 65; // Base confidence for limited data
-    
-    if (percentChange > 2) {
-      direction = 'LONG';
-      confidence = Math.min(75, 65 + Math.abs(percentChange) * 2);
-    } else if (percentChange < -2) {
-      direction = 'SHORT';
-      confidence = Math.min(75, 65 + Math.abs(percentChange) * 2);
-    }
-    
-    // Calculate basic support/resistance
-    const highs = data.map(d => d.high);
-    const lows = data.map(d => d.low);
-    const maxHigh = Math.max(...highs);
-    const minLow = Math.min(...lows);
-    
-    // Basic stop loss and take profit
-    const atrEstimate = (maxHigh - minLow) / data.length;
-    const riskMultiplier = timeframe === '1M' ? 0.06 : timeframe === '1w' ? 0.04 : 0.03;
-    
-    const stopLoss = direction === 'LONG' 
-      ? currentPrice - (currentPrice * riskMultiplier)
-      : currentPrice + (currentPrice * riskMultiplier);
-    
-    const takeProfit = direction === 'LONG'
-      ? currentPrice + (currentPrice * riskMultiplier * 2)
-      : currentPrice - (currentPrice * riskMultiplier * 2);
-    
-    return {
-      symbol,
-      timeframe,
-      direction,
-      confidence,
-      entryPrice: currentPrice,
-      stopLoss,
-      takeProfit,
-      timestamp: Date.now(),
-      indicators: {
-        rsi: { value: 50, signal: 'NEUTRAL', strength: 'WEAK' },
-        macd: { value: 0, signal: 'NEUTRAL', histogram: 0, strength: 'WEAK' },
-        ema: { short: currentPrice, medium: currentPrice, long: currentPrice },
-        stochastic: { k: 50, d: 50 },
-        bb: { upper: currentPrice * 1.02, lower: currentPrice * 0.98, middle: currentPrice, percentB: 50, width: 0.04 },
-        marketStructure: { fractalStructure: 'CONSOLIDATION', supplyZones: [], demandZones: [], orderBlocks: [] },
-        vwap: { daily: currentPrice, innerBands: { upper: currentPrice * 1.01, lower: currentPrice * 0.99 }, outerBands: { upper: currentPrice * 1.02, lower: currentPrice * 0.98 }, deviation: 0.01 },
-        fibonacciLevels: { levels: [], confluence: 0, psychologicalLevels: [] },
-        candlestickPatterns: [],
-        adx: { value: 25, pdi: 25, ndi: 25 },
-        atr: { value: atrEstimate },
-        supports: [minLow],
-        resistances: [maxHigh],
-        volatility: atrEstimate / currentPrice,
-        marketRegime: 'NORMAL',
-        confidenceFactors: {
-          trendAlignment: false,
-          momentumConfluence: false,
-          volatilityLevel: 'NORMAL',
-          structureConfirmation: false,
-          vwapAlignment: false,
-          fibonacciConfluence: false,
-          candlestickConfirmation: false
-        }
-      },
-      successProbability: confidence * 1.2,
-      macroInsights: [`Limited data analysis for ${timeframe}`, `Price change: ${percentChange.toFixed(2)}%`]
-    };
-  }
-
-  /**
    * Generate unified signal with all indicators
    */
   public generateSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): UnifiedSignal | null {
     const cacheKey = `${symbol}_${timeframe}`;
     const data = this.dataCache.get(cacheKey);
     
-    // Adjusted minimum data requirements for ALL timeframes to ensure calculations work
-    const minRequiredPoints = timeframe === '1M' ? 10 : timeframe === '1w' ? 15 : timeframe === '3d' ? 20 : 30;
-    if (!data || data.length < minRequiredPoints) {
-      // For higher timeframes with limited data, create a basic signal using available data
-      if (data && data.length >= 5) {
-        return this.generateBasicSignal(symbol, timeframe, currentPrice, data);
-      }
-      return null;
-    }
+    if (!data || data.length < 50) return null;
     
     // Calculate all indicators
     const rsi = this.calculateRSI(data);

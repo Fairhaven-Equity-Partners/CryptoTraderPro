@@ -941,12 +941,15 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
   macroClassification: string,
   macroInsights: string[]
 } {
-  // Allow all timeframes to use the same calculation logic
-  // Weekly and monthly timeframes will use the standard indicators with adjusted thresholds
+  // Prevent errors for weekly and monthly timeframes by using simplified signal
+  if (['1w', '1M'].includes(timeframe)) {
+    return generateSimplifiedSignal(data, timeframe);
+  }
   
   try {
-    // Make sure we have enough data - adjust requirements for longer timeframes
-    const minRequiredPoints = timeframe === '1M' ? 12 : timeframe === '1w' ? 20 : 50;
+    // Make sure we have enough data
+    // Monthly timeframe requires fewer data points than other timeframes
+    const minRequiredPoints = timeframe === '1M' ? 30 : 50;
     if (!data || data.length < minRequiredPoints) {
       console.log(`Not enough data points for ${timeframe}, using simplified analysis`);
       
@@ -1416,19 +1419,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       stopLoss,
       takeProfit,
       indicators,
-      environment,
-      timeframe,
-      patternFormations: [],
-      supportResistance: [],
-      recommendedLeverage: direction === 'NEUTRAL' ? 1 : (timeframe === '1M' ? 2 : timeframe === '1w' ? 3 : 5),
-      optimalRiskReward: Math.abs((takeProfit - currentPrice) / (stopLoss - currentPrice)),
-      predictedMovement: {
-        percentChange: direction === 'LONG' ? 5 : direction === 'SHORT' ? -5 : 0,
-        timeEstimate: timeframe === '1M' ? '2-4 weeks' : timeframe === '1w' ? '1-2 weeks' : '2-5 days'
-      },
-      macroScore: Math.round(confidence * 0.8),
-      macroClassification: direction === 'LONG' ? 'Bullish' : direction === 'SHORT' ? 'Bearish' : 'Neutral',
-      macroInsights: [`${timeframe} timeframe analysis`, `Current trend: ${direction}`, `Market confidence: ${Math.round(confidence)}%`]
+      environment
     };
   } catch (error) {
     console.error(`Error generating signal for ${timeframe}:`, error);
@@ -1447,19 +1438,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
   stopLoss: number,
   takeProfit: number,
   indicators: any,
-  environment: any,
-  timeframe: TimeFrame,
-  patternFormations: any[],
-  supportResistance: any[],
-  recommendedLeverage: number,
-  optimalRiskReward: number,
-  predictedMovement: {
-    percentChange: number,
-    timeEstimate: string
-  },
-  macroScore: number,
-  macroClassification: string,
-  macroInsights: string[]
+  environment: any
 } {
   // Default to neutral with moderate confidence
   let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
@@ -1793,19 +1772,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame): {
       trend: 'NEUTRAL',
       volatility: 'MODERATE',
       momentum: 'NEUTRAL'
-    },
-    timeframe: timeframe,
-    patternFormations: [],
-    supportResistance: [],
-    recommendedLeverage: 1,
-    optimalRiskReward: 1.05,
-    predictedMovement: {
-      percentChange: 0,
-      timeEstimate: '1-2 days'
-    },
-    macroScore: 50,
-    macroClassification: 'Neutral',
-    macroInsights: ['No trend detected', 'Market is consolidating', 'Waiting for breakout']
+    }
   };
 }
 

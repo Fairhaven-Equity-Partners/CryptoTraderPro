@@ -353,9 +353,7 @@ export class EnhancedCalculationEngine {
   // Enhanced signal generation with market regime awareness
   generateSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): AdvancedSignal {
     const data = this.dataStore.get(symbol)?.get(timeframe);
-    // Adjust minimum data requirements for different timeframes
-    const minRequiredPoints = timeframe === '1M' ? 12 : timeframe === '1w' ? 20 : 50;
-    if (!data || data.length < minRequiredPoints) {
+    if (!data || data.length < 50) {
       return this.createNeutralSignal(symbol, timeframe, currentPrice);
     }
 
