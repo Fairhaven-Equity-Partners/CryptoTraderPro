@@ -134,15 +134,20 @@ async function performScheduledPriceFetch(): Promise<void> {
     const response = await fetch('/api/crypto/BTC/USDT');
     if (response.ok) {
       const data = await response.json();
-      console.log(`[UltimateManager] Price synchronized: BTC/USDT = $${data.currentPrice}`);
-      
-      // Update global price if function exists
-      if (window.syncGlobalPrice) {
-        window.syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
+      if (data && typeof data.currentPrice === 'number') {
+        console.log(`[UltimateManager] Price synchronized: BTC/USDT = $${data.currentPrice}`);
+        
+        // Update global price if function exists
+        if (window.syncGlobalPrice) {
+          window.syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
+        }
       }
+    } else {
+      console.warn(`[UltimateManager] Price fetch response not ok: ${response.status}`);
     }
   } catch (error) {
-    console.error('[UltimateManager] Price fetch error:', error);
+    // Silently handle fetch errors to prevent console spam
+    console.warn('[UltimateManager] Price fetch temporarily unavailable');
   }
 }
 
