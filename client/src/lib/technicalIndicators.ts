@@ -1469,7 +1469,12 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
   macroInsights: string[],
   timestamp: number,
   macroScore: number,
-  macroClassification: string
+  macroClassification: string,
+  optimalRiskReward: number,
+  predictedMovement: {
+    percentChange: number,
+    timeEstimate: string
+  }
 } {
   // Default to neutral with moderate confidence
   let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
@@ -1762,7 +1767,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
         },
         timeframe: timeframe,
         patternFormations: [],
-        supportResistance: supportResistanceLevels,
+        supportResistance: supportResistanceLevels.map(level => level.price),
         recommendedLeverage: recommendedLeverage,
         optimalRiskReward: optimalRiskReward,
         predictedMovement: {
@@ -1771,7 +1776,10 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
         },
         macroScore: macroScore,
         macroClassification: macroClassification,
-        macroInsights: macroInsights
+        macroInsights: macroInsights,
+        marketStructure: 'CONSOLIDATION',
+        successProbability: confidence,
+        timestamp: Date.now()
       };
     }
   } catch (err) {
@@ -1803,7 +1811,22 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
       trend: 'NEUTRAL',
       volatility: 'MODERATE',
       momentum: 'NEUTRAL'
-    }
+    },
+    timeframe: timeframe,
+    patternFormations: [],
+    supportResistance: [currentPrice * 0.95, currentPrice * 0.90, currentPrice * 0.85, currentPrice * 1.05, currentPrice * 1.10, currentPrice * 1.15],
+    recommendedLeverage: 1,
+    macroInsights: ['Default signal conditions', 'No clear market direction'],
+    optimalRiskReward: 1.5,
+    predictedMovement: {
+      percentChange: 0.0,
+      timeEstimate: timeframe
+    },
+    macroScore: 50,
+    macroClassification: 'NEUTRAL',
+    marketStructure: 'CONSOLIDATION',
+    successProbability: 50,
+    timestamp: Date.now()
   };
 }
 
