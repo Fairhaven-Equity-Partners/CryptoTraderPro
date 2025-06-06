@@ -11,6 +11,7 @@ import { z } from "zod";
 import { extendedCryptoList } from "./cryptoData";
 import { WebSocketServer } from 'ws';
 import { automatedSignalCalculator } from "./automatedSignalCalculator";
+import { AdvancedAnalyticsEngine } from "./advancedAnalytics";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -668,15 +669,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Accuracy metrics routes
+  // Enhanced accuracy metrics routes with professional analytics
   app.get('/api/accuracy/:symbol', async (req: Request, res: Response) => {
     try {
-      const { symbol } = req.params;
+      const symbol = decodeURIComponent(req.params.symbol);
       const { timeframe } = req.query;
-      const metrics = await storage.getAccuracyMetrics(symbol, timeframe as string);
-      res.json(metrics);
+      
+      // Get trade simulations for analysis
+      const simulations = await storage.getTradeSimulations(symbol);
+      
+      // Calculate advanced metrics using professional analytics engine
+      const advancedMetrics = AdvancedAnalyticsEngine.calculateAdvancedMetrics(simulations);
+      
+      // Generate performance report
+      const performanceReport = AdvancedAnalyticsEngine.generatePerformanceReport(advancedMetrics);
+      
+      // Legacy compatibility calculations
+      const completedTrades = simulations.filter(sim => !sim.isActive && sim.profitLossPercent !== null);
+      const successfulTrades = completedTrades.filter(sim => (sim.profitLossPercent || 0) > 0);
+      const basicAccuracy = completedTrades.length > 0 ? 
+        (successfulTrades.length / completedTrades.length) * 100 : 0;
+
+      res.json({
+        // Legacy format for backward compatibility
+        symbol,
+        accuracy: Math.round(basicAccuracy),
+        totalTrades: completedTrades.length,
+        successfulTrades: successfulTrades.length,
+        activeTrades: simulations.filter(sim => sim.isActive).length,
+        
+        // Enhanced professional analytics
+        advanced: advancedMetrics,
+        performanceReport,
+        
+        // Quick access to key metrics
+        winRate: advancedMetrics.winRate,
+        sharpeRatio: advancedMetrics.sharpeRatio,
+        maxDrawdown: advancedMetrics.maxDrawdownPercent,
+        profitFactor: advancedMetrics.profitFactor,
+        avgRiskReward: advancedMetrics.avgRiskReward,
+        consistencyScore: advancedMetrics.consistencyScore,
+        volatilityAdjustedReturn: advancedMetrics.volatilityAdjustedReturn
+      });
     } catch (error: any) {
-      console.error('Error fetching accuracy metrics:', error);
+      console.error('Error calculating enhanced accuracy metrics:', error);
       res.status(500).json({ error: error.message });
     }
   });
