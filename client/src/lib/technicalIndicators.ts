@@ -1182,7 +1182,6 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         patternFormations: [],
         supportResistance: [calculatedPrice * 0.95, calculatedPrice * 0.90, calculatedPrice * 0.85, calculatedPrice * 1.05, calculatedPrice * 1.10, calculatedPrice * 1.15],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : 2,
-        successProbability: confidence,
         macroInsights: direction === 'LONG' 
           ? ['Bullish trend in monthly timeframe', 'Favorable long-term conditions'] 
           : (direction === 'SHORT' 
@@ -1280,7 +1279,6 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         patternFormations: [],
         supportResistance: [calculatedPrice * 0.97, calculatedPrice * 0.94, calculatedPrice * 0.90, calculatedPrice * 1.03, calculatedPrice * 1.07, calculatedPrice * 1.12],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : (direction === 'LONG' ? 3 : 2),
-        successProbability: confidence,
         macroInsights: direction === 'LONG' 
           ? ['Positive weekly trend', 'Favorable medium-term outlook'] 
           : (direction === 'SHORT' 
@@ -1412,16 +1410,11 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
       patternFormations: [],
       supportResistance: [currentPrice * 0.95, currentPrice * 0.90, currentPrice * 0.85, currentPrice * 1.05, currentPrice * 1.10, currentPrice * 1.15],
       recommendedLeverage: direction === 'NEUTRAL' ? 1 : 2,
-      riskReward: direction === 'LONG' ? 2.5 : (direction === 'SHORT' ? 2.0 : 1.0),
-      marketStructure: direction === 'NEUTRAL' ? 'RANGING' : 'TRENDING',
-      volumeProfile: 'AVERAGE',
-      successProbability: Math.round(confidence),
       macroInsights: direction === 'LONG' 
         ? ['Bullish technical setup', 'Favorable momentum indicators'] 
         : (direction === 'SHORT' 
           ? ['Bearish technical setup', 'Momentum turning negative'] 
           : ['Neutral market conditions', 'Consolidation phase']),
-      timestamp: Date.now(),
       macroScore: Math.round(confidence),
       macroClassification: direction === 'LONG' ? 'bullish' : (direction === 'SHORT' ? 'bearish' : 'neutral')
     };
