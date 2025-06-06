@@ -69,100 +69,36 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch all 50 cryptocurrency pairs with authentic CoinGecko data
+  // Fetch all 50 cryptocurrency pairs with authentic calculated signals
   const { data: cryptoAssets, isLoading } = useQuery({
-    queryKey: ['/api/crypto/all-pairs'],
+    queryKey: ['/api/crypto/all-pairs', selectedTimeframe],
+    queryFn: () => fetch(`/api/crypto/all-pairs?timeframe=${selectedTimeframe}`).then(res => res.json()),
     refetchInterval: 240000, // 4 minutes synchronized with auto-calculation
     staleTime: 30000 // 30 seconds
   });
 
-  // Process authentic CoinGecko data for all 50 cryptocurrency pairs
+  // Process authentic market signals from calculation system
   const cryptoSignals = useMemo(() => {
     if (!cryptoAssets || !Array.isArray(cryptoAssets)) return [];
     
-    // Use authentic data from the new API endpoint
+    // Use authentic calculated signals from the market analysis system
     return cryptoAssets
       .filter((asset: any) => asset.currentPrice > 0) // Only include assets with valid prices
       .map((asset: any) => {
         const price = asset.currentPrice;
         const change24h = asset.change24h || 0;
         
-        // Dynamic timeframe-specific signal generation
-        let direction: 'LONG' | 'SHORT' | 'NEUTRAL';
-        let confidence: number;
-        
-        // Market analysis with timeframe-specific variations
-        const priceVolatility = Math.abs(change24h);
-        const timeframeIndex = ALL_TIMEFRAMES.indexOf(selectedTimeframe);
-        const symbolHash = asset.symbol.split('').reduce((a: number, b: string) => {
-          a = ((a << 5) - a) + b.charCodeAt(0);
-          return a & a;
-        }, 0);
-        
-        // Generate different signals for each timeframe using symbol hash
-        const timeframeSeed = (symbolHash + timeframeIndex * 1000) % 100;
-        const volatilitySeed = Math.floor(priceVolatility * 10) % 30;
-        const combinedSeed = (timeframeSeed + volatilitySeed) % 100;
-        
-        // Timeframe-specific signal distribution
-        if (selectedTimeframe === '1M' || selectedTimeframe === '1w') {
-          // Longer timeframes: more conservative, higher confidence
-          if (combinedSeed < 35) {
-            direction = 'LONG';
-            confidence = 75 + (combinedSeed % 20);
-          } else if (combinedSeed < 65) {
-            direction = 'SHORT';  
-            confidence = 75 + (combinedSeed % 20);
-          } else {
-            direction = 'NEUTRAL';
-            confidence = 50;
-          }
-        } else if (selectedTimeframe === '3d' || selectedTimeframe === '1d') {
-          // Medium timeframes: balanced distribution
-          if (combinedSeed < 30) {
-            direction = 'LONG';
-            confidence = 70 + (combinedSeed % 25);
-          } else if (combinedSeed < 60) {
-            direction = 'SHORT';
-            confidence = 70 + (combinedSeed % 25);
-          } else {
-            direction = 'NEUTRAL';
-            confidence = 50;
-          }
-        } else {
-          // Shorter timeframes: more active, varied signals
-          if (combinedSeed < 40) {
-            direction = 'LONG';
-            confidence = 60 + (combinedSeed % 30);
-          } else if (combinedSeed < 75) {
-            direction = 'SHORT';
-            confidence = 60 + (combinedSeed % 30);
-          } else {
-            direction = 'NEUTRAL';
-            confidence = 50;
-          }
-        }
-        
-        // Apply market momentum influence
-        if (change24h > 3) {
-          confidence = Math.min(95, confidence + 10);
-          if (direction === 'SHORT') direction = 'LONG';
-        } else if (change24h < -3) {
-          confidence = Math.min(95, confidence + 10);
-          if (direction === 'LONG') direction = 'SHORT';
-        }
-        
-        // Market cap bonus for major cryptocurrencies
-        if (asset.marketCap > 10000000000) {
-          confidence = Math.min(95, confidence + 3);
-        }
+        // Extract authentic signal data from the calculation system
+        const signalData = asset.signals?.[selectedTimeframe] || { direction: 'NEUTRAL', confidence: 50 };
+        const direction = signalData.direction as 'LONG' | 'SHORT' | 'NEUTRAL';
+        const confidence = Math.round(signalData.confidence || 50);
         
         return {
           symbol: asset.symbol,
           name: asset.name,
           marketCap: asset.marketCap || 0,
           direction,
-          confidence: Math.round(confidence),
+          confidence,
           price,
           change24h
         };

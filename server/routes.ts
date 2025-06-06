@@ -63,13 +63,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all 50 cryptocurrency pairs with authentic CoinGecko data
+  // Get all 50 cryptocurrency pairs with authentic market signals
   app.get('/api/crypto/all-pairs', async (req: Request, res: Response) => {
     try {
-      // Import the symbol mappings for all 50 cryptocurrencies
       const { TOP_50_SYMBOL_MAPPINGS } = await import('./optimizedSymbolMapping');
+      const requestedTimeframe = req.query.timeframe as string || '4h';
       
-      // Fetch authentic price data from CoinGecko for all symbols
+      // Fetch authentic price data from CoinGecko
       const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map(m => m.coinGeckoId).join(',');
       const coinGeckoResponse = await fetch(
         `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoIds}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`,
@@ -86,32 +86,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const coinGeckoData = await coinGeckoResponse.json();
       
-      // Convert to format expected by market heatmap with authentic data
-      const marketData = TOP_50_SYMBOL_MAPPINGS.map(mapping => {
+      // Get authentic calculated signals for each cryptocurrency
+      const marketDataPromises = TOP_50_SYMBOL_MAPPINGS.map(async (mapping) => {
         const priceData = coinGeckoData[mapping.coinGeckoId];
+        const currentPrice = priceData?.usd || 0;
+        const change24h = priceData?.usd_24h_change || 0;
+        
+        // Get actual calculated signal for this symbol and timeframe
+        let signalData = { direction: 'NEUTRAL', confidence: 50 };
+        
+        try {
+          const signalResponse = await fetch(`http://localhost:${process.env.PORT || 5000}/api/signals/${encodeURIComponent(mapping.symbol)}?timeframe=${requestedTimeframe}`);
+          if (signalResponse.ok) {
+            const signals = await signalResponse.json();
+            const timeframeSignal = signals.find((s: any) => s.timeframe === requestedTimeframe);
+            if (timeframeSignal) {
+              signalData = {
+                direction: timeframeSignal.direction,
+                confidence: timeframeSignal.confidence || 50
+              };
+            }
+          }
+        } catch (signalError) {
+          console.warn(`Could not fetch signal for ${mapping.symbol}:`, signalError);
+        }
+        
         return {
           id: mapping.symbol.toLowerCase().replace('/', ''),
           symbol: mapping.symbol,
           name: mapping.name,
-          currentPrice: priceData?.usd || 0,
-          change24h: priceData?.usd_24h_change || 0,
+          currentPrice,
+          change24h,
           marketCap: priceData?.usd_market_cap || 0,
           lastUpdate: Date.now(),
           signals: {
-            '4h': { 
-              direction: 'NEUTRAL',
-              confidence: 50
-            }
+            [requestedTimeframe]: signalData
           }
         };
       });
 
-      console.log(`Fetched authentic data for ${marketData.length} cryptocurrency pairs`);
+      const marketData = await Promise.all(marketDataPromises);
+      console.log(`Fetched authentic signals for ${marketData.length} cryptocurrency pairs`);
       res.json(marketData);
       
     } catch (error) {
-      console.error('Error fetching authentic market data:', error);
-      res.status(500).json({ error: 'Failed to fetch authentic market data' });
+      console.error('Error fetching authentic market signals:', error);
+      res.status(500).json({ error: 'Failed to fetch authentic market signals' });
     }
   });
   
