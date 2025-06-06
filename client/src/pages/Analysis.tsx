@@ -6,7 +6,7 @@ import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import PerformanceDashboard from '../components/PerformanceDashboard';
-import { CompactPerformanceDashboard } from '../components/CompactPerformanceDashboard';
+import CompactPerformanceDashboard from '../components/CompactPerformanceDashboard';
 import { EnhancedTechnicalAnalysis } from '../components/EnhancedTechnicalAnalysis';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
