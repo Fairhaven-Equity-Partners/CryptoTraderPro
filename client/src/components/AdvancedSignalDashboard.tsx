@@ -1289,10 +1289,19 @@ export default function AdvancedSignalDashboard({
           // Start calculation with realistic logging
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
-          // Debug current price being passed
-          console.log(`[${timeframe}] Using currentAssetPrice: ${currentAssetPrice} for calculation`);
+          // Get real-time price for calculation accuracy
+          const livePrice = currentAssetPrice && currentAssetPrice > 0 ? currentAssetPrice : 
+                           (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);
           
-          // Generate signal using unified calculation core (consolidates 78+ files into optimized system)
+          console.log(`[${timeframe}] Using live price: ${livePrice} for calculation`);
+          
+          // Ensure we have valid price data before proceeding
+          if (!livePrice || livePrice <= 0) {
+            console.log(`[${timeframe}] No valid price data available, skipping calculation`);
+            return null;
+          }
+          
+          // Generate signal using unified calculation core with live price data
           console.log(`[${timeframe}] Preparing chart data with ${chartData[timeframe].length} candles`);
           const chartDataWithTimestamp = chartData[timeframe].map(d => ({
             ...d,
@@ -1302,16 +1311,26 @@ export default function AdvancedSignalDashboard({
           console.log(`[${timeframe}] Updating market data in unified core`);
           unifiedCalculationCore.updateMarketData(symbol, timeframe, chartDataWithTimestamp);
           
-          console.log(`[${timeframe}] Generating signal with price ${currentAssetPrice}`);
-          let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentAssetPrice);
+          console.log(`[${timeframe}] Generating signal with live price ${livePrice}`);
+          let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, livePrice);
           
           console.log(`[${timeframe}] Unified signal result:`, unifiedSignal ? `${unifiedSignal.direction} (${unifiedSignal.confidence}%)` : 'null');
           
           // Convert unified signal to AdvancedSignal format for UI compatibility
           let signal: AdvancedSignal | null = null;
           if (unifiedSignal) {
+            // Override entry price with live market data for accurate calculations
+            const actualEntryPrice = livePrice;
+            const adjustedStopLoss = unifiedSignal.stopLoss > 0 ? unifiedSignal.stopLoss : 
+                                   (unifiedSignal.direction === 'LONG' ? actualEntryPrice * 0.95 : actualEntryPrice * 1.05);
+            const adjustedTakeProfit = unifiedSignal.takeProfit > 0 ? unifiedSignal.takeProfit :
+                                     (unifiedSignal.direction === 'LONG' ? actualEntryPrice * 1.08 : actualEntryPrice * 0.92);
+
             signal = {
               ...unifiedSignal,
+              entryPrice: actualEntryPrice,
+              stopLoss: adjustedStopLoss,
+              takeProfit: adjustedTakeProfit,
               indicators: {
                 trend: [
                   { id: 'ema_short', name: 'EMA Short', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.short > unifiedSignal.indicators.ema.medium ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength, value: unifiedSignal.indicators.ema.short },
@@ -1331,7 +1350,7 @@ export default function AdvancedSignalDashboard({
               supportResistance: {
                 supports: unifiedSignal.indicators.supports,
                 resistances: unifiedSignal.indicators.resistances,
-                pivotPoints: [unifiedSignal.entryPrice]
+                pivotPoints: [actualEntryPrice]
               },
               environment: { 
                 trend: unifiedSignal.indicators.marketRegime === 'TRENDING_UP' ? 'BULLISH' : unifiedSignal.indicators.marketRegime === 'TRENDING_DOWN' ? 'BEARISH' : 'NEUTRAL', 
@@ -1345,14 +1364,14 @@ export default function AdvancedSignalDashboard({
                 aggressive: 3,
                 recommendation: 'conservative'
               },
-              riskReward: Math.abs(unifiedSignal.takeProfit - unifiedSignal.entryPrice) / Math.abs(unifiedSignal.entryPrice - unifiedSignal.stopLoss),
+              riskReward: Math.abs(adjustedTakeProfit - actualEntryPrice) / Math.abs(actualEntryPrice - adjustedStopLoss),
               marketStructure: { 
                 trend: unifiedSignal.indicators.marketRegime === 'RANGING' ? 'SIDEWAYS' : 'TRENDING', 
                 phase: 'ACTIVE', 
                 strength: unifiedSignal.confidence 
               },
               volumeProfile: { 
-                volumeWeightedPrice: unifiedSignal.entryPrice, 
+                volumeWeightedPrice: actualEntryPrice, 
                 highVolumeNodes: [], 
                 lowVolumeNodes: [] 
               },
