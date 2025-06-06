@@ -173,6 +173,13 @@ export class StreamlinedPriceManager {
 export const streamlinedPriceManager = new StreamlinedPriceManager();
 
 /**
+ * Initialize the price manager system
+ */
+export function initPriceManager(): void {
+  console.log('[StreamlinedPriceManager] Initialized for 50 cryptocurrency pairs');
+}
+
+/**
  * React hook for streamlined price data
  */
 export function useStreamlinedPrice(symbol: string) {

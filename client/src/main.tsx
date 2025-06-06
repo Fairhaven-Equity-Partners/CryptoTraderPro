@@ -22,8 +22,8 @@ import('./lib/syncedPriceCalculation').then(({ initSyncedCalculation }) => {
   initSyncedCalculation();
 });
 
-// Initialize price system with 1-minute refresh interval for more frequent updates
-initPriceSystem(60);
+// Initialize price system with 4-minute refresh interval to respect CoinGecko rate limits
+initPriceSystem(240);
 
 // Initialize default price events container
 window.latestPriceEvents = window.latestPriceEvents || {};
