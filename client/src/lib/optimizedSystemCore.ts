@@ -50,7 +50,7 @@ export async function initializeOptimizedSystem(): Promise<void> {
       window.latestPriceEvents = window.latestPriceEvents || {};
       window.syncGlobalPrice = (symbol: string, price: number, timestamp?: number) => {
         const now = timestamp || Date.now();
-        window.latestPriceEvents[symbol] = { price, timestamp: now };
+        window.latestPriceEvents![symbol] = { price, timestamp: now };
         return price;
       };
     }

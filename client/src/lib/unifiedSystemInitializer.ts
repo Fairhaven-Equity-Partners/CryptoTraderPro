@@ -84,7 +84,7 @@ async function performInitialization(): Promise<void> {
       window.latestPriceEvents = window.latestPriceEvents || {};
       window.syncGlobalPrice = (symbol: string, price: number, timestamp?: number) => {
         const now = timestamp || Date.now();
-        window.latestPriceEvents[symbol] = { price, timestamp: now };
+        window.latestPriceEvents![symbol] = { price, timestamp: now };
         // Reduced logging frequency to prevent spam
         if (Math.random() < 0.1) { // Only log 10% of price updates
           console.log(`[PriceSync] ${symbol}: $${price}`);
