@@ -242,14 +242,14 @@ export class OptimizedSignalEngine {
 
     // Adjust based on nearby support/resistance
     if (supports.length > 0) {
-      const nearestSupport = supports.find(s => s < currentPrice && currentPrice - s < riskAmount * 2);
+      const nearestSupport = supports.find((s: number) => s < currentPrice && currentPrice - s < riskAmount * 2);
       if (nearestSupport) {
         stopLoss = Math.max(stopLoss, nearestSupport * 0.995); // 0.5% below support
       }
     }
 
     if (resistances.length > 0) {
-      const nearestResistance = resistances.find(r => r > currentPrice && r - currentPrice < riskAmount * 3);
+      const nearestResistance = resistances.find((r: number) => r > currentPrice && r - currentPrice < riskAmount * 3);
       if (nearestResistance) {
         takeProfit = Math.min(takeProfit, nearestResistance * 0.995); // 0.5% below resistance
       }

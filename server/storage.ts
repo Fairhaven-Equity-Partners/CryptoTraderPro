@@ -205,7 +205,10 @@ export class MemStorage implements IStorage {
       const cryptoAsset: CryptoAsset = {
         id: this.cryptoAssets.size + 1,
         ...assetData,
-
+        lastPrice: assetData.lastPrice ?? null,
+        change24h: assetData.change24h ?? null,
+        volume24h: assetData.volume24h ?? null,
+        marketCap: assetData.marketCap ?? null,
         updatedAt: new Date()
       };
       this.cryptoAssets.set(assetData.symbol, cryptoAsset);

@@ -25,6 +25,7 @@ class CentralizedPriceManager {
   private fetchInterval: NodeJS.Timeout | null = null;
   private lastFetchTime: number = 0;
   private readonly FETCH_INTERVAL_MS = 4 * 60 * 1000; // 4 minutes
+  private readonly MIN_CACHE_TIME = 30 * 1000; // 30 seconds minimum between fetches
 
   constructor() {
     console.log('[CentralizedPriceManager] Initializing with 4-minute intervals');
@@ -84,14 +85,20 @@ class CentralizedPriceManager {
    */
   getCurrentPrice(symbol: string): number | null {
     const data = this.priceData.get(symbol);
-    if (data && data.price > 0) {
+    const now = Date.now();
+    
+    // Return cached price if it's fresh (within cache time)
+    if (data && data.price > 0 && (now - data.timestamp) < this.MIN_CACHE_TIME) {
       return data.price;
     }
     
-    // If no cached price, fetch immediately to prevent 2-cycle delay
-    console.log(`[CentralizedPriceManager] No cached price for ${symbol}, fetching immediately`);
-    this.fetchPriceForSymbol(symbol);
-    return null;
+    // Only fetch if cache is stale or missing
+    if (!data || (now - data.timestamp) >= this.MIN_CACHE_TIME) {
+      console.log(`[CentralizedPriceManager] No cached price for ${symbol}, fetching immediately`);
+      this.fetchPriceForSymbol(symbol);
+    }
+    
+    return data?.price || null;
   }
 
   /**
@@ -162,6 +169,14 @@ class CentralizedPriceManager {
    * Fetch price for a specific symbol - immediate retrieval for feedback loop
    */
   private async fetchPriceForSymbol(symbol: string) {
+    // Check if we have recent cached data
+    const cachedData = this.priceData.get(symbol);
+    const now = Date.now();
+    
+    if (cachedData && (now - cachedData.timestamp) < this.MIN_CACHE_TIME) {
+      return; // Use cached data if it's fresh
+    }
+
     try {
       const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
       if (response.ok) {
@@ -173,7 +188,7 @@ class CentralizedPriceManager {
           const priceData: PriceData = {
             price,
             change24h,
-            timestamp: Date.now()
+            timestamp: now
           };
           
           this.priceData.set(symbol, priceData);

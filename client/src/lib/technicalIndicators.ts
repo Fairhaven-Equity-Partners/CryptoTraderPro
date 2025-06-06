@@ -627,7 +627,7 @@ export function initTechnicalIndicatorsModule() {
     calculateRSI,
     calculateStochastics: calculateStochastic,
     calculateBollingerBands,
-    calculateEMA
+    calculateEMA: (data: ChartData[], period: number = 14, priceKey?: keyof ChartData) => calculateEMA(data, period, priceKey)
   };
   
   // Add support & resistance generators
