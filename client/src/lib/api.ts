@@ -8,6 +8,7 @@ import {
 } from '../types';
 import { calculateSafeLeverage } from './calculations';
 import { getPrice } from './priceSync';
+import { centralizedPriceManager } from './centralizedPriceManager';
 
 // API Base URL
 const API_BASE_URL = window.location.origin;
@@ -173,8 +174,13 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     
     // Create and store the promise
     pendingRequests[symbol][timeframe] = (async () => {
-      // Use existing chart generation as fallback until API endpoints are ready
-      const data = generateChartDataFallback(timeframe, symbol);
+      // Fetch authentic chart data from API endpoint
+      const encodedSymbol = symbol.replace('/', '%2F');
+      const response = await fetch(`${API_BASE_URL}/api/chart/${encodedSymbol}/${timeframe}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch chart data for ${symbol} ${timeframe}`);
+      }
+      const data = await response.json();
       
       // Update the cache
       chartDataCache[symbol][timeframe] = data;
@@ -412,10 +418,7 @@ export function startRealTimeUpdates() {
   return updateInterval;
 }
 
-// DEPRECATED: Synthetic data generation removed - use authentic market data only
-function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
-  throw new Error(`Synthetic chart data generation disabled. Use authentic market data from /api/chart/${symbol}/${timeframe} endpoint`);
-}
+
 
 // Get volatility for different timeframes
 function getVolatilityForTimeframe(timeframe: TimeFrame): number {

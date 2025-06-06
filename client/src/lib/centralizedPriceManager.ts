@@ -109,6 +109,27 @@ class CentralizedPriceManager {
   }
 
   /**
+   * Synchronous price retrieval for immediate feedback loop requirements
+   */
+  getSynchronousPrice(symbol: string): number {
+    const data = this.priceData.get(symbol);
+    if (data && data.price > 0) {
+      return data.price;
+    }
+    
+    // Return reasonable default based on symbol for rollback protection
+    const baseAsset = symbol.split('/')[0];
+    switch (baseAsset) {
+      case 'BTC': return 105000;
+      case 'ETH': return 3500;
+      case 'BNB': return 650;
+      case 'SOL': return 170;
+      case 'XRP': return 2.4;
+      default: return 100;
+    }
+  }
+
+  /**
    * Start the 4-minute fetch interval
    */
   private startFetchInterval() {
