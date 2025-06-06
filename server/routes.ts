@@ -10,9 +10,14 @@ import {
 import { z } from "zod";
 import { extendedCryptoList } from "./cryptoData";
 import { WebSocketServer } from 'ws';
+import { automatedSignalCalculator } from "./automatedSignalCalculator";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
+  
+  // Start automated signal calculation system
+  console.log('[System] Starting automated signal calculation system');
+  await automatedSignalCalculator.start();
   
   // Set up WebSocket server for real-time updates
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
@@ -63,75 +68,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all 50 cryptocurrency pairs with authentic market signals
+  // Get all 50 cryptocurrency pairs with pre-calculated signals
   app.get('/api/crypto/all-pairs', async (req: Request, res: Response) => {
     try {
       const { TOP_50_SYMBOL_MAPPINGS } = await import('./optimizedSymbolMapping');
       const requestedTimeframe = req.query.timeframe as string || '4h';
       
-      // Fetch authentic price data from CoinGecko
-      const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map(m => m.coinGeckoId).join(',');
-      const coinGeckoResponse = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoIds}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`,
-        {
-          headers: {
-            'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || ''
-          }
-        }
-      );
-
-      if (!coinGeckoResponse.ok) {
-        throw new Error(`CoinGecko API error: ${coinGeckoResponse.status}`);
-      }
-
-      const coinGeckoData = await coinGeckoResponse.json();
+      // Get pre-calculated signals from automated calculation system
+      const allSignals = automatedSignalCalculator.getAllSignals();
       
-      // Get authentic calculated signals for each cryptocurrency
-      const marketDataPromises = TOP_50_SYMBOL_MAPPINGS.map(async (mapping) => {
-        const priceData = coinGeckoData[mapping.coinGeckoId];
-        const currentPrice = priceData?.usd || 0;
-        const change24h = priceData?.usd_24h_change || 0;
+      // Build market data with pre-calculated signals
+      const marketData = TOP_50_SYMBOL_MAPPINGS.map((mapping) => {
+        const symbolSignals = allSignals.get(mapping.symbol) || [];
+        const timeframeSignal = symbolSignals.find(s => s.timeframe === requestedTimeframe);
         
-        // Get actual calculated signal for this symbol and timeframe
-        let signalData = { direction: 'NEUTRAL', confidence: 50 };
-        
-        try {
-          const signalResponse = await fetch(`http://localhost:${process.env.PORT || 5000}/api/signals/${encodeURIComponent(mapping.symbol)}?timeframe=${requestedTimeframe}`);
-          if (signalResponse.ok) {
-            const signals = await signalResponse.json();
-            const timeframeSignal = signals.find((s: any) => s.timeframe === requestedTimeframe);
-            if (timeframeSignal) {
-              signalData = {
-                direction: timeframeSignal.direction,
-                confidence: timeframeSignal.confidence || 50
-              };
-            }
-          }
-        } catch (signalError) {
-          console.warn(`Could not fetch signal for ${mapping.symbol}:`, signalError);
-        }
+        const signalData = timeframeSignal ? {
+          direction: timeframeSignal.direction,
+          confidence: timeframeSignal.confidence
+        } : { direction: 'NEUTRAL', confidence: 50 };
         
         return {
           id: mapping.symbol.toLowerCase().replace('/', ''),
           symbol: mapping.symbol,
           name: mapping.name,
-          currentPrice,
-          change24h,
-          marketCap: priceData?.usd_market_cap || 0,
-          lastUpdate: Date.now(),
+          currentPrice: timeframeSignal?.price || 0,
+          change24h: 0, // Will be populated from signal calculation
+          marketCap: 0, // Will be populated from signal calculation
+          lastUpdate: timeframeSignal?.timestamp || Date.now(),
           signals: {
             [requestedTimeframe]: signalData
           }
         };
       });
 
-      const marketData = await Promise.all(marketDataPromises);
-      console.log(`Fetched authentic signals for ${marketData.length} cryptocurrency pairs`);
+      console.log(`Served pre-calculated signals for ${marketData.length} cryptocurrency pairs (${requestedTimeframe})`);
       res.json(marketData);
       
     } catch (error) {
-      console.error('Error fetching authentic market signals:', error);
-      res.status(500).json({ error: 'Failed to fetch authentic market signals' });
+      console.error('Error serving pre-calculated signals:', error);
+      res.status(500).json({ error: 'Failed to serve pre-calculated signals' });
     }
   });
   
