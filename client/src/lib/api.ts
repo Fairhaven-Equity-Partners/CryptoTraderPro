@@ -577,3 +577,21 @@ export async function calculateLeverage(params: LeverageParams): Promise<Leverag
   }
   return response.json();
 }
+
+// Optimized fetchAssetBySymbol with debouncing
+export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
+  return debouncedApiCall<AssetPrice>(
+    `${API_BASE_URL}/api/crypto/${symbol}`,
+    undefined,
+    240000 // 4-minute cache duration to match calculation cycle
+  );
+}
+
+// Optimized fetchAllAssets with caching
+export async function fetchAllAssets(): Promise<AssetPrice[]> {
+  return debouncedApiCall<AssetPrice[]>(
+    `${API_BASE_URL}/api/crypto`,
+    undefined,
+    300000 // 5-minute cache for asset list
+  );
+}
