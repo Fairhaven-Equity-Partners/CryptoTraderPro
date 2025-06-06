@@ -30,6 +30,7 @@ export interface IStorage {
   // Trade simulation operations
   createTradeSimulation(trade: InsertTradeSimulation): Promise<TradeSimulation>;
   getActiveTradeSimulations(symbol: string): Promise<TradeSimulation[]>;
+  getTradeSimulations(symbol: string): Promise<TradeSimulation[]>;
   updateTradeSimulation(id: number, data: Partial<TradeSimulation>): Promise<TradeSimulation | undefined>;
   closeTradeSimulation(id: number, exitPrice: number, exitReason: string): Promise<TradeSimulation | undefined>;
   
@@ -345,6 +346,11 @@ export class MemStorage implements IStorage {
   async getActiveTradeSimulations(symbol: string): Promise<TradeSimulation[]> {
     return Array.from(this.tradeSimulations.values())
       .filter(trade => trade.symbol === symbol && trade.isActive);
+  }
+
+  async getTradeSimulations(symbol: string): Promise<TradeSimulation[]> {
+    return Array.from(this.tradeSimulations.values())
+      .filter(trade => trade.symbol === symbol);
   }
 
   async updateTradeSimulation(id: number, data: Partial<TradeSimulation>): Promise<TradeSimulation | undefined> {

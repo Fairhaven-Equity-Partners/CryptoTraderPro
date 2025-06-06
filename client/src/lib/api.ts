@@ -422,22 +422,9 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   throw new Error(`Synthetic chart data generation disabled. Use authentic market data from /api/chart/${symbol}/${timeframe} endpoint`);
 }
 
-// Get volatility for different timeframes
+// DEPRECATED: Volatility calculation removed - use authentic market data only
 function getVolatilityForTimeframe(timeframe: TimeFrame): number {
-  // Scale volatility based on timeframe
-  switch (timeframe) {
-    case '1m': return 0.003;  // 0.3%
-    case '5m': return 0.0045; // 0.45%
-    case '15m': return 0.006; // 0.6%
-    case '30m': return 0.008; // 0.8%
-    case '1h': return 0.01;   // 1%
-    case '4h': return 0.015;  // 1.5%
-    case '1d': return 0.025;  // 2.5%
-    case '3d': return 0.035;  // 3.5%
-    case '1w': return 0.045;  // 4.5%
-    case '1M': return 0.08;   // 8%
-    default: return 0.01;
-  }
+  throw new Error(`Synthetic volatility calculation disabled. Use authentic market data from API endpoints`);
 }
 
 // DEPRECATED: Volume generation functions removed - use authentic market data only
