@@ -694,7 +694,7 @@ export default function AdvancedSignalDashboard({
       // Clean up fallback timeout when component unmounts or conditions change
       return () => clearTimeout(fallbackTimeoutRef);
     }
-  }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, effectivelyLiveDataReady]);
+  }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
   useEffect(() => {
