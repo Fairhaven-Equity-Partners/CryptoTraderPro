@@ -338,7 +338,7 @@ export default function AdvancedSignalDashboard({
       window.triggerSignalCalculation = (symbolToCalc: string, priceValue: number) => {
         if (symbolToCalc === symbol && priceValue > 0) {
           console.log('[SignalDashboard] Immediate calculation triggered by UltimateManager');
-          calculateSignals(priceValue, true); // Force immediate calculation
+          calculateAllSignals(); // Force immediate calculation
         }
       };
     }
