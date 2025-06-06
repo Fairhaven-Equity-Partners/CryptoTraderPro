@@ -26,6 +26,9 @@ class CentralizedPriceManager {
   private lastFetchTime: number = 0;
   private readonly FETCH_INTERVAL_MS = 4 * 60 * 1000; // 4 minutes
   private readonly MIN_CACHE_TIME = 60 * 1000; // 60 seconds minimum between fetches - optimized
+  
+  // API deduplication for efficiency
+  private activeFetches: Map<string, Promise<void>> = new Map();
 
   constructor() {
     console.log('[CentralizedPriceManager] Initializing with 4-minute intervals');
@@ -166,7 +169,7 @@ class CentralizedPriceManager {
   }
 
   /**
-   * Fetch price for a specific symbol - immediate retrieval for feedback loop
+   * Fetch price for a specific symbol with API deduplication
    */
   private async fetchPriceForSymbol(symbol: string) {
     // Check if we have recent cached data
@@ -177,6 +180,31 @@ class CentralizedPriceManager {
       return; // Use cached data if it's fresh
     }
 
+    // Check if there's already an active fetch for this symbol
+    const existingFetch = this.activeFetches.get(symbol);
+    if (existingFetch) {
+      console.log(`[CentralizedPriceManager] Using existing fetch for ${symbol}`);
+      return existingFetch;
+    }
+
+    // Create new fetch promise and cache it
+    const fetchPromise = this.performActualFetch(symbol);
+    this.activeFetches.set(symbol, fetchPromise);
+
+    // Clean up after fetch completes
+    fetchPromise.finally(() => {
+      this.activeFetches.delete(symbol);
+    });
+
+    return fetchPromise;
+  }
+
+  /**
+   * Perform the actual API fetch
+   */
+  private async performActualFetch(symbol: string) {
+    const now = Date.now();
+    
     try {
       const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
       if (response.ok) {

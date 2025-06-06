@@ -1180,10 +1180,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         environment: environment,
         timeframe: timeframe,
         patternFormations: [],
-        supportResistance: { 
-          support: [calculatedPrice * 0.95, calculatedPrice * 0.90, calculatedPrice * 0.85], 
-          resistance: [calculatedPrice * 1.05, calculatedPrice * 1.10, calculatedPrice * 1.15] 
-        },
+        supportResistance: [calculatedPrice * 0.95, calculatedPrice * 0.90, calculatedPrice * 0.85, calculatedPrice * 1.05, calculatedPrice * 1.10, calculatedPrice * 1.15],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : 2,
         profitPotential: direction === 'LONG' ? 25 : (direction === 'SHORT' ? 20 : 5),
         riskLevel: direction === 'NEUTRAL' ? 'LOW' : 'MEDIUM',
@@ -1238,7 +1235,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
       
       // Create stability mechanism to prevent frequent changes
       const now = new Date();
-      const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / (24 * 60 * 60 * 1000));
+      const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / (24 * 60 * 60 * 1000));
       const weekNumber = Math.floor(dayOfYear / 7);
       
       // This creates a stability factor that changes only once per week per symbol
