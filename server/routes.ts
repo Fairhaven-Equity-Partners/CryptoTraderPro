@@ -68,6 +68,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get automated signal calculator status
+  app.get('/api/automation/status', async (req: Request, res: Response) => {
+    try {
+      const status = automatedSignalCalculator.getStatus();
+      res.json(status);
+    } catch (error) {
+      console.error('Error getting automation status:', error);
+      res.status(500).json({ error: 'Failed to get automation status' });
+    }
+  });
+
   // Get all 50 cryptocurrency pairs with pre-calculated signals
   app.get('/api/crypto/all-pairs', async (req: Request, res: Response) => {
     try {
@@ -76,6 +87,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get pre-calculated signals from automated calculation system
       const allSignals = automatedSignalCalculator.getAllSignals();
+      const status = automatedSignalCalculator.getStatus();
+      
+      console.log(`[AutomationStatus] Running: ${status.isRunning}, Cache size: ${status.totalSignals}, Last calc: ${new Date(status.lastCalculationTime).toISOString()}`);
+      
+      // If no signals are cached yet, trigger an immediate calculation
+      if (status.totalSignals === 0) {
+        console.log('[AutomationStatus] No cached signals found, system may still be initializing');
+      }
       
       // Build market data with pre-calculated signals
       const marketData = TOP_50_SYMBOL_MAPPINGS.map((mapping) => {
