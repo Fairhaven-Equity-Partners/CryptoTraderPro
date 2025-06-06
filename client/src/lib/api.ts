@@ -420,37 +420,6 @@ export function startRealTimeUpdates() {
 // DEPRECATED: Synthetic data generation removed - use authentic market data only
 function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   throw new Error(`Synthetic chart data generation disabled. Use authentic market data from /api/chart/${symbol}/${timeframe} endpoint`);
-    }
-    
-    const time = now - (count - i) * timeIncrement;
-    const currentBias = trendCycles[cycleIndex].bias;
-    
-    // Calculate price change with the current trend bias
-    const change = (Math.random() - currentBias) * (price * 0.01);
-    price += change;
-    
-    const volatility = getVolatilityForTimeframe(timeframe);
-    
-    const open = price;
-    const close = price + (Math.random() - 0.5) * (price * volatility);
-    const high = Math.max(open, close) + Math.random() * (price * volatility * 0.5);
-    const low = Math.min(open, close) - Math.random() * (price * volatility * 0.5);
-    const volume = getBaseVolumeForSymbol(symbol) * (0.8 + Math.random() * 0.4);
-    
-    data.push({
-      time,
-      open,
-      high,
-      low,
-      close,
-      volume
-    });
-    
-    price = close;
-    posInCycle++;
-  }
-  
-  return data;
 }
 
 // Get volatility for different timeframes
@@ -471,24 +440,19 @@ function getVolatilityForTimeframe(timeframe: TimeFrame): number {
   }
 }
 
-// Scale volume based on symbol
+// DEPRECATED: Volume generation functions removed - use authentic market data only
 function getBaseVolumeForSymbol(symbol: string): number {
-  if (symbol.includes('BTC')) {
-    return 500 + Math.random() * 200;
-  } else if (symbol.includes('ETH')) {
-    return 1000 + Math.random() * 500;
-  } else if (symbol.includes('BNB')) {
-    return 200 + Math.random() * 100;
-  } else if (symbol.includes('SOL')) {
-    return 800 + Math.random() * 400;
-  } else if (symbol.includes('XRP')) {
-    return 2000 + Math.random() * 1000;
-  }
-  return 100 + Math.random() * 50;
+  throw new Error(`Synthetic volume generation disabled. Use authentic market data from API endpoints`);
 }
 
-// Get current price for a symbol
+// Get current price for a symbol from authentic data sources
 function getCurrentPrice(symbol: string): number {
+  // Get price from centralized price manager
+  const price = getPrice(symbol);
+  if (price > 0) {
+    return price;
+  }
+  
   // Try to get from the chart data cache
   if (chartDataCache[symbol] && Object.keys(chartDataCache[symbol]).length > 0) {
     const firstTimeframe = Object.keys(chartDataCache[symbol])[0] as TimeFrame;
@@ -498,19 +462,7 @@ function getCurrentPrice(symbol: string): number {
     }
   }
   
-  // Simple fallback values
-  if (symbol.includes('BTC')) {
-    return 65000;
-  } else if (symbol.includes('ETH')) {
-    return 3500;
-  } else if (symbol.includes('BNB')) {
-    return 550;
-  } else if (symbol.includes('SOL')) {
-    return 170;
-  } else if (symbol.includes('XRP')) {
-    return 2;
-  }
-  return 100;
+  throw new Error(`No authentic price data available for ${symbol}`);
 }
 
 // Register for chart updates - returns an unsubscribe function
