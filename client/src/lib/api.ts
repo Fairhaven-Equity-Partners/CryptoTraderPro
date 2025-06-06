@@ -13,6 +13,24 @@ import { centralizedPriceManager } from './centralizedPriceManager';
 // API Base URL
 const API_BASE_URL = window.location.origin;
 
+// Rollback-safe authentic price retrieval with immediate feedback
+function getAuthenticPriceImmediate(symbol: string): number {
+  // Priority 1: Centralized manager synchronous price
+  const authenticPrice = centralizedPriceManager.getSynchronousPrice(symbol);
+  if (authenticPrice && authenticPrice > 0) {
+    return authenticPrice;
+  }
+  
+  // Priority 2: Global registry fallback
+  if (window.cryptoPrices && window.cryptoPrices[symbol] > 0) {
+    return window.cryptoPrices[symbol];
+  }
+  
+  // Priority 3: Immediate async fetch trigger + synchronous return
+  centralizedPriceManager.getImmediatePrice(symbol);
+  return centralizedPriceManager.getSynchronousPrice(symbol);
+}
+
 // General JSON fetch utility
 export async function fetchJson(url: string, options?: RequestInit): Promise<any> {
   try {
@@ -454,9 +472,15 @@ function getBaseVolumeForSymbol(symbol: string): number {
   return 100 + Math.random() * 50;
 }
 
-// Get current price for a symbol
+// Get current price for a symbol - optimized for immediate authentic data
 function getCurrentPrice(symbol: string): number {
-  // Try to get from the chart data cache
+  // Priority 1: Use authentic price from centralized manager
+  const authenticPrice = getAuthenticPriceImmediate(symbol);
+  if (authenticPrice && authenticPrice > 0) {
+    return authenticPrice;
+  }
+  
+  // Priority 2: Chart data cache as backup
   if (chartDataCache[symbol] && Object.keys(chartDataCache[symbol]).length > 0) {
     const firstTimeframe = Object.keys(chartDataCache[symbol])[0] as TimeFrame;
     const candles = chartDataCache[symbol][firstTimeframe];
@@ -465,19 +489,9 @@ function getCurrentPrice(symbol: string): number {
     }
   }
   
-  // Simple fallback values
-  if (symbol.includes('BTC')) {
-    return 65000;
-  } else if (symbol.includes('ETH')) {
-    return 3500;
-  } else if (symbol.includes('BNB')) {
-    return 550;
-  } else if (symbol.includes('SOL')) {
-    return 170;
-  } else if (symbol.includes('XRP')) {
-    return 2;
-  }
-  return 100;
+  // Priority 3: Fallback with immediate fetch trigger
+  centralizedPriceManager.getImmediatePrice(symbol);
+  return centralizedPriceManager.getSynchronousPrice(symbol);
 }
 
 // Register for chart updates - returns an unsubscribe function
