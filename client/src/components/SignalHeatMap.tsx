@@ -55,9 +55,9 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filterDirection, setFilterDirection] = useState<'ALL' | 'LONG' | 'SHORT' | 'NEUTRAL'>('ALL');
   
-  // Fetch all crypto assets
+  // Fetch all 50 cryptocurrency pairs with authentic CoinGecko data
   const { data: cryptoAssets, isLoading } = useQuery({
-    queryKey: ['/api/crypto'],
+    queryKey: ['/api/crypto/all-pairs'],
     staleTime: 30000 // 30 seconds
   });
 
