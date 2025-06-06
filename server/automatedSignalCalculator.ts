@@ -145,10 +145,11 @@ export class AutomatedSignalCalculator {
           continue;
         }
 
-        // Calculate optimized signals for all timeframes using advanced analysis
+        // Calculate comprehensive signals for all timeframes using the same analysis as BTC
         for (const timeframe of this.timeframes) {
           try {
-            const signal = await this.calculateSignalForPair(
+            // Use the same comprehensive signal calculation system as BTC/USDT
+            const calculatedSignal = await this.calculateSignalForPair(
               mapping.symbol, 
               currentPrice, 
               change24h, 
@@ -157,12 +158,14 @@ export class AutomatedSignalCalculator {
               mapping.category
             );
             
-            // Log samples of LONG signals for debugging
-            if (signal.direction === 'LONG' && Math.random() < 0.1) {
-              console.log(`[AutomatedSignalCalculator] LONG signal found: ${signal.symbol} ${signal.timeframe} - Change: ${change24h}%, Confidence: ${signal.confidence}%`);
+            if (calculatedSignal) {
+              allCalculatedSignals[signalIndex++] = calculatedSignal;
+              
+              // Log samples of LONG signals for debugging
+              if (calculatedSignal.direction === 'LONG' && Math.random() < 0.1) {
+                console.log(`[AutomatedSignalCalculator] LONG signal found: ${calculatedSignal.symbol} ${calculatedSignal.timeframe} - Change: ${change24h}%, Confidence: ${calculatedSignal.confidence}%`);
+              }
             }
-            
-            allCalculatedSignals[signalIndex++] = signal;
           } catch (error) {
             console.error(`[AutomatedSignalCalculator] Error calculating signal for ${mapping.symbol} ${timeframe}:`, error);
             // Use fallback calculation for stability
