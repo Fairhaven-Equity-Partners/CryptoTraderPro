@@ -1769,9 +1769,8 @@ export default function AdvancedSignalDashboard({
               // Calculate enhanced confidence based on market conditions
               const enhancedConfidence = calculateEnhancedConfidence(
                 signal.confidence,
-                symbol,
-                signal.timeframe,
-                signal.indicators
+                signal.timeframe as TimeFrame,
+                signal.direction
               );
               
               const predictionSignal = {
@@ -1839,9 +1838,10 @@ export default function AdvancedSignalDashboard({
       }
       
       console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
+      
     } catch (error) {
       console.error('[SignalDashboard] Calculation process error:', error);
-      setIsCalculating(false); // Reset calculation state on error
+      setIsCalculating(false);
     } finally {
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
