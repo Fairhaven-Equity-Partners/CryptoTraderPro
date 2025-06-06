@@ -43,9 +43,21 @@ export async function initializeUltimateSystem(): Promise<void> {
     // Initialize only essential components
     await initializeEssentialComponents();
 
-    // Trigger immediate calculation on startup
-    console.log('[UltimateManager] Triggering immediate calculation on startup');
+    // Trigger IMMEDIATE calculation on startup - eliminate 2-cycle delay
+    console.log('[UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay');
     await performScheduledPriceFetch();
+    
+    // Force immediate signal generation for all components
+    setTimeout(() => {
+      document.dispatchEvent(new CustomEvent('synchronized-calculation-trigger', {
+        detail: { 
+          interval: '4-minute', 
+          symbol: 'BTC/USDT', 
+          manual: false,
+          immediate: true 
+        }
+      }));
+    }, 100); // Minimal delay to ensure components are ready
 
     // Start the ultimate synchronized timer
     startUltimateTimer();

@@ -49,7 +49,7 @@ export class AutomatedSignalCalculator {
   }
 
   /**
-   * Start the automated signal calculation system
+   * Start the automated signal calculation system with immediate initialization
    */
   async start(): Promise<void> {
     if (this.isRunning) {
@@ -58,10 +58,16 @@ export class AutomatedSignalCalculator {
     }
 
     this.isRunning = true;
-    console.log('[AutomatedSignalCalculator] Starting automated signal calculations');
+    console.log('[AutomatedSignalCalculator] Starting IMMEDIATE automated signal calculations');
     
-    // Calculate signals immediately on startup
-    await this.calculateAllSignals();
+    // Calculate signals IMMEDIATELY on startup - no delays
+    console.log('[AutomatedSignalCalculator] Triggering immediate calculation to eliminate 2-cycle delay');
+    try {
+      await this.calculateAllSignals();
+      console.log('[AutomatedSignalCalculator] Initial calculation completed successfully');
+    } catch (error) {
+      console.error('[AutomatedSignalCalculator] Initial calculation error:', error);
+    }
     
     // Set up recurring calculations every 4 minutes
     this.calculationInterval = setInterval(async () => {
@@ -72,7 +78,7 @@ export class AutomatedSignalCalculator {
       }
     }, this.baseCalculationIntervalMs);
 
-    console.log('[AutomatedSignalCalculator] Automated system started - calculating every 4 minutes');
+    console.log('[AutomatedSignalCalculator] Automated system started - immediate calculations active');
   }
 
   /**

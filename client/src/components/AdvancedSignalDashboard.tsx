@@ -636,49 +636,36 @@ export default function AdvancedSignalDashboard({
     
     // Removed debug logging to keep console clean
     
-    // Optimized immediate calculation trigger with consistent behavior across all pairs
-    if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
-      console.log(`[SignalDashboard] Data ready for ${symbol} - triggering calculation`);
+    // IMMEDIATE calculation trigger - eliminate 2-cycle delay
+    if (isAllDataLoaded && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
+      console.log(`[SignalDashboard] Data ready for ${symbol} - triggering IMMEDIATE calculation`);
       calculationTriggeredRef.current = true;
       
       if (calculationTimeoutRef.current) {
         clearTimeout(calculationTimeoutRef.current);
       }
       
-      // Execute calculation with minimal delay for consistency
-      calculationTimeoutRef.current = setTimeout(() => {
-        if (!isCalculating) {
-          calculateAllSignals().catch(error => {
-            console.error('[SignalDashboard] Calculation error:', error);
-            setIsCalculating(false);
-          });
-        }
-      }, 1000); // Optimized 1-second buffer
+      // Execute calculation IMMEDIATELY without delay
+      if (!isCalculating) {
+        calculateAllSignals().catch(error => {
+          console.error('[SignalDashboard] Calculation error:', error);
+          setIsCalculating(false);
+        });
+      }
     }
     
-    // Optimized fallback trigger for consistent calculation across all pairs
+    // IMMEDIATE fallback trigger - eliminate all delays
     if (isAllDataLoaded && !calculationTriggeredRef.current) {
-      const fallbackTimeoutRef = setTimeout(() => {
-        if (!calculationTriggeredRef.current) {
-          console.log(`[SignalDashboard] Fallback calculation for ${symbol}`);
-          calculationTriggeredRef.current = true;
-          
-          if (calculationTimeoutRef.current) {
-            clearTimeout(calculationTimeoutRef.current);
-          }
-          
-          calculationTimeoutRef.current = setTimeout(() => {
-            if (!isCalculating) {
-              calculateAllSignals().catch(error => {
-                console.error('[SignalDashboard] Fallback error:', error);
-                setIsCalculating(false);
-              });
-            }
-          }, 500);
-        }
-      }, 3000); // Reduced to 3-second fallback for faster responsiveness
+      console.log(`[SignalDashboard] IMMEDIATE fallback calculation for ${symbol}`);
+      calculationTriggeredRef.current = true;
       
-      return () => clearTimeout(fallbackTimeoutRef);
+      // Execute fallback calculation IMMEDIATELY without any timeout
+      if (!isCalculating) {
+        calculateAllSignals().catch(error => {
+          console.error('[SignalDashboard] Fallback error:', error);
+          setIsCalculating(false);
+        });
+      }
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData]);
   
