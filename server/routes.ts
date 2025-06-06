@@ -731,5 +731,250 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Advanced signals and calculations are now handled client-side
   // in the timeframeSuccessProbability and advancedSignalsNew modules
   
+  // Advanced Trading Features API Routes
+  app.post('/api/backtest/run', async (req: Request, res: Response) => {
+    try {
+      const config = req.body;
+      console.log(`[Routes] Starting backtest for ${config.symbols?.length || 0} symbols`);
+      
+      if (!config.startDate || !config.endDate || !config.symbols || !config.timeframes) {
+        return res.status(400).json({ error: 'Missing required backtest configuration' });
+      }
+      
+      const { advancedBacktestingEngine } = await import('./advancedBacktesting.js');
+      
+      const backtestConfig = {
+        ...config,
+        startDate: new Date(config.startDate),
+        endDate: new Date(config.endDate),
+        initialCapital: config.initialCapital || 100000,
+        maxPositionSize: config.maxPositionSize || 10,
+        commissionRate: config.commissionRate || 0.1,
+        slippageRate: config.slippageRate || 0.05,
+        riskPerTrade: config.riskPerTrade || 2,
+        enableCompounding: config.enableCompounding || true,
+        maxDrawdownStop: config.maxDrawdownStop || 20
+      };
+      
+      const result = await advancedBacktestingEngine.runBacktest(backtestConfig);
+      
+      console.log(`[Routes] Backtest completed: ${result.trades.length} trades, ${result.metrics.winRate.toFixed(2)}% win rate`);
+      
+      res.json({
+        success: true,
+        result,
+        summary: {
+          totalTrades: result.trades.length,
+          winRate: result.metrics.winRate,
+          totalReturn: result.metrics.totalReturn,
+          sharpeRatio: result.metrics.sharpeRatio,
+          maxDrawdown: result.metrics.maxDrawdown
+        }
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error running backtest:', error);
+      res.status(500).json({ error: 'Failed to run backtest' });
+    }
+  });
+
+  app.get('/api/backtest/templates', async (req: Request, res: Response) => {
+    try {
+      const templates = [
+        {
+          id: 'conservative',
+          name: 'Conservative Strategy',
+          description: 'Low risk, steady returns with minimal drawdown',
+          config: {
+            riskPerTrade: 1,
+            maxPositionSize: 5,
+            maxDrawdownStop: 10,
+            timeframes: ['1d', '3d', '1w'],
+            symbols: ['BTC/USDT', 'ETH/USDT']
+          }
+        },
+        {
+          id: 'aggressive',
+          name: 'Aggressive Strategy',
+          description: 'Higher risk, potentially higher returns',
+          config: {
+            riskPerTrade: 3,
+            maxPositionSize: 15,
+            maxDrawdownStop: 25,
+            timeframes: ['15m', '1h', '4h', '1d'],
+            symbols: ['BTC/USDT', 'ETH/USDT', 'SOL/USDT', 'ADA/USDT']
+          }
+        },
+        {
+          id: 'scalping',
+          name: 'Scalping Strategy',
+          description: 'High-frequency trading on short timeframes',
+          config: {
+            riskPerTrade: 0.5,
+            maxPositionSize: 3,
+            maxDrawdownStop: 5,
+            timeframes: ['1m', '5m', '15m'],
+            symbols: ['BTC/USDT', 'ETH/USDT']
+          }
+        }
+      ];
+      
+      res.json({ templates });
+      
+    } catch (error) {
+      console.error('[Routes] Error fetching backtest templates:', error);
+      res.status(500).json({ error: 'Failed to fetch backtest templates' });
+    }
+  });
+
+  app.post('/api/portfolio/optimize', async (req: Request, res: Response) => {
+    try {
+      const { assets, constraints, targetReturn } = req.body;
+      
+      if (!assets || !Array.isArray(assets) || assets.length === 0) {
+        return res.status(400).json({ error: 'Assets array is required' });
+      }
+      
+      const { portfolioOptimizationEngine } = await import('./portfolioOptimization.js');
+      
+      const defaultConstraints = {
+        maxWeight: 0.3,
+        minWeight: 0.05,
+        maxSectorConcentration: 0.5,
+        maxCorrelation: 0.8,
+        riskFreeRate: 0.02,
+        ...constraints
+      };
+      
+      const result = await portfolioOptimizationEngine.optimizePortfolio(
+        assets,
+        new Map(),
+        defaultConstraints,
+        targetReturn
+      );
+      
+      console.log(`[Routes] Portfolio optimization completed for ${assets.length} assets`);
+      
+      res.json({
+        success: true,
+        optimization: result,
+        summary: {
+          expectedReturn: result.metrics.expectedReturn,
+          volatility: result.metrics.volatility,
+          sharpeRatio: result.metrics.sharpeRatio,
+          riskLevel: result.riskLevel,
+          confidenceScore: result.confidenceScore
+        }
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error optimizing portfolio:', error);
+      res.status(500).json({ error: 'Failed to optimize portfolio' });
+    }
+  });
+
+  app.get('/api/sentiment/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const { marketSentimentEngine } = await import('./marketSentimentEngine.js');
+      
+      const sentiment = await marketSentimentEngine.getMarketSentiment(symbol);
+      
+      res.json({
+        success: true,
+        sentiment,
+        summary: {
+          overall: sentiment.overall,
+          score: sentiment.score,
+          regime: sentiment.marketRegime,
+          volatilityExpectation: sentiment.volatilityExpectation
+        }
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error fetching market sentiment:', error);
+      res.status(500).json({ error: 'Failed to fetch market sentiment' });
+    }
+  });
+
+  app.get('/api/sentiment/trend/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const periods = parseInt(req.query.periods as string) || 10;
+      
+      const { marketSentimentEngine } = await import('./marketSentimentEngine.js');
+      const trend = await marketSentimentEngine.getSentimentTrend(symbol, periods);
+      
+      res.json({
+        success: true,
+        trend,
+        summary: {
+          direction: trend.trend,
+          momentum: trend.momentum,
+          periods: periods
+        }
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error fetching sentiment trend:', error);
+      res.status(500).json({ error: 'Failed to fetch sentiment trend' });
+    }
+  });
+
+  app.post('/api/risk-management/rules', async (req: Request, res: Response) => {
+    try {
+      const { marketVolatility, marketRegime, portfolioMetrics } = req.body;
+      
+      const { portfolioOptimizationEngine } = await import('./portfolioOptimization.js');
+      
+      const rules = portfolioOptimizationEngine.generateRiskManagementRules(
+        marketVolatility || 0.15,
+        marketRegime || 'NORMAL',
+        portfolioMetrics || {}
+      );
+      
+      res.json({
+        success: true,
+        rules,
+        summary: {
+          stopLoss: `${(rules.stopLossPercent * 100).toFixed(1)}%`,
+          takeProfit: `${(rules.takeProfitPercent * 100).toFixed(1)}%`,
+          maxPosition: `${(rules.maxPositionSize * 100).toFixed(1)}%`,
+          maxDrawdown: `${(rules.maxDrawdownStop * 100).toFixed(1)}%`
+        }
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error generating risk management rules:', error);
+      res.status(500).json({ error: 'Failed to generate risk management rules' });
+    }
+  });
+
+  app.get('/api/analytics/advanced/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const simulations = await storage.getTradeSimulations(symbol);
+      
+      const { AdvancedAnalyticsEngine } = await import('./advancedAnalytics.js');
+      const metrics = AdvancedAnalyticsEngine.calculateAdvancedMetrics(simulations);
+      
+      res.json({
+        success: true,
+        metrics,
+        summary: {
+          winRate: metrics.winRate,
+          sharpeRatio: metrics.sharpeRatio,
+          maxDrawdown: metrics.maxDrawdown,
+          profitFactor: metrics.profitFactor,
+          totalTrades: metrics.totalTrades
+        }
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error fetching advanced analytics:', error);
+      res.status(500).json({ error: 'Failed to fetch advanced analytics' });
+    }
+  });
+
   return httpServer;
 }

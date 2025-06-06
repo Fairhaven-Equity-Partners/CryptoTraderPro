@@ -9,6 +9,7 @@ import { TOP_50_SYMBOL_MAPPINGS, getCoinGeckoId } from './optimizedSymbolMapping
 import type { InsertSignalHistory } from '../shared/schema';
 import { TechnicalIndicatorsEngine, type TechnicalAnalysis, type CandlestickData } from './technicalIndicators.js';
 import { AdvancedMarketAnalysisEngine, type AdvancedMarketData } from './advancedMarketAnalysis.js';
+import { marketSentimentEngine, type SentimentAdjustedSignal } from './marketSentimentEngine.js';
 
 interface CalculatedSignal {
   symbol: string;
@@ -233,7 +234,27 @@ export class AutomatedSignalCalculator {
     // Use advanced layered scoring system
     const layeredScore = advancedAnalysis.layeredScore;
     const direction = layeredScore.direction;
-    const confidence = layeredScore.normalizedConfidence;
+    let confidence = layeredScore.normalizedConfidence;
+    
+    // Apply sentiment analysis enhancement for major pairs
+    if (['BTC/USDT', 'ETH/USDT', 'BNB/USDT'].includes(symbol)) {
+      try {
+        const sentimentAdjustment = await marketSentimentEngine.adjustSignalWithSentiment(
+          confidence,
+          direction,
+          symbol,
+          timeframe
+        );
+        confidence = sentimentAdjustment.adjustedConfidence;
+        
+        // Add sentiment reasoning to indicators
+        if (sentimentAdjustment.sentimentReason.length > 0) {
+          layeredScore.reasoning.push(...sentimentAdjustment.sentimentReason);
+        }
+      } catch (error) {
+        console.error(`[AutomatedSignalCalculator] Sentiment analysis failed for ${symbol}:`, error);
+      }
+    }
     
     // Generate comprehensive indicators from advanced analysis
     const advancedIndicators = {
