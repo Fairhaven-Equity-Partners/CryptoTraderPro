@@ -71,6 +71,8 @@ interface Props {
 }
 
 export default function UnifiedPerformancePanel({ symbol }: Props) {
+  console.log('[UnifiedPerformancePanel] Component loading for symbol:', symbol);
+  
   const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
     queryKey: ['/api/technical-analysis', symbol],
     queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}`).then(res => res.json()),
@@ -83,18 +85,28 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
   });
 
   const isLoading = techLoading || perfLoading;
+  
+  console.log('[UnifiedPerformancePanel] Data status:', { 
+    techLoading, 
+    perfLoading, 
+    hasTechnicalData: !!technicalData, 
+    hasPerformanceData: !!performanceData 
+  });
 
   if (isLoading) {
+    console.log('[UnifiedPerformancePanel] Rendering loading state');
     return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
         <Card className="border-gray-800 bg-gray-900 text-white">
           <CardContent className="p-2">
-            <div className="text-xs font-mono text-gray-400">Loading analysis...</div>
+            <div className="text-xs font-mono text-gray-400">Loading unified performance data...</div>
           </CardContent>
         </Card>
       </div>
     );
   }
+
+  console.log('[UnifiedPerformancePanel] Rendering full component');
 
   const getSignalColor = (direction: string) => {
     switch (direction) {
