@@ -171,6 +171,7 @@ export function isCalculationAllowed(): boolean {
 
 /**
  * Perform the scheduled price fetch for all 50 cryptocurrency pairs
+ * Optimized to use centralized price manager and reduce API calls
  */
 async function performScheduledPriceFetch(): Promise<void> {
   // Prevent overlapping calculations
@@ -184,22 +185,41 @@ async function performScheduledPriceFetch(): Promise<void> {
   try {
     systemState.lastPriceFetch = Date.now();
 
-    // Fetch BTC/USDT price as primary symbol
-    const response = await fetch('/api/crypto/BTC/USDT');
-    if (response.ok) {
-      const data = await response.json();
-      if (data && typeof data.currentPrice === 'number') {
-        console.log(`[UltimateManager] Primary price synchronized: BTC/USDT = $${data.currentPrice}`);
+    // Use centralized price manager instead of direct API calls
+    if ((window as any).centralizedPriceManager) {
+      const price = await (window as any).centralizedPriceManager.getPrice('BTC/USDT');
+      if (price && typeof price === 'number') {
+        console.log(`[UltimateManager] Primary price synchronized: BTC/USDT = $${price}`);
         
         // Update global price if function exists
-        if (window.syncGlobalPrice) {
-          window.syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
+        if ((window as any).syncGlobalPrice) {
+          (window as any).syncGlobalPrice('BTC/USDT', price, Date.now());
         }
 
         // Trigger immediate signal calculations if this is startup
-        if (window.triggerSignalCalculation) {
+        if ((window as any).triggerSignalCalculation) {
           console.log('[UltimateManager] Triggering immediate signal calculations');
-          window.triggerSignalCalculation('BTC/USDT', data.currentPrice);
+          (window as any).triggerSignalCalculation('BTC/USDT', price);
+        }
+      }
+    } else {
+      // Fallback to direct API call if centralized manager not available
+      const response = await fetch('/api/crypto/BTC/USDT');
+      if (response.ok) {
+        const data = await response.json();
+        if (data && typeof data.currentPrice === 'number') {
+          console.log(`[UltimateManager] Primary price synchronized: BTC/USDT = $${data.currentPrice}`);
+          
+          // Update global price if function exists
+          if ((window as any).syncGlobalPrice) {
+            (window as any).syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
+          }
+
+          // Trigger immediate signal calculations if this is startup
+          if ((window as any).triggerSignalCalculation) {
+            console.log('[UltimateManager] Triggering immediate signal calculations');
+            (window as any).triggerSignalCalculation('BTC/USDT', data.currentPrice);
+          }
         }
       }
     }

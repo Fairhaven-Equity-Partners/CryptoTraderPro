@@ -13,8 +13,8 @@ interface PriceOverviewProps {
 }
 
 const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
-  // Global price data from API (for 24h change %, etc)
-  const { price, isLoading } = useAssetPrice(symbol);
+  // Use only centralized price manager to eliminate redundant API calls
+  const centralizedPrice = useCentralizedPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
   
   // Track price state with animation - use authentic CoinGecko price
@@ -25,11 +25,11 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
     lastUpdate: new Date()
   });
   
+  // Get price data only when needed (reduced frequency)
+  const { price, isLoading } = useAssetPrice(symbol);
+  
   // Ref for flash animation timer
   const flashTimerRef = useRef<NodeJS.Timeout | null>(null);
-  
-  // Use centralized price manager for consistent 4-minute intervals
-  const centralizedPrice = useCentralizedPrice(symbol);
   
   // Update price state when centralized price changes
   useEffect(() => {

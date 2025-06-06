@@ -116,7 +116,8 @@ export function useAssetPrice(symbol: string) {
   const { data: initialPrice, isLoading, error } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],
     queryFn: () => fetchAssetBySymbol(symbol),
-    staleTime: 30000, // 30 seconds
+    staleTime: 240000, // 4 minutes to match calculation interval
+    refetchInterval: 240000, // Only refetch every 4 minutes
   });
   
   // Use live prices from authentic data sources
