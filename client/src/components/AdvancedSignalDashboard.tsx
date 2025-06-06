@@ -106,7 +106,7 @@ export default function AdvancedSignalDashboard({
   const timerIntervalRef = useRef<number | null>(null);
   
   // List of timeframes available
-  const timeframes: TimeFrame[] = ['5m', '15m', '30m', '1h', '4h', '12h', '1d', '1w', '1M'];
+  const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
   
   // Subscribe to price updates
   useEffect(() => {
@@ -203,7 +203,9 @@ export default function AdvancedSignalDashboard({
             <div className="flex flex-col items-end">
               <div className="flex items-center space-x-2">
                 {/* Auto calculation status indicator */}
-                <AutoCalculationStatus isCalculating={isCalculating} />
+                <Badge variant="outline" className="text-xs bg-green-700/70 text-white border-green-600 px-3 py-1">
+                  AUTO CALCULATIONS ACTIVE
+                </Badge>
               </div>
               <div className="text-xs text-slate-500 mt-1">
                 Next auto-update in {formattedTimer}
