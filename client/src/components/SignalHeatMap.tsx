@@ -70,12 +70,19 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   }, []);
 
   // Fetch all 50 cryptocurrency pairs with authentic calculated signals
-  const { data: cryptoAssets, isLoading } = useQuery({
+  const { data: cryptoAssets, isLoading, refetch } = useQuery({
     queryKey: ['/api/crypto/all-pairs', selectedTimeframe],
     queryFn: () => fetch(`/api/crypto/all-pairs?timeframe=${selectedTimeframe}`).then(res => res.json()),
     refetchInterval: 240000, // 4 minutes synchronized with auto-calculation
-    staleTime: 30000 // 30 seconds
+    staleTime: 0, // Always fetch fresh data when timeframe changes
+    refetchOnMount: true,
+    refetchOnWindowFocus: false
   });
+
+  // Force refetch when timeframe changes
+  React.useEffect(() => {
+    refetch();
+  }, [selectedTimeframe, refetch]);
 
   // Process authentic market signals from calculation system
   const cryptoSignals = useMemo(() => {
