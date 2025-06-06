@@ -1182,9 +1182,9 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         patternFormations: [],
         supportResistance: [calculatedPrice * 0.95, calculatedPrice * 0.90, calculatedPrice * 0.85, calculatedPrice * 1.05, calculatedPrice * 1.10, calculatedPrice * 1.15],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : 2,
-        profitPotential: direction === 'LONG' ? 25 : (direction === 'SHORT' ? 20 : 5),
-        riskLevel: direction === 'NEUTRAL' ? 'LOW' : 'MEDIUM',
-        tradeDuration: '3-4 weeks',
+        riskReward: direction === 'LONG' ? 2.5 : (direction === 'SHORT' ? 2.0 : 1.0),
+        marketStructure: direction === 'NEUTRAL' ? 'RANGING' : 'TRENDING',
+        volumeProfile: 'AVERAGE',
         successProbability: confidence,
         macroInsights: direction === 'LONG' 
           ? ['Bullish trend in monthly timeframe', 'Favorable long-term conditions'] 
@@ -1281,14 +1281,11 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         environment: environment,
         timeframe: timeframe,
         patternFormations: [],
-        supportResistance: { 
-          support: [calculatedPrice * 0.97, calculatedPrice * 0.94, calculatedPrice * 0.90], 
-          resistance: [calculatedPrice * 1.03, calculatedPrice * 1.07, calculatedPrice * 1.12] 
-        },
+        supportResistance: [calculatedPrice * 0.97, calculatedPrice * 0.94, calculatedPrice * 0.90, calculatedPrice * 1.03, calculatedPrice * 1.07, calculatedPrice * 1.12],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : (direction === 'LONG' ? 3 : 2),
-        profitPotential: direction === 'LONG' ? 20 : (direction === 'SHORT' ? 15 : 5),
-        riskLevel: direction === 'NEUTRAL' ? 'LOW' : 'MEDIUM',
-        tradeDuration: '1-2 weeks',
+        riskReward: direction === 'LONG' ? 2.0 : (direction === 'SHORT' ? 1.5 : 1.0),
+        marketStructure: direction === 'NEUTRAL' ? 'RANGING' : 'TRENDING',
+        volumeProfile: 'AVERAGE',
         successProbability: confidence,
         macroInsights: direction === 'LONG' 
           ? ['Positive weekly trend', 'Favorable medium-term outlook'] 
