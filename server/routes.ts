@@ -13,6 +13,8 @@ import { WebSocketServer } from 'ws';
 import { automatedSignalCalculator } from "./automatedSignalCalculator";
 import { AdvancedAnalyticsEngine } from "./advancedAnalytics";
 import { feedbackAnalyzer } from "./feedbackAnalyzer";
+import { enhancedPriceStreamer } from "./enhancedPriceStreamer";
+import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -27,6 +29,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Set up WebSocket server for real-time updates
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  
+  // Initialize enhanced price streaming
+  console.log('[System] Starting enhanced real-time price streaming');
+  enhancedPriceStreamer.initialize(wss);
+  await enhancedPriceStreamer.start();
   
   // Track connected clients
   const clients = new Set<any>();
@@ -1093,6 +1100,82 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('[Routes] Error fetching advanced analytics:', error);
       res.status(500).json({ error: 'Failed to fetch advanced analytics' });
+    }
+  });
+
+  // Enhanced technical analysis endpoint
+  app.get('/api/technical-analysis/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const { period = 30 } = req.query;
+      
+      console.log(`[Routes] Calculating real technical indicators for ${symbol}`);
+      
+      // Get current price
+      const currentPrice = enhancedPriceStreamer.getCurrentPrice(symbol);
+      if (!currentPrice) {
+        return res.status(404).json({ error: 'Symbol not found or no price data' });
+      }
+
+      // Calculate technical indicators using real historical data
+      const indicators = await AdvancedTechnicalAnalysis.calculateAllIndicators(symbol, Number(period));
+      
+      if (!indicators) {
+        return res.status(500).json({ error: 'Unable to calculate technical indicators' });
+      }
+
+      // Generate trading signal based on real analysis
+      const signal = AdvancedTechnicalAnalysis.generateTradingSignal(indicators, currentPrice.price);
+      
+      // Get latest indicator values for display
+      const latestValues = AdvancedTechnicalAnalysis.getLatestValues(indicators);
+
+      res.json({
+        success: true,
+        symbol,
+        currentPrice: currentPrice.price,
+        change24h: currentPrice.change24h,
+        signal: {
+          direction: signal.direction,
+          confidence: signal.confidence,
+          reasoning: signal.reasoning
+        },
+        indicators: latestValues,
+        analysis: {
+          trend: latestValues.ema12 > latestValues.sma20 ? 'BULLISH' : 'BEARISH',
+          momentum: latestValues.rsi > 50 ? 'POSITIVE' : 'NEGATIVE',
+          volatility: latestValues.atr > 0 ? 'NORMAL' : 'LOW',
+          support: currentPrice.price * 0.95,
+          resistance: currentPrice.price * 1.05
+        },
+        timestamp: Date.now()
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error calculating technical analysis:', error);
+      res.status(500).json({ error: 'Failed to calculate technical analysis' });
+    }
+  });
+
+  // Real-time price streaming status
+  app.get('/api/streaming/status', async (req: Request, res: Response) => {
+    try {
+      const stats = enhancedPriceStreamer.getStats();
+      
+      res.json({
+        success: true,
+        streaming: stats,
+        summary: {
+          isActive: stats.isRunning,
+          connectedClients: stats.connectedClients,
+          cachedPrices: stats.cachedPrices,
+          historicalDataSets: stats.cachedHistoricalSets
+        }
+      });
+      
+    } catch (error) {
+      console.error('[Routes] Error fetching streaming status:', error);
+      res.status(500).json({ error: 'Failed to fetch streaming status' });
     }
   });
 
