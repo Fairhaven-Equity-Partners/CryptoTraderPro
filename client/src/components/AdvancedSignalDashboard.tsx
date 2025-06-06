@@ -466,24 +466,31 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Enhanced calculation triggers:
-        // 1. Official 3-minute synchronized events
-        // 2. Significant price movements (>0.5% change)
-        // 3. Manual calculation requests
+        // Enhanced calculation triggers synchronized with ultimateSystemManager:
+        // 1. Official 4-minute synchronized events from ultimateSystemManager
+        // 2. Manual calculation requests
+        // 3. Real-time updates when significant data changes occur
         const shouldCalculate = (
-          (isThreeMinuteMark && timeSinceLastCalc >= 170) || // 3-minute sync with buffer
+          (event.detail.interval === '4-minute' && timeSinceLastCalc >= 230) || // 4-minute sync with buffer
           (event.detail.manual === true) || // Manual trigger
-          (timeSinceLastCalc >= 30 && hasMinimumData) // Real-time calculation every 30s
+          (timeSinceLastCalc >= 60 && hasMinimumData) // Reduced frequency for better sync
         );
         
         if (shouldCalculate && !isCalculating) {
-          const triggerType = isThreeMinuteMark ? '3-minute sync' : 
+          const triggerType = event.detail.interval === '4-minute' ? '4-minute sync' : 
                             event.detail.manual ? 'manual' : 'real-time';
           console.log(`⚡ Starting ${triggerType} calculation for ${symbol}`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals();
+          
+          // Broadcast completion to heatmap and other components for perfect synchronization
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('calculation-loop-complete', {
+              detail: { symbol, timestamp: Date.now(), triggerType }
+            }));
+          }, 1000); // Delay to ensure calculation completion
         } else {
           console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
         }
