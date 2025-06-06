@@ -556,6 +556,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Synchronized market heatmap endpoint - uses same calculation engine as main dashboard
+  app.get('/api/market-heatmap', async (req: Request, res: Response) => {
+    try {
+      const { timeframe = '4h' } = req.query;
+      console.log(`[HeatMapAPI] Fetching synchronized heatmap data for ${timeframe}`);
+      
+      // Get authentic calculated signals from the automated signal calculator
+      const allSignals = automatedSignalCalculator.getAllSignals();
+      const heatmapData: any[] = [];
+      
+      // Iterate through all signals using forEach to avoid downlevelIteration issues
+      allSignals.forEach((signalsList, symbol) => {
+        // Find signal for requested timeframe
+        const signal = signalsList.find((s: { timeframe: any; }) => s.timeframe === timeframe);
+        
+        if (signal && signal.price > 0) {
+          // Use the same calculation system data for perfect synchronization
+          const cryptoAsset = extendedCryptoList.find(crypto => crypto.symbol === symbol);
+          
+          const timeframeKey = String(timeframe);
+          const signalData = {
+            symbol: signal.symbol,
+            name: cryptoAsset?.name || signal.symbol,
+            marketCap: cryptoAsset?.marketCap || 0,
+            currentPrice: signal.price,
+            change24h: 0, // Will be updated from price data
+            signals: {
+              [timeframeKey]: {
+                direction: signal.direction,
+                confidence: Math.round(signal.confidence),
+                strength: signal.strength,
+                timestamp: signal.timestamp
+              }
+            }
+          };
+          
+          heatmapData.push(signalData);
+        }
+      });
+      
+      console.log(`[HeatMapAPI] Returning ${heatmapData.length} synchronized signals for ${timeframe}`);
+      res.json(heatmapData);
+      
+    } catch (error) {
+      console.error('[HeatMapAPI] Error fetching synchronized heatmap data:', error);
+      res.status(500).json({ error: 'Failed to fetch heatmap data' });
+    }
+  });
+
   // Trade simulation routes
   app.post('/api/trade-simulations', async (req: Request, res: Response) => {
     try {

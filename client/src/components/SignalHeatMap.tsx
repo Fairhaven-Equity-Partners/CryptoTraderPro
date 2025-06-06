@@ -56,25 +56,41 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filterDirection, setFilterDirection] = useState<'ALL' | 'LONG' | 'SHORT' | 'NEUTRAL'>('ALL');
   
-  // Synchronized heatmap updates with auto-calculation timer
+  // Perfect synchronization with ultimateSystemManager timer
   useEffect(() => {
-    const syncWithAutoCalculation = () => {
-      // Force refetch when auto-calculation completes
+    const syncWithUltimateSystem = () => {
+      console.log('[HeatMap] Syncing with ultimate system timer - refreshing heatmap data');
       queryClient.invalidateQueries({ queryKey: ['/api/crypto/all-pairs'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/market-heatmap'] });
     };
 
-    // Listen for auto-calculation completion events
-    const interval = setInterval(syncWithAutoCalculation, 240000); // 4 minutes
+    // Listen for synchronized calculation events from the ultimate system
+    const handleCalculationEvent = (event: CustomEvent) => {
+      console.log('[HeatMap] Received synchronized calculation event - updating heatmap');
+      syncWithUltimateSystem();
+    };
+
+    // Subscribe to synchronized calculation events
+    window.addEventListener('synchronized-calculation-complete', handleCalculationEvent as EventListener);
+    window.addEventListener('calculation-loop-complete', handleCalculationEvent as EventListener);
     
-    return () => clearInterval(interval);
+    return () => {
+      window.removeEventListener('synchronized-calculation-complete', handleCalculationEvent as EventListener);
+      window.removeEventListener('calculation-loop-complete', handleCalculationEvent as EventListener);
+    };
   }, []);
 
-  // Fetch all 50 cryptocurrency pairs with authentic calculated signals
+  // Fetch market heatmap data synchronized with calculation engine
   const { data: cryptoAssets, isLoading, refetch } = useQuery({
-    queryKey: ['/api/crypto/all-pairs', selectedTimeframe],
-    queryFn: () => fetch(`/api/crypto/all-pairs?timeframe=${selectedTimeframe}`).then(res => res.json()),
-    refetchInterval: 240000, // 4 minutes synchronized with auto-calculation
-    staleTime: 0, // Always fetch fresh data when timeframe changes
+    queryKey: ['/api/market-heatmap', selectedTimeframe],
+    queryFn: async () => {
+      console.log(`[HeatMap] Fetching synchronized heatmap data for ${selectedTimeframe}`);
+      const response = await fetch(`/api/market-heatmap?timeframe=${selectedTimeframe}`);
+      if (!response.ok) throw new Error('Failed to fetch heatmap data');
+      return response.json();
+    },
+    refetchInterval: false, // Disable automatic refetch - use event-driven updates
+    staleTime: 0,
     refetchOnMount: true,
     refetchOnWindowFocus: false
   });

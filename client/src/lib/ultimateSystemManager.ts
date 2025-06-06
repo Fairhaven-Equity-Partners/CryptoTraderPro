@@ -120,8 +120,14 @@ function startUltimateTimer(): void {
 
     // When countdown reaches zero
     if (countdownRemaining <= 0) {
-      console.log('[UltimateManager] 4-minute interval reached - triggering price fetch');
+      console.log('[UltimateManager] 4-minute interval reached - triggering synchronized calculation');
       performScheduledPriceFetch();
+      
+      // Broadcast synchronized calculation event to all components
+      window.dispatchEvent(new CustomEvent('synchronized-calculation-complete', {
+        detail: { timestamp: Date.now(), interval: '4-minute' }
+      }));
+      
       countdownRemaining = 240; // Reset to exactly 4 minutes
     }
   }, 1000);
