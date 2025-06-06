@@ -1569,8 +1569,20 @@ export default function AdvancedSignalDashboard({
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          // Get authentic live price immediately - eliminate 2-cycle delay
-          const authenticLivePrice = centralizedPrice || (asset as any)?.lastPrice || currentAssetPrice || (asset as any)?.currentPrice;
+          // Get authentic live price immediately using centralized manager
+          let authenticLivePrice = centralizedPrice || (asset as any)?.lastPrice || currentAssetPrice;
+          
+          // If no immediate price available, force fetch from centralized manager
+          if (!authenticLivePrice || authenticLivePrice <= 0) {
+            const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
+            authenticLivePrice = await centralizedPriceManager.getImmediatePrice(symbol);
+          }
+          
+          if (!authenticLivePrice || authenticLivePrice <= 0) {
+            console.warn('No valid live price available for accuracy tracking - skipping prediction recording');
+            return;
+          }
+          
           console.log(`Recording predictions using live price: ${authenticLivePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {

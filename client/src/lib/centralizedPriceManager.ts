@@ -80,11 +80,32 @@ class CentralizedPriceManager {
   }
 
   /**
-   * Get current price for a symbol
+   * Get current price for a symbol - immediate retrieval for feedback loop
    */
   getCurrentPrice(symbol: string): number | null {
     const data = this.priceData.get(symbol);
-    return data ? data.price : null;
+    if (data && data.price > 0) {
+      return data.price;
+    }
+    
+    // If no cached price, fetch immediately to prevent 2-cycle delay
+    console.log(`[CentralizedPriceManager] No cached price for ${symbol}, fetching immediately`);
+    this.fetchPriceForSymbol(symbol);
+    return null;
+  }
+
+  /**
+   * Force immediate price fetch and return - eliminates 2-cycle delay
+   */
+  async getImmediatePrice(symbol: string): Promise<number | null> {
+    // Check cache first
+    const cachedData = this.priceData.get(symbol);
+    if (cachedData && cachedData.price > 0 && (Date.now() - cachedData.timestamp) < 60000) {
+      return cachedData.price;
+    }
+    
+    // Fetch immediately if no recent cached data
+    return await this.fetchPriceForSymbol(symbol);
   }
 
   /**
@@ -117,7 +138,7 @@ class CentralizedPriceManager {
   }
 
   /**
-   * Fetch price for a specific symbol
+   * Fetch price for a specific symbol - immediate retrieval for feedback loop
    */
   private async fetchPriceForSymbol(symbol: string) {
     try {
@@ -135,6 +156,7 @@ class CentralizedPriceManager {
           };
           
           this.priceData.set(symbol, priceData);
+          this.lastFetchTime = Date.now();
           console.log(`[CentralizedPriceManager] Updated price for ${symbol}: $${price}`);
           
           // Notify all subscribers with the exact same price
@@ -144,11 +166,14 @@ class CentralizedPriceManager {
               subscriber.callback(price);
             });
           }
+          
+          return price;
         }
       }
     } catch (error) {
       console.error(`[CentralizedPriceManager] Error fetching price for ${symbol}:`, error);
     }
+    return null;
   }
 
   /**
