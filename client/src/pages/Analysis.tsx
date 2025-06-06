@@ -5,9 +5,7 @@ import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
-import PerformanceDashboard from '../components/PerformanceDashboard';
-import CompactPerformanceDashboard from '../components/CompactPerformanceDashboard';
-import { EnhancedTechnicalAnalysis } from '../components/EnhancedTechnicalAnalysis';
+import { UnifiedPerformancePanel } from '../components/UnifiedPerformancePanel';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
 import { 
@@ -73,14 +71,9 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-        {/* Enhanced Technical Analysis Section - Positioned after Market Analysis */}
+        {/* Unified Performance Panel - Combines Technical Analysis & Performance Metrics */}
         <div className="px-4 py-2">
-          <EnhancedTechnicalAnalysis symbol={currentAsset} />
-        </div>
-        
-        {/* Performance Analytics Section - Positioned after Technical Analysis */}
-        <div className="px-4 py-2">
-          <CompactPerformanceDashboard />
+          <UnifiedPerformancePanel symbol={currentAsset} />
         </div>
         
         {/* Heat Map Section */}
