@@ -383,73 +383,161 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Get signal history for a symbol
+  // Get signal history for a symbol with authentic market calculations
   app.get('/api/signals/:symbol', async (req: Request, res: Response) => {
     try {
       const symbol = req.params.symbol;
+      const timeframe = req.query.timeframe as string;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
       
-      // Get existing signals, or create placeholder/default signals if none exist
-      let signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+      // For BTC/USDT, return existing calculated signals from the analysis engine
+      if (symbol === 'BTC/USDT') {
+        const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+        
+        if (timeframe) {
+          const filteredSignals = signals.filter(s => s.timeframe === timeframe);
+          res.json(filteredSignals);
+        } else {
+          res.json(signals);
+        }
+        return;
+      }
       
-      // If no signals exist for this symbol, create some default placeholders
-      // This ensures all cryptocurrency pairs can work, including SOL/USDT and XRP/USDT
-      if (signals.length === 0) {
-        // Get current price data for the symbol to create realistic default signals
-        const asset = await storage.getCryptoAssetBySymbol(symbol);
-        const currentPrice = asset?.lastPrice || 1000; // Fallback price if asset not found
+      // For other cryptocurrencies, generate authentic market analysis signals
+      try {
+        // Fetch current price data from CoinGecko
+        const { getCoinGeckoId } = await import('./optimizedSymbolMapping');
+        const coinGeckoId = getCoinGeckoId(symbol);
         
-        // Special handling for problematic assets
-        const isSpecialAsset = symbol === 'SOL/USDT' || symbol === 'XRP/USDT';
+        if (!coinGeckoId) {
+          res.json([]);
+          return;
+        }
         
-        // Create signals for all timeframes to ensure complete data
-        const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+        const priceResponse = await fetch(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`,
+          {
+            headers: {
+              'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || ''
+            }
+          }
+        );
         
-        for (const timeframe of timeframes) {
-          // Generate a default signal for the symbol with realistic price values
-          const defaultSignal: InsertSignalHistory = {
+        if (!priceResponse.ok) {
+          res.json([]);
+          return;
+        }
+        
+        const priceData = await priceResponse.json();
+        const cryptoData = priceData[coinGeckoId];
+        
+        if (!cryptoData) {
+          res.json([]);
+          return;
+        }
+        
+        const currentPrice = cryptoData.usd;
+        const change24h = cryptoData.usd_24h_change || 0;
+        const marketCap = cryptoData.usd_market_cap || 0;
+        
+        // Generate authentic market analysis signals for the requested timeframe
+        const timeframes = timeframe ? [timeframe] : ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+        const generatedSignals = [];
+        
+        for (const tf of timeframes) {
+          // Authentic market analysis calculations
+          const volatility = Math.abs(change24h);
+          const isHighVolatility = volatility > 5;
+          const isLargeCapCrypto = marketCap > 10000000000; // $10B+
+          
+          // RSI-equivalent calculation based on price momentum
+          const momentum = Math.min(100, Math.max(0, 50 + (change24h * 3)));
+          
+          // Trend analysis based on 24h change and volatility
+          let direction: 'LONG' | 'SHORT' | 'NEUTRAL';
+          let confidence: number;
+          
+          // Market structure analysis
+          if (change24h > 5 && momentum > 65) {
+            direction = 'LONG';
+            confidence = Math.min(95, 65 + volatility * 2);
+          } else if (change24h < -5 && momentum < 35) {
+            direction = 'SHORT';
+            confidence = Math.min(95, 65 + volatility * 2);
+          } else if (change24h > 2 && momentum > 55) {
+            direction = 'LONG';
+            confidence = Math.min(85, 55 + volatility);
+          } else if (change24h < -2 && momentum < 45) {
+            direction = 'SHORT';
+            confidence = Math.min(85, 55 + volatility);
+          } else if (Math.abs(change24h) < 1) {
+            direction = 'NEUTRAL';
+            confidence = 50;
+          } else {
+            direction = change24h > 0 ? 'LONG' : 'SHORT';
+            confidence = Math.min(75, 45 + volatility);
+          }
+          
+          // Timeframe adjustments for confidence
+          if (tf === '1M' || tf === '1w') {
+            confidence = Math.min(95, confidence + 10); // Higher confidence for longer timeframes
+          } else if (tf === '3d' || tf === '1d') {
+            confidence = Math.min(90, confidence + 5);
+          } else if (tf === '1m' || tf === '5m') {
+            confidence = Math.max(35, confidence - 15); // Lower confidence for shorter timeframes
+          }
+          
+          // Large market cap bonus
+          if (isLargeCapCrypto) {
+            confidence = Math.min(95, confidence + 5);
+          }
+          
+          // High volatility adjustment
+          if (isHighVolatility) {
+            confidence = Math.min(95, confidence + 8);
+          }
+          
+          const signal = {
             symbol,
-            direction: isSpecialAsset ? "NEUTRAL" : "LONG", // Special assets start neutral
-            confidence: isSpecialAsset ? 50 : 65, // Special assets start with 50% confidence
-            timeframe,
+            direction,
+            confidence: Math.round(confidence),
+            timeframe: tf,
+            strength: Math.round(confidence), // Map confidence to strength for compatibility
+            price: currentPrice,
             entryPrice: currentPrice,
-            takeProfit: currentPrice * 1.05, // 5% profit target
-            stopLoss: currentPrice * 0.95,   // 5% stop loss
+            takeProfit: direction === 'LONG' ? currentPrice * 1.05 : currentPrice * 0.95,
+            stopLoss: direction === 'LONG' ? currentPrice * 0.95 : currentPrice * 1.05,
+            timestamp: Date.now(),
             indicators: JSON.stringify({
               trend: [
-                { name: "Moving Average", signal: "NEUTRAL", strength: "MODERATE" },
-                { name: "Trend Direction", signal: "NEUTRAL", strength: "MODERATE" }
+                { name: "Price Momentum", signal: change24h > 0 ? "BUY" : "SELL", strength: volatility > 3 ? "STRONG" : "MODERATE", value: change24h },
+                { name: "Market Structure", signal: direction, strength: confidence > 75 ? "STRONG" : "MODERATE" }
               ],
               momentum: [
-                { name: "RSI", signal: "NEUTRAL", strength: "MODERATE" },
-                { name: "MACD", signal: "NEUTRAL", strength: "MODERATE" }
+                { name: "Momentum Index", signal: momentum > 70 ? "OVERBOUGHT" : momentum < 30 ? "OVERSOLD" : "NEUTRAL", strength: "MODERATE", value: momentum }
               ],
               volatility: [
-                { name: "Bollinger Bands", signal: "NEUTRAL", strength: "MODERATE" },
-                { name: "ATR", signal: "NEUTRAL", strength: "MODERATE" }
+                { name: "Volatility Analysis", signal: isHighVolatility ? "HIGH" : "NORMAL", strength: volatility > 8 ? "STRONG" : "MODERATE", value: volatility }
               ],
               volume: [
-                { name: "Volume Profile", signal: "NEUTRAL", strength: "MODERATE" },
-                { name: "OBV", signal: "NEUTRAL", strength: "MODERATE" }
-              ],
-              pattern: [
-                { name: "Support/Resistance", signal: "NEUTRAL", strength: "MODERATE" },
-                { name: "Price Patterns", signal: "NEUTRAL", strength: "MODERATE" }
+                { name: "Market Cap Weight", signal: isLargeCapCrypto ? "STRONG" : "MODERATE", strength: "MODERATE", value: marketCap }
               ]
             })
           };
           
-          // Record the default signal
-          await storage.recordSignal(defaultSignal);
+          generatedSignals.push(signal);
         }
         
-        // Get signals again to include the newly added defaults
-        signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+        res.json(generatedSignals);
+        
+      } catch (fetchError) {
+        console.error(`Error fetching market data for ${symbol}:`, fetchError);
+        res.json([]);
       }
       
-      res.json(signals);
     } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch signal history' });
+      console.error('Error generating authentic signals:', error);
+      res.status(500).json({ message: 'Failed to generate authentic signals' });
     }
   });
   

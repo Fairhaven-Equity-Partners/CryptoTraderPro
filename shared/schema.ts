@@ -61,6 +61,7 @@ export const signalHistory = pgTable("signal_history", {
   symbol: text("symbol").notNull(),
   timeframe: text("timeframe").notNull(),
   direction: text("direction").notNull(), // LONG or SHORT
+  confidence: integer("confidence").notNull(), // 0-100 confidence percentage
   strength: integer("strength").notNull(), // 0-100
   indicators: jsonb("indicators").notNull(), // Store indicator results as JSON
   price: doublePrecision("price").notNull(),
@@ -71,6 +72,7 @@ export const insertSignalHistorySchema = createInsertSchema(signalHistory).pick(
   symbol: true,
   timeframe: true,
   direction: true,
+  confidence: true,
   strength: true,
   indicators: true,
   price: true,
