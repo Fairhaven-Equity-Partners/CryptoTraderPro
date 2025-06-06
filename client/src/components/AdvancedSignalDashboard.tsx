@@ -636,69 +636,48 @@ export default function AdvancedSignalDashboard({
     
     // Removed debug logging to keep console clean
     
-    // Enhanced immediate calculation trigger with detailed debugging
-    console.log(`[DEBUG] Checking immediate calc conditions: isAllDataLoaded=${isAllDataLoaded}, isLiveDataReady=${isLiveDataReady}, effectivelyLiveDataReady=${effectivelyLiveDataReady}, currentAssetPrice=${currentAssetPrice}, calculationTriggeredRef=${calculationTriggeredRef.current}`);
-    
+    // Optimized immediate calculation trigger with consistent behavior across all pairs
     if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
-      console.log(`[SignalDashboard] All data ready for ${symbol} - executing immediate calculation`);
+      console.log(`[SignalDashboard] Data ready for ${symbol} - triggering calculation`);
       calculationTriggeredRef.current = true;
       
-      // Clear any existing timeout to prevent conflicts
       if (calculationTimeoutRef.current) {
         clearTimeout(calculationTimeoutRef.current);
       }
       
-      // Execute calculation immediately using the existing timeout system
+      // Execute calculation with minimal delay for consistency
       calculationTimeoutRef.current = setTimeout(() => {
-        console.log(`[SignalDashboard] Executing immediate calculation for ${symbol}`);
-        
-        // Force execution by temporarily bypassing state checks
-        const originalCalculating = isCalculating;
-        if (!originalCalculating) {
-          try {
-            calculateAllSignals().catch(error => {
-              console.error('[SignalDashboard] Error in immediate calculation:', error);
-              setIsCalculating(false);
-            });
-          } catch (error) {
-            console.error('[SignalDashboard] Sync error in immediate calculation:', error);
+        if (!isCalculating) {
+          calculateAllSignals().catch(error => {
+            console.error('[SignalDashboard] Calculation error:', error);
             setIsCalculating(false);
-          }
+          });
         }
-      }, 2000); // 2-second buffer using existing system
+      }, 1000); // Optimized 1-second buffer
     }
     
-    // Fallback trigger - if data is loaded but price conditions not met after 5 seconds
+    // Optimized fallback trigger for consistent calculation across all pairs
     if (isAllDataLoaded && !calculationTriggeredRef.current) {
       const fallbackTimeoutRef = setTimeout(() => {
         if (!calculationTriggeredRef.current) {
-          console.log(`[SignalDashboard] Fallback trigger executing for ${symbol} - bypassing price conditions`);
+          console.log(`[SignalDashboard] Fallback calculation for ${symbol}`);
           calculationTriggeredRef.current = true;
           
-          // Clear any existing calculation timeout
           if (calculationTimeoutRef.current) {
             clearTimeout(calculationTimeoutRef.current);
           }
           
-          // Execute with minimal delay
           calculationTimeoutRef.current = setTimeout(() => {
-            console.log(`[SignalDashboard] Fallback calculation executing for ${symbol}`);
             if (!isCalculating) {
-              try {
-                calculateAllSignals().catch(error => {
-                  console.error('[SignalDashboard] Error in fallback calculation:', error);
-                  setIsCalculating(false);
-                });
-              } catch (error) {
-                console.error('[SignalDashboard] Sync error in fallback calculation:', error);
+              calculateAllSignals().catch(error => {
+                console.error('[SignalDashboard] Fallback error:', error);
                 setIsCalculating(false);
-              }
+              });
             }
           }, 500);
         }
-      }, 5000); // 5-second fallback delay
+      }, 3000); // Reduced to 3-second fallback for faster responsiveness
       
-      // Clean up fallback timeout when component unmounts or conditions change
       return () => clearTimeout(fallbackTimeoutRef);
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData]);

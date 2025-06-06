@@ -113,20 +113,28 @@ function startUltimateTimer(): void {
   ultimateTimer = window.setInterval(() => {
     countdownRemaining -= 1;
 
-    // Log every 10 seconds to reduce spam
-    if (countdownRemaining % 10 === 0) {
+    // Optimized logging frequency for better performance
+    if (countdownRemaining % 20 === 0) {
       console.log(`[UltimateManager] Next fetch in ${countdownRemaining}s`);
     }
 
-    // When countdown reaches zero
+    // Enhanced synchronized calculation trigger
     if (countdownRemaining <= 0) {
-      console.log('[UltimateManager] 4-minute interval reached - triggering synchronized calculation');
+      console.log('[UltimateManager] 4-minute synchronized calculation starting');
       performScheduledPriceFetch();
       
-      // Broadcast synchronized calculation event to all components
-      window.dispatchEvent(new CustomEvent('synchronized-calculation-complete', {
-        detail: { timestamp: Date.now(), interval: '4-minute' }
-      }));
+      // Enhanced event broadcasting for all components
+      const syncEvent = new CustomEvent('synchronized-calculation-complete', {
+        detail: { 
+          timestamp: Date.now(), 
+          interval: '4-minute',
+          triggerType: 'automatic',
+          systemState: 'active'
+        }
+      });
+      
+      window.dispatchEvent(syncEvent);
+      document.dispatchEvent(syncEvent);
       
       countdownRemaining = 240; // Reset to exactly 4 minutes
     }

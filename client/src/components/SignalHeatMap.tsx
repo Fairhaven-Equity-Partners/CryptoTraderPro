@@ -236,9 +236,12 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                   {groupedByConfidence.high_long.map(signal => (
                     <Badge 
                       key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
-                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
-                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
+                      title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
+                      onClick={() => {
+                        console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
+                        onSelectAsset && onSelectAsset(signal.symbol);
+                      }}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -256,9 +259,12 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                   {groupedByConfidence.medium_long.map(signal => (
                     <Badge 
                       key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer`}
-                      title={`${signal.confidence}% confidence - Click to select ${signal.name}`}
-                      onClick={() => onSelectAsset && onSelectAsset(signal.symbol)}
+                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
+                      title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
+                      onClick={() => {
+                        console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
+                        onSelectAsset && onSelectAsset(signal.symbol);
+                      }}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>

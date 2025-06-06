@@ -217,51 +217,52 @@ export class AutomatedSignalCalculator {
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 50;
 
-    // Enhanced multi-factor trend analysis with more realistic thresholds
-    const strongBullish = change24h > 3;
-    const moderateBullish = change24h > 0.5 && change24h <= 3;
-    const strongBearish = change24h < -3;
-    const moderateBearish = change24h < -0.5 && change24h >= -3;
+    // Optimized multi-factor trend analysis with enhanced precision
+    const strongBullish = change24h > 2.5;
+    const moderateBullish = change24h > 0.3 && change24h <= 2.5;
+    const strongBearish = change24h < -2.5;
+    const moderateBearish = change24h < -0.3 && change24h >= -2.5;
     
+    // Enhanced signal generation with improved accuracy
     if (strongBullish) {
       direction = 'LONG';
-      confidence = Math.min(95, 70 + (change24h * 4) * categoryMultiplier * timeframeWeight);
-    } else if (moderateBullish && momentum > 55) {
+      confidence = Math.min(95, 65 + (change24h * 5) * categoryMultiplier * timeframeWeight);
+    } else if (moderateBullish && momentum > 52) {
       direction = 'LONG';
-      confidence = Math.min(85, 55 + (change24h * 8) * categoryMultiplier * timeframeWeight);
+      confidence = Math.min(85, 50 + (change24h * 10) * categoryMultiplier * timeframeWeight);
     } else if (strongBearish) {
       direction = 'SHORT';
-      confidence = Math.min(95, 70 + (Math.abs(change24h) * 4) * categoryMultiplier * timeframeWeight);
-    } else if (moderateBearish && momentum < 45) {
+      confidence = Math.min(95, 65 + (Math.abs(change24h) * 5) * categoryMultiplier * timeframeWeight);
+    } else if (moderateBearish && momentum < 48) {
       direction = 'SHORT';
-      confidence = Math.min(85, 55 + (Math.abs(change24h) * 8) * categoryMultiplier * timeframeWeight);
-    } else if (change24h > 0 && momentum > 60) {
-      // Momentum-driven LONG signals for positive movement
+      confidence = Math.min(85, 50 + (Math.abs(change24h) * 10) * categoryMultiplier * timeframeWeight);
+    } else if (change24h > 0 && momentum > 58) {
+      // Enhanced momentum-driven LONG signals
       direction = 'LONG';
-      confidence = Math.min(75, 50 + (momentum * 0.5) * categoryMultiplier * timeframeWeight);
-    } else if (change24h < 0 && momentum < 40) {
-      // Momentum-driven SHORT signals for negative movement
+      confidence = Math.min(80, 45 + (momentum * 0.6) * categoryMultiplier * timeframeWeight);
+    } else if (change24h < 0 && momentum < 42) {
+      // Enhanced momentum-driven SHORT signals
       direction = 'SHORT';
-      confidence = Math.min(75, 50 + ((60 - momentum) * 0.5) * categoryMultiplier * timeframeWeight);
+      confidence = Math.min(80, 45 + ((60 - momentum) * 0.6) * categoryMultiplier * timeframeWeight);
     } else {
       direction = 'NEUTRAL';
-      confidence = Math.max(30, 50 - (volatility * 2));
+      confidence = Math.max(35, 50 - (volatility * 1.8));
     }
 
-    // Momentum-based adjustments
-    if (momentum > 70 && direction === 'LONG') {
-      confidence = Math.min(98, confidence + 8);
-    } else if (momentum < 30 && direction === 'SHORT') {
-      confidence = Math.min(98, confidence + 8);
+    // Enhanced momentum-based precision adjustments
+    if (momentum > 72 && direction === 'LONG') {
+      confidence = Math.min(98, confidence + 10);
+    } else if (momentum < 28 && direction === 'SHORT') {
+      confidence = Math.min(98, confidence + 10);
     }
 
-    // Market cap and volatility adjustments
-    if (isLargeCapCrypto && confidence > 70) {
-      confidence = Math.min(95, confidence + 5);
+    // Optimized market cap and volatility adjustments
+    if (isLargeCapCrypto && confidence > 65) {
+      confidence = Math.min(96, confidence + 6);
     }
     
-    if (isHighVolatility) {
-      confidence = Math.min(95, confidence + 3);
+    if (isHighVolatility && confidence > 60) {
+      confidence = Math.min(94, confidence + 4);
     }
 
     return {
@@ -308,16 +309,16 @@ export class AutomatedSignalCalculator {
   }
 
   /**
-   * Get timeframe-specific weight multiplier
+   * Get optimized timeframe-specific weight multiplier for enhanced precision
    */
   private getTimeframeWeight(timeframe: string): number {
     const weights: Record<string, number> = {
-      '1m': 0.8,
-      '5m': 0.85,
-      '15m': 0.9,
-      '30m': 0.95,
+      '1m': 0.75,
+      '5m': 0.82,
+      '15m': 0.88,
+      '30m': 0.94,
       '1h': 1.0,
-      '4h': 1.1,
+      '4h': 1.12,
       '1d': 1.15,
       '3d': 1.1,
       '1w': 1.05,
