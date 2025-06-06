@@ -69,14 +69,14 @@ export class AutomatedSignalCalculator {
       console.error('[AutomatedSignalCalculator] Initial calculation error:', error);
     }
     
-    // Set up recurring calculations every 4 minutes
-    this.calculationInterval = setInterval(async () => {
-      try {
-        await this.calculateAllSignals();
-      } catch (error) {
-        console.error('[AutomatedSignalCalculator] Error in scheduled calculation:', error);
-      }
-    }, this.baseCalculationIntervalMs);
+    // Disabled automatic interval - calculations now triggered by component timer only
+    // this.calculationInterval = setInterval(async () => {
+    //   try {
+    //     await this.calculateAllSignals();
+    //   } catch (error) {
+    //     console.error('[AutomatedSignalCalculator] Error in scheduled calculation:', error);
+    //   }
+    // }, this.baseCalculationIntervalMs);
 
     console.log('[AutomatedSignalCalculator] Automated system started - immediate calculations active');
   }
