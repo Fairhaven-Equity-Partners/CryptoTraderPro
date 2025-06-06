@@ -6,6 +6,7 @@ import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import PerformanceDashboard from '../components/PerformanceDashboard';
+import { CompactPerformanceDashboard } from '../components/CompactPerformanceDashboard';
 import { EnhancedTechnicalAnalysis } from '../components/EnhancedTechnicalAnalysis';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
@@ -72,6 +73,16 @@ const Analysis: React.FC = () => {
           />
         </div>
         
+        {/* Enhanced Technical Analysis Section - Positioned after Market Analysis */}
+        <div className="px-4 py-2">
+          <EnhancedTechnicalAnalysis symbol={currentAsset} />
+        </div>
+        
+        {/* Performance Analytics Section - Positioned after Technical Analysis */}
+        <div className="px-4 py-2">
+          <CompactPerformanceDashboard />
+        </div>
+        
         {/* Heat Map Section */}
         <div className="px-4 py-4">
           <Collapsible open={isHeatMapOpen} onOpenChange={setIsHeatMapOpen}>
@@ -92,16 +103,6 @@ const Analysis: React.FC = () => {
               <SignalHeatMap onSelectAsset={handleChangeAsset} />
             </CollapsibleContent>
           </Collapsible>
-          
-          {/* Enhanced Technical Analysis Section */}
-          <div className="space-y-4">
-            <EnhancedTechnicalAnalysis symbol={currentAsset} />
-          </div>
-          
-          {/* Performance Analytics Section */}
-          <div className="space-y-4">
-            <PerformanceDashboard />
-          </div>
         </div>
       </main>
     </div>
