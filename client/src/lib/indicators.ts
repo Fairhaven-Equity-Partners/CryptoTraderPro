@@ -35,44 +35,33 @@ function cleanupCache() {
 
 // Helper functions for technical indicators
 export function calculateRSI(prices: number[], period = 14): number {
-  if (prices.length < period + 1) {
-    return 50; // Not enough data, return neutral
-  }
+  if (prices.length < period + 1) return 50;
   
-  let avgGain = 0;
-  let avgLoss = 0;
+  let gainSum = 0;
+  let lossSum = 0;
   
-  // Calculate initial average gain and loss
+  // Initial period calculation
   for (let i = 1; i <= period; i++) {
     const change = prices[i] - prices[i - 1];
-    if (change >= 0) {
-      avgGain += change;
-    } else {
-      avgLoss += Math.abs(change);
-    }
+    if (change > 0) gainSum += change;
+    else lossSum -= change;
   }
   
-  avgGain /= period;
-  avgLoss /= period;
+  let avgGain = gainSum / period;
+  let avgLoss = lossSum / period;
   
-  // Calculate RSI using smoothed averages
+  // Wilder's smoothing for remaining periods
+  const alpha = 1 / period;
   for (let i = period + 1; i < prices.length; i++) {
     const change = prices[i] - prices[i - 1];
-    if (change >= 0) {
-      avgGain = (avgGain * (period - 1) + change) / period;
-      avgLoss = (avgLoss * (period - 1)) / period;
-    } else {
-      avgGain = (avgGain * (period - 1)) / period;
-      avgLoss = (avgLoss * (period - 1) + Math.abs(change)) / period;
-    }
+    const gain = Math.max(change, 0);
+    const loss = Math.max(-change, 0);
+    
+    avgGain = alpha * gain + (1 - alpha) * avgGain;
+    avgLoss = alpha * loss + (1 - alpha) * avgLoss;
   }
   
-  if (avgLoss === 0) {
-    return 100;
-  }
-  
-  const rs = avgGain / avgLoss;
-  return 100 - (100 / (1 + rs));
+  return avgLoss === 0 ? 100 : 100 - (100 / (1 + avgGain / avgLoss));
 }
 
 export function calculateMACD(prices: number[], fastPeriod = 12, slowPeriod = 26, signalPeriod = 9): {

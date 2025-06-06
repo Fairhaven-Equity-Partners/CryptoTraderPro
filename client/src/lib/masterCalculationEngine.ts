@@ -9,12 +9,33 @@ export class MasterCalculationEngine {
   private static instance: MasterCalculationEngine;
   private priceCache = new Map<string, number[]>();
   private indicatorCache = new Map<string, any>();
+  private cacheAccessTimes = new Map<string, number>();
+  private readonly MAX_CACHE_SIZE = 1000;
+  private readonly CACHE_TTL = 300000; // 5 minutes
 
   static getInstance(): MasterCalculationEngine {
     if (!MasterCalculationEngine.instance) {
       MasterCalculationEngine.instance = new MasterCalculationEngine();
     }
     return MasterCalculationEngine.instance;
+  }
+
+  private manageCacheSize(): void {
+    if (this.indicatorCache.size > this.MAX_CACHE_SIZE) {
+      const now = Date.now();
+      const sortedEntries = Array.from(this.cacheAccessTimes.entries())
+        .sort((a, b) => a[1] - b[1])
+        .slice(0, Math.floor(this.MAX_CACHE_SIZE * 0.3));
+      
+      for (const [key] of sortedEntries) {
+        this.indicatorCache.delete(key);
+        this.cacheAccessTimes.delete(key);
+      }
+    }
+  }
+
+  private updateCacheAccess(key: string): void {
+    this.cacheAccessTimes.set(key, Date.now());
   }
 
   /**
@@ -26,6 +47,7 @@ export class MasterCalculationEngine {
 
     const cacheKey = `rsi_${data.length}_${period}`;
     if (this.indicatorCache.has(cacheKey)) {
+      this.updateCacheAccess(cacheKey);
       return this.indicatorCache.get(cacheKey);
     }
 
@@ -55,6 +77,8 @@ export class MasterCalculationEngine {
 
     const rsi = avgLoss === 0 ? 100 : 100 - (100 / (1 + avgGain / avgLoss));
     this.indicatorCache.set(cacheKey, rsi);
+    this.updateCacheAccess(cacheKey);
+    this.manageCacheSize();
     return rsi;
   }
 
@@ -67,6 +91,7 @@ export class MasterCalculationEngine {
 
     const cacheKey = `ema_${data.length}_${period}`;
     if (this.indicatorCache.has(cacheKey)) {
+      this.updateCacheAccess(cacheKey);
       return this.indicatorCache.get(cacheKey);
     }
 
@@ -78,6 +103,8 @@ export class MasterCalculationEngine {
     }
 
     this.indicatorCache.set(cacheKey, ema);
+    this.updateCacheAccess(cacheKey);
+    this.manageCacheSize();
     return ema;
   }
 

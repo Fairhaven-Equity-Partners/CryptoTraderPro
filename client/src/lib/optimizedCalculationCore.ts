@@ -222,22 +222,31 @@ function calculateIndicators(data: ChartData[], currentPrice: number): Calculate
 function calculateRSI(closes: number[], period: number): number {
   if (closes.length < period + 1) return 50;
   
-  let gains = 0;
-  let losses = 0;
+  let gainSum = 0;
+  let lossSum = 0;
   
+  // Initial period calculation
   for (let i = 1; i <= period; i++) {
-    const change = closes[closes.length - i] - closes[closes.length - i - 1];
-    if (change > 0) gains += change;
-    else losses -= change;
+    const change = closes[i] - closes[i - 1];
+    if (change > 0) gainSum += change;
+    else lossSum -= change;
   }
   
-  const avgGain = gains / period;
-  const avgLoss = losses / period;
+  let avgGain = gainSum / period;
+  let avgLoss = lossSum / period;
   
-  if (avgLoss === 0) return 100;
+  // Wilder's smoothing for remaining periods
+  const alpha = 1 / period;
+  for (let i = period + 1; i < closes.length; i++) {
+    const change = closes[i] - closes[i - 1];
+    const gain = Math.max(change, 0);
+    const loss = Math.max(-change, 0);
+    
+    avgGain = alpha * gain + (1 - alpha) * avgGain;
+    avgLoss = alpha * loss + (1 - alpha) * avgLoss;
+  }
   
-  const rs = avgGain / avgLoss;
-  return 100 - (100 / (1 + rs));
+  return avgLoss === 0 ? 100 : 100 - (100 / (1 + avgGain / avgLoss));
 }
 
 function calculateMACD(closes: number[]): { value: number; signal: number; histogram: number } {
