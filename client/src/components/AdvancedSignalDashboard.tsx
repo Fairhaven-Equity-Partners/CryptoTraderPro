@@ -631,19 +631,24 @@ export default function AdvancedSignalDashboard({
     // Removed debug logging to keep console clean
     
     if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
-      console.log(`[SignalDashboard] All data ready for ${symbol} - triggering immediate calculation`);
+      console.log(`[SignalDashboard] All data ready for ${symbol} - scheduling immediate calculation with 3s buffer`);
       calculationTriggeredRef.current = true;
       
-      // Wrap in try-catch to handle any async errors
-      try {
-        calculateAllSignals().catch(error => {
-          console.error('[SignalDashboard] Error in immediate calculation:', error);
-          setIsCalculating(false); // Reset calculation state on error
-        });
-      } catch (error) {
-        console.error('[SignalDashboard] Sync error in immediate calculation:', error);
-        setIsCalculating(false);
-      }
+      // Add 3-second buffer for smoother calculation execution
+      setTimeout(() => {
+        console.log(`[SignalDashboard] Executing immediate calculation for ${symbol} after buffer`);
+        
+        // Wrap in try-catch to handle any async errors
+        try {
+          calculateAllSignals().catch(error => {
+            console.error('[SignalDashboard] Error in immediate calculation:', error);
+            setIsCalculating(false); // Reset calculation state on error
+          });
+        } catch (error) {
+          console.error('[SignalDashboard] Sync error in immediate calculation:', error);
+          setIsCalculating(false);
+        }
+      }, 3000); // 3-second buffer
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady]);
   
@@ -1244,12 +1249,19 @@ export default function AdvancedSignalDashboard({
           console.log(`[${timeframe}] Using currentAssetPrice: ${currentAssetPrice} for calculation`);
           
           // Generate signal using unified calculation core (consolidates 78+ files into optimized system)
+          console.log(`[${timeframe}] Preparing chart data with ${chartData[timeframe].length} candles`);
           const chartDataWithTimestamp = chartData[timeframe].map(d => ({
             ...d,
             timestamp: d.time || Date.now()
           }));
+          
+          console.log(`[${timeframe}] Updating market data in unified core`);
           unifiedCalculationCore.updateMarketData(symbol, timeframe, chartDataWithTimestamp);
+          
+          console.log(`[${timeframe}] Generating signal with price ${currentAssetPrice}`);
           let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, currentAssetPrice);
+          
+          console.log(`[${timeframe}] Unified signal result:`, unifiedSignal ? `${unifiedSignal.direction} (${unifiedSignal.confidence}%)` : 'null');
           
           // Convert unified signal to AdvancedSignal format for UI compatibility
           let signal: AdvancedSignal | null = null;
