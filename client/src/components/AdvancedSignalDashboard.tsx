@@ -631,24 +631,32 @@ export default function AdvancedSignalDashboard({
     // Removed debug logging to keep console clean
     
     if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
-      console.log(`[SignalDashboard] All data ready for ${symbol} - scheduling immediate calculation with 3s buffer`);
+      console.log(`[SignalDashboard] All data ready for ${symbol} - executing immediate calculation`);
       calculationTriggeredRef.current = true;
       
-      // Add 3-second buffer for smoother calculation execution
-      setTimeout(() => {
-        console.log(`[SignalDashboard] Executing immediate calculation for ${symbol} after buffer`);
+      // Clear any existing timeout to prevent conflicts
+      if (calculationTimeoutRef.current) {
+        clearTimeout(calculationTimeoutRef.current);
+      }
+      
+      // Execute calculation immediately using the existing timeout system
+      calculationTimeoutRef.current = setTimeout(() => {
+        console.log(`[SignalDashboard] Executing immediate calculation for ${symbol}`);
         
-        // Wrap in try-catch to handle any async errors
-        try {
-          calculateAllSignals().catch(error => {
-            console.error('[SignalDashboard] Error in immediate calculation:', error);
-            setIsCalculating(false); // Reset calculation state on error
-          });
-        } catch (error) {
-          console.error('[SignalDashboard] Sync error in immediate calculation:', error);
-          setIsCalculating(false);
+        // Force execution by temporarily bypassing state checks
+        const originalCalculating = isCalculating;
+        if (!originalCalculating) {
+          try {
+            calculateAllSignals().catch(error => {
+              console.error('[SignalDashboard] Error in immediate calculation:', error);
+              setIsCalculating(false);
+            });
+          } catch (error) {
+            console.error('[SignalDashboard] Sync error in immediate calculation:', error);
+            setIsCalculating(false);
+          }
         }
-      }, 3000); // 3-second buffer
+      }, 2000); // 2-second buffer using existing system
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady]);
   
@@ -1459,7 +1467,7 @@ export default function AdvancedSignalDashboard({
             return { timeframe, result };
           })
           .catch(error => {
-            console.log(`⚡ Error calculating ${timeframe}, using neutral signal`);
+            console.error(`⚡ Error calculating ${timeframe}:`, error);
             return { timeframe, result: null };
           });
       });
