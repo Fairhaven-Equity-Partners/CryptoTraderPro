@@ -29,7 +29,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import AutoCalculationStatus from "./AutoCalculationStatus";
+// import { AutoCalculationStatus } from "./AutoCalculationStatus";
 
 // Import window type definitions
 import '../lib/windowTypes';
