@@ -624,12 +624,18 @@ export default function AdvancedSignalDashboard({
     }
     
     // Streamlined data validation and immediate calculation trigger
-    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
+    // Override isLiveDataReady if we have valid price data from centralized manager
+    const hasValidPriceData = currentAssetPrice && currentAssetPrice > 0;
+    const effectivelyLiveDataReady = isLiveDataReady || hasValidPriceData;
+    
+    // Removed debug logging to keep console clean
+    
+    if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
       console.log(`[SignalDashboard] All data ready for ${symbol} - triggering immediate calculation`);
       calculationTriggeredRef.current = true;
       calculateAllSignals(); // Trigger immediate calculation when all data is ready
     }
-  }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
+  }, [symbol, isAllDataLoaded, isLiveDataReady]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
   useEffect(() => {
