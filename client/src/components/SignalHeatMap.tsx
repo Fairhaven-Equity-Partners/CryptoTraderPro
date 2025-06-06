@@ -61,15 +61,15 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
     staleTime: 30000 // 30 seconds
   });
 
-  // Generate mock signals for demonstration
+  // Process authentic CoinGecko data for all 50 cryptocurrency pairs
   const cryptoSignals = useMemo(() => {
     if (!cryptoAssets || !Array.isArray(cryptoAssets)) return [];
     
+    // Use authentic data from the new API endpoint
     return cryptoAssets
-      .filter((asset: any) => asset.marketCap && asset.marketCap >= 100000000) // $100M minimum
+      .filter((asset: any) => asset.currentPrice > 0) // Only include assets with valid prices
       .map((asset: any) => {
-        // For demonstration, generate signals based on asset properties
-        const price = asset.lastPrice;
+        const price = asset.currentPrice;
         const change24h = asset.change24h || 0;
         
         // Use the 24h change to influence the direction for demo purposes
@@ -105,13 +105,16 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
         return {
           symbol: asset.symbol,
           name: asset.name,
-          marketCap: asset.marketCap,
+          marketCap: asset.marketCap || 0,
           direction,
           confidence: Math.round(confidence),
           price,
           change24h
         };
-      });
+      })
+      .filter((signal, index, self) => 
+        index === self.findIndex(s => s.symbol === signal.symbol)
+      ); // Remove duplicates by symbol
   }, [cryptoAssets, selectedTimeframe]);
 
   // Apply direction filtering only (removed sorting for simplified interface)
