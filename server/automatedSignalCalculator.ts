@@ -33,10 +33,10 @@ export class AutomatedSignalCalculator {
   private lastCalculationTime: number = 0;
   private signalCache: Map<string, CalculatedSignal[]> = new Map();
   private marketVolatilityLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME' = 'MEDIUM';
-  private dynamicIntervalMs: number = 8 * 60 * 1000; // Optimized 8 minutes for free tier
+  private dynamicIntervalMs: number = 4 * 60 * 1000; // Optimized 4 minutes for synchronized calculations
   
   private readonly timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-  private readonly baseCalculationIntervalMs = 8 * 60 * 1000; // Base 8 minutes (optimized for free tier)
+  private readonly baseCalculationIntervalMs = 4 * 60 * 1000; // Base 4 minutes (synchronized with main engine)
   private readonly volatilityThresholds = {
     low: 2,
     medium: 5,
@@ -70,7 +70,7 @@ export class AutomatedSignalCalculator {
       } catch (error) {
         console.error('[AutomatedSignalCalculator] Error in scheduled calculation:', error);
       }
-    }, this.calculationIntervalMs);
+    }, this.baseCalculationIntervalMs);
 
     console.log('[AutomatedSignalCalculator] Automated system started - calculating every 4 minutes');
   }
@@ -96,7 +96,7 @@ export class AutomatedSignalCalculator {
     console.log(`[AutomatedSignalCalculator] Starting optimized calculation for ${TOP_50_SYMBOL_MAPPINGS.length} pairs across ${this.timeframes.length} timeframes`);
 
     try {
-      // Batch fetch all price data with optimized request
+      // Fetch authentic market data from CoinGecko API
       const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map(m => m.coinGeckoId).join(',');
       const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoIds}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&precision=2`;
       
