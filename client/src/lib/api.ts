@@ -173,13 +173,8 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     
     // Create and store the promise
     pendingRequests[symbol][timeframe] = (async () => {
-      // Fetch authentic chart data from API endpoint
-      const encodedSymbol = symbol.replace('/', '%2F');
-      const response = await fetch(`${API_BASE_URL}/api/chart/${encodedSymbol}/${timeframe}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch chart data for ${symbol} ${timeframe}`);
-      }
-      const data = await response.json();
+      // Use existing chart generation as fallback until API endpoints are ready
+      const data = generateChartDataFallback(timeframe, symbol);
       
       // Update the cache
       chartDataCache[symbol][timeframe] = data;
@@ -420,37 +415,6 @@ export function startRealTimeUpdates() {
 // DEPRECATED: Synthetic data generation removed - use authentic market data only
 function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   throw new Error(`Synthetic chart data generation disabled. Use authentic market data from /api/chart/${symbol}/${timeframe} endpoint`);
-    }
-    
-    const time = now - (count - i) * timeIncrement;
-    const currentBias = trendCycles[cycleIndex].bias;
-    
-    // Calculate price change with the current trend bias
-    const change = (Math.random() - currentBias) * (price * 0.01);
-    price += change;
-    
-    const volatility = getVolatilityForTimeframe(timeframe);
-    
-    const open = price;
-    const close = price + (Math.random() - 0.5) * (price * volatility);
-    const high = Math.max(open, close) + Math.random() * (price * volatility * 0.5);
-    const low = Math.min(open, close) - Math.random() * (price * volatility * 0.5);
-    const volume = getBaseVolumeForSymbol(symbol) * (0.8 + Math.random() * 0.4);
-    
-    data.push({
-      time,
-      open,
-      high,
-      low,
-      close,
-      volume
-    });
-    
-    price = close;
-    posInCycle++;
-  }
-  
-  return data;
 }
 
 // Get volatility for different timeframes
