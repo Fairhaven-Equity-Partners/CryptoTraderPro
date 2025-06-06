@@ -4,7 +4,7 @@
  * Runs on synchronized 4-minute intervals with the main calculation engine
  */
 
-import { TOP_50_SYMBOL_MAPPINGS, getCoinGeckoId } from './optimizedSymbolMapping';
+import { TOP_50_SYMBOL_MAPPINGS, getCoinGeckoId } from './optimizedSymbolMapping.js';
 import type { InsertSignalHistory } from '../shared/schema';
 
 interface CalculatedSignal {

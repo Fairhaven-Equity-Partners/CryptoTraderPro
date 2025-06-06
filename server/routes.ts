@@ -564,10 +564,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get authentic calculated signals from the automated signal calculator
       const allSignals = automatedSignalCalculator.getAllSignals();
+      console.log(`[HeatMapAPI] Signal cache has ${allSignals.size} symbols with signals`);
+      
       const heatmapData: any[] = [];
       
-      // Iterate through all signals using forEach to avoid downlevelIteration issues
+      // Debug: Log the first few symbols in cache
+      let debugCount = 0;
       allSignals.forEach((signalsList, symbol) => {
+        if (debugCount < 3) {
+          console.log(`[HeatMapAPI] Debug symbol ${symbol}: ${signalsList.length} signals, timeframes: ${signalsList.map(s => s.timeframe).join(', ')}`);
+          debugCount++;
+        }
+        
         // Find signal for requested timeframe
         const signal = signalsList.find((s: { timeframe: any; }) => s.timeframe === timeframe);
         
@@ -593,6 +601,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           };
           
           heatmapData.push(signalData);
+        } else if (debugCount < 5) {
+          console.log(`[HeatMapAPI] No signal found for ${symbol} at ${timeframe} timeframe`);
+          debugCount++;
         }
       });
       
