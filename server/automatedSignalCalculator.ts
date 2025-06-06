@@ -10,6 +10,7 @@ import type { InsertSignalHistory } from '../shared/schema';
 import { TechnicalIndicatorsEngine, type TechnicalAnalysis, type CandlestickData } from './technicalIndicators.js';
 import { AdvancedMarketAnalysisEngine, type AdvancedMarketData } from './advancedMarketAnalysis.js';
 import { marketSentimentEngine, type SentimentAdjustedSignal } from './marketSentimentEngine.js';
+import { smartCacheManager } from './smartCacheManager.js';
 
 interface CalculatedSignal {
   symbol: string;
@@ -32,10 +33,10 @@ export class AutomatedSignalCalculator {
   private lastCalculationTime: number = 0;
   private signalCache: Map<string, CalculatedSignal[]> = new Map();
   private marketVolatilityLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME' = 'MEDIUM';
-  private dynamicIntervalMs: number = 4 * 60 * 1000; // Default 4 minutes
+  private dynamicIntervalMs: number = 8 * 60 * 1000; // Optimized 8 minutes for free tier
   
   private readonly timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-  private readonly baseCalculationIntervalMs = 4 * 60 * 1000; // Base 4 minutes
+  private readonly baseCalculationIntervalMs = 8 * 60 * 1000; // Base 8 minutes (optimized for free tier)
   private readonly volatilityThresholds = {
     low: 2,
     medium: 5,
