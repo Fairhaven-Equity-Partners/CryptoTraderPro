@@ -411,21 +411,22 @@ export default function AdvancedSignalDashboard({
     return () => clearInterval(timerInterval);
   }, []);
 
-  // Synchronized timer system that matches actual calculation execution logic
+  // Synchronized timer system using UltimateManager's 4-minute intervals
   useEffect(() => {
     const timerInterval = setInterval(() => {
-      const now = Date.now() / 1000;
-      const timeSinceActualLastCalc = now - actualLastCalculationTime;
-      const remainingTime = Math.max(0, 180 - timeSinceActualLastCalc);
-      
-      setTimeUntilNextCalc(Math.ceil(remainingTime));
+      // Get timer from UltimateManager if available
+      if (window.getUltimateSystemStatus) {
+        const status = window.getUltimateSystemStatus();
+        setTimeUntilNextCalc(status.nextFetch || 240);
+      } else {
+        // Fallback to 4-minute calculation
+        const now = Date.now() / 1000;
+        const timeSinceActualLastCalc = now - actualLastCalculationTime;
+        const remainingTime = Math.max(0, 240 - timeSinceActualLastCalc);
+        setTimeUntilNextCalc(Math.ceil(remainingTime));
+      }
       
       // Update actual last calculation time when signals are updated
-      const currentSignature = JSON.stringify(Object.entries(signals).map(([tf, signal]) => 
-        signal ? `${tf}:${signal.direction}:${signal.confidence}` : `${tf}:null`
-      ));
-      
-      // If signals changed meaningfully, update the actual last calculation time
       if (Object.values(signals).some(s => s !== null)) {
         const signalTimestamp = Math.max(...Object.values(signals)
           .filter(s => s !== null)

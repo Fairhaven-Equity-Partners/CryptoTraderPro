@@ -15,6 +15,14 @@ declare global {
     latestPriceEvents: Record<string, PriceEvent>;
     syncGlobalPrice: (symbol: string, price: number, timestamp?: number) => number;
     
+    // Ultimate system manager status
+    getUltimateSystemStatus: () => {
+      initialized: boolean;
+      timerActive: boolean;
+      nextFetch: number;
+      components: string[];
+    };
+    
     // Technical indicator utilities
     technicalIndicators?: TechnicalIndicators;
     
