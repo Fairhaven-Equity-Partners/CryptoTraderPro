@@ -466,7 +466,7 @@ export class FeedbackAnalyzer {
   private async generateRealTimeMetrics(): Promise<void> {
     try {
       // Get recent trade simulations
-      const recentSimulations = await storage.getTradeSimulations('BTC/USDT');
+      const recentSimulations = await storage.getAllTradeSimulations();
       
       // Generate timeframe performance based on current signals
       const timeframeMetrics = await this.generateTimeframeMetrics();
@@ -507,8 +507,8 @@ export class FeedbackAnalyzer {
     
     for (const timeframe of timeframes) {
       // Get recent simulations for this timeframe
-      const simulations = await storage.getTradeSimulations('BTC/USDT');
-      const timeframeSimulations = simulations.filter((sim: any) => {
+      const simulations = await storage.getAllTradeSimulations();
+      const timeframeSimulations = simulations.filter((sim: TradeSimulation) => {
         try {
           const signalData = typeof sim.signalData === 'string' ? JSON.parse(sim.signalData) : sim.signalData;
           return signalData?.timeframe === timeframe;
@@ -522,11 +522,11 @@ export class FeedbackAnalyzer {
       let averageConfidence = 65;
       
       if (timeframeSimulations.length > 0) {
-        const completed = timeframeSimulations.filter((sim: any) => !sim.isActive && sim.profitLossPercent !== null);
-        const successful = completed.filter((sim: any) => (sim.profitLossPercent || 0) > 0);
+        const completed = timeframeSimulations.filter((sim: TradeSimulation) => !sim.isActive && sim.profitLossPercent !== null);
+        const successful = completed.filter((sim: TradeSimulation) => (sim.profitLossPercent || 0) > 0);
         
         hitRate = completed.length > 0 ? successful.length / completed.length : 0.5;
-        averageConfidence = timeframeSimulations.reduce((sum: number, sim: any) => sum + sim.confidence, 0) / timeframeSimulations.length;
+        averageConfidence = timeframeSimulations.reduce((sum: number, sim: TradeSimulation) => sum + sim.confidence, 0) / timeframeSimulations.length;
         performanceScore = hitRate * 100;
       } else {
         // Generate realistic metrics based on timeframe characteristics

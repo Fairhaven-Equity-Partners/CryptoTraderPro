@@ -361,6 +361,10 @@ export class MemStorage implements IStorage {
       .filter(trade => trade.symbol === symbol && trade.isActive);
   }
 
+  async getAllTradeSimulations(): Promise<TradeSimulation[]> {
+    return Array.from(this.tradeSimulations.values());
+  }
+
   async updateTradeSimulation(id: number, data: Partial<TradeSimulation>): Promise<TradeSimulation | undefined> {
     const trade = this.tradeSimulations.get(id);
     if (!trade) return undefined;
