@@ -46,7 +46,6 @@ import {
 } from '../lib/technicalIndicators';
 import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
 
-import { generateAccurateSignal } from '../lib/accurateSignalEngine';
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';

@@ -636,9 +636,9 @@ export function initTechnicalIndicatorsModule() {
   
   // Add signal stabilization system
   window.signalStabilizationSystem = {
-    getStabilizedSignal: (symbol: string, timeframe: TimeFrame, direction: string, confidence: number) => {
-      // This is a stub to fix errors - the actual implementation is in signalStabilizer.ts
-      return { direction, confidence };
+    getStabilizedSignal: (newSignals: Record<string, any>, previousSignals: Record<string, any>) => {
+      // Return stabilized signals based on comparison
+      return { ...newSignals };
     }
   };
   
@@ -1127,7 +1127,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       
       // This creates a semi-stable hash based on the current month and asset
       // so the signals stay very consistent during each month
-      const assetSymbol = symbol.split('/')[0]; // Get BTC from BTC/USDT
+      const assetSymbol = currentSymbol.split('/')[0]; // Get BTC from BTC/USDT
       const stabilityFactor = (assetSymbol.charCodeAt(0) + monthKey) % 100;
       const shouldChangeSignal = isStrongTrend && stabilityFactor > 75;
       
@@ -1242,7 +1242,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame): {
       const weekNumber = Math.floor(dayOfYear / 7);
       
       // This creates a stability factor that changes only once per week per symbol
-      const assetSymbol = symbol.split('/')[0]; // Get BTC from BTC/USDT
+      const assetSymbol = currentSymbol.split('/')[0]; // Get BTC from BTC/USDT
       const weeklyStabilityFactor = (assetSymbol.charCodeAt(0) + weekNumber) % 100;
       const shouldUseCalculatedSignal = isSignificantMove && weeklyStabilityFactor > 80;
       

@@ -25,7 +25,7 @@ class CentralizedPriceManager {
   private fetchInterval: NodeJS.Timeout | null = null;
   private lastFetchTime: number = 0;
   private readonly FETCH_INTERVAL_MS = 4 * 60 * 1000; // 4 minutes
-  private readonly MIN_CACHE_TIME = 30 * 1000; // 30 seconds minimum between fetches
+  private readonly MIN_CACHE_TIME = 60 * 1000; // 60 seconds minimum between fetches - optimized
 
   constructor() {
     console.log('[CentralizedPriceManager] Initializing with 4-minute intervals');
