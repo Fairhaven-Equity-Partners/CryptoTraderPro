@@ -313,6 +313,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Chart data endpoint for timeframe-specific data
+  app.get('/api/chart/:symbol/:timeframe', async (req: Request, res: Response) => {
+    try {
+      const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
+      const timeframe = req.params.timeframe as string;
+      
+      console.log(`Fetching chart data for ${symbol} (${timeframe})`);
+      
+      // Import chart data provider
+      const { getChartData } = await import('./chartDataProvider');
+      
+      // Fetch authentic chart data
+      const chartData = await getChartData(symbol, timeframe);
+      
+      if (!chartData || chartData.length === 0) {
+        return res.status(404).json({ 
+          error: 'No chart data available',
+          message: `No authentic market data available for ${symbol} on ${timeframe} timeframe`
+        });
+      }
+      
+      console.log(`Served ${chartData.length} chart data points for ${symbol} (${timeframe})`);
+      res.json(chartData);
+      
+    } catch (error) {
+      console.error(`Error fetching chart data for ${req.params.symbol}:`, error);
+      res.status(500).json({ 
+        error: 'Chart data fetch failed',
+        message: 'Unable to retrieve authentic chart data'
+      });
+    }
+  });
+
   // Get all alerts
   app.get('/api/alerts', async (req: Request, res: Response) => {
     try {

@@ -1,0 +1,304 @@
+ Replit version cecb977d, pid2 version 0.0.1374
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-2f7743b956c273f9.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-2f7743b956c273f9.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-2f7743b956c273f9.js:1
+workspace_iframe.html:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=VdY2scRUKICo' failed: 
+t @ eruda.js:2
+eruda.js:2 Uncaught (in promise) 
+ [CentralizedPriceManager] Initializing with 4-minute intervals
+ Technical indicators module initialized
+ 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+ 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+ [UltimateManager] Starting FINAL system initialization
+ Technical indicators module initialized
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ [CentralizedPriceManager] New subscriber for BTC/USDT
+ [CentralizedPriceManager] Starting 4-minute fetch interval
+ Loading chart data for BTC/USDT (1m)
+ Loading chart data for BTC/USDT (5m)
+ Loading chart data for BTC/USDT (15m)
+ Loading chart data for BTC/USDT (30m)
+ Loading chart data for BTC/USDT (1h)
+ Loading chart data for BTC/USDT (4h)
+ Loading chart data for BTC/USDT (1d)
+ Loading chart data for BTC/USDT (3d)
+ Loading chart data for BTC/USDT (1w)
+ Loading chart data for BTC/USDT (1M)
+ [CentralizedPriceManager] New subscriber for BTC/USDT
+ 🧠 Initializing continuous learning feedback loop for BTC/USDT
+ 🧠 Starting continuous learning for BTC/USDT
+ [HeatMap] Fetching synchronized heatmap data for 4h
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ Establishing data connection...
+ [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 5m data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 15m data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 4h data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 1m data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 1h data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 30m data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 1d data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ [CentralizedPriceManager] Updated price for BTC/USDT: $105170.52
+ [PriceOverview] Centralized price update for BTC/USDT: $105170.52
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105170.52
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 3d data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 1w data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error fetching BTC/USDT data: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ Error loading 1M data for BTC/USDT: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ All timeframe data loaded for BTC/USDT
+ [SignalDashboard] Data ready for BTC/USDT - triggering IMMEDIATE calculation
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1m timeframe. Skipping.
+ ⚡ Successfully calculated 1m: null
+ [UltimateManager] Price fetch temporarily unavailable
+Mt.forEach.n.<computed> @ eruda.js:2
+ [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+ [System] Ultimate manager active - synchronized 4-minute intervals
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 5m timeframe. Skipping.
+ ⚡ Successfully calculated 5m: null
+ Data connection established
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Calculation blocked: hasMinimumData=false, isCalculating=true, timeSinceLastCalc=0.166s
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 15m timeframe. Skipping.
+ ⚡ Successfully calculated 15m: null
+ [CentralizedPriceManager] Updated price for BTC/USDT: $105043.25
+ [PriceOverview] Centralized price update for BTC/USDT: $105043.25
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105043.25
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 30m timeframe. Skipping.
+ ⚡ Successfully calculated 30m: null
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1h timeframe. Skipping.
+ ⚡ Successfully calculated 1h: null
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 4h timeframe. Skipping.
+ ⚡ Successfully calculated 4h: null
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1d timeframe. Skipping.
+ ⚡ Successfully calculated 1d: null
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 3d timeframe. Skipping.
+ ⚡ Successfully calculated 3d: null
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 ⚡ About to calculate 1w timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1w timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 1w timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 1w: null
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $105105.34
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $105105.34
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105105.34
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1M timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 1M timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 1M: null
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: no 1d signal
+Console.js:61 📊 Sample 1d signal: null
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 Recording predictions using live price: 105105.34
+Console.js:61 Found 0 valid signals for recommendation for BTC/USDT
+Console.js:61 Calculation process complete for BTC/USDT - 0 signals generated
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $104984.98
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $104984.98
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104984.98
+Console.js:61 [SignalDashboard] Data ready for BTC/USDT - triggering IMMEDIATE calculation
+Console.js:61 ⚡ Starting calculation loop for 10 timeframes
+Console.js:61 ⚡ About to calculate 1m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1m timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 1m timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 1m: null
+Console.js:61 ⚡ About to calculate 5m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 5m timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 5m timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 5m: null
+Console.js:61 ⚡ About to calculate 15m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 15m timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 15m timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 15m: null
+Console.js:61 ⚡ About to calculate 30m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 30m timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 30m timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 30m: null
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $105106.36
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $105106.36
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105106.36
+Console.js:61 ⚡ About to calculate 1h timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1h timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 1h timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 1h: null
+Console.js:61 ⚡ About to calculate 4h timeframe
+Console.js:61 Calculating signal for BTC/USDT on 4h timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 4h timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 4h: null
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $105116.03
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $105116.03
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105116.03
+Console.js:61 ⚡ About to calculate 1d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1d timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 1d timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 1d: null
+Console.js:61 ⚡ About to calculate 3d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 3d timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 3d timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 3d: null
+Console.js:61 ⚡ About to calculate 1w timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1w timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 1w timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 1w: null
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1M timeframe
+Console.js:61 DATA CHECK: Not enough data for BTC/USDT on 1M timeframe. Skipping.
+Console.js:61 ⚡ Successfully calculated 1M: null
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: no 1d signal
+Console.js:61 📊 Sample 1d signal: null
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 Recording predictions using live price: 105105.34
+Console.js:61 Found 0 valid signals for recommendation for BTC/USDT
+Console.js:61 Calculation process complete for BTC/USDT - 0 signals generated
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [UltimateManager] Next fetch in 160s
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
