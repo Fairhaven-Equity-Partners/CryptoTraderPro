@@ -685,8 +685,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const performanceReport = AdvancedAnalyticsEngine.generatePerformanceReport(advancedMetrics);
       
       // Legacy compatibility calculations
-      const completedTrades = simulations.filter(sim => !sim.isActive && sim.profitLossPercent !== null);
-      const successfulTrades = completedTrades.filter(sim => (sim.profitLossPercent || 0) > 0);
+      const completedTrades = simulations.filter((sim: any) => !sim.isActive && sim.profitLossPercent !== null);
+      const successfulTrades = completedTrades.filter((sim: any) => (sim.profitLossPercent || 0) > 0);
       const basicAccuracy = completedTrades.length > 0 ? 
         (successfulTrades.length / completedTrades.length) * 100 : 0;
 
@@ -696,7 +696,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         accuracy: Math.round(basicAccuracy),
         totalTrades: completedTrades.length,
         successfulTrades: successfulTrades.length,
-        activeTrades: simulations.filter(sim => sim.isActive).length,
+        activeTrades: simulations.filter((sim: any) => sim.isActive).length,
         
         // Enhanced professional analytics
         advanced: advancedMetrics,

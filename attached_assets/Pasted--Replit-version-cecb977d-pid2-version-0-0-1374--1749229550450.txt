@@ -1,0 +1,680 @@
+ Replit version cecb977d, pid2 version 0.0.1374
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-2f7743b956c273f9.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-2f7743b956c273f9.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-2f7743b956c273f9.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-2f7743b956c273f9.js:1
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=NuhBpRC6IV98' failed: 
+t @ eruda.js:2
+eruda.js:2 Uncaught (in promise) 
+ [CentralizedPriceManager] Initializing with 4-minute intervals
+ Technical indicators module initialized
+ 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+ 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+ [UltimateManager] Starting FINAL system initialization
+ Technical indicators module initialized
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ [CentralizedPriceManager] New subscriber for BTC/USDT
+ [CentralizedPriceManager] Starting 4-minute fetch interval
+ Loading chart data for BTC/USDT (1m)
+ Loading chart data for BTC/USDT (5m)
+ Loading chart data for BTC/USDT (15m)
+ Loading chart data for BTC/USDT (30m)
+ Loading chart data for BTC/USDT (1h)
+ Loading chart data for BTC/USDT (4h)
+ Loading chart data for BTC/USDT (1d)
+ Loading chart data for BTC/USDT (3d)
+ Loading chart data for BTC/USDT (1w)
+ Loading chart data for BTC/USDT (1M)
+ [CentralizedPriceManager] New subscriber for BTC/USDT
+ 🧠 Initializing continuous learning feedback loop for BTC/USDT
+ 🧠 Starting continuous learning for BTC/USDT
+ [HeatMap] Fetching synchronized heatmap data for 4h
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ Establishing data connection...
+ [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 500 data points for BTC/USDT (4h)
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104962.68
+ [PriceOverview] Centralized price update for BTC/USDT: $104962.68
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104962.68
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 200 data points for BTC/USDT (1w)
+ All timeframe data loaded for BTC/USDT
+ [SignalDashboard] Data ready for BTC/USDT - triggering IMMEDIATE calculation
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using live price: 104962.68 for calculation
+ [1m] Preparing chart data with 1000 candles
+ [1m] Updating market data in unified core
+ [1m] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [1m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 0 patterns for 1m timeframe
+ ⚡ Successfully calculated 1m: NEUTRAL
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [UltimateManager] Price fetch temporarily unavailable
+Mt.forEach.n.<computed> @ eruda.js:2
+ [UltimateManager] Preloading chart data for immediate analysis
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart with 500 data points for BTC/USDT (4h)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart with 200 data points for BTC/USDT (1w)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using live price: 104962.68 for calculation
+ [5m] Preparing chart data with 1000 candles
+ [5m] Updating market data in unified core
+ [5m] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [5m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 1 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 1000 data points for ETH/USDT (1m)
+ Loading chart with 800 data points for ETH/USDT (15m)
+ Loading chart with 800 data points for ETH/USDT (30m)
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using live price: 104962.68 for calculation
+ [15m] Preparing chart data with 800 candles
+ [15m] Updating market data in unified core
+ [15m] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [15m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 15m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 5 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: NEUTRAL
+ Loading chart with 1000 data points for ETH/USDT (5m)
+ Loading chart with 500 data points for ETH/USDT (4h)
+ Loading chart with 365 data points for ETH/USDT (1d)
+ Loading chart with 720 data points for ETH/USDT (1h)
+ [CentralizedPriceManager] Updated price for BTC/USDT: $105006.06
+ [PriceOverview] Centralized price update for BTC/USDT: $105006.06
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105006.06
+ Loading chart with 150 data points for ETH/USDT (3d)
+ Loading chart with 200 data points for ETH/USDT (1w)
+ Loading chart with 60 data points for ETH/USDT (1M)
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 1000 data points for BNB/USDT (1m)
+ Loading chart with 1000 data points for BNB/USDT (5m)
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using live price: 104962.68 for calculation
+ [30m] Preparing chart data with 800 candles
+ [30m] Updating market data in unified core
+ [30m] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [30m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 5 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ Loading chart with 800 data points for BNB/USDT (30m)
+ Loading chart with 720 data points for BNB/USDT (1h)
+ Loading chart with 365 data points for BNB/USDT (1d)
+ Loading chart with 500 data points for BNB/USDT (4h)
+ Loading chart with 150 data points for BNB/USDT (3d)
+ Loading chart with 800 data points for BNB/USDT (15m)
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using live price: 104962.68 for calculation
+ [1h] Preparing chart data with 720 candles
+ [1h] Updating market data in unified core
+ [1h] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [1h] Unified signal result: SHORT (98%)
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 5 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ Loading chart with 200 data points for BNB/USDT (1w)
+ Loading chart with 60 data points for BNB/USDT (1M)
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 1000 data points for SOL/USDT (5m)
+ Loading chart with 800 data points for SOL/USDT (30m)
+ Loading chart with 1000 data points for SOL/USDT (1m)
+ Loading chart with 800 data points for SOL/USDT (15m)
+ Loading chart with 720 data points for SOL/USDT (1h)
+ Loading chart with 500 data points for SOL/USDT (4h)
+ Loading chart with 365 data points for SOL/USDT (1d)
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using live price: 104962.68 for calculation
+ [4h] Preparing chart data with 500 candles
+ [4h] Updating market data in unified core
+ [4h] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [4h] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 7 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: NEUTRAL
+ Loading chart with 200 data points for SOL/USDT (1w)
+ Loading chart with 150 data points for SOL/USDT (3d)
+ Loading chart with 60 data points for SOL/USDT (1M)
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 1000 data points for XRP/USDT (1m)
+ Loading chart with 1000 data points for XRP/USDT (5m)
+ Loading chart with 800 data points for XRP/USDT (15m)
+ Loading chart with 800 data points for XRP/USDT (30m)
+ Loading chart with 720 data points for XRP/USDT (1h)
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using live price: 104962.68 for calculation
+ [1d] Preparing chart data with 365 candles
+ [1d] Updating market data in unified core
+ [1d] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [1d] Unified signal result: LONG (70%)
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=70%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=LONG, Confidence=70%
+ Generated 7 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: LONG
+ Loading chart with 365 data points for XRP/USDT (1d)
+ Loading chart with 150 data points for XRP/USDT (3d)
+ Loading chart with 500 data points for XRP/USDT (4h)
+ Loading chart with 200 data points for XRP/USDT (1w)
+ Loading chart with 60 data points for XRP/USDT (1M)
+ [UltimateManager] Chart data preloading completed
+ [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+ [System] Ultimate manager active - synchronized 4-minute intervals
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using live price: 104962.68 for calculation
+ [3d] Preparing chart data with 150 candles
+ [3d] Updating market data in unified core
+ [3d] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [3d] Unified signal result: LONG (98%)
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 6 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ Calculation blocked: hasMinimumData=true, isCalculating=true, timeSinceLastCalc=0.777s
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using live price: 104962.68 for calculation
+ [1w] Preparing chart data with 200 candles
+ [1w] Updating market data in unified core
+ [1w] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [1w] Unified signal result: SHORT (98%)
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 6 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: SHORT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using live price: 104962.68 for calculation
+ [1M] Preparing chart data with 60 candles
+ [1M] Updating market data in unified core
+ [1M] Generating signal with live price 104962.68
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [1M] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 2 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: NEUTRAL
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ Recording predictions using live price: 104962.68
+ 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104962.68
+ 🎯 Stop Loss: 106222.23, Take Profit: 102443.58
+ Recorded prediction: 1h SHORT @ 104962.68
+ 📈 Prediction recorded: BTC/USDT 1d LONG @ 104962.68
+ 🎯 Stop Loss: 103073.35, Take Profit: 108741.34
+ Recorded prediction: 1d LONG @ 104962.68
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104869.19
+ [PriceOverview] Centralized price update for BTC/USDT: $104869.19
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104869.19
+ 📈 Prediction recorded: BTC/USDT 3d LONG @ 104962.68
+ 🎯 Stop Loss: 102601.02, Take Profit: 109686.00
+ Recorded prediction: 3d LONG @ 104962.68
+ 📈 Prediction recorded: BTC/USDT 1w SHORT @ 104962.68
+ 🎯 Stop Loss: 107796.67, Take Profit: 99294.70
+ Recorded prediction: 1w SHORT @ 104962.68
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104884.76
+ [PriceOverview] Centralized price update for BTC/USDT: $104884.76
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104884.76
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ No signal available for BTC/USDT on 4h
+ Calculation process complete for BTC/USDT - 10 signals generated
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104870.22
+ [PriceOverview] Centralized price update for BTC/USDT: $104870.22
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104870.22
+ [SignalDashboard] Data ready for BTC/USDT - triggering IMMEDIATE calculation
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using live price: 104884.76 for calculation
+ [1m] Preparing chart data with 1000 candles
+ [1m] Updating market data in unified core
+ [1m] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [1m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 3 patterns for 1m timeframe
+ ⚡ Successfully calculated 1m: NEUTRAL
+ 🔄 Signals updated, syncing timer with actual calculation time
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using live price: 104884.76 for calculation
+ [5m] Preparing chart data with 1000 candles
+ [5m] Updating market data in unified core
+ [5m] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [5m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 2 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ [CentralizedPriceManager] Updated price for BTC/USDT: $105017.16
+ [PriceOverview] Centralized price update for BTC/USDT: $105017.16
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105017.16
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using live price: 104884.76 for calculation
+ [15m] Preparing chart data with 800 candles
+ [15m] Updating market data in unified core
+ [15m] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [15m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 15m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 2 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: NEUTRAL
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using live price: 104884.76 for calculation
+ [30m] Preparing chart data with 800 candles
+ [30m] Updating market data in unified core
+ [30m] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [30m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 4 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104894.29
+ [PriceOverview] Centralized price update for BTC/USDT: $104894.29
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104894.29
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using live price: 104884.76 for calculation
+ [1h] Preparing chart data with 720 candles
+ [1h] Updating market data in unified core
+ [1h] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [1h] Unified signal result: SHORT (98%)
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 8 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using live price: 104884.76 for calculation
+ [4h] Preparing chart data with 500 candles
+ [4h] Updating market data in unified core
+ [4h] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [4h] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 3 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: NEUTRAL
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104930.24
+ [PriceOverview] Centralized price update for BTC/USDT: $104930.24
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104930.24
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using live price: 104884.76 for calculation
+ [1d] Preparing chart data with 365 candles
+ [1d] Updating market data in unified core
+ [1d] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [1d] Unified signal result: LONG (70%)
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=70%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=LONG, Confidence=70%
+ Generated 6 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: LONG
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using live price: 104884.76 for calculation
+ [3d] Preparing chart data with 150 candles
+ [3d] Updating market data in unified core
+ [3d] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [3d] Unified signal result: LONG (98%)
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 7 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using live price: 104884.76 for calculation
+ [1w] Preparing chart data with 200 candles
+ [1w] Updating market data in unified core
+ [1w] Generating signal with live price 104884.76
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [1w] Unified signal result: SHORT (98%)
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 5 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: SHORT
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1M)
+Console.js:61 [1M] Using live price: 104884.76 for calculation
+Console.js:61 [1M] Preparing chart data with 60 candles
+Console.js:61 [1M] Updating market data in unified core
+Console.js:61 [1M] Generating signal with live price 104884.76
+Console.js:61 Support/Resistance calculation for BTC/USDT 1M: Object
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1M: Object
+Console.js:61 [1M] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 1 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: NEUTRAL
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: Array(18)
+Console.js:61 📊 Sample 1d signal: Object
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 Recording predictions using live price: 104884.76
+Console.js:61 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104884.76
+Console.js:61 🎯 Stop Loss: 106143.38, Take Profit: 102367.53
+Console.js:61 Recorded prediction: 1h SHORT @ 104884.76
+Console.js:61 📈 Prediction recorded: BTC/USDT 1d LONG @ 104884.76
+Console.js:61 🎯 Stop Loss: 102996.83, Take Profit: 108660.61
+Console.js:61 Recorded prediction: 1d LONG @ 104884.76
+Console.js:61 📈 Prediction recorded: BTC/USDT 3d LONG @ 104884.76
+Console.js:61 🎯 Stop Loss: 102524.85, Take Profit: 109604.57
+Console.js:61 Recorded prediction: 3d LONG @ 104884.76
+Console.js:61 📈 Prediction recorded: BTC/USDT 1w SHORT @ 104884.76
+Console.js:61 🎯 Stop Loss: 107716.65, Take Profit: 99220.98
+Console.js:61 Recorded prediction: 1w SHORT @ 104884.76
+Console.js:61 Found 10 valid signals for recommendation for BTC/USDT
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Calculation process complete for BTC/USDT - 10 signals generated
+Console.js:61 🔄 Signals updated, syncing timer with actual calculation time
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 Tab change to 15m - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 15m timeframe
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Tab change to 1h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1h timeframe
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 Tab change to 4h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 Tab change to 1d - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1d timeframe
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 Tab change to 3d - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 3d timeframe
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 Tab change to 1w - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1w timeframe
+Console.js:61 Loading chart with 200 data points for BTC/USDT (1w)
+Console.js:61 Tab change to 1M - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1M timeframe
+Console.js:61 Loading chart with 60 data points for BTC/USDT (1M)
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1w
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 3d
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1d
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 30m
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 15m
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 5m
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1m
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1w
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1w
+Console.js:61 [UltimateManager] Next fetch in 160s
+Console.js:61 Tab change to 15m - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 15m timeframe
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Tab change to 1h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1h timeframe
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 Tab change to 4h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 Tab change to 1d - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1d timeframe
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 [UltimateManager] Next fetch in 140s
+Console.js:61 Tab change to 3d - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 3d timeframe
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 Tab change to 1w - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1w timeframe
+Console.js:61 Loading chart with 200 data points for BTC/USDT (1w)
+Console.js:61 Tab change to 1M - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1M timeframe
+Console.js:61 Loading chart with 60 data points for BTC/USDT (1M)
+Console.js:61 [UltimateManager] Next fetch in 120s
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.

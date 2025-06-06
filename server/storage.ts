@@ -89,7 +89,7 @@ export class MemStorage implements IStorage {
           change24h: 0,
           volume24h: this.getEstimatedVolume(mapping.category),
           marketCap: this.getEstimatedMarketCap(initialPrice, mapping.category),
-          createdAt: new Date(),
+
           updatedAt: new Date()
         };
         
@@ -205,7 +205,7 @@ export class MemStorage implements IStorage {
       const cryptoAsset: CryptoAsset = {
         id: this.cryptoAssets.size + 1,
         ...assetData,
-        createdAt: new Date(),
+
         updatedAt: new Date()
       };
       this.cryptoAssets.set(assetData.symbol, cryptoAsset);
@@ -266,6 +266,9 @@ export class MemStorage implements IStorage {
       id,
       isTriggered: false,
       createdAt: new Date(),
+      isActive: insertAlert.isActive ?? true,
+      targetPrice: insertAlert.targetPrice ?? null,
+      userId: insertAlert.userId ?? null,
     };
     this.alerts.set(id, alert);
     return alert;
@@ -317,7 +320,7 @@ export class MemStorage implements IStorage {
   async getSignalHistoryBySymbol(symbol: string, limit = 50): Promise<SignalHistory[]> {
     const signals = Array.from(this.signalHistory.values())
       .filter((signal) => signal.symbol === symbol)
-      .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+      .sort((a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0));
     
     return signals.slice(0, limit);
   }
@@ -335,11 +338,17 @@ export class MemStorage implements IStorage {
       profitLoss: null,
       profitLossPercent: null,
       isActive: true,
+      signalData: insertTrade.signalData ?? null,
     };
     
     this.tradeSimulations.set(id, trade);
     console.log(`📈 Created trade simulation: ${trade.symbol} ${trade.timeframe} ${trade.direction} @ ${trade.entryPrice}`);
     return trade;
+  }
+
+  async getTradeSimulations(symbol: string): Promise<TradeSimulation[]> {
+    return Array.from(this.tradeSimulations.values())
+      .filter(trade => trade.symbol === symbol);
   }
 
   async getActiveTradeSimulations(symbol: string): Promise<TradeSimulation[]> {
