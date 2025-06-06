@@ -8,7 +8,6 @@ import NotFound from "@/pages/not-found";
 import Analysis from "@/pages/Analysis";
 import Settings from "@/pages/Settings";
 import Forex from "@/pages/Forex";
-import HeatMap from "@/pages/HeatMap";
 import NavigationBar from "@/components/NavigationBar";
 import GlobalNotifications from "@/components/GlobalNotifications";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -26,7 +25,6 @@ function Router() {
     <div className="flex flex-col min-h-screen bg-primary">
       <Switch>
         <Route path="/" component={() => <Analysis />} />
-        <Route path="/heatmap" component={() => <HeatMap />} />
         <Route path="/forex" component={() => <Forex />} />
         <Route path="/settings" component={() => <Settings />} />
         <Route component={NotFound} />
