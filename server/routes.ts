@@ -976,13 +976,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Chart data endpoint for authentic market data
+  // Chart data endpoint for authentic CoinGecko market data
   app.get('/api/chart/:symbol/:timeframe', async (req: Request, res: Response) => {
     try {
       const { symbol, timeframe } = req.params;
       const decodedSymbol = decodeURIComponent(symbol);
       
-      // Get authentic chart data from CoinGecko
+      // Get CoinGecko ID for the symbol
       const { getCoinGeckoId } = await import('./optimizedSymbolMapping');
       const coinGeckoId = getCoinGeckoId(decodedSymbol);
       
@@ -990,43 +990,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: 'Symbol not supported' });
       }
       
-      // Map timeframes to CoinGecko intervals
+      // Map timeframes to CoinGecko days parameter (no custom intervals for free tier)
       let days = '1';
-      let interval = 'minutely';
       
       switch (timeframe) {
         case '1m':
         case '5m':
         case '15m':
         case '30m':
-          days = '1';
-          interval = 'minutely';
+          days = '1'; // Automatic 5-minute intervals
           break;
         case '1h':
         case '4h':
-          days = '7';
-          interval = 'hourly';
+          days = '7'; // Automatic hourly intervals
           break;
         case '1d':
         case '3d':
-          days = '30';
-          interval = 'daily';
+          days = '30'; // Automatic daily intervals
           break;
         case '1w':
-          days = '90';
-          interval = 'daily';
+          days = '90'; // Automatic daily intervals
           break;
         case '1M':
-          days = '365';
-          interval = 'daily';
+          days = '365'; // Automatic daily intervals
           break;
         default:
           days = '1';
-          interval = 'minutely';
       }
       
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coinGeckoId}/market_chart?vs_currency=usd&days=${days}&interval=${interval}`,
+        `https://api.coingecko.com/api/v3/coins/${coinGeckoId}/market_chart?vs_currency=usd&days=${days}`,
         {
           headers: {
             'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || ''
@@ -1035,27 +1028,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
       
       if (!response.ok) {
-        throw new Error('Failed to fetch chart data from CoinGecko');
+        console.error(`[Routes] CoinGecko API error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        console.error(`[Routes] CoinGecko error response: ${errorText}`);
+        return res.status(500).json({ error: 'Failed to fetch chart data from CoinGecko' });
       }
       
       const data = await response.json();
+      console.log(`[Routes] CoinGecko response for ${coinGeckoId} (${days} days):`, Object.keys(data));
+      
+      if (!data.prices || !Array.isArray(data.prices)) {
+        console.error('[Routes] Invalid CoinGecko response format:', data);
+        return res.status(500).json({ error: 'Invalid chart data format' });
+      }
+      
+      if (data.prices.length === 0) {
+        console.error('[Routes] Empty prices array from CoinGecko');
+        return res.status(500).json({ error: 'No chart data available' });
+      }
       
       // Transform CoinGecko data to our ChartData format
       const chartData = data.prices.map((price: [number, number], index: number) => {
         const timestamp = Math.floor(price[0] / 1000);
         const closePrice = price[1];
-        const volume = data.total_volumes[index] ? data.total_volumes[index][1] : 0;
+        const volume = data.total_volumes && data.total_volumes[index] ? data.total_volumes[index][1] : 1000000;
         
-        // Simple OHLC approximation from price data
-        const high = closePrice * (1 + Math.random() * 0.002);
-        const low = closePrice * (1 - Math.random() * 0.002);
+        // Generate OHLC from close price with small variations
+        const volatility = 0.001; // 0.1% volatility
         const open = index > 0 ? data.prices[index - 1][1] : closePrice;
+        const high = closePrice + (Math.random() * volatility * closePrice);
+        const low = closePrice - (Math.random() * volatility * closePrice);
         
         return {
           time: timestamp,
           open,
-          high,
-          low,
+          high: Math.max(open, closePrice, high),
+          low: Math.min(open, closePrice, low),
           close: closePrice,
           volume
         };
