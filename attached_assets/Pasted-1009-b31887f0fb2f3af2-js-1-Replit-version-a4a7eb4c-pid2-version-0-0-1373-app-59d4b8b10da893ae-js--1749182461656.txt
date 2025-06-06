@@ -1,0 +1,1671 @@
+1009-b31887f0fb2f3af2.js:1 Replit version a4a7eb4c, pid2 version 0.0.1373
+_app-59d4b8b10da893ae.js:37 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-59d4b8b10da893ae.js:37 [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'battery'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+framework-e5ff3ac173b1d6d8.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-e5ff3ac173b1d6d8.js:1
+(anonymous) @ framework-e5ff3ac173b1d6d8.js:1
+uD @ framework-e5ff3ac173b1d6d8.js:1
+uI @ framework-e5ff3ac173b1d6d8.js:1
+uM @ framework-e5ff3ac173b1d6d8.js:1
+uS @ framework-e5ff3ac173b1d6d8.js:1
+C @ framework-e5ff3ac173b1d6d8.js:1
+z @ framework-e5ff3ac173b1d6d8.js:1
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+eruda.js:2 WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=azp7Rzg0svPP' failed: 
+t @ Network.js:227
+eruda.js:2 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=azp7Rzg0svPP' is invalid.
+    at new t (eruda.js:2:218737)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+eruda.js:2 [CentralizedPriceManager] Initializing with 4-minute intervals
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+eruda.js:2 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+eruda.js:2 [UltimateManager] Starting FINAL system initialization
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Starting 4-minute fetch interval
+eruda.js:2 Loading chart data for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart data for BTC/USDT (5m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart data for BTC/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart data for BTC/USDT (30m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart data for BTC/USDT (1h)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart data for BTC/USDT (4h)
+eruda.js:2 Loading chart data for BTC/USDT (1d)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart data for BTC/USDT (3d)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart data for BTC/USDT (1w)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart data for BTC/USDT (1M)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 🧠 Initializing continuous learning feedback loop for BTC/USDT
+eruda.js:2 🧠 Starting continuous learning for BTC/USDT
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=false, isLiveDataReady=false, effectivelyLiveDataReady=0, currentAssetPrice=0, calculationTriggeredRef=false
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 4h
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 All timeframe data loaded for BTC/USDT
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=0, currentAssetPrice=0, calculationTriggeredRef=false
+eruda.js:2 Establishing data connection...
+eruda.js:2 [UltimateManager] Triggering immediate calculation on startup
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 [UltimateManager] Price fetch temporarily unavailable
+Mt.forEach.n.<computed> @ Console.js:61
+eruda.js:2 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+eruda.js:2 [System] Ultimate manager active - synchronized 4-minute intervals
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $102319.98
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $102319.98
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102319.98
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=true, currentAssetPrice=102319.98, calculationTriggeredRef=false
+eruda.js:2 [SignalDashboard] All data ready for BTC/USDT - executing immediate calculation
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $102255.99
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $102255.99
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102255.99
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=true, currentAssetPrice=102255.99, calculationTriggeredRef=true
+eruda.js:2 [SignalDashboard] Executing immediate calculation for BTC/USDT
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 [1m] Using live price: 115032.69543268632 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Updating market data in unified core
+eruda.js:2 [1m] Generating signal with live price 115032.69543268632
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1m: Object
+eruda.js:2 [1m] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 3 patterns for 1m timeframe
+eruda.js:2 ⚡ Successfully calculated 1m: SHORT
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [5m] Using live price: 108385.29641755346 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Updating market data in unified core
+eruda.js:2 [5m] Generating signal with live price 108385.29641755346
+eruda.js:2 Support/Resistance calculation for BTC/USDT 5m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 5m: Object
+eruda.js:2 [5m] Unified signal result: SHORT (70%)
+eruda.js:2 [UnifiedEngine] 5m: Market Regime=Market Regime: NORMAL, Direction=SHORT, Confidence=70%
+eruda.js:2 [EnhancedEngine] 5m: Enhanced signal ready - Direction=SHORT, Confidence=70%
+eruda.js:2 Generated 0 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: SHORT
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [15m] Using live price: 105196.15779066806 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Updating market data in unified core
+eruda.js:2 [15m] Generating signal with live price 105196.15779066806
+eruda.js:2 Support/Resistance calculation for BTC/USDT 15m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 15m: Object
+eruda.js:2 [15m] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 15m: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 3 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: LONG
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 [30m] Using live price: 122306.18717342486 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Updating market data in unified core
+eruda.js:2 [30m] Generating signal with live price 122306.18717342486
+eruda.js:2 Support/Resistance calculation for BTC/USDT 30m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 30m: Object
+eruda.js:2 [30m] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 4 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: SHORT
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Using live price: 91031.83221162995 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Updating market data in unified core
+eruda.js:2 [1h] Generating signal with live price 91031.83221162995
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1h: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1h: Object
+eruda.js:2 [1h] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1h: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 6 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: LONG
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Using live price: 107180.25151247282 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Updating market data in unified core
+eruda.js:2 [4h] Generating signal with live price 107180.25151247282
+eruda.js:2 Support/Resistance calculation for BTC/USDT 4h: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 4h: Object
+eruda.js:2 [4h] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 4 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: LONG
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Using live price: 144143.38398068966 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Updating market data in unified core
+eruda.js:2 [1d] Generating signal with live price 144143.38398068966
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1d: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1d: Object
+eruda.js:2 [1d] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 10 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: SHORT
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 [3d] Using live price: 106852.71696804817 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Updating market data in unified core
+eruda.js:2 [3d] Generating signal with live price 106852.71696804817
+eruda.js:2 Support/Resistance calculation for BTC/USDT 3d: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 3d: Object
+eruda.js:2 [3d] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 3d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 5 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: SHORT
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 [1w] Using live price: 95021.77845416887 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Updating market data in unified core
+eruda.js:2 [1w] Generating signal with live price 95021.77845416887
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1w: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1w: Object
+eruda.js:2 [1w] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1w: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 7 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: SHORT
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 [1M] Using live price: 121910.31563013839 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Updating market data in unified core
+eruda.js:2 [1M] Generating signal with live price 121910.31563013839
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1M: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1M: Object
+eruda.js:2 [1M] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1M: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 5 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: LONG
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: Array(10)
+eruda.js:2 🔧 Aligned signals after processing: Array(10)
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: Array(10)
+eruda.js:2 📊 About to call setSignals with: Array(10)
+eruda.js:2 📊 Sample signal structure: Array(18)
+eruda.js:2 📊 Sample 1d signal: Object
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Cannot record predictions - no valid live price available
+Mt.forEach.n.<computed> @ Console.js:61
+eruda.js:2 🔄 Signals updated, syncing timer with actual calculation time
+eruda.js:2 [UltimateManager] Next fetch in 230s
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 210s
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1M
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1w
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 3d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1h
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 30m
+eruda.js:2 [UltimateManager] Next fetch in 190s
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 170s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+eruda.js:2 [UltimateManager] Next fetch in 150s
+eruda.js:2 [UltimateManager] Next fetch in 140s
+eruda.js:2 [UltimateManager] Next fetch in 130s
+eruda.js:2 [UltimateManager] Next fetch in 120s
+eruda.js:2 [UltimateManager] Next fetch in 110s
+eruda.js:2 [UltimateManager] Next fetch in 100s
+eruda.js:2 [UltimateManager] Next fetch in 90s
+eruda.js:2 [UltimateManager] Next fetch in 80s
+eruda.js:2 [UltimateManager] Next fetch in 70s
+eruda.js:2 [UltimateManager] Next fetch in 60s
+eruda.js:2 [UltimateManager] Next fetch in 50s
+eruda.js:2 [UltimateManager] Next fetch in 40s
+eruda.js:2 [UltimateManager] Next fetch in 30s
+eruda.js:2 [UltimateManager] Next fetch in 20s
+eruda.js:2 [UltimateManager] Next fetch in 10s
+eruda.js:2 Scheduled price update check (240-second interval) at 9:49:17 PM
+eruda.js:2 [CentralizedPriceManager] Fetching prices for 1 symbols
+eruda.js:2 CoinGecko real-time price data: Object
+eruda.js:2 Price update for BTC/USDT: 107180.25 → 102404.00
+eruda.js:2 [API] Price update received for BTC/USDT - dispatching calculation event
+eruda.js:2 [AdvancedSignalDashboard] Price updated via price-update event: 102404
+eruda.js:2 [useMarketData] Price updated to 102404 for BTC/USDT - display only
+eruda.js:2 [useMarketData] Price updated to 102404 for BTC/USDT - display only
+eruda.js:2 🔄 Real-time calculation triggered for BTC/USDT after 237.544s
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 [1m] Using live price: 102255.99 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Updating market data in unified core
+eruda.js:2 [1m] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1m: Object
+eruda.js:2 [1m] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 0 patterns for 1m timeframe
+eruda.js:2 [AdvancedSignalDashboard] Live price updated to: 102404
+eruda.js:2 [useMarketData] Price updated to 102404 for BTC/USDT - display only
+eruda.js:2 [useMarketData] Price updated to 102404 for BTC/USDT - display only
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 ✅ LIVE PRICE RECEIVED for BTC/USDT: 102404
+eruda.js:2 [useMarketData] Price update for BTC/USDT: 102404 - NOT dispatching extra event
+eruda.js:2 ⚡ Successfully calculated 1m: SHORT
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=true, effectivelyLiveDataReady=true, currentAssetPrice=102255.99, calculationTriggeredRef=false
+eruda.js:2 [SignalDashboard] All data ready for BTC/USDT - executing immediate calculation
+eruda.js:2 [UltimateManager] Next fetch in 0s
+eruda.js:2 [UltimateManager] 4-minute interval reached - triggering synchronized calculation
+eruda.js:2 [HeatMap] Received synchronized calculation event - updating heatmap
+eruda.js:2 [HeatMap] Syncing with ultimate system timer - refreshing heatmap data
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 30m
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $102299.4
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $102299.4
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102299.4
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=true, effectivelyLiveDataReady=true, currentAssetPrice=102299.4, calculationTriggeredRef=true
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [5m] Using live price: 102255.99 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Updating market data in unified core
+eruda.js:2 [5m] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 5m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 5m: Object
+eruda.js:2 [5m] Unified signal result: SHORT (70%)
+eruda.js:2 [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=70%
+eruda.js:2 [EnhancedEngine] 5m: Enhanced signal ready - Direction=SHORT, Confidence=70%
+eruda.js:2 Generated 1 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: SHORT
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [15m] Using live price: 102255.99 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Updating market data in unified core
+eruda.js:2 [15m] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 15m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 15m: Object
+eruda.js:2 [15m] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 4 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: SHORT
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 [30m] Using live price: 102255.99 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Updating market data in unified core
+eruda.js:2 [30m] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 30m: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 30m: Object
+eruda.js:2 [30m] Unified signal result: SHORT (73%)
+eruda.js:2 [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=73%
+eruda.js:2 [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=73%
+eruda.js:2 Generated 5 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: SHORT
+eruda.js:2 [UltimateManager] Price fetch temporarily unavailable
+Mt.forEach.n.<computed> @ Console.js:61
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Using live price: 102255.99 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Updating market data in unified core
+eruda.js:2 [1h] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1h: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1h: Object
+eruda.js:2 [1h] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1h: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 6 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: LONG
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Using live price: 102255.99 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Updating market data in unified core
+eruda.js:2 [4h] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 4h: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 4h: Object
+eruda.js:2 [4h] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 6 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: LONG
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Using live price: 102255.99 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Updating market data in unified core
+eruda.js:2 [1d] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1d: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1d: Object
+eruda.js:2 [1d] Unified signal result: NEUTRAL (50%)
+eruda.js:2 [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+eruda.js:2 [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+eruda.js:2 Generated 10 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: NEUTRAL
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 [3d] Using live price: 102255.99 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Updating market data in unified core
+eruda.js:2 [3d] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 3d: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 3d: Object
+eruda.js:2 [3d] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 3d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 10 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: SHORT
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 [1w] Using live price: 102255.99 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Updating market data in unified core
+eruda.js:2 [1w] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1w: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1w: Object
+eruda.js:2 [1w] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1w: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 10 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: SHORT
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 [1M] Using live price: 102255.99 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Updating market data in unified core
+eruda.js:2 [1M] Generating signal with live price 102255.99
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1M: Object
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1M: Object
+eruda.js:2 [1M] Unified signal result: NEUTRAL (50%)
+eruda.js:2 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+eruda.js:2 [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+eruda.js:2 Generated 7 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: NEUTRAL
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: Array(10)
+eruda.js:2 🔧 Aligned signals after processing: Array(10)
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: Array(10)
+eruda.js:2 📊 About to call setSignals with: Array(10)
+eruda.js:2 📊 Sample signal structure: Array(18)
+eruda.js:2 📊 Sample 1d signal: Object
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Recording predictions using live price: 102270.38
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1m SHORT @ 102270.38
+eruda.js:2 🎯 Stop Loss: 102716.14, Take Profit: 101335.69
+eruda.js:2 Recorded prediction: 1m SHORT @ 102270.38
+eruda.js:2 📈 Prediction recorded: BTC/USDT 5m SHORT @ 102270.38
+eruda.js:2 🎯 Stop Loss: 102869.53, Take Profit: 101028.92
+eruda.js:2 Recorded prediction: 5m SHORT @ 102270.38
+eruda.js:2 📈 Prediction recorded: BTC/USDT 15m SHORT @ 102270.38
+eruda.js:2 🎯 Stop Loss: 103022.91, Take Profit: 100722.15
+eruda.js:2 Recorded prediction: 15m SHORT @ 102270.38
+eruda.js:2 📈 Prediction recorded: BTC/USDT 30m SHORT @ 102270.38
+eruda.js:2 🎯 Stop Loss: 103176.29, Take Profit: 100415.38
+eruda.js:2 Recorded prediction: 30m SHORT @ 102270.38
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1h LONG @ 102270.38
+eruda.js:2 🎯 Stop Loss: 101028.92, Take Profit: 104710.13
+eruda.js:2 Recorded prediction: 1h LONG @ 102270.38
+eruda.js:2 📈 Prediction recorded: BTC/USDT 4h LONG @ 102270.38
+eruda.js:2 🎯 Stop Loss: 100722.15, Take Profit: 105323.67
+eruda.js:2 Recorded prediction: 4h LONG @ 102270.38
+eruda.js:2 📈 Prediction recorded: BTC/USDT 3d SHORT @ 102270.38
+eruda.js:2 🎯 Stop Loss: 104556.75, Take Profit: 97654.47
+eruda.js:2 Recorded prediction: 3d SHORT @ 102270.38
+eruda.js:2 🔄 Signals updated, syncing timer with actual calculation time
+eruda.js:2 [SignalDashboard] Executing immediate calculation for BTC/USDT
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1w SHORT @ 102270.38
+eruda.js:2 🎯 Stop Loss: 105016.90, Take Profit: 96734.17
+eruda.js:2 Recorded prediction: 1w SHORT @ 102270.38
+eruda.js:2 Found 10 valid signals for recommendation for BTC/USDT
+eruda.js:2 Updating trade recommendation for 4h timeframe
+eruda.js:2 Calculation process complete for BTC/USDT - 10 signals generated
+eruda.js:2 [UltimateManager] Next fetch in 230s
+eruda.js:2 Tab change to 15m - using synchronized auto-calculated signal
+eruda.js:2 Updating trade recommendation for 15m timeframe
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Tab change to 1h - using synchronized auto-calculated signal
+eruda.js:2 Updating trade recommendation for 1h timeframe
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Tab change to 4h - using synchronized auto-calculated signal
+eruda.js:2 Updating trade recommendation for 4h timeframe
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Tab change to 1d - using synchronized auto-calculated signal
+eruda.js:2 Updating trade recommendation for 1d timeframe
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Tab change to 3d - using synchronized auto-calculated signal
+eruda.js:2 Updating trade recommendation for 3d timeframe
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 Tab change to 1w - using synchronized auto-calculated signal
+eruda.js:2 Updating trade recommendation for 1w timeframe
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Tab change to 1M - using synchronized auto-calculated signal
+eruda.js:2 Updating trade recommendation for 1M timeframe
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1M
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1M
+eruda.js:2 [UltimateManager] Next fetch in 210s
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1w
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1w
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 3d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 3d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1w
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1w
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 3d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 3d
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1w
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1w
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 3d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 3d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1d
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 4h
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 4h
+eruda.js:2 [UltimateManager] Next fetch in 190s
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1h
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1h
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 30m
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 30m
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 15m
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 5m
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 1m
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 170s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+eruda.js:2 [UltimateManager] Next fetch in 150s
+eruda.js:2 [UltimateManager] Next fetch in 140s
+eruda.js:2 [UltimateManager] Next fetch in 130s
+eruda.js:2 [UltimateManager] Next fetch in 120s
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+eruda.js:2 [UltimateManager] Next fetch in 110s
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+eruda.js:2 [UltimateManager] Next fetch in 100s
+eruda.js:2 [UltimateManager] Next fetch in 90s
+eruda.js:2 [UltimateManager] Next fetch in 80s
+eruda.js:2 [UltimateManager] Next fetch in 70s
+eruda.js:2 [UltimateManager] Next fetch in 60s
+eruda.js:2 [UltimateManager] Next fetch in 50s
+eruda.js:2 [UltimateManager] Next fetch in 40s
+eruda.js:2 [UltimateManager] Next fetch in 30s
+eruda.js:2 
+            
+            
+           GET https://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/api/accuracy/BTC/USDT 502 (Bad Gateway)
+window.fetch @ Network.js:219
+(anonymous) @ queryClient.ts:32
+fetchFn @ @tanstack_react-query.js?v=dad7364a:840
+run @ @tanstack_react-query.js?v=dad7364a:494
+start @ @tanstack_react-query.js?v=dad7364a:536
+fetch @ @tanstack_react-query.js?v=dad7364a:926
+executeFetch_fn @ @tanstack_react-query.js?v=dad7364a:2211
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:2245
+setInterval
+updateRefetchInterval_fn @ @tanstack_react-query.js?v=dad7364a:2243
+updateTimers_fn @ @tanstack_react-query.js?v=dad7364a:2250
+onQueryUpdate @ @tanstack_react-query.js?v=dad7364a:2206
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:998
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:997
+batch @ @tanstack_react-query.js?v=dad7364a:583
+dispatch_fn @ @tanstack_react-query.js?v=dad7364a:996
+onError @ @tanstack_react-query.js?v=dad7364a:861
+reject @ @tanstack_react-query.js?v=dad7364a:465
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:508
+Promise.catch
+run @ @tanstack_react-query.js?v=dad7364a:498
+start @ @tanstack_react-query.js?v=dad7364a:536
+fetch @ @tanstack_react-query.js?v=dad7364a:926
+executeFetch_fn @ @tanstack_react-query.js?v=dad7364a:2211
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:2245
+setInterval
+updateRefetchInterval_fn @ @tanstack_react-query.js?v=dad7364a:2243
+updateTimers_fn @ @tanstack_react-query.js?v=dad7364a:2250
+onQueryUpdate @ @tanstack_react-query.js?v=dad7364a:2206
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:998
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:997
+batch @ @tanstack_react-query.js?v=dad7364a:583
+dispatch_fn @ @tanstack_react-query.js?v=dad7364a:996
+onError @ @tanstack_react-query.js?v=dad7364a:861
+reject @ @tanstack_react-query.js?v=dad7364a:465
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:508
+Promise.catch
+run @ @tanstack_react-query.js?v=dad7364a:498
+start @ @tanstack_react-query.js?v=dad7364a:536
+fetch @ @tanstack_react-query.js?v=dad7364a:926
+executeFetch_fn @ @tanstack_react-query.js?v=dad7364a:2211
+(anonymous) @ @tanstack_react-query.js?v=dad7364a:2245
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar19m%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar19m%3A:32 Unrecognized feature: 'battery'.
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar19m%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar19m%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar19m%3A:32 Unrecognized feature: 'layout-animations'.
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar19m%3A:32 Unrecognized feature: 'legacy-image-formats'.
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar19m%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+eruda.js:2 WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=AtggJB-4i4z3' failed: 
+t @ Network.js:227
+setupWebSocket @ client:536
+(anonymous) @ client:531
+eruda.js:2 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=AtggJB-4i4z3' is invalid.
+    at new t (eruda.js:2:218737)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ Network.js:227
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+eruda.js:2 [CentralizedPriceManager] Initializing with 4-minute intervals
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+eruda.js:2 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+eruda.js:2 [UltimateManager] Starting FINAL system initialization
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Starting 4-minute fetch interval
+eruda.js:2 Loading chart data for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart data for BTC/USDT (5m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart data for BTC/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart data for BTC/USDT (30m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart data for BTC/USDT (1h)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart data for BTC/USDT (4h)
+eruda.js:2 Loading chart data for BTC/USDT (1d)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart data for BTC/USDT (3d)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart data for BTC/USDT (1w)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart data for BTC/USDT (1M)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 🧠 Initializing continuous learning feedback loop for BTC/USDT
+eruda.js:2 🧠 Starting continuous learning for BTC/USDT
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=false, isLiveDataReady=false, effectivelyLiveDataReady=0, currentAssetPrice=0, calculationTriggeredRef=false
+eruda.js:2 [HeatMap] Fetching synchronized heatmap data for 4h
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 All timeframe data loaded for BTC/USDT
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=0, currentAssetPrice=0, calculationTriggeredRef=false
+eruda.js:2 Establishing data connection...
+eruda.js:2 [UltimateManager] Triggering immediate calculation on startup
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 [UltimateManager] Price fetch temporarily unavailable
+Mt.forEach.n.<computed> @ eruda.js:2
+performScheduledPriceFetch @ 24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/lib/ultimateSystemManager.ts?v=V8ZRGhtHQgZmA1YlsErIH:106
+await in performScheduledPriceFetch
+initializeUltimateSystem @ 24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/lib/ultimateSystemManager.ts?v=V8ZRGhtHQgZmA1YlsErIH:22
+await in initializeUltimateSystem
+(anonymous) @ 24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/src/main.tsx?v=V8ZRGhtHQgZmA1YlsErIH:7
+eruda.js:2 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+eruda.js:2 [System] Ultimate manager active - synchronized 4-minute intervals
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $102490.58
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $102490.58
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102490.58
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=true, currentAssetPrice=102490.58, calculationTriggeredRef=false
+eruda.js:2 [SignalDashboard] All data ready for BTC/USDT - executing immediate calculation
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $102405.89
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $102405.89
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102405.89
+eruda.js:2 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=true, currentAssetPrice=102405.89, calculationTriggeredRef=true
+eruda.js:2 [SignalDashboard] Executing immediate calculation for BTC/USDT
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 [1m] Using live price: 123235.50966064725 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Updating market data in unified core
+eruda.js:2 [1m] Generating signal with live price 123235.50966064725
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1m: {dataLength: 1000, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1m: {supports: Array(3), resistances: Array(3), currentPrice: 123235.50966064725}
+eruda.js:2 [1m] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1m: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 1 patterns for 1m timeframe
+eruda.js:2 ⚡ Successfully calculated 1m: LONG
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [5m] Using live price: 113767.05422630355 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Updating market data in unified core
+eruda.js:2 [5m] Generating signal with live price 113767.05422630355
+eruda.js:2 Support/Resistance calculation for BTC/USDT 5m: {dataLength: 1000, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 5m: {supports: Array(3), resistances: Array(3), currentPrice: 113767.05422630355}
+eruda.js:2 [5m] Unified signal result: LONG (75%)
+eruda.js:2 [UnifiedEngine] 5m: Market Regime=Market Regime: NORMAL, Direction=LONG, Confidence=75%
+eruda.js:2 [EnhancedEngine] 5m: Enhanced signal ready - Direction=LONG, Confidence=75%
+eruda.js:2 Generated 1 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: LONG
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [15m] Using live price: 102633.19617103382 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Updating market data in unified core
+eruda.js:2 [15m] Generating signal with live price 102633.19617103382
+eruda.js:2 Support/Resistance calculation for BTC/USDT 15m: {dataLength: 800, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 15m: {supports: Array(3), resistances: Array(3), currentPrice: 102633.19617103382}
+eruda.js:2 [15m] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 15m: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 8 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: LONG
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 [30m] Using live price: 114868.68249767579 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Updating market data in unified core
+eruda.js:2 [30m] Generating signal with live price 114868.68249767579
+eruda.js:2 Support/Resistance calculation for BTC/USDT 30m: {dataLength: 800, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 30m: {supports: Array(3), resistances: Array(3), currentPrice: 114868.68249767579}
+eruda.js:2 [30m] Unified signal result: SHORT (78%)
+eruda.js:2 [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=78%
+eruda.js:2 [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=78%
+eruda.js:2 Generated 3 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: SHORT
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Using live price: 132119.5431105745 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Updating market data in unified core
+eruda.js:2 [1h] Generating signal with live price 132119.5431105745
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1h: {dataLength: 720, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1h: {supports: Array(3), resistances: Array(3), currentPrice: 132119.5431105745}
+eruda.js:2 [1h] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1h: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 6 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: LONG
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Using live price: 114876.63241489371 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Updating market data in unified core
+eruda.js:2 [4h] Generating signal with live price 114876.63241489371
+eruda.js:2 Support/Resistance calculation for BTC/USDT 4h: {dataLength: 500, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 4h: {supports: Array(3), resistances: Array(3), currentPrice: 114876.63241489371}
+eruda.js:2 [4h] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 8 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: LONG
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Using live price: 95231.13898535926 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Updating market data in unified core
+eruda.js:2 [1d] Generating signal with live price 95231.13898535926
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1d: {dataLength: 365, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1d: {supports: Array(3), resistances: Array(3), currentPrice: 95231.13898535926}
+eruda.js:2 [1d] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 8 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: SHORT
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 [3d] Using live price: 127505.0487129071 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Updating market data in unified core
+eruda.js:2 [3d] Generating signal with live price 127505.0487129071
+eruda.js:2 Support/Resistance calculation for BTC/USDT 3d: {dataLength: 150, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 3d: {supports: Array(3), resistances: Array(3), currentPrice: 127505.0487129071}
+eruda.js:2 [3d] Unified signal result: LONG (75%)
+eruda.js:2 [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=75%
+eruda.js:2 [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=75%
+eruda.js:2 Generated 8 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: LONG
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 [1w] Using live price: 112446.47491043802 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Updating market data in unified core
+eruda.js:2 [1w] Generating signal with live price 112446.47491043802
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1w: {dataLength: 200, supports: 3, resistances: 1, supportLevels: Array(3), resistanceLevels: Array(1)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1w: {supports: Array(3), resistances: Array(1), currentPrice: 112446.47491043802}
+eruda.js:2 [1w] Unified signal result: LONG (98%)
+eruda.js:2 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1w: Enhanced signal ready - Direction=LONG, Confidence=98%
+eruda.js:2 Generated 8 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: LONG
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 [1M] Using live price: 121848.98131384992 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Updating market data in unified core
+eruda.js:2 [1M] Generating signal with live price 121848.98131384992
+eruda.js:2 Support/Resistance calculation for BTC/USDT 1M: {dataLength: 60, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+eruda.js:2 FINAL Support/Resistance for BTC/USDT 1M: {supports: Array(3), resistances: Array(3), currentPrice: 121848.98131384992}
+eruda.js:2 [1M] Unified signal result: SHORT (98%)
+eruda.js:2 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+eruda.js:2 [EnhancedEngine] 1M: Enhanced signal ready - Direction=SHORT, Confidence=98%
+eruda.js:2 Generated 5 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: SHORT
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: SHORT', '1h: LONG', '4h: LONG', '1d: SHORT', '3d: LONG', '1w: LONG', '1M: SHORT']
+eruda.js:2 🔧 Aligned signals after processing: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: SHORT', '1h: LONG', '4h: LONG', '1d: SHORT', '3d: LONG', '1w: LONG', '1M: SHORT']
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: SHORT', '1h: LONG', '4h: LONG', '1d: SHORT', '3d: LONG', '1w: LONG', '1M: SHORT']
+eruda.js:2 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+eruda.js:2 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'indicators', 'successProbability', 'patternFormations', 'macroInsights', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile']
+eruda.js:2 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'SHORT', confidence: 97.75, entryPrice: 95231.13898535926, …}
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Cannot record predictions - no valid live price available
+Mt.forEach.n.<computed> @ eruda.js:2
+(anonymous) @ AdvancedSignalDashboard.tsx:1181
+await in (anonymous)
+(anonymous) @ AdvancedSignalDashboard.tsx:488
+setTimeout
+(anonymous) @ AdvancedSignalDashboard.tsx:483
+commitHookEffectListMount @ chunk-276SZO74.js:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js:18119
+commitPassiveMountEffects @ chunk-276SZO74.js:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js:19490
+flushPassiveEffects @ chunk-276SZO74.js:19447
+(anonymous) @ chunk-276SZO74.js:19328
+workLoop @ chunk-276SZO74.js:197
+flushWork @ chunk-276SZO74.js:176
+performWorkUntilDeadline @ chunk-276SZO74.js:384
+eruda.js:2 🔄 Signals updated, syncing timer with actual calculation time
+eruda.js:2 [UltimateManager] Next fetch in 230s
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 210s
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [UltimateManager] Next fetch in 190s
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 170s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536 WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=rzrVqRLl-YJs' failed: 
+t @ Network.js:227
+setupWebSocket @ client:536
+(anonymous) @ client:531
+Network.js:227 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=rzrVqRLl-YJs' is invalid.
+    at new t (Network.js:227:18)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ Network.js:227
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+Console.js:61 [CentralizedPriceManager] Initializing with 4-minute intervals
+Console.js:61 Technical indicators module initialized
+Console.js:61 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+Console.js:61 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+Console.js:61 [UltimateManager] Starting FINAL system initialization
+Console.js:61 Technical indicators module initialized
+Console.js:61 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+Console.js:61 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 [CentralizedPriceManager] New subscriber for BTC/USDT
+Console.js:61 [CentralizedPriceManager] Starting 4-minute fetch interval
+Console.js:61 Loading chart data for BTC/USDT (1m)
+Console.js:61 Loading chart with 1000 data points for BTC/USDT (1m)
+Console.js:61 Loading chart data for BTC/USDT (5m)
+Console.js:61 Loading chart with 1000 data points for BTC/USDT (5m)
+Console.js:61 Loading chart data for BTC/USDT (15m)
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Loading chart data for BTC/USDT (30m)
+Console.js:61 Loading chart with 800 data points for BTC/USDT (30m)
+Console.js:61 Loading chart data for BTC/USDT (1h)
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 Loading chart data for BTC/USDT (4h)
+Console.js:61 Loading chart data for BTC/USDT (1d)
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 Loading chart data for BTC/USDT (3d)
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 Loading chart data for BTC/USDT (1w)
+Console.js:61 Loading chart with 200 data points for BTC/USDT (1w)
+Console.js:61 Loading chart data for BTC/USDT (1M)
+Console.js:61 Loading chart with 60 data points for BTC/USDT (1M)
+Console.js:61 [CentralizedPriceManager] New subscriber for BTC/USDT
+Console.js:61 🧠 Initializing continuous learning feedback loop for BTC/USDT
+Console.js:61 🧠 Starting continuous learning for BTC/USDT
+Console.js:61 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=false, isLiveDataReady=false, effectivelyLiveDataReady=0, currentAssetPrice=0, calculationTriggeredRef=false
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 4h
+Console.js:61 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT
+Console.js:61 All timeframe data loaded for BTC/USDT
+Console.js:61 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=0, currentAssetPrice=0, calculationTriggeredRef=false
+Console.js:61 Establishing data connection...
+Console.js:61 [UltimateManager] Triggering immediate calculation on startup
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 [UltimateManager] Price fetch temporarily unavailable
+Mt.forEach.n.<computed> @ Console.js:61
+performScheduledPriceFetch @ ultimateSystemManager.ts:175
+await in performScheduledPriceFetch
+initializeUltimateSystem @ ultimateSystemManager.ts:48
+await in initializeUltimateSystem
+(anonymous) @ main.tsx:8
+Console.js:61 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+Console.js:61 [System] Ultimate manager active - synchronized 4-minute intervals
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Data connection established
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $102434.43
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $102434.43
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102434.43
+Console.js:61 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=true, currentAssetPrice=102434.43, calculationTriggeredRef=false
+Console.js:61 [SignalDashboard] All data ready for BTC/USDT - executing immediate calculation
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $102502.88
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $102502.88
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102502.88
+Console.js:61 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=false, effectivelyLiveDataReady=true, currentAssetPrice=102502.88, calculationTriggeredRef=true
+Console.js:61 [SignalDashboard] Executing immediate calculation for BTC/USDT
+Console.js:61 ⚡ Starting calculation loop for 10 timeframes
+Console.js:61 ⚡ About to calculate 1m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1m)
+Console.js:61 [1m] Using live price: 129400.3475933864 for calculation
+Console.js:61 [1m] Preparing chart data with 1000 candles
+Console.js:61 [1m] Updating market data in unified core
+Console.js:61 [1m] Generating signal with live price 129400.3475933864
+Console.js:61 Support/Resistance calculation for BTC/USDT 1m: {dataLength: 1000, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1m: {supports: Array(3), resistances: Array(3), currentPrice: 129400.3475933864}
+Console.js:61 [1m] Unified signal result: SHORT (63%)
+Console.js:61 [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=63%
+Console.js:61 [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=63%
+Console.js:61 Generated 4 patterns for 1m timeframe
+Console.js:61 ⚡ Successfully calculated 1m: SHORT
+Console.js:61 ⚡ About to calculate 5m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 5m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (5m)
+Console.js:61 [5m] Using live price: 118943.103610896 for calculation
+Console.js:61 [5m] Preparing chart data with 1000 candles
+Console.js:61 [5m] Updating market data in unified core
+Console.js:61 [5m] Generating signal with live price 118943.103610896
+Console.js:61 Support/Resistance calculation for BTC/USDT 5m: {dataLength: 1000, supports: 3, resistances: 1, supportLevels: Array(3), resistanceLevels: Array(1)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 5m: {supports: Array(3), resistances: Array(1), currentPrice: 118943.103610896}
+Console.js:61 [5m] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 2 patterns for 5m timeframe
+Console.js:61 ⚡ Successfully calculated 5m: NEUTRAL
+Console.js:61 ⚡ About to calculate 15m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 15m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (15m)
+Console.js:61 [15m] Using live price: 108320.31938287045 for calculation
+Console.js:61 [15m] Preparing chart data with 800 candles
+Console.js:61 [15m] Updating market data in unified core
+Console.js:61 [15m] Generating signal with live price 108320.31938287045
+Console.js:61 Support/Resistance calculation for BTC/USDT 15m: {dataLength: 800, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 15m: {supports: Array(3), resistances: Array(3), currentPrice: 108320.31938287045}
+Console.js:61 [15m] Unified signal result: LONG (98%)
+Console.js:61 [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+Console.js:61 [EnhancedEngine] 15m: Enhanced signal ready - Direction=LONG, Confidence=98%
+Console.js:61 Generated 5 patterns for 15m timeframe
+Console.js:61 ⚡ Successfully calculated 15m: LONG
+Console.js:61 ⚡ About to calculate 30m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 30m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (30m)
+Console.js:61 [30m] Using live price: 104027.772586378 for calculation
+Console.js:61 [30m] Preparing chart data with 800 candles
+Console.js:61 [30m] Updating market data in unified core
+Console.js:61 [30m] Generating signal with live price 104027.772586378
+Console.js:61 Support/Resistance calculation for BTC/USDT 30m: {dataLength: 800, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 30m: {supports: Array(3), resistances: Array(3), currentPrice: 104027.772586378}
+Console.js:61 [30m] Unified signal result: SHORT (98%)
+Console.js:61 [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+Console.js:61 [EnhancedEngine] 30m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+Console.js:61 Generated 5 patterns for 30m timeframe
+Console.js:61 ⚡ Successfully calculated 30m: SHORT
+Console.js:61 ⚡ About to calculate 1h timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1h timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1h)
+Console.js:61 [1h] Using live price: 123480.21773903003 for calculation
+Console.js:61 [1h] Preparing chart data with 720 candles
+Console.js:61 [1h] Updating market data in unified core
+Console.js:61 [1h] Generating signal with live price 123480.21773903003
+Console.js:61 Support/Resistance calculation for BTC/USDT 1h: {dataLength: 720, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1h: {supports: Array(3), resistances: Array(3), currentPrice: 123480.21773903003}
+Console.js:61 [1h] Unified signal result: SHORT (73%)
+Console.js:61 [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=73%
+Console.js:61 [EnhancedEngine] 1h: Enhanced signal ready - Direction=SHORT, Confidence=73%
+Console.js:61 Generated 6 patterns for 1h timeframe
+Console.js:61 ⚡ Successfully calculated 1h: SHORT
+Console.js:61 ⚡ About to calculate 4h timeframe
+Console.js:61 Calculating signal for BTC/USDT on 4h timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (4h)
+Console.js:61 [4h] Using live price: 110853.1631297285 for calculation
+Console.js:61 [4h] Preparing chart data with 500 candles
+Console.js:61 [4h] Updating market data in unified core
+Console.js:61 [4h] Generating signal with live price 110853.1631297285
+Console.js:61 Support/Resistance calculation for BTC/USDT 4h: {dataLength: 500, supports: 3, resistances: 1, supportLevels: Array(3), resistanceLevels: Array(1)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 4h: {supports: Array(3), resistances: Array(1), currentPrice: 110853.1631297285}
+Console.js:61 [4h] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 4h: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 3 patterns for 4h timeframe
+Console.js:61 ⚡ Successfully calculated 4h: NEUTRAL
+Console.js:61 ⚡ About to calculate 1d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1d timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1d)
+Console.js:61 [1d] Using live price: 104158.58488366782 for calculation
+Console.js:61 [1d] Preparing chart data with 365 candles
+Console.js:61 [1d] Updating market data in unified core
+Console.js:61 [1d] Generating signal with live price 104158.58488366782
+Console.js:61 Support/Resistance calculation for BTC/USDT 1d: {dataLength: 365, supports: 3, resistances: 1, supportLevels: Array(3), resistanceLevels: Array(1)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1d: {supports: Array(3), resistances: Array(1), currentPrice: 104158.58488366782}
+Console.js:61 [1d] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 11 patterns for 1d timeframe
+Console.js:61 ⚡ Successfully calculated 1d: NEUTRAL
+Console.js:61 ⚡ About to calculate 3d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 3d timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (3d)
+Console.js:61 [3d] Using live price: 124873.9266867933 for calculation
+Console.js:61 [3d] Preparing chart data with 150 candles
+Console.js:61 [3d] Updating market data in unified core
+Console.js:61 [3d] Generating signal with live price 124873.9266867933
+Console.js:61 Support/Resistance calculation for BTC/USDT 3d: {dataLength: 150, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 3d: {supports: Array(3), resistances: Array(3), currentPrice: 124873.9266867933}
+Console.js:61 [3d] Unified signal result: LONG (75%)
+Console.js:61 [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=75%
+Console.js:61 [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=75%
+Console.js:61 Generated 9 patterns for 3d timeframe
+Console.js:61 ⚡ Successfully calculated 3d: LONG
+Console.js:61 ⚡ About to calculate 1w timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1w timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1w)
+Console.js:61 [1w] Using live price: 119713.0511622583 for calculation
+Console.js:61 [1w] Preparing chart data with 200 candles
+Console.js:61 [1w] Updating market data in unified core
+Console.js:61 [1w] Generating signal with live price 119713.0511622583
+Console.js:61 Support/Resistance calculation for BTC/USDT 1w: {dataLength: 200, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1w: {supports: Array(3), resistances: Array(3), currentPrice: 119713.0511622583}
+Console.js:61 [1w] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 8 patterns for 1w timeframe
+Console.js:61 ⚡ Successfully calculated 1w: NEUTRAL
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1M timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1M)
+Console.js:61 [1M] Using live price: 119592.54161735247 for calculation
+Console.js:61 [1M] Preparing chart data with 60 candles
+Console.js:61 [1M] Updating market data in unified core
+Console.js:61 [1M] Generating signal with live price 119592.54161735247
+Console.js:61 Support/Resistance calculation for BTC/USDT 1M: {dataLength: 60, supports: 3, resistances: 1, supportLevels: Array(3), resistanceLevels: Array(1)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1M: {supports: Array(3), resistances: Array(1), currentPrice: 119592.54161735247}
+Console.js:61 [1M] Unified signal result: LONG (98%)
+Console.js:61 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+Console.js:61 [EnhancedEngine] 1M: Enhanced signal ready - Direction=LONG, Confidence=98%
+Console.js:61 Generated 3 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: LONG
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: (10) ['1m: SHORT', '5m: NEUTRAL', '15m: LONG', '30m: SHORT', '1h: SHORT', '4h: NEUTRAL', '1d: NEUTRAL', '3d: LONG', '1w: NEUTRAL', '1M: LONG']
+Console.js:61 🔧 Aligned signals after processing: (10) ['1m: SHORT', '5m: NEUTRAL', '15m: LONG', '30m: SHORT', '1h: SHORT', '4h: NEUTRAL', '1d: NEUTRAL', '3d: LONG', '1w: NEUTRAL', '1M: LONG']
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: (10) ['1m: SHORT', '5m: NEUTRAL', '15m: LONG', '30m: SHORT', '1h: SHORT', '4h: NEUTRAL', '1d: NEUTRAL', '3d: LONG', '1w: NEUTRAL', '1M: LONG']
+Console.js:61 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+Console.js:61 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'indicators', 'successProbability', 'patternFormations', 'macroInsights', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile']
+Console.js:61 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'NEUTRAL', confidence: 47, entryPrice: 104158.58488366782, …}
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 Cannot record predictions - no valid live price available
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ AdvancedSignalDashboard.tsx:1596
+await in (anonymous)
+(anonymous) @ AdvancedSignalDashboard.tsx:659
+setTimeout
+(anonymous) @ AdvancedSignalDashboard.tsx:652
+commitHookEffectListMount @ chunk-276SZO74.js?v=dad7364a:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=dad7364a:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=dad7364a:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=dad7364a:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=dad7364a:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=dad7364a:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=dad7364a:19447
+(anonymous) @ chunk-276SZO74.js?v=dad7364a:19328
+workLoop @ chunk-276SZO74.js?v=dad7364a:197
+flushWork @ chunk-276SZO74.js?v=dad7364a:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=dad7364a:384
+Console.js:61 🔄 Signals updated, syncing timer with actual calculation time
+Console.js:61 [UltimateManager] Next fetch in 230s
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 [UltimateManager] Next fetch in 210s
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 [UltimateManager] Next fetch in 190s
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [UltimateManager] Next fetch in 170s
+Console.js:61 [UltimateManager] Next fetch in 160s
+Console.js:61 [UltimateManager] Next fetch in 150s
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1M
+Console.js:61 [UltimateManager] Next fetch in 140s
+Console.js:61 [UltimateManager] Next fetch in 130s
+Console.js:61 [UltimateManager] Next fetch in 120s
+Console.js:61 [UltimateManager] Next fetch in 110s
+Console.js:61 [UltimateManager] Next fetch in 100s
+Console.js:61 [UltimateManager] Next fetch in 90s
+Console.js:61 [UltimateManager] Next fetch in 80s
+Console.js:61 [UltimateManager] Next fetch in 70s
+Console.js:61 [UltimateManager] Next fetch in 60s
+Console.js:61 [UltimateManager] Next fetch in 50s
+Console.js:61 [UltimateManager] Next fetch in 40s
+Console.js:61 [UltimateManager] Next fetch in 30s
+Console.js:61 [UltimateManager] Next fetch in 20s
+Console.js:61 [UltimateManager] Next fetch in 10s
+Console.js:61 Scheduled price update check (240-second interval) at 9:58:25 PM
+Console.js:61 [CentralizedPriceManager] Fetching prices for 1 symbols
+Console.js:61 CoinGecko real-time price data: {binancecoin: {…}, bitcoin: {…}, ethereum: {…}, ripple: {…}, solana: {…}}
+Console.js:61 Price update for BTC/USDT: 110853.16 → 102432.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [AdvancedSignalDashboard] Price updated via price-update event: 102432
+Console.js:61 [useMarketData] Price updated to 102432 for BTC/USDT - display only
+Console.js:61 [useMarketData] Price updated to 102432 for BTC/USDT - display only
+Console.js:61 🔄 Real-time calculation triggered for BTC/USDT after 237.475s
+Console.js:61 ⚡ Starting calculation loop for 10 timeframes
+Console.js:61 ⚡ About to calculate 1m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1m)
+Console.js:61 [1m] Using live price: 102502.88 for calculation
+Console.js:61 [1m] Preparing chart data with 1000 candles
+Console.js:61 [1m] Updating market data in unified core
+Console.js:61 [1m] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 1m: {dataLength: 1000, supports: 3, resistances: 0, supportLevels: Array(3), resistanceLevels: Array(0)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1m: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [1m] Unified signal result: SHORT (68%)
+Console.js:61 [UnifiedEngine] 1m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=68%
+Console.js:61 [EnhancedEngine] 1m: Enhanced signal ready - Direction=SHORT, Confidence=68%
+Console.js:61 Generated 3 patterns for 1m timeframe
+Console.js:61 [AdvancedSignalDashboard] Live price updated to: 102432
+Console.js:61 [useMarketData] Price updated to 102432 for BTC/USDT - display only
+Console.js:61 [useMarketData] Price updated to 102432 for BTC/USDT - display only
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 102432
+Console.js:61 [useMarketData] Price update for BTC/USDT: 102432 - NOT dispatching extra event
+Console.js:61 ⚡ Successfully calculated 1m: SHORT
+Console.js:61 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=true, effectivelyLiveDataReady=true, currentAssetPrice=102502.88, calculationTriggeredRef=false
+Console.js:61 [SignalDashboard] All data ready for BTC/USDT - executing immediate calculation
+Console.js:61 [UltimateManager] Next fetch in 0s
+Console.js:61 [UltimateManager] 4-minute interval reached - triggering synchronized calculation
+Console.js:61 [HeatMap] Received synchronized calculation event - updating heatmap
+Console.js:61 [HeatMap] Syncing with ultimate system timer - refreshing heatmap data
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1M
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $102346.8
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $102346.8
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $102346.8
+Console.js:61 [DEBUG] Checking immediate calc conditions: isAllDataLoaded=true, isLiveDataReady=true, effectivelyLiveDataReady=true, currentAssetPrice=102346.8, calculationTriggeredRef=true
+Console.js:61 ⚡ About to calculate 5m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 5m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (5m)
+Console.js:61 [5m] Using live price: 102502.88 for calculation
+Console.js:61 [5m] Preparing chart data with 1000 candles
+Console.js:61 [5m] Updating market data in unified core
+Console.js:61 [5m] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 5m: {dataLength: 1000, supports: 0, resistances: 3, supportLevels: Array(0), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 5m: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [5m] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 2 patterns for 5m timeframe
+Console.js:61 ⚡ Successfully calculated 5m: NEUTRAL
+Console.js:61 ⚡ About to calculate 15m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 15m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (15m)
+Console.js:61 [15m] Using live price: 102502.88 for calculation
+Console.js:61 [15m] Preparing chart data with 800 candles
+Console.js:61 [15m] Updating market data in unified core
+Console.js:61 [15m] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 15m: {dataLength: 800, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 15m: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [15m] Unified signal result: SHORT (98%)
+Console.js:61 [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+Console.js:61 [EnhancedEngine] 15m: Enhanced signal ready - Direction=SHORT, Confidence=98%
+Console.js:61 Generated 4 patterns for 15m timeframe
+Console.js:61 ⚡ Successfully calculated 15m: SHORT
+Console.js:61 ⚡ About to calculate 30m timeframe
+Console.js:61 Calculating signal for BTC/USDT on 30m timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (30m)
+Console.js:61 [30m] Using live price: 102502.88 for calculation
+Console.js:61 [30m] Preparing chart data with 800 candles
+Console.js:61 [30m] Updating market data in unified core
+Console.js:61 [30m] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 30m: {dataLength: 800, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 30m: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [30m] Unified signal result: NEUTRAL (58%)
+Console.js:61 [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+Console.js:61 [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+Console.js:61 Generated 6 patterns for 30m timeframe
+Console.js:61 ⚡ Successfully calculated 30m: NEUTRAL
+Console.js:61 [UltimateManager] Price fetch temporarily unavailable
+Mt.forEach.n.<computed> @ Console.js:61
+performScheduledPriceFetch @ ultimateSystemManager.ts:175
+await in performScheduledPriceFetch
+(anonymous) @ ultimateSystemManager.ts:124
+setInterval
+startUltimateTimer @ ultimateSystemManager.ts:113
+initializeUltimateSystem @ ultimateSystemManager.ts:51
+await in initializeUltimateSystem
+(anonymous) @ main.tsx:8
+Console.js:61 ⚡ About to calculate 1h timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1h timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1h)
+Console.js:61 [1h] Using live price: 102502.88 for calculation
+Console.js:61 [1h] Preparing chart data with 720 candles
+Console.js:61 [1h] Updating market data in unified core
+Console.js:61 [1h] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 1h: {dataLength: 720, supports: 1, resistances: 3, supportLevels: Array(1), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1h: {supports: Array(1), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [1h] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1h: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 8 patterns for 1h timeframe
+Console.js:61 ⚡ Successfully calculated 1h: NEUTRAL
+Console.js:61 ⚡ About to calculate 4h timeframe
+Console.js:61 Calculating signal for BTC/USDT on 4h timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (4h)
+Console.js:61 [4h] Using live price: 102502.88 for calculation
+Console.js:61 [4h] Preparing chart data with 500 candles
+Console.js:61 [4h] Updating market data in unified core
+Console.js:61 [4h] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 4h: {dataLength: 500, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 4h: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [4h] Unified signal result: SHORT (65%)
+Console.js:61 [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=65%
+Console.js:61 [EnhancedEngine] 4h: Enhanced signal ready - Direction=SHORT, Confidence=65%
+Console.js:61 Generated 7 patterns for 4h timeframe
+Console.js:61 ⚡ Successfully calculated 4h: SHORT
+Console.js:61 ⚡ About to calculate 1d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1d timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1d)
+Console.js:61 [1d] Using live price: 102502.88 for calculation
+Console.js:61 [1d] Preparing chart data with 365 candles
+Console.js:61 [1d] Updating market data in unified core
+Console.js:61 [1d] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 1d: {dataLength: 365, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1d: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [1d] Unified signal result: SHORT (98%)
+Console.js:61 [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+Console.js:61 [EnhancedEngine] 1d: Enhanced signal ready - Direction=SHORT, Confidence=98%
+Console.js:61 Generated 7 patterns for 1d timeframe
+Console.js:61 ⚡ Successfully calculated 1d: SHORT
+Console.js:61 ⚡ About to calculate 3d timeframe
+Console.js:61 Calculating signal for BTC/USDT on 3d timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (3d)
+Console.js:61 [3d] Using live price: 102502.88 for calculation
+Console.js:61 [3d] Preparing chart data with 150 candles
+Console.js:61 [3d] Updating market data in unified core
+Console.js:61 [3d] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 3d: {dataLength: 150, supports: 0, resistances: 3, supportLevels: Array(0), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 3d: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [3d] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 3d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 10 patterns for 3d timeframe
+Console.js:61 ⚡ Successfully calculated 3d: NEUTRAL
+Console.js:61 ⚡ About to calculate 1w timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1w timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1w)
+Console.js:61 [1w] Using live price: 102502.88 for calculation
+Console.js:61 [1w] Preparing chart data with 200 candles
+Console.js:61 [1w] Updating market data in unified core
+Console.js:61 [1w] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 1w: {dataLength: 200, supports: 0, resistances: 3, supportLevels: Array(0), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1w: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [1w] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1w: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 7 patterns for 1w timeframe
+Console.js:61 ⚡ Successfully calculated 1w: NEUTRAL
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1M timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1M)
+Console.js:61 [1M] Using live price: 102502.88 for calculation
+Console.js:61 [1M] Preparing chart data with 60 candles
+Console.js:61 [1M] Updating market data in unified core
+Console.js:61 [1M] Generating signal with live price 102502.88
+Console.js:61 Support/Resistance calculation for BTC/USDT 1M: {dataLength: 60, supports: 3, resistances: 3, supportLevels: Array(3), resistanceLevels: Array(3)}
+Console.js:61 FINAL Support/Resistance for BTC/USDT 1M: {supports: Array(3), resistances: Array(3), currentPrice: 102502.88}
+Console.js:61 [1M] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 6 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: NEUTRAL
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: (10) ['1m: SHORT', '5m: NEUTRAL', '15m: SHORT', '30m: NEUTRAL', '1h: NEUTRAL', '4h: SHORT', '1d: SHORT', '3d: NEUTRAL', '1w: NEUTRAL', '1M: NEUTRAL']
+Console.js:61 🔧 Aligned signals after processing: (10) ['1m: SHORT', '5m: NEUTRAL', '15m: SHORT', '30m: NEUTRAL', '1h: NEUTRAL', '4h: SHORT', '1d: SHORT', '3d: NEUTRAL', '1w: NEUTRAL', '1M: NEUTRAL']
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: (10) ['1m: SHORT', '5m: NEUTRAL', '15m: SHORT', '30m: NEUTRAL', '1h: NEUTRAL', '4h: SHORT', '1d: SHORT', '3d: NEUTRAL', '1w: NEUTRAL', '1M: NEUTRAL']
+Console.js:61 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+Console.js:61 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'indicators', 'successProbability', 'patternFormations', 'macroInsights', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile']
+Console.js:61 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'SHORT', confidence: 98, entryPrice: 102502.88, …}
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 Recording predictions using live price: 102409.29
+Console.js:61 📈 Prediction recorded: BTC/USDT 1m SHORT @ 102409.29
+Console.js:61 🎯 Stop Loss: 102964.14, Take Profit: 101580.35
+Console.js:61 Recorded prediction: 1m SHORT @ 102409.29
+Console.js:61 📈 Prediction recorded: BTC/USDT 15m SHORT @ 102409.29
+Console.js:61 🎯 Stop Loss: 103271.65, Take Profit: 100965.34
+Console.js:61 Recorded prediction: 15m SHORT @ 102409.29
+Console.js:61 📈 Prediction recorded: BTC/USDT 4h SHORT @ 102409.29
+Console.js:61 🎯 Stop Loss: 104040.42, Take Profit: 99427.79
+Console.js:61 Recorded prediction: 4h SHORT @ 102409.29
+Console.js:61 📈 Prediction recorded: BTC/USDT 1d SHORT @ 102409.29
+Console.js:61 🎯 Stop Loss: 104347.93, Take Profit: 98812.78
+Console.js:61 Recorded prediction: 1d SHORT @ 102409.29
+Console.js:61 Found 10 valid signals for recommendation for BTC/USDT
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Calculation process complete for BTC/USDT - 10 signals generated
+Console.js:61 🔄 Signals updated, syncing timer with actual calculation time
+Console.js:61 [SignalDashboard] Executing immediate calculation for BTC/USDT
+Console.js:61 [UltimateManager] Next fetch in 230s
+Console.js:61 Tab change to 15m - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 15m timeframe
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Tab change to 1h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1h timeframe
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 Tab change to 4h - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 Tab change to 1d - using synchronized auto-calculated signal
+Console.js:61 Updating trade recommendation for 1d timeframe
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1w
+Console.js:61 [UltimateManager] Next fetch in 210s
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 3d
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1d
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1h
+Console.js:61 [UltimateManager] Next fetch in 190s
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 30m
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 15m
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 5m
+Console.js:61 [HeatMap] Fetching synchronized heatmap data for 1m
+Console.js:61 [UltimateManager] Next fetch in 170s
+Console.js:61 [UltimateManager] Next fetch in 160s
+Console.js:61 [UltimateManager] Next fetch in 150s
+Console.js:61 [UltimateManager] Next fetch in 140s
+Console.js:61 [UltimateManager] Next fetch in 130s
+Console.js:61 [UltimateManager] Next fetch in 120s
+Console.js:61 [UltimateManager] Next fetch in 110s
+Console.js:61 [UltimateManager] Next fetch in 100s
+Console.js:61 [UltimateManager] Next fetch in 90s
