@@ -30,6 +30,8 @@ export interface IStorage {
   // Trade simulation operations
   createTradeSimulation(trade: InsertTradeSimulation): Promise<TradeSimulation>;
   getActiveTradeSimulations(symbol: string): Promise<TradeSimulation[]>;
+  getTradeSimulations(symbol: string): Promise<TradeSimulation[]>;
+  getAllTradeSimulations(): Promise<TradeSimulation[]>;
   updateTradeSimulation(id: number, data: Partial<TradeSimulation>): Promise<TradeSimulation | undefined>;
   closeTradeSimulation(id: number, exitPrice: number, exitReason: string): Promise<TradeSimulation | undefined>;
   

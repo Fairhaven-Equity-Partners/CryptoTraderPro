@@ -158,7 +158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get performance metrics from feedback analyzer
   app.get('/api/performance-metrics', async (req: Request, res: Response) => {
     try {
-      const metrics = feedbackAnalyzer.getPerformanceMetrics();
+      const metrics = await feedbackAnalyzer.getPerformanceMetrics();
       res.json(metrics);
     } catch (error) {
       console.error('Error retrieving performance metrics:', error);
