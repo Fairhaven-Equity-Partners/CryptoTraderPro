@@ -47,6 +47,7 @@ interface Props {
 export function EnhancedTechnicalAnalysis({ symbol }: Props) {
   const { data, isLoading, error, refetch } = useQuery<TechnicalAnalysisData>({
     queryKey: ['/api/technical-analysis', symbol],
+    queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}`).then(res => res.json()),
     refetchInterval: 60000, // Refresh every minute
   });
 
