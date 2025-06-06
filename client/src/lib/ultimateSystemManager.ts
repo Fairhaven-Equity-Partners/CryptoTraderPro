@@ -8,6 +8,8 @@ let systemInitialized = false;
 let masterTimerActive = false;
 let ultimateTimer: number | null = null;
 let countdownRemaining = 240; // Exactly 4 minutes
+let calculationInProgress = false;
+let lastCalculationTime = 0;
 
 interface GlobalSystemState {
   initialized: boolean;
@@ -157,9 +159,28 @@ function startUltimateTimer(): void {
 }
 
 /**
+ * Check if calculations are allowed based on 4-minute schedule
+ */
+export function isCalculationAllowed(): boolean {
+  const now = Date.now();
+  const timeSinceLastCalc = now - lastCalculationTime;
+  
+  // Only allow calculations every 4 minutes (240,000ms) OR if it's the first calculation
+  return (timeSinceLastCalc >= 240000) || (lastCalculationTime === 0);
+}
+
+/**
  * Perform the scheduled price fetch for all 50 cryptocurrency pairs
  */
 async function performScheduledPriceFetch(): Promise<void> {
+  // Prevent overlapping calculations
+  if (calculationInProgress) {
+    console.log('[UltimateManager] Calculation already in progress - skipping');
+    return;
+  }
+  
+  calculationInProgress = true;
+  lastCalculationTime = Date.now();
   try {
     systemState.lastPriceFetch = Date.now();
 
@@ -196,6 +217,8 @@ async function performScheduledPriceFetch(): Promise<void> {
     
   } catch (error) {
     console.warn('[UltimateManager] Price fetch temporarily unavailable');
+  } finally {
+    calculationInProgress = false;
   }
 }
 

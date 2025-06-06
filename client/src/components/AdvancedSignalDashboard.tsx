@@ -611,7 +611,7 @@ export default function AdvancedSignalDashboard({
   const hasValidPriceData = currentAssetPrice && currentAssetPrice > 0;
   const effectivelyLiveDataReady = isLiveDataReady || hasValidPriceData;
 
-  // Each time data is loaded or symbol changes, trigger calculation if not already done
+  // Each time data is loaded or symbol changes, trigger calculation ONLY when timer allows
   useEffect(() => {
     // Reset calculation status when symbol changes
     if (lastSymbolRef.current !== symbol) {
@@ -634,30 +634,27 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // Removed debug logging to keep console clean
-    
-    // IMMEDIATE calculation trigger - eliminate 2-cycle delay
-    if (isAllDataLoaded && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
-      console.log(`[SignalDashboard] Data ready for ${symbol} - triggering IMMEDIATE calculation`);
-      calculationTriggeredRef.current = true;
-      
-      if (calculationTimeoutRef.current) {
-        clearTimeout(calculationTimeoutRef.current);
+    // RESPECT 4-MINUTE TIMER - only calculate when allowed by master timer
+    import('../lib/ultimateSystemManager').then(({ isCalculationAllowed }) => {
+      if (isAllDataLoaded && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current && isCalculationAllowed()) {
+        console.log(`[SignalDashboard] Data ready for ${symbol} - triggering TIMER-SYNCHRONIZED calculation`);
+        calculationTriggeredRef.current = true;
+        
+        if (calculationTimeoutRef.current) {
+          clearTimeout(calculationTimeoutRef.current);
+        }
+        
+        // Execute calculation only when timer allows
+        if (!isCalculating) {
+          calculateAllSignals().catch(error => {
+            console.error('[SignalDashboard] Calculation error:', error);
+            setIsCalculating(false);
+          });
+        }
+      } else if (isAllDataLoaded && !isCalculationAllowed()) {
+        console.log(`[SignalDashboard] Data ready for ${symbol} but calculation blocked by 4-minute timer`);
       }
-      
-      // Execute calculation IMMEDIATELY without delay
-      if (!isCalculating) {
-        calculateAllSignals().catch(error => {
-          console.error('[SignalDashboard] Calculation error:', error);
-          setIsCalculating(false);
-        });
-      }
-    }
-    
-    // IMMEDIATE fallback trigger - eliminate all delays
-    if (isAllDataLoaded && !calculationTriggeredRef.current) {
-      console.log(`[SignalDashboard] IMMEDIATE fallback calculation for ${symbol}`);
-      calculationTriggeredRef.current = true;
+    });
       
       // Execute fallback calculation IMMEDIATELY without any timeout
       if (!isCalculating) {
