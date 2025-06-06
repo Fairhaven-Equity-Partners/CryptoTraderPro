@@ -320,23 +320,14 @@ export default function AdvancedSignalDashboard({
     const correct = correctTrades.length;
     const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
     
-    console.log(`Trade data: ${tradeSimulations.length} total, ${activeTrades.length} active, ${completedTrades.length} completed`);
+    // Removed excessive logging to prevent console spam
     
     return { correct, total, percentage, activeTrades: activeTrades.length };
   }, [tradeSimulations]);
   
   const realAccuracy = calculateRealAccuracy();
   
-  // Debug trade simulations data
-  useEffect(() => {
-    console.log('Trade simulations query status:', {
-      isLoading: tradeSimulationsQuery.isLoading,
-      isError: tradeSimulationsQuery.isError,
-      error: tradeSimulationsQuery.error,
-      dataLength: Array.isArray(tradeSimulations) ? tradeSimulations.length : 0,
-      data: tradeSimulations
-    });
-  }, [tradeSimulations, tradeSimulationsQuery.isLoading, tradeSimulationsQuery.isError]);
+  // Removed excessive debug logging to prevent console spam
   
   // State to track live price directly from price events
   const [livePriceState, setLivePriceState] = useState<number | null>(null);
