@@ -123,27 +123,24 @@ export function EnhancedTechnicalAnalysis({ symbol }: Props) {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Main Signal Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
-              Enhanced Technical Analysis - {symbol}
-            </div>
-            <Badge className={getSignalColor(data.signal.direction)}>
+    <div className="space-y-3">
+      {/* Compact Signal Card */}
+      <Card className="border-gray-800 bg-gray-900 text-white">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-mono flex items-center justify-between">
+            <span>Technical Analysis</span>
+            <Badge className={`text-xs ${getSignalColor(data.signal.direction)}`}>
               {data.signal.direction} {data.signal.confidence}%
             </Badge>
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Price Info */}
-          <div className="flex justify-between items-center">
+        <CardContent className="pt-0 space-y-2">
+          {/* Compact Price Info */}
+          <div className="flex justify-between items-center text-xs">
             <div>
-              <p className="text-2xl font-bold">{formatPrice(data.currentPrice)}</p>
-              <p className={`text-sm ${data.change24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {formatPercent(data.change24h)} (24h)
+              <p className="text-sm font-mono">{formatPrice(data.currentPrice)}</p>
+              <p className={`text-xs font-mono ${data.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {formatPercent(data.change24h)}
               </p>
             </div>
             <div className="text-right">
@@ -179,78 +176,61 @@ export function EnhancedTechnicalAnalysis({ symbol }: Props) {
         </CardContent>
       </Card>
 
-      {/* Technical Indicators Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Compact Technical Indicators */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
         {/* RSI */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">RSI (14)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-2xl font-bold">{data.indicators.rsi.toFixed(1)}</span>
-                <Badge variant={data.indicators.rsi > 70 ? 'destructive' : data.indicators.rsi < 30 ? 'default' : 'secondary'}>
-                  {data.indicators.rsi > 70 ? 'Overbought' : data.indicators.rsi < 30 ? 'Oversold' : 'Neutral'}
-                </Badge>
-              </div>
-              <Progress value={data.indicators.rsi} className="h-2" />
+        <Card className="border-gray-800 bg-gray-900 text-white">
+          <CardContent className="p-2">
+            <div className="text-xs font-mono">RSI</div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-mono">{data.indicators.rsi.toFixed(1)}</span>
+              <div className={`w-2 h-2 rounded-full ${
+                data.indicators.rsi > 70 ? 'bg-red-400' : 
+                data.indicators.rsi < 30 ? 'bg-green-400' : 'bg-gray-400'
+              }`}></div>
             </div>
           </CardContent>
         </Card>
 
         {/* MACD */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">MACD</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-lg font-bold">{data.indicators.macd.toFixed(2)}</span>
-                <Badge variant={data.indicators.macd > data.indicators.signal ? 'default' : 'destructive'}>
-                  {data.indicators.macd > data.indicators.signal ? 'Bullish' : 'Bearish'}
-                </Badge>
-              </div>
-              <div className="text-xs text-gray-600">
-                Signal: {data.indicators.signal.toFixed(2)}
-              </div>
+        <Card className="border-gray-800 bg-gray-900 text-white">
+          <CardContent className="p-2">
+            <div className="text-xs font-mono">MACD</div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-mono">{data.indicators.macd.toFixed(1)}</span>
+              <div className={`w-2 h-2 rounded-full ${
+                data.indicators.macd > data.indicators.signal ? 'bg-green-400' : 'bg-red-400'
+              }`}></div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Moving Averages */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Moving Averages</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>EMA(12):</span>
-                <span className="font-medium">{formatPrice(data.indicators.ema12)}</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span>SMA(20):</span>
-                <span className="font-medium">{formatPrice(data.indicators.sma20)}</span>
-              </div>
-              <Badge variant={data.indicators.ema12 > data.indicators.sma20 ? 'default' : 'destructive'} className="w-full justify-center">
-                {data.indicators.ema12 > data.indicators.sma20 ? 'Bullish Cross' : 'Bearish Cross'}
-              </Badge>
+        {/* EMA */}
+        <Card className="border-gray-800 bg-gray-900 text-white">
+          <CardContent className="p-2">
+            <div className="text-xs font-mono">EMA</div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-mono">${data.indicators.ema12.toFixed(0)}</span>
+              <div className={`w-2 h-2 rounded-full ${
+                data.indicators.ema12 > data.indicators.sma20 ? 'bg-green-400' : 'bg-red-400'
+              }`}></div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Bollinger Bands */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Bollinger Bands</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>Upper:</span>
-                <span className="font-medium">{formatPrice(data.indicators.upperBB)}</span>
+        {/* Stochastic */}
+        <Card className="border-gray-800 bg-gray-900 text-white">
+          <CardContent className="p-2">
+            <div className="text-xs font-mono">STOCH</div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-mono">{data.indicators.stochK.toFixed(1)}</span>
+              <div className={`w-2 h-2 rounded-full ${
+                data.indicators.stochK > 80 ? 'bg-red-400' : 
+                data.indicators.stochK < 20 ? 'bg-green-400' : 'bg-gray-400'
+              }`}></div>
+            </div>
+          </CardContent>
+        </Card>
               </div>
               <div className="flex justify-between">
                 <span>Price:</span>
