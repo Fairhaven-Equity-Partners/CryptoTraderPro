@@ -205,9 +205,9 @@ export function startPricePolling(symbol: string): () => void {
         console.log(`[Price] 4-MINUTE MARK REACHED - Fetching ALL prices`);
         
         // Fetch prices for all tracked symbols
-        for (const trackedSymbol of activeSymbols) {
+        Array.from(activeSymbols).forEach(trackedSymbol => {
           getCurrentPrice(trackedSymbol);
-        }
+        });
       }
     }, 60000); // Check every minute
   }

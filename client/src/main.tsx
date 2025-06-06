@@ -1,14 +1,14 @@
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import "./lib/windowTypes"; // Import type definitions for window object
-import { initializeUnifiedSystem } from "./lib/unifiedSystemInitializer";
+import "./lib/windowTypes";
+import { initializeOptimizedSystem } from "./lib/optimizedSystemCore";
 
-// Initialize all systems through unified initializer (prevents redundant initialization)
-initializeUnifiedSystem().then(() => {
-  console.log('✅ Unified system initialization complete');
+// Initialize optimized system (single point of control, eliminates redundancies)
+initializeOptimizedSystem().then(() => {
+  console.log('[Core] Optimized system ready with authentic data sources');
 }).catch((error) => {
-  console.error('❌ System initialization failed:', error);
+  console.error('[Core] System initialization failed:', error);
 });
 
 createRoot(document.getElementById("root")!).render(<App />);

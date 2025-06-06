@@ -1280,10 +1280,14 @@ export default function AdvancedSignalDashboard({
           if (signal) {
             console.log(`[UnifiedEngine] ${timeframe}: Market Regime=${signal.macroInsights?.[0]}, Direction=${signal.direction}, Confidence=${signal.confidence}%`);
             
-            // Ensure the enhanced signal data is properly structured for UI display
-            // Use the unified signal directly if available, otherwise keep original
+            // Enhanced signal data is compatible - use unified calculation results
             if (unifiedSignal) {
-              signal = unifiedSignal;
+              // Update core signal properties with enhanced calculations
+              signal.direction = unifiedSignal.direction;
+              signal.confidence = unifiedSignal.confidence;
+              signal.entryPrice = unifiedSignal.entryPrice;
+              signal.stopLoss = unifiedSignal.stopLoss;
+              signal.takeProfit = unifiedSignal.takeProfit;
             }
             console.log(`[EnhancedEngine] ${timeframe}: Enhanced signal ready - Direction=${signal?.direction || 'NEUTRAL'}, Confidence=${signal?.confidence || 0}%`);
           }
