@@ -862,7 +862,9 @@ class UnifiedCalculationCore {
     const cacheKey = `${symbol}_${timeframe}`;
     const data = this.dataCache.get(cacheKey);
     
-    if (!data || data.length < 50) return null;
+    // Adjust minimum data requirements for different timeframes
+    const minRequiredPoints = timeframe === '1M' ? 12 : timeframe === '1w' ? 20 : 50;
+    if (!data || data.length < minRequiredPoints) return null;
     
     // Calculate all indicators
     const rsi = this.calculateRSI(data);
