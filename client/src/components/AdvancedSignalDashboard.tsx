@@ -630,6 +630,9 @@ export default function AdvancedSignalDashboard({
     
     // Removed debug logging to keep console clean
     
+    // Enhanced immediate calculation trigger with detailed debugging
+    console.log(`[DEBUG] Checking immediate calc conditions: isAllDataLoaded=${isAllDataLoaded}, isLiveDataReady=${isLiveDataReady}, hasValidPriceData=${hasValidPriceData}, currentAssetPrice=${currentAssetPrice}, calculationTriggeredRef=${calculationTriggeredRef.current}`);
+    
     if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
       console.log(`[SignalDashboard] All data ready for ${symbol} - executing immediate calculation`);
       calculationTriggeredRef.current = true;
