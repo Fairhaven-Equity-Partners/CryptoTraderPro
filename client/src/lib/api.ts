@@ -9,6 +9,7 @@ import {
 import { calculateSafeLeverage } from './calculations';
 import { getPrice } from './priceSync';
 import { centralizedPriceManager } from './centralizedPriceManager';
+import { debouncedApiCall } from './requestDebouncer';
 
 // API Base URL
 const API_BASE_URL = window.location.origin;

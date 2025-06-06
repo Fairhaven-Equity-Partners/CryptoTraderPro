@@ -279,12 +279,12 @@ export default function AdvancedSignalDashboard({
   // Get market data and crypto asset price with live data readiness
   const { chartData, isAllDataLoaded, isLiveDataReady, liveDataTimestamp } = useMarketData(symbol);
   
-  // Use a short refetch interval to ensure live price synchronization
+  // Use centralized price manager instead of frequent API calls
   const { data: asset } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],
     enabled: !!symbol,
-    refetchInterval: 3000, // Refetch every 3 seconds to stay synchronized
-    staleTime: 1000 // Consider data stale after 1 second
+    refetchInterval: 240000, // Align with 4-minute calculation cycle
+    staleTime: 240000 // Match calculation interval
   });
   
   // Fetch accuracy metrics for current symbol
@@ -350,47 +350,20 @@ export default function AdvancedSignalDashboard({
     };
   }, [symbol]);
   
-  // Listen for ALL price update events and invalidate cache to sync with top page display
+  // Listen for centralized price updates only (eliminate redundant cache invalidation)
   useEffect(() => {
-    const handleLivePriceUpdate = (event: any) => {
+    const handleCentralizedPriceUpdate = (event: any) => {
       if (event.detail?.symbol === symbol && event.detail?.price) {
         setLivePriceState(event.detail.price);
-        // Invalidate the asset query cache to force refetch
-        queryClient.invalidateQueries({ queryKey: [`/api/crypto/${symbol}`] });
-        console.log(`[AdvancedSignalDashboard] Live price updated to: ${event.detail.price}`);
+        console.log(`[AdvancedSignalDashboard] Centralized price update for ${symbol}: $${event.detail.price}`);
       }
     };
 
-    // Listen for crypto price update events from API routes
-    const handleCryptoUpdate = (event: any) => {
-      if (event.detail?.symbol === symbol && event.detail?.price) {
-        setLivePriceState(event.detail.price);
-        // Invalidate the asset query cache to force refetch
-        queryClient.invalidateQueries({ queryKey: [`/api/crypto/${symbol}`] });
-        console.log(`[AdvancedSignalDashboard] Crypto price updated to: ${event.detail.price}`);
-      }
-    };
-
-    // Listen for price update events (broader coverage)
-    const handlePriceUpdate = (event: any) => {
-      if (event.detail?.symbol === symbol && event.detail?.price) {
-        setLivePriceState(event.detail.price);
-        // Invalidate the asset query cache to force refetch
-        queryClient.invalidateQueries({ queryKey: [`/api/crypto/${symbol}`] });
-        console.log(`[AdvancedSignalDashboard] Price updated via price-update event: ${event.detail.price}`);
-      }
-    };
-
-    document.addEventListener('live-price-update', handleLivePriceUpdate);
-    window.addEventListener('crypto-price-update', handleCryptoUpdate);
-    window.addEventListener('price-update', handlePriceUpdate);
-    document.addEventListener('price-update', handlePriceUpdate);
+    // Only listen to centralized price updates to reduce API calls
+    document.addEventListener('centralized-price-update', handleCentralizedPriceUpdate);
     
     return () => {
-      document.removeEventListener('live-price-update', handleLivePriceUpdate);
-      window.removeEventListener('crypto-price-update', handleCryptoUpdate);
-      window.removeEventListener('price-update', handlePriceUpdate);
-      document.removeEventListener('price-update', handlePriceUpdate);
+      document.removeEventListener('centralized-price-update', handleCentralizedPriceUpdate);
     };
   }, [symbol]);
   
