@@ -1,7 +1,7 @@
 /**
- * Feedback Analysis Engine
- * Continuously evaluates prediction accuracy and adapts signal weights for improved performance
- * Implements dynamic learning to optimize signal quality over time
+ * Intelligent Feedback Analysis Engine
+ * Continuously evaluates prediction accuracy and provides optimization recommendations
+ * Analyzes indicator performance, timeframe effectiveness, and symbol accuracy patterns
  */
 
 import { storage } from './storage';
