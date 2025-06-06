@@ -242,11 +242,13 @@ export class FeedbackAnalyzer {
     
     // Convert to performance metrics
     const performance: IndicatorPerformance[] = [];
-    for (const [indicator, stats] of indicatorStats) {
+    const entries = Array.from(indicatorStats.entries());
+    
+    for (const [indicator, stats] of entries) {
       if (stats.total >= 5) { // Minimum sample size
         const hitRate = stats.hits / stats.total;
-        const averageReturn = stats.returns.reduce((a, b) => a + b, 0) / stats.returns.length;
-        const averageConfidence = stats.confidences.reduce((a, b) => a + b, 0) / stats.confidences.length;
+        const averageReturn = stats.returns.reduce((a: number, b: number) => a + b, 0) / stats.returns.length;
+        const averageConfidence = stats.confidences.reduce((a: number, b: number) => a + b, 0) / stats.confidences.length;
         
         performance.push({
           indicator,
@@ -260,7 +262,7 @@ export class FeedbackAnalyzer {
       }
     }
     
-    return performance.sort((a, b) => b.hitRate - a.hitRate);
+    return performance.sort((a: IndicatorPerformance, b: IndicatorPerformance) => b.hitRate - a.hitRate);
   }
 
   /**
@@ -287,10 +289,12 @@ export class FeedbackAnalyzer {
     }
     
     const performance: TimeframePerformance[] = [];
-    for (const [timeframe, stats] of timeframeStats) {
+    const entries = Array.from(timeframeStats.entries());
+    
+    for (const [timeframe, stats] of entries) {
       if (stats.total >= 3) { // Minimum sample size
         const hitRate = stats.hits / stats.total;
-        const averageConfidence = stats.confidences.reduce((a, b) => a + b, 0) / stats.confidences.length;
+        const averageConfidence = stats.confidences.reduce((a: number, b: number) => a + b, 0) / stats.confidences.length;
         const performanceScore = hitRate * (averageConfidence / 100);
         
         performance.push({
@@ -305,7 +309,7 @@ export class FeedbackAnalyzer {
       }
     }
     
-    return performance.sort((a, b) => b.performanceScore - a.performanceScore);
+    return performance.sort((a: TimeframePerformance, b: TimeframePerformance) => b.performanceScore - a.performanceScore);
   }
 
   /**
@@ -335,18 +339,21 @@ export class FeedbackAnalyzer {
     }
     
     const performance: SymbolPerformance[] = [];
-    for (const [symbol, stats] of symbolStats) {
+    const entries = Array.from(symbolStats.entries());
+    
+    for (const [symbol, stats] of entries) {
       if (stats.total >= 3) { // Minimum sample size
         const hitRate = stats.hits / stats.total;
-        const averageReturn = stats.returns.reduce((a, b) => a + b, 0) / stats.returns.length;
+        const averageReturn = stats.returns.reduce((a: number, b: number) => a + b, 0) / stats.returns.length;
         const volatilityAdjustedReturn = averageReturn / Math.sqrt(stats.returns.length); // Simplified Sharpe-like ratio
         
         // Find best performing timeframes for this symbol
-        const bestTimeframes = Array.from(stats.timeframes.entries())
-          .filter(([_, hits]) => hits >= 1)
-          .sort((a, b) => b[1] - a[1])
+        const timeframeEntries = Array.from(stats.timeframes.entries());
+        const bestTimeframes: string[] = timeframeEntries
+          .filter(([_, hits]: [string, number]) => hits >= 1)
+          .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
           .slice(0, 3)
-          .map(([timeframe]) => timeframe);
+          .map(([timeframe]: [string, number]) => timeframe);
         
         performance.push({
           symbol,
@@ -359,7 +366,7 @@ export class FeedbackAnalyzer {
       }
     }
     
-    return performance.sort((a, b) => b.signalQuality - a.signalQuality);
+    return performance.sort((a: SymbolPerformance, b: SymbolPerformance) => b.signalQuality - a.signalQuality);
   }
 
   /**

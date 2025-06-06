@@ -91,6 +91,11 @@ const Analysis: React.FC = () => {
               <SignalHeatMap onSelectAsset={handleChangeAsset} />
             </CollapsibleContent>
           </Collapsible>
+          
+          {/* Performance Analytics Section */}
+          <div className="space-y-4">
+            <PerformanceDashboard />
+          </div>
         </div>
       </main>
     </div>
