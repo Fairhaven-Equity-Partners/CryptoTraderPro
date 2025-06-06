@@ -8,6 +8,7 @@
 import { TOP_50_SYMBOL_MAPPINGS, getCoinGeckoId } from './optimizedSymbolMapping.js';
 import type { InsertSignalHistory } from '../shared/schema';
 import { TechnicalIndicatorsEngine, type TechnicalAnalysis, type CandlestickData } from './technicalIndicators.js';
+import { AdvancedMarketAnalysisEngine, type AdvancedMarketData } from './advancedMarketAnalysis.js';
 
 interface CalculatedSignal {
   symbol: string;
@@ -136,23 +137,30 @@ export class AutomatedSignalCalculator {
           continue;
         }
 
-        // Calculate optimized signals for all timeframes
+        // Calculate optimized signals for all timeframes using advanced analysis
         for (const timeframe of this.timeframes) {
-          const signal = this.calculateSignalForPair(
-            mapping.symbol, 
-            currentPrice, 
-            change24h, 
-            marketCap, 
-            timeframe,
-            mapping.category
-          );
-          
-          // Log samples of LONG signals for debugging
-          if (signal.direction === 'LONG' && Math.random() < 0.1) {
-            console.log(`[AutomatedSignalCalculator] LONG signal found: ${signal.symbol} ${signal.timeframe} - Change: ${change24h}%, Confidence: ${signal.confidence}%`);
+          try {
+            const signal = await this.calculateSignalForPair(
+              mapping.symbol, 
+              currentPrice, 
+              change24h, 
+              marketCap, 
+              timeframe,
+              mapping.category
+            );
+            
+            // Log samples of LONG signals for debugging
+            if (signal.direction === 'LONG' && Math.random() < 0.1) {
+              console.log(`[AutomatedSignalCalculator] LONG signal found: ${signal.symbol} ${signal.timeframe} - Change: ${change24h}%, Confidence: ${signal.confidence}%`);
+            }
+            
+            allCalculatedSignals[signalIndex++] = signal;
+          } catch (error) {
+            console.error(`[AutomatedSignalCalculator] Error calculating signal for ${mapping.symbol} ${timeframe}:`, error);
+            // Use fallback calculation for stability
+            const fallbackSignal = this.createFallbackSignal(mapping.symbol, currentPrice, change24h, timeframe);
+            allCalculatedSignals[signalIndex++] = fallbackSignal;
           }
-          
-          allCalculatedSignals[signalIndex++] = signal;
         }
       }
 
@@ -201,145 +209,92 @@ export class AutomatedSignalCalculator {
   }
 
   /**
-   * Calculate enhanced signal with professional technical analysis and confluence detection
-   * Integrates authentic RSI, EMA, MACD, ADX, Bollinger Bands, and VWAP analysis
+   * Calculate advanced signal using sophisticated multi-factor analysis
+   * Replaces change24h-centric approach with layered scoring system
    */
-  private calculateSignalForPair(
+  private async calculateSignalForPair(
     symbol: string,
     currentPrice: number,
     change24h: number,
     marketCap: number,
     timeframe: string,
     category?: string
-  ): CalculatedSignal {
-    // Generate synthetic candlestick data based on current market conditions
-    // This creates realistic OHLCV data for technical analysis when historical data isn't available
-    const syntheticCandles = TechnicalIndicatorsEngine.generateSyntheticCandles(currentPrice, change24h, 100);
+  ): Promise<CalculatedSignal> {
+    // Perform advanced market analysis
+    const advancedAnalysis = await AdvancedMarketAnalysisEngine.analyzeMarket(
+      symbol,
+      currentPrice,
+      change24h,
+      marketCap,
+      category || 'altcoin',
+      timeframe
+    );
     
-    // Perform comprehensive technical analysis
-    const technicalAnalysis = TechnicalIndicatorsEngine.analyzeTechnicals(syntheticCandles, currentPrice);
+    // Use advanced layered scoring system
+    const layeredScore = advancedAnalysis.layeredScore;
+    const direction = layeredScore.direction;
+    const confidence = layeredScore.normalizedConfidence;
     
-    // Enhanced market analysis with category-specific optimizations
-    const volatility = Math.abs(change24h);
-    const isHighVolatility = volatility > 5;
-    const isLargeCapCrypto = marketCap > 10000000000;
-    
-    // Category and timeframe multipliers
-    const categoryMultiplier = this.getCategoryMultiplier(category || 'altcoin');
-    const timeframeWeight = this.getTimeframeWeight(timeframe);
-    
-    // Start with technical confluence as base direction
-    let direction = technicalAnalysis.confluence.overallDirection;
-    let baseConfidence = technicalAnalysis.confluence.confidenceMultiplier * 100;
-    
-    // Apply traditional price momentum analysis as secondary confirmation
-    const priceBasedConfidence = this.calculatePriceBasedConfidence(change24h, volatility);
-    
-    // Combine technical analysis with price momentum
-    const combinedConfidence = (baseConfidence * 0.7) + (priceBasedConfidence * 0.3);
-    
-    // Apply category and timeframe adjustments
-    let finalConfidence = combinedConfidence * categoryMultiplier * timeframeWeight;
-    
-    // Technical analysis refinements
-    const rsi = technicalAnalysis.rsi.value;
-    const adxStrength = technicalAnalysis.adx.adx;
-    const volumeConfirmation = technicalAnalysis.volumeAnalysis.signal;
-    
-    // RSI overbought/oversold adjustments
-    if (rsi > 80 && direction === 'LONG') {
-      finalConfidence *= 0.8; // Reduce LONG confidence in overbought conditions
-    } else if (rsi < 20 && direction === 'SHORT') {
-      finalConfidence *= 0.8; // Reduce SHORT confidence in oversold conditions
-    } else if (rsi > 70 && direction === 'SHORT') {
-      finalConfidence *= 1.15; // Boost SHORT confidence when RSI is overbought
-    } else if (rsi < 30 && direction === 'LONG') {
-      finalConfidence *= 1.15; // Boost LONG confidence when RSI is oversold
-    }
-    
-    // ADX trend strength validation
-    if (adxStrength > 25) {
-      finalConfidence *= 1.1; // Strong trend confirmation
-    } else if (adxStrength < 20) {
-      finalConfidence *= 0.9; // Weak trend, reduce confidence
-      if (finalConfidence < 60) {
-        direction = 'NEUTRAL'; // Switch to neutral in weak trend environments
-      }
-    }
-    
-    // Volume confirmation
-    if (['STRONG_BUY', 'BUY'].includes(volumeConfirmation) && direction === 'LONG') {
-      finalConfidence *= 1.08;
-    } else if (['SELL'].includes(volumeConfirmation) && direction === 'SHORT') {
-      finalConfidence *= 1.08;
-    }
-    
-    // Multi-timeframe confluence logic
-    const confluenceScore = this.calculateTimeframeConfluence(technicalAnalysis, timeframe);
-    finalConfidence *= confluenceScore;
-    
-    // Risk-reward calculation
-    const riskReward = this.calculateRiskReward(currentPrice, technicalAnalysis, direction);
-    
-    // Volatility-based adjustments
-    const volatilityAdjustment = this.calculateVolatilityAdjustment(volatility, isHighVolatility);
-    finalConfidence *= volatilityAdjustment;
-    
-    // Ensure confidence bounds
-    finalConfidence = Math.max(25, Math.min(98, finalConfidence));
-    
-    // Generate enhanced indicators data with authentic technical analysis
-    const enhancedIndicators = {
+    // Generate comprehensive indicators from advanced analysis
+    const advancedIndicators = {
       trend: [
         { 
-          id: "rsi", 
-          name: "RSI (14)", 
-          category: "MOMENTUM", 
-          signal: technicalAnalysis.rsi.signal, 
-          strength: technicalAnalysis.rsi.strength, 
-          value: technicalAnalysis.rsi.value 
+          id: "multi_period_returns", 
+          name: "Multi-Period Returns", 
+          category: "TREND", 
+          signal: advancedAnalysis.multiPeriodReturns.weightedMomentumScore > 0 ? "BUY" : "SELL",
+          strength: Math.abs(advancedAnalysis.multiPeriodReturns.weightedMomentumScore) > 3 ? "STRONG" : "MODERATE",
+          value: advancedAnalysis.multiPeriodReturns.weightedMomentumScore
+        },
+        { 
+          id: "trend_consistency", 
+          name: "Trend Consistency", 
+          category: "TREND", 
+          signal: advancedAnalysis.multiPeriodReturns.trendConsistency > 75 ? "STRONG" : "MODERATE",
+          strength: advancedAnalysis.multiPeriodReturns.trendConsistency > 75 ? "STRONG" : "MODERATE",
+          value: advancedAnalysis.multiPeriodReturns.trendConsistency
         },
         { 
           id: "ema_short", 
           name: "EMA (12)", 
           category: "TREND", 
-          signal: technicalAnalysis.emaShort.signal, 
-          strength: technicalAnalysis.emaShort.strength, 
-          value: technicalAnalysis.emaShort.value 
+          signal: advancedAnalysis.technicalAnalysis.emaShort.signal, 
+          strength: advancedAnalysis.technicalAnalysis.emaShort.strength, 
+          value: advancedAnalysis.technicalAnalysis.emaShort.value 
         },
         { 
           id: "ema_medium", 
           name: "EMA (26)", 
           category: "TREND", 
-          signal: technicalAnalysis.emaMedium.signal, 
-          strength: technicalAnalysis.emaMedium.strength, 
-          value: technicalAnalysis.emaMedium.value 
-        },
-        { 
-          id: "ema_long", 
-          name: "EMA (50)", 
-          category: "TREND", 
-          signal: technicalAnalysis.emaLong.signal, 
-          strength: technicalAnalysis.emaLong.strength, 
-          value: technicalAnalysis.emaLong.value 
+          signal: advancedAnalysis.technicalAnalysis.emaMedium.signal, 
+          strength: advancedAnalysis.technicalAnalysis.emaMedium.strength, 
+          value: advancedAnalysis.technicalAnalysis.emaMedium.value 
         }
       ],
       momentum: [
         { 
+          id: "rsi", 
+          name: "RSI (14)", 
+          category: "MOMENTUM", 
+          signal: advancedAnalysis.technicalAnalysis.rsi.signal, 
+          strength: advancedAnalysis.technicalAnalysis.rsi.strength, 
+          value: advancedAnalysis.technicalAnalysis.rsi.value 
+        },
+        { 
           id: "macd", 
           name: "MACD", 
           category: "MOMENTUM", 
-          signal: technicalAnalysis.macd.result.signal, 
-          strength: technicalAnalysis.macd.result.strength, 
-          value: technicalAnalysis.macd.histogram 
+          signal: advancedAnalysis.technicalAnalysis.macd.result.signal, 
+          strength: advancedAnalysis.technicalAnalysis.macd.result.strength, 
+          value: advancedAnalysis.technicalAnalysis.macd.histogram 
         },
         { 
           id: "adx", 
           name: "ADX", 
           category: "TREND", 
-          signal: technicalAnalysis.adx.result.signal, 
-          strength: technicalAnalysis.adx.result.strength, 
-          value: technicalAnalysis.adx.adx 
+          signal: advancedAnalysis.technicalAnalysis.adx.result.signal, 
+          strength: advancedAnalysis.technicalAnalysis.adx.result.strength, 
+          value: advancedAnalysis.technicalAnalysis.adx.adx 
         }
       ],
       volatility: [
@@ -347,9 +302,17 @@ export class AutomatedSignalCalculator {
           id: "bollinger", 
           name: "Bollinger Bands", 
           category: "VOLATILITY", 
-          signal: technicalAnalysis.bollingerBands.result.signal, 
-          strength: technicalAnalysis.bollingerBands.result.strength, 
-          value: technicalAnalysis.bollingerBands.position 
+          signal: advancedAnalysis.technicalAnalysis.bollingerBands.result.signal, 
+          strength: advancedAnalysis.technicalAnalysis.bollingerBands.result.strength, 
+          value: advancedAnalysis.technicalAnalysis.bollingerBands.position 
+        },
+        {
+          id: "market_regime",
+          name: "Market Regime",
+          category: "VOLATILITY",
+          signal: advancedAnalysis.marketRegime.type,
+          strength: advancedAnalysis.marketRegime.strength > 70 ? "STRONG" : "MODERATE",
+          value: advancedAnalysis.marketRegime.strength
         }
       ],
       volume: [
@@ -357,44 +320,45 @@ export class AutomatedSignalCalculator {
           id: "volume", 
           name: "Volume Analysis", 
           category: "VOLUME", 
-          signal: technicalAnalysis.volumeAnalysis.signal, 
-          strength: technicalAnalysis.volumeAnalysis.strength, 
-          value: technicalAnalysis.volumeAnalysis.value 
+          signal: advancedAnalysis.technicalAnalysis.volumeAnalysis.signal, 
+          strength: advancedAnalysis.technicalAnalysis.volumeAnalysis.strength, 
+          value: advancedAnalysis.technicalAnalysis.volumeAnalysis.value 
         },
         { 
           id: "vwap", 
           name: "VWAP", 
           category: "VOLUME", 
-          signal: technicalAnalysis.vwap.signal, 
-          strength: technicalAnalysis.vwap.strength, 
-          value: technicalAnalysis.vwap.value 
+          signal: advancedAnalysis.technicalAnalysis.vwap.signal, 
+          strength: advancedAnalysis.technicalAnalysis.vwap.strength, 
+          value: advancedAnalysis.technicalAnalysis.vwap.value 
         }
       ],
       confluence: [
         {
-          id: "confluence",
-          name: "Multi-Indicator Confluence",
+          id: "layered_score",
+          name: "Advanced Layered Analysis",
           category: "CONFLUENCE",
           signal: direction,
-          strength: finalConfidence > 75 ? "STRONG" : finalConfidence > 50 ? "MODERATE" : "WEAK",
-          value: confluenceScore
+          strength: confidence > 75 ? "STRONG" : confidence > 50 ? "MODERATE" : "WEAK",
+          value: layeredScore.totalScore
         }
-      ]
+      ],
+      reasoning: layeredScore.reasoning
     };
 
     return {
       symbol,
       timeframe,
       direction,
-      confidence: Math.round(finalConfidence),
-      strength: Math.round(finalConfidence),
+      confidence: Math.round(confidence),
+      strength: Math.round(confidence),
       price: currentPrice,
       timestamp: Date.now(),
-      indicators: enhancedIndicators,
-      technicalAnalysis,
-      confluenceScore,
-      riskReward,
-      volatilityAdjustment
+      indicators: advancedIndicators,
+      technicalAnalysis: advancedAnalysis.technicalAnalysis,
+      confluenceScore: layeredScore.confluenceScore,
+      riskReward: this.calculateRiskReward(currentPrice, advancedAnalysis.technicalAnalysis, direction),
+      volatilityAdjustment: this.calculateVolatilityAdjustment(Math.abs(change24h), Math.abs(change24h) > 5)
     };
   }
 
