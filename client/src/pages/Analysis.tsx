@@ -5,7 +5,7 @@ import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
-import { UnifiedPerformancePanel } from '../components/UnifiedPerformancePanel';
+import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
 import { 

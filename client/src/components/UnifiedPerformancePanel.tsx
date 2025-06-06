@@ -70,7 +70,7 @@ interface Props {
   symbol: string;
 }
 
-export function UnifiedPerformancePanel({ symbol }: Props) {
+export default function UnifiedPerformancePanel({ symbol }: Props) {
   const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
     queryKey: ['/api/technical-analysis', symbol],
     queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}`).then(res => res.json()),
