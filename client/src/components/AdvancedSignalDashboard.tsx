@@ -1569,12 +1569,8 @@ export default function AdvancedSignalDashboard({
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          // Use authenticated live price from CentralizedPriceManager or asset data
-          const authenticLivePrice = (asset as any)?.lastPrice || centralizedPrice || currentAssetPrice;
-          if (!authenticLivePrice || authenticLivePrice <= 0) {
-            console.warn(`Cannot record predictions - no valid live price available`);
-            return;
-          }
+          // Get authentic live price immediately - eliminate 2-cycle delay
+          const authenticLivePrice = centralizedPrice || (asset as any)?.lastPrice || currentAssetPrice || (asset as any)?.currentPrice;
           console.log(`Recording predictions using live price: ${authenticLivePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
@@ -1612,13 +1608,15 @@ export default function AdvancedSignalDashboard({
           // Update live price monitoring
           await updateWithLivePrice(authenticLivePrice, symbol);
           
-          // Update feedback metrics display
+          // Update feedback metrics display immediately
+          const validSignalsCount = Object.values(alignedSignals).filter(s => s !== null).length;
           setFeedbackMetrics(prev => ({
             ...prev,
-            dataPoints: Object.values(alignedSignals).filter(s => s !== null).length,
+            dataPoints: validSignalsCount,
             learningCycles: prev.learningCycles + 1,
             lastUpdate: new Date(),
-            totalPredictions: prev.totalPredictions + 1
+            totalPredictions: prev.totalPredictions + validSignalsCount,
+            isActive: true // Ensure feedback loop is marked as active
           }));
           
         } catch (trackingError) {
