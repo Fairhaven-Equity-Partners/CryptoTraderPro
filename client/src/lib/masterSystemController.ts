@@ -38,14 +38,14 @@ export async function initializeMasterSystem(): Promise<void> {
     // Initialize core components exactly once
     await initializeComponents();
 
-    // Start the synchronized master timer
-    startMasterTimer();
+    // Disabled timer - using UltimateManager timer only
+    // startMasterTimer();
 
     // Setup global price sync function
     setupGlobalPriceSync();
 
     isSystemActive = true;
-    console.log('[MasterController] System initialization complete - all timers synchronized');
+    console.log('[MasterController] System initialization complete - using UltimateManager timer');
 
   } catch (error) {
     console.error('[MasterController] Initialization failed:', error);

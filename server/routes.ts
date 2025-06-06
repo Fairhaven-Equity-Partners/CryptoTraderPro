@@ -130,11 +130,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Request deduplication cache for CoinGecko API calls
+  const priceRequestCache = new Map<string, { promise: Promise<any>, timestamp: number }>();
+  const CACHE_TTL = 30000; // 30 seconds TTL for deduplication
+
   // Get specific crypto asset with real-time price data from CoinGecko
   app.get('/api/crypto/:symbol', async (req: Request, res: Response) => {
     try {
       // URL decode the symbol and replace encoded forward slash
       const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
+      
+      // Check for cached request to prevent duplicate API calls
+      const cacheKey = `price_${symbol}`;
+      const cachedRequest = priceRequestCache.get(cacheKey);
+      const now = Date.now();
+      
+      if (cachedRequest && (now - cachedRequest.timestamp) < CACHE_TTL) {
+        console.log(`[RequestDedup] Using cached request for ${symbol}`);
+        const result = await cachedRequest.promise;
+        return res.json(result);
+      }
+      
       console.log(`Fetching crypto asset with symbol: ${symbol}`);
       
       // Import optimized data providers for top 50 cryptocurrencies
