@@ -2283,8 +2283,7 @@ export default function AdvancedSignalDashboard({
                 <TabsTrigger 
                   key={tf} 
                   value={tf}
-                  disabled={!signals[tf]}
-                  className={!signals[tf] ? 'opacity-50 cursor-not-allowed' : ''}
+                  className={!signals[tf] ? 'opacity-75' : ''}
                 >
                   {tf}
                   {/* Show arrow based on actual signal direction */}
