@@ -12,6 +12,7 @@ import { extendedCryptoList } from "./cryptoData";
 import { WebSocketServer } from 'ws';
 import { automatedSignalCalculator } from "./automatedSignalCalculator";
 import { AdvancedAnalyticsEngine } from "./advancedAnalytics";
+import { feedbackAnalyzer } from "./feedbackAnalyzer";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -19,6 +20,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Start automated signal calculation system
   console.log('[System] Starting automated signal calculation system');
   await automatedSignalCalculator.start();
+  
+  // Start feedback analysis system
+  console.log('[System] Starting intelligent feedback analysis system');
+  await feedbackAnalyzer.start();
   
   // Set up WebSocket server for real-time updates
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
@@ -140,6 +145,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error serving pre-calculated signals:', error);
       res.status(500).json({ error: 'Failed to serve pre-calculated signals' });
+    }
+  });
+
+  // Get performance metrics from feedback analyzer
+  app.get('/api/performance-metrics', async (req: Request, res: Response) => {
+    try {
+      const metrics = feedbackAnalyzer.getPerformanceMetrics();
+      res.json(metrics);
+    } catch (error) {
+      console.error('Error retrieving performance metrics:', error);
+      res.status(500).json({ error: 'Failed to retrieve performance metrics' });
     }
   });
   
