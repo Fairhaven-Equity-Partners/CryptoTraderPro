@@ -623,9 +623,11 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // Streamlined data validation
-    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice && currentAssetPrice > 0) {
-      // Data ready - calculations controlled by 3-minute timer
+    // Streamlined data validation and immediate calculation trigger
+    if (isAllDataLoaded && isLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
+      console.log(`[SignalDashboard] All data ready for ${symbol} - triggering immediate calculation`);
+      calculationTriggeredRef.current = true;
+      calculateAllSignals(); // Trigger immediate calculation when all data is ready
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, isCalculating, chartData, currentAssetPrice, triggerCalculation]);
   
