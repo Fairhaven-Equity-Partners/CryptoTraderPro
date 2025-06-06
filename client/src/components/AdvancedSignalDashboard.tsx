@@ -1238,7 +1238,6 @@ export default function AdvancedSignalDashboard({
     
     console.log(`⚡ Starting calculation loop for 10 timeframes`);
     
-    // Use promise to allow proper async calculation
     try {
       // Helper to process one timeframe
       const calculateTimeframe = async (timeframe: TimeFrame, delay: number = 0) => {
