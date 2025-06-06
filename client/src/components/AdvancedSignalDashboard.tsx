@@ -634,37 +634,33 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // RESPECT 4-MINUTE TIMER - only calculate when allowed by master timer
-    import('../lib/ultimateSystemManager').then(({ isCalculationAllowed }) => {
-      if (isAllDataLoaded && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current && isCalculationAllowed()) {
-        console.log(`[SignalDashboard] Data ready for ${symbol} - triggering TIMER-SYNCHRONIZED calculation`);
+    // Only calculate on initial data load or when explicitly triggered
+    if (isAllDataLoaded && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
+      // Check if this is the first calculation or if enough time has passed
+      const now = Date.now();
+      const timeSinceLastCalc = now - lastCalculationRef.current;
+      
+      // Allow calculation only for first load or after 4 minutes (240000ms)
+      if (lastCalculationRef.current === 0 || timeSinceLastCalc >= 240000) {
+        console.log(`[SignalDashboard] Data ready for ${symbol} - triggering calculation (${lastCalculationRef.current === 0 ? 'initial' : '4-minute interval'})`);
         calculationTriggeredRef.current = true;
         
         if (calculationTimeoutRef.current) {
           clearTimeout(calculationTimeoutRef.current);
         }
         
-        // Execute calculation only when timer allows
+        // Execute calculation
         if (!isCalculating) {
           calculateAllSignals().catch(error => {
             console.error('[SignalDashboard] Calculation error:', error);
             setIsCalculating(false);
           });
         }
-      } else if (isAllDataLoaded && !isCalculationAllowed()) {
-        console.log(`[SignalDashboard] Data ready for ${symbol} but calculation blocked by 4-minute timer`);
-      }
-    });
-      
-      // Execute fallback calculation IMMEDIATELY without any timeout
-      if (!isCalculating) {
-        calculateAllSignals().catch(error => {
-          console.error('[SignalDashboard] Fallback error:', error);
-          setIsCalculating(false);
-        });
+      } else {
+        console.log(`[SignalDashboard] Data ready for ${symbol} but calculation blocked by 4-minute timer (${Math.round((240000 - timeSinceLastCalc) / 1000)}s remaining)`);
       }
     }
-  }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData]);
+  }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData, isCalculating]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
   useEffect(() => {
