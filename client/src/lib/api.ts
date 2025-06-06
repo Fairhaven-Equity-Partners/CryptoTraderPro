@@ -216,9 +216,6 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
         subscribeToSymbols(currentSymbols);
       }
       
-      // Automatic refresh handled by 5-minute synchronized calculation system
-      // scheduleTimeframeRefresh(symbol, timeframe); // DISABLED - redundant with sync system
-      
       console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
       return [...data];
     })();
@@ -248,42 +245,6 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
   }
 }
 
-// Track the last time we updated each symbol's price
-const lastUpdateTime: Record<string, number> = {};
-
-/**
- * Schedule automatic refresh for a specific symbol and timeframe
- * Uses the optimized intervals from refreshScheduler.ts
- */
-function scheduleTimeframeRefresh(symbol: string, timeframe: TimeFrame) {
-  // Initialize container for this symbol if it doesn't exist
-  activeSchedulers[symbol] = activeSchedulers[symbol] || {};
-  
-  // Clear any existing interval for this symbol/timeframe
-  if (activeSchedulers[symbol][timeframe]) {
-    clearInterval(activeSchedulers[symbol][timeframe]);
-  }
-  
-  // Get the appropriate refresh interval for this timeframe
-  const refreshInterval = REFRESH_INTERVALS[timeframe];
-  
-  // Create a new refresh interval
-  activeSchedulers[symbol][timeframe] = window.setInterval(() => {
-    console.log(`Auto-refreshing data for ${symbol} (${timeframe}) after ${refreshInterval/1000}s interval`);
-    
-    // Create a new request to refresh data
-    fetchChartData(symbol, timeframe).catch(err => {
-      console.error(`Error auto-refreshing ${symbol} (${timeframe}):`, err);
-    });
-  }, refreshInterval);
-  
-  return activeSchedulers[symbol][timeframe];
-}
-
-// Throttle parameters to prevent excessive updates
-const PRICE_UPDATE_THROTTLE = 5000; // Minimum 5 seconds between updates for same symbol
-const MINOR_CHANGE_THRESHOLD = 0.05; // 0.05% change threshold for minor updates
-
 // Start real-time updates with optimized performance
 export function startRealTimeUpdates() {
   if (realTimeUpdatesActive) return;
@@ -291,219 +252,45 @@ export function startRealTimeUpdates() {
   realTimeUpdatesActive = true;
   connectWebSocket(currentSymbols);
   
-  // Optimized handler for price updates - only updates when necessary
+  // Register handler for price updates
   const handlePriceUpdate = (data: { symbol: string, price: number, change24h: number }) => {
-    const now = Date.now();
-    const symbol = data.symbol;
-    const newPrice = data.price;
-    const oldPrice = lastPrices[symbol] || 0;
-    
-    // Skip updates if too frequent and price change is minimal
-    const timeSinceLastUpdate = now - (lastUpdateTime[symbol] || 0);
-    const percentChange = oldPrice > 0 ? Math.abs((newPrice - oldPrice) / oldPrice * 100) : 0;
-    
-    if (timeSinceLastUpdate < PRICE_UPDATE_THROTTLE && percentChange < MINOR_CHANGE_THRESHOLD) {
-      return; // Skip this update - too soon after last one with minimal change
-    }
-    
-    // Update the latest candle for each timeframe - but only the ones currently in use
-    if (chartDataCache[symbol]) {
-      Object.entries(chartDataCache[symbol]).forEach(([timeframe, candles]) => {
+    // Update the latest candle for each timeframe
+    if (chartDataCache[data.symbol]) {
+      Object.entries(chartDataCache[data.symbol]).forEach(([timeframe, candles]) => {
         if (candles.length > 0) {
           const lastCandle = candles[candles.length - 1];
+          lastCandle.close = data.price;
+          lastCandle.high = Math.max(lastCandle.high, data.price);
+          lastCandle.low = Math.min(lastCandle.low, data.price);
           
-          // Only update the candle if price has actually changed
-          if (lastCandle.close !== newPrice) {
-            // Update the last candle
-            lastCandle.close = newPrice;
-            lastCandle.high = Math.max(lastCandle.high, newPrice);
-            lastCandle.low = Math.min(lastCandle.low, newPrice);
-            
-            // Only notify listeners if we have any registered
-            const listenerKey = `${symbol}_${timeframe}`;
-            if (chartUpdateListeners[listenerKey] && chartUpdateListeners[listenerKey].length > 0) {
-              chartUpdateListeners[listenerKey].forEach(listener => listener());
-            }
+          const listenerKey = `${data.symbol}_${timeframe}`;
+          if (chartUpdateListeners[listenerKey]) {
+            chartUpdateListeners[listenerKey].forEach(listener => listener());
           }
         }
       });
     }
     
-    // Update tracking data
-    lastPrices[symbol] = newPrice;
-    lastChangePercentages[symbol] = data.change24h;
-    lastUpdateTime[symbol] = now;
+    lastPrices[data.symbol] = data.price;
+    lastChangePercentages[data.symbol] = data.change24h;
   };
   
-  // Register handler for price updates
   registerMessageHandler('priceUpdate', handlePriceUpdate);
-  
-  // Update prices at the optimal frequency specified in the scheduler
-  // This will continue to update live prices for the UI without triggering calculations
-  const updateInterval = setInterval(() => {
-    // Log for debugging
-    console.log(`Scheduled price update check (${PRICE_REFRESH_INTERVAL/1000}-second interval) at ${new Date().toLocaleTimeString()}`);
-    try {
-      // Fetch real-time price data from CoinGecko
-      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true')
-        .then(response => response.json())
-        .then(realPriceData => {
-          // Use the real data from CoinGecko
-          console.log('CoinGecko real-time price data:', realPriceData);
-          
-          // Update each subscribed symbol
-          currentSymbols.forEach(symbol => {
-            const currentPrice = getCurrentPrice(symbol);
-            let newPrice: number;
-            let change24h: number = 0;
-            
-            // Map symbol to real data from CoinGecko
-            if (symbol.includes('BTC')) {
-              newPrice = realPriceData.bitcoin.usd;
-              change24h = realPriceData.bitcoin.usd_24h_change;
-            } else if (symbol.includes('ETH')) {
-              newPrice = realPriceData.ethereum.usd;
-              change24h = realPriceData.ethereum.usd_24h_change;
-            } else if (symbol.includes('BNB')) {
-              newPrice = realPriceData.binancecoin.usd;
-              change24h = realPriceData.binancecoin.usd_24h_change;
-            } else if (symbol.includes('SOL')) {
-              newPrice = realPriceData.solana.usd;
-              change24h = realPriceData.solana.usd_24h_change;
-            } else if (symbol.includes('XRP')) {
-              newPrice = realPriceData.ripple.usd;
-              change24h = realPriceData.ripple.usd_24h_change;
-            } else {
-              // Skip unsupported symbols - require authentic data only
-              console.warn(`No authentic price data available for ${symbol}`);
-              return;
-            }
-            
-            // Only log if we have a price
-            if (newPrice && currentPrice) {
-              console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
-              
-              // Dispatch both price-update and live-price-update events
-              console.log(`[API] Price update received for ${symbol} - dispatching calculation event`);
-              
-              // Dispatch price-update for UI updates
-              window.dispatchEvent(new CustomEvent('price-update', { 
-                detail: { symbol, price: newPrice, timestamp: Date.now() }
-              }));
-              
-              // Dispatch live-price-update for calculations (throttling handled in dashboard)
-              document.dispatchEvent(new CustomEvent('live-price-update', { 
-                detail: { symbol, price: newPrice, timestamp: Date.now(), forceCalculate: true }
-              }));
-              
-              // IMPORTANT: This next line was causing duplicate calculations
-              // We still want to update the UI with the latest price, but
-              // we don't want to trigger the direct handlePriceUpdate function
-              // as this can trigger unwanted calculations
-              
-              // Update price in the UI but DON'T trigger automatic calculations
-              // by calling handlePriceUpdate directly
-              const priceData = {
-                symbol,
-                price: newPrice,
-                change24h
-              };
-              
-              // DISABLED: Direct price update handler call to prevent calculations
-              // handlePriceUpdate(priceData);
-              
-              // Only broadcast to UI display handlers, not calculation handlers
-              if (messageHandlers['priceUpdate']) {
-                messageHandlers['priceUpdate'].forEach(handler => {
-                  handler(priceData);
-                });
-              }
-              
-              // Update tracking values
-              lastPrices[symbol] = newPrice;
-              lastChangePercentages[symbol] = change24h;
-            }
-          });
-        })
-        .catch(err => {
-          console.error('Error fetching CoinGecko data:', err);
-        });
-    } catch (error) {
-      console.error('Error in price update:', error);
-    }
-  }, OPTIMIZED_PRICE_REFRESH_INTERVAL);
-  
-  // Return the interval ID so it can be cleared if needed
-  return updateInterval;
 }
 
-
-
-// Get volatility for different timeframes
-function getVolatilityForTimeframe(timeframe: TimeFrame): number {
-  // Scale volatility based on timeframe
-  switch (timeframe) {
-    case '1m': return 0.003;  // 0.3%
-    case '5m': return 0.0045; // 0.45%
-    case '15m': return 0.006; // 0.6%
-    case '30m': return 0.008; // 0.8%
-    case '1h': return 0.01;   // 1%
-    case '4h': return 0.015;  // 1.5%
-    case '1d': return 0.025;  // 2.5%
-    case '3d': return 0.035;  // 3.5%
-    case '1w': return 0.045;  // 4.5%
-    case '1M': return 0.08;   // 8%
-    default: return 0.01;
-  }
+// Get current price for a symbol
+export function getCurrentPrice(symbol: string): number {
+  return getAuthenticPriceImmediate(symbol);
 }
 
-// Scale volume based on symbol
-function getBaseVolumeForSymbol(symbol: string): number {
-  if (symbol.includes('BTC')) {
-    return 500 + Math.random() * 200;
-  } else if (symbol.includes('ETH')) {
-    return 1000 + Math.random() * 500;
-  } else if (symbol.includes('BNB')) {
-    return 200 + Math.random() * 100;
-  } else if (symbol.includes('SOL')) {
-    return 800 + Math.random() * 400;
-  } else if (symbol.includes('XRP')) {
-    return 2000 + Math.random() * 1000;
-  }
-  return 100 + Math.random() * 50;
-}
-
-// Get current price for a symbol - optimized for immediate authentic data
-function getCurrentPrice(symbol: string): number {
-  // Priority 1: Use authentic price from centralized manager
-  const authenticPrice = getAuthenticPriceImmediate(symbol);
-  if (authenticPrice && authenticPrice > 0) {
-    return authenticPrice;
-  }
-  
-  // Priority 2: Chart data cache as backup
-  if (chartDataCache[symbol] && Object.keys(chartDataCache[symbol]).length > 0) {
-    const firstTimeframe = Object.keys(chartDataCache[symbol])[0] as TimeFrame;
-    const candles = chartDataCache[symbol][firstTimeframe];
-    if (candles.length > 0) {
-      return candles[candles.length - 1].close;
-    }
-  }
-  
-  // Priority 3: Fallback with immediate fetch trigger
-  centralizedPriceManager.getImmediatePrice(symbol);
-  return centralizedPriceManager.getSynchronousPrice(symbol);
-}
-
-// Register for chart updates - returns an unsubscribe function
-export function registerChartUpdateListener(symbol: string, timeframe: TimeFrame, callback: () => void): () => void {
+// Add chart update listener
+export function addChartUpdateListener(symbol: string, timeframe: TimeFrame, callback: () => void) {
   const key = `${symbol}_${timeframe}`;
   if (!chartUpdateListeners[key]) {
     chartUpdateListeners[key] = [];
   }
   chartUpdateListeners[key].push(callback);
   
-  // Return unsubscribe function
   return () => {
     chartUpdateListeners[key] = chartUpdateListeners[key].filter(cb => cb !== callback);
   };
@@ -576,22 +363,4 @@ export async function calculateLeverage(params: LeverageParams): Promise<Leverag
     throw new Error('Failed to calculate leverage');
   }
   return response.json();
-}
-
-// Optimized fetchAssetBySymbol with debouncing
-export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
-  return debouncedApiCall<AssetPrice>(
-    `${API_BASE_URL}/api/crypto/${symbol}`,
-    undefined,
-    240000 // 4-minute cache duration to match calculation cycle
-  );
-}
-
-// Optimized fetchAllAssets with caching
-export async function fetchAllAssets(): Promise<AssetPrice[]> {
-  return debouncedApiCall<AssetPrice[]>(
-    `${API_BASE_URL}/api/crypto`,
-    undefined,
-    300000 // 5-minute cache for asset list
-  );
 }
