@@ -124,7 +124,7 @@ function startUltimateTimer(): void {
 }
 
 /**
- * Perform the scheduled price fetch
+ * Perform the scheduled price fetch for all 50 cryptocurrency pairs
  */
 async function performScheduledPriceFetch(): Promise<void> {
   try {
@@ -135,18 +135,27 @@ async function performScheduledPriceFetch(): Promise<void> {
     if (response.ok) {
       const data = await response.json();
       if (data && typeof data.currentPrice === 'number') {
-        console.log(`[UltimateManager] Price synchronized: BTC/USDT = $${data.currentPrice}`);
+        console.log(`[UltimateManager] Primary price synchronized: BTC/USDT = $${data.currentPrice}`);
         
         // Update global price if function exists
         if (window.syncGlobalPrice) {
           window.syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
         }
       }
-    } else {
-      console.warn(`[UltimateManager] Price fetch response not ok: ${response.status}`);
     }
+
+    // Trigger multi-pair fetch for market-wide heatmap
+    try {
+      const multiResponse = await fetch('/api/crypto/all-pairs');
+      if (multiResponse.ok) {
+        const multiData = await multiResponse.json();
+        console.log(`[UltimateManager] Multi-pair fetch: ${multiData.length} symbols updated`);
+      }
+    } catch (error) {
+      console.warn('[UltimateManager] Multi-pair fetch unavailable');
+    }
+    
   } catch (error) {
-    // Silently handle fetch errors to prevent console spam
     console.warn('[UltimateManager] Price fetch temporarily unavailable');
   }
 }

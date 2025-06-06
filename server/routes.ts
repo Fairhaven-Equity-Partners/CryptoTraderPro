@@ -62,6 +62,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: 'Failed to fetch crypto assets' });
     }
   });
+
+  // Get all 50 cryptocurrency pairs with authentic CoinGecko data
+  app.get('/api/crypto/all-pairs', async (req: Request, res: Response) => {
+    try {
+      // Import the symbol mappings for all 50 cryptocurrencies
+      const { TOP_50_SYMBOL_MAPPINGS } = await import('./optimizedSymbolMapping');
+      
+      // Fetch authentic price data from CoinGecko for all symbols
+      const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map(m => m.coinGeckoId).join(',');
+      const coinGeckoResponse = await fetch(
+        `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoIds}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`,
+        {
+          headers: {
+            'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || ''
+          }
+        }
+      );
+
+      if (!coinGeckoResponse.ok) {
+        throw new Error(`CoinGecko API error: ${coinGeckoResponse.status}`);
+      }
+
+      const coinGeckoData = await coinGeckoResponse.json();
+      
+      // Convert to format expected by market heatmap with authentic data
+      const marketData = TOP_50_SYMBOL_MAPPINGS.map(mapping => {
+        const priceData = coinGeckoData[mapping.coinGeckoId];
+        return {
+          id: mapping.symbol.toLowerCase().replace('/', ''),
+          symbol: mapping.symbol,
+          name: mapping.name,
+          currentPrice: priceData?.usd || 0,
+          change24h: priceData?.usd_24h_change || 0,
+          marketCap: priceData?.usd_market_cap || 0,
+          lastUpdate: Date.now(),
+          signals: {
+            '4h': { 
+              direction: 'NEUTRAL',
+              confidence: 50
+            }
+          }
+        };
+      });
+
+      console.log(`Fetched authentic data for ${marketData.length} cryptocurrency pairs`);
+      res.json(marketData);
+      
+    } catch (error) {
+      console.error('Error fetching authentic market data:', error);
+      res.status(500).json({ error: 'Failed to fetch authentic market data' });
+    }
+  });
   
   // Get specific crypto asset with real-time price data from CoinGecko
   app.get('/api/crypto/:symbol', async (req: Request, res: Response) => {
@@ -84,8 +136,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const updatedAsset = await storage.updateCryptoAsset(symbol, {
               lastPrice: tvData.price,
               change24h: tvData.change24h,
-              volume24h: tvData.volume,
-              updatedAt: new Date()
+              volume24h: tvData.volume
             });
             
             if (updatedAsset) {
