@@ -1182,8 +1182,6 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         patternFormations: [],
         supportResistance: [calculatedPrice * 0.95, calculatedPrice * 0.90, calculatedPrice * 0.85, calculatedPrice * 1.05, calculatedPrice * 1.10, calculatedPrice * 1.15],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : 2,
-
-        volumeProfile: 'AVERAGE',
         successProbability: confidence,
         macroInsights: direction === 'LONG' 
           ? ['Bullish trend in monthly timeframe', 'Favorable long-term conditions'] 
@@ -1282,8 +1280,6 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         patternFormations: [],
         supportResistance: [calculatedPrice * 0.97, calculatedPrice * 0.94, calculatedPrice * 0.90, calculatedPrice * 1.03, calculatedPrice * 1.07, calculatedPrice * 1.12],
         recommendedLeverage: direction === 'NEUTRAL' ? 1 : (direction === 'LONG' ? 3 : 2),
-
-        volumeProfile: 'AVERAGE',
         successProbability: confidence,
         macroInsights: direction === 'LONG' 
           ? ['Positive weekly trend', 'Favorable medium-term outlook'] 
@@ -1446,7 +1442,17 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
   stopLoss: number,
   takeProfit: number,
   indicators: any,
-  environment: any
+  environment: any,
+  timeframe: TimeFrame,
+  patternFormations: any[],
+  supportResistance: number[],
+  recommendedLeverage: number,
+  marketStructure: string,
+  successProbability: number,
+  macroInsights: string[],
+  timestamp: number,
+  macroScore: number,
+  macroClassification: string
 } {
   // Default to neutral with moderate confidence
   let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
