@@ -495,6 +495,53 @@ export class AutomatedSignalCalculator {
   }
 
   /**
+   * Create fallback signal for system stability when advanced analysis fails
+   */
+  private createFallbackSignal(
+    symbol: string,
+    currentPrice: number,
+    change24h: number,
+    timeframe: string
+  ): CalculatedSignal {
+    const volatility = Math.abs(change24h);
+    let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
+    let confidence = 50;
+
+    // Simple momentum-based fallback logic
+    if (change24h > 3) {
+      direction = 'LONG';
+      confidence = Math.min(80, 55 + (change24h * 5));
+    } else if (change24h < -3) {
+      direction = 'SHORT';
+      confidence = Math.min(80, 55 + (Math.abs(change24h) * 5));
+    }
+
+    return {
+      symbol,
+      timeframe,
+      direction,
+      confidence: Math.round(confidence),
+      strength: Math.round(confidence),
+      price: currentPrice,
+      timestamp: Date.now(),
+      indicators: {
+        trend: [{ 
+          id: "fallback", 
+          name: "Fallback Analysis", 
+          category: "TREND", 
+          signal: direction, 
+          strength: "MODERATE", 
+          value: change24h 
+        }],
+        momentum: [],
+        volatility: [],
+        volume: [],
+        confluence: []
+      }
+    };
+  }
+
+  /**
    * Get calculation status
    */
   getStatus(): {
@@ -506,7 +553,7 @@ export class AutomatedSignalCalculator {
   } {
     const now = Date.now();
     const nextCalculationIn = Math.max(0, 
-      this.lastCalculationTime + this.calculationIntervalMs - now
+      this.lastCalculationTime + this.dynamicIntervalMs - now
     );
     
     let totalSignals = 0;
