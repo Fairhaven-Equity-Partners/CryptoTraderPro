@@ -97,27 +97,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log('[AutomationStatus] No cached signals found, system may still be initializing');
       }
       
-      // Build market data with pre-calculated signals
+      // Build market data with comprehensive technical analysis from automated signal calculator
       const marketData = TOP_50_SYMBOL_MAPPINGS.map((mapping) => {
         const symbolSignals = allSignals.get(mapping.symbol) || [];
         const timeframeSignal = symbolSignals.find(s => s.timeframe === requestedTimeframe);
         
+        // Use full technical analysis data for heatmap signal decisions
         const signalData = timeframeSignal ? {
           direction: timeframeSignal.direction,
-          confidence: timeframeSignal.confidence
-        } : { direction: 'NEUTRAL', confidence: 50 };
+          confidence: timeframeSignal.confidence,
+          technicalAnalysis: timeframeSignal.technicalAnalysis,
+          confluenceScore: timeframeSignal.confluenceScore,
+          riskReward: timeframeSignal.riskReward,
+          volatilityAdjustment: timeframeSignal.volatilityAdjustment
+        } : { 
+          direction: 'NEUTRAL', 
+          confidence: 50,
+          technicalAnalysis: null,
+          confluenceScore: 0,
+          riskReward: 1.0,
+          volatilityAdjustment: 0
+        };
         
         return {
           id: mapping.symbol.toLowerCase().replace('/', ''),
           symbol: mapping.symbol,
           name: mapping.name,
           currentPrice: timeframeSignal?.price || 0,
-          change24h: 0, // Will be populated from signal calculation
-          marketCap: 0, // Will be populated from signal calculation
-          lastUpdate: timeframeSignal?.timestamp || Date.now(),
+          change24h: 0, // Will be populated from comprehensive signal calculation
+          marketCap: 0, // Will be populated from CoinGecko data
           signals: {
             [requestedTimeframe]: signalData
-          }
+          },
+          category: mapping.category,
+          lastUpdate: timeframeSignal?.timestamp || Date.now()
         };
       });
 

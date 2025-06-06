@@ -100,30 +100,44 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
     refetch();
   }, [selectedTimeframe, refetch]);
 
-  // Process authentic market signals from calculation system
+  // Process comprehensive market signals with full technical analysis from calculation system
   const cryptoSignals = useMemo(() => {
     if (!cryptoAssets || !Array.isArray(cryptoAssets)) return [];
     
-    // Use authentic calculated signals from the market analysis system
+    // Use comprehensive calculated signals from the automated signal calculator
     return cryptoAssets
       .filter((asset: any) => asset.currentPrice > 0) // Only include assets with valid prices
       .map((asset: any) => {
         const price = asset.currentPrice;
         const change24h = asset.change24h || 0;
         
-        // Extract authentic signal data from the calculation system
-        const signalData = asset.signals?.[selectedTimeframe] || { direction: 'NEUTRAL', confidence: 50 };
+        // Extract comprehensive signal data with full technical analysis
+        const signalData = asset.signals?.[selectedTimeframe] || { 
+          direction: 'NEUTRAL', 
+          confidence: 50,
+          technicalAnalysis: null,
+          confluenceScore: 0,
+          riskReward: 1.0
+        };
+        
         const direction = signalData.direction as 'LONG' | 'SHORT' | 'NEUTRAL';
         const confidence = Math.round(signalData.confidence || 50);
+        
+        // Enhanced confidence based on technical analysis confluence
+        const enhancedConfidence = signalData.confluenceScore ? 
+          Math.min(95, confidence + (signalData.confluenceScore * 10)) : confidence;
         
         return {
           symbol: asset.symbol,
           name: asset.name,
           marketCap: asset.marketCap || 0,
           direction,
-          confidence,
+          confidence: enhancedConfidence,
           price,
-          change24h
+          change24h,
+          technicalAnalysis: signalData.technicalAnalysis,
+          riskReward: signalData.riskReward,
+          category: asset.category
         };
       })
       .filter((signal, index, self) => 

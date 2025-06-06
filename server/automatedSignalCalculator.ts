@@ -126,7 +126,7 @@ export class AutomatedSignalCalculator {
       allCalculatedSignals.length = TOP_50_SYMBOL_MAPPINGS.length * this.timeframes.length;
       let signalIndex = 0;
 
-      // Calculate signals for each cryptocurrency across all timeframes
+      // Calculate comprehensive signals for all 50 cryptocurrency pairs across all timeframes
       for (const mapping of TOP_50_SYMBOL_MAPPINGS) {
         const cryptoData = priceData[mapping.coinGeckoId];
         
@@ -139,16 +139,16 @@ export class AutomatedSignalCalculator {
         const change24h = Number(cryptoData.usd_24h_change) || 0;
         const marketCap = Number(cryptoData.usd_market_cap) || 0;
 
-        // Validate price data integrity
+        // Validate authentic price data integrity
         if (currentPrice < 0.000001 || isNaN(currentPrice)) {
           console.warn(`[AutomatedSignalCalculator] Price validation failed for ${mapping.symbol}: ${currentPrice}`);
           continue;
         }
 
-        // Calculate comprehensive signals for all timeframes using the same analysis as BTC
+        // Calculate comprehensive signals for all timeframes using same technical analysis as BTC/USDT
         for (const timeframe of this.timeframes) {
           try {
-            // Use the same comprehensive signal calculation system as BTC/USDT
+            // Apply the same advanced signal calculation system used for BTC/USDT
             const calculatedSignal = await this.calculateSignalForPair(
               mapping.symbol, 
               currentPrice, 
@@ -161,14 +161,14 @@ export class AutomatedSignalCalculator {
             if (calculatedSignal) {
               allCalculatedSignals[signalIndex++] = calculatedSignal;
               
-              // Log samples of LONG signals for debugging
-              if (calculatedSignal.direction === 'LONG' && Math.random() < 0.1) {
-                console.log(`[AutomatedSignalCalculator] LONG signal found: ${calculatedSignal.symbol} ${calculatedSignal.timeframe} - Change: ${change24h}%, Confidence: ${calculatedSignal.confidence}%`);
+              // Log samples for monitoring signal diversity across all pairs
+              if (calculatedSignal.direction !== 'NEUTRAL' && Math.random() < 0.05) {
+                console.log(`[AutomatedSignalCalculator] ${calculatedSignal.direction} signal: ${calculatedSignal.symbol} ${calculatedSignal.timeframe} - Confidence: ${calculatedSignal.confidence}%`);
               }
             }
           } catch (error) {
             console.error(`[AutomatedSignalCalculator] Error calculating signal for ${mapping.symbol} ${timeframe}:`, error);
-            // Use fallback calculation for stability
+            // Create fallback signal with authentic price data
             const fallbackSignal = this.createFallbackSignal(mapping.symbol, currentPrice, change24h, timeframe);
             allCalculatedSignals[signalIndex++] = fallbackSignal;
           }
