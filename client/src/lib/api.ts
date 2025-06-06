@@ -105,14 +105,7 @@ export async function fetchAllAssets(): Promise<AssetPrice[]> {
     return await response.json();
   } catch (error) {
     console.error('Error fetching assets:', error);
-    // Return mock data if server fails
-    return [
-      { symbol: 'BTC/USDT', name: 'Bitcoin', price: 60000 + Math.random() * 5000, change24h: (Math.random() * 5) - 2 },
-      { symbol: 'ETH/USDT', name: 'Ethereum', price: 3000 + Math.random() * 300, change24h: (Math.random() * 8) - 3 },
-      { symbol: 'BNB/USDT', name: 'Binance Coin', price: 600 + Math.random() * 50, change24h: (Math.random() * 6) - 2 },
-      { symbol: 'SOL/USDT', name: 'Solana', price: 150 + Math.random() * 20, change24h: (Math.random() * 10) - 4 },
-      { symbol: 'XRP/USDT', name: 'Ripple', price: 2 + Math.random() * 0.5, change24h: (Math.random() * 7) - 3 }
-    ];
+    throw new Error('Failed to fetch authentic market data - requires valid API connection');
   }
 }
 
@@ -130,13 +123,7 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
     return await response.json();
   } catch (error) {
     console.error(`Error fetching ${symbol} data:`, error);
-    // Use a safe fallback that doesn't generate random data
-    return { 
-      symbol, 
-      name: symbol.split('/')[0] || 'Unknown', 
-      price: 0, 
-      change24h: 0 
-    };
+    throw new Error(`Failed to fetch authentic data for ${symbol} - requires valid API connection`);
   }
 }
 
@@ -186,8 +173,13 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     
     // Create and store the promise
     pendingRequests[symbol][timeframe] = (async () => {
-      // Generate data since we don't have a chart API endpoint
-      const data = generateChartData(timeframe, symbol);
+      // Fetch authentic chart data from API endpoint
+      const encodedSymbol = symbol.replace('/', '%2F');
+      const response = await fetch(`${API_BASE_URL}/api/chart/${encodedSymbol}/${timeframe}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch chart data for ${symbol} ${timeframe}`);
+      }
+      const data = await response.json();
       
       // Update the cache
       chartDataCache[symbol][timeframe] = data;
@@ -231,23 +223,8 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
       }
     }
     
-    // Generate fallback data
-    console.log(`Generating fallback data for ${symbol} (${timeframe})`);
-    const fallbackData = generateChartData(timeframe, symbol);
-    
-    // Cache the fallback data
-    if (!chartDataCache[symbol]) {
-      chartDataCache[symbol] = {} as Record<TimeFrame, ChartData[]>;
-    }
-    chartDataCache[symbol][timeframe] = fallbackData;
-    
-    // Update timestamp for the fallback data
-    if (!cacheTimestamps[symbol]) {
-      cacheTimestamps[symbol] = {} as Record<TimeFrame, number>;
-    }
-    cacheTimestamps[symbol][timeframe] = Date.now();
-    
-    return fallbackData;
+    // No fallback data - require authentic market data only
+    throw error;
   }
 }
 
@@ -377,10 +354,9 @@ export function startRealTimeUpdates() {
               newPrice = realPriceData.ripple.usd;
               change24h = realPriceData.ripple.usd_24h_change;
             } else {
-              // For unsupported symbols, just do a small random change
-              const priceChange = (Math.random() - 0.48) * 0.003; 
-              newPrice = currentPrice * (1 + priceChange);
-              change24h = (Math.random() - 0.48) * 5;
+              // Skip unsupported symbols - require authentic data only
+              console.warn(`No authentic price data available for ${symbol}`);
+              return;
             }
             
             // Only log if we have a price
@@ -441,107 +417,9 @@ export function startRealTimeUpdates() {
   return updateInterval;
 }
 
-// Generate realistic looking chart data with trend patterns
+// DEPRECATED: Synthetic data generation removed - use authentic market data only
 function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
-  // Important: Always get the current price from the central price registry
-  const currentSynchronizedPrice = getPrice(symbol);
-  const now = Math.floor(Date.now() / 1000);
-  const data: ChartData[] = [];
-  
-  // Determine time increment based on timeframe
-  let timeIncrement: number;
-  let count: number;
-  
-  // Significantly increase historical data points for better analysis
-  switch (timeframe) {
-    case '1m':
-      timeIncrement = 60;
-      count = 1000; // 1000 minutes (~16.7 hours)
-      break;
-    case '5m':
-      timeIncrement = 300;
-      count = 1000; // 5000 minutes (~3.5 days)
-      break;
-    case '15m':
-      timeIncrement = 900;
-      count = 800; // 12000 minutes (~8.3 days)
-      break;
-    case '30m':
-      timeIncrement = 1800;
-      count = 800; // 24000 minutes (~16.7 days)
-      break;
-    case '1h':
-      timeIncrement = 3600;
-      count = 720; // 720 hours (30 days)
-      break;
-    case '4h':
-      timeIncrement = 14400;
-      count = 500; // 2000 hours (~83.3 days)
-      break;
-    case '1d':
-      timeIncrement = 86400;
-      count = 365; // 365 days (1 year)
-      break;
-    case '3d':
-      timeIncrement = 259200; // 3 days in seconds
-      count = 150; // 150 3-day periods (~1.2 years)
-      break;
-    case '1w':
-      timeIncrement = 604800;
-      count = 200; // 200 weeks (~3.8 years)
-      break;
-    case '1M':
-      timeIncrement = 2592000;
-      count = 60; // 60 months (5 years)
-      break;
-    default:
-      timeIncrement = 3600;
-      count = 100;
-  }
-  
-  // Use the single global source of truth for price data
-  const baseAsset = symbol.split('/')[0];
-  
-  // Get price directly from our global window registry
-  let basePrice = window.cryptoPrices[symbol] || 0;
-
-  // If no price in the registry yet, use defaults based on asset
-  if (!basePrice || basePrice <= 0) {
-    if (baseAsset === 'BTC') {
-      basePrice = 108918; // Fixed price for consistency
-    } else if (baseAsset === 'ETH') {
-      basePrice = 2559;
-    } else if (baseAsset === 'BNB') {
-      basePrice = 656;
-    } else if (baseAsset === 'SOL') {
-      basePrice = 171;
-    } else if (baseAsset === 'XRP') {
-      basePrice = 2.39;
-    } else {
-      basePrice = 100;
-    }
-    // Store this price in our global registry for future reference
-    window.cryptoPrices[symbol] = basePrice;
-  }
-  
-  let price = basePrice;
-  
-  // Create some trend cycles to make the data look realistic
-  const trendCycles = [
-    { length: Math.floor(count * 0.2), bias: 0.48 },  // small downtrend
-    { length: Math.floor(count * 0.3), bias: 0.53 },  // stronger uptrend
-    { length: Math.floor(count * 0.2), bias: 0.5 },   // sideways
-    { length: Math.floor(count * 0.3), bias: 0.45 }   // downtrend
-  ];
-  
-  let cycleIndex = 0;
-  let posInCycle = 0;
-  
-  for (let i = 0; i < count; i++) {
-    // Check if we need to move to the next cycle
-    if (posInCycle >= trendCycles[cycleIndex].length) {
-      cycleIndex = (cycleIndex + 1) % trendCycles.length;
-      posInCycle = 0;
+  throw new Error(`Synthetic chart data generation disabled. Use authentic market data from /api/chart/${symbol}/${timeframe} endpoint`);
     }
     
     const time = now - (count - i) * timeIncrement;
