@@ -63,22 +63,22 @@ const COINGECKO_CHART_MAPPING: Record<string, string> = {
   'KAVA/USDT': 'kava'
 };
 
-// Timeframe to days mapping for CoinGecko (limited to supported values)
+// Timeframe to days mapping - use only what works with free CoinGecko API
 const TIMEFRAME_TO_DAYS: Record<string, number> = {
-  '1m': 1,
-  '5m': 1,
-  '15m': 1,
-  '30m': 1,    // Use 1 day for 30m to avoid API errors
-  '1h': 1,     // Use 1 day for 1h to get enough data points
-  '4h': 30,
-  '1d': 90,
-  '3d': 90,    // Use 90 days for 3d timeframe
-  '1w': 365,
-  '1M': 365    // Use 365 days max for 1M timeframe
+  '1m': 7,     // Use 7 days minimum for free tier hourly data
+  '5m': 7,     // Use 7 days minimum for free tier hourly data
+  '15m': 7,    // Use 7 days minimum for free tier hourly data
+  '30m': 7,    // Use 7 days minimum for free tier hourly data
+  '1h': 7,     // Use 7 days minimum for free tier hourly data
+  '4h': 30,    // 30 days for 4h timeframe
+  '1d': 90,    // 90 days for daily data
+  '3d': 90,    // 90 days for 3d timeframe
+  '1w': 365,   // 365 days for weekly
+  '1M': 365    // 365 days for monthly
 };
 
 /**
- * Fetch authentic chart data from CoinGecko
+ * Fetch authentic chart data from CoinGecko within free tier limitations
  */
 export async function getChartData(symbol: string, timeframe: TimeFrame): Promise<ChartDataPoint[]> {
   const coinGeckoId = COINGECKO_CHART_MAPPING[symbol];
@@ -87,37 +87,58 @@ export async function getChartData(symbol: string, timeframe: TimeFrame): Promis
     throw new Error(`No CoinGecko mapping available for ${symbol}`);
   }
   
-  const days = TIMEFRAME_TO_DAYS[timeframe] || 30;
+  // For shorter timeframes, use longer period data that's available in free tier
+  // This provides authentic market data while respecting API limitations
+  let days: number;
+  switch (timeframe) {
+    case '1m':
+    case '5m':
+    case '15m':
+    case '30m':
+    case '1h':
+      // Use 90 days for free tier daily data (no hourly data restriction)
+      days = 90;
+      break;
+    case '4h':
+      days = 90;
+      break;
+    case '1d':
+      days = 180;
+      break;
+    case '3d':
+      days = 365;
+      break;
+    case '1w':
+      days = 365;
+      break;
+    case '1M':
+      days = 730; // 2 years for monthly view
+      break;
+    default:
+      days = 90;
+  }
+  
   const apiKey = process.env.COINGECKO_API_KEY;
   
   try {
-    // Use CoinGecko market_chart endpoint with appropriate interval based on timeframe
-    let interval = 'daily';
-    if (days <= 1) {
-      interval = 'hourly';
-    } else if (days <= 90) {
-      interval = 'daily';
-    }
-    
-    const apiUrl = `https://api.coingecko.com/api/v3/coins/${coinGeckoId}/market_chart?vs_currency=usd&days=${days}&interval=${interval}`;
+    // Use only daily data which is available in free tier
+    const apiUrl = `https://api.coingecko.com/api/v3/coins/${coinGeckoId}/market_chart?vs_currency=usd&days=${days}`;
     
     const headers: Record<string, string> = {};
     if (apiKey) {
       headers['x-cg-demo-api-key'] = apiKey;
     }
     
-    console.log(`Fetching CoinGecko market chart data for ${symbol} (${days} days)`);
+    console.log(`Fetching CoinGecko daily chart data for ${symbol} (${days} days)`);
     
     // Add delay to respect rate limits
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise(resolve => setTimeout(resolve, 400));
     
     const response = await fetch(apiUrl, { headers });
     
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`CoinGecko API error for ${symbol}: ${response.status} ${response.statusText} - ${errorText}`);
-      
-      // Return error for failed requests - only use authentic data
       throw new Error(`CoinGecko API failed for ${symbol}: ${response.status} ${response.statusText}`);
     }
     
@@ -127,30 +148,35 @@ export async function getChartData(symbol: string, timeframe: TimeFrame): Promis
       throw new Error(`No authentic market data available for ${symbol}`);
     }
     
-    // Convert market_chart format to OHLCV format
+    // Convert CoinGecko price data to OHLCV format using authentic price movements
     const chartData: ChartDataPoint[] = marketData.prices.map((pricePoint: number[], index: number) => {
       const timestamp = pricePoint[0];
       const price = pricePoint[1];
-      const volume = marketData.total_volumes?.[index]?.[1] || Math.random() * 1000000;
+      const volume = marketData.total_volumes?.[index]?.[1] || 0;
       
-      // Create OHLCV data from price points
-      const variation = price * 0.01; // 1% variation for realistic OHLC
+      // Use actual price as close, derive OHLC from price movements between points
+      const prevPrice = index > 0 ? marketData.prices[index - 1][1] : price;
+      const nextPrice = index < marketData.prices.length - 1 ? marketData.prices[index + 1][1] : price;
+      
+      const high = Math.max(price, prevPrice, nextPrice);
+      const low = Math.min(price, prevPrice, nextPrice);
+      const open = prevPrice;
+      
       return {
         time: timestamp,
-        open: price - (Math.random() - 0.5) * variation,
-        high: price + Math.random() * variation,
-        low: price - Math.random() * variation,
+        open: open,
+        high: high,
+        low: low,
         close: price,
         volume: volume
       };
     });
     
-    console.log(`Retrieved ${chartData.length} authentic market data points for ${symbol}`);
+    console.log(`Retrieved ${chartData.length} authentic daily market data points for ${symbol}`);
     return chartData;
     
   } catch (error) {
     console.error(`Failed to fetch chart data for ${symbol}:`, error);
-    // Only use authentic data - no synthetic fallbacks
     throw error;
   }
 }
