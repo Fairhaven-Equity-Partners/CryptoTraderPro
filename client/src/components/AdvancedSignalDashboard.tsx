@@ -1251,9 +1251,10 @@ export default function AdvancedSignalDashboard({
         console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
         
         try {
-          // Check if we have data for this timeframe
-          if (!chartData[timeframe] || !Array.isArray(chartData[timeframe]) || chartData[timeframe].length < 20) {
-            console.log(`DATA CHECK: Not enough data for ${symbol} on ${timeframe} timeframe. Skipping.`);
+          // Check if we have data for this timeframe with adjusted minimums
+          const minRequiredPoints = timeframe === '1M' ? 12 : timeframe === '1w' ? 20 : 20;
+          if (!chartData[timeframe] || !Array.isArray(chartData[timeframe]) || chartData[timeframe].length < minRequiredPoints) {
+            console.log(`DATA CHECK: Not enough data for ${symbol} on ${timeframe} timeframe. Need ${minRequiredPoints}, have ${chartData[timeframe]?.length || 0}. Skipping.`);
             return null;
           }
           
