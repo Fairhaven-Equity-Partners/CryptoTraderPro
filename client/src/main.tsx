@@ -2,13 +2,13 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import "./lib/windowTypes";
-import { initializeOptimizedSystem } from "./lib/optimizedSystemCore";
+import { initializeMasterSystem } from "./lib/masterSystemController";
 
-// Initialize optimized system (single point of control, eliminates redundancies)
-initializeOptimizedSystem().then(() => {
-  console.log('[Core] Optimized system ready with authentic data sources');
+// Initialize master system controller (eliminates all redundancies and synchronizes timers)
+initializeMasterSystem().then(() => {
+  console.log('[System] Master controller initialized - all timers synchronized to 4-minute intervals');
 }).catch((error) => {
-  console.error('[Core] System initialization failed:', error);
+  console.error('[System] Master initialization failed:', error);
 });
 
 createRoot(document.getElementById("root")!).render(<App />);

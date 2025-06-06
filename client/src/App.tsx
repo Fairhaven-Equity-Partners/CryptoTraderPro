@@ -36,37 +36,23 @@ function Router() {
 }
 
 function App() {
-  // Initialize streamlined calculation system with error handling
+  // Add only essential error handlers (system initialization handled by master controller)
   useEffect(() => {
-    const initializeSystem = async () => {
-      try {
-        // Add global error handler for DOM exceptions
-        window.addEventListener('error', (event) => {
-          if (event.error?.name === 'DOMException') {
-            console.warn('DOMException caught and handled:', event.error.message);
-            event.preventDefault();
-            return false;
-          }
-        });
-
-        // Add unhandled promise rejection handler
-        window.addEventListener('unhandledrejection', (event) => {
-          if (event.reason?.name === 'DOMException') {
-            console.warn('Unhandled DOMException caught:', event.reason.message);
-            event.preventDefault();
-          }
-        });
-
-        // Import and initialize the optimized unified calculation system
-        const { initPriceManager } = await import('./lib/streamlinedPriceManager');
-        console.log('✅ Initializing streamlined calculation system');
-        initPriceManager();
-      } catch (error) {
-        console.error('Failed to initialize streamlined system:', error);
+    // Global error handlers for stability
+    window.addEventListener('error', (event) => {
+      if (event.error?.name === 'DOMException') {
+        console.warn('DOMException handled:', event.error.message);
+        event.preventDefault();
+        return false;
       }
-    };
+    });
 
-    initializeSystem();
+    window.addEventListener('unhandledrejection', (event) => {
+      if (event.reason?.name === 'DOMException') {
+        console.warn('Unhandled rejection handled:', event.reason.message);
+        event.preventDefault();
+      }
+    });
   }, []);
   
   return (

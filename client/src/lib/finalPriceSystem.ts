@@ -53,12 +53,10 @@ export function initPriceSystem(initialInterval = DEFAULT_REFRESH_INTERVAL) {
 function updateCountdown() {
   countdownSeconds -= 1;
   
-  // Only log the countdown, completely stopped auto-fetches
-  
   // Are we at zero?
   if (countdownSeconds <= 0) {
     // Reset the timer to exactly 4 minutes (240 seconds) to match CoinGecko rate limits
-    countdownSeconds = 240; // Fixed 4-minute interval
+    countdownSeconds = DEFAULT_REFRESH_INTERVAL; // Use constant for consistency
     
     // At zero, fetch price AND trigger a synchronized calculation
     console.log(`[FinalPriceSystem] 4-minute interval reached - fetching fresh price and triggering calculation`);
