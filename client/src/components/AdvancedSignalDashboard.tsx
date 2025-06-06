@@ -600,6 +600,10 @@ export default function AdvancedSignalDashboard({
     
   }, [symbol, isCalculating, isAllDataLoaded, toast]);
 
+  // Data validation - moved outside useEffect to fix scope error
+  const hasValidPriceData = currentAssetPrice && currentAssetPrice > 0;
+  const effectivelyLiveDataReady = isLiveDataReady || hasValidPriceData;
+
   // Each time data is loaded or symbol changes, trigger calculation if not already done
   useEffect(() => {
     // Reset calculation status when symbol changes
@@ -623,15 +627,10 @@ export default function AdvancedSignalDashboard({
       lastCalculationRef.current = 0; // Reset last calculation time
     }
     
-    // Streamlined data validation and immediate calculation trigger
-    // Override isLiveDataReady if we have valid price data from centralized manager
-    const hasValidPriceData = currentAssetPrice && currentAssetPrice > 0;
-    const effectivelyLiveDataReady = isLiveDataReady || hasValidPriceData;
-    
     // Removed debug logging to keep console clean
     
     // Enhanced immediate calculation trigger with detailed debugging
-    console.log(`[DEBUG] Checking immediate calc conditions: isAllDataLoaded=${isAllDataLoaded}, isLiveDataReady=${isLiveDataReady}, hasValidPriceData=${hasValidPriceData}, currentAssetPrice=${currentAssetPrice}, calculationTriggeredRef=${calculationTriggeredRef.current}`);
+    console.log(`[DEBUG] Checking immediate calc conditions: isAllDataLoaded=${isAllDataLoaded}, isLiveDataReady=${isLiveDataReady}, effectivelyLiveDataReady=${effectivelyLiveDataReady}, currentAssetPrice=${currentAssetPrice}, calculationTriggeredRef=${calculationTriggeredRef.current}`);
     
     if (isAllDataLoaded && effectivelyLiveDataReady && currentAssetPrice && currentAssetPrice > 0 && !calculationTriggeredRef.current) {
       console.log(`[SignalDashboard] All data ready for ${symbol} - executing immediate calculation`);
@@ -661,7 +660,41 @@ export default function AdvancedSignalDashboard({
         }
       }, 2000); // 2-second buffer using existing system
     }
-  }, [symbol, isAllDataLoaded, isLiveDataReady]);
+    
+    // Fallback trigger - if data is loaded but price conditions not met after 5 seconds
+    if (isAllDataLoaded && !calculationTriggeredRef.current) {
+      const fallbackTimeoutRef = setTimeout(() => {
+        if (!calculationTriggeredRef.current) {
+          console.log(`[SignalDashboard] Fallback trigger executing for ${symbol} - bypassing price conditions`);
+          calculationTriggeredRef.current = true;
+          
+          // Clear any existing calculation timeout
+          if (calculationTimeoutRef.current) {
+            clearTimeout(calculationTimeoutRef.current);
+          }
+          
+          // Execute with minimal delay
+          calculationTimeoutRef.current = setTimeout(() => {
+            console.log(`[SignalDashboard] Fallback calculation executing for ${symbol}`);
+            if (!isCalculating) {
+              try {
+                calculateAllSignals().catch(error => {
+                  console.error('[SignalDashboard] Error in fallback calculation:', error);
+                  setIsCalculating(false);
+                });
+              } catch (error) {
+                console.error('[SignalDashboard] Sync error in fallback calculation:', error);
+                setIsCalculating(false);
+              }
+            }
+          }, 500);
+        }
+      }, 5000); // 5-second fallback delay
+      
+      // Clean up fallback timeout when component unmounts or conditions change
+      return () => clearTimeout(fallbackTimeoutRef);
+    }
+  }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, effectivelyLiveDataReady]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
   useEffect(() => {
