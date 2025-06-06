@@ -204,16 +204,35 @@ export class AutomatedSignalCalculator {
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 50;
 
-    // Primary trend analysis
-    if (change24h > 2) {
+    // Enhanced multi-factor trend analysis with more realistic thresholds
+    const strongBullish = change24h > 3;
+    const moderateBullish = change24h > 0.5 && change24h <= 3;
+    const strongBearish = change24h < -3;
+    const moderateBearish = change24h < -0.5 && change24h >= -3;
+    
+    if (strongBullish) {
       direction = 'LONG';
-      confidence = Math.min(95, 60 + (change24h * 5) * categoryMultiplier * timeframeWeight);
-    } else if (change24h < -2) {
+      confidence = Math.min(95, 70 + (change24h * 4) * categoryMultiplier * timeframeWeight);
+    } else if (moderateBullish && momentum > 55) {
+      direction = 'LONG';
+      confidence = Math.min(85, 55 + (change24h * 8) * categoryMultiplier * timeframeWeight);
+    } else if (strongBearish) {
       direction = 'SHORT';
-      confidence = Math.min(95, 60 + (Math.abs(change24h) * 5) * categoryMultiplier * timeframeWeight);
+      confidence = Math.min(95, 70 + (Math.abs(change24h) * 4) * categoryMultiplier * timeframeWeight);
+    } else if (moderateBearish && momentum < 45) {
+      direction = 'SHORT';
+      confidence = Math.min(85, 55 + (Math.abs(change24h) * 8) * categoryMultiplier * timeframeWeight);
+    } else if (change24h > 0 && momentum > 60) {
+      // Momentum-driven LONG signals for positive movement
+      direction = 'LONG';
+      confidence = Math.min(75, 50 + (momentum * 0.5) * categoryMultiplier * timeframeWeight);
+    } else if (change24h < 0 && momentum < 40) {
+      // Momentum-driven SHORT signals for negative movement
+      direction = 'SHORT';
+      confidence = Math.min(75, 50 + ((60 - momentum) * 0.5) * categoryMultiplier * timeframeWeight);
     } else {
       direction = 'NEUTRAL';
-      confidence = Math.max(30, 50 - (volatility * 3));
+      confidence = Math.max(30, 50 - (volatility * 2));
     }
 
     // Momentum-based adjustments

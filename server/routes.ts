@@ -89,10 +89,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const allSignals = automatedSignalCalculator.getAllSignals();
       const status = automatedSignalCalculator.getStatus();
       
-      console.log(`[AutomationStatus] Running: ${status.isRunning}, Cache size: ${status.cachedSignalsCount || 0}, Last calc: ${new Date(status.lastCalculationTime).toISOString()}`);
+      console.log(`[AutomationStatus] Running: ${status.isRunning}, Cache size: ${status.totalSignals || 0}, Last calc: ${new Date(status.lastCalculationTime).toISOString()}`);
       
       // If no signals are cached yet, trigger an immediate calculation
-      if (status.cachedSignalsCount === 0) {
+      if (status.totalSignals === 0) {
         console.log('[AutomationStatus] No cached signals found, system may still be initializing');
       }
       
