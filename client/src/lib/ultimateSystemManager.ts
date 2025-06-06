@@ -43,6 +43,10 @@ export async function initializeUltimateSystem(): Promise<void> {
     // Initialize only essential components
     await initializeEssentialComponents();
 
+    // Trigger immediate calculation on startup
+    console.log('[UltimateManager] Triggering immediate calculation on startup');
+    await performScheduledPriceFetch();
+
     // Start the ultimate synchronized timer
     startUltimateTimer();
 
@@ -140,6 +144,12 @@ async function performScheduledPriceFetch(): Promise<void> {
         // Update global price if function exists
         if (window.syncGlobalPrice) {
           window.syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
+        }
+
+        // Trigger immediate signal calculations if this is startup
+        if (window.triggerSignalCalculation) {
+          console.log('[UltimateManager] Triggering immediate signal calculations');
+          window.triggerSignalCalculation('BTC/USDT', data.currentPrice);
         }
       }
     }

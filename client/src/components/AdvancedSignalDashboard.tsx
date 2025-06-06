@@ -332,6 +332,25 @@ export default function AdvancedSignalDashboard({
   // State to track live price directly from price events
   const [livePriceState, setLivePriceState] = useState<number | null>(null);
   
+  // Setup global trigger function for immediate calculations upon startup
+  useEffect(() => {
+    if (!window.triggerSignalCalculation) {
+      window.triggerSignalCalculation = (symbolToCalc: string, priceValue: number) => {
+        if (symbolToCalc === symbol && priceValue > 0) {
+          console.log('[SignalDashboard] Immediate calculation triggered by UltimateManager');
+          calculateSignals(priceValue, true); // Force immediate calculation
+        }
+      };
+    }
+
+    return () => {
+      // Cleanup on unmount
+      if (window.triggerSignalCalculation) {
+        delete window.triggerSignalCalculation;
+      }
+    };
+  }, [symbol]);
+  
   // Listen for ALL price update events and invalidate cache to sync with top page display
   useEffect(() => {
     const handleLivePriceUpdate = (event: any) => {
