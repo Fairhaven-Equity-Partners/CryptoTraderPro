@@ -80,7 +80,7 @@ const TIMEFRAME_TO_DAYS: Record<string, number> = {
 /**
  * Fetch authentic chart data from CoinGecko within free tier limitations
  */
-export async function getChartData(symbol: string, timeframe: TimeFrame): Promise<ChartDataPoint[]> {
+export async function getChartData(symbol: string, timeframe: string): Promise<ChartDataPoint[]> {
   const coinGeckoId = COINGECKO_CHART_MAPPING[symbol];
   
   if (!coinGeckoId) {
@@ -151,7 +151,7 @@ export async function getChartData(symbol: string, timeframe: TimeFrame): Promis
     }
     
     // Convert CoinGecko price data to OHLCV format using authentic price movements
-    const chartData: ChartDataPoint[] = marketData.prices.map((pricePoint: number[], index: number) => {
+    let rawData: ChartDataPoint[] = marketData.prices.map((pricePoint: number[], index: number) => {
       const timestamp = pricePoint[0];
       const price = pricePoint[1];
       const volume = marketData.total_volumes?.[index]?.[1] || 0;
@@ -173,8 +173,19 @@ export async function getChartData(symbol: string, timeframe: TimeFrame): Promis
         volume: volume
       };
     });
+
+    // Aggregate data for weekly and monthly timeframes
+    let chartData: ChartDataPoint[];
     
-    console.log(`Retrieved ${chartData.length} authentic daily market data points for ${symbol}`);
+    if (timeframe === '1w') {
+      chartData = aggregateToWeekly(rawData);
+    } else if (timeframe === '1M') {
+      chartData = aggregateToMonthly(rawData);
+    } else {
+      chartData = rawData;
+    }
+    
+    console.log(`Retrieved ${chartData.length} authentic ${timeframe} market data points for ${symbol}`);
     return chartData;
     
   } catch (error) {
@@ -183,7 +194,113 @@ export async function getChartData(symbol: string, timeframe: TimeFrame): Promis
   }
 }
 
+/**
+ * Aggregate daily data to weekly intervals
+ */
+function aggregateToWeekly(dailyData: ChartDataPoint[]): ChartDataPoint[] {
+  if (dailyData.length === 0) return [];
+  
+  const weeklyData: ChartDataPoint[] = [];
+  let currentWeekStart = getWeekStart(dailyData[0].time);
+  let weekData: ChartDataPoint[] = [];
+  
+  for (const dataPoint of dailyData) {
+    const pointWeekStart = getWeekStart(dataPoint.time);
+    
+    if (pointWeekStart === currentWeekStart) {
+      weekData.push(dataPoint);
+    } else {
+      if (weekData.length > 0) {
+        weeklyData.push(aggregateDataPoints(weekData, currentWeekStart));
+      }
+      currentWeekStart = pointWeekStart;
+      weekData = [dataPoint];
+    }
+  }
+  
+  if (weekData.length > 0) {
+    weeklyData.push(aggregateDataPoints(weekData, currentWeekStart));
+  }
+  
+  return weeklyData;
+}
 
+/**
+ * Aggregate daily data to monthly intervals
+ */
+function aggregateToMonthly(dailyData: ChartDataPoint[]): ChartDataPoint[] {
+  if (dailyData.length === 0) return [];
+  
+  const monthlyData: ChartDataPoint[] = [];
+  let currentMonthStart = getMonthStart(dailyData[0].time);
+  let monthData: ChartDataPoint[] = [];
+  
+  for (const dataPoint of dailyData) {
+    const pointMonthStart = getMonthStart(dataPoint.time);
+    
+    if (pointMonthStart === currentMonthStart) {
+      monthData.push(dataPoint);
+    } else {
+      if (monthData.length > 0) {
+        monthlyData.push(aggregateDataPoints(monthData, currentMonthStart));
+      }
+      currentMonthStart = pointMonthStart;
+      monthData = [dataPoint];
+    }
+  }
+  
+  if (monthData.length > 0) {
+    monthlyData.push(aggregateDataPoints(monthData, currentMonthStart));
+  }
+  
+  return monthlyData;
+}
+
+/**
+ * Get the start of the week (Monday) for a given timestamp
+ */
+function getWeekStart(timestamp: number): number {
+  const date = new Date(timestamp);
+  const day = date.getDay();
+  const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday
+  const weekStart = new Date(date.setDate(diff));
+  weekStart.setHours(0, 0, 0, 0);
+  return weekStart.getTime();
+}
+
+/**
+ * Get the start of the month for a given timestamp
+ */
+function getMonthStart(timestamp: number): number {
+  const date = new Date(timestamp);
+  const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+  monthStart.setHours(0, 0, 0, 0);
+  return monthStart.getTime();
+}
+
+/**
+ * Aggregate multiple data points into a single OHLCV candle
+ */
+function aggregateDataPoints(dataPoints: ChartDataPoint[], timestamp: number): ChartDataPoint {
+  if (dataPoints.length === 0) {
+    throw new Error('Cannot aggregate empty data points array');
+  }
+  
+  const open = dataPoints[0].open;
+  const close = dataPoints[dataPoints.length - 1].close;
+  const high = Math.max(...dataPoints.map(p => p.high));
+  const low = Math.min(...dataPoints.map(p => p.low));
+  const volume = dataPoints.reduce((sum, p) => sum + p.volume, 0);
+  
+  return {
+    time: timestamp,
+    open,
+    high,
+    low,
+    close,
+    volume
+  };
+}
 
 /**
  * Get supported symbols for chart data
