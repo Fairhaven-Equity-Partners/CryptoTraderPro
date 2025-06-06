@@ -8,13 +8,46 @@ interface AutoCalculationStatusProps {
 }
 
 /**
- * A simple component to display the status of automatic calculations
- * replacing the old "Calculate Now" and "Quick Update" buttons
+ * Synchronized timer display showing countdown from ultimateSystemManager
  */
 export const AutoCalculationStatus: React.FC<AutoCalculationStatusProps> = ({ 
   isCalculating, 
   nextUpdateIn 
 }) => {
+  const [countdown, setCountdown] = useState<number>(240);
+  const [syncStatus, setSyncStatus] = useState<string>('Synchronized');
+
+  // Listen for synchronized timer updates from ultimateSystemManager
+  useEffect(() => {
+    const handleSyncEvent = (event: CustomEvent) => {
+      if (event.detail?.timestamp && event.detail?.interval === '4-minute') {
+        setSyncStatus('Calculating...');
+        setCountdown(240); // Reset to 4 minutes
+        
+        setTimeout(() => setSyncStatus('Synchronized'), 2000);
+      }
+    };
+
+    // Listen for calculation events
+    window.addEventListener('synchronized-calculation-complete', handleSyncEvent as EventListener);
+    
+    // Countdown timer
+    const timer = setInterval(() => {
+      setCountdown(prev => Math.max(0, prev - 1));
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('synchronized-calculation-complete', handleSyncEvent as EventListener);
+      clearInterval(timer);
+    };
+  }, []);
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   if (isCalculating) {
     return (
       <Badge 
@@ -34,13 +67,11 @@ export const AutoCalculationStatus: React.FC<AutoCalculationStatusProps> = ({
         className="text-xs bg-emerald-900/30 text-emerald-300 border-emerald-800 px-3 py-1"
       >
         <CheckCircle2 className="w-3 h-3 mr-1" />
-        AUTO-CALCULATIONS ENABLED
+        {syncStatus.toUpperCase()}
       </Badge>
-      {nextUpdateIn && (
-        <span className="text-xs text-slate-400">
-          Next update in {nextUpdateIn}
-        </span>
-      )}
+      <span className="text-xs text-slate-400">
+        Next update in {formatTime(countdown)}
+      </span>
     </div>
   );
 };
