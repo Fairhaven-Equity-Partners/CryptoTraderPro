@@ -229,10 +229,10 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
         )}
       </div>
       
-      {/* Timeframe-Specific Signal Data */}
-      {currentSignal && (
-        <div className="mt-3 p-2 bg-gray-900/50 rounded border border-gray-800">
-          <h5 className="text-green-300 font-medium text-xs mb-2">📈 {selectedTimeframe.toUpperCase()} Signal Levels</h5>
+      {/* Timeframe-Specific Signal Data - Always show for consistency */}
+      <div className="mt-3 p-2 bg-gray-900/50 rounded border border-gray-800">
+        <h5 className="text-green-300 font-medium text-xs mb-2">📈 {selectedTimeframe.toUpperCase()} Signal Levels</h5>
+        {currentSignal ? (
           <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
             <div className="flex justify-between">
               <span className="text-slate-400">Entry:</span>
@@ -251,8 +251,12 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
               <span className="text-green-400 font-medium">${currentSignal.takeProfit?.toFixed(2) || 'N/A'}</span>
             </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="text-xs text-slate-400 text-center py-2">
+            Signal calculating for {selectedTimeframe.toUpperCase()} timeframe...
+          </div>
+        )}
+      </div>
 
       {/* AI Insights */}
       <div className="mt-2 text-xs text-slate-400">

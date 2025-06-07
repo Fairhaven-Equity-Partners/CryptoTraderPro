@@ -1212,13 +1212,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Adjust indicator performance based on timeframe characteristics
         const adjustedIndicators = performanceData.indicators.map(indicator => ({
-          ...indicator,
+          indicator: indicator.indicator,
           hitRate: timeframeData ? 
             Math.min(95, indicator.hitRate + (timeframeData.actualAccuracy - 75) * 0.3) : 
             indicator.hitRate,
           signalQuality: timeframeData ?
-            Math.min(95, indicator.signalQuality + (timeframeData.actualAccuracy - 75) * 0.2) :
-            indicator.signalQuality
+            Math.min(95, indicator.hitRate + (timeframeData.actualAccuracy - 75) * 0.2) :
+            Math.min(95, indicator.hitRate * 100 + 10) // Convert to percentage and add quality bonus
         }));
 
         // Create timeframe-specific response
