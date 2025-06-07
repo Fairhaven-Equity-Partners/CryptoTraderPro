@@ -48,6 +48,7 @@ import {
 import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
 
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
+import { UnifiedMarketPanel } from './UnifiedMarketPanel';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
@@ -1902,19 +1903,16 @@ export default function AdvancedSignalDashboard({
         </div>
       </div>
       
-      {/* Combined Market Analysis & Live Accuracy Panel */}
-      <Card className="border-2 border-blue-500/50 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4">
-        <CardHeader className="pb-2 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-t-lg">
-          <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
-            📊 Market Analysis & Live Accuracy
-            <Badge className="bg-blue-500 text-white font-semibold px-1 py-0.5 text-xs">
-              ENHANCED
-            </Badge>
-          </CardTitle>
-          <CardDescription className="text-slate-200 text-xs">
-            Combined real-time analysis and accuracy tracking for {selectedTimeframe}
-          </CardDescription>
-        </CardHeader>
+      {/* Unified Market Panel - Consolidates 4 separate components */}
+      <UnifiedMarketPanel
+        symbol={symbol}
+        selectedTimeframe={selectedTimeframe}
+        signals={signals}
+        currentAssetPrice={currentAssetPrice}
+        change24h={change24h || 0}
+        realAccuracy={realAccuracy}
+        isCalculating={isCalculating}
+      />
         <CardContent className="pb-2">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
             {/* Live Accuracy Metrics */}

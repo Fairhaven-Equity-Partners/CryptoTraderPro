@@ -3,7 +3,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
-import { type AdvancedSignal, type TimeFrame } from '@shared/schema';
+import { type TimeFrame } from '@shared/schema';
+
+// Import the AdvancedSignal type from the correct location
+interface AdvancedSignal {
+  symbol: string;
+  timeframe: TimeFrame;
+  direction: 'LONG' | 'SHORT' | 'NEUTRAL';
+  confidence: number;
+  entryPrice: number;
+  stopLoss?: number;
+  takeProfit?: number;
+  timestamp: number;
+  indicators?: any;
+  successProbability?: number;
+  supportResistance?: {
+    supports: number[];
+    resistances: number[];
+  };
+  macroInsights?: string[];
+}
 
 interface UnifiedMarketPanelProps {
   symbol: string;
@@ -51,12 +70,12 @@ export const UnifiedMarketPanel: React.FC<UnifiedMarketPanelProps> = ({
     }
     
     // Calculate supply/demand zones
-    const supplyZones = currentSignal.supportResistance?.resistances?.map((level, index) => ({
+    const supplyZones = currentSignal.supportResistance?.resistances?.map((level: number, index: number) => ({
       level,
       strength: Math.max(60, 85 - (index * 10))
     })) || [];
     
-    const demandZones = currentSignal.supportResistance?.supports?.map((level, index) => ({
+    const demandZones = currentSignal.supportResistance?.supports?.map((level: number, index: number) => ({
       level,
       strength: Math.max(60, 85 - (index * 10))
     })) || [];
@@ -233,7 +252,7 @@ export const UnifiedMarketPanel: React.FC<UnifiedMarketPanelProps> = ({
             {currentSignal?.indicators && (
               <div className="space-y-2">
                 <h4 className="text-white font-semibold text-sm">Technical Indicators</h4>
-                {currentSignal.indicators.trend?.map((indicator, index) => (
+                {currentSignal.indicators.trend?.map((indicator: any, index: number) => (
                   <div key={index} className="flex justify-between items-center p-2 bg-slate-800/50 rounded">
                     <span className="text-slate-300 text-xs">{indicator.name}:</span>
                     <div className="flex items-center gap-2">
