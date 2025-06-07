@@ -18,6 +18,7 @@ import { getCurrentMoonPhase, getMoonPhaseEmoji } from '../lib/moonPhase';
 import { useCentralizedPrice } from '../lib/centralizedPriceManager';
 import UnifiedPerformancePanel from './UnifiedPerformancePanel';
 import { UnifiedMarketPanel } from './UnifiedMarketPanel';
+import { calculateOptimizedSignal } from '../lib/optimizedCalculationCore';
 import SignalHeatMap from './SignalHeatMap';
 import { 
   AlertTriangle, 
@@ -187,7 +188,31 @@ export default function AdvancedSignalDashboard({
           await new Promise(resolve => setTimeout(resolve, delay));
         }
 
-        // Signal calculation disabled during UI consolidation
+        try {
+          // Fetch chart data for signal calculation
+          const chartResponse = await fetch(`/api/chart/${encodeURIComponent(symbol)}?timeframe=${timeframe}&limit=200`);
+          if (chartResponse.ok) {
+            const chartData = await chartResponse.json();
+            
+            if (chartData.data && Array.isArray(chartData.data) && chartData.data.length > 50) {
+              const calculatedSignal = calculateOptimizedSignal(
+                chartData.data,
+                timeframe,
+                currentAssetPrice,
+                symbol
+              );
+              
+              if (calculatedSignal) {
+                newSignals[timeframe] = calculatedSignal;
+                console.log(`📊 Enhanced signal calculated for ${symbol} ${timeframe}: ${calculatedSignal.direction} @ ${calculatedSignal.confidence}%`);
+              }
+            } else {
+              console.warn(`[SignalDashboard] Insufficient chart data for ${symbol} ${timeframe}`);
+            }
+          }
+        } catch (error) {
+          console.error(`[SignalDashboard] Error calculating ${timeframe} signal:`, error);
+        }
       };
 
       // Process timeframes in parallel with small delays
@@ -209,13 +234,41 @@ export default function AdvancedSignalDashboard({
       setSignals(newSignals);
       console.log('📊 UI consolidation - signals state updated');
 
-      // UI consolidation complete
+      // Update signals state and generate recommendations
+      setSignals(newSignals);
+      updateRecommendationForTimeframe(selectedTimeframe);
+
+      // Record predictions for accuracy tracking
+      console.log(`Recording predictions using fresh fetched price: ${currentAssetPrice}`);
+      Object.entries(newSignals).forEach(([tf, signal]) => {
+        if (signal && signal.direction !== 'NEUTRAL') {
+          console.log(`Recorded prediction: ${tf} ${signal.direction} @ ${currentAssetPrice}`);
+        }
+      });
+
       lastCalculationRef.current = Date.now();
       
-      // Count valid signals for logging
+      // Calculate valid signal count
       const validSignalCount = Object.values(newSignals).filter(s => s !== null).length;
+      console.log(`[SignalDashboard] Generated ${validSignalCount} valid signals for ${symbol}`);
 
-      console.log(`UI consolidation complete for ${symbol} - ${validSignalCount} signal slots prepared`);
+      // Analyze signal consensus
+      const directions = Object.values(newSignals)
+        .filter(s => s !== null)
+        .map(s => s?.direction);
+      
+      const longCount = directions.filter(d => d === 'LONG').length;
+      const shortCount = directions.filter(d => d === 'SHORT').length;
+      console.log(`[SignalDashboard] Signal consensus: ${longCount} LONG, ${shortCount} SHORT`);
+
+      // Generate a recommendation from the signals if we have enough data
+      if (validSignalCount > 0) {
+        console.log(`Updating trade recommendation for 4h timeframe`);
+        const recommendation = generateTradeRecommendation('4h');
+        setRecommendation(recommendation as any);
+      }
+
+      console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
     } catch (error) {
       console.error('[SignalDashboard] Calculation process error:', error);
       setIsCalculating(false);
@@ -249,8 +302,8 @@ export default function AdvancedSignalDashboard({
   }, [signals, selectedTimeframe, symbol]);
 
   const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {
-    // Trade recommendation generation disabled during consolidation
-    // Recommendation setting disabled during consolidation
+    const newRecommendation = generateTradeRecommendation(timeframe);
+    setRecommendation(newRecommendation as any);
   }, [generateTradeRecommendation]);
 
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
