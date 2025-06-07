@@ -433,11 +433,8 @@ class EnhancedPriceStreamer {
   clearHistoricalCache(symbol?: string): void {
     if (symbol) {
       // Clear specific symbol caches
-      for (const key of this.historicalCache.keys()) {
-        if (key.startsWith(symbol)) {
-          this.historicalCache.delete(key);
-        }
-      }
+      const keysToDelete = Array.from(this.historicalCache.keys()).filter(key => key.startsWith(symbol));
+      keysToDelete.forEach(key => this.historicalCache.delete(key));
       console.log(`[PriceStreamer] Cleared historical cache for ${symbol}`);
     } else {
       // Clear all historical cache
