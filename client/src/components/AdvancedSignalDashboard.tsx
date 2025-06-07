@@ -1232,7 +1232,6 @@ export default function AdvancedSignalDashboard({
     console.log(`⚡ Starting calculation loop for 10 timeframes`);
     
     // Use promise to allow proper async calculation
-    try {
       // Helper to process one timeframe
       const calculateTimeframe = async (timeframe: TimeFrame, delay: number = 0) => {
         // Staggered start times for resource management
@@ -1296,7 +1295,11 @@ export default function AdvancedSignalDashboard({
           
           // Generate signal using unified calculation core with live price data
           console.log(`[${timeframe}] Updating market data in unified core`);
-          unifiedCalculationCore.updateMarketData(symbol, chartData[timeframe]);
+          const chartDataWithTimestamp = chartData[timeframe].map(d => ({
+            ...d,
+            timestamp: d.time || Date.now()
+          }));
+          unifiedCalculationCore.updateMarketData(symbol, timeframe, chartDataWithTimestamp);
           
           console.log(`[${timeframe}] Generating signal with live price ${livePrice}`);
           let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, livePrice);
@@ -1384,8 +1387,15 @@ export default function AdvancedSignalDashboard({
               signal.confidence = unifiedSignal.confidence;
               signal.entryPrice = unifiedSignal.entryPrice;
               signal.stopLoss = unifiedSignal.stopLoss;
-              signal.takeProfit = unifiedSignal.takeProfit
-      };
+              signal.takeProfit = unifiedSignal.takeProfit;
+            }
+          }
+          
+          return signal;
+        } catch (error) {
+          console.error(`[${timeframe}] Error calculating signal:`, error);
+          return null;
+        }
       
       // PHASE 2: Parallel timeframe processing for synchronized calculations
       const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
