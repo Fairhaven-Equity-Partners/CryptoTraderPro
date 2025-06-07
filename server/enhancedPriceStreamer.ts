@@ -167,14 +167,14 @@ class EnhancedPriceStreamer {
       const crypto = TOP_50_SYMBOL_MAPPINGS.find((c: SymbolMapping) => c.symbol === symbol);
       if (!crypto) {
         console.error(`[PriceStreamer] Symbol not found: ${symbol}`);
-        return this.generateFallbackData(symbol, days);
+        return [];
       }
 
       // Map to valid CoinGecko days parameter
       const validDays = this.mapToValidDays(days);
       
       // Check cache first
-      const cacheKey = `${symbol}_${validDays}d`;
+      const cacheKey = `${symbol}_${validDays}d_chart`;
       if (this.historicalCache.has(cacheKey)) {
         const cached = this.historicalCache.get(cacheKey)!;
         if (cached.length > 0) {
@@ -187,61 +187,25 @@ class EnhancedPriceStreamer {
         }
       }
 
-      console.log(`[PriceStreamer] Fetching ${validDays} days of historical data for ${symbol} (requested: ${days})`);
+      console.log(`[PriceStreamer] Fetching ${validDays} days of historical data for ${symbol} using market chart API`);
 
       // Add delay to respect rate limits
-      await this.delay(100);
+      await this.delay(200);
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000);
+      // Use market chart API instead of OHLC for better reliability
+      const response = await this.fetchHistoricalDataFallback(symbol, crypto.coinGeckoId);
       
-      const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${crypto.coinGeckoId}/ohlc?vs_currency=usd&days=${validDays}`,
-        {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'CryptoTradingApp/1.0'
-          },
-          signal: controller.signal
-        }
-      );
-      
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        console.error(`[PriceStreamer] Historical data API error for ${symbol}: ${response.status}`);
-        // Try with a different timeframe
-        if (validDays !== 30) {
-          console.log(`[PriceStreamer] Retrying with 30 days for ${symbol}`);
-          return this.fetchHistoricalDataFallback(symbol, crypto.coinGeckoId);
-        }
-        return this.generateFallbackData(symbol, days);
+      if (response.length > 0) {
+        // Cache the data
+        this.historicalCache.set(cacheKey, response);
+        return this.filterDataForRequestedDays(response, days);
       }
 
-      const ohlcData = await response.json();
-      
-      if (!Array.isArray(ohlcData) || ohlcData.length === 0) {
-        console.error(`[PriceStreamer] Invalid OHLC data format for ${symbol}`);
-        return this.generateFallbackData(symbol, days);
-      }
-
-      const historicalData: HistoricalData[] = ohlcData.map((candle: number[]) => ({
-        timestamp: candle[0],
-        open: candle[1],
-        high: candle[2],
-        low: candle[3],
-        close: candle[4],
-        volume: Math.random() * 1000000 // Estimate volume since CoinGecko OHLC doesn't include it
-      }));
-
-      // Cache the data
-      this.historicalCache.set(cacheKey, historicalData);
-
-      return this.filterDataForRequestedDays(historicalData, days);
+      return [];
 
     } catch (error) {
       console.error(`[PriceStreamer] Error fetching historical data for ${symbol}:`, error);
-      return this.generateFallbackData(symbol, days);
+      return [];
     }
   }
 
