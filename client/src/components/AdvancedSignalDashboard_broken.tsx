@@ -1595,7 +1595,8 @@ export default function AdvancedSignalDashboard({
         console.error('[SignalDashboard] Signal state update error:', error);
         setIsCalculating(false); // Reset calculation state on error
       }
-      
+    
+    try {
       // Store the signals for this symbol in our persistent ref
       persistentSignalsRef.current[symbol] = { ...alignedSignals };
       
@@ -1628,7 +1629,7 @@ export default function AdvancedSignalDashboard({
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
     }
-  }, [chartData, isCalculating, signals, symbol]);
+  }, [symbol]);
 
   // Generate a trade recommendation based on signals across timeframes
   const generateTradeRecommendation = useCallback((timeframe: TimeFrame) => {
