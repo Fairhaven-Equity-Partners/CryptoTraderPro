@@ -1220,9 +1220,30 @@ export default function AdvancedSignalDashboard({
           // Start calculation with realistic logging
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
-          // Get real-time price for calculation accuracy
-          const livePrice = currentAssetPrice && currentAssetPrice > 0 ? currentAssetPrice : 
-                           (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);
+          // Get real-time price for calculation accuracy - ensure we use the correct symbol's price
+          let livePrice = centralizedPrice || 0;
+          
+          // CRITICAL: Verify we have the correct symbol's price, not another symbol's price
+          console.log(`[${timeframe}] Centralized price for ${symbol}: ${centralizedPrice}`);
+          console.log(`[${timeframe}] Asset data price: ${(asset as any)?.lastPrice || (asset as any)?.currentPrice}`);
+          
+          // If centralized price manager doesn't have the price, get it from asset data or chart data
+          if (!livePrice || livePrice <= 0) {
+            livePrice = (asset as any)?.lastPrice || 
+                       (asset as any)?.currentPrice || 
+                       (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);
+          }
+          
+          // Force fetch correct price if still invalid
+          if (!livePrice || livePrice <= 0) {
+            try {
+              const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
+              const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
+              livePrice = fetchedPrice && fetchedPrice > 0 ? fetchedPrice : livePrice;
+            } catch (error) {
+              console.warn(`Failed to fetch price for ${symbol}:`, error);
+            }
+          }
           
           console.log(`[${timeframe}] Using live price: ${livePrice} for calculation`);
           
@@ -1251,6 +1272,7 @@ export default function AdvancedSignalDashboard({
           let signal: AdvancedSignal | null = null;
           if (unifiedSignal) {
             // Override entry price with live market data for accurate calculations
+            // Ensure we use the symbol-specific price, not a generic current price
             const actualEntryPrice = livePrice;
             const adjustedStopLoss = unifiedSignal.stopLoss > 0 ? unifiedSignal.stopLoss : 
                                    (unifiedSignal.direction === 'LONG' ? actualEntryPrice * 0.95 : actualEntryPrice * 1.05);
