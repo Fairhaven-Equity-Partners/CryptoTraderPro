@@ -209,44 +209,13 @@ export default function AdvancedSignalDashboard({
       setSignals(newSignals);
       console.log('📊 UI consolidation - signals state updated');
 
-      // Record predictions for accuracy tracking
-      console.log(`Recording predictions using fresh fetched price: ${currentAssetPrice}`);
-      Object.entries(alignedSignals).forEach(([tf, signal]) => {
-        if (signal && signal.direction !== 'NEUTRAL') {
-          // Prediction recording disabled during consolidation
-          console.log(`Recorded prediction: ${tf} ${signal.direction} @ ${currentAssetPrice}`);
-        }
-      });
-
+      // UI consolidation complete
       lastCalculationRef.current = Date.now();
-
-      // Dispatch calculation complete event
-      document.dispatchEvent(new CustomEvent('synchronized-calculation', {
-        detail: { symbol, timestamp: Date.now(), signalCount: Object.values(alignedSignals).filter(s => s !== null).length }
-      }));
-
+      
       // Count valid signals for logging
-      const validSignalCount = Object.values(alignedSignals).filter(s => s !== null).length;
+      const validSignalCount = Object.values(newSignals).filter(s => s !== null).length;
 
-      // Show visual notification for auto-calculations
-      if (validSignalCount > 0) {
-        toast({
-          title: "Auto-Calculation Complete",
-          description: `Updated ${validSignalCount} signals for ${symbol} at ${new Date().toLocaleTimeString()}`,
-          variant: "default", 
-          duration: 10000
-        });
-      }
-      console.log(`Found ${validSignalCount} valid signals for recommendation for ${symbol}`);
-
-      // Generate a recommendation from the signals if we have enough data
-      if (validSignalCount > 0) {
-        console.log(`Updating trade recommendation for 4h timeframe`);
-        // Trade recommendation generation disabled during consolidation
-        // Recommendation setting disabled during consolidation
-      }
-
-      console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
+      console.log(`UI consolidation complete for ${symbol} - ${validSignalCount} signal slots prepared`);
     } catch (error) {
       console.error('[SignalDashboard] Calculation process error:', error);
       setIsCalculating(false);
