@@ -432,13 +432,14 @@ export default function AdvancedSignalDashboard({
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
         // Enhanced calculation triggers synchronized with ultimateSystemManager:
-        // 1. Official 4-minute synchronized events from ultimateSystemManager
-        // 2. Manual calculation requests
+        // 1. Official 4-minute synchronized events from ultimateSystemManager - ALWAYS allow
+        // 2. Manual calculation requests - ALWAYS allow
         // 3. Real-time updates when significant data changes occur
         const shouldCalculate = (
-          (event.detail.interval === '4-minute' && timeSinceLastCalc >= 230) || // 4-minute sync with buffer
-          (event.detail.manual === true) || // Manual trigger
-          (timeSinceLastCalc >= 60 && hasMinimumData) // Reduced frequency for better sync
+          (event.detail.interval === '4-minute') || // Always allow 4-minute sync events
+          (event.detail.manual === true) || // Always allow manual triggers
+          (event.detail.triggerType === 'automatic' && timeSinceLastCalc >= 60) || // Allow automated triggers with minimal delay
+          (timeSinceLastCalc >= 240) // Standard 4-minute interval for other triggers
         );
         
         if (shouldCalculate && !isCalculating) {
@@ -479,16 +480,41 @@ export default function AdvancedSignalDashboard({
       }
     };
     
-    // Listen for calculation events and price updates
+    // Enhanced event listeners - respond to Ultimate System Manager automated triggers
+    const handleUltimateSystemTrigger = (event: CustomEvent) => {
+      if (event.detail.interval === '4-minute' || event.detail.triggerType === 'automatic') {
+        console.log(`[${symbol}] Ultimate System Manager automated trigger - forcing signal calculation`);
+        
+        // Override all timer restrictions for automated system triggers
+        if (!isCalculating) {
+          setIsCalculating(true);
+          lastCalculationRef.current = Date.now();
+          lastCalculationTimeRef.current = Date.now() / 1000;
+          calculationTriggeredRef.current = true;
+          
+          // Force immediate calculation
+          calculateAllSignals().catch(error => {
+            console.error(`[${symbol}] Automated calculation failed:`, error);
+            setIsCalculating(false);
+          });
+        }
+      }
+    };
+
+    // Listen for all calculation events and price updates
     document.addEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
     document.addEventListener('price-update', handlePriceUpdate as EventListener);
     window.addEventListener('price-update', handlePriceUpdate as EventListener);
+    window.addEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
+    document.addEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
     
     // Return cleanup function
     return () => {
       document.removeEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
       document.removeEventListener('price-update', handlePriceUpdate as EventListener);
       window.removeEventListener('price-update', handlePriceUpdate as EventListener);
+      window.removeEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
+      document.removeEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
     };
   }, [symbol, isAllDataLoaded, isCalculating, chartData]);
 
@@ -605,9 +631,18 @@ export default function AdvancedSignalDashboard({
       const now = Date.now();
       const timeSinceLastCalc = now - lastCalculationRef.current;
       
-      // Allow calculation only for first load or after 4 minutes (240000ms)
-      if (lastCalculationRef.current === 0 || timeSinceLastCalc >= 240000) {
-        console.log(`[SignalDashboard] Data ready for ${symbol} - triggering calculation (${lastCalculationRef.current === 0 ? 'initial' : '4-minute interval'})`);
+      // ENHANCED: Allow calculation for initial load, 4-minute intervals, OR automated system triggers
+      const isAutomatedTrigger = window.getUltimateSystemStatus && window.getUltimateSystemStatus().lastPriceFetch > (Date.now() - 30000);
+      const shouldAllowCalculation = (
+        lastCalculationRef.current === 0 || // Initial load
+        timeSinceLastCalc >= 240000 || // 4-minute interval
+        isAutomatedTrigger // Recent automated system activity
+      );
+      
+      if (shouldAllowCalculation) {
+        const triggerReason = lastCalculationRef.current === 0 ? 'initial' : 
+                            isAutomatedTrigger ? 'automated-system' : '4-minute interval';
+        console.log(`[SignalDashboard] Data ready for ${symbol} - triggering calculation (${triggerReason})`);
         calculationTriggeredRef.current = true;
         
         if (calculationTimeoutRef.current) {
