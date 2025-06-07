@@ -168,10 +168,22 @@ export default function AdvancedSignalDashboard({
       return;
     }
 
-    if (!chartData || !(chartData as any)?.success || !(chartData as any)?.data) {
-      console.log(`[SignalDashboard] No chart data available for ${symbol}, skipping calculation`);
+    // Debug chart data structure
+    console.log(`[SignalDashboard] Chart data check for ${symbol}:`, {
+      hasChartData: !!chartData,
+      chartDataType: typeof chartData,
+      chartDataKeys: chartData ? Object.keys(chartData as any) : 'none',
+      currentAssetPrice
+    });
+
+    // Proceed with calculation if we have price data
+    if (currentAssetPrice <= 0) {
+      console.log(`[SignalDashboard] No price data available for ${symbol}, skipping calculation`);
       return;
     }
+
+    console.log(`[SignalDashboard] Proceeding with calculation for ${symbol} with price ${currentAssetPrice}`);
+    // Chart data will be fetched individually for each timeframe
 
     try {
       calculationTriggeredRef.current = true;
@@ -271,7 +283,14 @@ export default function AdvancedSignalDashboard({
 
   // Auto-calculation effect - RESTORED after UI consolidation
   useEffect(() => {
-    if (!chartData || !(chartData as any)?.success) {
+    console.log(`[SignalDashboard] Auto-calculation effect triggered for ${symbol}`, {
+      hasChartData: !!chartData,
+      isCalculating,
+      calculationTriggered: calculationTriggeredRef.current
+    });
+
+    if (!chartData) {
+      console.log(`[SignalDashboard] No chart data for auto-calculation trigger`);
       return;
     }
 
