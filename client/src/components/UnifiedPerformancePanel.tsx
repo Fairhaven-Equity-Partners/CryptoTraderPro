@@ -140,38 +140,44 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
         </Badge>
       </h4>
       
-      {/* Technical Analysis Summary */}
-      {technicalData?.success && (
-        <div className="mb-3 p-2 bg-gray-900/50 rounded border border-gray-800">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-xs text-slate-300">Signal</span>
-            <span className={`text-xs font-semibold ${getSignalColor(technicalData.signal.direction)}`}>
-              {technicalData.signal.direction} {technicalData.signal.confidence}%
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-sm font-semibold text-white">{formatPrice(technicalData.currentPrice)}</p>
-              <p className={`text-xs ${technicalData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                {formatPercent(technicalData.change24h)}
-              </p>
+      {/* Technical Analysis Summary - Always show for consistency */}
+      <div className="mb-3 p-2 bg-gray-900/50 rounded border border-gray-800">
+        {technicalData?.success ? (
+          <>
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs text-slate-300">Signal</span>
+              <span className={`text-xs font-semibold ${getSignalColor(technicalData.signal.direction)}`}>
+                {technicalData.signal.direction} {technicalData.signal.confidence}%
+              </span>
             </div>
-            <div className="text-right">
-              <div className="flex items-center gap-1">
-                {technicalData.analysis.trend === 'BULLISH' ? 
-                  <TrendingUp className="h-3 w-3 text-green-400" /> : 
-                  <TrendingDown className="h-3 w-3 text-red-400" />
-                }
-                <span className="text-xs text-slate-300">{technicalData.analysis.trend}</span>
+            <div className="flex justify-between items-center">
+              <div>
+                <p className="text-sm font-semibold text-white">{formatPrice(technicalData.currentPrice)}</p>
+                <p className={`text-xs ${technicalData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {formatPercent(technicalData.change24h)}
+                </p>
+              </div>
+              <div className="text-right">
+                <div className="flex items-center gap-1">
+                  {technicalData.analysis.trend === 'BULLISH' ? 
+                    <TrendingUp className="h-3 w-3 text-green-400" /> : 
+                    <TrendingDown className="h-3 w-3 text-red-400" />
+                  }
+                  <span className="text-xs text-slate-300">{technicalData.analysis.trend}</span>
+                </div>
               </div>
             </div>
+          </>
+        ) : (
+          <div className="text-center py-3">
+            <p className="text-xs text-slate-400">Loading {selectedTimeframe.toUpperCase()} technical analysis...</p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Key Indicators Grid */}
+      {/* Key Indicators Grid - Always show for consistency */}
       <div className="grid grid-cols-2 gap-3 text-xs">
-        {technicalData?.success && (
+        {technicalData?.success ? (
           <>
             <div className="space-y-1">
               <div className="flex justify-between">
@@ -201,6 +207,51 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
                   technicalData.indicators.stochK > 80 ? 'text-red-400' : 
                   technicalData.indicators.stochK < 20 ? 'text-green-400' : 'text-white'
                 }`}>{technicalData.indicators.stochK.toFixed(1)}</span>
+              </div>
+              {currentSignal && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Signal Confidence:</span>
+                    <span className={`font-semibold ${
+                      currentSignal.confidence > 75 ? 'text-green-400' : 
+                      currentSignal.confidence > 50 ? 'text-yellow-400' : 'text-red-400'
+                    }`}>{currentSignal.confidence}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Direction:</span>
+                    <span className={`font-semibold ${
+                      currentSignal.direction === 'LONG' ? 'text-green-400' : 
+                      currentSignal.direction === 'SHORT' ? 'text-red-400' : 'text-slate-400'
+                    }`}>{currentSignal.direction}</span>
+                  </div>
+                </>
+              )}
+              <div className="flex justify-between">
+                <span className="text-slate-300">Top Indicator:</span>
+                <span className="text-blue-400 font-semibold">{getTopIndicator()}</span>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span className="text-slate-300">RSI:</span>
+                <span className="text-slate-400">--</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-300">MACD:</span>
+                <span className="text-slate-400">--</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-300">EMA vs SMA:</span>
+                <span className="text-slate-400">--</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span className="text-slate-300">Stochastic:</span>
+                <span className="text-slate-400">--</span>
               </div>
               {currentSignal && (
                 <>
