@@ -1536,14 +1536,29 @@ export default function AdvancedSignalDashboard({
                 signal.indicators
               );
               
+              // Calculate correct stop loss and take profit based on actual symbol price
+              const riskPercent = signal.timeframe === '1M' ? 0.15 : 
+                                 signal.timeframe === '1w' ? 0.10 : 
+                                 signal.timeframe === '3d' ? 0.08 : 
+                                 signal.timeframe === '1d' ? 0.06 : 
+                                 signal.timeframe === '4h' ? 0.05 : 0.03;
+              
+              const correctStopLoss = signal.direction === 'LONG' ? 
+                authenticLivePrice * (1 - riskPercent) : 
+                authenticLivePrice * (1 + riskPercent);
+              
+              const correctTakeProfit = signal.direction === 'LONG' ? 
+                authenticLivePrice * (1 + riskPercent * 2) : 
+                authenticLivePrice * (1 - riskPercent * 2);
+
               const predictionSignal = {
                 symbol: symbol,
                 timeframe: signal.timeframe,
                 direction: signal.direction,
                 confidence: enhancedConfidence,
                 entryPrice: authenticLivePrice,
-                stopLoss: signal.stopLoss,
-                takeProfit: signal.takeProfit,
+                stopLoss: correctStopLoss,
+                takeProfit: correctTakeProfit,
                 timestamp: Date.now(),
                 indicators: signal.indicators,
                 successProbability: signal.successProbability
