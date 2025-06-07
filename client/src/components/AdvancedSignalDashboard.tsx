@@ -72,13 +72,23 @@ function analyzeIndicatorConvergence(indicators: any[]): { confidence: number; d
   return { confidence: 45, description: 'Mixed indicator signals' };
 }
 
-function detectMarketRegime(): { confidence: number; description: string } {
-  const regimes = [
-    { confidence: 75, description: 'Bullish trending market detected' },
-    { confidence: 70, description: 'Sideways consolidation phase' },
-    { confidence: 65, description: 'Bearish market correction ongoing' }
-  ];
-  return regimes[Math.floor(Math.random() * regimes.length)];
+function detectMarketRegimeFromData(signal: AdvancedSignal): { confidence: number; description: string } {
+  if (!signal.marketStructure) {
+    return { confidence: 50, description: 'Market regime data unavailable' };
+  }
+  
+  const { trend, strength } = signal.marketStructure;
+  const volatilityLevel = strength > 70 ? 'HIGH' : strength < 30 ? 'LOW' : 'NORMAL';
+  
+  if (trend === 'BULLISH' && volatility === 'LOW') {
+    return { confidence: 85, description: 'Strong bullish trending market detected' };
+  } else if (trend === 'BEARISH' && volatility === 'HIGH') {
+    return { confidence: 80, description: 'Bearish market correction with high volatility' };
+  } else if (trend === 'NEUTRAL') {
+    return { confidence: 70, description: 'Sideways consolidation phase' };
+  } else {
+    return { confidence: 60, description: 'Mixed market conditions' };
+  }
 }
 
 // Market analysis functions using authentic data only
@@ -110,7 +120,10 @@ function analyzeVolatilityFromData(signal: AdvancedSignal): { confidence: number
     return { confidence: 70, description: 'Normal volatility assumed' };
   }
   
-  const avgVolatility = volatilityIndicators.reduce((sum, ind) => sum + (ind.value || 50), 0) / volatilityIndicators.length;
+  const avgVolatility = volatilityIndicators.reduce((sum, ind) => {
+    const value = typeof ind.value === 'number' ? ind.value : Number(ind.value) || 50;
+    return sum + value;
+  }, 0) / volatilityIndicators.length;
   
   if (avgVolatility < 20) {
     return { confidence: 85, description: 'Low volatility supports trend continuation' };
@@ -1356,34 +1369,30 @@ export default function AdvancedSignalDashboard({
             const historicalAccuracy = Math.max(65, Math.min(96, Math.round(baseAccuracy * timeframeMultiplier)));
             enhancedMacroInsights.push(`Validation: ${historicalAccuracy}% historical accuracy`);
             
-            // Add institutional flow analysis
-            const institutionalFlow = analyzeInstitutionalFlow(signal.confidence, timeframe);
-            if (institutionalFlow.significance > 60) {
-              enhancedMacroInsights.push(`Flow: ${institutionalFlow.description}`);
-            }
-            
-            // Add market structure analysis
-            const marketStructure = analyzeMarketStructure(signal.direction, timeframe);
+            // Add market structure analysis using authentic data
+            const marketStructure = analyzeMarketStructureFromData(signal);
             if (marketStructure.strength > 65) {
               enhancedMacroInsights.push(`Structure: ${marketStructure.description}`);
             }
             
-            // Add liquidity analysis
-            const liquidityAnalysis = analyzeLiquidityConditions(signal.confidence);
-            if (liquidityAnalysis.impact > 55) {
-              enhancedMacroInsights.push(`Liquidity: ${liquidityAnalysis.description}`);
+            // Add volatility analysis using authentic data
+            const volatilityAnalysis = analyzeVolatilityFromData(signal);
+            if (volatilityAnalysis.confidence > 70) {
+              enhancedMacroInsights.push(`Volatility: ${volatilityAnalysis.description}`);
             }
             
-            // Add volatility regime analysis
-            const volatilityRegime = analyzeVolatilityRegime(timeframe);
-            if (volatilityRegime.confidence > 70) {
-              enhancedMacroInsights.push(`Volatility: ${volatilityRegime.description}`);
-            }
+            // Add indicator consensus analysis
+            const totalIndicators = [
+              ...(signal.indicators?.trend || []),
+              ...(signal.indicators?.momentum || [])
+            ];
+            const bullishCount = totalIndicators.filter(ind => ind.signal === 'BUY').length;
+            const bearishCount = totalIndicators.filter(ind => ind.signal === 'SELL').length;
             
-            // Add sentiment divergence analysis
-            const sentimentDivergence = analyzeSentimentDivergence(signal.direction, signal.confidence);
-            if (sentimentDivergence.significance > 60) {
-              enhancedMacroInsights.push(`Sentiment: ${sentimentDivergence.description}`);
+            if (bullishCount > bearishCount) {
+              enhancedMacroInsights.push(`Consensus: ${bullishCount}/${totalIndicators.length} indicators bullish`);
+            } else if (bearishCount > bullishCount) {
+              enhancedMacroInsights.push(`Consensus: ${bearishCount}/${totalIndicators.length} indicators bearish`);
             }
             
             signal.macroInsights = enhancedMacroInsights;
