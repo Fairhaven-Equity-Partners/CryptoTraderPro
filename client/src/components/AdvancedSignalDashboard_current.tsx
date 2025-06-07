@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Badge } from './ui/badge';
-import { useToast } from '../hooks/use-toast';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 
 // Type definitions
-type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' | '1M';
+export type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' | '1M';
 
-interface AdvancedSignal {
+export interface AdvancedSignal {
   symbol: string;
   timeframe: TimeFrame;
   direction: 'LONG' | 'SHORT' | 'NEUTRAL';
@@ -39,7 +39,7 @@ export default function AdvancedSignalDashboard({
 
   const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
 
-  // Handle synchronized calculation events from the automated backend system
+  // Handle synchronized calculation events from backend
   useEffect(() => {
     const handleSynchronizedCalculationEvent = (event: CustomEvent) => {
       try {
@@ -66,35 +66,21 @@ export default function AdvancedSignalDashboard({
 
     const handlePriceUpdate = (event: CustomEvent) => {
       try {
-        const { symbol: eventSymbol, price } = event.detail;
+        const { symbol: eventSymbol } = event.detail;
         if (eventSymbol === symbol) {
-          console.log(`[SignalDashboard] Price update for ${symbol}: $${price}`);
+          console.log(`[SignalDashboard] Price update received for ${symbol}`);
         }
       } catch (error) {
         console.error('[SignalDashboard] Price update error:', error);
       }
     };
 
-    const handleUltimateSystemTrigger = (event: CustomEvent) => {
-      try {
-        console.log(`[SignalDashboard] Ultimate system calculation triggered for ${symbol}`);
-        setIsCalculating(true);
-        // Reset calculating state after a reasonable time
-        setTimeout(() => setIsCalculating(false), 5000);
-      } catch (error) {
-        console.error('[SignalDashboard] Ultimate system error:', error);
-      }
-    };
-
-    // Listen for automated calculation events
     window.addEventListener('synchronizedCalculationComplete', handleSynchronizedCalculationEvent as EventListener);
     window.addEventListener('priceUpdate', handlePriceUpdate as EventListener);
-    window.addEventListener('ultimateSystemTrigger', handleUltimateSystemTrigger as EventListener);
     
     return () => {
       window.removeEventListener('synchronizedCalculationComplete', handleSynchronizedCalculationEvent as EventListener);
       window.removeEventListener('priceUpdate', handlePriceUpdate as EventListener);
-      window.removeEventListener('ultimateSystemTrigger', handleUltimateSystemTrigger as EventListener);
     };
   }, [symbol, toast, onAnalysisComplete]);
 
@@ -201,7 +187,7 @@ export default function AdvancedSignalDashboard({
             <Card className="border-dashed">
               <CardContent className="p-8 text-center text-muted-foreground">
                 <p>No signal available for {selectedTimeframe} timeframe</p>
-                <p className="text-sm mt-2">Automated calculations run every 4 minutes</p>
+                <p className="text-sm mt-2">Automated calculations will generate signals every 4 minutes</p>
               </CardContent>
             </Card>
           )}
@@ -238,7 +224,7 @@ export default function AdvancedSignalDashboard({
 
           {/* Status Information */}
           <div className="text-sm text-muted-foreground text-center">
-            Signals automatically calculated every 4 minutes using authentic CoinGecko API data
+            Signals are automatically calculated every 4 minutes using authentic market data from CoinGecko API
           </div>
         </CardContent>
       </Card>

@@ -33,8 +33,19 @@ import {
   Clock,
   CheckCircle2,
 } from "lucide-react";
-import { AdvancedSignal, PatternFormation, Level, TradeRecommendation } from '../lib/advancedSignals';
-import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../types';
+// Type definitions for working version
+type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' | '1M';
+
+interface AdvancedSignal {
+  symbol: string;
+  timeframe: TimeFrame;
+  direction: 'LONG' | 'SHORT' | 'NEUTRAL';
+  confidence: number;
+  entryPrice: number;
+  stopLoss: number;
+  takeProfit: number;
+  timestamp: number;
+}
 import { formatCurrency, formatPercentage } from '../lib/calculations';
 import { useToast } from '../hooks/use-toast';
 import { useMarketData } from '../hooks/useMarketData';
