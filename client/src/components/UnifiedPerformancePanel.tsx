@@ -1,21 +1,20 @@
-/**
- * Unified Performance Panel
- * Combines technical analysis and performance metrics with consistent styling
- */
+import React from 'react';
+import { Badge } from "@/components/ui/badge";
+import { useQuery } from "@tanstack/react-query";
+import { TrendingUp, TrendingDown } from "lucide-react";
 
-import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { TrendingUp, TrendingDown, Target, Activity } from 'lucide-react';
-
+// Types for technical analysis data
 interface TechnicalAnalysisData {
   success: boolean;
   symbol: string;
   currentPrice: number;
   change24h: number;
   signal: {
-    direction: 'LONG' | 'SHORT' | 'NEUTRAL';
+    direction: string;
     confidence: number;
-    reasoning: string[];
+  };
+  analysis: {
+    trend: string;
   };
   indicators: {
     rsi: number;
@@ -28,42 +27,23 @@ interface TechnicalAnalysisData {
     stochK: number;
     atr: number;
   };
-  analysis: {
-    trend: 'BULLISH' | 'BEARISH';
-    momentum: 'POSITIVE' | 'NEGATIVE';
-    volatility: string;
-    support: number;
-    resistance: number;
-  };
-  timestamp: number;
 }
 
+// Types for performance metrics
 interface PerformanceMetrics {
   indicators: Array<{
     indicator: string;
     hitRate: number;
-    totalPredictions: number;
-    successfulPredictions: number;
-    averageReturn: number;
-    confidenceAccuracy: number;
+    signalQuality: number;
   }>;
   timeframes: Array<{
     timeframe: string;
-    hitRate: number;
-    totalSignals: number;
-    successfulSignals: number;
-    averageConfidence: number;
     actualAccuracy: number;
-    performanceScore: number;
   }>;
   symbols: Array<{
     symbol: string;
-    hitRate: number;
-    signalQuality: number;
-    bestTimeframes: string[];
+    avgAccuracy: number;
   }>;
-  recommendations: string[];
-  lastUpdated: number;
 }
 
 interface Props {
@@ -86,12 +66,8 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-        <Card className="border-gray-800 bg-gray-900 text-white">
-          <CardContent className="p-2">
-            <div className="text-xs font-mono text-gray-400">Loading analysis...</div>
-          </CardContent>
-        </Card>
+      <div className="mt-4 p-3 bg-gradient-to-r from-gray-900/80 to-gray-950/90 rounded-lg border border-gray-700">
+        <div className="text-xs text-slate-400">Loading performance analysis...</div>
       </div>
     );
   }
@@ -100,179 +76,128 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
     switch (direction) {
       case 'LONG': return 'text-green-400';
       case 'SHORT': return 'text-red-400';
-      default: return 'text-gray-400';
+      default: return 'text-yellow-400';
     }
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: price > 1 ? 2 : 6
-    }).format(price);
+    return `$${price.toLocaleString('en-US', { 
+      minimumFractionDigits: 2, 
+      maximumFractionDigits: 2 
+    })}`;
   };
 
-  const formatPercent = (value: number) => {
-    return `${value > 0 ? '+' : ''}${value.toFixed(2)}%`;
+  const formatPercent = (percent: number) => {
+    const sign = percent >= 0 ? '+' : '';
+    return `${sign}${percent.toFixed(2)}%`;
   };
 
-  const formatLastUpdated = (timestamp: number) => {
-    if (!timestamp) return 'Never';
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString();
+  const getBestTimeframe = () => {
+    if (!performanceData?.timeframes || performanceData.timeframes.length === 0) return 'N/A';
+    return performanceData.timeframes[0].timeframe;
+  };
+
+  const getTopIndicator = () => {
+    if (!performanceData?.indicators || performanceData.indicators.length === 0) return 'RSI';
+    return performanceData.indicators[0].indicator;
+  };
+
+  const getAIRecommendation = () => {
+    if (!technicalData?.success) return 'Analyzing market conditions';
+    const confidence = technicalData.signal.confidence;
+    if (confidence > 75) return 'Strong signal detected';
+    if (confidence > 50) return 'Moderate signal strength';
+    return 'Low confidence signal';
   };
 
   return (
-    <div className="space-y-2">
-      {/* Unified Performance Panel Header */}
-      <div className="flex items-center justify-between px-2 py-1 bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700/50 rounded">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-          <span className="text-xs font-mono text-blue-400">UNIFIED PERFORMANCE ANALYSIS</span>
-        </div>
-        <span className="text-xs font-mono text-gray-400">{symbol}</span>
-      </div>
-
-      {/* Technical Analysis Header */}
+    <div className="mt-4 p-3 bg-gradient-to-r from-gray-900/80 to-gray-950/90 rounded-lg border border-gray-700">
+      <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
+        📊 Performance Analysis
+        <Badge className="bg-blue-900/20 text-blue-400 border-blue-800 text-xs px-2 py-0.5">
+          Live
+        </Badge>
+      </h4>
+      
+      {/* Technical Analysis Summary */}
       {technicalData?.success && (
-        <Card className="border-gray-800 bg-gray-900 text-white">
-          <CardContent className="p-2">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-mono text-gray-400">Technical Signal</span>
-              <span className={`text-xs font-mono ${getSignalColor(technicalData.signal.direction)}`}>
-                {technicalData.signal.direction} {technicalData.signal.confidence}%
-              </span>
+        <div className="mb-3 p-2 bg-gray-900/50 rounded border border-gray-800">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs text-slate-300">Signal</span>
+            <span className={`text-xs font-semibold ${getSignalColor(technicalData.signal.direction)}`}>
+              {technicalData.signal.direction} {technicalData.signal.confidence}%
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-sm font-semibold text-white">{formatPrice(technicalData.currentPrice)}</p>
+              <p className={`text-xs ${technicalData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {formatPercent(technicalData.change24h)}
+              </p>
             </div>
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-sm font-mono">{formatPrice(technicalData.currentPrice)}</p>
-                <p className={`text-xs font-mono ${technicalData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {formatPercent(technicalData.change24h)}
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="flex items-center gap-1">
-                  {technicalData.analysis.trend === 'BULLISH' ? 
-                    <TrendingUp className="h-3 w-3 text-green-400" /> : 
-                    <TrendingDown className="h-3 w-3 text-red-400" />
-                  }
-                  <span className="text-xs font-mono">{technicalData.analysis.trend}</span>
-                </div>
+            <div className="text-right">
+              <div className="flex items-center gap-1">
+                {technicalData.analysis.trend === 'BULLISH' ? 
+                  <TrendingUp className="h-3 w-3 text-green-400" /> : 
+                  <TrendingDown className="h-3 w-3 text-red-400" />
+                }
+                <span className="text-xs text-slate-300">{technicalData.analysis.trend}</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
-      {/* Unified Grid Layout */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-        {/* Technical Indicators */}
+      {/* Key Indicators Grid */}
+      <div className="grid grid-cols-2 gap-3 text-xs">
         {technicalData?.success && (
           <>
-            <Card className="border-gray-800 bg-gray-900 text-white">
-              <CardContent className="p-2">
-                <div className="text-xs font-mono text-gray-400">RSI</div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-mono">{technicalData.indicators.rsi.toFixed(1)}</span>
-                  <div className={`w-2 h-2 rounded-full ${
-                    technicalData.indicators.rsi > 70 ? 'bg-red-400' : 
-                    technicalData.indicators.rsi < 30 ? 'bg-green-400' : 'bg-gray-400'
-                  }`}></div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-gray-800 bg-gray-900 text-white">
-              <CardContent className="p-2">
-                <div className="text-xs font-mono text-gray-400">MACD</div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-mono">{technicalData.indicators.macd.toFixed(1)}</span>
-                  <div className={`w-2 h-2 rounded-full ${
-                    technicalData.indicators.macd > technicalData.indicators.signal ? 'bg-green-400' : 'bg-red-400'
-                  }`}></div>
-                </div>
-              </CardContent>
-            </Card>
-          </>
-        )}
-
-        {/* Performance Metrics */}
-        {performanceData && (
-          <>
-            {/* Top Timeframe */}
-            {performanceData.timeframes.length > 0 && (
-              <Card className="border-gray-800 bg-gray-900 text-white">
-                <CardContent className="p-2">
-                  <div className="text-xs font-mono text-gray-400">Best TF</div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono">{performanceData.timeframes[0].timeframe}</span>
-                    <span className={`text-xs font-mono ${
-                      performanceData.timeframes[0].actualAccuracy > 60 ? 'text-green-400' : 
-                      performanceData.timeframes[0].actualAccuracy > 45 ? 'text-yellow-400' : 'text-red-400'
-                    }`}>
-                      {performanceData.timeframes[0].actualAccuracy}%
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Top Indicator */}
-            {performanceData.indicators.length > 0 && (
-              <Card className="border-gray-800 bg-gray-900 text-white">
-                <CardContent className="p-2">
-                  <div className="text-xs font-mono text-gray-400">Best Ind</div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono">{performanceData.indicators[0].indicator}</span>
-                    <span className={`text-xs font-mono ${
-                      performanceData.indicators[0].hitRate > 0.6 ? 'text-green-400' : 
-                      performanceData.indicators[0].hitRate > 0.5 ? 'text-yellow-400' : 'text-red-400'
-                    }`}>
-                      {Math.round(performanceData.indicators[0].hitRate * 100)}%
-                    </span>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span className="text-slate-300">RSI:</span>
+                <span className={`font-semibold ${
+                  technicalData.indicators.rsi > 70 ? 'text-red-400' : 
+                  technicalData.indicators.rsi < 30 ? 'text-green-400' : 'text-white'
+                }`}>{technicalData.indicators.rsi.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-300">MACD:</span>
+                <span className={`font-semibold ${
+                  technicalData.indicators.macd > technicalData.indicators.signal ? 'text-green-400' : 'text-red-400'
+                }`}>{technicalData.indicators.macd.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-300">EMA vs SMA:</span>
+                <span className={`font-semibold ${
+                  technicalData.indicators.ema12 > technicalData.indicators.sma20 ? 'text-green-400' : 'text-red-400'
+                }`}>{(technicalData.indicators.ema12 / technicalData.indicators.sma20 * 100 - 100).toFixed(2)}%</span>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="flex justify-between">
+                <span className="text-slate-300">Stochastic:</span>
+                <span className={`font-semibold ${
+                  technicalData.indicators.stochK > 80 ? 'text-red-400' : 
+                  technicalData.indicators.stochK < 20 ? 'text-green-400' : 'text-white'
+                }`}>{technicalData.indicators.stochK.toFixed(1)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-300">Best Timeframe:</span>
+                <span className="text-green-400 font-semibold">{getBestTimeframe()}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-300">Top Indicator:</span>
+                <span className="text-blue-400 font-semibold">{getTopIndicator()}</span>
+              </div>
+            </div>
           </>
         )}
       </div>
-
-      {/* Performance Summary */}
-      {performanceData && performanceData.timeframes.length > 0 && (
-        <Card className="border-gray-800 bg-gray-900 text-white">
-          <CardContent className="p-2">
-            <div className="flex items-center gap-1 mb-2">
-              <Activity className="h-3 w-3 text-gray-400" />
-              <span className="text-xs font-mono text-gray-400">Performance Summary</span>
-            </div>
-            <div className="grid grid-cols-3 gap-2 text-xs">
-              {performanceData.timeframes.slice(0, 3).map((tf) => (
-                <div key={tf.timeframe} className="text-center">
-                  <div className="font-mono text-gray-400">{tf.timeframe}</div>
-                  <div className={`font-mono ${
-                    tf.actualAccuracy > 60 ? 'text-green-400' : 
-                    tf.actualAccuracy > 45 ? 'text-yellow-400' : 'text-red-400'
-                  }`}>
-                    {tf.actualAccuracy}%
-                  </div>
-                </div>
-              ))}
-            </div>
-            {performanceData.recommendations.length > 0 && (
-              <div className="mt-2 pt-2 border-t border-gray-800">
-                <div className="text-xs font-mono text-gray-300 leading-tight">
-                  • {performanceData.recommendations[0].substring(0, 80)}...
-                </div>
-                <div className="text-xs font-mono text-gray-500 mt-1">
-                  Updated: {formatLastUpdated(performanceData.lastUpdated)}
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
+      
+      {/* AI Insights */}
+      <div className="mt-2 text-xs text-slate-400">
+        {getAIRecommendation()} • System continuously learns from prediction accuracy
+      </div>
     </div>
   );
 }
