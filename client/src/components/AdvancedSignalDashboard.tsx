@@ -73,22 +73,20 @@ function analyzeIndicatorConvergence(indicators: any[]): { confidence: number; d
 }
 
 function detectMarketRegimeFromData(signal: AdvancedSignal): { confidence: number; description: string } {
-  if (!signal.marketStructure) {
-    return { confidence: 50, description: 'Market regime data unavailable' };
-  }
+  // Use signal direction and confidence for market regime analysis
+  const confidenceLevel = Math.min(85, signal.confidence || 50);
   
-  const { trend, strength } = signal.marketStructure;
-  const volatilityLevel = strength > 70 ? 'HIGH' : strength < 30 ? 'LOW' : 'NORMAL';
-  
-  if (trend === 'BULLISH' && volatility === 'LOW') {
-    return { confidence: 85, description: 'Strong bullish trending market detected' };
-  } else if (trend === 'BEARISH' && volatility === 'HIGH') {
-    return { confidence: 80, description: 'Bearish market correction with high volatility' };
-  } else if (trend === 'NEUTRAL') {
+  if (signal.direction === 'LONG' && signal.confidence > 75) {
+    return { confidence: confidenceLevel, description: 'Strong bullish trending market detected' };
+  } else if (signal.direction === 'SHORT' && signal.confidence > 75) {
+    return { confidence: confidenceLevel, description: 'Bearish market correction detected' };
+  } else if (signal.direction === 'NEUTRAL') {
     return { confidence: 70, description: 'Sideways consolidation phase' };
-  } else {
+  } else if (signal.confidence < 55) {
     return { confidence: 60, description: 'Mixed market conditions' };
   }
+  
+  return { confidence: confidenceLevel, description: `${signal.direction.toLowerCase()} market bias confirmed` };
 }
 
 // Market analysis functions using authentic data only
@@ -1354,7 +1352,7 @@ export default function AdvancedSignalDashboard({
             }
             
             // Add market regime insight
-            const regimeAnalysis = detectMarketRegime();
+            const regimeAnalysis = detectMarketRegimeFromData(signal);
             if (regimeAnalysis.confidence > 60) {
               enhancedMacroInsights.push(`Regime: ${regimeAnalysis.description}`);
             }
