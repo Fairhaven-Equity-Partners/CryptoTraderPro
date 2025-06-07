@@ -90,9 +90,15 @@ class CentralizedPriceManager {
     const data = this.priceData.get(symbol);
     const now = Date.now();
     
-    // Return cached price if it's fresh (within cache time)
+    // CRITICAL: Validate price is reasonable for the symbol to prevent cross-contamination
     if (data && data.price > 0 && (now - data.timestamp) < this.MIN_CACHE_TIME) {
-      return data.price;
+      // Price validation to prevent BTC price being used for other symbols
+      if (this.validatePriceForSymbol(symbol, data.price)) {
+        return data.price;
+      } else {
+        console.warn(`[CentralizedPriceManager] Invalid price ${data.price} for ${symbol}, clearing cache`);
+        this.priceData.delete(symbol); // Clear invalid cached price
+      }
     }
     
     // Only fetch if cache is stale or missing
@@ -102,6 +108,44 @@ class CentralizedPriceManager {
     }
     
     return data?.price || null;
+  }
+
+  /**
+   * Validate that a price is reasonable for a given symbol
+   */
+  private validatePriceForSymbol(symbol: string, price: number): boolean {
+    const baseAsset = symbol.split('/')[0];
+    
+    // Define reasonable price ranges for different assets
+    const priceRanges: { [key: string]: { min: number; max: number } } = {
+      'BTC': { min: 50000, max: 200000 },
+      'ETH': { min: 1000, max: 10000 },
+      'BNB': { min: 200, max: 2000 },
+      'SOL': { min: 50, max: 500 },
+      'XRP': { min: 0.1, max: 10 },
+      'DOT': { min: 1, max: 50 },
+      'ADA': { min: 0.1, max: 5 },
+      'AVAX': { min: 5, max: 200 },
+      'DOGE': { min: 0.01, max: 2 },
+      'LINK': { min: 5, max: 100 },
+      'MATIC': { min: 0.1, max: 10 },
+      'UNI': { min: 3, max: 50 },
+      'LTC': { min: 50, max: 500 },
+      'BCH': { min: 100, max: 2000 },
+      'USDC': { min: 0.95, max: 1.05 }
+    };
+    
+    const range = priceRanges[baseAsset];
+    if (range) {
+      const isValid = price >= range.min && price <= range.max;
+      if (!isValid) {
+        console.error(`[CentralizedPriceManager] Price validation failed: ${symbol} price ${price} outside range ${range.min}-${range.max}`);
+      }
+      return isValid;
+    }
+    
+    // For unknown assets, just check it's not obviously wrong (like BTC price range)
+    return price < 50000; // Most altcoins should be under $50k
   }
 
   /**

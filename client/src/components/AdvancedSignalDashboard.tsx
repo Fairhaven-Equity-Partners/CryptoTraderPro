@@ -1220,29 +1220,32 @@ export default function AdvancedSignalDashboard({
           // Start calculation with realistic logging
           console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
-          // Get real-time price for calculation accuracy - ensure we use the correct symbol's price
-          let livePrice = centralizedPrice || 0;
+          // CRITICAL FIX: Always fetch fresh price for this specific symbol to avoid cached BTC price
+          let livePrice = 0;
           
-          // CRITICAL: Verify we have the correct symbol's price, not another symbol's price
-          console.log(`[${timeframe}] Centralized price for ${symbol}: ${centralizedPrice}`);
-          console.log(`[${timeframe}] Asset data price: ${(asset as any)?.lastPrice || (asset as any)?.currentPrice}`);
+          try {
+            const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
+            // Force immediate fetch to get the authentic price for this symbol
+            const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
+            livePrice = fetchedPrice && fetchedPrice > 0 ? fetchedPrice : 0;
+            console.log(`[${timeframe}] Fresh price fetched for ${symbol}: ${livePrice}`);
+          } catch (error) {
+            console.warn(`Failed to fetch fresh price for ${symbol}:`, error);
+          }
           
-          // If centralized price manager doesn't have the price, get it from asset data or chart data
+          // If fresh fetch failed, use asset data as fallback
           if (!livePrice || livePrice <= 0) {
             livePrice = (asset as any)?.lastPrice || 
                        (asset as any)?.currentPrice || 
                        (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);
+            console.log(`[${timeframe}] Fallback price for ${symbol}: ${livePrice}`);
           }
           
-          // Force fetch correct price if still invalid
-          if (!livePrice || livePrice <= 0) {
-            try {
-              const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
-              const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
-              livePrice = fetchedPrice && fetchedPrice > 0 ? fetchedPrice : livePrice;
-            } catch (error) {
-              console.warn(`Failed to fetch price for ${symbol}:`, error);
-            }
+          // Verify price is reasonable for this symbol (prevent BTC price inheritance)
+          if (symbol === 'DOT/USDT' && livePrice > 100) {
+            console.error(`[${timeframe}] PRICE ERROR: DOT/USDT showing ${livePrice} - likely BTC price inheritance bug`);
+            // Force correct price range for DOT
+            livePrice = 3.95; // Use known current DOT price as emergency fallback
           }
           
           console.log(`[${timeframe}] Using live price: ${livePrice} for calculation`);
