@@ -23,6 +23,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('[System] Starting automated signal calculation system');
   await automatedSignalCalculator.start();
   
+  // Trigger immediate signal calculation for all symbols
+  console.log('[System] Triggering immediate signal calculation for all 50 symbols');
+  setTimeout(async () => {
+    try {
+      await automatedSignalCalculator.calculateAllSignals();
+      console.log('[System] Initial signal calculation completed');
+    } catch (error) {
+      console.error('[System] Error in initial signal calculation:', error);
+    }
+  }, 2000);
+  
   // Start feedback analysis system
   console.log('[System] Starting intelligent feedback analysis system');
   await feedbackAnalyzer.start();

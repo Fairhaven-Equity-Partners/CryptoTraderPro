@@ -97,7 +97,7 @@ export class AutomatedSignalCalculator {
    * Calculate signals for all cryptocurrency pairs across all timeframes
    * Optimized for maximum efficiency and accuracy
    */
-  private async calculateAllSignals(): Promise<void> {
+  async calculateAllSignals(): Promise<void> {
     const startTime = Date.now();
     console.log(`[AutomatedSignalCalculator] Starting optimized calculation for ${TOP_50_SYMBOL_MAPPINGS.length} pairs across ${this.timeframes.length} timeframes`);
 

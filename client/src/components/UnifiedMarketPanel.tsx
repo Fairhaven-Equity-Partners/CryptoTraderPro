@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { type TimeFrame } from '@shared/schema';
+import { DirectSignalDisplay } from './DirectSignalDisplay';
 
 // Import the AdvancedSignal type from the correct location
 interface AdvancedSignal {
