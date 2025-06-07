@@ -2186,7 +2186,7 @@ export default function AdvancedSignalDashboard({
           </div>
 
           {/* Unified Performance Analysis */}
-          <UnifiedPerformancePanel symbol={symbol} />
+          <UnifiedPerformancePanel symbol={symbol} selectedTimeframe={selectedTimeframe} signals={signals} />
         </CardContent>
       </Card>
 

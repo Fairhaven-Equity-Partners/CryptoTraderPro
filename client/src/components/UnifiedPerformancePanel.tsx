@@ -48,9 +48,11 @@ interface PerformanceMetrics {
 
 interface Props {
   symbol: string;
+  selectedTimeframe: string;
+  signals: Record<string, any>;
 }
 
-export default function UnifiedPerformancePanel({ symbol }: Props) {
+export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, signals }: Props) {
   const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
     queryKey: ['/api/technical-analysis', symbol],
     queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}`).then(res => res.json()),
@@ -92,8 +94,11 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
     return `${sign}${percent.toFixed(2)}%`;
   };
 
+  // Get timeframe-specific signal data
+  const currentSignal = signals[selectedTimeframe];
+  
   const getBestTimeframe = () => {
-    if (!performanceData?.timeframes || performanceData.timeframes.length === 0) return 'N/A';
+    if (!performanceData?.timeframes || performanceData.timeframes.length === 0) return selectedTimeframe;
     return performanceData.timeframes[0].timeframe;
   };
 
@@ -103,19 +108,34 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
   };
 
   const getAIRecommendation = () => {
-    if (!technicalData?.success) return 'Analyzing market conditions';
-    const confidence = technicalData.signal.confidence;
-    if (confidence > 75) return 'Strong signal detected';
-    if (confidence > 50) return 'Moderate signal strength';
-    return 'Low confidence signal';
+    if (!currentSignal) return `Analyzing ${selectedTimeframe} timeframe`;
+    const confidence = currentSignal.confidence || 0;
+    const direction = currentSignal.direction || 'NEUTRAL';
+    
+    if (confidence > 75) return `Strong ${direction} signal on ${selectedTimeframe}`;
+    if (confidence > 50) return `Moderate ${direction} signal on ${selectedTimeframe}`;
+    return `Low confidence on ${selectedTimeframe}`;
+  };
+
+  const getTimeframeSpecificData = () => {
+    if (!currentSignal) return null;
+    
+    return {
+      confidence: currentSignal.confidence || 0,
+      direction: currentSignal.direction || 'NEUTRAL',
+      entryPrice: currentSignal.entryPrice || 0,
+      stopLoss: currentSignal.stopLoss || 0,
+      takeProfit: currentSignal.takeProfit || 0,
+      successProbability: currentSignal.successProbability || 0
+    };
   };
 
   return (
     <div className="mt-4 p-3 bg-gradient-to-r from-gray-900/80 to-gray-950/90 rounded-lg border border-gray-700">
       <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
-        📊 Performance Analysis
+        📊 Performance Analysis - {selectedTimeframe.toUpperCase()}
         <Badge className="bg-blue-900/20 text-blue-400 border-blue-800 text-xs px-2 py-0.5">
-          Live
+          {currentSignal ? 'Active' : 'Pending'}
         </Badge>
       </h4>
       
@@ -181,10 +201,24 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
                   technicalData.indicators.stochK < 20 ? 'text-green-400' : 'text-white'
                 }`}>{technicalData.indicators.stochK.toFixed(1)}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-300">Best Timeframe:</span>
-                <span className="text-green-400 font-semibold">{getBestTimeframe()}</span>
-              </div>
+              {currentSignal && (
+                <>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Signal Confidence:</span>
+                    <span className={`font-semibold ${
+                      currentSignal.confidence > 75 ? 'text-green-400' : 
+                      currentSignal.confidence > 50 ? 'text-yellow-400' : 'text-red-400'
+                    }`}>{currentSignal.confidence}%</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-300">Direction:</span>
+                    <span className={`font-semibold ${
+                      currentSignal.direction === 'LONG' ? 'text-green-400' : 
+                      currentSignal.direction === 'SHORT' ? 'text-red-400' : 'text-slate-400'
+                    }`}>{currentSignal.direction}</span>
+                  </div>
+                </>
+              )}
               <div className="flex justify-between">
                 <span className="text-slate-300">Top Indicator:</span>
                 <span className="text-blue-400 font-semibold">{getTopIndicator()}</span>
@@ -194,6 +228,31 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
         )}
       </div>
       
+      {/* Timeframe-Specific Signal Data */}
+      {currentSignal && (
+        <div className="mt-3 p-2 bg-gray-900/50 rounded border border-gray-800">
+          <h5 className="text-green-300 font-medium text-xs mb-2">📈 {selectedTimeframe.toUpperCase()} Signal Levels</h5>
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+            <div className="flex justify-between">
+              <span className="text-slate-400">Entry:</span>
+              <span className="text-white font-medium">${currentSignal.entryPrice?.toFixed(2) || 'N/A'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Success Rate:</span>
+              <span className="text-green-400 font-medium">{currentSignal.successProbability || 0}%</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Stop Loss:</span>
+              <span className="text-red-400 font-medium">${currentSignal.stopLoss?.toFixed(2) || 'N/A'}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-slate-400">Take Profit:</span>
+              <span className="text-green-400 font-medium">${currentSignal.takeProfit?.toFixed(2) || 'N/A'}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* AI Insights */}
       <div className="mt-2 text-xs text-slate-400">
         {getAIRecommendation()} • System continuously learns from prediction accuracy
