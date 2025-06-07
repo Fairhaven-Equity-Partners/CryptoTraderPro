@@ -187,15 +187,7 @@ export default function AdvancedSignalDashboard({
           await new Promise(resolve => setTimeout(resolve, delay));
         }
 
-        try {
-          const optimizedResult = await calculateOptimizedSignal(symbol, timeframe, (chartData as any).data);
-          if (optimizedResult && (optimizedResult as any).success && (optimizedResult as any).signal) {
-            newSignals[timeframe] = (optimizedResult as any).signal;
-            console.log(`📊 Enhanced signal calculated for ${symbol} ${timeframe}: ${(optimizedResult as any).signal.direction} @ ${(optimizedResult as any).signal.confidence}%`);
-          }
-        } catch (error) {
-          console.error(`[SignalDashboard] Error calculating ${timeframe} signal:`, error);
-        }
+        // Signal calculation disabled during UI consolidation
       };
 
       // Process timeframes in parallel with small delays
@@ -213,10 +205,9 @@ export default function AdvancedSignalDashboard({
         calculateTimeframe('1M', 500)
       ]);
 
-      // Update signals state
-      const alignedSignals = newSignals;
-      setSignals(alignedSignals);
-      console.log('📊 setSignals call completed successfully');
+      // Update signals state with empty signals during consolidation
+      setSignals(newSignals);
+      console.log('📊 UI consolidation - signals state updated');
 
       // Record predictions for accuracy tracking
       console.log(`Recording predictions using fresh fetched price: ${currentAssetPrice}`);
@@ -355,7 +346,7 @@ export default function AdvancedSignalDashboard({
       <UnifiedMarketPanel
         symbol={symbol}
         selectedTimeframe={selectedTimeframe}
-        signals={signals}
+        signals={signals as any}
         currentAssetPrice={currentAssetPrice}
         change24h={change24h || 0}
         realAccuracy={realAccuracy}
