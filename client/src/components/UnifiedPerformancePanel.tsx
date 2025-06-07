@@ -47,24 +47,22 @@ interface PerformanceMetrics {
 }
 
 interface Props {
-  symbol?: string;
-  selectedTimeframe?: string;
-  signals?: any;
+  symbol: string;
+  selectedTimeframe: string;
+  signals: Record<string, any>;
 }
 
-export default function UnifiedPerformancePanel({ symbol = 'BTC/USDT', selectedTimeframe = '1h', signals = {} }: Props) {
+export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, signals }: Props) {
   const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
     queryKey: ['/api/technical-analysis', symbol, selectedTimeframe],
     queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}?timeframe=${selectedTimeframe}`).then(res => res.json()),
     refetchInterval: 30000,
-    enabled: !!symbol && !!selectedTimeframe
   });
 
   const { data: performanceData, isLoading: perfLoading } = useQuery<PerformanceMetrics>({
     queryKey: ['/api/performance-metrics', selectedTimeframe],
     queryFn: () => fetch(`/api/performance-metrics?timeframe=${selectedTimeframe}`).then(res => res.json()),
     refetchInterval: 60000,
-    enabled: !!selectedTimeframe
   });
 
   const isLoading = techLoading || perfLoading;
