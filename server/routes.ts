@@ -1111,6 +1111,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`[Routes] Calculating real technical indicators for ${symbol}${timeframe ? ` (${timeframe})` : ''}`);
       
+      // Clear stale cache to ensure fresh data
+      enhancedPriceStreamer.clearHistoricalCache(symbol);
+      
       // Get current price
       const currentPrice = enhancedPriceStreamer.getCurrentPrice(symbol);
       if (!currentPrice) {
