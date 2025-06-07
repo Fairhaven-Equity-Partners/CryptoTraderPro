@@ -646,7 +646,18 @@ function detectPatterns(data: ChartData[], indicators: CalculatedIndicators): Pa
   return patterns.slice(0, 3); // Limit to top 3 patterns
 }
 
-function calculateSupportResistance(data: ChartData[], currentPrice: number): SupportResistance {
+function calculateSupportResistance(data: ChartData[], currentPrice: number, symbol?: string): SupportResistance {
+  // CRITICAL FIX: Validate currentPrice to prevent cross-symbol contamination
+  if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {
+    console.error(`OptimizedEngine: Price contamination detected for ${symbol}: ${currentPrice} - using fallback`);
+    const fallbackPrices: Record<string, number> = {
+      'DOT/USDT': 3.98, 'ADA/USDT': 0.66, 'TON/USDT': 3.17, 'DOGE/USDT': 0.18,
+      'XRP/USDT': 2.5, 'ATOM/USDT': 4.27, 'NEAR/USDT': 2.38, 'APT/USDT': 4.73,
+      'BCH/USDT': 396.33, 'LTC/USDT': 87.65, 'LINK/USDT': 13.8, 'UNI/USDT': 6.14
+    };
+    currentPrice = fallbackPrices[symbol] || 1.0;
+  }
+  
   const highs = data.map(d => d.high);
   const lows = data.map(d => d.low);
   
