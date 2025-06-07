@@ -518,12 +518,7 @@ export class AutomatedSignalCalculator {
     return symbolSignals;
   }
 
-  /**
-   * Get all cached signals for the market heatmap
-   */
-  getAllSignals(): Map<string, CalculatedSignal[]> {
-    return this.signalCache;
-  }
+
 
   /**
    * Create fallback signal for system stability when advanced analysis fails

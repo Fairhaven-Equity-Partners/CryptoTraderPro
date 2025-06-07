@@ -211,17 +211,63 @@ export default function AdvancedSignalDashboard({
                 if (signalResponse.ok) {
                   const signalData = await signalResponse.json();
                   if (signalData.success && signalData.signal) {
-                    newSignals[timeframe] = signalData.signal;
-                    console.log(`📊 Backend signal retrieved for ${symbol} ${timeframe}: ${signalData.signal.direction} @ ${signalData.signal.confidence}%`);
+                    // Convert backend signal format to frontend format
+                    const backendSignal = signalData.signal;
+                    newSignals[timeframe] = {
+                      direction: backendSignal.direction,
+                      confidence: backendSignal.confidence,
+                      entryPrice: backendSignal.entryPrice,
+                      stopLoss: backendSignal.stopLoss,
+                      takeProfit: backendSignal.takeProfit,
+                      timeframe: timeframe as TimeFrame,
+                      timestamp: backendSignal.timestamp,
+                      successProbability: backendSignal.successProbability,
+                      indicators: backendSignal.indicators || {},
+                      patternFormations: backendSignal.patternFormations || [],
+                      supportResistance: {
+                        supports: [],
+                        resistances: [],
+                        pivotPoints: []
+                      },
+                      environment: {
+                        trend: 'NEUTRAL',
+                        volatility: 'MEDIUM',
+                        volume: 'NORMAL',
+                        sentiment: 'NEUTRAL'
+                      },
+                      marketStructure: {
+                        trend: 'SIDEWAYS',
+                        phase: 'CONSOLIDATION',
+                        strength: 50
+                      },
+                      volumeProfile: {
+                        volumeWeightedPrice: backendSignal.entryPrice,
+                        highVolumeNodes: [],
+                        lowVolumeNodes: []
+                      },
+                      expectedDuration: '4-8 hours',
+                      riskRewardRatio: Math.abs((backendSignal.takeProfit - backendSignal.entryPrice) / (backendSignal.entryPrice - backendSignal.stopLoss)) || 1.5,
+                      optimalRiskReward: {
+                        ideal: 2.0,
+                        range: [1.5, 3.0]
+                      },
+                      recommendedLeverage: backendSignal.recommendedLeverage || {
+                        conservative: 1,
+                        moderate: 2,
+                        aggressive: 3,
+                        recommendation: 'conservative'
+                      },
+                      macroInsights: []
+                    };
+                    console.log(`📊 Backend signal retrieved for ${symbol} ${timeframe}: ${backendSignal.direction} @ ${backendSignal.confidence}%`);
+                  } else {
+                    console.log(`No signal available for ${symbol} on ${timeframe}`);
                   }
+                } else {
+                  console.log(`Failed to fetch signal for ${symbol} ${timeframe}`);
                 }
               } catch (signalError) {
-                // Fallback to basic signal generation
-                const basicSignal = generateSignal(chartData.data, timeframe, currentAssetPrice);
-                if (basicSignal) {
-                  newSignals[timeframe] = basicSignal;
-                  console.log(`📊 Fallback signal calculated for ${symbol} ${timeframe}: ${basicSignal.direction} @ ${basicSignal.confidence}%`);
-                }
+                console.log(`Signal fetch error for ${symbol} ${timeframe}:`, signalError);
               }
             } else {
               console.warn(`[SignalDashboard] Insufficient chart data for ${symbol} ${timeframe}`);
