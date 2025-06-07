@@ -421,10 +421,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const timeframe = req.query.timeframe as string;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
       
-      // For BTC/USDT, return existing calculated signals from the analysis engine
-      if (symbol === 'BTC/USDT') {
-        const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
-        
+      // Return existing calculated signals from the analysis engine for all symbols
+      const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+      
+      if (signals.length > 0) {
         if (timeframe) {
           const filteredSignals = signals.filter(s => s.timeframe === timeframe);
           res.json(filteredSignals);
