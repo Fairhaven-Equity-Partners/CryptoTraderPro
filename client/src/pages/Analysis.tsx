@@ -71,7 +71,19 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-
+        {/* Enhanced Technical Analysis */}
+        <div className="px-4 py-2">
+          <MacroIndicatorsPanel />
+        </div>
+        
+        {/* Performance Dashboard */}
+        <div className="px-4 py-2">
+          <UnifiedPerformancePanel 
+            symbol={currentAsset}
+            selectedTimeframe={currentTimeframe}
+            signals={{}}
+          />
+        </div>
         
         {/* Heat Map Section */}
         <div className="px-4 py-4">

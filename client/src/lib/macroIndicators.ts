@@ -9,6 +9,10 @@ import { calculateMoonPhaseImpact, MoonPhaseData } from './moonPhase';
 
 // Interface for macro data that might be expected by other components
 export interface MacroData {
+  btcDominance: number;
+  usdtDominance: number;
+  fearGreedIndex: number;
+  fearGreedClassification: string;
   marketSentiment: number;
   liquidityFlow: number;
   fundingRate: number;
@@ -22,6 +26,10 @@ export interface MacroData {
 // Functions that might be expected by other parts of the application
 export function getMacroIndicators(): MacroData {
   return {
+    btcDominance: 56.2,
+    usdtDominance: 7.8,
+    fearGreedIndex: 68,
+    fearGreedClassification: 'Greed',
     marketSentiment: 65,
     liquidityFlow: 55,
     fundingRate: 0.01,
