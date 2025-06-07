@@ -52,16 +52,23 @@ export async function initializeUltimateSystem(): Promise<void> {
     // Force immediate signal generation for all components with chart data pre-loading
     await preloadChartDataForImmediate(['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT']);
     
-    // Trigger immediate technical analysis calculation
+    // Trigger immediate technical analysis calculation for ALL symbols
     setTimeout(() => {
-      document.dispatchEvent(new CustomEvent('synchronized-calculation-trigger', {
-        detail: { 
-          interval: '4-minute', 
-          symbol: 'BTC/USDT', 
-          manual: false,
-          immediate: true 
-        }
-      }));
+      // Dispatch calculation event for all supported symbols
+      const allSymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT', 'USDC/USD', 'ADA/USDT', 'AVAX/USDT', 'DOGE/USDT', 'TRX/USDT', 'TON/USDT', 'LINK/USDT', 'MATIC/USDT', 'SHIB/USDT', 'LTC/USDT', 'BCH/USDT', 'UNI/USDT', 'DOT/USDT', 'XLM/USDT', 'ATOM/USDT', 'XMR/USDT', 'ETC/USDT', 'HBAR/USDT', 'FIL/USDT', 'ICP/USDT', 'VET/USDT', 'APT/USDT', 'NEAR/USDT', 'AAVE/USDT', 'ARB/USDT', 'OP/USDT', 'MKR/USDT', 'GRT/USDT', 'STX/USDT', 'INJ/USDT', 'ALGO/USDT', 'LDO/USDT', 'THETA/USDT', 'SUI/USDT', 'RUNE/USDT', 'MANA/USDT', 'SAND/USDT', 'FET/USDT', 'RNDR/USDT', 'KAVA/USDT', 'MINA/USDT', 'FLOW/USDT', 'XTZ/USDT', 'BLUR/USDT', 'QNT/USDT'];
+      
+      allSymbols.forEach((symbol, index) => {
+        setTimeout(() => {
+          document.dispatchEvent(new CustomEvent('synchronized-calculation-trigger', {
+            detail: { 
+              interval: '4-minute', 
+              symbol: symbol, 
+              manual: false,
+              immediate: true 
+            }
+          }));
+        }, index * 50); // Stagger events to prevent overwhelming
+      });
     }, 100); // Minimal delay to ensure components are ready
 
     // Start the ultimate synchronized timer
@@ -185,42 +192,55 @@ async function performScheduledPriceFetch(): Promise<void> {
   try {
     systemState.lastPriceFetch = Date.now();
 
-    // Use centralized price manager instead of direct API calls
-    if ((window as any).centralizedPriceManager) {
-      const price = await (window as any).centralizedPriceManager.getPrice('BTC/USDT');
-      if (price && typeof price === 'number') {
-        console.log(`[UltimateManager] Primary price synchronized: BTC/USDT = $${price}`);
+    // Define all 50 supported symbols - each must use its own authentic price
+    const allSymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT', 'USDC/USD', 'ADA/USDT', 'AVAX/USDT', 'DOGE/USDT', 'TRX/USDT', 'TON/USDT', 'LINK/USDT', 'MATIC/USDT', 'SHIB/USDT', 'LTC/USDT', 'BCH/USDT', 'UNI/USDT', 'DOT/USDT', 'XLM/USDT', 'ATOM/USDT', 'XMR/USDT', 'ETC/USDT', 'HBAR/USDT', 'FIL/USDT', 'ICP/USDT', 'VET/USDT', 'APT/USDT', 'NEAR/USDT', 'AAVE/USDT', 'ARB/USDT', 'OP/USDT', 'MKR/USDT', 'GRT/USDT', 'STX/USDT', 'INJ/USDT', 'ALGO/USDT', 'LDO/USDT', 'THETA/USDT', 'SUI/USDT', 'RUNE/USDT', 'MANA/USDT', 'SAND/USDT', 'FET/USDT', 'RNDR/USDT', 'KAVA/USDT', 'MINA/USDT', 'FLOW/USDT', 'XTZ/USDT', 'BLUR/USDT', 'QNT/USDT'];
+
+    // Fetch authentic price for each symbol independently
+    for (const symbol of allSymbols) {
+      try {
+        // Use centralized price manager for each symbol
+        if ((window as any).centralizedPriceManager) {
+          const price = await (window as any).centralizedPriceManager.getPrice(symbol);
+          if (price && typeof price === 'number') {
+            console.log(`[UltimateManager] Price synchronized: ${symbol} = $${price}`);
+            
+            // Update global price for this specific symbol
+            if ((window as any).syncGlobalPrice) {
+              (window as any).syncGlobalPrice(symbol, price, Date.now());
+            }
+
+            // Trigger calculations for this symbol with its own authentic price
+            if ((window as any).triggerSignalCalculation) {
+              (window as any).triggerSignalCalculation(symbol, price);
+            }
+          }
+        } else {
+          // Fallback to direct API call for this specific symbol
+          const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
+          if (response.ok) {
+            const data = await response.json();
+            const symbolPrice = data.lastPrice || data.currentPrice;
+            if (symbolPrice && typeof symbolPrice === 'number') {
+              console.log(`[UltimateManager] Fallback price synchronized: ${symbol} = $${symbolPrice}`);
+              
+              // Update global price for this specific symbol
+              if ((window as any).syncGlobalPrice) {
+                (window as any).syncGlobalPrice(symbol, symbolPrice, Date.now());
+              }
+
+              // Trigger calculations for this symbol with its own authentic price
+              if ((window as any).triggerSignalCalculation) {
+                (window as any).triggerSignalCalculation(symbol, symbolPrice);
+              }
+            }
+          }
+        }
         
-        // Update global price if function exists
-        if ((window as any).syncGlobalPrice) {
-          (window as any).syncGlobalPrice('BTC/USDT', price, Date.now());
-        }
-
-        // Trigger immediate signal calculations if this is startup
-        if ((window as any).triggerSignalCalculation) {
-          console.log('[UltimateManager] Triggering immediate signal calculations');
-          (window as any).triggerSignalCalculation('BTC/USDT', price);
-        }
-      }
-    } else {
-      // Fallback to direct API call if centralized manager not available
-      const response = await fetch('/api/crypto/BTC/USDT');
-      if (response.ok) {
-        const data = await response.json();
-        if (data && typeof data.currentPrice === 'number') {
-          console.log(`[UltimateManager] Primary price synchronized: BTC/USDT = $${data.currentPrice}`);
-          
-          // Update global price if function exists
-          if ((window as any).syncGlobalPrice) {
-            (window as any).syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
-          }
-
-          // Trigger immediate signal calculations if this is startup
-          if ((window as any).triggerSignalCalculation) {
-            console.log('[UltimateManager] Triggering immediate signal calculations');
-            (window as any).triggerSignalCalculation('BTC/USDT', data.currentPrice);
-          }
-        }
+        // Small delay to prevent API rate limiting
+        await new Promise(resolve => setTimeout(resolve, 50));
+        
+      } catch (error) {
+        console.warn(`[UltimateManager] Failed to fetch price for ${symbol}:`, error);
       }
     }
 
