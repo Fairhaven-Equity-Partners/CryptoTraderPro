@@ -32,6 +32,35 @@ export class AutomatedSignalCalculator {
   private calculationInterval: NodeJS.Timeout | null = null;
   private lastCalculationTime: number = 0;
   private signalCache: Map<string, CalculatedSignal[]> = new Map();
+  
+  /**
+   * Add signals directly to cache for testing
+   */
+  addTestSignals(): void {
+    const symbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT'];
+    const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+    
+    for (const symbol of symbols) {
+      const signals: CalculatedSignal[] = [];
+      
+      for (const timeframe of timeframes) {
+        signals.push({
+          symbol,
+          timeframe,
+          direction: Math.random() > 0.5 ? 'LONG' : 'SHORT',
+          confidence: Math.floor(Math.random() * 40) + 60,
+          strength: Math.floor(Math.random() * 50) + 50,
+          price: symbol === 'BTC/USDT' ? 105000 : symbol === 'ETH/USDT' ? 3500 : 650,
+          timestamp: Date.now(),
+          indicators: {}
+        });
+      }
+      
+      this.signalCache.set(symbol, signals);
+    }
+    
+    console.log(`[AutomatedSignalCalculator] Added test signals for ${symbols.length} symbols`);
+  }
   private marketVolatilityLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME' = 'MEDIUM';
   private dynamicIntervalMs: number = 4 * 60 * 1000; // Optimized 4 minutes for synchronized calculations
   
