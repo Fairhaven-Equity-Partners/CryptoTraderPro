@@ -71,8 +71,6 @@ interface Props {
 }
 
 export default function UnifiedPerformancePanel({ symbol }: Props) {
-  console.log('[UnifiedPerformancePanel] Component loading for symbol:', symbol);
-  
   const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
     queryKey: ['/api/technical-analysis', symbol],
     queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}`).then(res => res.json()),
@@ -85,28 +83,18 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
   });
 
   const isLoading = techLoading || perfLoading;
-  
-  console.log('[UnifiedPerformancePanel] Data status:', { 
-    techLoading, 
-    perfLoading, 
-    hasTechnicalData: !!technicalData, 
-    hasPerformanceData: !!performanceData 
-  });
 
   if (isLoading) {
-    console.log('[UnifiedPerformancePanel] Rendering loading state');
     return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
         <Card className="border-gray-800 bg-gray-900 text-white">
           <CardContent className="p-2">
-            <div className="text-xs font-mono text-gray-400">Loading unified performance data...</div>
+            <div className="text-xs font-mono text-gray-400">Loading analysis...</div>
           </CardContent>
         </Card>
       </div>
     );
   }
-
-  console.log('[UnifiedPerformancePanel] Rendering full component');
 
   const getSignalColor = (direction: string) => {
     switch (direction) {
@@ -137,6 +125,15 @@ export default function UnifiedPerformancePanel({ symbol }: Props) {
 
   return (
     <div className="space-y-2">
+      {/* Unified Performance Panel Header */}
+      <div className="flex items-center justify-between px-2 py-1 bg-gradient-to-r from-blue-900/30 to-purple-900/30 border border-blue-700/50 rounded">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+          <span className="text-xs font-mono text-blue-400">UNIFIED PERFORMANCE ANALYSIS</span>
+        </div>
+        <span className="text-xs font-mono text-gray-400">{symbol}</span>
+      </div>
+
       {/* Technical Analysis Header */}
       {technicalData?.success && (
         <Card className="border-gray-800 bg-gray-900 text-white">

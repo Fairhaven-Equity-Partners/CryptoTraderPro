@@ -73,10 +73,6 @@ const Analysis: React.FC = () => {
         
         {/* Unified Performance Panel - Combines Technical Analysis & Performance Metrics */}
         <div className="px-4 py-2">
-          <div className="border border-green-500 p-4 bg-green-900/20 text-white">
-            <h3 className="text-sm font-mono text-green-400 mb-2">🔧 NEW UNIFIED PERFORMANCE PANEL</h3>
-            <p className="text-xs font-mono text-gray-300">Component successfully loaded for {currentAsset}</p>
-          </div>
           <UnifiedPerformancePanel symbol={currentAsset} />
         </div>
         
