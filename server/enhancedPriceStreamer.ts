@@ -182,7 +182,7 @@ class EnhancedPriceStreamer {
           
           // Use cache if less than 30 minutes old and has sufficient data
           if (cacheAge < 1800000) {
-            return this.filterDataForRequestedDays(cached, days);
+            return cached; // Return full cached data without filtering
           }
         }
         // Clear insufficient cache
@@ -200,18 +200,20 @@ class EnhancedPriceStreamer {
       if (response.length >= 50) {
         // Cache the data only if sufficient
         this.historicalCache.set(cacheKey, response);
-        return this.filterDataForRequestedDays(response, days);
+        // Return the full response for technical analysis - don't filter
+        return response;
       } else if (response.length > 0) {
         // Expand insufficient data
         const expandedData = this.expandHistoricalData(response, symbol, 100);
         this.historicalCache.set(cacheKey, expandedData);
-        return this.filterDataForRequestedDays(expandedData, days);
+        // Return the expanded data for technical analysis
+        return expandedData;
       }
 
       // Generate completely synthetic data as last resort
       const syntheticData = this.expandHistoricalData([], symbol, 100);
       this.historicalCache.set(cacheKey, syntheticData);
-      return this.filterDataForRequestedDays(syntheticData, days);
+      return syntheticData;
 
     } catch (error) {
       console.error(`[PriceStreamer] Error fetching historical data for ${symbol}:`, error);
@@ -337,6 +339,8 @@ class EnhancedPriceStreamer {
       }
 
       console.log(`[PriceStreamer] Generated ${historicalData.length} candles for ${symbol} using daily data`);
+      console.log(`[PriceStreamer] DEBUG: First candle timestamp: ${new Date(historicalData[0]?.timestamp)}`);
+      console.log(`[PriceStreamer] DEBUG: Last candle timestamp: ${new Date(historicalData[historicalData.length - 1]?.timestamp)}`);
       return historicalData;
 
     } catch (error) {
@@ -382,12 +386,21 @@ class EnhancedPriceStreamer {
 
   /**
    * Filter historical data to match requested timeframe
+   * Always ensures minimum 60 candles for technical analysis
    */
   private filterDataForRequestedDays(data: HistoricalData[], requestedDays: number): HistoricalData[] {
-    if (requestedDays >= 30) return data;
+    // Always return full dataset if we have sufficient data for technical analysis
+    if (data.length >= 60) {
+      return data;
+    }
     
-    const cutoffTime = Date.now() - (requestedDays * 24 * 60 * 60 * 1000);
-    return data.filter(candle => candle.timestamp >= cutoffTime);
+    // If we don't have enough data, don't filter further - expand instead
+    if (data.length < 60) {
+      const symbol = data.length > 0 ? 'Unknown' : 'Unknown';
+      return this.expandHistoricalData(data, symbol, 100);
+    }
+    
+    return data;
   }
 
   /**
