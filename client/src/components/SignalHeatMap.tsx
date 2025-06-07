@@ -373,4 +373,4 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   );
 }
 
-export { SignalHeatMapComponent as SignalHeatMap };
+export { SignalHeatMap };

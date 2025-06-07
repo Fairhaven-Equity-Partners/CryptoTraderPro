@@ -102,8 +102,8 @@ export default function AdvancedSignalDashboard({
   });
 
   useEffect(() => {
-    if (accuracyData) {
-      setRealAccuracy(accuracyData);
+    if (accuracyData && typeof accuracyData === 'object') {
+      setRealAccuracy(accuracyData as any);
     }
   }, [accuracyData]);
 
@@ -168,7 +168,7 @@ export default function AdvancedSignalDashboard({
       return;
     }
 
-    if (!chartData?.success || !chartData?.data) {
+    if (!chartData || !(chartData as any)?.success || !(chartData as any)?.data) {
       console.log(`[SignalDashboard] No chart data available for ${symbol}, skipping calculation`);
       return;
     }
@@ -178,7 +178,7 @@ export default function AdvancedSignalDashboard({
       setIsCalculating(true);
       console.log(`[SignalDashboard] Starting comprehensive calculation for ${symbol}`);
 
-      const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '12h', '1d', '3d', '1w', '1M'];
+      const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
       const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
 
       // Calculate signals for each timeframe with staggered delays
@@ -188,10 +188,10 @@ export default function AdvancedSignalDashboard({
         }
 
         try {
-          const optimizedResult = await calculateOptimizedSignal(symbol, timeframe, chartData.data);
-          if (optimizedResult?.success && optimizedResult.signal) {
-            newSignals[timeframe] = optimizedResult.signal;
-            console.log(`📊 Enhanced signal calculated for ${symbol} ${timeframe}: ${optimizedResult.signal.direction} @ ${optimizedResult.signal.confidence}%`);
+          const optimizedResult = await calculateOptimizedSignal(symbol, timeframe, (chartData as any).data);
+          if (optimizedResult && (optimizedResult as any).success && (optimizedResult as any).signal) {
+            newSignals[timeframe] = (optimizedResult as any).signal;
+            console.log(`📊 Enhanced signal calculated for ${symbol} ${timeframe}: ${(optimizedResult as any).signal.direction} @ ${(optimizedResult as any).signal.confidence}%`);
           }
         } catch (error) {
           console.error(`[SignalDashboard] Error calculating ${timeframe} signal:`, error);
@@ -206,7 +206,7 @@ export default function AdvancedSignalDashboard({
         calculateTimeframe('30m', 150),
         calculateTimeframe('1h', 200),
         calculateTimeframe('4h', 250),
-        calculateTimeframe('12h', 300),
+
         calculateTimeframe('1d', 350),
         calculateTimeframe('3d', 400),
         calculateTimeframe('1w', 450),
@@ -363,11 +363,7 @@ export default function AdvancedSignalDashboard({
       />
 
       {/* Signal Heatmap */}
-      <SignalHeatMap 
-        symbol={symbol} 
-        selectedTimeframe={selectedTimeframe} 
-        signals={signals} 
-      />
+      <SignalHeatMap />
 
       {/* Performance Panel */}
       <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
