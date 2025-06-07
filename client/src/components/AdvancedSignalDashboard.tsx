@@ -47,9 +47,8 @@ import {
 } from '../lib/technicalIndicators';
 import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
 
-import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
+import { calculateConsolidatedSignal, ConsolidatedSignal } from '../lib/consolidatedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
-import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
   calculateEnhancedConfidence, 
   analyzeTimeframeCorrelations, 
@@ -1298,11 +1297,8 @@ export default function AdvancedSignalDashboard({
             timestamp: d.time || Date.now()
           }));
           
-          console.log(`[${timeframe}] Updating market data in unified core`);
-          unifiedCalculationCore.updateMarketData(symbol, timeframe, chartDataWithTimestamp);
-          
-          console.log(`[${timeframe}] Generating signal with live price ${livePrice}`);
-          let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, livePrice);
+          console.log(`[${timeframe}] Using consolidated calculation engine with live price ${livePrice}`);
+          let consolidatedSignal = await calculateConsolidatedSignal(symbol, timeframe, chartDataWithTimestamp, livePrice);
           
           console.log(`[${timeframe}] Unified signal result:`, unifiedSignal ? `${unifiedSignal.direction} (${unifiedSignal.confidence}%)` : 'null');
           
