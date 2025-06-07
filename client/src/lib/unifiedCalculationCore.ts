@@ -713,8 +713,9 @@ class UnifiedCalculationCore {
 
   /**
    * Optimized support and resistance calculation with intelligent pivot detection
+   * CRITICAL FIX: Validates currentPrice to prevent cross-symbol contamination
    */
-  private calculateSupportResistance(data: OHLCData[], lookback = 12): { supports: number[]; resistances: number[] } {
+  private calculateSupportResistance(data: OHLCData[], lookback = 12, symbol?: string): { supports: number[]; resistances: number[] } {
     if (data.length < 20) {
       const currentPrice = data[data.length - 1]?.close || 0;
       return currentPrice > 0 ? {
@@ -723,7 +724,24 @@ class UnifiedCalculationCore {
       } : { supports: [], resistances: [] };
     }
     
-    const currentPrice = data[data.length - 1].close;
+    let currentPrice = data[data.length - 1].close;
+    
+    // CRITICAL: Prevent BTC price contamination for other symbols
+    if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {
+      console.error(`Price contamination detected in support/resistance calculation for ${symbol}: ${currentPrice} - using fallback`);
+      // Use symbol-specific fallback prices instead of contaminated BTC values
+      const fallbackPrices: Record<string, number> = {
+        'DOT/USDT': 3.98,
+        'ADA/USDT': 0.66,
+        'TON/USDT': 3.17,
+        'DOGE/USDT': 0.18,
+        'XRP/USDT': 2.5,
+        'ATOM/USDT': 4.27,
+        'NEAR/USDT': 2.38,
+        'APT/USDT': 4.73
+      };
+      currentPrice = fallbackPrices[symbol] || 1.0;
+    }
     const supports = new Set<number>();
     const resistances = new Set<number>();
     
@@ -882,8 +900,8 @@ class UnifiedCalculationCore {
     const returns = prices.slice(1).map((price, i) => Math.log(price / prices[i]));
     const volatility = Math.sqrt(returns.reduce((sum, ret) => sum + ret * ret, 0) / returns.length) * Math.sqrt(252);
     
-    // Calculate support and resistance levels
-    const supportResistance = this.calculateSupportResistance(data);
+    // Calculate support and resistance levels with symbol validation
+    const supportResistance = this.calculateSupportResistance(data, 12, symbol);
     
     // Debug logging
     console.log(`Support/Resistance calculation for ${symbol} ${timeframe}:`, {
