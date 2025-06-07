@@ -195,7 +195,7 @@ export default function AdvancedSignalDashboard({
             
             if (chartData.data && Array.isArray(chartData.data) && chartData.data.length > 50) {
               // Use the streamlined signal generation that was working before consolidation
-              const calculatedSignal = generateStreamlinedSignal(symbol, timeframe, currentAssetPrice);
+              const calculatedSignal = generateStreamlinedSignal(chartData.data, timeframe, currentAssetPrice, symbol);
               
               if (calculatedSignal) {
                 newSignals[timeframe] = calculatedSignal;
@@ -268,6 +268,34 @@ export default function AdvancedSignalDashboard({
       calculationTriggeredRef.current = false;
     }
   }, [chartData, isCalculating, signals, symbol, currentAssetPrice, toast]);
+
+  // Auto-calculation effect - RESTORED after UI consolidation
+  useEffect(() => {
+    if (!chartData || !(chartData as any)?.success) {
+      return;
+    }
+
+    const autoCalculateTimer = setTimeout(() => {
+      if (!isCalculating && !calculationTriggeredRef.current) {
+        console.log(`[SignalDashboard] Auto-triggering calculation for ${symbol} after chart data load`);
+        performCalculation();
+      }
+    }, 1000);
+
+    return () => clearTimeout(autoCalculateTimer);
+  }, [chartData, symbol, performCalculation, isCalculating]);
+
+  // Immediate calculation trigger for new symbol loads
+  useEffect(() => {
+    const immediateCalculationTimer = setTimeout(() => {
+      if (!isCalculating && !calculationTriggeredRef.current && currentAssetPrice > 0) {
+        console.log(`[SignalDashboard] Immediate auto-calculation trigger for ${symbol}`);
+        performCalculation();
+      }
+    }, 2000);
+
+    return () => clearTimeout(immediateCalculationTimer);
+  }, [symbol, currentAssetPrice, performCalculation, isCalculating]);
 
   // Generate a trade recommendation based on signals across timeframes
   const generateTradeRecommendation = useCallback((timeframe: TimeFrame) => {
