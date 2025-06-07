@@ -92,6 +92,97 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get signals for a specific symbol from automated calculator
+  app.get('/api/signal/:symbol/:timeframe', async (req: Request, res: Response) => {
+    try {
+      const { symbol, timeframe } = req.params;
+      const signals = automatedSignalCalculator.getSignalsForSymbol(symbol);
+      
+      if (signals && signals.length > 0) {
+        // Find signal for the specific timeframe
+        const signal = signals.find(s => s.timeframe === timeframe);
+        
+        if (signal) {
+          res.json({
+            success: true,
+            signal: {
+              direction: signal.direction,
+              confidence: signal.confidence,
+              entryPrice: signal.entryPrice,
+              stopLoss: signal.stopLoss,
+              takeProfit: signal.takeProfit,
+              timeframe: signal.timeframe,
+              timestamp: signal.timestamp,
+              successProbability: signal.successProbability,
+              indicators: signal.indicators || {},
+              patternFormations: signal.patternFormations || [],
+              recommendedLeverage: signal.recommendedLeverage || {
+                conservative: 1,
+                moderate: 2,
+                aggressive: 3,
+                recommendation: 'conservative'
+              }
+            }
+          });
+        } else {
+          res.json({
+            success: false,
+            error: `No signal available for ${symbol} on ${timeframe}`
+          });
+        }
+      } else {
+        res.json({
+          success: false,
+          error: `No signals available for ${symbol}`
+        });
+      }
+    } catch (error) {
+      console.error(`Error getting signal for ${req.params.symbol}:`, error);
+      res.status(500).json({ error: 'Failed to get signal' });
+    }
+  });
+
+  // Get all signals for a specific symbol
+  app.get('/api/signals/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const signals = automatedSignalCalculator.getSignalsForSymbol(symbol);
+      
+      if (signals && signals.length > 0) {
+        res.json({
+          success: true,
+          signals: signals.map(signal => ({
+            direction: signal.direction,
+            confidence: signal.confidence,
+            entryPrice: signal.entryPrice,
+            stopLoss: signal.stopLoss,
+            takeProfit: signal.takeProfit,
+            timeframe: signal.timeframe,
+            timestamp: signal.timestamp,
+            successProbability: signal.successProbability,
+            indicators: signal.indicators || {},
+            patternFormations: signal.patternFormations || [],
+            recommendedLeverage: signal.recommendedLeverage || {
+              conservative: 1,
+              moderate: 2,
+              aggressive: 3,
+              recommendation: 'conservative'
+            }
+          }))
+        });
+      } else {
+        res.json({
+          success: false,
+          error: `No signals available for ${symbol}`,
+          signals: []
+        });
+      }
+    } catch (error) {
+      console.error(`Error getting signals for ${req.params.symbol}:`, error);
+      res.status(500).json({ error: 'Failed to get signals' });
+    }
+  });
+
   // Get all 50 cryptocurrency pairs with pre-calculated signals
   app.get('/api/crypto/all-pairs', async (req: Request, res: Response) => {
     try {

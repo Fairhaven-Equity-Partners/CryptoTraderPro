@@ -49,7 +49,6 @@ import {
 } from '../lib/technicalIndicators';
 import { OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
 
-import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 
@@ -205,13 +204,24 @@ export default function AdvancedSignalDashboard({
           if (chartResponse.ok) {
             const chartData = await chartResponse.json();
             
-            if (chartData.data && Array.isArray(chartData.data) && chartData.data.length > 50) {
-              // Use the streamlined signal generation that was working before consolidation
-              const calculatedSignal = generateStreamlinedSignal(chartData.data, timeframe, currentAssetPrice, symbol);
-              
-              if (calculatedSignal) {
-                newSignals[timeframe] = calculatedSignal;
-                console.log(`📊 Enhanced signal calculated for ${symbol} ${timeframe}: ${calculatedSignal.direction} @ ${calculatedSignal.confidence}%`);
+            if (chartData.data && Array.isArray(chartData.data) && chartData.data.length > 20) {
+              // Use the backend automated signal system that's already working
+              try {
+                const signalResponse = await fetch(`/api/signal/${encodeURIComponent(symbol)}/${timeframe}`);
+                if (signalResponse.ok) {
+                  const signalData = await signalResponse.json();
+                  if (signalData.success && signalData.signal) {
+                    newSignals[timeframe] = signalData.signal;
+                    console.log(`📊 Backend signal retrieved for ${symbol} ${timeframe}: ${signalData.signal.direction} @ ${signalData.signal.confidence}%`);
+                  }
+                }
+              } catch (signalError) {
+                // Fallback to basic signal generation
+                const basicSignal = generateSignal(chartData.data, timeframe, currentAssetPrice);
+                if (basicSignal) {
+                  newSignals[timeframe] = basicSignal;
+                  console.log(`📊 Fallback signal calculated for ${symbol} ${timeframe}: ${basicSignal.direction} @ ${basicSignal.confidence}%`);
+                }
               }
             } else {
               console.warn(`[SignalDashboard] Insufficient chart data for ${symbol} ${timeframe}`);
