@@ -96,11 +96,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/signal/:symbol/:timeframe', async (req: Request, res: Response) => {
     try {
       const { symbol, timeframe } = req.params;
+      console.log(`[Routes] Fetching signal for ${symbol} ${timeframe}`);
+      
       const signals = automatedSignalCalculator.getSignalsForSymbol(symbol);
+      console.log(`[Routes] Found ${signals.length} signals for ${symbol}`);
       
       if (signals && signals.length > 0) {
         // Find signal for the specific timeframe
         const signal = signals.find(s => s.timeframe === timeframe);
+        console.log(`[Routes] Signal for ${timeframe}: ${signal ? 'FOUND' : 'NOT FOUND'}`);
         
         if (signal) {
           res.json({
@@ -108,15 +112,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             signal: {
               direction: signal.direction,
               confidence: signal.confidence,
-              entryPrice: signal.entryPrice,
-              stopLoss: signal.stopLoss,
-              takeProfit: signal.takeProfit,
+              entryPrice: signal.price,
+              stopLoss: signal.price * 0.98,
+              takeProfit: signal.price * 1.02,
               timeframe: signal.timeframe,
               timestamp: signal.timestamp,
-              successProbability: signal.successProbability,
+              successProbability: signal.confidence,
               indicators: signal.indicators || {},
-              patternFormations: signal.patternFormations || [],
-              recommendedLeverage: signal.recommendedLeverage || {
+              patternFormations: [],
+              recommendedLeverage: {
                 conservative: 1,
                 moderate: 2,
                 aggressive: 3,

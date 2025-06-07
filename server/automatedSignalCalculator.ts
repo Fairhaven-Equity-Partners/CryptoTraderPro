@@ -573,6 +573,20 @@ export class AutomatedSignalCalculator {
   }
 
   /**
+   * Get signals for specific symbol
+   */
+  getSignalsForSymbol(symbol: string): CalculatedSignal[] {
+    return this.signalCache.get(symbol) || [];
+  }
+
+  /**
+   * Get all cached signals
+   */
+  getAllSignals(): Map<string, CalculatedSignal[]> {
+    return new Map(this.signalCache);
+  }
+
+  /**
    * Get calculation status
    */
   getStatus(): {
