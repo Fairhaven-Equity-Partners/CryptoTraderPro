@@ -1535,21 +1535,29 @@ export default function AdvancedSignalDashboard({
 
         // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
-          // Get authentic live price immediately using centralized manager
-          let authenticLivePrice = centralizedPrice || (asset as any)?.lastPrice || currentAssetPrice;
+          // CRITICAL FIX: Use the exact same fresh price that was used for signal calculations
+          // This ensures trade levels match the actual calculated entry prices
+          let authenticLivePrice = 0;
           
-          // If no immediate price available, force fetch from centralized manager
-          if (!authenticLivePrice || authenticLivePrice <= 0) {
+          try {
             const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
+            // Force fresh fetch to get the exact price used in calculations
             authenticLivePrice = await centralizedPriceManager.getImmediatePrice(symbol);
+            console.log(`Recording predictions using fresh fetched price: ${authenticLivePrice}`);
+          } catch (error) {
+            console.warn('Failed to fetch fresh price for prediction recording:', error);
+          }
+          
+          // Fallback only if fresh fetch fails
+          if (!authenticLivePrice || authenticLivePrice <= 0) {
+            authenticLivePrice = (asset as any)?.lastPrice || currentAssetPrice || centralizedPrice;
+            console.log(`Recording predictions using fallback price: ${authenticLivePrice}`);
           }
           
           if (!authenticLivePrice || authenticLivePrice <= 0) {
             console.warn('No valid live price available for accuracy tracking - skipping prediction recording');
             return;
           }
-          
-          console.log(`Recording predictions using live price: ${authenticLivePrice}`);
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
             if (signal && signal.direction !== 'NEUTRAL') {
