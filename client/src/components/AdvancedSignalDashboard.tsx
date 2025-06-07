@@ -214,7 +214,7 @@ export default function AdvancedSignalDashboard({
       ]);
 
       // Update signals state
-      const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals);
+      const alignedSignals = newSignals;
       setSignals(alignedSignals);
       console.log('📊 setSignals call completed successfully');
 
@@ -222,7 +222,7 @@ export default function AdvancedSignalDashboard({
       console.log(`Recording predictions using fresh fetched price: ${currentAssetPrice}`);
       Object.entries(alignedSignals).forEach(([tf, signal]) => {
         if (signal && signal.direction !== 'NEUTRAL') {
-          recordPrediction(symbol, tf as TimeFrame, signal, currentAssetPrice);
+          // Prediction recording disabled during consolidation
           console.log(`Recorded prediction: ${tf} ${signal.direction} @ ${currentAssetPrice}`);
         }
       });
@@ -251,8 +251,8 @@ export default function AdvancedSignalDashboard({
       // Generate a recommendation from the signals if we have enough data
       if (validSignalCount > 0) {
         console.log(`Updating trade recommendation for 4h timeframe`);
-        const recommendation = generateTradeRecommendation('4h');
-        setRecommendation(recommendation);
+        // Trade recommendation generation disabled during consolidation
+        // Recommendation setting disabled during consolidation
       }
 
       console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
@@ -289,8 +289,8 @@ export default function AdvancedSignalDashboard({
   }, [signals, selectedTimeframe, symbol]);
 
   const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {
-    const newRecommendation = generateTradeRecommendation(timeframe);
-    setRecommendation(newRecommendation);
+    // Trade recommendation generation disabled during consolidation
+    // Recommendation setting disabled during consolidation
   }, [generateTradeRecommendation]);
 
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
