@@ -54,13 +54,14 @@ interface Props {
 
 export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, signals }: Props) {
   const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
-    queryKey: ['/api/technical-analysis', symbol],
-    queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}`).then(res => res.json()),
+    queryKey: ['/api/technical-analysis', symbol, selectedTimeframe],
+    queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}?timeframe=${selectedTimeframe}`).then(res => res.json()),
     refetchInterval: 30000,
   });
 
   const { data: performanceData, isLoading: perfLoading } = useQuery<PerformanceMetrics>({
-    queryKey: ['/api/performance-metrics'],
+    queryKey: ['/api/performance-metrics', selectedTimeframe],
+    queryFn: () => fetch(`/api/performance-metrics?timeframe=${selectedTimeframe}`).then(res => res.json()),
     refetchInterval: 60000,
   });
 
