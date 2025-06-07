@@ -18,7 +18,7 @@ import { getCurrentMoonPhase, getMoonPhaseEmoji } from '../lib/moonPhase';
 import { useCentralizedPrice } from '../lib/centralizedPriceManager';
 import UnifiedPerformancePanel from './UnifiedPerformancePanel';
 import { UnifiedMarketPanel } from './UnifiedMarketPanel';
-import { SignalHeatMap } from './SignalHeatMap';
+import SignalHeatMap from './SignalHeatMap';
 import { 
   AlertTriangle, 
   TrendingUp, 
@@ -52,13 +52,7 @@ import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimize
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
 import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
-import { 
-  calculateEnhancedConfidence, 
-  calculateSupportResistanceAdvanced,
-  generatePriceLevels,
-  analyzeMarketStructure
-} from '../lib/enhancedSignalProcessing';
-import { ultimateSystemManager } from '../lib/ultimateSystemManager';
+
 
 interface AdvancedSignalDashboardProps {
   symbol: string;
@@ -74,7 +68,7 @@ export default function AdvancedSignalDashboard({
   const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
   const [signals, setSignals] = useState<Record<TimeFrame, AdvancedSignal | null>>({
     '1m': null, '5m': null, '15m': null, '30m': null, '1h': null, '4h': null, 
-    '12h': null, '1d': null, '3d': null, '1w': null, '1M': null
+    '1d': null, '3d': null, '1w': null, '1M': null
   });
   const [isCalculating, setIsCalculating] = useState(false);
   const [recommendation, setRecommendation] = useState<TradeRecommendation | null>(null);
@@ -91,8 +85,9 @@ export default function AdvancedSignalDashboard({
   const { toast } = useToast();
   
   // Use centralized price management
-  const { centralizedPrice, asset, change24h } = useCentralizedPrice(symbol);
-  const currentAssetPrice = centralizedPrice;
+  const centralizedPrice = useCentralizedPrice(symbol);
+  const currentAssetPrice = centralizedPrice || 0;
+  const change24h = 0; // Will be populated by price manager
 
   // Chart data query
   const { data: chartData } = useQuery({
