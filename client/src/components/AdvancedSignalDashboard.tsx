@@ -18,7 +18,6 @@ import { getCurrentMoonPhase, getMoonPhaseEmoji } from '../lib/moonPhase';
 import { useCentralizedPrice } from '../lib/centralizedPriceManager';
 import UnifiedPerformancePanel from './UnifiedPerformancePanel';
 import { UnifiedMarketPanel } from './UnifiedMarketPanel';
-import { calculateOptimizedSignal } from '../lib/optimizedCalculationCore';
 import SignalHeatMap from './SignalHeatMap';
 import { 
   AlertTriangle, 
@@ -48,7 +47,7 @@ import {
   alignSignalsWithTimeframeHierarchy,
   calculateSupportResistance
 } from '../lib/technicalIndicators';
-import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
+import { OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
 
 import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
@@ -195,12 +194,8 @@ export default function AdvancedSignalDashboard({
             const chartData = await chartResponse.json();
             
             if (chartData.data && Array.isArray(chartData.data) && chartData.data.length > 50) {
-              const calculatedSignal = calculateOptimizedSignal(
-                chartData.data,
-                timeframe,
-                currentAssetPrice,
-                symbol
-              );
+              // Use the streamlined signal generation that was working before consolidation
+              const calculatedSignal = generateStreamlinedSignal(symbol, timeframe, currentAssetPrice);
               
               if (calculatedSignal) {
                 newSignals[timeframe] = calculatedSignal;
@@ -229,10 +224,6 @@ export default function AdvancedSignalDashboard({
         calculateTimeframe('1w', 450),
         calculateTimeframe('1M', 500)
       ]);
-
-      // Update signals state with empty signals during consolidation
-      setSignals(newSignals);
-      console.log('📊 UI consolidation - signals state updated');
 
       // Update signals state and generate recommendations
       setSignals(newSignals);
