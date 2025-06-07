@@ -152,11 +152,9 @@ class EnhancedPriceStreamer {
    * Map requested days to valid CoinGecko OHLC days parameter
    */
   private mapToValidDays(requestedDays: number): number {
-    // CoinGecko OHLC API only accepts specific values
-    // For free tier, stick to safer values
-    if (requestedDays <= 7) return 7;
-    if (requestedDays <= 30) return 30;
-    return 90; // Use 90 days max for better reliability
+    // Always fetch at least 90 days to ensure sufficient data for technical analysis
+    // CoinGecko OHLC API accepts these values, prioritize longer periods
+    return 90; // Always use 90 days to ensure sufficient historical data
   }
 
   /**

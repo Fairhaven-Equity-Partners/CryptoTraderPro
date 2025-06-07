@@ -255,42 +255,9 @@ class AdvancedTechnicalAnalysis {
         enhancedPriceStreamer.clearHistoricalCache(symbol);
         historicalData = await enhancedPriceStreamer.fetchHistoricalData(symbol, 90);
         
-        // If still insufficient, get authentic data via fallback
+        // If still insufficient after all attempts, return null
         if (historicalData.length < 50) {
-          console.log(`[TechnicalAnalysis] Fetching more historical data for ${symbol}`);
-          
-          // Request authentic market data with extended period
-          try {
-            const crypto = TOP_50_SYMBOL_MAPPINGS.find((c: SymbolMapping) => c.symbol === symbol);
-            if (crypto) {
-              const response = await fetch(
-                `https://api.coingecko.com/api/v3/coins/${crypto.coinGeckoId}/market_chart?vs_currency=usd&days=365&interval=daily`,
-                {
-                  headers: {
-                    'Accept': 'application/json',
-                    'User-Agent': 'CryptoTradingApp/1.0'
-                  }
-                }
-              );
-              
-              if (response.ok) {
-                const chartData = await response.json();
-                if (chartData.prices && chartData.prices.length >= 50) {
-                  historicalData = chartData.prices.slice(-100).map((price: [number, number]) => ({
-                    timestamp: price[0],
-                    open: price[1] * (0.995 + Math.random() * 0.01),
-                    high: price[1] * (1.005 + Math.random() * 0.02),
-                    low: price[1] * (0.995 - Math.random() * 0.02),
-                    close: price[1],
-                    volume: 1000000 + Math.random() * 3000000
-                  }));
-                  console.log(`[TechnicalAnalysis] Retrieved ${historicalData.length} authentic data points for ${symbol}`);
-                }
-              }
-            }
-          } catch (error) {
-            console.error(`[TechnicalAnalysis] Error fetching extended data for ${symbol}:`, error);
-          }
+          console.log(`[TechnicalAnalysis] Unable to obtain sufficient data for ${symbol} after multiple attempts`);
         }
         
         // Final check - if still insufficient, return null to indicate failure
