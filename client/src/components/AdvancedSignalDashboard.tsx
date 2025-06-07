@@ -47,8 +47,9 @@ import {
 } from '../lib/technicalIndicators';
 import { calculateOptimizedSignal, OptimizedSignalResult } from '../lib/optimizedTechnicalEngine';
 
-import { calculateConsolidatedSignal, ConsolidatedSignal } from '../lib/consolidatedCalculationEngine';
+import { generateStreamlinedSignal } from '../lib/streamlinedCalculationEngine';
 import { recordPrediction, updateWithLivePrice, getActivePredictions } from '../lib/liveAccuracyTracker';
+import { unifiedCalculationCore } from '../lib/unifiedCalculationCore';
 import { 
   calculateEnhancedConfidence, 
   analyzeTimeframeCorrelations, 
@@ -1292,80 +1293,70 @@ export default function AdvancedSignalDashboard({
           
           // Generate signal using unified calculation core with live price data
           console.log(`[${timeframe}] Preparing chart data with ${chartData[timeframe].length} candles`);
-          const chartDataWithTimestamp = chartData[timeframe].map(d => ({
-            ...d,
-            timestamp: d.time || Date.now()
-          }));
           
-          console.log(`[${timeframe}] Using consolidated calculation engine with live price ${livePrice}`);
-          let consolidatedSignal = await calculateConsolidatedSignal(symbol, timeframe, chartDataWithTimestamp, livePrice);
+          // Generate signal using unified calculation core with live price data
+          console.log(`[${timeframe}] Updating market data in unified core`);
+          unifiedCalculationCore.updateMarketData(symbol, chartData[timeframe]);
           
-          console.log(`[${timeframe}] Consolidated signal result:`, consolidatedSignal ? `${consolidatedSignal.direction} (${consolidatedSignal.confidence}%)` : 'null');
+          console.log(`[${timeframe}] Generating signal with live price ${livePrice}`);
+          let unifiedSignal = unifiedCalculationCore.generateSignal(symbol, timeframe, livePrice);
           
-          // Convert consolidated signal to AdvancedSignal format for UI compatibility
+          console.log(`[${timeframe}] Unified signal result:`, unifiedSignal ? `${unifiedSignal.direction} (${unifiedSignal.confidence}%)` : 'null');
+          
+          // Convert unified signal to AdvancedSignal format for UI compatibility
           let signal: AdvancedSignal | null = null;
-          if (consolidatedSignal) {
+          if (unifiedSignal) {
             // Override entry price with live market data for accurate calculations
             // Ensure we use the symbol-specific price, not a generic current price
             const actualEntryPrice = livePrice;
-            const adjustedStopLoss = consolidatedSignal.stopLoss > 0 ? consolidatedSignal.stopLoss : 
-                                   (consolidatedSignal.direction === 'LONG' ? actualEntryPrice * 0.95 : actualEntryPrice * 1.05);
-            const adjustedTakeProfit = consolidatedSignal.takeProfit > 0 ? consolidatedSignal.takeProfit :
-                                     (consolidatedSignal.direction === 'LONG' ? actualEntryPrice * 1.08 : actualEntryPrice * 0.92);
+            const adjustedStopLoss = unifiedSignal.stopLoss > 0 ? unifiedSignal.stopLoss : 
+                                   (unifiedSignal.direction === 'LONG' ? actualEntryPrice * 0.95 : actualEntryPrice * 1.05);
+            const adjustedTakeProfit = unifiedSignal.takeProfit > 0 ? unifiedSignal.takeProfit :
+                                     (unifiedSignal.direction === 'LONG' ? actualEntryPrice * 1.08 : actualEntryPrice * 0.92);
 
             signal = {
-              direction: consolidatedSignal.direction,
-              confidence: consolidatedSignal.confidence,
+              ...unifiedSignal,
               entryPrice: actualEntryPrice,
               stopLoss: adjustedStopLoss,
               takeProfit: adjustedTakeProfit,
-              timeframe,
-              timestamp: consolidatedSignal.timestamp,
-              successProbability: consolidatedSignal.successProbability,
               indicators: {
-                trend: consolidatedSignal.indicators.trend.map(t => ({
-                  id: t.name.toLowerCase().replace(/\s+/g, '_'),
-                  name: t.name,
-                  category: 'TREND' as IndicatorCategory,
-                  signal: t.signal as IndicatorSignal,
-                  strength: 'MODERATE' as IndicatorStrength,
-                  value: t.strength
-                })),
-                momentum: consolidatedSignal.indicators.momentum.map(m => ({
-                  id: m.name.toLowerCase().replace(/\s+/g, '_'),
-                  name: m.name,
-                  category: 'MOMENTUM' as IndicatorCategory,
-                  signal: m.signal as IndicatorSignal,
-                  strength: 'MODERATE' as IndicatorStrength,
-                  value: m.strength
-                })),
+                trend: [
+                  { id: 'ema_short', name: 'EMA Short', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.short > unifiedSignal.indicators.ema.medium ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength, value: unifiedSignal.indicators.ema.short },
+                  { id: 'ema_medium', name: 'EMA Medium', category: 'TREND' as IndicatorCategory, signal: unifiedSignal.indicators.ema.medium > unifiedSignal.indicators.ema.long ? 'BUY' as IndicatorSignal : 'SELL' as IndicatorSignal, strength: 'MODERATE' as IndicatorStrength, value: unifiedSignal.indicators.ema.medium }
+                ],
+                momentum: [
+                  { id: 'rsi', name: 'RSI', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.rsi.signal as IndicatorSignal, strength: unifiedSignal.indicators.rsi.strength as IndicatorStrength, value: unifiedSignal.indicators.rsi.value },
+                  { id: 'macd', name: 'MACD', category: 'MOMENTUM' as IndicatorCategory, signal: unifiedSignal.indicators.macd.signal as IndicatorSignal, strength: unifiedSignal.indicators.macd.strength as IndicatorStrength, value: unifiedSignal.indicators.macd.value }
+                ],
                 volume: [],
                 pattern: [],
-                volatility: []
+                volatility: [],
+                marketRegime: unifiedSignal.indicators.marketRegime as any,
+                confidenceFactors: unifiedSignal.indicators.confidenceFactors as any
               },
-              patternFormations: consolidatedSignal.patternFormations,
+              patternFormations: [],
               supportResistance: {
-                supports: consolidatedSignal.supportResistance.supports,
-                resistances: consolidatedSignal.supportResistance.resistances,
+                supports: unifiedSignal.indicators.supports,
+                resistances: unifiedSignal.indicators.resistances,
                 pivotPoints: [actualEntryPrice]
               },
               environment: { 
-                trend: consolidatedSignal.marketStructure.regime === 'TRENDING_UP' ? 'BULLISH' : consolidatedSignal.marketStructure.regime === 'TRENDING_DOWN' ? 'BEARISH' : 'NEUTRAL', 
-                volatility: consolidatedSignal.marketStructure.regime === 'HIGH_VOLATILITY' ? 'HIGH' : consolidatedSignal.marketStructure.regime === 'LOW_VOLATILITY' ? 'LOW' : 'NORMAL', 
+                trend: unifiedSignal.indicators.marketRegime === 'TRENDING_UP' ? 'BULLISH' : unifiedSignal.indicators.marketRegime === 'TRENDING_DOWN' ? 'BEARISH' : 'NEUTRAL', 
+                volatility: unifiedSignal.indicators.marketRegime === 'HIGH_VOLATILITY' ? 'HIGH' : unifiedSignal.indicators.marketRegime === 'LOW_VOLATILITY' ? 'LOW' : 'NORMAL', 
                 volume: 'NORMAL', 
                 sentiment: 'NEUTRAL' 
               },
-              recommendedLeverage: {
-                conservative: 1,
-                moderate: Math.min(2, consolidatedSignal.recommendedLeverage),
-                aggressive: Math.min(3, consolidatedSignal.recommendedLeverage),
-                recommendation: consolidatedSignal.recommendedLeverage > 2 ? 'moderate' : 'conservative'
+              recommendedLeverage: { 
+                conservative: unifiedSignal.indicators.leverageRecommendation?.conservative || 1, 
+                moderate: unifiedSignal.indicators.leverageRecommendation?.moderate || 2, 
+                aggressive: unifiedSignal.indicators.leverageRecommendation?.aggressive || 3, 
+                recommendation: unifiedSignal.indicators.leverageRecommendation?.recommendation || 'conservative' 
               },
-              riskReward: consolidatedSignal.riskReward,
-              marketStructure: { 
-                trend: consolidatedSignal.marketStructure.description.includes('trending') ? 'TRENDING' : 'SIDEWAYS', 
-                phase: 'ACTIVE', 
-                strength: consolidatedSignal.marketStructure.strength 
+              riskReward: unifiedSignal.indicators.riskReward || Math.abs(adjustedTakeProfit - actualEntryPrice) / Math.abs(actualEntryPrice - adjustedStopLoss),
+              marketStructure: {
+                trend: unifiedSignal.indicators.marketStructure?.trend || 'SIDEWAYS',
+                phase: unifiedSignal.indicators.marketStructure?.phase || 'CONSOLIDATION',
+                strength: unifiedSignal.indicators.marketStructure?.strength || 50
               },
               volumeProfile: { 
                 volumeWeightedPrice: actualEntryPrice, 
@@ -1373,122 +1364,27 @@ export default function AdvancedSignalDashboard({
                 lowVolumeNodes: [] 
               },
               macroInsights: [
-                `Market Regime: ${consolidatedSignal.marketStructure.regime}`,
-                `Confidence: ${consolidatedSignal.confidence}%`,
-                `Success Probability: ${consolidatedSignal.successProbability}%`,
-                `Risk/Reward: ${consolidatedSignal.riskReward.toFixed(2)}`,
-                `Recommended Leverage: ${consolidatedSignal.recommendedLeverage}x`
+                `Market Regime: ${unifiedSignal.indicators.marketRegime}`,
+                `RSI: ${unifiedSignal.indicators.rsi.value.toFixed(2)}`,
+                `MACD Histogram: ${unifiedSignal.indicators.macd.histogram.toFixed(2)}`,
+                `ADX: ${unifiedSignal.indicators.adx.value.toFixed(2)}`,
+                `Volatility: ${(unifiedSignal.indicators.volatility * 100).toFixed(2)}%`
               ]
             } as AdvancedSignal;
           }
           
           // Enhanced signal with mathematically accurate indicators and market regime detection
           if (signal) {
-            console.log(`[ConsolidatedEngine] ${timeframe}: Market Regime=${signal.macroInsights?.[0]}, Direction=${signal.direction}, Confidence=${signal.confidence}%`);
-            console.log(`[ConsolidatedEngine] ${timeframe}: Enhanced signal ready - Direction=${signal?.direction || 'NEUTRAL'}, Confidence=${signal?.confidence || 0}%`);
-          }
-          
-          return signal;
-        } catch (error) {
-          console.error(`[ConsolidatedEngine] Error calculating ${timeframe} signal:`, error);
-          return null;
-        }
+            console.log(`[UnifiedEngine] ${timeframe}: Market Regime=${signal.macroInsights?.[0]}, Direction=${signal.direction}, Confidence=${signal.confidence}%`);
             
-            // Add correlation analysis insight
-            const mockIndicators = [
-              { name: 'RSI', category: 'MOMENTUM', signal: signal.direction === 'LONG' ? 'BUY' : 'SELL', strength: 'STRONG' },
-              { name: 'MACD', category: 'MOMENTUM', signal: signal.direction === 'LONG' ? 'BUY' : 'SELL', strength: 'MODERATE' },
-              { name: 'SMA', category: 'TREND', signal: signal.direction === 'LONG' ? 'BUY' : 'SELL', strength: 'WEAK' }
-            ];
-            
-            const convergenceAnalysis = analyzeIndicatorConvergence(mockIndicators);
-            if (convergenceAnalysis.confidence > 70) {
-              enhancedMacroInsights.push(`Correlation: ${convergenceAnalysis.description}`);
-            }
-            
-            // Add market regime insight
-            const regimeAnalysis = detectMarketRegimeFromData(signal);
-            if (regimeAnalysis.confidence > 60) {
-              enhancedMacroInsights.push(`Regime: ${regimeAnalysis.description}`);
-            }
-            
-            // Add enhanced validation insight with optimized accuracy calculation
-            const baseAccuracy = signal.confidence;
-            const timeframeMultiplier = timeframe === '1m' ? 0.75 : timeframe === '5m' ? 0.80 : 
-                                       timeframe === '15m' ? 0.85 : timeframe === '30m' ? 0.90 :
-                                       timeframe === '1h' ? 0.95 : timeframe === '4h' ? 1.0 :
-                                       timeframe === '1d' ? 0.98 : timeframe === '3d' ? 0.95 :
-                                       timeframe === '1w' ? 0.90 : 0.85;
-            const historicalAccuracy = Math.max(65, Math.min(96, Math.round(baseAccuracy * timeframeMultiplier)));
-            enhancedMacroInsights.push(`Validation: ${historicalAccuracy}% historical accuracy`);
-            
-            // Add market structure analysis using authentic data
-            const marketStructure = analyzeMarketStructureFromData(signal);
-            if (marketStructure.strength > 65) {
-              enhancedMacroInsights.push(`Structure: ${marketStructure.description}`);
-            }
-            
-            // Add volatility analysis using authentic data
-            const volatilityAnalysis = analyzeVolatilityFromData(signal);
-            if (volatilityAnalysis.confidence > 70) {
-              enhancedMacroInsights.push(`Volatility: ${volatilityAnalysis.description}`);
-            }
-            
-            // Add indicator consensus analysis
-            const totalIndicators = [
-              ...(signal.indicators?.trend || []),
-              ...(signal.indicators?.momentum || [])
-            ];
-            const bullishCount = totalIndicators.filter(ind => ind.signal === 'BUY').length;
-            const bearishCount = totalIndicators.filter(ind => ind.signal === 'SELL').length;
-            
-            if (bullishCount > bearishCount) {
-              enhancedMacroInsights.push(`Consensus: ${bullishCount}/${totalIndicators.length} indicators bullish`);
-            } else if (bearishCount > bullishCount) {
-              enhancedMacroInsights.push(`Consensus: ${bearishCount}/${totalIndicators.length} indicators bearish`);
-            }
-            
-            signal.macroInsights = enhancedMacroInsights;
-          }
-          
-          return signal;
-        } catch (error) {
-          // Return neutral signal instead of null to prevent console errors
-          return {
-            direction: 'NEUTRAL' as const,
-            confidence: 50,
-            entryPrice: currentAssetPrice,
-            stopLoss: currentAssetPrice * 0.98,
-            takeProfit: currentAssetPrice * 1.02,
-            timeframe: timeframe,
-            timestamp: Date.now(),
-            successProbability: 50,
-            indicators: {
-              trend: [],
-              momentum: [],
-              volume: [],
-              pattern: [],
-              volatility: []
-            },
-            patternFormations: [],
-            supportResistance: {
-              supports: [currentAssetPrice * 0.98],
-              resistances: [currentAssetPrice * 1.02],
-              pivotPoints: [currentAssetPrice]
-            },
-            environment: { trend: 'NEUTRAL', volatility: 'NORMAL', volume: 'NORMAL', sentiment: 'NEUTRAL' },
-            recommendedLeverage: {
-              conservative: 1,
-              moderate: 1,
-              aggressive: 1,
-              recommendation: 'conservative'
-            },
-            riskReward: 1,
-            marketStructure: { trend: 'SIDEWAYS', phase: 'CONSOLIDATION', strength: 50 },
-            volumeProfile: { volumeWeightedPrice: currentAssetPrice, highVolumeNodes: [], lowVolumeNodes: [] },
-            macroInsights: ['NEUTRAL_MARKET', 'LOW_VOLATILITY']
-          };
-        }
+            // Enhanced signal data is compatible - use unified calculation results
+            if (unifiedSignal) {
+              // Update core signal properties with enhanced calculations
+              signal.direction = unifiedSignal.direction;
+              signal.confidence = unifiedSignal.confidence;
+              signal.entryPrice = unifiedSignal.entryPrice;
+              signal.stopLoss = unifiedSignal.stopLoss;
+              signal.takeProfit = unifiedSignal.takeProfit
       };
       
       // PHASE 2: Parallel timeframe processing for synchronized calculations
