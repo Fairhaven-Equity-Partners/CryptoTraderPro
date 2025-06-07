@@ -1542,8 +1542,11 @@ export default function AdvancedSignalDashboard({
           try {
             const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
             // Force fresh fetch to get the exact price used in calculations
-            authenticLivePrice = await centralizedPriceManager.getImmediatePrice(symbol);
-            console.log(`Recording predictions using fresh fetched price: ${authenticLivePrice}`);
+            const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
+            if (fetchedPrice !== null && fetchedPrice > 0) {
+              authenticLivePrice = fetchedPrice;
+              console.log(`Recording predictions using fresh fetched price: ${authenticLivePrice}`);
+            }
           } catch (error) {
             console.warn('Failed to fetch fresh price for prediction recording:', error);
           }
@@ -1584,6 +1587,33 @@ export default function AdvancedSignalDashboard({
                 authenticLivePrice * (1 + riskPercent * 2) : 
                 authenticLivePrice * (1 - riskPercent * 2);
 
+              // CRITICAL: Validate that we're using the correct symbol's price
+              // Prevent cross-symbol price contamination for all pairs
+              const symbolPriceRanges: { [key: string]: { min: number; max: number } } = {
+                'DOT/USDT': { min: 1, max: 50 },
+                'ADA/USDT': { min: 0.1, max: 5 },
+                'ETH/USDT': { min: 1000, max: 10000 },
+                'SOL/USDT': { min: 50, max: 500 },
+                'XRP/USDT': { min: 0.1, max: 10 },
+                'BNB/USDT': { min: 200, max: 2000 }
+              };
+              
+              const expectedRange = symbolPriceRanges[symbol];
+              if (expectedRange && (authenticLivePrice < expectedRange.min || authenticLivePrice > expectedRange.max)) {
+                console.error(`PRICE VALIDATION FAILED: ${symbol} showing ${authenticLivePrice} - outside expected range ${expectedRange.min}-${expectedRange.max}`);
+                // Force re-fetch instead of using fallback to ensure authenticity
+                try {
+                  const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
+                  const correctedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
+                  if (correctedPrice !== null && correctedPrice > 0) {
+                    authenticLivePrice = correctedPrice;
+                    console.log(`Price corrected for ${symbol}: ${authenticLivePrice}`);
+                  }
+                } catch (error) {
+                  console.error(`Failed to correct price for ${symbol}:`, error);
+                }
+              }
+              
               const predictionSignal = {
                 symbol: symbol,
                 timeframe: signal.timeframe,
