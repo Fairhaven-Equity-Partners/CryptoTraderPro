@@ -178,7 +178,7 @@ export function isCalculationAllowed(): boolean {
 
 /**
  * Perform the scheduled price fetch for all 50 cryptocurrency pairs
- * Optimized to use centralized price manager and reduce API calls
+ * ENHANCED: Ensures data availability before triggering calculations
  */
 async function performScheduledPriceFetch(): Promise<void> {
   // Prevent overlapping calculations
@@ -191,7 +191,7 @@ async function performScheduledPriceFetch(): Promise<void> {
   lastCalculationTime = Date.now();
   try {
     systemState.lastPriceFetch = Date.now();
-
+    
     // Define all 50 supported symbols - each must use its own authentic price
     const allSymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT', 'USDC/USD', 'ADA/USDT', 'AVAX/USDT', 'DOGE/USDT', 'TRX/USDT', 'TON/USDT', 'LINK/USDT', 'MATIC/USDT', 'SHIB/USDT', 'LTC/USDT', 'BCH/USDT', 'UNI/USDT', 'DOT/USDT', 'XLM/USDT', 'ATOM/USDT', 'XMR/USDT', 'ETC/USDT', 'HBAR/USDT', 'FIL/USDT', 'ICP/USDT', 'VET/USDT', 'APT/USDT', 'NEAR/USDT', 'AAVE/USDT', 'ARB/USDT', 'OP/USDT', 'MKR/USDT', 'GRT/USDT', 'STX/USDT', 'INJ/USDT', 'ALGO/USDT', 'LDO/USDT', 'THETA/USDT', 'SUI/USDT', 'RUNE/USDT', 'MANA/USDT', 'SAND/USDT', 'FET/USDT', 'RNDR/USDT', 'KAVA/USDT', 'MINA/USDT', 'FLOW/USDT', 'XTZ/USDT', 'BLUR/USDT', 'QNT/USDT'];
 
@@ -259,6 +259,39 @@ async function performScheduledPriceFetch(): Promise<void> {
     console.warn('[UltimateManager] Price fetch temporarily unavailable');
   } finally {
     calculationInProgress = false;
+  }
+}
+
+/**
+ * Preload essential chart data for automated calculations
+ */
+async function preloadEssentialChartData(): Promise<void> {
+  console.log('[UltimateManager] Preloading essential chart data for automated calculations');
+  
+  try {
+    const { fetchChartData } = await import('./api');
+    const essentialTimeframes = ['1h', '4h', '1d']; // Focus on key timeframes
+    const prioritySymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT']; // Start with major symbols
+    
+    // Preload essential data in parallel with error handling
+    const preloadPromises = prioritySymbols.flatMap(symbol =>
+      essentialTimeframes.map(async timeframe => {
+        try {
+          await fetchChartData(symbol, timeframe as any);
+          return { symbol, timeframe, success: true };
+        } catch (error) {
+          console.warn(`[UltimateManager] Failed to preload ${symbol} ${timeframe}:`, error);
+          return { symbol, timeframe, success: false };
+        }
+      })
+    );
+    
+    const results = await Promise.all(preloadPromises);
+    const successful = results.filter(r => r.success).length;
+    console.log(`[UltimateManager] Preloaded ${successful}/${results.length} essential data sets`);
+    
+  } catch (error) {
+    console.warn('[UltimateManager] Chart data preloading failed:', error);
   }
 }
 
