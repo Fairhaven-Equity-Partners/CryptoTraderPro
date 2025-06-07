@@ -71,10 +71,7 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-        {/* Unified Performance Panel - Combines Technical Analysis & Performance Metrics */}
-        <div className="px-4 py-2">
-          <UnifiedPerformancePanel symbol={currentAsset} />
-        </div>
+
         
         {/* Heat Map Section */}
         <div className="px-4 py-4">
