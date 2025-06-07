@@ -216,19 +216,15 @@ export default function AdvancedSignalDashboard({
                     newSignals[timeframe] = {
                       direction: backendSignal.direction,
                       confidence: backendSignal.confidence,
-                      entryPrice: backendSignal.entryPrice,
-                      stopLoss: backendSignal.stopLoss,
-                      takeProfit: backendSignal.takeProfit,
-                      timeframe: timeframe as TimeFrame,
-                      timestamp: backendSignal.timestamp,
-                      successProbability: backendSignal.successProbability,
+                      entryPrice: backendSignal.entryPrice || currentAssetPrice,
+                      stopLoss: backendSignal.stopLoss || currentAssetPrice * 0.98,
+                      takeProfit: backendSignal.takeProfit || currentAssetPrice * 1.02,
+                      timeframe: timeframe,
+                      timestamp: backendSignal.timestamp || Date.now(),
+                      successProbability: backendSignal.successProbability || backendSignal.confidence,
                       indicators: backendSignal.indicators || {},
                       patternFormations: backendSignal.patternFormations || [],
-                      supportResistance: {
-                        supports: [],
-                        resistances: [],
-                        pivotPoints: []
-                      },
+
                       environment: {
                         trend: 'NEUTRAL',
                         volatility: 'MEDIUM',
@@ -241,12 +237,13 @@ export default function AdvancedSignalDashboard({
                         strength: 50
                       },
                       volumeProfile: {
-                        volumeWeightedPrice: backendSignal.entryPrice,
+                        volumeWeightedPrice: backendSignal.entryPrice || currentAssetPrice,
                         highVolumeNodes: [],
                         lowVolumeNodes: []
                       },
                       expectedDuration: '4-8 hours',
-                      riskRewardRatio: Math.abs((backendSignal.takeProfit - backendSignal.entryPrice) / (backendSignal.entryPrice - backendSignal.stopLoss)) || 1.5,
+                      riskRewardRatio: backendSignal.takeProfit && backendSignal.stopLoss ? 
+                        Math.abs((backendSignal.takeProfit - backendSignal.entryPrice) / (backendSignal.entryPrice - backendSignal.stopLoss)) : 1.5,
                       optimalRiskReward: {
                         ideal: 2.0,
                         range: [1.5, 3.0]
