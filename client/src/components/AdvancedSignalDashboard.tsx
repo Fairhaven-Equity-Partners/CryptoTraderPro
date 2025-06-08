@@ -391,36 +391,22 @@ export default function AdvancedSignalDashboard({
       if (event.detail?.symbol === symbol) {
         console.log(`[AdvancedSignalDashboard] Immediate calculation triggered for ${symbol} via ${event.detail.trigger}`);
         
-        // Force immediate calculation bypass
-        if (!isCalculating && isAllDataLoaded) {
-          console.log(`⚡ Starting immediate calculation for ${symbol} - bypassing all restrictions`);
-          setIsCalculating(true);
-          lastCalculationRef.current = Date.now();
-          lastCalculationTimeRef.current = Date.now() / 1000;
-          // Trigger the actual calculation function that exists
-          if (calculateAllSignalsRef.current) {
-            calculateAllSignalsRef.current('pair-selection');
-          }
-        } else if (!isCalculating) {
-          // Wait for data to load, then trigger calculation
-          console.log(`Waiting for data to load before immediate calculation for ${symbol}...`);
-          const waitForData = setInterval(() => {
-            if (isAllDataLoaded && !isCalculating) {
-              clearInterval(waitForData);
-              console.log(`⚡ Data loaded, starting immediate calculation for ${symbol}`);
+        // Always attempt immediate calculation - remove all blocking conditions
+        if (!isCalculating) {
+          console.log(`⚡ Starting immediate calculation for ${symbol}`);
+          setTimeout(() => {
+            if (calculateAllSignalsRef.current && !isCalculating) {
+              console.log(`⚡ Executing immediate calculation for ${symbol}`);
               setIsCalculating(true);
               lastCalculationRef.current = Date.now();
               lastCalculationTimeRef.current = Date.now() / 1000;
-              if (calculateAllSignalsRef.current) {
-                calculateAllSignalsRef.current('pair-selection');
-              }
+              calculateAllSignalsRef.current('pair-selection');
+            } else {
+              console.log(`⚠️ Calculation function not ready: calculateAllSignalsRef=${!!calculateAllSignalsRef.current}, isCalculating=${isCalculating}`);
             }
-          }, 500);
-          
-          // Clear interval after 10 seconds to prevent memory leak
-          setTimeout(() => clearInterval(waitForData), 10000);
+          }, 800);
         } else {
-          console.log(`Cannot start immediate calculation: isCalculating=${isCalculating}, isAllDataLoaded=${isAllDataLoaded}`);
+          console.log(`Skipping immediate calculation - already in progress for ${symbol}`);
         }
       }
     };
