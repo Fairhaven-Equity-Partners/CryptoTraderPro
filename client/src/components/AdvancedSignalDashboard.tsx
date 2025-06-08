@@ -460,9 +460,9 @@ export default function AdvancedSignalDashboard({
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         const hasMinimumData = Object.keys(chartData).length >= 5;
         
-        // Enable real-time calculations every 30 seconds for all cryptocurrency pairs
-        if (timeSinceLastCalc >= 30 && hasMinimumData && !isCalculating) {
-          console.log(`🔄 Real-time calculation triggered for ${symbol} after ${timeSinceLastCalc}s`);
+        // DISABLED: Real-time calculations - wait for 4-minute synchronized events only
+        if (timeSinceLastCalc >= 240 && hasMinimumData && !isCalculating && event.detail.interval === '4-minute') {
+          console.log(`⏰ 4-minute synchronized calculation for ${symbol}`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
@@ -471,40 +471,35 @@ export default function AdvancedSignalDashboard({
       }
     };
     
-    // Enhanced event listeners - respond to Ultimate System Manager automated triggers
+    // DISABLED ALL EXCESSIVE EVENT LISTENERS - Only allow 4-minute synchronized events
     const handleUltimateSystemTrigger = (event: CustomEvent) => {
-      if (event.detail.interval === '4-minute' || event.detail.triggerType === 'automatic') {
-        console.log(`[${symbol}] Ultimate System Manager automated trigger - forcing signal calculation`);
+      const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
+      
+      // STRICT: Only 4-minute intervals with proper timing
+      if (event.detail.interval === '4-minute' && timeSinceLastCalc >= 240) {
+        console.log(`[${symbol}] 4-minute synchronized calculation (${timeSinceLastCalc}s since last)`);
         
-        // Override all timer restrictions for automated system triggers
         if (!isCalculating) {
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
-          calculationTriggeredRef.current = true;
-          
-          // Force immediate calculation
           calculateAllSignals().catch(error => {
-            console.error(`[${symbol}] Automated calculation failed:`, error);
+            console.error(`[${symbol}] 4-minute calculation failed:`, error);
             setIsCalculating(false);
           });
         }
+      } else {
+        console.log(`[${symbol}] Calculation blocked - ${Math.round(240 - timeSinceLastCalc)}s until next 4-minute sync`);
       }
     };
 
-    // Listen for all calculation events and price updates
+    // MINIMAL EVENT LISTENERS - Only 4-minute synchronized events
     document.addEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
-    document.addEventListener('price-update', handlePriceUpdate as EventListener);
-    window.addEventListener('price-update', handlePriceUpdate as EventListener);
-    window.addEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
     document.addEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
     
     // Return cleanup function
     return () => {
       document.removeEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
-      document.removeEventListener('price-update', handlePriceUpdate as EventListener);
-      window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-      window.removeEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
       document.removeEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
     };
   }, [symbol, isAllDataLoaded, isCalculating, chartData]);
@@ -1209,17 +1204,28 @@ export default function AdvancedSignalDashboard({
   const signalCacheRef = useRef<Record<TimeFrame, AdvancedSignal | null>>({} as any);
   const lastCalculationSignalsRef = useRef<Record<TimeFrame, AdvancedSignal | null>>({} as any);
 
-  // Function to calculate signals for all timeframes
-  const calculateAllSignals = useCallback(async () => {
+  // Function to calculate signals for all timeframes - THROTTLED TO 4-MINUTE INTERVALS
+  const calculateAllSignals = useCallback(async (trigger: string = 'unknown') => {
+    const now = Date.now();
+    const timeSinceLastCalc = now - lastCalculationRef.current;
+    
+    // EMERGENCY THROTTLE: Block calculations less than 4 minutes apart unless manual
+    if (trigger !== 'manual' && timeSinceLastCalc < 240000) {
+      const remaining = Math.round((240000 - timeSinceLastCalc) / 1000);
+      console.log(`🛑 Calculation blocked: ${remaining}s until next 4-minute interval (trigger: ${trigger})`);
+      return;
+    }
+    
     if (isCalculating) {
       console.log(`Calculation already in progress for ${symbol}, skipping new request`);
       return;
     }
     
     // Mark as calculating to prevent overlapping calculations
+    console.log(`✅ Calculation allowed: ${trigger} (${Math.round(timeSinceLastCalc / 1000)}s since last)`);
     setIsCalculating(true);
-    lastCalculationRef.current = Date.now();
-    lastCalculationTimeRef.current = Date.now() / 1000;
+    lastCalculationRef.current = now;
+    lastCalculationTimeRef.current = now / 1000;
     
     console.log(`⚡ Starting calculation loop for 10 timeframes`);
     
