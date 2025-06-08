@@ -449,7 +449,7 @@ export default function AdvancedSignalDashboard({
             }));
           }, 1000); // Delay to ensure calculation completion
         } else {
-          console.log(`Calculation blocked: hasMinimumData=${hasMinimumData}, isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
+          console.log(`Calculation blocked: isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
         }
       }
     };
@@ -463,10 +463,7 @@ export default function AdvancedSignalDashboard({
         // DISABLED: Real-time calculations - wait for 4-minute synchronized events only
         if (timeSinceLastCalc >= 240 && hasMinimumData && !isCalculating && event.detail.interval === '4-minute') {
           console.log(`⏰ 4-minute synchronized calculation for ${symbol}`);
-          setIsCalculating(true);
-          lastCalculationRef.current = Date.now();
-          lastCalculationTimeRef.current = Date.now() / 1000;
-          calculateAllSignals();
+          calculateAllSignals('4-minute-sync');
         }
       }
     };
