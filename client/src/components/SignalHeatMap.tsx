@@ -284,10 +284,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                       key={signal.symbol} 
                       className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
                       title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => {
-                        console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
-                        onSelectAsset && onSelectAsset(signal.symbol);
-                      }}
+                      onClick={() => handlePairSelection(signal)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -310,10 +307,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                       key={signal.symbol} 
                       className="bg-gray-600 text-white hover:bg-gray-500 cursor-pointer transition-all duration-200"
                       title={`${signal.confidence}% confidence (Neutral) - Click to analyze ${signal.name}`}
-                      onClick={() => {
-                        console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
-                        onSelectAsset && onSelectAsset(signal.symbol);
-                      }}
+                      onClick={() => handlePairSelection(signal)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -338,10 +332,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                       key={signal.symbol} 
                       className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
                       title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => {
-                        console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
-                        onSelectAsset && onSelectAsset(signal.symbol);
-                      }}
+                      onClick={() => handlePairSelection(signal)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
@@ -361,10 +352,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                       key={signal.symbol} 
                       className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
                       title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => {
-                        console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
-                        onSelectAsset && onSelectAsset(signal.symbol);
-                      }}
+                      onClick={() => handlePairSelection(signal)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>

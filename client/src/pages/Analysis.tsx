@@ -44,6 +44,12 @@ const Analysis: React.FC = () => {
     setShouldRunAnalysis(true); // Directly set to run analysis
     setAssetChangeCounter(prev => prev + 1);
     console.log(`Selected new asset: ${symbol} - analysis will run automatically`);
+    
+    // Trigger immediate calculation for selected pair
+    const event = new CustomEvent('immediate-pair-calculation', {
+      detail: { symbol: symbol, trigger: 'dropdown-selection' }
+    });
+    document.dispatchEvent(event);
   };
   
   const handleChangeTimeframe = (timeframe: TimeFrame) => {
