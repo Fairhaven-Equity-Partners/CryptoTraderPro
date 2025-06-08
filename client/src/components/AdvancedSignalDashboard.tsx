@@ -292,7 +292,8 @@ export default function AdvancedSignalDashboard({
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
-          calculateAllSignals('pair-selection');
+          // Trigger immediate calculation using the actual function
+          calculateTimeframe(selectedTimeframe, 0); // No delay for immediate execution
         }
       }, 2000); // Wait 2 seconds for data to load
       
