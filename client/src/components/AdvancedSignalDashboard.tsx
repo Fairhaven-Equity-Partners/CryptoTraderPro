@@ -265,6 +265,9 @@ export default function AdvancedSignalDashboard({
   const recalcIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const calculationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
+  // Ref to store the calculation function for early access
+  const calculateAllSignalsRef = useRef<((trigger?: string) => Promise<void>) | null>(null);
+  
   // Get toast for notifications
   const { toast } = useToast();
   
@@ -293,7 +296,9 @@ export default function AdvancedSignalDashboard({
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           // Trigger immediate calculation using the actual function
-          calculateTimeframe(selectedTimeframe, 0); // No delay for immediate execution
+          if (calculateAllSignalsRef.current) {
+            calculateAllSignalsRef.current('pair-selection');
+          }
         }
       }, 2000); // Wait 2 seconds for data to load
       
@@ -392,7 +397,10 @@ export default function AdvancedSignalDashboard({
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
-          calculateAllSignals('pair-selection');
+          // Trigger the actual calculation function that exists
+          if (calculateAllSignalsRef.current) {
+            calculateAllSignalsRef.current('pair-selection');
+          }
         } else if (!isCalculating) {
           // Wait for data to load, then trigger calculation
           console.log(`Waiting for data to load before immediate calculation for ${symbol}...`);
@@ -403,7 +411,7 @@ export default function AdvancedSignalDashboard({
               setIsCalculating(true);
               lastCalculationRef.current = Date.now();
               lastCalculationTimeRef.current = Date.now() / 1000;
-              calculateAllSignals('pair-selection');
+              calculateAllSignals('pair-selection'); // Force immediate execution
             }
           }, 500);
           
