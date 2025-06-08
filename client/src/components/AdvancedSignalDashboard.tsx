@@ -355,7 +355,16 @@ export default function AdvancedSignalDashboard({
     const handleImmediatePairCalculation = (event: any) => {
       if (event.detail?.symbol === symbol) {
         console.log(`[AdvancedSignalDashboard] Immediate calculation triggered for ${symbol} via ${event.detail.trigger}`);
-        calculateAllSignals('pair-selection');
+        
+        // Dispatch proper calculation event with immediate flag
+        const calcEvent = new CustomEvent('calculation-trigger', {
+          detail: { 
+            symbol: symbol, 
+            immediate: true, 
+            trigger: event.detail.trigger 
+          }
+        });
+        document.dispatchEvent(calcEvent);
       }
     };
 
@@ -438,10 +447,11 @@ export default function AdvancedSignalDashboard({
       if (event.detail.symbol === symbol) {
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // STRICT: Only allow official 4-minute synchronized events or manual triggers
+        // Allow 4-minute synchronized events, manual triggers, and immediate pair selections
         const shouldCalculate = (
           (event.detail.interval === '4-minute' && timeSinceLastCalc >= 240) || // 4-minute sync events only
-          (event.detail.manual === true) // Manual triggers only
+          (event.detail.manual === true) || // Manual triggers only
+          (event.detail.immediate === true) // Immediate pair selection triggers
         );
         
         if (shouldCalculate && !isCalculating) {
@@ -500,14 +510,16 @@ export default function AdvancedSignalDashboard({
       }
     };
 
-    // MINIMAL EVENT LISTENERS - Only 4-minute synchronized events
+    // MINIMAL EVENT LISTENERS - Only 4-minute synchronized events and immediate pair selections
     document.addEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
     document.addEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
+    document.addEventListener('calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
     
     // Return cleanup function
     return () => {
       document.removeEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
       document.removeEventListener('synchronized-calculation-complete', handleUltimateSystemTrigger as EventListener);
+      document.removeEventListener('calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
     };
   }, [symbol, isAllDataLoaded, isCalculating, chartData]);
 
