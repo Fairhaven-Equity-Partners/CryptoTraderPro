@@ -480,7 +480,7 @@ export default function AdvancedSignalDashboard({
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
-          calculateAllSignals().catch(error => {
+          calculateAllSignals('4-minute-sync').catch(error => {
             console.error(`[${symbol}] 4-minute calculation failed:`, error);
             setIsCalculating(false);
           });
@@ -1203,14 +1203,11 @@ export default function AdvancedSignalDashboard({
 
   // Function to calculate signals for all timeframes - THROTTLED TO 4-MINUTE INTERVALS
   const calculateAllSignals = useCallback(async (trigger: string = 'unknown') => {
-    const now = Date.now();
-    const timeSinceLastCalc = now - lastCalculationRef.current;
+    // Use centralized emergency kill switch for throttling
+    const { isCalculationAllowed } = await import('../lib/emergencyCalculationKillSwitch');
     
-    // EMERGENCY THROTTLE: Block calculations less than 4 minutes apart unless manual
-    if (trigger !== 'manual' && timeSinceLastCalc < 240000) {
-      const remaining = Math.round((240000 - timeSinceLastCalc) / 1000);
-      console.log(`🛑 Calculation blocked: ${remaining}s until next 4-minute interval (trigger: ${trigger})`);
-      return;
+    if (!isCalculationAllowed(trigger)) {
+      return; // Kill switch handles logging
     }
     
     if (isCalculating) {
@@ -1219,7 +1216,8 @@ export default function AdvancedSignalDashboard({
     }
     
     // Mark as calculating to prevent overlapping calculations
-    console.log(`✅ Calculation allowed: ${trigger} (${Math.round(timeSinceLastCalc / 1000)}s since last)`);
+    const now = Date.now();
+    console.log(`✅ Calculation allowed: ${trigger}`);
     setIsCalculating(true);
     lastCalculationRef.current = now;
     lastCalculationTimeRef.current = now / 1000;
