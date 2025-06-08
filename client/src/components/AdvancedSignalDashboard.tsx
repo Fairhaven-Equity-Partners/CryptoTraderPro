@@ -351,11 +351,21 @@ export default function AdvancedSignalDashboard({
       }
     };
 
+    // Listen for immediate pair selection calculations
+    const handleImmediatePairCalculation = (event: any) => {
+      if (event.detail?.symbol === symbol) {
+        console.log(`[AdvancedSignalDashboard] Immediate calculation triggered for ${symbol} via ${event.detail.trigger}`);
+        calculateAllSignals('pair-selection');
+      }
+    };
+
     // Only listen to centralized price updates to reduce API calls
     document.addEventListener('centralized-price-update', handleCentralizedPriceUpdate);
+    document.addEventListener('immediate-pair-calculation', handleImmediatePairCalculation);
     
     return () => {
       document.removeEventListener('centralized-price-update', handleCentralizedPriceUpdate);
+      document.removeEventListener('immediate-pair-calculation', handleImmediatePairCalculation);
     };
   }, [symbol]);
   

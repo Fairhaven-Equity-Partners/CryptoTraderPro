@@ -55,6 +55,18 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const [sortBy, setSortBy] = useState<'confidence' | 'marketCap' | 'change24h'>('confidence');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [filterDirection, setFilterDirection] = useState<'ALL' | 'LONG' | 'SHORT' | 'NEUTRAL'>('ALL');
+
+  // Function to handle pair selection with immediate calculation trigger
+  const handlePairSelection = (signal: CryptoSignal) => {
+    console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
+    onSelectAsset && onSelectAsset(signal.symbol);
+    
+    // Trigger immediate calculation for selected pair
+    const event = new CustomEvent('immediate-pair-calculation', {
+      detail: { symbol: signal.symbol, trigger: 'heatmap-selection' }
+    });
+    document.dispatchEvent(event);
+  };
   
   // Perfect synchronization with ultimateSystemManager timer
   useEffect(() => {
@@ -252,10 +264,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                       key={signal.symbol} 
                       className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
                       title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => {
-                        console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
-                        onSelectAsset && onSelectAsset(signal.symbol);
-                      }}
+                      onClick={() => handlePairSelection(signal)}
                     >
                       {signal.name.split(' ')[0]} {signal.confidence}%
                     </Badge>
