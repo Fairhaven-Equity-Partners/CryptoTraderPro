@@ -421,29 +421,21 @@ export default function AdvancedSignalDashboard({
     return () => clearInterval(timerInterval);
   }, [signals, actualLastCalculationTime]);
 
-  // Listen for calculation events - both synchronized and real-time triggers
+  // Listen for calculation events - ONLY 4-minute synchronized triggers
   useEffect(() => {
-    // Handler for calculation events with optimized triggering
+    // Handler for calculation events with STRICT 4-minute timing only
     const handleSynchronizedCalculationEvent = (event: CustomEvent) => {
       if (event.detail.symbol === symbol) {
-        const isThreeMinuteMark = event.detail.isThreeMinuteMark === true;
-        const hasMinimumData = Object.keys(chartData).length >= 5;
         const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
         
-        // Enhanced calculation triggers synchronized with ultimateSystemManager:
-        // 1. Official 4-minute synchronized events from ultimateSystemManager - ALWAYS allow
-        // 2. Manual calculation requests - ALWAYS allow
-        // 3. Real-time updates when significant data changes occur
+        // STRICT: Only allow official 4-minute synchronized events or manual triggers
         const shouldCalculate = (
-          (event.detail.interval === '4-minute') || // Always allow 4-minute sync events
-          (event.detail.manual === true) || // Always allow manual triggers
-          (event.detail.triggerType === 'automatic' && timeSinceLastCalc >= 60) || // Allow automated triggers with minimal delay
-          (timeSinceLastCalc >= 240) // Standard 4-minute interval for other triggers
+          (event.detail.interval === '4-minute' && timeSinceLastCalc >= 240) || // 4-minute sync events only
+          (event.detail.manual === true) // Manual triggers only
         );
         
         if (shouldCalculate && !isCalculating) {
-          const triggerType = event.detail.interval === '4-minute' ? '4-minute sync' : 
-                            event.detail.manual ? 'manual' : 'real-time';
+          const triggerType = event.detail.interval === '4-minute' ? '4-minute sync' : 'manual';
           console.log(`⚡ Starting ${triggerType} calculation for ${symbol}`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
