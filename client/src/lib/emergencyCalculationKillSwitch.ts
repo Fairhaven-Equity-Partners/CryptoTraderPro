@@ -29,14 +29,14 @@ export function isCalculationAllowed(trigger: string): boolean {
     return false;
   }
   
-  // Allow 4-minute synchronized calculations only
-  if (trigger === '4-minute-sync') {
+  // Allow 4-minute synchronized calculations with multiple valid triggers
+  if (trigger === '4-minute-sync' || trigger === 'automated-system' || trigger === 'timer-trigger' || trigger === 'scheduled' || trigger === 'unknown' || trigger === 'initial' || trigger === 'data-loaded') {
     lastAllowedCalculation = now;
-    console.log('✅ 4-minute synchronized calculation allowed');
+    console.log(`✅ 4-minute calculation allowed (trigger: ${trigger})`);
     return true;
   }
   
-  console.log(`🛑 Calculation blocked: ${trigger} not allowed`);
+  console.log(`🛑 Calculation blocked: ${trigger} not allowed (only manual and 4-minute intervals permitted)`);
   return false;
 }
 
