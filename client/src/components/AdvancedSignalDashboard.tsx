@@ -356,15 +356,32 @@ export default function AdvancedSignalDashboard({
       if (event.detail?.symbol === symbol) {
         console.log(`[AdvancedSignalDashboard] Immediate calculation triggered for ${symbol} via ${event.detail.trigger}`);
         
-        // Dispatch proper calculation event with immediate flag
-        const calcEvent = new CustomEvent('calculation-trigger', {
-          detail: { 
-            symbol: symbol, 
-            immediate: true, 
-            trigger: event.detail.trigger 
-          }
-        });
-        document.dispatchEvent(calcEvent);
+        // Force immediate calculation bypass
+        if (!isCalculating && isAllDataLoaded) {
+          console.log(`⚡ Starting immediate calculation for ${symbol} - bypassing all restrictions`);
+          setIsCalculating(true);
+          lastCalculationRef.current = Date.now();
+          lastCalculationTimeRef.current = Date.now() / 1000;
+          calculateAllSignals('pair-selection');
+        } else if (!isCalculating) {
+          // Wait for data to load, then trigger calculation
+          console.log(`Waiting for data to load before immediate calculation for ${symbol}...`);
+          const waitForData = setInterval(() => {
+            if (isAllDataLoaded && !isCalculating) {
+              clearInterval(waitForData);
+              console.log(`⚡ Data loaded, starting immediate calculation for ${symbol}`);
+              setIsCalculating(true);
+              lastCalculationRef.current = Date.now();
+              lastCalculationTimeRef.current = Date.now() / 1000;
+              calculateAllSignals('pair-selection');
+            }
+          }, 500);
+          
+          // Clear interval after 10 seconds to prevent memory leak
+          setTimeout(() => clearInterval(waitForData), 10000);
+        } else {
+          console.log(`Cannot start immediate calculation: isCalculating=${isCalculating}, isAllDataLoaded=${isAllDataLoaded}`);
+        }
       }
     };
 
@@ -455,12 +472,13 @@ export default function AdvancedSignalDashboard({
         );
         
         if (shouldCalculate && !isCalculating) {
-          const triggerType = event.detail.interval === '4-minute' ? '4-minute sync' : 'manual';
+          const triggerType = event.detail.immediate ? 'immediate pair selection' : 
+                             event.detail.interval === '4-minute' ? '4-minute sync' : 'manual';
           console.log(`⚡ Starting ${triggerType} calculation for ${symbol}`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
-          calculateAllSignals();
+          calculateAllSignals(event.detail.immediate ? 'pair-selection' : '4-minute-sync');
           
           // Broadcast completion to heatmap and other components for perfect synchronization
           setTimeout(() => {
