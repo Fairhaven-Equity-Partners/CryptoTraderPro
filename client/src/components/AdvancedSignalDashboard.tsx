@@ -271,6 +271,35 @@ export default function AdvancedSignalDashboard({
   // Get market data and crypto asset price with live data readiness
   const { chartData, isAllDataLoaded, isLiveDataReady, liveDataTimestamp } = useMarketData(symbol);
   
+  // Symbol change detection for immediate calculations
+  useEffect(() => {
+    if (lastSymbolRef.current !== symbol) {
+      console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
+      lastSymbolRef.current = symbol;
+      setIsCalculating(false);
+      calculationTriggeredRef.current = false;
+      
+      // Clear any existing signals for the new symbol
+      setSignals({
+        '1m': null, '5m': null, '15m': null, '30m': null, '1h': null,
+        '4h': null, '1d': null, '3d': null, '1w': null, '1M': null
+      });
+      
+      // Trigger immediate calculation for new symbol after data loads
+      const immediateCalcTimer = setTimeout(() => {
+        if (isAllDataLoaded && !isCalculating) {
+          console.log(`⚡ Triggering immediate calculation for new symbol: ${symbol}`);
+          setIsCalculating(true);
+          lastCalculationRef.current = Date.now();
+          lastCalculationTimeRef.current = Date.now() / 1000;
+          calculateAllSignals('pair-selection');
+        }
+      }, 2000); // Wait 2 seconds for data to load
+      
+      return () => clearTimeout(immediateCalcTimer);
+    }
+  }, [symbol, isAllDataLoaded, isCalculating]);
+  
   // Use centralized price manager instead of frequent API calls
   const { data: asset } = useQuery({
     queryKey: [`/api/crypto/${symbol}`],

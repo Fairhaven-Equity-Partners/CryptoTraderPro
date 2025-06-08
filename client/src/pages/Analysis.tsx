@@ -45,11 +45,14 @@ const Analysis: React.FC = () => {
     setAssetChangeCounter(prev => prev + 1);
     console.log(`Selected new asset: ${symbol} - analysis will run automatically`);
     
-    // Trigger immediate calculation for selected pair
-    const event = new CustomEvent('immediate-pair-calculation', {
-      detail: { symbol: symbol, trigger: 'dropdown-selection' }
-    });
-    document.dispatchEvent(event);
+    // Dispatch immediate calculation event with delay to ensure component is ready
+    setTimeout(() => {
+      console.log(`[Analysis] Dispatching immediate calculation event for ${symbol}`);
+      const event = new CustomEvent('immediate-pair-calculation', {
+        detail: { symbol: symbol, trigger: 'dropdown-selection' }
+      });
+      document.dispatchEvent(event);
+    }, 1000); // 1 second delay to allow component to mount and listen
   };
   
   const handleChangeTimeframe = (timeframe: TimeFrame) => {
