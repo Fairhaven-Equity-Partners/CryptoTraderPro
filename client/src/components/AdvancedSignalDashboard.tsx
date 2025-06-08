@@ -411,7 +411,9 @@ export default function AdvancedSignalDashboard({
               setIsCalculating(true);
               lastCalculationRef.current = Date.now();
               lastCalculationTimeRef.current = Date.now() / 1000;
-              calculateAllSignals('pair-selection'); // Force immediate execution
+              if (calculateAllSignalsRef.current) {
+                calculateAllSignalsRef.current('pair-selection');
+              }
             }
           }, 500);
           
@@ -1913,6 +1915,11 @@ export default function AdvancedSignalDashboard({
     const newRecommendation = generateTradeRecommendation(timeframe);
     setRecommendation(newRecommendation);
   }, [generateTradeRecommendation]);
+
+  // Store calculation function in ref for immediate access
+  useEffect(() => {
+    calculateAllSignalsRef.current = calculateAllSignals;
+  }, [calculateAllSignals]);
 
   // Handle timeframe selection - FIXED to preserve synchronized signals
   const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
