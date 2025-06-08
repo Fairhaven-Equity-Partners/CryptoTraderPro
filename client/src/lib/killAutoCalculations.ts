@@ -70,21 +70,12 @@ export function triggerManualCalculation() {
 
 /**
  * Check if a calculation is allowed to execute
- * This should be called at the start of any calculation function
+ * DEPRECATED: This function is disabled to prevent conflicts with emergency kill switch
+ * Use emergencyCalculationKillSwitch.isCalculationAllowed() instead
  */
 export function isCalculationAllowed(source = 'unknown'): boolean {
-  // Get the current locked status
-  const isLocked = typeof window !== 'undefined' ? 
-    (window as any).__CALCULATIONS_LOCKED__ === true : 
-    true;
-  
-  if (isLocked) {
-    console.log(`🛑 [${source}] Calculation blocked - system locked for auto-calculations`);
-    return false;
-  }
-  
-  // We're in manual trigger mode, allow the calculation
-  console.log(`✅ [${source}] Calculation allowed - manual mode active`);
+  // Always return true to avoid blocking legitimate calculations
+  // The emergency kill switch handles proper throttling
   return true;
 }
 
