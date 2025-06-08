@@ -631,7 +631,8 @@ export default function AdvancedSignalDashboard({
       const timeSinceLastCalc = now - lastCalculationRef.current;
       
       // ENHANCED: Allow calculation for initial load, 4-minute intervals, OR automated system triggers
-      const isAutomatedTrigger = window.getUltimateSystemStatus && window.getUltimateSystemStatus().lastPriceFetch > (Date.now() - 30000);
+      const systemStatus = window.getUltimateSystemStatus ? window.getUltimateSystemStatus() : null;
+      const isAutomatedTrigger = systemStatus && systemStatus.initialized && systemStatus.timerActive;
       const shouldAllowCalculation = (
         lastCalculationRef.current === 0 || // Initial load
         timeSinceLastCalc >= 240000 || // 4-minute interval
