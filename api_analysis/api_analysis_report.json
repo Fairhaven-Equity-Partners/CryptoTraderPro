@@ -1,0 +1,176 @@
+{
+  "timestamp": "2025-06-10T18:26:02.596Z",
+  "analysis": {
+    "currentUsage": {
+      "priceStreamer": {
+        "hourly": 6000,
+        "daily": 144000,
+        "monthly": 4320000
+      },
+      "automatedSignals": {
+        "hourly": 15,
+        "daily": 360,
+        "monthly": 10800
+      },
+      "userRequests": {
+        "hourly": 5,
+        "daily": 100,
+        "monthly": 3000
+      },
+      "total": {
+        "hourly": 6020,
+        "daily": 144460,
+        "monthly": 4333800
+      }
+    },
+    "optimizedUsage": {
+      "batchPriceUpdates": {
+        "hourly": 30,
+        "daily": 720,
+        "monthly": 21600
+      },
+      "automatedSignals": {
+        "hourly": 15,
+        "daily": 360,
+        "monthly": 10800
+      },
+      "userRequests": {
+        "hourly": 3,
+        "daily": 72,
+        "monthly": 2160
+      },
+      "total": {
+        "hourly": 48,
+        "daily": 1152,
+        "monthly": 34560
+      }
+    },
+    "strategies": [
+      {
+        "name": "Smart Caching",
+        "description": "Cache prices based on volatility and importance",
+        "implementation": {
+          "highPriority": "1 minute cache (BTC, ETH, top 5)",
+          "mediumPriority": "3 minute cache (top 20)",
+          "lowPriority": "5 minute cache (remaining)",
+          "volatilityBonus": "Reduce cache time by 50% during high volatility"
+        },
+        "expectedSavings": 0.6
+      },
+      {
+        "name": "Batch Optimization",
+        "description": "Use batch calls wherever possible",
+        "implementation": {
+          "priceStreamer": "Single batch call every 2 minutes instead of individual calls",
+          "automatedSignals": "Already optimized with batch calls"
+        },
+        "expectedSavings": 0.8
+      },
+      {
+        "name": "Priority Tiers",
+        "description": "Different update frequencies for different importance levels",
+        "implementation": {
+          "tier1": "BTC, ETH, BNB, XRP, SOL - every 1 minute",
+          "tier2": "Next 15 symbols - every 2 minutes",
+          "tier3": "Remaining 30 symbols - every 5 minutes"
+        },
+        "expectedSavings": 0.4
+      },
+      {
+        "name": "Circuit Breaker",
+        "description": "Automatic throttling when approaching limits",
+        "implementation": {
+          "warning": "70% of daily limit - extend cache times",
+          "throttle": "85% of daily limit - reduce update frequency",
+          "emergency": "95% of daily limit - pause non-essential updates"
+        },
+        "expectedSavings": 0.2
+      }
+    ],
+    "config": {
+      "rateLimiting": {
+        "dailyLimit": 1000,
+        "hourlyLimit": 41,
+        "minuteLimit": 1,
+        "burstLimit": 3,
+        "resetIntervals": {
+          "minute": 60000,
+          "hour": 3600000,
+          "day": 86400000
+        }
+      },
+      "caching": {
+        "strategies": {
+          "tier1": {
+            "ttl": 60000,
+            "symbols": [
+              "BTC",
+              "ETH",
+              "BNB",
+              "XRP",
+              "SOL"
+            ]
+          },
+          "tier2": {
+            "ttl": 120000,
+            "symbols": [
+              "USDC",
+              "ADA",
+              "AVAX",
+              "DOGE",
+              "TRX",
+              "TON",
+              "LINK",
+              "MATIC",
+              "SHIB",
+              "LTC",
+              "BCH",
+              "UNI",
+              "DOT",
+              "XLM",
+              "ATOM"
+            ]
+          },
+          "tier3": {
+            "ttl": 300000,
+            "symbols": []
+          }
+        },
+        "volatilityMultiplier": 0.5,
+        "minTTL": 30000,
+        "maxTTL": 600000
+      },
+      "batchOptimization": {
+        "enabled": true,
+        "maxBatchSize": 50,
+        "batchInterval": 120000,
+        "fallbackToIndividual": true
+      },
+      "circuitBreaker": {
+        "thresholds": {
+          "warning": 0.7,
+          "throttle": 0.85,
+          "emergency": 0.95
+        },
+        "actions": {
+          "warning": "extend_cache_times",
+          "throttle": "reduce_frequency",
+          "emergency": "pause_non_essential"
+        },
+        "resetInterval": 3600000
+      }
+    },
+    "analysis": {
+      "isWithinLimit": false,
+      "safetyMargin": -4560,
+      "savingsPercent": 99
+    }
+  },
+  "recommendations": [
+    "Implement batch API calls for price streaming",
+    "Use tiered caching based on symbol importance",
+    "Add circuit breaker protection at 70%/85%/95% thresholds",
+    "Monitor usage in real-time with alerts",
+    "Cache aggressively during low volatility periods"
+  ]
+}
