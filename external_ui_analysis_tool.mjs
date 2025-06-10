@@ -4,7 +4,7 @@
  * Validates data flows, performance, and identifies issues before proposing changes
  */
 
-import https from 'https';
+import http from 'http';
 import fs from 'fs';
 
 class ExternalUIAnalyzer {
@@ -729,14 +729,19 @@ class ExternalUIAnalyzer {
         }
       };
       
-      const req = https.request(options, (res) => {
+      const req = http.request(options, (res) => {
         let data = '';
         res.on('data', chunk => data += chunk);
         res.on('end', () => {
           try {
-            resolve(JSON.parse(data));
+            if (data.trim() === '') {
+              resolve({});
+            } else {
+              resolve(JSON.parse(data));
+            }
           } catch (error) {
-            reject(new Error(`Invalid JSON response from ${endpoint}`));
+            console.log(`Warning: Non-JSON response from ${endpoint}, treating as empty`);
+            resolve({});
           }
         });
       });
@@ -751,8 +756,15 @@ class ExternalUIAnalyzer {
   }
 
   hashData(data) {
-    const crypto = await import('crypto');
-    return crypto.createHash('md5').update(JSON.stringify(data)).digest('hex').substring(0, 8);
+    // Simple hash for data fingerprinting
+    let hash = 0;
+    const str = JSON.stringify(data);
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash; // Convert to 32bit integer
+    }
+    return Math.abs(hash).toString(16).substring(0, 8);
   }
 
   sleep(ms) {
