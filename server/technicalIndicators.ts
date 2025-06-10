@@ -396,37 +396,11 @@ export class TechnicalIndicatorsEngine {
   }
 
   /**
-   * Generate synthetic OHLCV data for testing when historical data is unavailable
-   * This creates realistic price movements based on current price and volatility
+   * REMOVED: No synthetic candle generation - Real data only
+   * Returns empty array instead of synthetic candlestick data
    */
-  static generateSyntheticCandles(currentPrice: number, change24h: number, periods: number = 100): CandlestickData[] {
-    const candles: CandlestickData[] = [];
-    const volatility = Math.abs(change24h) / 100;
-    const baseVolume = 1000000;
-    
-    let price = currentPrice * (1 - (change24h / 100));
-    const priceIncrement = (currentPrice - price) / periods;
-    
-    for (let i = 0; i < periods; i++) {
-      const variance = (Math.random() - 0.5) * volatility * price;
-      const open = price;
-      const close = price + priceIncrement + variance;
-      const high = Math.max(open, close) * (1 + Math.random() * volatility);
-      const low = Math.min(open, close) * (1 - Math.random() * volatility);
-      const volume = baseVolume * (0.5 + Math.random() * 1.5);
-      
-      candles.push({
-        time: Date.now() - (periods - i) * 60000, // 1 minute intervals
-        open,
-        high,
-        low,
-        close,
-        volume
-      });
-      
-      price = close;
-    }
-    
-    return candles;
+  static getRealCandlesOnly(currentPrice: number, change24h: number, periods: number = 100): CandlestickData[] {
+    console.log(`[TechnicalIndicators] Real-data-only mode: No synthetic candles generated`);
+    return [];
   }
 }

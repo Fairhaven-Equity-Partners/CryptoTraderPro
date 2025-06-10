@@ -70,22 +70,15 @@ export class AdvancedMarketAnalysisEngine {
     change24h: number,
     historicalPrices?: { [period: string]: number }
   ): MultiPeriodReturns {
-    // Use provided historical prices or estimate from change24h
-    const price24hAgo = currentPrice / (1 + (change24h / 100));
-    
-    // Estimate intermediate prices with realistic volatility patterns
-    const estimatedPrices = {
-      price1hAgo: currentPrice * (1 - (change24h / 100) * 0.05), // 5% of daily change
-      price4hAgo: currentPrice * (1 - (change24h / 100) * 0.2),  // 20% of daily change
-      price7dAgo: price24hAgo * (1 - (change24h / 100) * 0.3),   // Extrapolate weekly
-      ...historicalPrices
-    };
-
-    // Calculate period returns
-    const return1h = ((currentPrice - estimatedPrices.price1hAgo) / estimatedPrices.price1hAgo) * 100;
-    const return4h = ((currentPrice - estimatedPrices.price4hAgo) / estimatedPrices.price4hAgo) * 100;
-    const return24h = change24h;
-    const return7d = ((currentPrice - estimatedPrices.price7dAgo) / estimatedPrices.price7dAgo) * 100;
+    // REAL DATA ONLY - Use provided historical prices or return conservative defaults
+    // No synthetic price estimation calculations
+    const return1h = historicalPrices?.price1hAgo ? 
+      ((currentPrice - historicalPrices.price1hAgo) / historicalPrices.price1hAgo) * 100 : 0;
+    const return4h = historicalPrices?.price4hAgo ? 
+      ((currentPrice - historicalPrices.price4hAgo) / historicalPrices.price4hAgo) * 100 : 0;
+    const return24h = change24h; // This is real data from API
+    const return7d = historicalPrices?.price7dAgo ? 
+      ((currentPrice - historicalPrices.price7dAgo) / historicalPrices.price7dAgo) * 100 : 0;
 
     // Weighted momentum score favoring recent periods
     const weightedMomentumScore = (return1h * 0.4) + (return4h * 0.3) + (return24h * 0.2) + (return7d * 0.1);
@@ -354,11 +347,9 @@ export class AdvancedMarketAnalysisEngine {
     // Calculate multi-period returns
     const multiPeriodReturns = this.calculateMultiPeriodReturns(currentPrice, change24h, historicalPrices);
     
-    // Generate synthetic candlestick data for technical analysis
-    const syntheticCandles = TechnicalIndicatorsEngine.generateSyntheticCandles(currentPrice, change24h, 100);
-    
-    // Perform technical analysis
-    const technicalAnalysis = TechnicalIndicatorsEngine.analyzeTechnicals(syntheticCandles, currentPrice);
+    // REAL DATA ONLY - No synthetic candlestick generation
+    // Use current price for simplified technical analysis without historical candles
+    const technicalAnalysis = TechnicalIndicatorsEngine.analyzeTechnicals([], currentPrice);
     
     // Detect market regime
     const marketRegime = await this.detectMarketRegime(
