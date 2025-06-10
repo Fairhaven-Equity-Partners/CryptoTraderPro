@@ -78,7 +78,7 @@ class CircuitBreakerOptimizationTest {
     for (const timeframe of testTimeframes) {
       try {
         const start = Date.now();
-        const response = await this.makeRequest(`/api/signals/BTC/USDT?timeframe=${timeframe}`);
+        const response = await this.makeRequest(`/api/signals/BTC%2FUSDT?timeframe=${timeframe}`);
         const signals = JSON.parse(response);
         const responseTime = Date.now() - start;
         
