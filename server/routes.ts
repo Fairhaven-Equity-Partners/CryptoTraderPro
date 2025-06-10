@@ -15,6 +15,7 @@ import { AdvancedAnalyticsEngine } from "./advancedAnalytics";
 import { feedbackAnalyzer } from "./feedbackAnalyzer";
 import { enhancedPriceStreamer } from "./enhancedPriceStreamer";
 import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
+import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -1202,6 +1203,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('[Routes] Error fetching performance metrics:', error);
       res.status(500).json({ error: 'Failed to fetch performance metrics' });
+    }
+  });
+
+  // Rate limiter monitoring endpoint
+  app.get('/api/rate-limiter/stats', (req: Request, res: Response) => {
+    try {
+      const stats = optimizedCoinMarketCapService.getStatistics();
+      const health = optimizedCoinMarketCapService.getHealthStatus();
+      
+      res.json({
+        ...stats,
+        health,
+        timestamp: new Date().toISOString(),
+        summary: {
+          status: health.status,
+          monthlyUsage: stats.apiCalls.projectedMonthly,
+          remainingCalls: stats.apiCalls.remainingMonthly,
+          cacheHitRate: `${stats.performance.cacheHitRate.toFixed(1)}%`,
+          recommendation: health.recommendation
+        }
+      });
+    } catch (error) {
+      res.status(500).json({ 
+        error: 'Failed to get rate limiter statistics',
+        timestamp: new Date().toISOString()
+      });
     }
   });
 

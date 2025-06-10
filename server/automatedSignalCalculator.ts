@@ -100,12 +100,12 @@ export class AutomatedSignalCalculator {
     console.log(`[AutomatedSignalCalculator] Starting optimized calculation for ${TOP_50_SYMBOL_MAPPINGS.length} pairs across ${this.timeframes.length} timeframes`);
 
     try {
-      // Use CoinMarketCap service for price fetching
-      const { coinMarketCapService } = await import('./coinMarketCapService.js');
+      // Use optimized CoinMarketCap service for rate-limited price fetching
+      const { optimizedCoinMarketCapService } = await import('./optimizedCoinMarketCapService.js');
       
-      // Fetch prices for all symbols in batch
+      // Fetch prices for all symbols in optimized batch
       const cmcSymbols = TOP_50_SYMBOL_MAPPINGS.map(m => m.cmcSymbol);
-      const batchPrices = await coinMarketCapService.fetchBatchPrices(cmcSymbols);
+      const batchPrices = await optimizedCoinMarketCapService.fetchBatchPrices(cmcSymbols);
       
       if (Object.keys(batchPrices).length === 0) {
         console.warn('[AutomatedSignalCalculator] No price data received from CoinMarketCap');
