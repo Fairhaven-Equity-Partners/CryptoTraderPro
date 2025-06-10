@@ -11,6 +11,7 @@ import { TechnicalIndicatorsEngine, type TechnicalAnalysis, type CandlestickData
 import { AdvancedMarketAnalysisEngine, type AdvancedMarketData } from './advancedMarketAnalysis.js';
 import { marketSentimentEngine, type SentimentAdjustedSignal } from './marketSentimentEngine.js';
 import { smartCacheManager } from './smartCacheManager.js';
+import { AdaptiveTimingManager } from './adaptiveTimingManager.js';
 
 interface CalculatedSignal {
   symbol: string;
@@ -29,14 +30,13 @@ interface CalculatedSignal {
 
 export class AutomatedSignalCalculator {
   private isRunning: boolean = false;
-  private calculationInterval: NodeJS.Timeout | null = null;
+  private timingManager: AdaptiveTimingManager;
   private lastCalculationTime: number = 0;
   private signalCache: Map<string, CalculatedSignal[]> = new Map();
   private marketVolatilityLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME' = 'MEDIUM';
-  private dynamicIntervalMs: number = 4 * 60 * 1000; // Optimized 4 minutes for synchronized calculations
+  private timeframeMetrics: Map<string, { calculations: number; errors: number; avgLatency: number }> = new Map();
 
   private readonly timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-  private readonly baseCalculationIntervalMs = 4 * 60 * 1000; // Base 4 minutes (synchronized with main engine)
   private readonly volatilityThresholds = {
     LOW: 0.02,    // 2% daily change
     MEDIUM: 0.05, // 5% daily change
@@ -45,11 +45,38 @@ export class AutomatedSignalCalculator {
   };
 
   constructor() {
-    console.log('[AutomatedSignalCalculator] Initializing optimized signal calculation system');
+    console.log('[AutomatedSignalCalculator] Initializing adaptive timing signal calculation system');
+    this.timingManager = new AdaptiveTimingManager();
+    this.initializeTimeframeMetrics();
+    this.registerTimeframeCallbacks();
   }
 
   /**
-   * Start the automated signal calculation system with immediate initialization
+   * Initialize metrics tracking for all timeframes
+   */
+  private initializeTimeframeMetrics(): void {
+    this.timeframes.forEach(timeframe => {
+      this.timeframeMetrics.set(timeframe, {
+        calculations: 0,
+        errors: 0,
+        avgLatency: 0
+      });
+    });
+  }
+
+  /**
+   * Register calculation callbacks for each timeframe
+   */
+  private registerTimeframeCallbacks(): void {
+    this.timeframes.forEach(timeframe => {
+      this.timingManager.registerCallback(timeframe, async (tf: string) => {
+        await this.calculateTimeframeSignals(tf);
+      });
+    });
+  }
+
+  /**
+   * Start the adaptive timing signal calculation system
    */
   async start(): Promise<void> {
     if (this.isRunning) {
@@ -57,38 +84,34 @@ export class AutomatedSignalCalculator {
       return;
     }
 
-    console.log('[AutomatedSignalCalculator] Starting IMMEDIATE automated signal calculations');
+    console.log('[AutomatedSignalCalculator] Starting adaptive timing signal calculations');
     this.isRunning = true;
 
     try {
-      // Immediate first calculation to eliminate startup delay
-      console.log('[AutomatedSignalCalculator] Triggering immediate calculation to eliminate 2-cycle delay');
+      // Perform immediate initial calculation for all pairs
+      console.log('[AutomatedSignalCalculator] Performing initial calculation across all timeframes');
       await this.calculateAllSignals();
       
-      // Set up interval for future calculations
-      this.calculationInterval = setInterval(async () => {
-        await this.calculateAllSignals();
-      }, this.dynamicIntervalMs);
+      // Start adaptive timing for all timeframes
+      this.timingManager.startAll();
       
-      console.log('[AutomatedSignalCalculator] Initial calculation completed successfully');
-      console.log(`[AutomatedSignalCalculator] Automated system started - immediate calculations active`);
+      console.log('[AutomatedSignalCalculator] Adaptive timing system started successfully');
+      console.log('[AutomatedSignalCalculator] Timeframe-specific intervals now active');
       
     } catch (error) {
       console.error('[AutomatedSignalCalculator] Failed to start:', error);
       this.isRunning = false;
+      this.timingManager.stopAll();
     }
   }
 
   /**
-   * Stop the automated signal calculation system
+   * Stop the adaptive timing signal calculation system
    */
   stop(): void {
-    if (this.calculationInterval) {
-      clearInterval(this.calculationInterval);
-      this.calculationInterval = null;
-    }
+    this.timingManager.stopAll();
     this.isRunning = false;
-    console.log('[AutomatedSignalCalculator] Stopped automated signal calculations');
+    console.log('[AutomatedSignalCalculator] Stopped adaptive timing signal calculations');
   }
 
   /**
