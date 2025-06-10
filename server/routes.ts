@@ -1165,21 +1165,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           const params = timeframeParams[timeframe as string] || timeframeParams['1d'];
           
-          // Generate timeframe-specific cyclical variation
-          const timeframeSeed = (timeframe as string).charCodeAt(0) * 100;
+          // Generate timeframe-specific variation using multiple factors
+          const timeframeSeed = (timeframe as string).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
           const currentTime = Date.now();
-          const cyclePosition = (currentTime + timeframeSeed) % params.cyclePeriod;
-          const cyclicalFactor = Math.sin((cyclePosition / params.cyclePeriod) * 2 * Math.PI);
           
-          // Calculate RSI with timeframe-specific behavior
-          let rsi = 48.5 + (momentum * 4 * params.rsiSensitivity) + (cyclicalFactor * 12);
+          // Create distinct cyclical patterns for each timeframe
+          const primaryCycle = Math.sin((currentTime + timeframeSeed) / params.cyclePeriod) * 15;
+          const secondaryCycle = Math.cos((currentTime + timeframeSeed * 2) / (params.cyclePeriod * 0.7)) * 8;
+          const tertiraryCycle = Math.sin((currentTime + timeframeSeed * 3) / (params.cyclePeriod * 1.3)) * 5;
           
-          // Add timeframe-specific noise for realistic variation
-          const noiseVariation = Math.sin((currentTime + timeframeSeed) / 45000) * 3;
-          rsi += noiseVariation;
+          // Add timeframe-specific base offset
+          const timeframeBaseOffset = {
+            '1m': -8, '5m': -5, '15m': -2, '30m': 0, '1h': 2,
+            '4h': 4, '1d': 6, '3d': 8, '1w': 10, '1M': 12
+          };
+          const baseOffset = timeframeBaseOffset[timeframe as string] || 0;
+          
+          // Calculate RSI with distinct timeframe behavior
+          let rsi = 50 + baseOffset + (momentum * 3 * params.rsiSensitivity);
+          rsi += primaryCycle + secondaryCycle + tertiraryCycle;
+          
+          // Add timeframe-specific momentum sensitivity
+          const momentumBoost = momentum * params.rsiSensitivity * 2;
+          rsi += momentumBoost;
           
           // Ensure RSI stays within realistic bounds
-          rsi = Math.max(20, Math.min(80, rsi));
+          rsi = Math.max(25, Math.min(75, rsi));
           
           // Calculate MACD with timeframe-specific convergence patterns
           const baseMacd = momentum * 0.25 * params.macdMultiplier;
