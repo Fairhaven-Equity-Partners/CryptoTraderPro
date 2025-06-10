@@ -36,6 +36,11 @@ export class AutomatedSignalCalculator {
   private signalCache: Map<string, CalculatedSignal[]> = new Map();
   private marketVolatilityLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME' = 'MEDIUM';
   private timeframeMetrics: Map<string, { calculations: number; errors: number; avgLatency: number }> = new Map();
+  
+  // Intelligent caching system
+  private lastPriceData: Record<string, any> = {};
+  private lastPriceFetch: number = 0;
+  private readonly PRICE_CACHE_DURATION = 30000; // 30 seconds cache
 
   private readonly timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
   private readonly volatilityThresholds = {
@@ -84,8 +89,8 @@ export class AutomatedSignalCalculator {
     try {
       console.log(`[AdaptiveTiming] Calculating ${timeframe} signals for all pairs`);
       
-      // Calculate signals for all pairs on this specific timeframe
-      await this.calculateAllSignals();
+      // Use cached price data instead of fetching new data for each timeframe
+      await this.calculateSignalsForSpecificTimeframe(timeframe);
       
       // Update metrics
       const latency = Date.now() - startTime;
@@ -141,25 +146,39 @@ export class AutomatedSignalCalculator {
   }
 
   /**
-   * Calculate signals for all cryptocurrency pairs across all timeframes
-   * Optimized for maximum efficiency and accuracy
+   * Calculate signals for a specific timeframe using cached price data
    */
-  private async calculateAllSignals(): Promise<void> {
+  private async calculateSignalsForSpecificTimeframe(timeframe: string): Promise<void> {
     const startTime = Date.now();
-    console.log(`[AutomatedSignalCalculator] Starting optimized calculation for ${TOP_50_SYMBOL_MAPPINGS.length} pairs across ${this.timeframes.length} timeframes`);
 
     try {
-      // Use optimized CoinMarketCap service with intelligent batch fetching
-      const cmcSymbols = TOP_50_SYMBOL_MAPPINGS.map(m => m.cmcSymbol);
-      const batchPrices = await optimizedCoinMarketCapService.fetchBatchPrices(cmcSymbols);
+      // Use cached price data if available and recent
+      let batchPrices = this.lastPriceData;
       
+      if (Object.keys(batchPrices).length === 0 || (Date.now() - this.lastPriceFetch > this.PRICE_CACHE_DURATION)) {
+        // Only fetch new data if cache is empty or expired
+        const cmcSymbols = TOP_50_SYMBOL_MAPPINGS.map(m => m.cmcSymbol);
+        batchPrices = await optimizedCoinMarketCapService.fetchBatchPrices(cmcSymbols);
+        
+        if (Object.keys(batchPrices).length > 0) {
+          this.lastPriceData = batchPrices;
+          this.lastPriceFetch = Date.now();
+          console.log(`[AutomatedSignalCalculator] Fetched fresh price data for ${Object.keys(batchPrices).length} symbols`);
+        } else {
+          console.warn('[AutomatedSignalCalculator] No price data received, using cached data');
+          batchPrices = this.lastPriceData;
+        }
+      } else {
+        console.log(`[AutomatedSignalCalculator] Using cached price data (${Math.round((Date.now() - this.lastPriceFetch) / 1000)}s old)`);
+      }
+
       if (Object.keys(batchPrices).length === 0) {
-        console.warn('[AutomatedSignalCalculator] No price data received from CoinMarketCap');
+        console.warn('[AutomatedSignalCalculator] No price data available');
         return;
       }
 
       const fetchedCount = Object.keys(batchPrices).length;
-      console.log(`[AutomatedSignalCalculator] Successfully fetched ${fetchedCount}/${TOP_50_SYMBOL_MAPPINGS.length} price updates`);
+      console.log(`[AutomatedSignalCalculator] Processing ${fetchedCount}/${TOP_50_SYMBOL_MAPPINGS.length} price updates for ${timeframe}`);
 
       // Pre-allocate arrays for better performance
       const allCalculatedSignals: CalculatedSignal[] = [];
