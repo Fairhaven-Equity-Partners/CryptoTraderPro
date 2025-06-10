@@ -1135,10 +1135,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Use authentic current price data for real-time calculations
       if (currentPrice) {
-        console.log(`[TechnicalAnalysis] ✅ Calculating real-time indicators for ${symbol} using authentic price data`);
-        
-        const price = typeof currentPrice === 'number' ? currentPrice : (currentPrice.price || currentPrice.lastPrice || 0);
-        let change24h = 0;
+        try {
+          console.log(`[TechnicalAnalysis] ✅ Calculating real-time indicators for ${symbol} using authentic price data`);
+          
+          const price = typeof currentPrice === 'number' ? currentPrice : (currentPrice.price || currentPrice.lastPrice || 0);
+          let change24h = 0;
         
         // Try to get authentic 24h change from CoinMarketCap, fallback to current data
         try {
@@ -1285,24 +1286,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           });
           return; // Exit early after successful response
+        } catch (marketDataError) {
+          console.log(`[TechnicalAnalysis] Market data error:`, marketDataError);
+          console.log(`[TechnicalAnalysis] Market data unavailable, checking price history`);
         }
-      } catch (marketDataError) {
-        console.log(`[TechnicalAnalysis] Market data error:`, marketDataError);
-        console.log(`[TechnicalAnalysis] Market data unavailable, checking price history`);
+      } else {
+        // No current price available - return error status
+        return res.json({
+          success: false,
+          status: 'INSUFFICIENT_AUTHENTIC_DATA',
+          symbol: symbol,
+          timeframe: (timeframe || '1d'),
+          message: 'Unable to obtain sufficient authentic data for technical analysis',
+          dataSource: 'CoinMarketCap_API',
+          authenticDataOnly: true,
+          timestamp: new Date().toISOString()
+        });
       }
-      } // Close the if (currentPrice) block
-
-      // Unable to obtain sufficient authentic data - return error status
-      return res.json({
-        success: false,
-        status: 'INSUFFICIENT_AUTHENTIC_DATA',
-        symbol: symbol,
-        timeframe: (timeframe || '1d'),
-        message: 'Unable to obtain sufficient authentic data for technical analysis',
-        dataSource: 'CoinMarketCap_API',
-        authenticDataOnly: true,
-        timestamp: new Date().toISOString()
-      });
       
     } catch (error) {
       console.error('[Routes] Error calculating technical analysis:', error);
