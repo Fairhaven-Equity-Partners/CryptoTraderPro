@@ -174,9 +174,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Fetching crypto asset with symbol: ${symbol}`);
       
       // Import optimized data providers for top 50 cryptocurrencies
-      const { getCoinGeckoId } = await import('./optimizedSymbolMapping.js');
+      const { getCMCSymbol } = await import('./optimizedSymbolMapping.js');
       const { tradingViewProvider } = await import('./tradingViewData.js');
-      const coinGeckoId = getCoinGeckoId(symbol);
+      const { coinMarketCapService } = await import('./coinMarketCapService.js');
+      const cmcSymbol = getCMCSymbol(symbol);
       
       // Try TradingView first for enhanced data capabilities
       if (tradingViewProvider.isAvailable()) {
@@ -200,43 +201,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       
-      // Fallback to CoinGecko for supported cryptocurrencies
-      if (coinGeckoId) {
+      // Use CoinMarketCap for supported cryptocurrencies
+      if (cmcSymbol) {
         try {
-          console.log(`Fetching real-time ${symbol} price from CoinGecko API using ID: ${coinGeckoId}`);
+          const priceData = await coinMarketCapService.fetchPrice(symbol);
           
-          // Add delay to respect rate limits
-          await new Promise(resolve => setTimeout(resolve, 100));
-          
-          const apiKey = process.env.COINGECKO_API_KEY;
-          // Always use standard API endpoint - pro endpoints require paid subscription
-          const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`;
-          
-          const headers: Record<string, string> = {};
-          if (apiKey) {
-            headers['x-cg-demo-api-key'] = apiKey; // Use demo header for free tier
-          }
-          const response = await fetch(apiUrl, { headers });
-          const data = await response.json();
-          console.log(`CoinGecko API response for ${symbol}:`, data);
-          
-          if (data && data[coinGeckoId] && data[coinGeckoId].usd) {
-            const basePrice = data[coinGeckoId].usd;
-            // Add proportional price variations for more realistic display
-            const variation = basePrice * (Math.random() * 0.002 - 0.001); // ±0.1% variation
-            const realTimePrice = parseFloat((basePrice + variation).toFixed(basePrice < 1 ? 6 : 2));
-            const change24h = data[coinGeckoId].usd_24h_change || 0;
-            
-            console.log(`Got real-time ${symbol} price: $${realTimePrice} with 24h change: ${change24h.toFixed(2)}%`);
-            
+          if (priceData) {
             // Get the existing asset first
             const asset = await storage.getCryptoAssetBySymbol(symbol);
             
             if (asset) {
               // Update the asset with real market data
               await storage.updateCryptoAsset(symbol, {
-                lastPrice: realTimePrice,
-                change24h: change24h
+                lastPrice: priceData.price,
+                change24h: priceData.change24h
               });
               
               // Return the updated asset
@@ -245,11 +223,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
         } catch (apiError: any) {
-          console.error(`Failed to fetch ${symbol} from CoinGecko:`, apiError);
-          // If rate limited, use cached data or fallback to storage
-          if (apiError && String(apiError).includes('429')) {
-            console.log(`Rate limited for ${symbol}, using cached data`);
-          }
+          console.error(`Failed to fetch ${symbol} from CoinMarketCap:`, apiError);
           // Continue with normal flow if API call fails
         }
       }
@@ -436,40 +410,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // For other cryptocurrencies, generate authentic market analysis signals
       try {
-        // Fetch current price data from CoinGecko
-        const { getCoinGeckoId } = await import('./optimizedSymbolMapping');
-        const coinGeckoId = getCoinGeckoId(symbol);
+        // Fetch current price data from CoinMarketCap
+        const { getCMCSymbol } = await import('./optimizedSymbolMapping');
+        const { coinMarketCapService } = await import('./coinMarketCapService.js');
+        const cmcSymbol = getCMCSymbol(symbol);
         
-        if (!coinGeckoId) {
+        if (!cmcSymbol) {
           res.json([]);
           return;
         }
         
-        const priceResponse = await fetch(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`,
-          {
-            headers: {
-              'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || ''
-            }
-          }
-        );
+        const priceData = await coinMarketCapService.fetchPrice(symbol);
         
-        if (!priceResponse.ok) {
+        if (!priceData) {
           res.json([]);
           return;
         }
         
-        const priceData = await priceResponse.json();
-        const cryptoData = priceData[coinGeckoId];
-        
-        if (!cryptoData) {
-          res.json([]);
-          return;
-        }
-        
-        const currentPrice = cryptoData.usd;
-        const change24h = cryptoData.usd_24h_change || 0;
-        const marketCap = cryptoData.usd_market_cap || 0;
+        const currentPrice = priceData.price;
+        const change24h = priceData.change24h;
+        const marketCap = priceData.marketCap;
         
         // Generate authentic market analysis signals for the requested timeframe
         const timeframes = timeframe ? [timeframe] : ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
