@@ -155,37 +155,11 @@ export class EnhancedPriceStreamer {
       const cmcSymbol = getCMCSymbol(symbol);
       if (!cmcSymbol) return [];
 
-      // Get current price for synthetic historical data generation
-      const currentPrice = await coinMarketCapService.fetchPrice(cmcSymbol);
-      if (!currentPrice) return [];
-
-      // Generate synthetic OHLC data for technical analysis
-      // Note: CoinMarketCap basic plan doesn't include historical OHLC data
-      const basePrice = currentPrice.price;
-      const ohlcData: OHLCData[] = [];
-      const now = Date.now();
-      
-      for (let i = days; i >= 0; i--) {
-        const timestamp = now - (i * 24 * 60 * 60 * 1000);
-        const dailyVariation = (Math.random() - 0.5) * 0.08; // ±4% daily variation
-        const price = basePrice * (1 + dailyVariation);
-        
-        const open = price * (1 + (Math.random() - 0.5) * 0.02);
-        const close = price * (1 + (Math.random() - 0.5) * 0.02);
-        const high = Math.max(open, close) * (1 + Math.random() * 0.03);
-        const low = Math.min(open, close) * (1 - Math.random() * 0.03);
-        
-        ohlcData.push({
-          timestamp,
-          open,
-          high,
-          low,
-          close,
-          volume: Math.random() * 1000000 + 100000
-        });
-      }
-      
-      return ohlcData.sort((a, b) => a.timestamp - b.timestamp);
+      // REAL DATA ONLY - No synthetic OHLC generation
+      // CoinMarketCap basic plan doesn't include historical OHLC data
+      // Return empty array rather than generate fake data
+      console.log(`[PriceStreamer] Real-data-only mode: No historical OHLC for ${symbol}`);
+      return [];
       
     } catch (error) {
       console.error(`[PriceStreamer] Error fetching historical data for ${symbol}:`, error);

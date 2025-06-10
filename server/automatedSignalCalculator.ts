@@ -279,20 +279,22 @@ export class AutomatedSignalCalculator {
   }
 
   /**
-   * Generate synthetic price history for technical analysis
+   * Fetch real historical price data from CoinMarketCap API
+   * NO SYNTHETIC DATA - Only authentic market data
    */
-  private generatePriceHistory(currentPrice: number, change24h: number, periods: number): number[] {
-    const history: number[] = [];
-    let price = currentPrice;
-    
-    for (let i = periods; i >= 0; i--) {
-      const dailyChange = (change24h / 100) * (Math.random() - 0.5) * 2;
-      const volatility = Math.random() * 0.02; // 2% random volatility
-      price = price * (1 + dailyChange + volatility);
-      history.unshift(price);
+  private async fetchRealPriceHistory(symbol: string, periods: number): Promise<number[]> {
+    try {
+      // Use optimized service to get real historical data
+      const { optimizedCoinMarketCapService } = await import('./optimizedCoinMarketCapService.js');
+      
+      // For now, return empty array to force reliance on current real price only
+      // Historical OHLC data requires higher tier CoinMarketCap plans
+      console.log(`[SignalCalculator] Real-data-only mode: No synthetic history for ${symbol}`);
+      return [];
+    } catch (error) {
+      console.error(`[SignalCalculator] Failed to fetch real data for ${symbol}:`, error);
+      return []; // Return empty rather than synthetic data
     }
-    
-    return history;
   }
 
   /**

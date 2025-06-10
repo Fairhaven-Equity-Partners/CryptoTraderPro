@@ -189,7 +189,7 @@ class CoinMarketCapPriceStreamer {
     const cmcSymbol = getCMCSymbol(symbol);
     if (!cmcSymbol) {
       console.warn(`[CMC PriceStreamer] No CMC symbol mapping found for ${symbol}`);
-      return this.generateFallbackData(symbol, days);
+      return this.getEmptyHistoricalData(symbol, days);
     }
 
     try {
@@ -209,33 +209,17 @@ class CoinMarketCapPriceStreamer {
       
     } catch (error) {
       console.error(`[CMC PriceStreamer] Error fetching historical data for ${symbol}:`, error);
-      return this.generateFallbackData(symbol, days);
+      return this.getEmptyHistoricalData(symbol, days);
     }
   }
 
   /**
-   * Generate fallback historical data for technical analysis
+   * REMOVED: No fallback data generation - Real data only
+   * Returns empty array instead of synthetic data
    */
-  private generateFallbackData(symbol: string, days: number): HistoricalData[] {
-    const currentPrice = this.priceCache.get(symbol)?.price || 50000; // Use cached price or default
-    const data: HistoricalData[] = [];
-    
-    for (let i = days; i >= 0; i--) {
-      const timestamp = Date.now() - (i * 24 * 60 * 60 * 1000);
-      const variance = (Math.random() - 0.5) * 0.1; // ±5% variance
-      const price = currentPrice * (1 + variance);
-      
-      data.push({
-        timestamp,
-        open: price * 0.99,
-        high: price * 1.02,
-        low: price * 0.98,
-        close: price,
-        volume: Math.random() * 1000000000 // Random volume
-      });
-    }
-    
-    return data;
+  private getEmptyHistoricalData(symbol: string, days: number): HistoricalData[] {
+    console.log(`[CMC PriceStreamer] Real-data-only mode: No fallback data for ${symbol}`);
+    return [];
   }
 
   /**
