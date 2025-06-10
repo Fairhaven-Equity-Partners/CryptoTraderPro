@@ -1118,10 +1118,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         adjustedPeriod = timeframePeriods[timeframe as string] || Number(period);
       }
       
+      // Check authentic data availability before attempting calculation
+      const dataQuality = enhancedPriceStreamer.getDataQuality(symbol);
+      const priceHistory = enhancedPriceStreamer.getAuthenticPriceHistory(symbol);
+      
+      // If insufficient authentic data, return data accumulation status
+      if (!priceHistory || priceHistory.length < adjustedPeriod) {
+        const currentDataPoints = priceHistory ? priceHistory.length : 0;
+        const requiredDataPoints = adjustedPeriod;
+        const timeframeDisplay = timeframe || '1d';
+        
+        return res.json({
+          success: false,
+          status: 'INSUFFICIENT_AUTHENTIC_DATA',
+          symbol,
+          currentPrice: currentPrice.price,
+          change24h: currentPrice.change24h,
+          dataAccumulation: {
+            currentDataPoints,
+            requiredDataPoints,
+            progressPercentage: Math.floor((currentDataPoints / requiredDataPoints) * 100),
+            timeframe: timeframeDisplay,
+            estimatedReadyTime: new Date(Date.now() + (requiredDataPoints - currentDataPoints) * 60000).toISOString()
+          },
+          message: `Accumulating authentic ${timeframeDisplay} data for technical analysis. Currently have ${currentDataPoints}/${requiredDataPoints} data points.`,
+          authenticDataOnly: true,
+          phase: 'Phase 1 - Authentic Data Accumulation',
+          timestamp: Date.now()
+        });
+      }
+
       const indicators = await AdvancedTechnicalAnalysis.calculateAllIndicators(symbol, adjustedPeriod);
       
       if (!indicators) {
-        return res.status(500).json({ error: 'Unable to calculate technical indicators' });
+        return res.json({
+          success: false,
+          status: 'CALCULATION_ERROR',
+          symbol,
+          currentPrice: currentPrice.price,
+          change24h: currentPrice.change24h,
+          message: 'Unable to calculate technical indicators with current authentic data',
+          authenticDataOnly: true,
+          dataPoints: priceHistory.length,
+          timestamp: Date.now()
+        });
       }
 
       // Generate trading signal based on real analysis
@@ -1148,6 +1188,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           support: currentPrice.price * 0.95,
           resistance: currentPrice.price * 1.05
         },
+        authenticData: true,
+        dataPoints: priceHistory.length,
         timestamp: Date.now()
       });
       
@@ -1333,7 +1375,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'BTC/USDT and ETH/USDT show most reliable patterns'
       ];
 
-      // If timeframe is specified, filter and adjust data for that timeframe
+      // Always use UI-compatible indicators for response
+      console.log('🚀 [PERFORMANCE-METRICS] Sending UI-compatible response with', uiCompatibleIndicators.length, 'indicators');
+      
       if (timeframe) {
         // Find timeframe-specific performance
         const timeframeData = completeTimeframes.find(tf => tf.timeframe === timeframe);
@@ -1355,7 +1399,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           hitRate: indicator.hitRate
         }));
 
-        // Create timeframe-specific response
+        // Create timeframe-specific response with UI-compatible data
         res.json({
           indicators: adjustedIndicators,
           timeframes: [timeframeData || { timeframe: timeframe as string, actualAccuracy: 75, totalSignals: 0 }],
