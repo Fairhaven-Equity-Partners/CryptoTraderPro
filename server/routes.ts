@@ -1108,6 +1108,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           console.log(`[TechnicalAnalysis] Got fresh price for ${symbol}: $${currentPrice}`);
         }
       }
+      
+      // If still no price, return error
+      if (!currentPrice) {
+        return res.status(404).json({ error: 'Symbol not found or no price data available' });
+      }
 
       // Calculate technical indicators using real historical data
       // If timeframe is provided, adjust the period based on timeframe

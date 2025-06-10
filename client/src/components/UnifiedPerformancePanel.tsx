@@ -184,30 +184,30 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
               <div className="flex justify-between">
                 <span className="text-slate-300">RSI:</span>
                 <span className={`font-semibold ${
-                  technicalData.indicators.rsi > 70 ? 'text-red-400' : 
-                  technicalData.indicators.rsi < 30 ? 'text-green-400' : 'text-white'
-                }`}>{technicalData.indicators.rsi.toFixed(1)}</span>
+                  technicalData.indicators.rsi?.value > 70 ? 'text-red-400' : 
+                  technicalData.indicators.rsi?.value < 30 ? 'text-green-400' : 'text-white'
+                }`}>{technicalData.indicators.rsi?.value?.toFixed(1) || 'N/A'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-300">MACD:</span>
                 <span className={`font-semibold ${
-                  technicalData.indicators.macd > technicalData.indicators.signal ? 'text-green-400' : 'text-red-400'
-                }`}>{technicalData.indicators.macd.toFixed(1)}</span>
+                  (technicalData.indicators.macd?.value || 0) > (technicalData.indicators.macd?.signal || 0) ? 'text-green-400' : 'text-red-400'
+                }`}>{technicalData.indicators.macd?.value?.toFixed(3) || 'N/A'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-300">EMA vs SMA:</span>
+                <span className="text-slate-300">EMA:</span>
                 <span className={`font-semibold ${
-                  technicalData.indicators.ema12 > technicalData.indicators.sma20 ? 'text-green-400' : 'text-red-400'
-                }`}>{(technicalData.indicators.ema12 / technicalData.indicators.sma20 * 100 - 100).toFixed(2)}%</span>
+                  (technicalData.indicators.ema?.value || 0) > (technicalData.indicators.sma?.value || 0) ? 'text-green-400' : 'text-red-400'
+                }`}>${(technicalData.indicators.ema?.value || 0).toFixed(0)}</span>
               </div>
             </div>
             <div className="space-y-1">
               <div className="flex justify-between">
                 <span className="text-slate-300">Stochastic:</span>
                 <span className={`font-semibold ${
-                  technicalData.indicators.stochK > 80 ? 'text-red-400' : 
-                  technicalData.indicators.stochK < 20 ? 'text-green-400' : 'text-white'
-                }`}>{technicalData.indicators.stochK.toFixed(1)}</span>
+                  (technicalData.indicators.stochastic?.k || 0) > 80 ? 'text-red-400' : 
+                  (technicalData.indicators.stochastic?.k || 0) < 20 ? 'text-green-400' : 'text-white'
+                }`}>{technicalData.indicators.stochastic?.k?.toFixed(1) || 'N/A'}%</span>
               </div>
               {currentSignal && (
                 <>
