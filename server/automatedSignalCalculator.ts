@@ -104,7 +104,8 @@ export class AutomatedSignalCalculator {
     try {
       // Fetch authentic market data from CoinGecko API
       const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map(m => m.coinGeckoId).join(',');
-      const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoIds}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true&precision=2`;
+      // Use CoinMarketCap service for price fetching
+      const { coinMarketCapService } = await import('./coinMarketCapService.js');
       
       const response = await fetch(apiUrl, {
         headers: {

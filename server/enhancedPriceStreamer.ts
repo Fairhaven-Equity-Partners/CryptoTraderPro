@@ -13,7 +13,7 @@ interface PriceUpdate {
   change24h: number;
   volume24h?: number;
   timestamp: number;
-  source: 'coingecko' | 'binance';
+  source: 'coinmarketcap' | 'binance';
 }
 
 interface HistoricalData {
@@ -97,7 +97,7 @@ class EnhancedPriceStreamer {
       const idsParam = coinGeckoIds.join(',');
       
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/simple/price?ids=${idsParam}&vs_currencies=usd&include_24hr_change=true&include_24hr_vol=true`,
+        // Use CoinMarketCap service instead
         {
           headers: {
             'Accept': 'application/json',
@@ -124,7 +124,7 @@ class EnhancedPriceStreamer {
             change24h: coinData.usd_24h_change || 0,
             volume24h: coinData.usd_24h_vol || 0,
             timestamp: Date.now(),
-            source: 'coingecko'
+            source: 'coinmarketcap'
           };
 
           this.priceCache.set(crypto.symbol, update);
@@ -231,7 +231,7 @@ class EnhancedPriceStreamer {
       
       // Try hourly data first for more granular historical data
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coinGeckoId}/market_chart?vs_currency=usd&days=90&interval=hourly`,
+        // Historical data from CoinMarketCap (requires different implementation)
         {
           headers: {
             'Accept': 'application/json',
@@ -292,7 +292,7 @@ class EnhancedPriceStreamer {
       const timeoutId = setTimeout(() => controller.abort(), 10000);
       
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${coinGeckoId}/market_chart?vs_currency=usd&days=90&interval=daily`,
+        // Historical data from CoinMarketCap (requires different implementation)
         {
           headers: {
             'Accept': 'application/json',

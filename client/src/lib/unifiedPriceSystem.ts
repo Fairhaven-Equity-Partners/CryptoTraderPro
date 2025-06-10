@@ -8,7 +8,7 @@ interface PriceData {
   price: number;
   change24h: number;
   timestamp: number;
-  source: 'coingecko' | 'cache';
+  source: 'coinmarketcap' | 'cache';
 }
 
 class UnifiedPriceSystem {
@@ -39,7 +39,7 @@ class UnifiedPriceSystem {
     const now = Date.now();
     const cached = this.priceCache.get(symbol);
     
-    if (cached && (now - cached.timestamp) < this.refreshInterval && cached.source === 'coingecko') {
+    if (cached && (now - cached.timestamp) < this.refreshInterval && cached.source === 'coinmarketcap') {
       console.log(`[UnifiedPrice] Using fresh CoinGecko data for ${symbol}: $${cached.price}`);
       return cached.price;
     }
@@ -57,7 +57,7 @@ class UnifiedPriceSystem {
           price: data.lastPrice,
           change24h: data.change24h || 0,
           timestamp: now,
-          source: 'coingecko'
+          source: 'coinmarketcap'
         };
         
         this.priceCache.set(symbol, priceData);
@@ -118,7 +118,7 @@ class UnifiedPriceSystem {
   private broadcastPriceUpdate(symbol: string, price: number): void {
     // Update live price display
     window.dispatchEvent(new CustomEvent('livePriceUpdate', {
-      detail: { symbol, price, forceCalculate: true, source: 'coingecko' }
+      detail: { symbol, price, forceCalculate: true, source: 'coinmarketcap' }
     }));
 
     // Update calculation systems
