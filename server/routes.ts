@@ -1277,6 +1277,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
       } catch (marketDataError) {
+        console.log(`[TechnicalAnalysis] Market data error:`, marketDataError);
         console.log(`[TechnicalAnalysis] Market data unavailable, checking price history`);
       }
 
