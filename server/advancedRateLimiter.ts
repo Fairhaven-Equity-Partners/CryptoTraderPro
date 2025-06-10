@@ -86,7 +86,7 @@ export class AdvancedRateLimiter {
       failures: 0,
       successCount: 0,
       lastFailureTime: 0,
-      openDuration: 60000, // 1 minute
+      openDuration: 15000, // 15 seconds
       thresholds: {
         warning: 0.8,
         throttle: 0.9,
@@ -153,7 +153,7 @@ export class AdvancedRateLimiter {
     this.circuitBreaker.state = 'OPEN';
     this.circuitBreaker.failures++;
     this.circuitBreaker.lastFailureTime = Date.now();
-    console.warn(`[RateLimiter] Circuit breaker opened: ${reason}`);
+    console.log(`[RateLimiter] Circuit breaker opened: ${reason} - will retry in ${this.circuitBreaker.openDuration/1000}s`);
   }
 
   private incrementCounters(): void {
@@ -191,8 +191,8 @@ export class AdvancedRateLimiter {
       this.circuitBreaker.state = 'HALF_OPEN';
     }
 
-    // Critical threshold protection
-    if (status.criticalLevel >= this.circuitBreaker.thresholds.emergency) {
+    // Critical threshold protection - only trigger at true emergency levels
+    if (status.criticalLevel >= 0.99) {
       this.openCircuitBreaker('emergency_threshold');
       return {
         allowed: false,
@@ -201,8 +201,8 @@ export class AdvancedRateLimiter {
       };
     }
 
-    // Adaptive throttling based on utilization
-    if (status.criticalLevel >= this.circuitBreaker.thresholds.throttle) {
+    // Less aggressive throttling - only throttle at very high utilization
+    if (status.criticalLevel >= 0.95) {
       const delay = this.calculateAdaptiveDelay(status.criticalLevel);
       const timeSinceLastCall = Date.now() - this.lastCall;
       
