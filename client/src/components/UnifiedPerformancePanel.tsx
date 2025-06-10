@@ -29,18 +29,19 @@ interface TechnicalAnalysisData {
   };
 }
 
-// Types for performance metrics
+// Types for performance metrics - Updated to match actual API response
 interface PerformanceMetrics {
   indicators: Array<{
     indicator: string;
-    hitRate: number;
-    signalQuality: number;
+    value: string | number;
+    status: string;
+    change: string;
   }>;
-  timeframes: Array<{
+  timeframes?: Array<{
     timeframe: string;
     actualAccuracy: number;
   }>;
-  symbols: Array<{
+  symbols?: Array<{
     symbol: string;
     avgAccuracy: number;
   }>;
@@ -308,6 +309,35 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
           </div>
         )}
       </div>
+
+      {/* Performance Metrics Section */}
+      {performanceData?.indicators && performanceData.indicators.length > 0 && (
+        <div className="mt-3 p-2 bg-gray-900/50 rounded border border-gray-800">
+          <h5 className="text-blue-300 font-medium text-xs mb-2">📊 Performance Analysis</h5>
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
+            {performanceData.indicators.map((indicator, index) => (
+              <div key={index} className="flex justify-between">
+                <span className="text-slate-300">{indicator.indicator}:</span>
+                <div className="flex items-center gap-1">
+                  <span className={`font-medium ${
+                    indicator.status === 'GOOD' ? 'text-green-400' : 
+                    indicator.status === 'WARNING' ? 'text-yellow-400' : 
+                    indicator.status === 'CRITICAL' ? 'text-red-400' : 'text-white'
+                  }`}>
+                    {typeof indicator.value === 'number' ? indicator.value.toFixed(1) : indicator.value}
+                  </span>
+                  <span className={`text-xs ${
+                    indicator.change.includes('+') ? 'text-green-400' : 
+                    indicator.change.includes('-') ? 'text-red-400' : 'text-slate-400'
+                  }`}>
+                    {indicator.change}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* AI Insights */}
       <div className="mt-2 text-xs text-slate-400">
