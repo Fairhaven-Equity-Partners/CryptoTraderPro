@@ -3,7 +3,7 @@
  * Validates that authentic price data accumulation is working correctly
  */
 
-const http = require('http');
+import http from 'http';
 
 class Phase1StatusCheck {
   constructor() {
