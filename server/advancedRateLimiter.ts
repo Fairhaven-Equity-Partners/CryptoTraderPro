@@ -203,25 +203,27 @@ export class AdvancedRateLimiter {
       console.log('[RateLimiter] Circuit breaker transitioning to HALF_OPEN');
     }
 
-    // Much more lenient emergency protection - only at true limits
+    // Emergency protection only for genuine API limits (not rate limiting)
     if (status.criticalLevel >= 1.0) {
-      this.recordFailure('emergency_limit');
+      // Only record as failure if it's a genuine API error, not rate limiting
+      console.log(`[RateLimiter] True API limit reached: ${status.criticalLevel}`);
+      this.recordFailure('api_limit');
       return {
         allowed: false,
-        reason: 'emergency_limit',
-        retryAfter: Math.min(3000, status.nextResetIn)
+        reason: 'api_limit',
+        retryAfter: Math.min(2000, status.nextResetIn)
       };
     }
 
-    // Adaptive throttling only at very high utilization
+    // Gentle throttling at very high utilization - no circuit breaker involvement
     if (status.criticalLevel >= 0.98) {
-      const delay = Math.min(2000, this.calculateAdaptiveDelay(status.criticalLevel));
+      const delay = Math.min(1000, this.calculateAdaptiveDelay(status.criticalLevel));
       const timeSinceLastCall = Date.now() - this.lastCall;
       
       if (timeSinceLastCall < delay) {
         return {
           allowed: false,
-          reason: 'adaptive_throttling',
+          reason: 'gentle_throttling',
           retryAfter: delay - timeSinceLastCall,
           suggestedDelay: delay
         };
@@ -264,13 +266,18 @@ export class AdvancedRateLimiter {
   }
 
   recordFailure(reason: string): void {
-    this.circuitBreaker.failures++;
-    // Only open circuit breaker for genuine API failures, not rate limits
-    if (reason === 'api_error' && this.circuitBreaker.failures >= 15) {
-      this.openCircuitBreaker(reason);
-    } else if (reason === 'rate_limit' && this.circuitBreaker.failures >= 25) {
-      // More lenient for rate limit failures - these are expected
-      this.openCircuitBreaker(reason);
+    // Only count genuine API failures for circuit breaker logic
+    if (reason === 'api_limit' || reason === 'emergency_limit') {
+      this.circuitBreaker.failures++;
+      console.log(`[RateLimiter] API failure recorded: ${reason} (${this.circuitBreaker.failures}/30)`);
+      
+      // Very high threshold - only open for persistent API failures
+      if (this.circuitBreaker.failures >= 30) {
+        this.openCircuitBreaker(reason);
+      }
+    } else {
+      // Rate limiting is normal behavior - don't count as failures
+      console.log(`[RateLimiter] Rate limiting active: ${reason} (normal operation)`);
     }
   }
 
