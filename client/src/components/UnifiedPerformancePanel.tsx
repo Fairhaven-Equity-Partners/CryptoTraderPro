@@ -3,29 +3,62 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
-// Types for technical analysis data
+// Types for technical analysis data - Updated to match actual API response
 interface TechnicalAnalysisData {
   success: boolean;
   symbol: string;
   currentPrice: number;
-  change24h: number;
-  signal: {
-    direction: string;
-    confidence: number;
+  timeframe: string;
+  timestamp: string;
+  dataSource: string;
+  marketData: {
+    volume24h: number;
+    change24h: number;
+    volatility: number;
+  };
+  indicators: {
+    rsi: {
+      value: number;
+      signal: string;
+      status: string;
+      strength: string;
+    };
+    macd: {
+      value: number;
+      signal: number;
+      histogram: number;
+      crossover: string;
+      strength: string;
+    };
+    ema: {
+      value: number;
+      signal: string;
+      deviation: number;
+    };
+    sma: {
+      value: number;
+      signal: string;
+      deviation: number;
+    };
+    stochastic: {
+      k: number;
+      d: number;
+      signal: string;
+      status: string;
+    };
+    bollingerBands: {
+      upper: number;
+      middle: number;
+      lower: number;
+      position: string;
+      squeeze: boolean;
+    };
   };
   analysis: {
     trend: string;
-  };
-  indicators: {
-    rsi: number;
-    macd: number;
-    signal: number;
-    ema12: number;
-    sma20: number;
-    upperBB: number;
-    lowerBB: number;
-    stochK: number;
-    atr: number;
+    strength: string;
+    recommendation: string;
+    confidence: number;
   };
 }
 
@@ -148,25 +181,30 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
         {technicalData?.success ? (
           <>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-slate-300">Signal</span>
-              <span className={`text-xs font-semibold ${getSignalColor(technicalData.signal?.direction || 'NEUTRAL')}`}>
-                {technicalData.signal?.direction || 'NEUTRAL'} {technicalData.signal?.confidence || 0}%
+              <span className="text-xs text-slate-300">Analysis</span>
+              <span className={`text-xs font-semibold ${
+                technicalData.analysis?.recommendation === 'BUY' ? 'text-green-400' : 
+                technicalData.analysis?.recommendation === 'SELL' ? 'text-red-400' : 'text-yellow-400'
+              }`}>
+                {technicalData.analysis?.recommendation || 'HOLD'} {Math.round(technicalData.analysis?.confidence || 0)}%
               </span>
             </div>
             <div className="flex justify-between items-center">
               <div>
                 <p className="text-sm font-semibold text-white">{formatPrice(technicalData.currentPrice || 0)}</p>
-                <p className={`text-xs ${(technicalData.change24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {formatPercent(technicalData.change24h || 0)}
+                <p className={`text-xs ${(technicalData.marketData?.change24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {formatPercent(technicalData.marketData?.change24h || 0)}
                 </p>
               </div>
               <div className="text-right">
                 <div className="flex items-center gap-1">
                   {technicalData.analysis?.trend === 'BULLISH' ? 
                     <TrendingUp className="h-3 w-3 text-green-400" /> : 
-                    <TrendingDown className="h-3 w-3 text-red-400" />
+                    technicalData.analysis?.trend === 'BEARISH' ?
+                    <TrendingDown className="h-3 w-3 text-red-400" /> :
+                    <TrendingUp className="h-3 w-3 text-yellow-400" />
                   }
-                  <span className="text-xs text-slate-300">{technicalData.analysis?.trend || 'NEUTRAL'}</span>
+                  <span className="text-xs text-slate-300">{technicalData.analysis?.trend || 'SIDEWAYS'}</span>
                 </div>
               </div>
             </div>
@@ -186,8 +224,8 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
               <div className="flex justify-between">
                 <span className="text-slate-300">RSI:</span>
                 <span className={`font-semibold ${
-                  technicalData.indicators.rsi?.value > 70 ? 'text-red-400' : 
-                  technicalData.indicators.rsi?.value < 30 ? 'text-green-400' : 'text-white'
+                  (technicalData.indicators.rsi?.value || 0) > 70 ? 'text-red-400' : 
+                  (technicalData.indicators.rsi?.value || 0) < 30 ? 'text-green-400' : 'text-white'
                 }`}>{technicalData.indicators.rsi?.value?.toFixed(1) || 'N/A'}</span>
               </div>
               <div className="flex justify-between">
@@ -200,7 +238,7 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
                 <span className="text-slate-300">EMA:</span>
                 <span className={`font-semibold ${
                   (technicalData.indicators.ema?.value || 0) > (technicalData.indicators.sma?.value || 0) ? 'text-green-400' : 'text-red-400'
-                }`}>${(technicalData.indicators.ema?.value || 0).toFixed(0)}</span>
+                }`}>${Math.round(technicalData.indicators.ema?.value || 0).toLocaleString()}</span>
               </div>
             </div>
             <div className="space-y-1">
