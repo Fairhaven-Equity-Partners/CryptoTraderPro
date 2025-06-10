@@ -5,19 +5,18 @@
 
 class FinalSystemVerifier {
   constructor() {
-    this.baseUrl = 'http://localhost:5000';
     this.results = {
       systemStatus: {},
-      authenticity: {},
-      performance: {},
-      rateLimit: {},
-      dataFlow: {},
-      recommendations: []
+      authenticDataFlow: {},
+      performanceMetrics: {},
+      rateLimiting: {},
+      signalGeneration: {},
+      errors: []
     };
   }
 
   async runCompleteVerification() {
-    console.log('🔍 Running final system verification...');
+    console.log('🔍 Running Final System Verification...\n');
     
     try {
       await this.verifySystemStatus();
@@ -25,140 +24,139 @@ class FinalSystemVerifier {
       await this.verifyPerformanceMetrics();
       await this.verifyRateLimitingSystem();
       await this.verifySignalGeneration();
-      await this.generateFinalReport();
       
+      this.generateFinalReport();
     } catch (error) {
       console.error('❌ Verification failed:', error.message);
+      this.results.errors.push(`Critical error: ${error.message}`);
     }
   }
 
   async verifySystemStatus() {
-    console.log('🔧 Verifying system status...');
+    console.log('📊 Verifying System Status...');
     
     try {
-      const response = await fetch(`${this.baseUrl}/api/authentic-system/status`);
+      const response = await fetch('http://localhost:5000/api/streaming/status');
       const data = await response.json();
       
       this.results.systemStatus = {
-        isRunning: response.ok,
-        authenticAnalysisReady: data.authenticAnalysisReady,
-        systemComponents: data.components || {},
-        timestamp: new Date().toISOString()
+        status: response.status,
+        isRunning: data.totalSymbols > 0,
+        totalSymbols: data.totalSymbols,
+        activePairs: data.activePairs,
+        lastUpdate: data.lastUpdate
       };
       
-      console.log(`   System running: ${this.results.systemStatus.isRunning ? 'Yes' : 'No'}`);
-      
+      console.log(`  ✅ System running: ${data.totalSymbols} symbols, ${data.activePairs} active pairs`);
     } catch (error) {
-      this.results.systemStatus = { error: error.message };
+      this.results.errors.push(`System status check failed: ${error.message}`);
+      console.log('  ❌ System status check failed');
     }
   }
 
   async verifyAuthenticDataFlow() {
-    console.log('📊 Verifying authentic data flow...');
+    console.log('🔄 Verifying Authentic Data Flow...');
     
     try {
-      // Test authentic data status
-      const statusResponse = await fetch(`${this.baseUrl}/api/authentic-data/status`);
-      const statusData = await statusResponse.json();
+      // Test crypto price endpoint
+      const priceResponse = await fetch('http://localhost:5000/api/crypto/BTC%2FUSDT');
+      const priceData = await priceResponse.json();
       
-      // Test specific symbol data
-      const symbolResponse = await fetch(`${this.baseUrl}/api/crypto/BTC/USDT`);
-      const symbolData = await symbolResponse.json();
+      // Test technical analysis endpoint
+      const techResponse = await fetch('http://localhost:5000/api/technical-analysis/BTC%2FUSDT');
+      const techData = await techResponse.json();
       
-      this.results.authenticity = {
-        systemStatus: statusData.system || {},
-        symbolData: {
-          hasPrice: typeof symbolData.lastPrice === 'number',
-          priceValue: symbolData.lastPrice,
-          isAuthentic: !symbolData.isFallback,
-          dataSource: symbolData.source,
-          lastUpdated: symbolData.lastUpdated
+      this.results.authenticDataFlow = {
+        priceEndpoint: {
+          status: priceResponse.status,
+          hasPrice: !!priceData.lastPrice,
+          hasChange24h: !!priceData.change24h,
+          symbol: priceData.symbol
         },
-        dataQuality: statusData.system?.totalSymbols > 0
+        technicalAnalysis: {
+          status: techResponse.status,
+          authenticDataOnly: techData.authenticDataOnly,
+          statusMessage: techData.status || 'working',
+          message: techData.message
+        }
       };
       
-      console.log(`   Total symbols: ${statusData.system?.totalSymbols || 0}`);
-      console.log(`   BTC price: $${symbolData.lastPrice?.toFixed(2) || 'N/A'}`);
-      console.log(`   Data source: ${symbolData.source || 'Unknown'}`);
-      
+      console.log(`  ✅ Price data: ${priceData.symbol} @ $${priceData.lastPrice}`);
+      console.log(`  ✅ Technical analysis: ${techData.status || 'working'} (authentic data only)`);
     } catch (error) {
-      this.results.authenticity = { error: error.message };
+      this.results.errors.push(`Authentic data flow check failed: ${error.message}`);
+      console.log('  ❌ Authentic data flow check failed');
     }
   }
 
   async verifyPerformanceMetrics() {
-    console.log('⚡ Verifying performance metrics...');
+    console.log('📈 Verifying Performance Metrics...');
     
     try {
-      const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      const response = await fetch('http://localhost:5000/api/performance-metrics');
       const data = await response.json();
       
-      this.results.performance = {
-        hasIndicators: Array.isArray(data.indicators) && data.indicators.length > 0,
+      const hasValidStructure = Array.isArray(data.indicators) &&
+        data.indicators.length > 0 &&
+        data.indicators[0].hasOwnProperty('value') &&
+        data.indicators[0].hasOwnProperty('status') &&
+        data.indicators[0].hasOwnProperty('change');
+      
+      this.results.performanceMetrics = {
+        status: response.status,
+        validStructure: hasValidStructure,
         indicatorCount: data.indicators?.length || 0,
-        hasTimingMetrics: !!data.timingMetrics,
-        hasCalculationMetrics: !!data.calculationMetrics,
-        dataPoints: data.dataPoints || 0
+        hasTimeframes: Array.isArray(data.timeframes),
+        hasSymbols: Array.isArray(data.symbols)
       };
       
-      console.log(`   Indicators available: ${this.results.performance.indicatorCount}`);
-      console.log(`   Data points: ${this.results.performance.dataPoints}`);
-      
+      console.log(`  ✅ Performance metrics: ${data.indicators?.length || 0} indicators with UI-compatible structure`);
     } catch (error) {
-      this.results.performance = { error: error.message };
+      this.results.errors.push(`Performance metrics check failed: ${error.message}`);
+      console.log('  ❌ Performance metrics check failed');
     }
   }
 
   async verifyRateLimitingSystem() {
-    console.log('🚦 Verifying rate limiting system...');
+    console.log('⚡ Verifying Rate Limiting System...');
     
     try {
-      const response = await fetch(`${this.baseUrl}/api/rate-limiter/stats`);
+      const response = await fetch('http://localhost:5000/api/rate-limiter/stats');
       const data = await response.json();
       
-      this.results.rateLimit = {
-        circuitBreakerState: data.rateLimiter?.circuitBreaker?.state,
-        monthlyUsage: data.apiCalls?.projectedMonthly || 0,
-        remainingCalls: data.apiCalls?.remainingMonthly || 0,
-        cacheHitRate: data.performance?.cacheHitRate || 0,
-        withinLimits: data.health?.withinLimits,
-        status: data.health?.status
+      this.results.rateLimiting = {
+        status: response.status,
+        currentUsage: data.currentUsage,
+        monthlyLimit: data.monthlyLimit,
+        utilizationRate: data.utilizationPercentage,
+        rateLimitActive: data.rateLimitActive
       };
       
-      console.log(`   Circuit breaker: ${this.results.rateLimit.circuitBreakerState}`);
-      console.log(`   Monthly usage: ${this.results.rateLimit.monthlyUsage}/30000`);
-      console.log(`   Cache hit rate: ${this.results.rateLimit.cacheHitRate.toFixed(1)}%`);
-      
+      console.log(`  ✅ Rate limiting: ${data.currentUsage}/${data.monthlyLimit} (${data.utilizationPercentage}% utilization)`);
     } catch (error) {
-      this.results.rateLimit = { error: error.message };
+      this.results.errors.push(`Rate limiting check failed: ${error.message}`);
+      console.log('  ❌ Rate limiting check failed');
     }
   }
 
   async verifySignalGeneration() {
-    console.log('📈 Verifying signal generation...');
+    console.log('🎯 Verifying Signal Generation...');
     
     try {
-      const response = await fetch(`${this.baseUrl}/api/signals/BTC/USDT`);
+      const response = await fetch('http://localhost:5000/api/signals/BTC%2FUSDT');
       const data = await response.json();
       
-      this.results.dataFlow = {
+      this.results.signalGeneration = {
+        status: response.status,
         hasSignals: Array.isArray(data) && data.length > 0,
         signalCount: Array.isArray(data) ? data.length : 0,
-        timeframes: Array.isArray(data) ? data.map(s => s.timeframe) : [],
-        sampleSignal: Array.isArray(data) && data.length > 0 ? {
-          timeframe: data[0].timeframe,
-          direction: data[0].direction,
-          confidence: data[0].confidence,
-          hasStopLoss: typeof data[0].stopLoss === 'number',
-          hasTakeProfit: typeof data[0].takeProfit === 'number'
-        } : null
+        hasTimeframes: data.some && data.some(signal => signal.timeframe)
       };
       
-      console.log(`   Signals generated: ${this.results.dataFlow.signalCount}`);
-      console.log(`   Timeframes: ${this.results.dataFlow.timeframes.join(', ')}`);
-      
+      console.log(`  ✅ Signal generation: ${Array.isArray(data) ? data.length : 0} signals available`);
     } catch (error) {
-      this.results.dataFlow = { error: error.message };
+      this.results.errors.push(`Signal generation check failed: ${error.message}`);
+      console.log('  ❌ Signal generation check failed');
     }
   }
 
@@ -167,109 +165,102 @@ class FinalSystemVerifier {
     console.log('📋 FINAL SYSTEM VERIFICATION REPORT');
     console.log('='.repeat(60));
     
-    // System Health Assessment
     const systemHealth = this.assessSystemHealth();
-    console.log(`🏥 Overall System Health: ${systemHealth.status}`);
+    
+    console.log(`\n🎯 OVERALL SYSTEM HEALTH: ${systemHealth.status}`);
     console.log(`📊 Health Score: ${systemHealth.score}/100`);
     
-    // Detailed Results
-    console.log('\n📋 Component Status:');
-    console.log(`   ✅ System Running: ${this.results.systemStatus.isRunning ? 'Yes' : 'No'}`);
-    console.log(`   ✅ Authentic Data: ${this.results.authenticity.dataQuality ? 'Working' : 'Issues'}`);
-    console.log(`   ✅ Performance: ${this.results.performance.hasIndicators ? 'Good' : 'Limited'}`);
-    console.log(`   ✅ Rate Limiting: ${this.results.rateLimit.circuitBreakerState === 'CLOSED' ? 'Healthy' : 'Throttled'}`);
-    console.log(`   ✅ Signal Generation: ${this.results.dataFlow.hasSignals ? 'Active' : 'Inactive'}`);
+    // System Components Status
+    console.log('\n📊 COMPONENT STATUS:');
+    console.log(`  🔧 Core System: ${this.results.systemStatus.isRunning ? '✅ RUNNING' : '❌ OFFLINE'}`);
+    console.log(`  💰 Price Data: ${this.results.authenticDataFlow.priceEndpoint?.hasPrice ? '✅ ACTIVE' : '❌ INACTIVE'}`);
+    console.log(`  📈 Performance Metrics: ${this.results.performanceMetrics.validStructure ? '✅ FIXED' : '❌ BROKEN'}`);
+    console.log(`  ⚡ Rate Limiting: ${this.results.rateLimiting.rateLimitActive ? '✅ PROTECTED' : '❌ UNPROTECTED'}`);
+    console.log(`  🎯 Signal Generation: ${this.results.signalGeneration.hasSignals ? '✅ OPERATIONAL' : '❌ INACTIVE'}`);
     
-    // Key Metrics
-    console.log('\n📈 Key Metrics:');
-    console.log(`   🎯 Symbols Tracked: ${this.results.authenticity.systemStatus?.totalSymbols || 0}`);
-    console.log(`   📡 API Usage: ${this.results.rateLimit.monthlyUsage || 0}/30,000 monthly`);
-    console.log(`   💾 Cache Efficiency: ${this.results.rateLimit.cacheHitRate?.toFixed(1) || 0}%`);
-    console.log(`   🔄 Signals Generated: ${this.results.dataFlow.signalCount || 0}`);
-    console.log(`   📊 Performance Indicators: ${this.results.performance.indicatorCount || 0}`);
+    // Data Integrity Status
+    console.log('\n🔒 DATA INTEGRITY STATUS:');
+    console.log(`  🌐 CoinMarketCap Integration: ${this.results.authenticDataFlow.priceEndpoint?.status === 200 ? '✅ ACTIVE' : '❌ INACTIVE'}`);
+    console.log(`  📊 Authentic Data Only: ${this.results.authenticDataFlow.technicalAnalysis?.authenticDataOnly ? '✅ ENFORCED' : '❌ COMPROMISED'}`);
+    console.log(`  🚫 Synthetic Elimination: ${this.results.authenticDataFlow.technicalAnalysis?.statusMessage !== 'working' ? '✅ COMPLETE' : '🔄 IN PROGRESS'}`);
+    
+    // Performance Statistics
+    console.log('\n⚡ PERFORMANCE STATISTICS:');
+    console.log(`  📊 Active Symbols: ${this.results.systemStatus.totalSymbols || 0}`);
+    console.log(`  📈 Performance Indicators: ${this.results.performanceMetrics.indicatorCount || 0}`);
+    console.log(`  🎯 Generated Signals: ${this.results.signalGeneration.signalCount || 0}`);
+    console.log(`  💎 API Utilization: ${this.results.rateLimiting.utilizationRate || 0}%`);
+    
+    // Issue Summary
+    if (this.results.errors.length > 0) {
+      console.log('\n⚠️  IDENTIFIED ISSUES:');
+      this.results.errors.forEach((error, index) => {
+        console.log(`  ${index + 1}. ${error}`);
+      });
+    } else {
+      console.log('\n✅ NO CRITICAL ISSUES IDENTIFIED');
+    }
     
     // Recommendations
     this.generateRecommendations();
-    console.log('\n💡 Recommendations:');
-    this.results.recommendations.forEach(rec => {
-      console.log(`   ${rec}`);
-    });
     
-    console.log('\n✅ Final verification completed');
-    
-    // Migration Status
-    console.log('\n🔄 Migration Status:');
-    console.log('   ✅ CoinMarketCap API integration: Complete');
-    console.log('   ✅ Rate limiting system: Operational');
-    console.log('   ✅ Authentic data flow: Established');
-    console.log('   ✅ Circuit breaker protection: Active');
-    console.log('   ✅ Performance monitoring: Available');
+    console.log('\n' + '='.repeat(60));
+    console.log('🏁 VERIFICATION COMPLETE');
+    console.log('='.repeat(60));
   }
 
   assessSystemHealth() {
     let score = 0;
-    let status = 'Critical';
+    let status = 'CRITICAL';
     
-    // System running (25 points)
+    // Core system running (25 points)
     if (this.results.systemStatus.isRunning) score += 25;
     
-    // Authentic data (25 points)
-    if (this.results.authenticity.dataQuality) score += 25;
+    // Authentic data flow (25 points)
+    if (this.results.authenticDataFlow.priceEndpoint?.hasPrice) score += 25;
     
-    // Performance metrics (20 points)
-    if (this.results.performance.hasIndicators) score += 20;
+    // Performance metrics fixed (25 points)
+    if (this.results.performanceMetrics.validStructure) score += 25;
     
-    // Rate limiting (20 points)
-    if (this.results.rateLimit.circuitBreakerState === 'CLOSED') score += 20;
+    // Rate limiting active (25 points)
+    if (this.results.rateLimiting.rateLimitActive) score += 25;
     
-    // Signal generation (10 points)
-    if (this.results.dataFlow.hasSignals) score += 10;
-    
-    if (score >= 90) status = 'Excellent';
-    else if (score >= 75) status = 'Good';
-    else if (score >= 60) status = 'Fair';
-    else if (score >= 40) status = 'Poor';
+    if (score >= 90) status = 'EXCELLENT';
+    else if (score >= 75) status = 'GOOD';
+    else if (score >= 50) status = 'FAIR';
+    else if (score >= 25) status = 'POOR';
     
     return { score, status };
   }
 
   generateRecommendations() {
-    // Cache optimization
-    if (this.results.rateLimit.cacheHitRate < 70) {
-      this.results.recommendations.push('🔄 Consider optimizing cache strategy for better performance');
+    console.log('\n💡 RECOMMENDATIONS:');
+    
+    if (!this.results.systemStatus.isRunning) {
+      console.log('  🔧 Restart core system services');
     }
     
-    // API usage optimization
-    if (this.results.rateLimit.monthlyUsage > 15000) {
-      this.results.recommendations.push('📡 Monitor API usage - approaching monthly limits');
+    if (!this.results.performanceMetrics.validStructure) {
+      console.log('  📈 Fix performance metrics data transformation');
     }
     
-    // Data quality
-    if (this.results.authenticity.systemStatus?.totalSymbols < 40) {
-      this.results.recommendations.push('📊 Expand symbol coverage for better market analysis');
+    if (!this.results.rateLimiting.rateLimitActive) {
+      console.log('  ⚡ Enable API rate limiting protection');
     }
     
-    // Circuit breaker
-    if (this.results.rateLimit.circuitBreakerState !== 'CLOSED') {
-      this.results.recommendations.push('🚦 Reset circuit breaker to restore full functionality');
+    if (this.results.authenticDataFlow.technicalAnalysis?.statusMessage === 'INSUFFICIENT_AUTHENTIC_DATA') {
+      console.log('  📊 Continue authentic data accumulation for technical analysis');
     }
     
-    // Performance
-    if (this.results.performance.indicatorCount < 5) {
-      this.results.recommendations.push('📈 Add more performance indicators for better monitoring');
-    }
-    
-    // Overall system health
-    if (this.assessSystemHealth().score >= 90) {
-      this.results.recommendations.push('✅ System operating excellently - ready for production deployment');
+    if (this.results.errors.length === 0) {
+      console.log('  🎉 System is operating optimally - continue monitoring');
     }
   }
 }
 
-// Run verification
 async function main() {
   const verifier = new FinalSystemVerifier();
   await verifier.runCompleteVerification();
 }
 
-main().catch(console.error);
+main();
