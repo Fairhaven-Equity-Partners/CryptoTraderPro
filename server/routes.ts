@@ -16,6 +16,7 @@ import { feedbackAnalyzer } from "./feedbackAnalyzer";
 import { enhancedPriceStreamer } from "./enhancedPriceStreamer";
 import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
 import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
+import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);

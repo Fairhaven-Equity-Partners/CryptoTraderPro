@@ -780,7 +780,7 @@ class MasterTestOrchestrator {
 }
 
 // Export for external usage
-module.exports = MasterTestOrchestrator;
+export default MasterTestOrchestrator;
 
 // Run if called directly
 if (require.main === module) {
