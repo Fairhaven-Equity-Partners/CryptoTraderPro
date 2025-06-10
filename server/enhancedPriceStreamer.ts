@@ -1,10 +1,12 @@
 /**
  * Enhanced Price Streamer with CoinMarketCap Integration
  * Real-time price streaming for 50+ cryptocurrency pairs
+ * Now integrated with authentic price history accumulation
  */
 
 import WebSocket, { WebSocketServer } from 'ws';
 import { TOP_50_SYMBOL_MAPPINGS, getCMCSymbol, type SymbolMapping } from './optimizedSymbolMapping.js';
+import { AuthenticPriceHistoryManager } from './authenticPriceHistoryManager.js';
 
 interface PriceUpdate {
   symbol: string;
@@ -35,8 +37,10 @@ export class EnhancedPriceStreamer {
   private priceCache: Map<string, CachedPrice> = new Map();
   private updateInterval: NodeJS.Timeout | null = null;
   private readonly UPDATE_INTERVAL = 30000; // 30 seconds
+  private authenticPriceHistory: AuthenticPriceHistoryManager;
 
   constructor() {
+    this.authenticPriceHistory = new AuthenticPriceHistoryManager();
     this.startPriceUpdates();
   }
 
