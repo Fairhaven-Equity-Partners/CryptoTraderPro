@@ -1349,6 +1349,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Circuit breaker reset endpoint for recovery
+  app.post('/api/rate-limiter/reset', (req: Request, res: Response) => {
+    try {
+      optimizedCoinMarketCapService.resetCircuitBreaker();
+      res.json({
+        success: true,
+        message: 'Circuit breaker reset successfully',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      res.status(500).json({ 
+        error: 'Failed to reset circuit breaker',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
   // Authentic Price History System Status
   app.get('/api/authentic-data/status', (req: Request, res: Response) => {
     try {

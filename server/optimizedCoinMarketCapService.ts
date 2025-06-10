@@ -326,6 +326,13 @@ export class OptimizedCoinMarketCapService {
   }
 
   /**
+   * Reset circuit breaker for recovery
+   */
+  resetCircuitBreaker(): void {
+    this.rateLimiter.resetCircuitBreaker();
+  }
+
+  /**
    * Get health status
    */
   getHealthStatus(): any {
