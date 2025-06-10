@@ -1182,17 +1182,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Performance metrics endpoint with timeframe support
   app.get('/api/performance-metrics', async (req: Request, res: Response) => {
     try {
+      // Disable caching to ensure UI transformation is always applied
+      res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+      res.set('Pragma', 'no-cache');
+      res.set('Expires', '0');
+      
       const { timeframe } = req.query;
       
-      console.log('[Routes] Processing performance metrics request with UI transformation');
+      console.log('🔄 [PERFORMANCE-METRICS] Starting request processing with UI transformation');
       
       // Get performance metrics from feedback analyzer
       let performanceData;
       try {
         performanceData = await feedbackAnalyzer.getPerformanceMetrics();
-        console.log('[Routes] Feedback analyzer data retrieved, applying UI transformation');
+        console.log('✅ [PERFORMANCE-METRICS] Raw feedback data retrieved - transforming to UI format');
       } catch (feedbackError) {
-        console.log('[Routes] Feedback analyzer unavailable, generating fallback metrics');
+        console.log('⚠️ [PERFORMANCE-METRICS] Feedback analyzer unavailable, using fallback');
         performanceData = null;
       }
       
@@ -1200,6 +1205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let uiCompatibleIndicators = [];
       
       if (performanceData?.indicators && Array.isArray(performanceData.indicators)) {
+        console.log('📊 [PERFORMANCE-METRICS] Transforming', performanceData.indicators.length, 'indicators to UI format');
         // Transform authentic feedback analyzer data
         uiCompatibleIndicators = performanceData.indicators.map(indicator => ({
           indicator: indicator.indicator,
@@ -1212,6 +1218,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           signalQuality: indicator.confidenceAccuracy || 85,
           hitRate: indicator.hitRate
         }));
+        console.log('✅ [PERFORMANCE-METRICS] UI transformation complete -', uiCompatibleIndicators.length, 'indicators with value/status/change fields');
       } else {
         // Fallback UI-compatible indicators when feedback analyzer unavailable
         uiCompatibleIndicators = [
