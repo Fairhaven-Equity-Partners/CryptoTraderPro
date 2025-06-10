@@ -143,16 +143,22 @@ class Phase4SyntheticEliminationEngine {
    * Verify authentic data quality for signal generation
    */
   private async verifyAuthenticDataQuality(symbol: string): Promise<'insufficient' | 'basic' | 'good' | 'excellent'> {
-    const historyData = authenticPriceHistoryManager.getSymbolHistory(symbol);
-    
-    if (!historyData || historyData.prices.length < 20) {
+    try {
+      // Use existing price history validation approach
+      const historyStatus = await authenticPriceHistoryManager.getDataQuality(symbol);
+      
+      if (!historyStatus || historyStatus.pointCount < 20) {
+        return 'insufficient';
+      } else if (historyStatus.pointCount < 50) {
+        return 'basic';
+      } else if (historyStatus.pointCount < 100) {
+        return 'good';
+      } else {
+        return 'excellent';
+      }
+    } catch (error) {
+      console.log(`[Phase4] Error checking data quality for ${symbol}: ${error}`);
       return 'insufficient';
-    } else if (historyData.prices.length < 50) {
-      return 'basic';
-    } else if (historyData.prices.length < 100) {
-      return 'good';
-    } else {
-      return 'excellent';
     }
   }
 
