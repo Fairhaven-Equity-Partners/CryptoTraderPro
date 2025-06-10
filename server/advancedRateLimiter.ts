@@ -86,11 +86,11 @@ export class AdvancedRateLimiter {
       failures: 0,
       successCount: 0,
       lastFailureTime: 0,
-      openDuration: 300000, // 5 minutes
+      openDuration: 60000, // 1 minute
       thresholds: {
-        warning: 0.7,
-        throttle: 0.85,
-        emergency: 0.95
+        warning: 0.8,
+        throttle: 0.9,
+        emergency: 0.98
       }
     };
 
