@@ -86,11 +86,11 @@ export class AdvancedRateLimiter {
       failures: 0,
       successCount: 0,
       lastFailureTime: 0,
-      openDuration: 10000, // Reduced to 10 seconds for faster recovery
+      openDuration: 5000, // Faster recovery - 5 seconds
       thresholds: {
-        warning: 0.85, // More lenient thresholds
-        throttle: 0.92,
-        emergency: 0.99 // Only trigger at true emergency
+        warning: 0.90, // Much more lenient thresholds
+        throttle: 0.95,
+        emergency: 0.98 // Only at near-absolute limit
       }
     };
 
