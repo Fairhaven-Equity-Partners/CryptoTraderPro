@@ -147,8 +147,8 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
           <>
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs text-slate-300">Signal</span>
-              <span className={`text-xs font-semibold ${getSignalColor(technicalData.signal.direction)}`}>
-                {technicalData.signal.direction} {technicalData.signal.confidence}%
+              <span className={`text-xs font-semibold ${getSignalColor(technicalData.signal?.direction || 'NEUTRAL')}`}>
+                {technicalData.signal?.direction || 'NEUTRAL'} {technicalData.signal?.confidence || 0}%
               </span>
             </div>
             <div className="flex justify-between items-center">
