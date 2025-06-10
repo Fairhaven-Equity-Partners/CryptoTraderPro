@@ -121,7 +121,7 @@ export class AutomatedSignalCalculator {
     try {
       // Perform immediate initial calculation for all pairs
       console.log('[AutomatedSignalCalculator] Performing initial calculation across all timeframes');
-      await this.calculateAllSignals();
+      await this.initializeAllSignals();
       
       // Start adaptive timing for all timeframes
       this.timingManager.startAll();
@@ -196,7 +196,77 @@ export class AutomatedSignalCalculator {
           continue;
         }
 
-        // Calculate enhanced signals across all timeframes
+        // Calculate signal only for the specific timeframe to prevent API exhaustion
+        try {
+          const signal = await this.calculateSignalForPair(
+            mapping,
+            priceData.price,
+            priceData.change24h || 0,
+            priceData.volume24h || 0,
+            timeframe
+          );
+
+          if (signal) {
+            allCalculatedSignals.push(signal);
+            signalIndex++;
+          }
+        } catch (error) {
+          console.error(`[AutomatedSignalCalculator] Error calculating signal for ${mapping.symbol} ${timeframe}:`, error);
+        }
+      }
+
+      // Update signal cache efficiently
+      this.updateSignalCache(allCalculatedSignals);
+
+      const duration = Date.now() - startTime;
+      console.log(`[AutomatedSignalCalculator] ✅ Calculated ${signalIndex} signals for ${TOP_50_SYMBOL_MAPPINGS.length} pairs in ${duration}ms`);
+      this.lastCalculationTime = startTime;
+
+    } catch (error) {
+      console.error('[AutomatedSignalCalculator] ❌ Critical error in signal calculation:', error);
+    }
+  }
+
+  /**
+   * Initialize signals for all pairs and timeframes with API-efficient batching
+   */
+  private async initializeAllSignals(): Promise<void> {
+    const startTime = Date.now();
+    console.log(`[AutomatedSignalCalculator] Initializing signals for ${TOP_50_SYMBOL_MAPPINGS.length} pairs across ${this.timeframes.length} timeframes`);
+
+    try {
+      // Fetch price data once for all calculations
+      const cmcSymbols = TOP_50_SYMBOL_MAPPINGS.map(m => m.cmcSymbol);
+      const batchPrices = await optimizedCoinMarketCapService.fetchBatchPrices(cmcSymbols);
+      
+      if (Object.keys(batchPrices).length === 0) {
+        console.warn('[AutomatedSignalCalculator] No price data received for initialization');
+        return;
+      }
+
+      // Cache the price data
+      this.lastPriceData = batchPrices;
+      this.lastPriceFetch = Date.now();
+
+      const fetchedCount = Object.keys(batchPrices).length;
+      console.log(`[AutomatedSignalCalculator] Successfully fetched ${fetchedCount}/${TOP_50_SYMBOL_MAPPINGS.length} price updates for initialization`);
+
+      // Calculate signals for all timeframes using cached data
+      const allCalculatedSignals: CalculatedSignal[] = [];
+      let signalIndex = 0;
+
+      for (const mapping of TOP_50_SYMBOL_MAPPINGS) {
+        const cmcSymbol = getCMCSymbol(mapping.symbol);
+        if (!cmcSymbol) continue;
+
+        const priceData = batchPrices[cmcSymbol];
+        
+        if (!priceData || !priceData.price || priceData.price <= 0) {
+          console.warn(`[AutomatedSignalCalculator] Invalid price data for ${mapping.symbol}: ${priceData?.price}`);
+          continue;
+        }
+
+        // Calculate signals for all timeframes for each pair
         for (const timeframe of this.timeframes) {
           try {
             const signal = await this.calculateSignalForPair(
@@ -221,11 +291,11 @@ export class AutomatedSignalCalculator {
       this.updateSignalCache(allCalculatedSignals);
 
       const duration = Date.now() - startTime;
-      console.log(`[AutomatedSignalCalculator] ✅ Calculated ${signalIndex} signals for ${TOP_50_SYMBOL_MAPPINGS.length} pairs in ${duration}ms`);
+      console.log(`[AutomatedSignalCalculator] ✅ Initialized ${signalIndex} signals for ${TOP_50_SYMBOL_MAPPINGS.length} pairs in ${duration}ms`);
       this.lastCalculationTime = startTime;
 
     } catch (error) {
-      console.error('[AutomatedSignalCalculator] ❌ Critical error in signal calculation:', error);
+      console.error('[AutomatedSignalCalculator] ❌ Critical error in signal initialization:', error);
     }
   }
 

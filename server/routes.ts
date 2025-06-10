@@ -398,6 +398,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const timeframe = req.query.timeframe as string;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
       
+      // First try to get signals from automated signal calculator
+      const calculatedSignals = automatedSignalCalculator.getSignals(symbol, timeframe);
+      
+      if (calculatedSignals && calculatedSignals.length > 0) {
+        // Filter by timeframe if specified
+        const filteredSignals = timeframe ? 
+          calculatedSignals.filter(s => s.timeframe === timeframe) : 
+          calculatedSignals;
+        
+        // Convert to expected format
+        const formattedSignals = filteredSignals.map(signal => ({
+          symbol: signal.symbol,
+          timeframe: signal.timeframe,
+          direction: signal.direction,
+          confidence: signal.confidence,
+          strength: signal.strength,
+          price: signal.price,
+          timestamp: signal.timestamp,
+          indicators: signal.indicators
+        }));
+        
+        res.json(formattedSignals);
+        return;
+      }
+      
       // Return existing calculated signals from the analysis engine for all symbols
       const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
       
