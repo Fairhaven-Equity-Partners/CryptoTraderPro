@@ -17,6 +17,7 @@ import { enhancedPriceStreamer } from "./enhancedPriceStreamer";
 import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
 import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
+import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
@@ -1429,6 +1430,117 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('[Routes] Error fetching authentic system status:', error);
       res.status(500).json({ 
         error: 'Failed to fetch authentic system status',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Phase 3: Legitimate Feedback System endpoints
+  app.post('/api/feedback/record-prediction', async (req: Request, res: Response) => {
+    try {
+      const {
+        symbol,
+        timeframe,
+        direction,
+        entryPrice,
+        predictedExitPrice,
+        stopLoss,
+        takeProfit,
+        confidence,
+        indicators
+      } = req.body;
+
+      const predictionId = legitimatePerformanceTracker.recordPrediction(
+        symbol,
+        timeframe,
+        direction,
+        entryPrice,
+        predictedExitPrice,
+        stopLoss,
+        takeProfit,
+        confidence,
+        indicators
+      );
+
+      res.json({
+        predictionId,
+        status: 'recorded',
+        message: 'Prediction recorded for performance tracking',
+        phase: 'Phase 3 - Legitimate Feedback'
+      });
+    } catch (error) {
+      console.error('[Routes] Error recording prediction:', error);
+      res.status(500).json({ 
+        error: 'Failed to record prediction',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  app.post('/api/feedback/update-outcome', async (req: Request, res: Response) => {
+    try {
+      const { predictionId, actualExitPrice, exitReason } = req.body;
+
+      legitimatePerformanceTracker.updatePredictionOutcome(
+        predictionId,
+        actualExitPrice,
+        exitReason
+      );
+
+      res.json({
+        status: 'updated',
+        message: 'Prediction outcome recorded for learning',
+        phase: 'Phase 3 - Legitimate Feedback'
+      });
+    } catch (error) {
+      console.error('[Routes] Error updating prediction outcome:', error);
+      res.status(500).json({ 
+        error: 'Failed to update prediction outcome',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  app.get('/api/feedback/performance-report', async (req: Request, res: Response) => {
+    try {
+      const report = legitimatePerformanceTracker.getPerformanceReport();
+      
+      res.json({
+        ...report,
+        phase: 'Phase 3 - Legitimate Feedback',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('[Routes] Error generating performance report:', error);
+      res.status(500).json({ 
+        error: 'Failed to generate performance report',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  app.post('/api/feedback/enhanced-confidence', async (req: Request, res: Response) => {
+    try {
+      const { symbol, timeframe, indicators, baseConfidence } = req.body;
+
+      const enhancedConfidence = legitimatePerformanceTracker.getEnhancedConfidence(
+        symbol,
+        timeframe,
+        indicators,
+        baseConfidence
+      );
+
+      res.json({
+        baseConfidence,
+        enhancedConfidence,
+        improvement: enhancedConfidence - baseConfidence,
+        source: 'legitimate-performance-data',
+        phase: 'Phase 3 - Legitimate Feedback'
+      });
+    } catch (error) {
+      console.error('[Routes] Error calculating enhanced confidence:', error);
+      res.status(500).json({ 
+        error: 'Failed to calculate enhanced confidence',
         timestamp: new Date().toISOString()
       });
     }
