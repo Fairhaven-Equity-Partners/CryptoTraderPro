@@ -92,37 +92,29 @@ class EnhancedPriceStreamer {
     try {
       console.log('[PriceStreamer] Fetching real-time prices for all symbols');
       
-      // Get all CoinGecko IDs
-      const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map((crypto: SymbolMapping) => crypto.coinGeckoId);
-      const idsParam = coinGeckoIds.join(',');
-      
-      // Use CoinMarketCap service instead of direct API calls
+      // Use CoinMarketCap service for all price fetching
       const { coinMarketCapService } = await import('./coinMarketCapService.js');
-      const priceData = await coinMarketCapService.fetchPrice(mapping.cmcSymbol);
-
-      if (!response.ok) {
-        console.error('[PriceStreamer] CoinGecko API error:', response.status);
-        return;
-      }
-
-      const priceData = await response.json();
       const updates: PriceUpdate[] = [];
 
       // Process each cryptocurrency
       for (const crypto of TOP_50_SYMBOL_MAPPINGS) {
-        const coinData = priceData[crypto.coinGeckoId];
-        if (coinData && coinData.usd) {
-          const update: PriceUpdate = {
-            symbol: crypto.symbol,
-            price: coinData.usd,
-            change24h: coinData.usd_24h_change || 0,
-            volume24h: coinData.usd_24h_vol || 0,
-            timestamp: Date.now(),
-            source: 'coinmarketcap'
-          };
+        try {
+          const priceData = await coinMarketCapService.fetchPrice(crypto.cmcSymbol);
+          if (priceData) {
+            const update: PriceUpdate = {
+              symbol: crypto.symbol,
+              price: priceData.price,
+              change24h: priceData.change24h || 0,
+              volume24h: priceData.volume24h || 0,
+              timestamp: Date.now(),
+              source: 'coinmarketcap'
+            };
 
-          this.priceCache.set(crypto.symbol, update);
-          updates.push(update);
+            this.priceCache.set(crypto.symbol, update);
+            updates.push(update);
+          }
+        } catch (error) {
+          console.error(`[PriceStreamer] Error fetching ${crypto.symbol}:`, error);
         }
       }
 
@@ -143,11 +135,10 @@ class EnhancedPriceStreamer {
   }
 
   /**
-   * Map requested days to valid CoinGecko OHLC days parameter
+   * Map requested days to valid historical data period
    */
   private mapToValidDays(requestedDays: number): number {
     // Always fetch at least 90 days to ensure sufficient data for technical analysis
-    // CoinGecko OHLC API accepts these values, prioritize longer periods
     return 90; // Always use 90 days to ensure sufficient historical data
   }
 
