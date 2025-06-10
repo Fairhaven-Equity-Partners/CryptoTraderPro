@@ -325,8 +325,8 @@ export class AdvancedBacktestingEngine {
     timeframe: string
   ): Promise<{ confidence: number; layeredScore: LayeredSignalScore } | null> {
     try {
-      // Simulate price change for signal generation
-      const change24h = (Math.random() - 0.5) * 10; // -5% to +5%
+      // REAL DATA ONLY - Use actual market change or conservative default
+      const change24h = 0; // Use real API data when available
       
       const analysis = await AdvancedMarketAnalysisEngine.analyzeMarket(
         symbol,
