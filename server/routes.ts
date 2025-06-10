@@ -18,6 +18,7 @@ import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
 import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
+import { phase4SyntheticElimination } from "./phase4SyntheticElimination";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
