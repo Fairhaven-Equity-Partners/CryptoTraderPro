@@ -82,14 +82,20 @@ export class EnhancedPriceStreamer {
     try {
       console.log('[PriceStreamer] Fetching real-time prices for all symbols');
       
-      // Use CoinMarketCap service for all price fetching
-      const { coinMarketCapService } = await import('./coinMarketCapService.js');
+      // Use optimized CoinMarketCap service with batch fetching
+      const { optimizedCoinMarketCapService } = await import('./optimizedCoinMarketCapService.js');
       const updates: PriceUpdate[] = [];
 
-      // Process each cryptocurrency with rate limiting
-      for (const crypto of TOP_50_SYMBOL_MAPPINGS) {
-        try {
-          const priceData = await coinMarketCapService.fetchPrice(crypto.cmcSymbol);
+      // Collect all CMC symbols for batch request
+      const cmcSymbols = TOP_50_SYMBOL_MAPPINGS.map(mapping => mapping.cmcSymbol);
+      
+      try {
+        // Single batch request for all symbols
+        const batchResults = await optimizedCoinMarketCapService.fetchBatchPrices(cmcSymbols);
+        
+        // Process batch results
+        for (const crypto of TOP_50_SYMBOL_MAPPINGS) {
+          const priceData = batchResults[crypto.cmcSymbol];
           if (priceData) {
             const update: PriceUpdate = {
               symbol: crypto.symbol,
@@ -97,7 +103,7 @@ export class EnhancedPriceStreamer {
               change24h: priceData.change24h || 0,
               volume24h: priceData.volume24h || 0,
               timestamp: Date.now(),
-              source: 'coinmarketcap'
+              source: 'coinmarketcap_optimized'
             };
 
             this.priceCache.set(crypto.symbol, {
@@ -106,13 +112,14 @@ export class EnhancedPriceStreamer {
               timestamp: Date.now()
             });
             updates.push(update);
+          } else {
+            console.log(`[PriceStreamer] No price data for ${crypto.symbol} (${crypto.cmcSymbol})`);
           }
-        } catch (error) {
-          console.error(`[PriceStreamer] Error fetching ${crypto.symbol}:`, error);
         }
         
-        // Rate limiting delay
-        await new Promise(resolve => setTimeout(resolve, 100));
+        console.log(`[PriceStreamer] Batch fetched ${updates.length}/${TOP_50_SYMBOL_MAPPINGS.length} price updates`);
+      } catch (error) {
+        console.error('[PriceStreamer] Batch price fetch failed:', error);
       }
 
       // Broadcast updates to all connected clients

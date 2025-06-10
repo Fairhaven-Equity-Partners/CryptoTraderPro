@@ -12,6 +12,7 @@ import { AdvancedMarketAnalysisEngine, type AdvancedMarketData } from './advance
 import { marketSentimentEngine, type SentimentAdjustedSignal } from './marketSentimentEngine.js';
 import { smartCacheManager } from './smartCacheManager.js';
 import { AdaptiveTimingManager } from './adaptiveTimingManager.js';
+import { optimizedCoinMarketCapService } from './optimizedCoinMarketCapService.js';
 
 interface CalculatedSignal {
   symbol: string;
@@ -148,10 +149,7 @@ export class AutomatedSignalCalculator {
     console.log(`[AutomatedSignalCalculator] Starting optimized calculation for ${TOP_50_SYMBOL_MAPPINGS.length} pairs across ${this.timeframes.length} timeframes`);
 
     try {
-      // Use optimized CoinMarketCap service for rate-limited price fetching
-      const { optimizedCoinMarketCapService } = await import('./optimizedCoinMarketCapService.js');
-      
-      // Fetch prices for all symbols in optimized batch
+      // Use optimized CoinMarketCap service with intelligent batch fetching
       const cmcSymbols = TOP_50_SYMBOL_MAPPINGS.map(m => m.cmcSymbol);
       const batchPrices = await optimizedCoinMarketCapService.fetchBatchPrices(cmcSymbols);
       

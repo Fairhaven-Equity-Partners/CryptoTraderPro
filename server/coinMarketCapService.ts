@@ -35,7 +35,7 @@ class CoinMarketCapService {
 
     const cmcSymbol = getCMCSymbol(symbol);
     if (!cmcSymbol) {
-      console.warn(`No CoinMarketCap mapping for ${symbol}`);
+      // Silently return null for unmapped symbols - no warnings needed
       return null;
     }
 
