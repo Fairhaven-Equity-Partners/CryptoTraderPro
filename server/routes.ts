@@ -1232,6 +1232,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Authentic Price History System Status
+  app.get('/api/authentic-data/status', (req: Request, res: Response) => {
+    try {
+      const systemStatus = enhancedPriceStreamer.getAuthenticSystemStatus();
+      const readySymbols = enhancedPriceStreamer.getAuthenticSystemStatus().symbolsReady;
+      const totalSymbols = enhancedPriceStreamer.getAuthenticSystemStatus().totalSymbols;
+      
+      res.json({
+        system: {
+          totalSymbols,
+          symbolsReady,
+          readinessPercentage: totalSymbols > 0 ? (readySymbols / totalSymbols * 100).toFixed(1) : 0,
+          totalDataPoints: systemStatus.totalDataPoints,
+          averageDataQuality: systemStatus.averageDataQuality,
+          dataAge: {
+            oldestData: new Date(systemStatus.oldestData).toISOString(),
+            newestData: new Date(systemStatus.newestData).toISOString(),
+            ageRangeHours: ((systemStatus.newestData - systemStatus.oldestData) / (1000 * 60 * 60)).toFixed(1)
+          }
+        },
+        phase1Implementation: {
+          status: 'ACTIVE',
+          authenticDataAccumulation: 'IN_PROGRESS',
+          syntheticDataElimination: 'PLANNED',
+          realTechnicalIndicators: 'PLANNED',
+          legitimateFeedback: 'PLANNED'
+        },
+        nextSteps: [
+          `Accumulating data for ${totalSymbols - readySymbols} symbols`,
+          'Need 20+ price points per symbol for basic analysis',
+          'System will automatically progress to Phase 2 when ready'
+        ],
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('[Routes] Error fetching authentic data status:', error);
+      res.status(500).json({ error: 'Failed to fetch authentic data status' });
+    }
+  });
+
+  // Individual symbol data quality check
+  app.get('/api/authentic-data/symbol/:symbol', (req: Request, res: Response) => {
+    try {
+      const symbol = req.params.symbol.toUpperCase();
+      const dataQuality = enhancedPriceStreamer.getDataQuality(symbol);
+      const priceHistory = enhancedPriceStreamer.getAuthenticPriceHistory(symbol);
+      const authenticPrices = enhancedPriceStreamer.getAuthenticPrices(symbol, 10);
+      
+      if (!priceHistory) {
+        return res.json({
+          symbol,
+          status: 'NO_DATA',
+          message: 'No authentic price data accumulated yet',
+          dataQuality: dataQuality,
+          readyForAnalysis: false,
+          timestamp: new Date().toISOString()
+        });
+      }
+
+      res.json({
+        symbol,
+        status: 'DATA_AVAILABLE',
+        dataQuality: dataQuality.quality,
+        pointCount: dataQuality.pointCount,
+        readyForAnalysis: dataQuality.isReady,
+        recommendedAnalysis: dataQuality.recommendedAnalysis,
+        recentPrices: authenticPrices.slice(-5),
+        priceRange: authenticPrices.length > 0 ? {
+          min: Math.min(...authenticPrices),
+          max: Math.max(...authenticPrices),
+          current: authenticPrices[authenticPrices.length - 1]
+        } : null,
+        lastUpdated: new Date(priceHistory.lastUpdated).toISOString(),
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error(`[Routes] Error fetching data for ${req.params.symbol}:`, error);
+      res.status(500).json({ error: 'Failed to fetch symbol data quality' });
+    }
+  });
+
   // Adaptive timing performance monitoring endpoint
   app.get('/api/timing/metrics', (req: Request, res: Response) => {
     try {
