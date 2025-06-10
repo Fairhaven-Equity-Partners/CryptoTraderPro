@@ -172,7 +172,8 @@ export class SmartCacheManager {
       const coinId = this.getCoinGeckoId(symbol);
       if (!coinId) return null;
 
-      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`;
+      // Use CoinMarketCap service for price fetching
+      const { coinMarketCapService } = await import('./coinMarketCapService.js');
       
       const response = await fetch(url, {
         headers: {

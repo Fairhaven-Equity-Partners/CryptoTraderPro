@@ -229,7 +229,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
           </div>
         </div>
         <CardDescription className="text-gray-400">
-          Authentic CoinGecko data for {sortedAndFilteredSignals.length} of 50 major cryptocurrencies
+          Authentic CoinMarketCap data for {sortedAndFilteredSignals.length} of 50 major cryptocurrencies
         </CardDescription>
         
         <Tabs defaultValue="4h" className="mt-4" onValueChange={(value) => setSelectedTimeframe(value as TimeFrame)}>

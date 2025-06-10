@@ -205,7 +205,8 @@ export class MultiPriceFetcher {
     }
 
     try {
-      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&include_24hr_change=true`;
+      // Use CoinMarketCap service for price fetching
+      const { coinMarketCapService } = await import('./coinMarketCapService.js');
       const response = await fetch(url);
       
       if (!response.ok) {

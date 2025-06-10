@@ -75,7 +75,8 @@ export class RealOHLCDataEngine {
     const config = this.timeframeConfigs.find(c => c.timeframe === timeframe);
     if (!config) return [];
 
-    const url = `https://api.coingecko.com/api/v3/coins/${coinId}/market_chart?vs_currency=usd&days=${config.days}&interval=${config.interval}`;
+    // Historical data from CoinMarketCap (requires different implementation)
+    console.log(`Historical data for ${symbol} not available - using current price data`);
     
     const response = await fetch(url, {
       headers: {

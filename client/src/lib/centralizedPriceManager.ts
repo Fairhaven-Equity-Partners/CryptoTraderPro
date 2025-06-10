@@ -2,9 +2,9 @@
  * Centralized Price Management System
  * 
  * Ensures perfect price synchronization between all components by:
- * - Fetching authentic CoinGecko prices once every 4 minutes
+ * - Fetching authentic CoinMarketCap prices once every 4 minutes
  * - Distributing the exact same price to all components
- * - Respecting CoinGecko rate limits
+ * - Respecting CoinMarketCap rate limits
  * - Maintaining real-time accuracy without excessive API calls
  */
 

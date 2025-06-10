@@ -150,7 +150,7 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
 // Import optimized refresh intervals from our scheduler
 import { CACHE_VALIDITY, REFRESH_INTERVALS, PRICE_REFRESH_INTERVAL } from './refreshScheduler';
 
-// Updated to 4-minute intervals for optimal CoinGecko free tier usage
+// Updated to 4-minute intervals for optimal CoinMarketCap API usage
 const OPTIMIZED_PRICE_REFRESH_INTERVAL = 240000; // 4 minutes (240 seconds)
 
 // Use the optimized cache expiration times from refreshScheduler

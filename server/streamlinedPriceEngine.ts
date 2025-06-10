@@ -136,7 +136,8 @@ export class StreamlinedPriceEngine {
   private async fetchBatch(coinGeckoIds: string[]): Promise<void> {
     try {
       const idsParam = coinGeckoIds.join(',');
-      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${idsParam}&vs_currencies=usd&include_24hr_change=true`;
+      // Use CoinMarketCap service for price fetching
+      const { coinMarketCapService } = await import('./coinMarketCapService.js');
       
       const headers: Record<string, string> = {};
       const apiKey = process.env.COINGECKO_API_KEY;

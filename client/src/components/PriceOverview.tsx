@@ -17,7 +17,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   const centralizedPrice = useCentralizedPrice(symbol);
   const { direction, strength } = useSignalAnalysis(symbol, timeframe as any);
   
-  // Track price state with animation - use authentic CoinGecko price
+  // Track price state with animation - use authentic CoinMarketCap price
   const [priceState, setPriceState] = useState({
     price: 0,
     previousPrice: 0,
