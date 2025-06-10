@@ -1,6 +1,6 @@
 /**
  * Advanced Technical Analysis Engine
- * Real technical indicators using historical price data from CoinGecko
+ * Real technical indicators using historical price data from CoinMarketCap
  * Replaces simulation with authentic calculations
  */
 

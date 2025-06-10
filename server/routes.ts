@@ -137,7 +137,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           name: mapping.name,
           currentPrice: timeframeSignal?.price || 0,
           change24h: 0, // Will be populated from comprehensive signal calculation
-          marketCap: 0, // Will be populated from CoinGecko data
+          marketCap: 0, // Will be populated from CoinMarketCap data
           signals: {
             [requestedTimeframe]: signalData
           },

@@ -140,9 +140,9 @@ export class StreamlinedPriceEngine {
       const { coinMarketCapService } = await import('./coinMarketCapService.js');
       
       const headers: Record<string, string> = {};
-      const apiKey = process.env.COINGECKO_API_KEY;
+      const apiKey = process.env.COINMARKETCAP_API_KEY;
       if (apiKey) {
-        headers['x-cg-demo-api-key'] = apiKey;
+        headers['X-CMC_PRO_API_KEY'] = apiKey;
       }
 
       const response = await fetch(url, { headers });

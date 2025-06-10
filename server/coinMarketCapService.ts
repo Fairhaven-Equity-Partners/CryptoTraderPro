@@ -1,6 +1,6 @@
 /**
  * CoinMarketCap Service
- * Direct replacement for CoinGecko price fetching functionality
+ * CoinMarketCap price fetching service for cryptocurrency data
  */
 
 import { getCMCSymbol } from './optimizedSymbolMapping.js';

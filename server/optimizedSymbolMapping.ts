@@ -113,7 +113,7 @@ export function isSymbolSupported(symbol: string): boolean {
  * Rate limiting calculation:
  * 50 symbols × 1 request per symbol = 50 requests
  * With 4-minute intervals = 12.5 requests/minute
- * Well within CoinGecko free tier limit of 50 requests/minute
+ * Well within CoinMarketCap API limits
  */
 export const RATE_LIMIT_INFO = {
   totalSymbols: TOP_50_SYMBOL_MAPPINGS.length,

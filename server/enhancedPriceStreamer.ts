@@ -96,15 +96,9 @@ class EnhancedPriceStreamer {
       const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map((crypto: SymbolMapping) => crypto.coinGeckoId);
       const idsParam = coinGeckoIds.join(',');
       
-      const response = await fetch(
-        // Use CoinMarketCap service instead
-        {
-          headers: {
-            'Accept': 'application/json',
-            'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || ''
-          }
-        }
-      );
+      // Use CoinMarketCap service instead of direct API calls
+      const { coinMarketCapService } = await import('./coinMarketCapService.js');
+      const priceData = await coinMarketCapService.fetchPrice(mapping.cmcSymbol);
 
       if (!response.ok) {
         console.error('[PriceStreamer] CoinGecko API error:', response.status);

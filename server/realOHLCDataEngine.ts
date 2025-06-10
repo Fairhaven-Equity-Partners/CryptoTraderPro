@@ -81,7 +81,7 @@ export class RealOHLCDataEngine {
     const response = await fetch(url, {
       headers: {
         'Accept': 'application/json',
-        'x-cg-demo-api-key': process.env.COINGECKO_API_KEY || ''
+        'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY || ''
       }
     });
 

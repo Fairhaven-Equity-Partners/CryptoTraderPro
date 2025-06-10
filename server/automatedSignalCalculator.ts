@@ -109,7 +109,7 @@ export class AutomatedSignalCalculator {
       
       const response = await fetch(apiUrl, {
         headers: {
-          'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || '',
+          'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY || '',
           'User-Agent': 'CryptoTraderPro/1.0'
         }
       });
