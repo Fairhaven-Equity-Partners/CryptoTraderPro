@@ -251,9 +251,19 @@ export class AdvancedRateLimiter {
 
   recordFailure(reason: string): void {
     this.circuitBreaker.failures++;
-    if (this.circuitBreaker.failures >= 5) {
+    if (this.circuitBreaker.failures >= 10) { // Increased threshold for more resilience
       this.openCircuitBreaker(reason);
     }
+  }
+
+  /**
+   * Reset circuit breaker for recovery
+   */
+  resetCircuitBreaker(): void {
+    this.circuitBreaker.state = 'CLOSED';
+    this.circuitBreaker.failures = 0;
+    this.circuitBreaker.successCount = 0;
+    console.log('[RateLimiter] Circuit breaker manually reset');
   }
 
   getStatistics(): any {
