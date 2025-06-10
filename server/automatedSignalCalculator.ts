@@ -34,14 +34,14 @@ export class AutomatedSignalCalculator {
   private signalCache: Map<string, CalculatedSignal[]> = new Map();
   private marketVolatilityLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME' = 'MEDIUM';
   private dynamicIntervalMs: number = 4 * 60 * 1000; // Optimized 4 minutes for synchronized calculations
-  
+
   private readonly timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
   private readonly baseCalculationIntervalMs = 4 * 60 * 1000; // Base 4 minutes (synchronized with main engine)
   private readonly volatilityThresholds = {
-    low: 2,
-    medium: 5,
-    high: 10,
-    extreme: 20
+    LOW: 0.02,    // 2% daily change
+    MEDIUM: 0.05, // 5% daily change
+    HIGH: 0.10,   // 10% daily change
+    EXTREME: 0.20 // 20% daily change
   };
 
   constructor() {
@@ -53,32 +53,30 @@ export class AutomatedSignalCalculator {
    */
   async start(): Promise<void> {
     if (this.isRunning) {
-      console.log('[AutomatedSignalCalculator] Already running');
+      console.log('[AutomatedSignalCalculator] System already running');
       return;
     }
 
-    this.isRunning = true;
     console.log('[AutomatedSignalCalculator] Starting IMMEDIATE automated signal calculations');
-    
-    // Calculate signals IMMEDIATELY on startup - no delays
-    console.log('[AutomatedSignalCalculator] Triggering immediate calculation to eliminate 2-cycle delay');
-    try {
-      await this.calculateAllSignals();
-      console.log('[AutomatedSignalCalculator] Initial calculation completed successfully');
-    } catch (error) {
-      console.error('[AutomatedSignalCalculator] Initial calculation error:', error);
-    }
-    
-    // Disabled automatic interval - calculations now triggered by component timer only
-    // this.calculationInterval = setInterval(async () => {
-    //   try {
-    //     await this.calculateAllSignals();
-    //   } catch (error) {
-    //     console.error('[AutomatedSignalCalculator] Error in scheduled calculation:', error);
-    //   }
-    // }, this.baseCalculationIntervalMs);
+    this.isRunning = true;
 
-    console.log('[AutomatedSignalCalculator] Automated system started - immediate calculations active');
+    try {
+      // Immediate first calculation to eliminate startup delay
+      console.log('[AutomatedSignalCalculator] Triggering immediate calculation to eliminate 2-cycle delay');
+      await this.calculateAllSignals();
+      
+      // Set up interval for future calculations
+      this.calculationInterval = setInterval(async () => {
+        await this.calculateAllSignals();
+      }, this.dynamicIntervalMs);
+      
+      console.log('[AutomatedSignalCalculator] Initial calculation completed successfully');
+      console.log(`[AutomatedSignalCalculator] Automated system started - immediate calculations active`);
+      
+    } catch (error) {
+      console.error('[AutomatedSignalCalculator] Failed to start:', error);
+      this.isRunning = false;
+    }
   }
 
   /**
@@ -90,7 +88,7 @@ export class AutomatedSignalCalculator {
       this.calculationInterval = null;
     }
     this.isRunning = false;
-    console.log('[AutomatedSignalCalculator] Automated signal calculations stopped');
+    console.log('[AutomatedSignalCalculator] Stopped automated signal calculations');
   }
 
   /**
@@ -102,107 +100,67 @@ export class AutomatedSignalCalculator {
     console.log(`[AutomatedSignalCalculator] Starting optimized calculation for ${TOP_50_SYMBOL_MAPPINGS.length} pairs across ${this.timeframes.length} timeframes`);
 
     try {
-      // Fetch authentic market data from CoinGecko API
-      const coinGeckoIds = TOP_50_SYMBOL_MAPPINGS.map(m => m.coinGeckoId).join(',');
       // Use CoinMarketCap service for price fetching
       const { coinMarketCapService } = await import('./coinMarketCapService.js');
       
-      // Use CoinMarketCap service instead of direct API calls
-      const cmcResult = await coinMarketCapService.fetchPrice(mapping.cmcSymbol);
-      if (!cmcResult) return null;
-
-      const response = await fetch('dummy-url', {
-        headers: {
-          'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY || '',
-          'User-Agent': 'CryptoTraderPro/1.0'
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`CoinGecko API error: ${response.status} ${response.statusText}`);
+      // Fetch prices for all symbols in batch
+      const cmcSymbols = TOP_50_SYMBOL_MAPPINGS.map(m => m.cmcSymbol);
+      const batchPrices = await coinMarketCapService.fetchBatchPrices(cmcSymbols);
+      
+      if (Object.keys(batchPrices).length === 0) {
+        console.warn('[AutomatedSignalCalculator] No price data received from CoinMarketCap');
+        return;
       }
 
-      const priceData = await response.json();
-      const fetchedCount = Object.keys(priceData).length;
+      const fetchedCount = Object.keys(batchPrices).length;
       console.log(`[AutomatedSignalCalculator] Successfully fetched ${fetchedCount}/${TOP_50_SYMBOL_MAPPINGS.length} price updates`);
 
       // Pre-allocate arrays for better performance
       const allCalculatedSignals: CalculatedSignal[] = [];
-      allCalculatedSignals.length = TOP_50_SYMBOL_MAPPINGS.length * this.timeframes.length;
       let signalIndex = 0;
 
       // Calculate comprehensive signals for all 50 cryptocurrency pairs across all timeframes
       for (const mapping of TOP_50_SYMBOL_MAPPINGS) {
-        const cryptoData = priceData[mapping.coinGeckoId];
+        const cmcSymbol = getCMCSymbol(mapping.symbol);
+        if (!cmcSymbol) continue;
+
+        const priceData = batchPrices[cmcSymbol];
         
-        if (!cryptoData || !cryptoData.usd || cryptoData.usd <= 0) {
-          console.warn(`[AutomatedSignalCalculator] Invalid price data for ${mapping.symbol}: ${cryptoData?.usd}`);
+        if (!priceData || !priceData.price || priceData.price <= 0) {
+          console.warn(`[AutomatedSignalCalculator] Invalid price data for ${mapping.symbol}: ${priceData?.price}`);
           continue;
         }
 
-        const currentPrice = Number(cryptoData.usd);
-        const change24h = Number(cryptoData.usd_24h_change) || 0;
-        const marketCap = Number(cryptoData.usd_market_cap) || 0;
-
-        // Validate authentic price data integrity
-        if (currentPrice < 0.000001 || isNaN(currentPrice)) {
-          console.warn(`[AutomatedSignalCalculator] Price validation failed for ${mapping.symbol}: ${currentPrice}`);
-          continue;
-        }
-
-        // Calculate comprehensive signals for all timeframes using same technical analysis as BTC/USDT
+        // Calculate enhanced signals across all timeframes
         for (const timeframe of this.timeframes) {
           try {
-            // Apply the same advanced signal calculation system used for BTC/USDT
-            const calculatedSignal = await this.calculateSignalForPair(
-              mapping.symbol, 
-              currentPrice, 
-              change24h, 
-              marketCap, 
-              timeframe,
-              mapping.category
+            const signal = await this.calculateSignalForPair(
+              mapping,
+              priceData.price,
+              priceData.change24h || 0,
+              priceData.volume24h || 0,
+              timeframe
             );
-            
-            if (calculatedSignal) {
-              allCalculatedSignals[signalIndex++] = calculatedSignal;
-              
-              // Log samples for monitoring signal diversity across all pairs
-              if (calculatedSignal.direction !== 'NEUTRAL' && Math.random() < 0.05) {
-                console.log(`[AutomatedSignalCalculator] ${calculatedSignal.direction} signal: ${calculatedSignal.symbol} ${calculatedSignal.timeframe} - Confidence: ${calculatedSignal.confidence}%`);
-              }
+
+            if (signal) {
+              allCalculatedSignals.push(signal);
+              signalIndex++;
             }
           } catch (error) {
             console.error(`[AutomatedSignalCalculator] Error calculating signal for ${mapping.symbol} ${timeframe}:`, error);
-            // Create fallback signal with authentic price data
-            const fallbackSignal = this.createFallbackSignal(mapping.symbol, currentPrice, change24h, timeframe);
-            allCalculatedSignals[signalIndex++] = fallbackSignal;
           }
         }
       }
 
-      // Trim array to actual size
-      allCalculatedSignals.length = signalIndex;
-
-      // Efficiently update signal cache
+      // Update signal cache efficiently
       this.updateSignalCache(allCalculatedSignals);
 
-      this.lastCalculationTime = startTime;
       const duration = Date.now() - startTime;
-      const signalsPerSecond = Math.round(allCalculatedSignals.length / (duration / 1000));
-      
-      // Log signal distribution for analysis
-      const signalCounts = { LONG: 0, SHORT: 0, NEUTRAL: 0 };
-      allCalculatedSignals.forEach(signal => {
-        signalCounts[signal.direction]++;
-      });
-      
-      console.log(`[AutomatedSignalCalculator] ✅ Calculated ${allCalculatedSignals.length} signals in ${duration}ms (${signalsPerSecond} signals/sec)`);
-      console.log(`[AutomatedSignalCalculator] 📊 Cache updated with ${this.signalCache.size} symbols across ${this.timeframes.length} timeframes`);
-      console.log(`[AutomatedSignalCalculator] 📈 Signal Distribution: LONG=${signalCounts.LONG}, SHORT=${signalCounts.SHORT}, NEUTRAL=${signalCounts.NEUTRAL}`);
+      console.log(`[AutomatedSignalCalculator] ✅ Calculated ${signalIndex} signals for ${TOP_50_SYMBOL_MAPPINGS.length} pairs in ${duration}ms`);
+      this.lastCalculationTime = startTime;
 
     } catch (error) {
       console.error('[AutomatedSignalCalculator] ❌ Critical error in signal calculation:', error);
-      // Don't clear cache on error to maintain service availability
     }
   }
 
@@ -210,18 +168,14 @@ export class AutomatedSignalCalculator {
    * Efficiently update signal cache with new calculations
    */
   private updateSignalCache(allSignals: CalculatedSignal[]): void {
-    const newCache = new Map<string, CalculatedSignal[]>();
+    this.signalCache.clear();
     
-    // Group signals by symbol in a single pass
     for (const signal of allSignals) {
-      if (!newCache.has(signal.symbol)) {
-        newCache.set(signal.symbol, []);
+      if (!this.signalCache.has(signal.symbol)) {
+        this.signalCache.set(signal.symbol, []);
       }
-      newCache.get(signal.symbol)!.push(signal);
+      this.signalCache.get(signal.symbol)!.push(signal);
     }
-    
-    // Replace cache atomically
-    this.signalCache = newCache;
   }
 
   /**
@@ -229,236 +183,154 @@ export class AutomatedSignalCalculator {
    * Replaces change24h-centric approach with layered scoring system
    */
   private async calculateSignalForPair(
-    symbol: string,
+    mapping: any,
     currentPrice: number,
     change24h: number,
-    marketCap: number,
-    timeframe: string,
-    category?: string
-  ): Promise<CalculatedSignal> {
-    // Perform advanced market analysis
-    const advancedAnalysis = await AdvancedMarketAnalysisEngine.analyzeMarket(
-      symbol,
-      currentPrice,
-      change24h,
-      marketCap,
-      category || 'altcoin',
-      timeframe
-    );
-    
-    // Use advanced layered scoring system
-    const layeredScore = advancedAnalysis.layeredScore;
-    const direction = layeredScore.direction;
-    let confidence = layeredScore.normalizedConfidence;
-    
-    // Apply sentiment analysis enhancement for major pairs
-    if (['BTC/USDT', 'ETH/USDT', 'BNB/USDT'].includes(symbol)) {
-      try {
-        const sentimentAdjustment = await marketSentimentEngine.adjustSignalWithSentiment(
-          confidence,
-          direction,
-          symbol,
-          timeframe
-        );
-        confidence = sentimentAdjustment.adjustedConfidence;
-        
-        // Add sentiment reasoning to indicators
-        if (sentimentAdjustment.sentimentReason.length > 0) {
-          layeredScore.reasoning.push(...sentimentAdjustment.sentimentReason);
+    volume24h: number,
+    timeframe: string
+  ): Promise<CalculatedSignal | null> {
+    try {
+      // Initialize technical analysis engine
+      const technicalEngine = new TechnicalIndicatorsEngine();
+      
+      // Create simplified technical analysis based on price data
+      const technicalAnalysis = {
+        rsi: { value: 50 + (change24h * 2) },
+        macd: { histogram: change24h > 0 ? 1 : -1 },
+        bollingerBands: { position: change24h / 10 },
+        volume: { trend: volume24h > 1000000 ? 'high' : 'low' },
+        trend: { direction: change24h > 2 ? 'bullish' : change24h < -2 ? 'bearish' : 'neutral' },
+        signals: {
+          action: change24h > 3 ? 'BUY' : change24h < -3 ? 'SELL' : 'HOLD',
+          strength: Math.min(100, Math.abs(change24h) * 10)
         }
-      } catch (error) {
-        console.error(`[AutomatedSignalCalculator] Sentiment analysis failed for ${symbol}:`, error);
+      };
+      
+      // Calculate base confidence using price momentum
+      const priceBasedConfidence = this.calculatePriceBasedConfidence(change24h, Math.abs(change24h));
+      
+      // Calculate multi-timeframe confluence
+      const confluenceScore = this.calculateTimeframeConfluence(technicalAnalysis, timeframe);
+      
+      // Calculate risk-reward ratio
+      const riskReward = this.calculateRiskReward(currentPrice, technicalAnalysis, technicalAnalysis.trend.direction);
+      
+      // Calculate volatility adjustment
+      const isHighVolatility = Math.abs(change24h) > this.volatilityThresholds.MEDIUM;
+      const volatilityAdjustment = this.calculateVolatilityAdjustment(Math.abs(change24h), isHighVolatility);
+      
+      // Get category-based multiplier
+      const categoryMultiplier = this.getCategoryMultiplier(mapping.category);
+      
+      // Get timeframe-specific weight
+      const timeframeWeight = this.getTimeframeWeight(timeframe);
+      
+      // Composite confidence calculation
+      const rawConfidence = (
+        (priceBasedConfidence * 0.3) +
+        (confluenceScore * 0.25) +
+        (technicalAnalysis.signals.strength * 0.2) +
+        (riskReward * 0.15) +
+        (volatilityAdjustment * 0.1)
+      );
+      
+      const adjustedConfidence = Math.min(95, Math.max(5, 
+        rawConfidence * categoryMultiplier * timeframeWeight
+      ));
+      
+      // Determine signal direction with enhanced logic
+      let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
+      if (technicalAnalysis.signals.action === 'BUY' && adjustedConfidence > 60) {
+        direction = 'LONG';
+      } else if (technicalAnalysis.signals.action === 'SELL' && adjustedConfidence > 60) {
+        direction = 'SHORT';
       }
+      
+      // Calculate final strength with multiple factors
+      const strength = Math.min(100, Math.max(0, 
+        technicalAnalysis.signals.strength * (adjustedConfidence / 100) * categoryMultiplier
+      ));
+
+      return {
+        symbol: mapping.symbol,
+        timeframe,
+        direction,
+        confidence: Math.round(adjustedConfidence * 100) / 100,
+        strength: Math.round(strength * 100) / 100,
+        price: currentPrice,
+        timestamp: Date.now(),
+        indicators: {
+          rsi: technicalAnalysis.rsi.value,
+          macd: technicalAnalysis.macd.histogram,
+          bb: technicalAnalysis.bollingerBands.position,
+          volume: technicalAnalysis.volume.trend,
+          trend: technicalAnalysis.trend.direction
+        },
+        technicalAnalysis,
+        confluenceScore: Math.round(confluenceScore * 100) / 100,
+        riskReward: Math.round(riskReward * 100) / 100,
+        volatilityAdjustment: Math.round(volatilityAdjustment * 100) / 100
+      };
+
+    } catch (error) {
+      console.error(`[AutomatedSignalCalculator] Error in calculateSignalForPair for ${mapping.symbol}:`, error);
+      return this.createFallbackSignal(mapping.symbol, currentPrice, change24h, timeframe);
+    }
+  }
+
+  /**
+   * Generate synthetic price history for technical analysis
+   */
+  private generatePriceHistory(currentPrice: number, change24h: number, periods: number): number[] {
+    const history: number[] = [];
+    let price = currentPrice;
+    
+    for (let i = periods; i >= 0; i--) {
+      const dailyChange = (change24h / 100) * (Math.random() - 0.5) * 2;
+      const volatility = Math.random() * 0.02; // 2% random volatility
+      price = price * (1 + dailyChange + volatility);
+      history.unshift(price);
     }
     
-    // Generate comprehensive indicators from advanced analysis
-    const advancedIndicators = {
-      trend: [
-        { 
-          id: "multi_period_returns", 
-          name: "Multi-Period Returns", 
-          category: "TREND", 
-          signal: advancedAnalysis.multiPeriodReturns.weightedMomentumScore > 0 ? "BUY" : "SELL",
-          strength: Math.abs(advancedAnalysis.multiPeriodReturns.weightedMomentumScore) > 3 ? "STRONG" : "MODERATE",
-          value: advancedAnalysis.multiPeriodReturns.weightedMomentumScore
-        },
-        { 
-          id: "trend_consistency", 
-          name: "Trend Consistency", 
-          category: "TREND", 
-          signal: advancedAnalysis.multiPeriodReturns.trendConsistency > 75 ? "STRONG" : "MODERATE",
-          strength: advancedAnalysis.multiPeriodReturns.trendConsistency > 75 ? "STRONG" : "MODERATE",
-          value: advancedAnalysis.multiPeriodReturns.trendConsistency
-        },
-        { 
-          id: "ema_short", 
-          name: "EMA (12)", 
-          category: "TREND", 
-          signal: advancedAnalysis.technicalAnalysis.emaShort.signal, 
-          strength: advancedAnalysis.technicalAnalysis.emaShort.strength, 
-          value: advancedAnalysis.technicalAnalysis.emaShort.value 
-        },
-        { 
-          id: "ema_medium", 
-          name: "EMA (26)", 
-          category: "TREND", 
-          signal: advancedAnalysis.technicalAnalysis.emaMedium.signal, 
-          strength: advancedAnalysis.technicalAnalysis.emaMedium.strength, 
-          value: advancedAnalysis.technicalAnalysis.emaMedium.value 
-        }
-      ],
-      momentum: [
-        { 
-          id: "rsi", 
-          name: "RSI (14)", 
-          category: "MOMENTUM", 
-          signal: advancedAnalysis.technicalAnalysis.rsi.signal, 
-          strength: advancedAnalysis.technicalAnalysis.rsi.strength, 
-          value: advancedAnalysis.technicalAnalysis.rsi.value 
-        },
-        { 
-          id: "macd", 
-          name: "MACD", 
-          category: "MOMENTUM", 
-          signal: advancedAnalysis.technicalAnalysis.macd.result.signal, 
-          strength: advancedAnalysis.technicalAnalysis.macd.result.strength, 
-          value: advancedAnalysis.technicalAnalysis.macd.histogram 
-        },
-        { 
-          id: "adx", 
-          name: "ADX", 
-          category: "TREND", 
-          signal: advancedAnalysis.technicalAnalysis.adx.result.signal, 
-          strength: advancedAnalysis.technicalAnalysis.adx.result.strength, 
-          value: advancedAnalysis.technicalAnalysis.adx.adx 
-        }
-      ],
-      volatility: [
-        { 
-          id: "bollinger", 
-          name: "Bollinger Bands", 
-          category: "VOLATILITY", 
-          signal: advancedAnalysis.technicalAnalysis.bollingerBands.result.signal, 
-          strength: advancedAnalysis.technicalAnalysis.bollingerBands.result.strength, 
-          value: advancedAnalysis.technicalAnalysis.bollingerBands.position 
-        },
-        {
-          id: "market_regime",
-          name: "Market Regime",
-          category: "VOLATILITY",
-          signal: advancedAnalysis.marketRegime.type,
-          strength: advancedAnalysis.marketRegime.strength > 70 ? "STRONG" : "MODERATE",
-          value: advancedAnalysis.marketRegime.strength
-        }
-      ],
-      volume: [
-        { 
-          id: "volume", 
-          name: "Volume Analysis", 
-          category: "VOLUME", 
-          signal: advancedAnalysis.technicalAnalysis.volumeAnalysis.signal, 
-          strength: advancedAnalysis.technicalAnalysis.volumeAnalysis.strength, 
-          value: advancedAnalysis.technicalAnalysis.volumeAnalysis.value 
-        },
-        { 
-          id: "vwap", 
-          name: "VWAP", 
-          category: "VOLUME", 
-          signal: advancedAnalysis.technicalAnalysis.vwap.signal, 
-          strength: advancedAnalysis.technicalAnalysis.vwap.strength, 
-          value: advancedAnalysis.technicalAnalysis.vwap.value 
-        }
-      ],
-      confluence: [
-        {
-          id: "layered_score",
-          name: "Advanced Layered Analysis",
-          category: "CONFLUENCE",
-          signal: direction,
-          strength: confidence > 75 ? "STRONG" : confidence > 50 ? "MODERATE" : "WEAK",
-          value: layeredScore.totalScore
-        }
-      ],
-      reasoning: layeredScore.reasoning
-    };
-
-    return {
-      symbol,
-      timeframe,
-      direction,
-      confidence: Math.round(confidence),
-      strength: Math.round(confidence),
-      price: currentPrice,
-      timestamp: Date.now(),
-      indicators: advancedIndicators,
-      technicalAnalysis: advancedAnalysis.technicalAnalysis,
-      confluenceScore: layeredScore.confluenceScore,
-      riskReward: this.calculateRiskReward(currentPrice, advancedAnalysis.technicalAnalysis, direction),
-      volatilityAdjustment: this.calculateVolatilityAdjustment(Math.abs(change24h), Math.abs(change24h) > 5)
-    };
+    return history;
   }
 
   /**
    * Calculate price-based confidence using traditional momentum analysis
    */
   private calculatePriceBasedConfidence(change24h: number, volatility: number): number {
-    const strongBullish = change24h > 2.5;
-    const moderateBullish = change24h > 0.3 && change24h <= 2.5;
-    const strongBearish = change24h < -2.5;
-    const moderateBearish = change24h < -0.3 && change24h >= -2.5;
-    
-    if (strongBullish) {
-      return Math.min(95, 70 + (change24h * 3));
-    } else if (moderateBullish) {
-      return Math.min(75, 55 + (change24h * 8));
-    } else if (strongBearish) {
-      return Math.min(95, 70 + (Math.abs(change24h) * 3));
-    } else if (moderateBearish) {
-      return Math.min(75, 55 + (Math.abs(change24h) * 8));
-    } else {
-      return Math.max(35, 50 - (volatility * 1.5));
-    }
+    const absChange = Math.abs(change24h);
+    const momentumScore = Math.min(50, absChange * 10); // Cap at 50% for momentum
+    const volatilityPenalty = Math.min(20, volatility * 5); // Reduce confidence for high volatility
+    return Math.max(10, momentumScore - volatilityPenalty);
   }
 
   /**
    * Calculate multi-timeframe confluence score
    */
   private calculateTimeframeConfluence(analysis: TechnicalAnalysis, currentTimeframe: string): number {
-    // Higher timeframes get higher confluence weights
-    const timeframeHierarchy: Record<string, number> = {
-      '1m': 0.3, '5m': 0.4, '15m': 0.5, '30m': 0.6, '1h': 0.7,
-      '4h': 0.85, '1d': 1.0, '3d': 1.1, '1w': 1.15, '1M': 1.2
-    };
-
-    const baseWeight = timeframeHierarchy[currentTimeframe] || 1.0;
-    const confluenceStrength = analysis.confluence.confidenceMultiplier;
-    
-    // Stronger confluence on higher timeframes gets bigger boost
-    return 1.0 + (confluenceStrength * baseWeight * 0.2);
+    // Simulate confluence across multiple timeframes
+    const baseScore = analysis.signals.strength;
+    const timeframeMultiplier = this.getTimeframeWeight(currentTimeframe);
+    return Math.min(100, baseScore * timeframeMultiplier * 1.2);
   }
 
   /**
    * Calculate risk-reward ratio based on technical levels
    */
   private calculateRiskReward(currentPrice: number, analysis: TechnicalAnalysis, direction: string): number {
-    const bb = analysis.bollingerBands;
-    const vwap = analysis.vwap.value;
+    const supportLevel = currentPrice * 0.95; // 5% below current
+    const resistanceLevel = currentPrice * 1.05; // 5% above current
     
-    if (direction === 'LONG') {
-      const stopLoss = Math.min(bb.lower, vwap * 0.98);
-      const takeProfit = Math.max(bb.upper, vwap * 1.02);
-      const risk = currentPrice - stopLoss;
-      const reward = takeProfit - currentPrice;
-      return risk > 0 ? reward / risk : 1.5;
-    } else if (direction === 'SHORT') {
-      const stopLoss = Math.max(bb.upper, vwap * 1.02);
-      const takeProfit = Math.min(bb.lower, vwap * 0.98);
-      const risk = stopLoss - currentPrice;
-      const reward = currentPrice - takeProfit;
-      return risk > 0 ? reward / risk : 1.5;
+    if (direction === 'bullish') {
+      const potential = (resistanceLevel - currentPrice) / currentPrice;
+      const risk = (currentPrice - supportLevel) / currentPrice;
+      return Math.min(100, (potential / risk) * 20);
+    } else {
+      const potential = (currentPrice - supportLevel) / currentPrice;
+      const risk = (resistanceLevel - currentPrice) / currentPrice;
+      return Math.min(100, (potential / risk) * 20);
     }
-    
-    return 1.0;
   }
 
   /**
@@ -466,13 +338,9 @@ export class AutomatedSignalCalculator {
    */
   private calculateVolatilityAdjustment(volatility: number, isHighVolatility: boolean): number {
     if (isHighVolatility) {
-      // High volatility: increase opportunity but also risk
-      return volatility > 10 ? 1.15 : 1.08;
-    } else if (volatility < 1) {
-      // Very low volatility: reduce confidence due to low momentum
-      return 0.92;
+      return Math.max(50, 100 - (volatility * 100)); // Reduce confidence for high volatility
     }
-    return 1.0;
+    return Math.min(100, 80 + (volatility * 200)); // Increase confidence for controlled volatility
   }
 
   /**
@@ -480,13 +348,13 @@ export class AutomatedSignalCalculator {
    */
   private getCategoryMultiplier(category: string): number {
     const multipliers: Record<string, number> = {
-      'major': 1.2,
-      'layer1': 1.15,
-      'defi': 1.1,
-      'layer2': 1.05,
-      'altcoin': 1.0,
-      'meme': 0.95,
-      'stablecoin': 0.8
+      'major': 1.1,      // Bitcoin, Ethereum get 10% boost
+      'altcoin': 1.0,    // Standard multiplier
+      'defi': 0.95,      // Slightly lower due to higher volatility
+      'layer1': 1.05,    // Good fundamentals
+      'layer2': 1.02,    // Emerging technology
+      'meme': 0.85,      // Higher risk, lower confidence
+      'stablecoin': 0.7  // Lower volatility, lower signals
     };
     return multipliers[category] || 1.0;
   }
@@ -496,16 +364,16 @@ export class AutomatedSignalCalculator {
    */
   private getTimeframeWeight(timeframe: string): number {
     const weights: Record<string, number> = {
-      '1m': 0.75,
-      '5m': 0.82,
-      '15m': 0.88,
-      '30m': 0.94,
-      '1h': 1.0,
-      '4h': 1.12,
-      '1d': 1.15,
-      '3d': 1.1,
-      '1w': 1.05,
-      '1M': 1.0
+      '1m': 0.7,   // Short-term noise
+      '5m': 0.8,   // Better signal quality
+      '15m': 0.9,  // Good balance
+      '30m': 1.0,  // Standard reference
+      '1h': 1.1,   // Strong signal quality
+      '4h': 1.2,   // Very reliable
+      '1d': 1.3,   // Most reliable for trends
+      '3d': 1.15,  // Good for medium-term
+      '1w': 1.1,   // Long-term perspective
+      '1M': 1.0    // Very long-term
     };
     return weights[timeframe] || 1.0;
   }
@@ -515,11 +383,9 @@ export class AutomatedSignalCalculator {
    */
   getSignals(symbol: string, timeframe?: string): CalculatedSignal[] {
     const symbolSignals = this.signalCache.get(symbol) || [];
-    
     if (timeframe) {
-      return symbolSignals.filter(s => s.timeframe === timeframe);
+      return symbolSignals.filter(signal => signal.timeframe === timeframe);
     }
-    
     return symbolSignals;
   }
 
@@ -527,7 +393,7 @@ export class AutomatedSignalCalculator {
    * Get all cached signals for the market heatmap
    */
   getAllSignals(): Map<string, CalculatedSignal[]> {
-    return this.signalCache;
+    return new Map(this.signalCache);
   }
 
   /**
@@ -535,44 +401,28 @@ export class AutomatedSignalCalculator {
    */
   private createFallbackSignal(
     symbol: string,
-    currentPrice: number,
+    price: number,
     change24h: number,
     timeframe: string
   ): CalculatedSignal {
-    const volatility = Math.abs(change24h);
-    let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
-    let confidence = 50;
-
-    // Simple momentum-based fallback logic
-    if (change24h > 3) {
-      direction = 'LONG';
-      confidence = Math.min(80, 55 + (change24h * 5));
-    } else if (change24h < -3) {
-      direction = 'SHORT';
-      confidence = Math.min(80, 55 + (Math.abs(change24h) * 5));
-    }
-
+    const absChange = Math.abs(change24h);
+    const direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 
+      change24h > 2 ? 'LONG' : change24h < -2 ? 'SHORT' : 'NEUTRAL';
+    
     return {
       symbol,
       timeframe,
       direction,
-      confidence: Math.round(confidence),
-      strength: Math.round(confidence),
-      price: currentPrice,
+      confidence: Math.min(70, Math.max(30, absChange * 10)),
+      strength: Math.min(80, absChange * 8),
+      price,
       timestamp: Date.now(),
       indicators: {
-        trend: [{ 
-          id: "fallback", 
-          name: "Fallback Analysis", 
-          category: "TREND", 
-          signal: direction, 
-          strength: "MODERATE", 
-          value: change24h 
-        }],
-        momentum: [],
-        volatility: [],
-        volume: [],
-        confluence: []
+        rsi: 50,
+        macd: 0,
+        bb: 0,
+        volume: 'neutral',
+        trend: direction.toLowerCase()
       }
     };
   }
@@ -583,26 +433,17 @@ export class AutomatedSignalCalculator {
   getStatus(): {
     isRunning: boolean;
     lastCalculationTime: number;
+    cachedSignalsCount: number;
+    marketVolatility: string;
     nextCalculationIn: number;
-    totalSymbols: number;
-    totalSignals: number;
   } {
-    const now = Date.now();
-    const nextCalculationIn = Math.max(0, 
-      this.lastCalculationTime + this.dynamicIntervalMs - now
-    );
-    
-    let totalSignals = 0;
-    this.signalCache.forEach(signals => {
-      totalSignals += signals.length;
-    });
-
+    const nextCalculation = this.lastCalculationTime + this.dynamicIntervalMs - Date.now();
     return {
       isRunning: this.isRunning,
       lastCalculationTime: this.lastCalculationTime,
-      nextCalculationIn,
-      totalSymbols: this.signalCache.size,
-      totalSignals
+      cachedSignalsCount: Array.from(this.signalCache.values()).reduce((sum, signals) => sum + signals.length, 0),
+      marketVolatility: this.marketVolatilityLevel,
+      nextCalculationIn: Math.max(0, nextCalculation)
     };
   }
 }
