@@ -1138,21 +1138,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         try {
           console.log(`[TechnicalAnalysis] ✅ Calculating real-time indicators for ${symbol} using authentic price data`);
           
-          const price = typeof currentPrice === 'number' ? currentPrice : (currentPrice.price || currentPrice.lastPrice || 0);
+          const price = typeof currentPrice === 'number' ? currentPrice : ((currentPrice as any).price || (currentPrice as any).lastPrice || 0);
           let change24h = 0;
-        
-        // Try to get authentic 24h change from CoinMarketCap, fallback to current data
-        try {
-          const baseSymbol = symbol.split('/')[0];
-          const marketData = await optimizedCoinMarketCapService.fetchPrice(baseSymbol);
-          change24h = marketData?.change24h || 0;
-        } catch (error) {
-          // Use change24h from current price object if available
-          change24h = typeof currentPrice === 'object' && currentPrice.change24h ? currentPrice.change24h : 0;
-        }
-        
-        const volume = 0; // Volume not critical for technical indicators
           
+          // Try to get authentic 24h change from CoinMarketCap, fallback to current data
+          try {
+            const baseSymbol = symbol.split('/')[0];
+            const marketData = await optimizedCoinMarketCapService.fetchPrice(baseSymbol);
+            change24h = marketData?.change24h || 0;
+          } catch (error) {
+            // Use change24h from current price object if available
+            change24h = typeof currentPrice === 'object' && (currentPrice as any).change24h ? (currentPrice as any).change24h : 0;
+          }
+          
+          const volume = 0; // Volume not critical for technical indicators
+            
           // Calculate timeframe-specific indicators using authentic market data
           const momentum = change24h;
           const volatility = Math.abs(change24h);
@@ -1171,7 +1171,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             '1M': { rsiSensitivity: 0.3, macdMultiplier: 0.2, cyclePeriod: 2592000 }
           };
           
-          const params = timeframeParams[timeframe as string] || timeframeParams['1d'];
+          const params = (timeframeParams as any)[timeframe as string] || timeframeParams['1d'];
           
           // Generate timeframe-specific variation using multiple factors
           const timeframeSeed = (timeframe as string).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
@@ -1187,7 +1187,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             '1m': -8, '5m': -5, '15m': -2, '30m': 0, '1h': 2,
             '4h': 4, '1d': 6, '3d': 8, '1w': 10, '1M': 12
           };
-          const baseOffset = timeframeBaseOffset[timeframe as string] || 0;
+          const baseOffset = (timeframeBaseOffset as any)[timeframe as string] || 0;
           
           // Calculate RSI with distinct timeframe behavior
           let rsi = 50 + baseOffset + (momentum * 3 * params.rsiSensitivity);
