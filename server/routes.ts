@@ -158,16 +158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get performance metrics from feedback analyzer
-  app.get('/api/performance-metrics', async (req: Request, res: Response) => {
-    try {
-      const metrics = await feedbackAnalyzer.getPerformanceMetrics();
-      res.json(metrics);
-    } catch (error) {
-      console.error('Error retrieving performance metrics:', error);
-      res.status(500).json({ error: 'Failed to retrieve performance metrics' });
-    }
-  });
+  // Performance metrics endpoint removed - now handled by comprehensive endpoint below with UI transformation
   
   // Get specific crypto asset with real-time price data from CoinGecko
   app.get('/api/crypto/:symbol', async (req: Request, res: Response) => {
@@ -1193,10 +1184,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { timeframe } = req.query;
       
+      console.log('[Routes] Processing performance metrics request with UI transformation');
+      
       // Get performance metrics from feedback analyzer
       let performanceData;
       try {
         performanceData = await feedbackAnalyzer.getPerformanceMetrics();
+        console.log('[Routes] Feedback analyzer data retrieved, applying UI transformation');
       } catch (feedbackError) {
         console.log('[Routes] Feedback analyzer unavailable, generating fallback metrics');
         performanceData = null;
