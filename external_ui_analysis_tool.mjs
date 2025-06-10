@@ -1,781 +1,791 @@
 /**
  * External UI Analysis Tool
- * Comprehensive testing of all UI components and system accuracy across 25+ cycles
- * Validates data flows, performance, and identifies issues before proposing changes
+ * Comprehensive analysis of performance analysis box issues
+ * Tests API endpoints, data structures, and UI compatibility
  */
 
+import { createRequire } from 'module';
 import http from 'http';
-import fs from 'fs';
+import { URL } from 'url';
+
+const require = createRequire(import.meta.url);
+
+// Simple fetch implementation using Node.js http module
+async function fetch(url) {
+  return new Promise((resolve, reject) => {
+    const urlObj = new URL(url);
+    const options = {
+      hostname: urlObj.hostname,
+      port: urlObj.port || (urlObj.protocol === 'https:' ? 443 : 80),
+      path: urlObj.pathname + urlObj.search,
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'External-UI-Analyzer/1.0'
+      }
+    };
+
+    const req = http.request(options, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        resolve({
+          status: res.statusCode,
+          headers: {
+            get: (name) => res.headers[name.toLowerCase()]
+          },
+          json: () => Promise.resolve(JSON.parse(data))
+        });
+      });
+    });
+
+    req.on('error', reject);
+    req.end();
+  });
+}
 
 class ExternalUIAnalyzer {
   constructor() {
     this.baseUrl = 'http://localhost:5000';
-    this.testResults = {
-      cycles: [],
-      components: new Map(),
-      dataFlows: new Map(),
-      performance: new Map(),
-      errors: [],
-      summary: {}
-    };
-    
-    this.targetCycles = 25;
-    this.currentCycle = 0;
-    this.startTime = Date.now();
-    
-    // Define comprehensive test endpoints
-    this.testEndpoints = {
-      'price-overview': {
-        url: '/api/crypto/BTC/USDT',
-        validations: ['lastPrice', 'change24h', 'volume24h'],
-        thresholds: { responseTime: 500, accuracy: 95 }
-      },
-      'market-heatmap': {
-        url: '/api/market-heatmap',
-        validations: ['signals', 'timeframes', 'direction'],
-        thresholds: { responseTime: 1000, accuracy: 90 }
-      },
-      'automation-status': {
-        url: '/api/automation/status',
-        validations: ['isRunning', 'systemHealth'],
-        thresholds: { responseTime: 200, accuracy: 100 }
-      },
-      'timing-metrics': {
-        url: '/api/timing/metrics',
-        validations: ['adaptiveTimingEnabled', 'timeframePerformance'],
-        thresholds: { responseTime: 300, accuracy: 98 }
-      },
-      'rate-limiter': {
-        url: '/api/rate-limiter/stats',
-        validations: ['monthlyUsage', 'cacheHitRate', 'health'],
-        thresholds: { responseTime: 150, accuracy: 100 }
-      },
-      'performance-metrics': {
-        url: '/api/performance-metrics',
-        validations: ['indicators', 'system'],
-        thresholds: { responseTime: 250, accuracy: 95 }
-      },
-      'signals-dashboard': {
-        url: '/api/signals/BTC/USDT',
-        validations: ['timeframes', 'predictions'],
-        thresholds: { responseTime: 800, accuracy: 92 }
-      },
-      'trade-simulations': {
-        url: '/api/trade-simulations/BTC/USDT',
-        validations: ['positions', 'profitLoss'],
-        thresholds: { responseTime: 400, accuracy: 90 }
-      },
-      'all-pairs': {
-        url: '/api/crypto/all-pairs',
-        validations: ['symbols', 'count'],
-        thresholds: { responseTime: 300, accuracy: 100 }
-      }
-    };
-    
-    // Data flow validation matrix
-    this.dataFlows = {
-      'price-consistency': {
-        source: 'price-overview',
-        target: 'signals-dashboard',
-        validation: 'price_match'
-      },
-      'signal-propagation': {
-        source: 'signals-dashboard', 
-        target: 'market-heatmap',
-        validation: 'signal_count'
-      },
-      'automation-timing': {
-        source: 'automation-status',
-        target: 'timing-metrics',
-        validation: 'status_alignment'
-      },
-      'performance-correlation': {
-        source: 'rate-limiter',
-        target: 'performance-metrics',
-        validation: 'metrics_correlation'
-      }
-    };
-    
-    this.prosAndCons = {
-      currentSystem: { pros: [], cons: [] },
-      proposedChanges: { pros: [], cons: [] },
-      criticalIssues: [],
+    this.results = {
+      apiTests: {},
+      dataStructureTests: {},
+      uiCompatibilityTests: {},
+      performanceTests: {},
+      issues: [],
       recommendations: []
     };
   }
 
-  /**
-   * Execute comprehensive analysis across all cycles
-   */
-  async runComprehensiveAnalysis() {
-    console.log('🔍 Starting External UI Analysis');
-    console.log(`📊 Target: ${this.targetCycles} cycles`);
-    console.log(`⏱️ Estimated duration: 20-25 minutes\n`);
-    
-    // Verify system readiness
-    await this.verifySystemReadiness();
-    
-    // Execute test cycles
-    for (let cycle = 1; cycle <= this.targetCycles; cycle++) {
-      this.currentCycle = cycle;
-      console.log(`\n🔄 CYCLE ${cycle}/${this.targetCycles}`);
-      console.log('=' + '='.repeat(50));
-      
-      const cycleResult = await this.executeCycle(cycle);
-      this.testResults.cycles.push(cycleResult);
-      
-      // Progress reporting every 5 cycles
-      if (cycle % 5 === 0) {
-        this.generateProgressReport(cycle);
-      }
-      
-      // Adaptive delay based on system performance
-      await this.sleep(cycle <= 10 ? 2000 : 1500);
-    }
-    
-    // Generate comprehensive analysis
-    return await this.generateFinalAnalysis();
-  }
-
-  /**
-   * Verify system readiness before testing
-   */
-  async verifySystemReadiness() {
-    console.log('🔍 Verifying system readiness...');
-    
-    const criticalEndpoints = [
-      '/api/automation/status',
-      '/api/timing/metrics', 
-      '/api/crypto/BTC/USDT'
-    ];
-    
-    for (const endpoint of criticalEndpoints) {
-      try {
-        const response = await this.makeRequest(endpoint);
-        if (!response) {
-          throw new Error(`Endpoint ${endpoint} not responding`);
-        }
-        console.log(`✅ ${endpoint}: Ready`);
-      } catch (error) {
-        console.log(`❌ ${endpoint}: ${error.message}`);
-        throw new Error(`System not ready: ${endpoint} failed`);
-      }
-    }
-    
-    console.log('✅ System readiness verified\n');
-  }
-
-  /**
-   * Execute single test cycle
-   */
-  async executeCycle(cycleNumber) {
-    const cycleStart = Date.now();
-    const cycleResult = {
-      cycleNumber,
-      timestamp: new Date().toISOString(),
-      components: {},
-      dataFlows: {},
-      errors: [],
-      duration: 0
-    };
-    
-    // Test all components
-    for (const [componentName, config] of Object.entries(this.testEndpoints)) {
-      try {
-        const componentResult = await this.testComponent(componentName, config);
-        cycleResult.components[componentName] = componentResult;
-        
-        // Track component history
-        if (!this.testResults.components.has(componentName)) {
-          this.testResults.components.set(componentName, []);
-        }
-        this.testResults.components.get(componentName).push(componentResult);
-        
-      } catch (error) {
-        const errorInfo = {
-          component: componentName,
-          cycle: cycleNumber,
-          error: error.message,
-          timestamp: new Date().toISOString()
-        };
-        cycleResult.errors.push(errorInfo);
-        this.testResults.errors.push(errorInfo);
-      }
-    }
-    
-    // Test data flows
-    await this.testDataFlows(cycleResult);
-    
-    cycleResult.duration = Date.now() - cycleStart;
-    return cycleResult;
-  }
-
-  /**
-   * Test individual component
-   */
-  async testComponent(componentName, config) {
-    const startTime = Date.now();
+  async runCompleteAnalysis() {
+    console.log('🔍 External UI Analysis - Performance Analysis Box Investigation\n');
     
     try {
-      const response = await this.makeRequest(config.url);
-      const responseTime = Date.now() - startTime;
+      await this.testPerformanceMetricsAPI();
+      await this.analyzeDataStructures();
+      await this.testUICompatibility();
+      await this.performLoadTesting();
+      await this.identifyRootCauses();
       
-      const validation = this.validateData(response, config.validations);
-      const performance = this.assessPerformance(responseTime, config.thresholds);
+      this.generateComprehensiveReport();
+    } catch (error) {
+      console.error('❌ Analysis failed:', error.message);
+      this.results.issues.push(`Critical analysis error: ${error.message}`);
+    }
+  }
+
+  async testPerformanceMetricsAPI() {
+    console.log('📊 Testing Performance Metrics API...');
+    
+    try {
+      // Test 1: Basic endpoint availability
+      const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      const data = await response.json();
+      
+      this.results.apiTests.basic = {
+        status: response.status,
+        contentType: response.headers.get('content-type'),
+        responseTime: response.headers.get('response-time') || 'unknown',
+        hasData: !!data
+      };
+      
+      // Test 2: Response structure validation
+      const structureValid = this.validateResponseStructure(data);
+      this.results.apiTests.structure = structureValid;
+      
+      // Test 3: Cache behavior
+      const cacheTest = await this.testCacheBehavior();
+      this.results.apiTests.cache = cacheTest;
+      
+      // Test 4: Multiple rapid requests
+      const concurrencyTest = await this.testConcurrency();
+      this.results.apiTests.concurrency = concurrencyTest;
+      
+      console.log(`  ✅ API Status: ${response.status}`);
+      console.log(`  📊 Data Structure: ${structureValid.isValid ? '✅ Valid' : '❌ Invalid'}`);
+      console.log(`  🔄 Cache Test: ${cacheTest.working ? '✅ Working' : '❌ Problematic'}`);
+      
+    } catch (error) {
+      this.results.issues.push(`Performance metrics API test failed: ${error.message}`);
+      console.log('  ❌ API test failed');
+    }
+  }
+
+  validateResponseStructure(data) {
+    const requiredFields = ['indicators', 'timeframes', 'symbols'];
+    const requiredIndicatorFields = ['indicator', 'value', 'status', 'change'];
+    
+    const validation = {
+      isValid: true,
+      missingFields: [],
+      invalidIndicators: [],
+      detailedAnalysis: {}
+    };
+    
+    // Check top-level fields
+    requiredFields.forEach(field => {
+      if (!data.hasOwnProperty(field)) {
+        validation.missingFields.push(field);
+        validation.isValid = false;
+      }
+    });
+    
+    // Check indicators array
+    if (Array.isArray(data.indicators)) {
+      validation.detailedAnalysis.indicatorCount = data.indicators.length;
+      
+      data.indicators.forEach((indicator, index) => {
+        const missing = requiredIndicatorFields.filter(field => !indicator.hasOwnProperty(field));
+        if (missing.length > 0) {
+          validation.invalidIndicators.push({
+            index,
+            indicator: indicator.indicator || `indicator_${index}`,
+            missingFields: missing
+          });
+          validation.isValid = false;
+        }
+      });
+    } else {
+      validation.missingFields.push('indicators (not array)');
+      validation.isValid = false;
+    }
+    
+    return validation;
+  }
+
+  async testCacheBehavior() {
+    try {
+      // First request
+      const start1 = Date.now();
+      const response1 = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      const time1 = Date.now() - start1;
+      const data1 = await response1.json();
+      
+      // Second request (should hit cache)
+      const start2 = Date.now();
+      const response2 = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      const time2 = Date.now() - start2;
+      const data2 = await response2.json();
+      
+      // Third request with cache-control header
+      const start3 = Date.now();
+      const response3 = await fetch(`${this.baseUrl}/api/performance-metrics`, {
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      const time3 = Date.now() - start3;
+      const data3 = await response3.json();
       
       return {
-        status: validation.passed && performance.passed ? 'PASS' : 'FAIL',
-        responseTime,
-        dataSize: JSON.stringify(response).length,
-        validation,
-        performance,
-        timestamp: new Date().toISOString(),
-        dataHash: this.hashData(response)
+        working: true,
+        times: { first: time1, second: time2, noCache: time3 },
+        cacheHeaders: {
+          first: response1.headers.get('cache-control'),
+          second: response2.headers.get('cache-control'),
+          noCache: response3.headers.get('cache-control')
+        },
+        dataConsistency: JSON.stringify(data1) === JSON.stringify(data2)
       };
     } catch (error) {
       return {
-        status: 'ERROR',
-        error: error.message,
-        responseTime: Date.now() - startTime,
-        timestamp: new Date().toISOString()
+        working: false,
+        error: error.message
       };
     }
   }
 
-  /**
-   * Validate component data
-   */
-  validateData(data, validations) {
-    const results = {
-      passed: true,
-      checks: {},
-      issues: []
-    };
-    
-    for (const field of validations) {
-      const check = this.performValidation(data, field);
-      results.checks[field] = check;
+  async testConcurrency() {
+    try {
+      const concurrent = 5;
+      const promises = Array(concurrent).fill().map(async (_, i) => {
+        const start = Date.now();
+        const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+        const time = Date.now() - start;
+        const data = await response.json();
+        return { index: i, status: response.status, time, hasData: !!data.indicators };
+      });
       
-      if (!check.valid) {
-        results.passed = false;
-        results.issues.push(`${field}: ${check.issue || 'validation failed'}`);
-      }
+      const results = await Promise.all(promises);
+      
+      return {
+        working: results.every(r => r.status === 200 && r.hasData),
+        results,
+        averageTime: results.reduce((sum, r) => sum + r.time, 0) / results.length,
+        maxTime: Math.max(...results.map(r => r.time)),
+        minTime: Math.min(...results.map(r => r.time))
+      };
+    } catch (error) {
+      return {
+        working: false,
+        error: error.message
+      };
     }
+  }
+
+  async analyzeDataStructures() {
+    console.log('🔍 Analyzing Data Structures...');
     
-    return results;
-  }
-
-  /**
-   * Perform specific field validation
-   */
-  performValidation(data, field) {
-    switch (field) {
-      case 'lastPrice':
-        if (data.lastPrice && typeof data.lastPrice === 'number' && data.lastPrice > 0) {
-          return { valid: true, value: data.lastPrice };
-        }
-        return { valid: false, issue: 'Invalid price data', value: data.lastPrice };
-        
-      case 'change24h':
-        if (data.change24h !== undefined && typeof data.change24h === 'number') {
-          return { valid: true, value: data.change24h };
-        }
-        return { valid: false, issue: 'Missing 24h change', value: data.change24h };
-        
-      case 'signals':
-        const signals = Array.isArray(data) ? data : (data.signals || []);
-        if (signals.length > 0) {
-          return { valid: true, value: signals.length };
-        }
-        return { valid: false, issue: 'No signals found', value: 0 };
-        
-      case 'timeframes':
-        const timeframes = data.timeframePerformance || data.timeframes || {};
-        const count = Object.keys(timeframes).length;
-        if (count >= 5) {
-          return { valid: true, value: count };
-        }
-        return { valid: false, issue: 'Insufficient timeframes', value: count };
-        
-      case 'isRunning':
-        if (typeof data.isRunning === 'boolean') {
-          return { valid: true, value: data.isRunning };
-        }
-        return { valid: false, issue: 'Missing automation status', value: undefined };
-        
-      case 'adaptiveTimingEnabled':
-        if (data.system && typeof data.system.adaptiveTimingEnabled === 'boolean') {
-          return { valid: true, value: data.system.adaptiveTimingEnabled };
-        }
-        return { valid: false, issue: 'Missing adaptive timing status', value: undefined };
-        
-      case 'monthlyUsage':
-        const usage = data.apiCalls?.projectedMonthly || data.summary?.monthlyUsage;
-        if (typeof usage === 'number' && usage >= 0) {
-          return { valid: true, value: usage };
-        }
-        return { valid: false, issue: 'Invalid monthly usage', value: usage };
-        
-      case 'indicators':
-        const indicators = data.indicators || data;
-        if (Array.isArray(indicators) && indicators.length > 0) {
-          return { valid: true, value: indicators.length };
-        }
-        return { valid: false, issue: 'No indicators found', value: 0 };
-        
-      case 'symbols':
-        if (Array.isArray(data) && data.length > 0) {
-          return { valid: true, value: data.length };
-        }
-        return { valid: false, issue: 'No symbols found', value: 0 };
-        
-      default:
-        return { valid: true, value: 'unknown_field' };
+    try {
+      const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      const data = await response.json();
+      
+      this.results.dataStructureTests = {
+        rawData: this.analyzeRawData(data),
+        indicatorAnalysis: this.analyzeIndicators(data.indicators || []),
+        typeValidation: this.validateDataTypes(data),
+        completeness: this.checkDataCompleteness(data)
+      };
+      
+      console.log(`  📊 Indicators Found: ${data.indicators?.length || 0}`);
+      console.log(`  🔍 Data Types: ${this.results.dataStructureTests.typeValidation.valid ? '✅ Valid' : '❌ Invalid'}`);
+      console.log(`  📋 Completeness: ${this.results.dataStructureTests.completeness.percentage}%`);
+      
+    } catch (error) {
+      this.results.issues.push(`Data structure analysis failed: ${error.message}`);
+      console.log('  ❌ Data structure analysis failed');
     }
   }
 
-  /**
-   * Assess performance against thresholds
-   */
-  assessPerformance(responseTime, thresholds) {
+  analyzeRawData(data) {
     return {
-      passed: responseTime <= thresholds.responseTime,
-      responseTime,
-      threshold: thresholds.responseTime,
-      grade: responseTime <= thresholds.responseTime * 0.5 ? 'EXCELLENT' :
-             responseTime <= thresholds.responseTime * 0.8 ? 'GOOD' :
-             responseTime <= thresholds.responseTime ? 'ACCEPTABLE' : 'POOR'
-    };
-  }
-
-  /**
-   * Test data flows between components
-   */
-  async testDataFlows(cycleResult) {
-    for (const [flowName, config] of Object.entries(this.dataFlows)) {
-      try {
-        const sourceResult = cycleResult.components[config.source];
-        const targetResult = cycleResult.components[config.target];
-        
-        if (sourceResult && targetResult) {
-          const flowResult = this.validateDataFlow(config.validation, sourceResult, targetResult);
-          cycleResult.dataFlows[flowName] = flowResult;
-          
-          if (!this.testResults.dataFlows.has(flowName)) {
-            this.testResults.dataFlows.set(flowName, []);
-          }
-          this.testResults.dataFlows.get(flowName).push(flowResult);
-        }
-      } catch (error) {
-        cycleResult.errors.push({
-          dataFlow: flowName,
-          error: error.message,
-          timestamp: new Date().toISOString()
-        });
-      }
-    }
-  }
-
-  /**
-   * Validate data flow consistency
-   */
-  validateDataFlow(validationType, sourceResult, targetResult) {
-    switch (validationType) {
-      case 'price_match':
-        // Check if price data is consistent between source and target
-        return {
-          status: 'PASS',
-          consistency: 95.5,
-          note: 'Price data consistent'
-        };
-        
-      case 'signal_count':
-        // Validate signal propagation
-        return {
-          status: 'PASS',
-          propagation: 92.0,
-          note: 'Signals properly propagated'
-        };
-        
-      case 'status_alignment':
-        // Check automation status alignment
-        return {
-          status: 'PASS',
-          alignment: 98.5,
-          note: 'Status metrics aligned'
-        };
-        
-      case 'metrics_correlation':
-        // Validate performance correlation
-        return {
-          status: 'PASS',
-          correlation: 89.2,
-          note: 'Metrics correlated properly'
-        };
-        
-      default:
-        return { status: 'UNKNOWN', note: 'Unknown validation type' };
-    }
-  }
-
-  /**
-   * Generate progress report
-   */
-  generateProgressReport(cycleNumber) {
-    console.log(`\n📈 PROGRESS REPORT - Cycle ${cycleNumber}`);
-    console.log('-'.repeat(60));
-    
-    const stats = this.calculateStats();
-    
-    console.log(`✅ Components tested: ${Object.keys(this.testEndpoints).length}`);
-    console.log(`🔄 Cycles completed: ${cycleNumber}/${this.targetCycles}`);
-    console.log(`⚠️ Total errors: ${this.testResults.errors.length}`);
-    console.log(`📊 Average response time: ${stats.avgResponseTime}ms`);
-    console.log(`🎯 Success rate: ${stats.successRate}%`);
-  }
-
-  /**
-   * Calculate performance statistics
-   */
-  calculateStats() {
-    let totalResponseTime = 0;
-    let totalTests = 0;
-    let successfulTests = 0;
-    
-    for (const [componentName, results] of this.testResults.components) {
-      for (const result of results) {
-        if (result.responseTime) {
-          totalResponseTime += result.responseTime;
-          totalTests++;
-          if (result.status === 'PASS') {
-            successfulTests++;
-          }
-        }
-      }
-    }
-    
-    return {
-      avgResponseTime: totalTests > 0 ? Math.round(totalResponseTime / totalTests) : 0,
-      successRate: totalTests > 0 ? Math.round((successfulTests / totalTests) * 100) : 0,
-      totalTests,
-      successfulTests,
-      errorRate: totalTests > 0 ? Math.round((this.testResults.errors.length / totalTests) * 100) : 0
-    };
-  }
-
-  /**
-   * Generate comprehensive final analysis
-   */
-  async generateFinalAnalysis() {
-    console.log('\n🎯 GENERATING COMPREHENSIVE ANALYSIS');
-    console.log('=' + '='.repeat(70));
-    
-    const finalStats = this.calculateStats();
-    await this.analyzeProsAndCons(finalStats);
-    const recommendations = this.generateRecommendations(finalStats);
-    
-    const report = {
-      executionSummary: {
-        totalDuration: Date.now() - this.startTime,
-        totalCycles: this.targetCycles,
-        componentsAnalyzed: Object.keys(this.testEndpoints).length,
-        ...finalStats
+      keys: Object.keys(data),
+      sizes: {
+        indicators: Array.isArray(data.indicators) ? data.indicators.length : 0,
+        timeframes: Array.isArray(data.timeframes) ? data.timeframes.length : 0,
+        symbols: Array.isArray(data.symbols) ? data.symbols.length : 0
       },
-      prosAndConsAnalysis: this.prosAndCons,
-      recommendations,
-      criticalIssues: this.identifyCriticalIssues(finalStats),
-      readinessAssessment: this.assessReadinessForChanges(finalStats),
-      detailedResults: {
-        components: Object.fromEntries(this.testResults.components),
-        dataFlows: Object.fromEntries(this.testResults.dataFlows),
-        errors: this.testResults.errors
-      },
-      timestamp: new Date().toISOString()
+      hasTimestamp: !!data.lastUpdated,
+      hasSummary: !!data.summary
     };
-    
-    // Save comprehensive report
-    const reportPath = 'external_ui_analysis_report.json';
-    fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
-    
-    this.displayExecutiveSummary(report);
-    
-    console.log(`\n📄 Complete analysis saved to: ${reportPath}`);
-    return report;
   }
 
-  /**
-   * Analyze pros and cons of current implementation
-   */
-  async analyzeProsAndCons(stats) {
-    // Current system pros
-    this.prosAndCons.currentSystem.pros = [
-      'Adaptive timing system successfully implemented and functional',
-      'Rate limiting protection effectively prevents API overuse',
-      'Multiple timeframes operating with independent scheduling',
-      'Real-time price data integration working for core symbols',
-      'Comprehensive monitoring endpoints providing system visibility',
-      'Automated signal calculation system generating predictions'
-    ];
-    
-    // Current system cons
-    this.prosAndCons.currentSystem.cons = [
-      'Incomplete CoinMarketCap symbol mapping causing "No mapping" errors',
-      'Circuit breaker occasionally blocking legitimate API requests',
-      'Variable response times under load affecting user experience',
-      'Some API endpoints returning inconsistent data structures',
-      'Rate limiting may be overly aggressive during peak usage',
-      'UI components lack comprehensive error state handling'
-    ];
-    
-    // Proposed improvements pros
-    this.prosAndCons.proposedChanges.pros = [
-      'Complete symbol mapping eliminates all mapping-related errors',
-      'Progressive backoff reduces unnecessary API request blocking',
-      'Enhanced UI error boundaries improve user experience',
-      'Optimized caching strategy reduces API calls and improves speed',
-      'Better error handling provides clearer user feedback',
-      'Improved monitoring gives better system health visibility'
-    ];
-    
-    // Proposed improvements cons
-    this.prosAndCons.proposedChanges.cons = [
-      'Implementation requires significant development time and testing',
-      'Risk of introducing new bugs during optimization process',
-      'Temporary service interruptions possible during deployment',
-      'Increased system complexity with additional monitoring layers',
-      'Learning curve for new monitoring and error handling interfaces',
-      'Potential compatibility issues with existing integrations'
-    ];
-  }
-
-  /**
-   * Generate actionable recommendations
-   */
-  generateRecommendations(stats) {
-    const recommendations = {
-      immediate: [],
-      shortTerm: [],
-      longTerm: []
-    };
-    
-    // Immediate actions
-    if (stats.errorRate > 5) {
-      recommendations.immediate.push({
-        priority: 'CRITICAL',
-        title: 'Complete CoinMarketCap symbol mapping',
-        description: 'Map all 50 cryptocurrency symbols to eliminate mapping errors',
-        impact: 'Eliminates 80% of current errors',
-        effort: 'High',
-        timeline: '2-3 days'
-      });
+  analyzeIndicators(indicators) {
+    if (!Array.isArray(indicators)) {
+      return { error: 'Indicators is not an array' };
     }
     
-    if (stats.avgResponseTime > 500) {
-      recommendations.immediate.push({
-        priority: 'HIGH',
-        title: 'Optimize API rate limiting strategy',
-        description: 'Implement progressive backoff and improve cache hit rates',
-        impact: 'Reduces response times by 30-40%',
-        effort: 'Medium',
-        timeline: '1-2 days'
-      });
-    }
+    const analysis = {
+      count: indicators.length,
+      uniqueIndicators: [...new Set(indicators.map(i => i.indicator))],
+      valueTypes: {},
+      statusTypes: {},
+      changeTypes: {},
+      completeness: {}
+    };
     
-    // Short-term improvements
-    recommendations.shortTerm.push({
-      priority: 'MEDIUM',
-      title: 'Implement comprehensive UI error boundaries',
-      description: 'Add error boundaries to handle API failures gracefully',
-      impact: 'Improves user experience and system reliability',
-      effort: 'Medium',
-      timeline: '1 week'
+    indicators.forEach(indicator => {
+      // Analyze value types
+      const valueType = typeof indicator.value;
+      analysis.valueTypes[valueType] = (analysis.valueTypes[valueType] || 0) + 1;
+      
+      // Analyze status types
+      if (indicator.status) {
+        analysis.statusTypes[indicator.status] = (analysis.statusTypes[indicator.status] || 0) + 1;
+      }
+      
+      // Analyze change format
+      if (indicator.change) {
+        const changeFormat = indicator.change.includes('%') ? 'percentage' : 'numeric';
+        analysis.changeTypes[changeFormat] = (analysis.changeTypes[changeFormat] || 0) + 1;
+      }
     });
     
-    recommendations.shortTerm.push({
-      priority: 'MEDIUM',
-      title: 'Enhance performance monitoring',
-      description: 'Add detailed metrics tracking and alerting',
-      impact: 'Better system observability and proactive issue detection',
-      effort: 'High',
-      timeline: '1-2 weeks'
-    });
-    
-    // Long-term enhancements
-    recommendations.longTerm.push({
-      priority: 'LOW',
-      title: 'Implement advanced caching strategies',
-      description: 'Add intelligent caching with volatility-based TTL',
-      impact: 'Significant performance improvement and cost reduction',
-      effort: 'High',
-      timeline: '3-4 weeks'
-    });
-    
-    return recommendations;
+    return analysis;
   }
 
-  /**
-   * Identify critical issues requiring immediate attention
-   */
-  identifyCriticalIssues(stats) {
+  validateDataTypes(data) {
     const issues = [];
     
-    if (stats.errorRate > 10) {
-      issues.push({
-        type: 'HIGH_ERROR_RATE',
-        severity: 'CRITICAL',
-        description: `Error rate of ${stats.errorRate}% exceeds 10% threshold`,
-        impact: 'System reliability severely compromised'
-      });
-    }
-    
-    if (stats.avgResponseTime > 1000) {
-      issues.push({
-        type: 'SLOW_RESPONSE_TIMES',
-        severity: 'HIGH',
-        description: `Average response time of ${stats.avgResponseTime}ms exceeds 1000ms`,
-        impact: 'Poor user experience and potential timeouts'
-      });
-    }
-    
-    if (stats.successRate < 90) {
-      issues.push({
-        type: 'LOW_SUCCESS_RATE',
-        severity: 'CRITICAL',
-        description: `Success rate of ${stats.successRate}% below 90% requirement`,
-        impact: 'Core functionality unreliable'
-      });
-    }
-    
-    return issues;
-  }
-
-  /**
-   * Assess readiness for implementing changes
-   */
-  assessReadinessForChanges(stats) {
-    const criticalIssues = this.identifyCriticalIssues(stats);
-    
-    if (criticalIssues.length === 0 && stats.successRate >= 95) {
-      return {
-        status: 'READY',
-        confidence: 'HIGH',
-        recommendation: 'System is stable, proceed with planned improvements'
-      };
-    } else if (criticalIssues.length <= 1 && stats.successRate >= 85) {
-      return {
-        status: 'CONDITIONALLY_READY',
-        confidence: 'MEDIUM',
-        recommendation: 'Address identified issues before major changes'
-      };
-    } else {
-      return {
-        status: 'NOT_READY',
-        confidence: 'LOW',
-        recommendation: 'Resolve critical issues before implementing changes'
-      };
-    }
-  }
-
-  /**
-   * Display executive summary
-   */
-  displayExecutiveSummary(report) {
-    console.log('\n🎯 EXECUTIVE SUMMARY');
-    console.log('=' + '='.repeat(70));
-    console.log(`⏱️ Total execution time: ${Math.round(report.executionSummary.totalDuration / 1000 / 60)} minutes`);
-    console.log(`📊 Overall success rate: ${report.executionSummary.successRate}%`);
-    console.log(`⚡ Average response time: ${report.executionSummary.avgResponseTime}ms`);
-    console.log(`⚠️ Error rate: ${report.executionSummary.errorRate}%`);
-    console.log(`🔧 Critical issues: ${report.criticalIssues.length}`);
-    console.log(`📋 Immediate recommendations: ${report.recommendations.immediate.length}`);
-    console.log(`🚦 Readiness status: ${report.readinessAssessment.status}`);
-    
-    console.log('\n✅ CURRENT SYSTEM PROS:');
-    report.prosAndConsAnalysis.currentSystem.pros.slice(0, 3).forEach(pro => {
-      console.log(`  • ${pro}`);
-    });
-    
-    console.log('\n❌ CURRENT SYSTEM CONS:');
-    report.prosAndConsAnalysis.currentSystem.cons.slice(0, 3).forEach(con => {
-      console.log(`  • ${con}`);
-    });
-    
-    if (report.recommendations.immediate.length > 0) {
-      console.log('\n🎯 TOP IMMEDIATE ACTIONS:');
-      report.recommendations.immediate.forEach(rec => {
-        console.log(`  ${rec.priority}: ${rec.title} - ${rec.impact}`);
-      });
-    }
-    
-    console.log(`\n📊 RECOMMENDATION: ${report.readinessAssessment.recommendation}`);
-  }
-
-  /**
-   * Utility methods
-   */
-  async makeRequest(endpoint) {
-    return new Promise((resolve, reject) => {
-      const url = `${this.baseUrl}${endpoint}`;
-      const urlObj = new URL(url);
-      
-      const options = {
-        hostname: urlObj.hostname,
-        port: urlObj.port || 80,
-        path: urlObj.pathname + urlObj.search,
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'User-Agent': 'ExternalUIAnalyzer/1.0'
+    if (data.indicators) {
+      data.indicators.forEach((indicator, index) => {
+        if (typeof indicator.indicator !== 'string') {
+          issues.push(`Indicator ${index}: 'indicator' should be string, got ${typeof indicator.indicator}`);
         }
-      };
-      
-      const req = http.request(options, (res) => {
-        let data = '';
-        res.on('data', chunk => data += chunk);
-        res.on('end', () => {
-          try {
-            if (data.trim() === '') {
-              resolve({});
-            } else {
-              resolve(JSON.parse(data));
-            }
-          } catch (error) {
-            console.log(`Warning: Non-JSON response from ${endpoint}, treating as empty`);
-            resolve({});
+        if (!['string', 'number'].includes(typeof indicator.value)) {
+          issues.push(`Indicator ${index}: 'value' should be string or number, got ${typeof indicator.value}`);
+        }
+        if (typeof indicator.status !== 'string') {
+          issues.push(`Indicator ${index}: 'status' should be string, got ${typeof indicator.status}`);
+        }
+        if (typeof indicator.change !== 'string') {
+          issues.push(`Indicator ${index}: 'change' should be string, got ${typeof indicator.change}`);
+        }
+      });
+    }
+    
+    return {
+      valid: issues.length === 0,
+      issues
+    };
+  }
+
+  checkDataCompleteness(data) {
+    const expectedFields = ['indicators', 'timeframes', 'symbols', 'lastUpdated'];
+    const presentFields = expectedFields.filter(field => data.hasOwnProperty(field));
+    
+    let totalIndicatorFields = 0;
+    let completeIndicatorFields = 0;
+    
+    if (Array.isArray(data.indicators)) {
+      const requiredIndicatorFields = ['indicator', 'value', 'status', 'change'];
+      data.indicators.forEach(indicator => {
+        requiredIndicatorFields.forEach(field => {
+          totalIndicatorFields++;
+          if (indicator.hasOwnProperty(field) && indicator[field] !== null && indicator[field] !== undefined) {
+            completeIndicatorFields++;
           }
         });
       });
-      
-      req.on('error', reject);
-      req.setTimeout(10000, () => {
-        req.destroy();
-        reject(new Error(`Request timeout for ${endpoint}`));
-      });
-      req.end();
-    });
-  }
-
-  hashData(data) {
-    // Simple hash for data fingerprinting
-    let hash = 0;
-    const str = JSON.stringify(data);
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash; // Convert to 32bit integer
     }
-    return Math.abs(hash).toString(16).substring(0, 8);
+    
+    const topLevelCompleteness = (presentFields.length / expectedFields.length) * 100;
+    const indicatorCompleteness = totalIndicatorFields > 0 ? (completeIndicatorFields / totalIndicatorFields) * 100 : 100;
+    
+    return {
+      percentage: Math.round((topLevelCompleteness + indicatorCompleteness) / 2),
+      topLevel: {
+        expected: expectedFields.length,
+        present: presentFields.length,
+        missing: expectedFields.filter(field => !data.hasOwnProperty(field))
+      },
+      indicators: {
+        totalFields: totalIndicatorFields,
+        completeFields: completeIndicatorFields,
+        completeness: indicatorCompleteness
+      }
+    };
   }
 
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  async testUICompatibility() {
+    console.log('🎨 Testing UI Compatibility...');
+    
+    try {
+      const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      const data = await response.json();
+      
+      const compatibility = {
+        reactCompatible: this.testReactCompatibility(data),
+        chartCompatible: this.testChartCompatibility(data),
+        displayCompatible: this.testDisplayCompatibility(data),
+        responsiveCompatible: this.testResponsiveCompatibility(data)
+      };
+      
+      this.results.uiCompatibilityTests = compatibility;
+      
+      console.log(`  ⚛️  React Compatible: ${compatibility.reactCompatible.compatible ? '✅ Yes' : '❌ No'}`);
+      console.log(`  📊 Chart Compatible: ${compatibility.chartCompatible.compatible ? '✅ Yes' : '❌ No'}`);
+      console.log(`  🖥️  Display Compatible: ${compatibility.displayCompatible.compatible ? '✅ Yes' : '❌ No'}`);
+      
+    } catch (error) {
+      this.results.issues.push(`UI compatibility test failed: ${error.message}`);
+      console.log('  ❌ UI compatibility test failed');
+    }
+  }
+
+  testReactCompatibility(data) {
+    const issues = [];
+    
+    // Check for React-safe data types
+    if (data.indicators) {
+      data.indicators.forEach((indicator, index) => {
+        if (indicator.value === null || indicator.value === undefined) {
+          issues.push(`Indicator ${index}: null/undefined value not React-safe`);
+        }
+        if (typeof indicator.value === 'object' && !Array.isArray(indicator.value)) {
+          issues.push(`Indicator ${index}: complex object value may cause React rendering issues`);
+        }
+      });
+    }
+    
+    // Check for key uniqueness (React requires unique keys)
+    if (Array.isArray(data.indicators)) {
+      const indicatorNames = data.indicators.map(i => i.indicator);
+      const uniqueNames = [...new Set(indicatorNames)];
+      if (indicatorNames.length !== uniqueNames.length) {
+        issues.push('Duplicate indicator names detected - React keys must be unique');
+      }
+    }
+    
+    return {
+      compatible: issues.length === 0,
+      issues
+    };
+  }
+
+  testChartCompatibility(data) {
+    const issues = [];
+    
+    if (data.indicators) {
+      data.indicators.forEach((indicator, index) => {
+        // Check if values are numeric or can be converted
+        const numericValue = parseFloat(indicator.value);
+        if (isNaN(numericValue)) {
+          issues.push(`Indicator ${index}: value '${indicator.value}' cannot be converted to number for charts`);
+        }
+        
+        // Check change format for chart deltas
+        if (indicator.change && !indicator.change.match(/^[+-]?\d+(\.\d+)?%?$/)) {
+          issues.push(`Indicator ${index}: change format '${indicator.change}' not chart-compatible`);
+        }
+      });
+    }
+    
+    return {
+      compatible: issues.length === 0,
+      issues
+    };
+  }
+
+  testDisplayCompatibility(data) {
+    const issues = [];
+    
+    if (data.indicators) {
+      data.indicators.forEach((indicator, index) => {
+        // Check for display-ready strings
+        if (typeof indicator.indicator !== 'string' || indicator.indicator.length === 0) {
+          issues.push(`Indicator ${index}: indicator name not display-ready`);
+        }
+        
+        // Check status values
+        const validStatuses = ['active', 'inactive', 'warning', 'error', 'success'];
+        if (indicator.status && !validStatuses.includes(indicator.status.toLowerCase())) {
+          issues.push(`Indicator ${index}: status '${indicator.status}' not standard display value`);
+        }
+        
+        // Check value format
+        if (indicator.value && typeof indicator.value === 'string' && indicator.value.length > 20) {
+          issues.push(`Indicator ${index}: value too long for standard display (${indicator.value.length} chars)`);
+        }
+      });
+    }
+    
+    return {
+      compatible: issues.length === 0,
+      issues
+    };
+  }
+
+  testResponsiveCompatibility(data) {
+    const issues = [];
+    
+    // Check data size for mobile compatibility
+    const dataSize = JSON.stringify(data).length;
+    if (dataSize > 50000) { // 50KB threshold
+      issues.push(`Data size ${dataSize} bytes may be too large for mobile devices`);
+    }
+    
+    // Check indicator count for small screens
+    if (data.indicators && data.indicators.length > 10) {
+      issues.push(`${data.indicators.length} indicators may be too many for small screens`);
+    }
+    
+    return {
+      compatible: issues.length === 0,
+      issues,
+      dataSize
+    };
+  }
+
+  async performLoadTesting() {
+    console.log('⚡ Performing Load Testing...');
+    
+    try {
+      const tests = {
+        sequentialLoad: await this.testSequentialLoad(),
+        concurrentLoad: await this.testConcurrentLoad(),
+        sustainedLoad: await this.testSustainedLoad()
+      };
+      
+      this.results.performanceTests = tests;
+      
+      console.log(`  📈 Sequential: ${tests.sequentialLoad.avgTime}ms avg`);
+      console.log(`  🔀 Concurrent: ${tests.concurrentLoad.avgTime}ms avg`);
+      console.log(`  ⏱️  Sustained: ${tests.sustainedLoad.successRate}% success rate`);
+      
+    } catch (error) {
+      this.results.issues.push(`Load testing failed: ${error.message}`);
+      console.log('  ❌ Load testing failed');
+    }
+  }
+
+  async testSequentialLoad() {
+    const iterations = 10;
+    const times = [];
+    
+    for (let i = 0; i < iterations; i++) {
+      const start = Date.now();
+      const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      await response.json();
+      times.push(Date.now() - start);
+      
+      // Small delay between requests
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    
+    return {
+      iterations,
+      times,
+      avgTime: Math.round(times.reduce((sum, time) => sum + time, 0) / times.length),
+      minTime: Math.min(...times),
+      maxTime: Math.max(...times)
+    };
+  }
+
+  async testConcurrentLoad() {
+    const concurrency = 8;
+    const promises = Array(concurrency).fill().map(async () => {
+      const start = Date.now();
+      const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+      await response.json();
+      return Date.now() - start;
+    });
+    
+    const times = await Promise.all(promises);
+    
+    return {
+      concurrency,
+      times,
+      avgTime: Math.round(times.reduce((sum, time) => sum + time, 0) / times.length),
+      minTime: Math.min(...times),
+      maxTime: Math.max(...times)
+    };
+  }
+
+  async testSustainedLoad() {
+    const duration = 30000; // 30 seconds
+    const interval = 1000; // 1 request per second
+    const startTime = Date.now();
+    const results = [];
+    
+    while (Date.now() - startTime < duration) {
+      try {
+        const start = Date.now();
+        const response = await fetch(`${this.baseUrl}/api/performance-metrics`);
+        const data = await response.json();
+        const time = Date.now() - start;
+        
+        results.push({
+          success: response.status === 200 && !!data.indicators,
+          time,
+          timestamp: Date.now()
+        });
+      } catch (error) {
+        results.push({
+          success: false,
+          error: error.message,
+          timestamp: Date.now()
+        });
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, interval));
+    }
+    
+    const successful = results.filter(r => r.success);
+    
+    return {
+      duration,
+      totalRequests: results.length,
+      successful: successful.length,
+      successRate: Math.round((successful.length / results.length) * 100),
+      avgTime: successful.length > 0 ? Math.round(successful.reduce((sum, r) => sum + r.time, 0) / successful.length) : 0,
+      errors: results.filter(r => !r.success).map(r => r.error)
+    };
+  }
+
+  async identifyRootCauses() {
+    console.log('🔍 Identifying Root Causes...');
+    
+    const issues = this.results.issues;
+    const apiTests = this.results.apiTests;
+    const structureTests = this.results.dataStructureTests;
+    const uiTests = this.results.uiCompatibilityTests;
+    
+    // Analyze patterns in the issues
+    if (apiTests.structure && !apiTests.structure.isValid) {
+      this.results.recommendations.push('CRITICAL: Fix data structure validation issues');
+    }
+    
+    if (uiTests.reactCompatible && !uiTests.reactCompatible.compatible) {
+      this.results.recommendations.push('HIGH: Address React compatibility issues');
+    }
+    
+    if (uiTests.chartCompatible && !uiTests.chartCompatible.compatible) {
+      this.results.recommendations.push('MEDIUM: Fix chart compatibility for better visualization');
+    }
+    
+    if (this.results.performanceTests.sustainedLoad && this.results.performanceTests.sustainedLoad.successRate < 95) {
+      this.results.recommendations.push('MEDIUM: Improve API reliability under sustained load');
+    }
+    
+    console.log(`  🎯 Issues Identified: ${issues.length}`);
+    console.log(`  💡 Recommendations Generated: ${this.results.recommendations.length}`);
+  }
+
+  generateComprehensiveReport() {
+    console.log('\n' + '='.repeat(80));
+    console.log('📋 COMPREHENSIVE UI ANALYSIS REPORT');
+    console.log('='.repeat(80));
+    
+    // Executive Summary
+    console.log('\n🎯 EXECUTIVE SUMMARY:');
+    const totalIssues = this.results.issues.length;
+    const criticalIssues = this.results.recommendations.filter(r => r.startsWith('CRITICAL')).length;
+    
+    console.log(`  Total Issues Found: ${totalIssues}`);
+    console.log(`  Critical Issues: ${criticalIssues}`);
+    console.log(`  Overall Health: ${this.calculateOverallHealth()}`);
+    
+    // API Test Results
+    console.log('\n📊 API TEST RESULTS:');
+    if (this.results.apiTests.basic) {
+      console.log(`  Status Code: ${this.results.apiTests.basic.status}`);
+      console.log(`  Content Type: ${this.results.apiTests.basic.contentType}`);
+      console.log(`  Has Data: ${this.results.apiTests.basic.hasData ? '✅' : '❌'}`);
+    }
+    
+    if (this.results.apiTests.structure) {
+      console.log(`  Structure Valid: ${this.results.apiTests.structure.isValid ? '✅' : '❌'}`);
+      if (!this.results.apiTests.structure.isValid) {
+        console.log(`  Missing Fields: ${this.results.apiTests.structure.missingFields.join(', ')}`);
+        if (this.results.apiTests.structure.invalidIndicators.length > 0) {
+          console.log(`  Invalid Indicators: ${this.results.apiTests.structure.invalidIndicators.length}`);
+        }
+      }
+    }
+    
+    // Data Structure Analysis
+    console.log('\n🔍 DATA STRUCTURE ANALYSIS:');
+    if (this.results.dataStructureTests.rawData) {
+      const raw = this.results.dataStructureTests.rawData;
+      console.log(`  Indicators: ${raw.sizes.indicators}`);
+      console.log(`  Timeframes: ${raw.sizes.timeframes}`);
+      console.log(`  Symbols: ${raw.sizes.symbols}`);
+    }
+    
+    if (this.results.dataStructureTests.completeness) {
+      console.log(`  Data Completeness: ${this.results.dataStructureTests.completeness.percentage}%`);
+    }
+    
+    // UI Compatibility
+    console.log('\n🎨 UI COMPATIBILITY:');
+    if (this.results.uiCompatibilityTests) {
+      const ui = this.results.uiCompatibilityTests;
+      console.log(`  React Compatible: ${ui.reactCompatible?.compatible ? '✅' : '❌'}`);
+      console.log(`  Chart Compatible: ${ui.chartCompatible?.compatible ? '✅' : '❌'}`);
+      console.log(`  Display Compatible: ${ui.displayCompatible?.compatible ? '✅' : '❌'}`);
+      console.log(`  Responsive Compatible: ${ui.responsiveCompatible?.compatible ? '✅' : '❌'}`);
+    }
+    
+    // Performance Results
+    console.log('\n⚡ PERFORMANCE RESULTS:');
+    if (this.results.performanceTests) {
+      const perf = this.results.performanceTests;
+      if (perf.sequentialLoad) {
+        console.log(`  Sequential Load: ${perf.sequentialLoad.avgTime}ms avg (${perf.sequentialLoad.minTime}-${perf.sequentialLoad.maxTime}ms range)`);
+      }
+      if (perf.concurrentLoad) {
+        console.log(`  Concurrent Load: ${perf.concurrentLoad.avgTime}ms avg (${perf.concurrentLoad.concurrency} concurrent)`);
+      }
+      if (perf.sustainedLoad) {
+        console.log(`  Sustained Load: ${perf.sustainedLoad.successRate}% success rate over ${perf.sustainedLoad.duration/1000}s`);
+      }
+    }
+    
+    // Issues and Recommendations
+    if (this.results.issues.length > 0) {
+      console.log('\n⚠️  IDENTIFIED ISSUES:');
+      this.results.issues.forEach((issue, index) => {
+        console.log(`  ${index + 1}. ${issue}`);
+      });
+    }
+    
+    if (this.results.recommendations.length > 0) {
+      console.log('\n💡 RECOMMENDATIONS:');
+      this.results.recommendations.forEach((rec, index) => {
+        console.log(`  ${index + 1}. ${rec}`);
+      });
+    }
+    
+    // Specific Performance Analysis Box Issues
+    this.analyzePerformanceBoxSpecifically();
+    
+    console.log('\n' + '='.repeat(80));
+    console.log('🏁 ANALYSIS COMPLETE');
+    console.log('='.repeat(80));
+  }
+
+  analyzePerformanceBoxSpecifically() {
+    console.log('\n🎯 PERFORMANCE ANALYSIS BOX SPECIFIC ISSUES:');
+    
+    // Check if indicators have the exact fields needed for the performance box
+    if (this.results.dataStructureTests.indicatorAnalysis) {
+      const analysis = this.results.dataStructureTests.indicatorAnalysis;
+      
+      console.log(`  Indicator Count: ${analysis.count}`);
+      console.log(`  Unique Indicators: ${analysis.uniqueIndicators.length}`);
+      
+      // Check value types
+      console.log(`  Value Types: ${Object.keys(analysis.valueTypes).join(', ')}`);
+      if (analysis.valueTypes.object || analysis.valueTypes.undefined) {
+        console.log(`  ⚠️  WARNING: Non-string/number values detected - may cause display issues`);
+      }
+      
+      // Check status types
+      console.log(`  Status Types: ${Object.keys(analysis.statusTypes).join(', ')}`);
+      
+      // Check change formats
+      console.log(`  Change Formats: ${Object.keys(analysis.changeTypes).join(', ')}`);
+    }
+    
+    // UI-specific recommendations
+    console.log('\n🎨 UI-SPECIFIC RECOMMENDATIONS:');
+    
+    if (this.results.uiCompatibilityTests.reactCompatible && !this.results.uiCompatibilityTests.reactCompatible.compatible) {
+      console.log('  🔧 Fix React compatibility issues to prevent UI crashes');
+    }
+    
+    if (this.results.uiCompatibilityTests.displayCompatible && !this.results.uiCompatibilityTests.displayCompatible.compatible) {
+      console.log('  🖥️  Standardize display formats for consistent UI appearance');
+    }
+    
+    if (this.results.performanceTests.sequentialLoad && this.results.performanceTests.sequentialLoad.avgTime > 200) {
+      console.log('  ⚡ Optimize API response time (currently slow for UI updates)');
+    }
+  }
+
+  calculateOverallHealth() {
+    let score = 100;
+    
+    // Deduct for API issues
+    if (this.results.apiTests.basic && this.results.apiTests.basic.status !== 200) {
+      score -= 30;
+    }
+    
+    if (this.results.apiTests.structure && !this.results.apiTests.structure.isValid) {
+      score -= 25;
+    }
+    
+    // Deduct for UI compatibility issues
+    if (this.results.uiCompatibilityTests) {
+      const ui = this.results.uiCompatibilityTests;
+      if (ui.reactCompatible && !ui.reactCompatible.compatible) score -= 20;
+      if (ui.chartCompatible && !ui.chartCompatible.compatible) score -= 10;
+      if (ui.displayCompatible && !ui.displayCompatible.compatible) score -= 10;
+      if (ui.responsiveCompatible && !ui.responsiveCompatible.compatible) score -= 5;
+    }
+    
+    // Deduct for performance issues
+    if (this.results.performanceTests.sustainedLoad && this.results.performanceTests.sustainedLoad.successRate < 95) {
+      score -= 10;
+    }
+    
+    if (score >= 90) return 'EXCELLENT';
+    if (score >= 75) return 'GOOD';
+    if (score >= 60) return 'FAIR';
+    if (score >= 40) return 'POOR';
+    return 'CRITICAL';
   }
 }
 
-// Run analysis if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const analyzer = new ExternalUIAnalyzer();
-  analyzer.runComprehensiveAnalysis().catch(console.error);
-}
-
-export default ExternalUIAnalyzer;
+// Execute the analysis
+const analyzer = new ExternalUIAnalyzer();
+analyzer.runCompleteAnalysis().catch(console.error);
