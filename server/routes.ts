@@ -1236,14 +1236,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get('/api/authentic-data/status', (req: Request, res: Response) => {
     try {
       const systemStatus = enhancedPriceStreamer.getAuthenticSystemStatus();
-      const readySymbols = enhancedPriceStreamer.getAuthenticSystemStatus().symbolsReady;
-      const totalSymbols = enhancedPriceStreamer.getAuthenticSystemStatus().totalSymbols;
       
       res.json({
         system: {
-          totalSymbols,
-          symbolsReady,
-          readinessPercentage: totalSymbols > 0 ? (readySymbols / totalSymbols * 100).toFixed(1) : 0,
+          totalSymbols: systemStatus.totalSymbols,
+          symbolsReady: systemStatus.symbolsReady,
+          readinessPercentage: systemStatus.totalSymbols > 0 ? 
+            (systemStatus.symbolsReady / systemStatus.totalSymbols * 100).toFixed(1) : '0',
           totalDataPoints: systemStatus.totalDataPoints,
           averageDataQuality: systemStatus.averageDataQuality,
           dataAge: {
@@ -1260,7 +1259,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           legitimateFeedback: 'PLANNED'
         },
         nextSteps: [
-          `Accumulating data for ${totalSymbols - readySymbols} symbols`,
+          `Accumulating data for ${systemStatus.totalSymbols - systemStatus.symbolsReady} symbols`,
           'Need 20+ price points per symbol for basic analysis',
           'System will automatically progress to Phase 2 when ready'
         ],
