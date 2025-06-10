@@ -206,12 +206,12 @@ export function startRealTimeUpdates() {
   // Update prices every 4 minutes with real data from CoinGecko (optimized for 200+ pairs)
   const updateInterval = setInterval(() => {
     try {
-      // Fetch real-time price data from CoinGecko
-      fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,solana,ripple&vs_currencies=usd&include_24hr_change=true')
+      // Fetch real-time price data from CoinMarketCap
+      fetch('/api/prices/batch?symbols=BTC/USDT,ETH/USDT,BNB/USDT,SOL/USDT,XRP/USDT')
         .then(response => response.json())
         .then(realPriceData => {
-          // Use the real data from CoinGecko
-          console.log('CoinGecko real-time price data:', realPriceData);
+          // Use the real data from CoinMarketCap
+          console.log('CoinMarketCap real-time price data:', realPriceData);
           
           // Update each subscribed symbol
           currentSymbols.forEach(symbol => {
@@ -219,22 +219,22 @@ export function startRealTimeUpdates() {
             let newPrice: number;
             let change24h: number = 0;
             
-            // Map symbol to real data from CoinGecko
+            // Map symbol to real data from CoinMarketCap
             if (symbol.includes('BTC')) {
-              newPrice = realPriceData.bitcoin.usd;
-              change24h = realPriceData.bitcoin.usd_24h_change;
+              newPrice = realPriceData['BTC/USDT']?.price || currentPrice;
+              change24h = realPriceData['BTC/USDT']?.change24h || 0;
             } else if (symbol.includes('ETH')) {
-              newPrice = realPriceData.ethereum.usd;
-              change24h = realPriceData.ethereum.usd_24h_change;
+              newPrice = realPriceData['ETH/USDT']?.price || currentPrice;
+              change24h = realPriceData['ETH/USDT']?.change24h || 0;
             } else if (symbol.includes('BNB')) {
-              newPrice = realPriceData.binancecoin.usd;
-              change24h = realPriceData.binancecoin.usd_24h_change;
+              newPrice = realPriceData['BNB/USDT']?.price || currentPrice;
+              change24h = realPriceData['BNB/USDT']?.change24h || 0;
             } else if (symbol.includes('SOL')) {
-              newPrice = realPriceData.solana.usd;
-              change24h = realPriceData.solana.usd_24h_change;
+              newPrice = realPriceData['SOL/USDT']?.price || currentPrice;
+              change24h = realPriceData['SOL/USDT']?.change24h || 0;
             } else if (symbol.includes('XRP')) {
-              newPrice = realPriceData.ripple.usd;
-              change24h = realPriceData.ripple.usd_24h_change;
+              newPrice = realPriceData['XRP/USDT']?.price || currentPrice;
+              change24h = realPriceData['XRP/USDT']?.change24h || 0;
             } else {
               // For unsupported symbols, just do a small random change
               const priceChange = (Math.random() - 0.48) * 0.003; 

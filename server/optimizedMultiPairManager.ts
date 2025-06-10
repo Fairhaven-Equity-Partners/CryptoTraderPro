@@ -107,33 +107,22 @@ export class OptimizedMultiPairManager {
    * Fetch a single batch of cryptocurrency pairs
    */
   private async fetchBatch(coinGeckoIds: string[], result: BatchFetchResult): Promise<void> {
-    const idsParam = coinGeckoIds.join(',');
-    const url = `https://api.coingecko.com/api/v3/simple/price?ids=${idsParam}&vs_currencies=usd&include_24hr_change=true`;
+    const { coinMarketCapService } = await import('./coinMarketCapService.js');
 
     try {
-      const response = await fetch(url, {
-        headers: {
-          'X-CG-Demo-API-Key': process.env.COINGECKO_API_KEY || ''
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(`CoinGecko API error: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data: Record<string, any> = {};
       
-      // Process each coin in the batch
+      // Process each coin in the batch using CoinMarketCap
       for (const coinGeckoId of coinGeckoIds) {
         const symbol = this.getSymbolFromCoinGeckoId(coinGeckoId);
         if (!symbol) continue;
 
-        const coinData = data[coinGeckoId];
-        if (coinData && coinData.usd) {
+        const priceData = await coinMarketCapService.fetchPrice(symbol);
+        if (priceData) {
           const pairData: PairData = {
             symbol,
-            price: coinData.usd,
-            change24h: coinData.usd_24h_change || 0,
+            price: priceData.price,
+            change24h: priceData.change24h,
             lastUpdate: Date.now(),
             isActive: true
           };

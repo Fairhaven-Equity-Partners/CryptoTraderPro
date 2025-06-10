@@ -113,35 +113,32 @@ export class MultiPriceFetcher {
     
     while (retries < this.config.maxRetries) {
       try {
-        const idsString = coinGeckoIds.join(',');
-        const apiKey = process.env.COINGECKO_API_KEY;
-        // Always use standard API endpoint - pro endpoints require paid subscription
-        const url = `https://api.coingecko.com/api/v3/simple/price?ids=${idsString}&vs_currencies=usd&include_24hr_change=true`;
+        const { coinMarketCapService } = await import('./coinMarketCapService.js');
+        const symbols = coinGeckoIds.map(id => this.getSymbolFromId(id)).filter(Boolean);
         
-        console.log(`Fetching batch of ${coinGeckoIds.length} cryptocurrencies (attempt ${retries + 1})`);
+        console.log(`Fetching batch of ${symbols.length} cryptocurrencies (attempt ${retries + 1})`);
         
-        const headers: Record<string, string> = {
-          'Accept': 'application/json',
-          'User-Agent': 'CryptoTraderPro/1.0'
-        };
+        const priceData: Record<string, any> = {};
         
-        if (apiKey) {
-          headers['x-cg-demo-api-key'] = apiKey; // Use demo header for free tier
+        // Fetch prices using CoinMarketCap service
+        for (const id of coinGeckoIds) {
+          const symbol = this.symbolToIdMap.get(id);
+          if (symbol) {
+            const cmcData = await coinMarketCapService.fetchPrice(symbol);
+            if (cmcData) {
+              priceData[id] = {
+                usd: cmcData.price,
+                usd_24h_change: cmcData.change24h
+              };
+            }
+          }
         }
-        
-        const response = await fetch(url, { headers });
-
-        if (!response.ok) {
-          throw new Error(`CoinGecko API error: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
         const timestamp = Date.now();
 
         // Process each coin in the response
         for (const coinGeckoId of coinGeckoIds) {
-          const symbol = symbolToIdMap.get(coinGeckoId);
-          const coinData = data[coinGeckoId];
+          const symbol = this.symbolToIdMap.get(coinGeckoId);
+          const coinData = priceData[coinGeckoId];
 
           if (symbol && coinData && coinData.usd) {
             const basePrice = coinData.usd;
