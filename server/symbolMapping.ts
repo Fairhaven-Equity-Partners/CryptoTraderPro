@@ -1,6 +1,6 @@
 /**
- * Comprehensive symbol mapping for multi-cryptocurrency support
- * Maps internal symbols to CoinGecko API identifiers for authentic price data
+ * Legacy symbol mapping - deprecated in favor of optimizedSymbolMapping.ts
+ * This file is kept for backward compatibility only
  */
 
 export interface SymbolMapping {
@@ -117,9 +117,10 @@ export const SYMBOL_MAPPINGS: SymbolMapping[] = [
 /**
  * Get CoinGecko ID for a symbol
  */
-export function getCoinGeckoId(symbol: string): string | null {
-  const mapping = SYMBOL_MAPPINGS.find(m => m.symbol === symbol);
-  return mapping ? mapping.coinGeckoId : null;
+export // Deprecated - use getCMCSymbol from optimizedSymbolMapping.ts instead
+function getCoinGeckoId(symbol: string): string | null {
+  const { getCMCSymbol } = require('./optimizedSymbolMapping.js');
+  return getCMCSymbol(symbol);
 }
 
 /**

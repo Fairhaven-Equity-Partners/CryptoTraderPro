@@ -1,6 +1,6 @@
 /**
  * Unified Real-Time Price System
- * Ensures all calculations use authentic CoinGecko data
+ * Ensures all calculations use authentic CoinMarketCap data
  * Eliminates price synchronization issues across the platform
  */
 

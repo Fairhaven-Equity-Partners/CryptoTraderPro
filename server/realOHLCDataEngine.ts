@@ -1,6 +1,6 @@
 /**
  * Real OHLC Data Engine
- * Fetches authentic historical market data from CoinGecko API
+ * Fetches authentic historical market data from CoinMarketCap API
  * Replaces synthetic price generation with real market conditions
  */
 
@@ -167,59 +167,59 @@ export class RealOHLCDataEngine {
   }
 
   /**
-   * Map symbol to CoinGecko ID
+   * Map symbol to CoinMarketCap symbol
    */
-  private getCoinGeckoId(symbol: string): string | null {
+  private getCMCSymbol(symbol: string): string | null {
     const mapping: { [key: string]: string } = {
-      'BTC/USDT': 'bitcoin',
-      'ETH/USDT': 'ethereum',
-      'BNB/USDT': 'binancecoin',
-      'XRP/USDT': 'ripple',
-      'SOL/USDT': 'solana',
-      'USDC/USD': 'usd-coin',
-      'ADA/USDT': 'cardano',
-      'AVAX/USDT': 'avalanche-2',
-      'DOGE/USDT': 'dogecoin',
-      'TRX/USDT': 'tron',
-      'TON/USDT': 'the-open-network',
-      'LINK/USDT': 'chainlink',
-      'MATIC/USDT': 'matic-network',
-      'LTC/USDT': 'litecoin',
-      'BCH/USDT': 'bitcoin-cash',
-      'UNI/USDT': 'uniswap',
-      'DOT/USDT': 'polkadot',
-      'XLM/USDT': 'stellar',
-      'ATOM/USDT': 'cosmos',
-      'XMR/USDT': 'monero',
-      'ETC/USDT': 'ethereum-classic',
-      'HBAR/USDT': 'hedera-hashgraph',
-      'FIL/USDT': 'filecoin',
-      'ICP/USDT': 'internet-computer',
-      'VET/USDT': 'vechain',
-      'APT/USDT': 'aptos',
-      'NEAR/USDT': 'near',
-      'AAVE/USDT': 'aave',
-      'ARB/USDT': 'arbitrum',
-      'OP/USDT': 'optimism',
-      'MKR/USDT': 'maker',
-      'GRT/USDT': 'the-graph',
-      'STX/USDT': 'stacks',
-      'INJ/USDT': 'injective-protocol',
-      'ALGO/USDT': 'algorand',
-      'LDO/USDT': 'lido-dao',
-      'THETA/USDT': 'theta-token',
-      'SUI/USDT': 'sui',
-      'RUNE/USDT': 'thorchain',
-      'MANA/USDT': 'decentraland',
-      'SAND/USDT': 'the-sandbox',
-      'FET/USDT': 'fetch-ai',
-      'RNDR/USDT': 'render-token',
-      'KAVA/USDT': 'kava',
-      'MINA/USDT': 'mina-protocol',
-      'FLOW/USDT': 'flow',
-      'XTZ/USDT': 'tezos',
-      'BLUR/USDT': 'blur',
-      'QNT/USDT': 'quant-network'
+      'BTC/USDT': 'BTC',
+      'ETH/USDT': 'ETH',
+      'BNB/USDT': 'BNB',
+      'XRP/USDT': 'XRP',
+      'SOL/USDT': 'SOL',
+      'USDC/USD': 'USDC',
+      'ADA/USDT': 'ADA',
+      'AVAX/USDT': 'AVAX',
+      'DOGE/USDT': 'DOGE',
+      'TRX/USDT': 'TRX',
+      'TON/USDT': 'TON',
+      'LINK/USDT': 'LINK',
+      'MATIC/USDT': 'MATIC',
+      'LTC/USDT': 'LTC',
+      'BCH/USDT': 'BCH',
+      'UNI/USDT': 'UNI',
+      'DOT/USDT': 'DOT',
+      'XLM/USDT': 'XLM',
+      'ATOM/USDT': 'ATOM',
+      'XMR/USDT': 'XMR',
+      'ETC/USDT': 'ETC',
+      'HBAR/USDT': 'HBAR',
+      'FIL/USDT': 'FIL',
+      'ICP/USDT': 'ICP',
+      'VET/USDT': 'VET',
+      'APT/USDT': 'APT',
+      'NEAR/USDT': 'NEAR',
+      'AAVE/USDT': 'AAVE',
+      'ARB/USDT': 'ARB',
+      'OP/USDT': 'OP',
+      'MKR/USDT': 'MKR',
+      'GRT/USDT': 'GRT',
+      'STX/USDT': 'STX',
+      'INJ/USDT': 'INJ',
+      'ALGO/USDT': 'ALGO',
+      'LDO/USDT': 'LDO',
+      'THETA/USDT': 'THETA',
+      'SUI/USDT': 'SUI',
+      'RUNE/USDT': 'RUNE',
+      'MANA/USDT': 'MANA',
+      'SAND/USDT': 'SAND',
+      'FET/USDT': 'FET',
+      'RNDR/USDT': 'RNDR',
+      'KAVA/USDT': 'KAVA',
+      'MINA/USDT': 'MINA',
+      'FLOW/USDT': 'FLOW',
+      'XTZ/USDT': 'XTZ',
+      'BLUR/USDT': 'BLUR',
+      'QNT/USDT': 'QNT'
     };
 
     return mapping[symbol] || null;

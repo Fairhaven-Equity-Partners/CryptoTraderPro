@@ -203,7 +203,7 @@ export function startRealTimeUpdates() {
   // Register handler for price updates
   registerMessageHandler('priceUpdate', handlePriceUpdate);
   
-  // Update prices every 4 minutes with real data from CoinGecko (optimized for 200+ pairs)
+  // Update prices every 4 minutes with real data from CoinMarketCap
   const updateInterval = setInterval(() => {
     try {
       // Fetch real-time price data from CoinMarketCap

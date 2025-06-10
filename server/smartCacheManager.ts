@@ -208,29 +208,29 @@ export class SmartCacheManager {
   /**
    * Map symbol to CoinGecko ID
    */
-  private getCoinGeckoId(symbol: string): string | null {
+  private getCMCSymbol(symbol: string): string | null {
     const mapping: { [key: string]: string } = {
-      'BTC/USDT': 'bitcoin',
-      'ETH/USDT': 'ethereum',
-      'BNB/USDT': 'binancecoin',
-      'XRP/USDT': 'ripple',
-      'SOL/USDT': 'solana',
-      'USDC/USD': 'usd-coin',
-      'ADA/USDT': 'cardano',
-      'AVAX/USDT': 'avalanche-2',
-      'DOGE/USDT': 'dogecoin',
-      'TRX/USDT': 'tron',
-      'TON/USDT': 'the-open-network',
-      'LINK/USDT': 'chainlink',
-      'MATIC/USDT': 'matic-network',
-      'SHIB/USDT': 'shiba-inu',
-      'LTC/USDT': 'litecoin',
-      'BCH/USDT': 'bitcoin-cash',
-      'UNI/USDT': 'uniswap',
-      'DOT/USDT': 'polkadot',
-      'XLM/USDT': 'stellar',
-      'ATOM/USDT': 'cosmos',
-      'XMR/USDT': 'monero'
+      'BTC/USDT': 'BTC',
+      'ETH/USDT': 'ETH',
+      'BNB/USDT': 'BNB',
+      'XRP/USDT': 'XRP',
+      'SOL/USDT': 'SOL',
+      'USDC/USD': 'USDC',
+      'ADA/USDT': 'ADA',
+      'AVAX/USDT': 'AVAX',
+      'DOGE/USDT': 'DOGE',
+      'TRX/USDT': 'TRX',
+      'TON/USDT': 'TON',
+      'LINK/USDT': 'LINK',
+      'MATIC/USDT': 'MATIC',
+      'SHIB/USDT': 'SHIB',
+      'LTC/USDT': 'LTC',
+      'BCH/USDT': 'BCH',
+      'UNI/USDT': 'UNI',
+      'DOT/USDT': 'DOT',
+      'XLM/USDT': 'XLM',
+      'ATOM/USDT': 'ATOM',
+      'XMR/USDT': 'XMR'
     };
 
     return mapping[symbol] || null;
