@@ -1387,5 +1387,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Authentic Technical Analysis endpoint (Phase 2)
+  app.get('/api/authentic-technical-analysis/:symbol', async (req: Request, res: Response) => {
+    try {
+      const { symbol } = req.params;
+      const { timeframe = '1d' } = req.query;
+
+      console.log(`[Routes] Generating authentic technical analysis for ${symbol} (${timeframe})`);
+
+      const analysis = await authenticTechnicalAnalysis.generateAnalysis(symbol, timeframe as string);
+      
+      res.json({
+        ...analysis,
+        endpoint: 'authentic-technical-analysis',
+        phase: 'Phase 2 - Authentic Indicators'
+      });
+    } catch (error) {
+      console.error('[Routes] Error in authentic technical analysis:', error);
+      res.status(500).json({ 
+        error: 'Failed to generate authentic technical analysis',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Authentic system status endpoint
+  app.get('/api/authentic-system/status', async (req: Request, res: Response) => {
+    try {
+      const systemStatus = authenticTechnicalAnalysis.getSystemStatus();
+      
+      res.json({
+        ...systemStatus,
+        phase2Implementation: {
+          status: 'active',
+          description: 'Authentic technical analysis engine operational',
+          migrationProgress: 'technical-indicators-migrated'
+        },
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('[Routes] Error fetching authentic system status:', error);
+      res.status(500).json({ 
+        error: 'Failed to fetch authentic system status',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
   return httpServer;
 }
