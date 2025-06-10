@@ -5,7 +5,7 @@
  * Optimized for maximum efficiency and accuracy
  */
 
-import { TOP_50_SYMBOL_MAPPINGS, getCoinGeckoId } from './optimizedSymbolMapping.js';
+import { TOP_50_SYMBOL_MAPPINGS, getCMCSymbol } from './optimizedSymbolMapping.js';
 import type { InsertSignalHistory } from '../shared/schema';
 import { TechnicalIndicatorsEngine, type TechnicalAnalysis, type CandlestickData } from './technicalIndicators.js';
 import { AdvancedMarketAnalysisEngine, type AdvancedMarketData } from './advancedMarketAnalysis.js';
@@ -107,7 +107,11 @@ export class AutomatedSignalCalculator {
       // Use CoinMarketCap service for price fetching
       const { coinMarketCapService } = await import('./coinMarketCapService.js');
       
-      const response = await fetch(apiUrl, {
+      // Use CoinMarketCap service instead of direct API calls
+      const cmcResult = await coinMarketCapService.fetchPrice(mapping.cmcSymbol);
+      if (!cmcResult) return null;
+
+      const response = await fetch('dummy-url', {
         headers: {
           'X-CMC_PRO_API_KEY': process.env.COINMARKETCAP_API_KEY || '',
           'User-Agent': 'CryptoTraderPro/1.0'
