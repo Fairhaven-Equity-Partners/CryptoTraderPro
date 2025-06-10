@@ -84,14 +84,16 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
     }
   };
 
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: number | undefined) => {
+    if (price === undefined || price === null) return '$0.00';
     return `$${price.toLocaleString('en-US', { 
       minimumFractionDigits: 2, 
       maximumFractionDigits: 2 
     })}`;
   };
 
-  const formatPercent = (percent: number) => {
+  const formatPercent = (percent: number | undefined) => {
+    if (percent === undefined || percent === null) return '+0.00%';
     const sign = percent >= 0 ? '+' : '';
     return `${sign}${percent.toFixed(2)}%`;
   };
