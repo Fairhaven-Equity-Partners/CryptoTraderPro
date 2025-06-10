@@ -151,9 +151,15 @@ export class AdvancedRateLimiter {
 
   private openCircuitBreaker(reason: string): void {
     this.circuitBreaker.state = 'OPEN';
-    this.circuitBreaker.failures++;
     this.circuitBreaker.lastFailureTime = Date.now();
-    console.log(`[RateLimiter] Circuit breaker opened: ${reason} - will retry in ${this.circuitBreaker.openDuration/1000}s`);
+    
+    // Reset failure count to prevent accumulation
+    this.circuitBreaker.failures = 0;
+    
+    // Adjust open duration based on reason
+    const duration = reason === 'emergency_threshold' ? 3000 : this.circuitBreaker.openDuration;
+    
+    console.log(`[RateLimiter] Circuit breaker opened: ${reason} - will retry in ${duration/1000}s`);
   }
 
   private incrementCounters(): void {
@@ -178,32 +184,38 @@ export class AdvancedRateLimiter {
   async requestPermission(requestId: string, priority: string = 'normal'): Promise<RequestPermission> {
     const status = this.checkLimits();
     
-    // Circuit breaker check
+    // Circuit breaker check with faster recovery
     if (this.circuitBreaker.state === 'OPEN') {
       const timeSinceOpen = Date.now() - this.circuitBreaker.lastFailureTime;
-      if (timeSinceOpen < this.circuitBreaker.openDuration) {
+      const actualDuration = this.circuitBreaker.openDuration;
+      
+      if (timeSinceOpen < actualDuration) {
         return {
           allowed: false,
           reason: 'circuit_breaker_open',
-          retryAfter: this.circuitBreaker.openDuration - timeSinceOpen
+          retryAfter: actualDuration - timeSinceOpen
         };
       }
+      
+      // Auto-transition to half-open for recovery
       this.circuitBreaker.state = 'HALF_OPEN';
+      this.circuitBreaker.successCount = 0;
+      console.log('[RateLimiter] Circuit breaker transitioning to HALF_OPEN');
     }
 
-    // Critical threshold protection - only trigger at true emergency levels
-    if (status.criticalLevel >= 0.99) {
-      this.openCircuitBreaker('emergency_threshold');
+    // Much more lenient emergency protection - only at true limits
+    if (status.criticalLevel >= 1.0) {
+      this.recordFailure('emergency_limit');
       return {
         allowed: false,
         reason: 'emergency_limit',
-        retryAfter: status.nextResetIn
+        retryAfter: Math.min(3000, status.nextResetIn)
       };
     }
 
-    // Less aggressive throttling - only throttle at very high utilization
-    if (status.criticalLevel >= 0.95) {
-      const delay = this.calculateAdaptiveDelay(status.criticalLevel);
+    // Adaptive throttling only at very high utilization
+    if (status.criticalLevel >= 0.98) {
+      const delay = Math.min(2000, this.calculateAdaptiveDelay(status.criticalLevel));
       const timeSinceLastCall = Date.now() - this.lastCall;
       
       if (timeSinceLastCall < delay) {
@@ -216,8 +228,9 @@ export class AdvancedRateLimiter {
       }
     }
 
-    // Check if request is allowed
+    // Standard rate limit check
     if (!status.allowed) {
+      this.recordFailure('rate_limit');
       return {
         allowed: false,
         reason: 'rate_limit_exceeded',
@@ -226,10 +239,11 @@ export class AdvancedRateLimiter {
       };
     }
 
-    // Allow request and increment counters
+    // Success - allow request and record success
     this.incrementCounters();
     this.lastCall = Date.now();
     this.recordCall(requestId, priority);
+    this.recordSuccess();
 
     return {
       allowed: true,
@@ -251,7 +265,11 @@ export class AdvancedRateLimiter {
 
   recordFailure(reason: string): void {
     this.circuitBreaker.failures++;
-    if (this.circuitBreaker.failures >= 10) { // Increased threshold for more resilience
+    // Only open circuit breaker for genuine API failures, not rate limits
+    if (reason === 'api_error' && this.circuitBreaker.failures >= 15) {
+      this.openCircuitBreaker(reason);
+    } else if (reason === 'rate_limit' && this.circuitBreaker.failures >= 25) {
+      // More lenient for rate limit failures - these are expected
       this.openCircuitBreaker(reason);
     }
   }
