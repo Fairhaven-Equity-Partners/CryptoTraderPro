@@ -69,10 +69,35 @@ export class AutomatedSignalCalculator {
    */
   private registerTimeframeCallbacks(): void {
     this.timeframes.forEach(timeframe => {
-      this.timingManager.registerCallback(timeframe, async (tf: string) => {
-        await this.calculateTimeframeSignals(tf);
-      });
+      this.timingManager.registerCallback(timeframe, this.calculateTimeframeSignals.bind(this));
     });
+  }
+
+  /**
+   * Calculate signals for a specific timeframe across all pairs
+   */
+  private async calculateTimeframeSignals(timeframe: string): Promise<void> {
+    const startTime = Date.now();
+    const metrics = this.timeframeMetrics.get(timeframe)!;
+    
+    try {
+      console.log(`[AdaptiveTiming] Calculating ${timeframe} signals for all pairs`);
+      
+      // Calculate signals for all pairs on this specific timeframe
+      await this.calculateAllSignals();
+      
+      // Update metrics
+      const latency = Date.now() - startTime;
+      metrics.calculations++;
+      metrics.avgLatency = (metrics.avgLatency * (metrics.calculations - 1) + latency) / metrics.calculations;
+      
+      console.log(`[AdaptiveTiming] ${timeframe} calculation completed in ${latency}ms`);
+      
+    } catch (error) {
+      console.error(`[AdaptiveTiming] Error calculating ${timeframe}:`, error);
+      metrics.errors++;
+      throw error;
+    }
   }
 
   /**
@@ -453,23 +478,31 @@ export class AutomatedSignalCalculator {
   }
 
   /**
-   * Get calculation status
+   * Get adaptive timing calculation status
    */
   getStatus(): {
     isRunning: boolean;
     lastCalculationTime: number;
     cachedSignalsCount: number;
     marketVolatility: string;
-    nextCalculationIn: number;
+    adaptiveTimingStatus: any;
+    timeframeMetrics: any;
   } {
-    const nextCalculation = this.lastCalculationTime + this.dynamicIntervalMs - Date.now();
     return {
       isRunning: this.isRunning,
       lastCalculationTime: this.lastCalculationTime,
       cachedSignalsCount: Array.from(this.signalCache.values()).reduce((sum, signals) => sum + signals.length, 0),
       marketVolatility: this.marketVolatilityLevel,
-      nextCalculationIn: Math.max(0, nextCalculation)
+      adaptiveTimingStatus: this.timingManager.getStatus(),
+      timeframeMetrics: Object.fromEntries(this.timeframeMetrics)
     };
+  }
+
+  /**
+   * Get timing manager for external access
+   */
+  getTimingManager(): AdaptiveTimingManager {
+    return this.timingManager;
   }
 }
 

@@ -102,10 +102,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const allSignals = automatedSignalCalculator.getAllSignals();
       const status = automatedSignalCalculator.getStatus();
       
-      console.log(`[AutomationStatus] Running: ${status.isRunning}, Cache size: ${status.totalSignals || 0}, Last calc: ${new Date(status.lastCalculationTime).toISOString()}`);
+      console.log(`[AutomationStatus] Running: ${status.isRunning}, Cache size: ${status.cachedSignalsCount}, Last calc: ${new Date(status.lastCalculationTime).toISOString()}`);
       
       // If no signals are cached yet, trigger an immediate calculation
-      if (status.totalSignals === 0) {
+      if (status.cachedSignalsCount === 0) {
         console.log('[AutomationStatus] No cached signals found, system may still be initializing');
       }
       
@@ -1227,6 +1227,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       res.status(500).json({ 
         error: 'Failed to get rate limiter statistics',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Adaptive timing performance monitoring endpoint
+  app.get('/api/timing/metrics', (req: Request, res: Response) => {
+    try {
+      const timingManager = automatedSignalCalculator.getTimingManager();
+      const timingStatus = timingManager.getStatus();
+      const allMetrics = timingManager.getMetrics();
+      const calculatorStatus = automatedSignalCalculator.getStatus();
+      
+      // Calculate overall performance statistics
+      const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+      const overallStats = {
+        totalActiveTimers: timingStatus.activeTimers,
+        totalExecutions: 0,
+        totalErrors: 0,
+        averageAccuracy: 0,
+        averageEfficiency: 0
+      };
+      
+      const timeframePerformance: any = {};
+      
+      timeframes.forEach(tf => {
+        const metrics = allMetrics.get(tf);
+        if (metrics) {
+          overallStats.totalExecutions += metrics.accuracy;
+          overallStats.totalErrors += metrics.errorCount;
+          
+          timeframePerformance[tf] = {
+            accuracy: `${metrics.accuracy.toFixed(1)}%`,
+            efficiency: `${metrics.efficiency.toFixed(1)}%`,
+            lastCalculation: new Date(metrics.lastCalculation).toISOString(),
+            nextCalculation: new Date(metrics.nextCalculation).toISOString(),
+            errorCount: metrics.errorCount,
+            isActive: timingManager.isTimeframeActive(tf)
+          };
+        }
+      });
+      
+      // Calculate averages
+      const activeTimeframes = timeframes.filter(tf => allMetrics.has(tf));
+      if (activeTimeframes.length > 0) {
+        overallStats.averageAccuracy = Array.from(allMetrics.values())
+          .reduce((sum, m) => sum + m.accuracy, 0) / activeTimeframes.length;
+        overallStats.averageEfficiency = Array.from(allMetrics.values())
+          .reduce((sum, m) => sum + m.efficiency, 0) / activeTimeframes.length;
+      }
+      
+      res.json({
+        system: {
+          isRunning: calculatorStatus.isRunning,
+          adaptiveTimingEnabled: true,
+          totalCachedSignals: calculatorStatus.cachedSignalsCount,
+          marketVolatility: calculatorStatus.marketVolatility,
+          lastSystemCalculation: new Date(calculatorStatus.lastCalculationTime).toISOString()
+        },
+        overallPerformance: {
+          ...overallStats,
+          averageAccuracy: `${overallStats.averageAccuracy.toFixed(1)}%`,
+          averageEfficiency: `${overallStats.averageEfficiency.toFixed(1)}%`,
+          errorRate: overallStats.totalExecutions > 0 ? 
+            `${((overallStats.totalErrors / overallStats.totalExecutions) * 100).toFixed(2)}%` : '0%'
+        },
+        timeframePerformance,
+        batchOptimization: timingManager.getBatchGroups(),
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('[Routes] Error fetching timing metrics:', error);
+      res.status(500).json({ 
+        error: 'Failed to fetch timing metrics',
         timestamp: new Date().toISOString()
       });
     }
