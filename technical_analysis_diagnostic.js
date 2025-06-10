@@ -51,7 +51,7 @@ class TechnicalAnalysisDiagnostic {
       
       this.results.technicalAnalysisEndpoint = {
         status: response.status || 'unknown',
-        hasData: !!response.data,
+        hasData: !!response.indicators,
         dataStructure: this.analyzeDataStructure(response),
         indicators: this.extractIndicators(response),
         isEmpty: this.isDataEmpty(response)

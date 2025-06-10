@@ -153,18 +153,18 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
             </div>
             <div className="flex justify-between items-center">
               <div>
-                <p className="text-sm font-semibold text-white">{formatPrice(technicalData.currentPrice)}</p>
-                <p className={`text-xs ${technicalData.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {formatPercent(technicalData.change24h)}
+                <p className="text-sm font-semibold text-white">{formatPrice(technicalData.currentPrice || 0)}</p>
+                <p className={`text-xs ${(technicalData.change24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {formatPercent(technicalData.change24h || 0)}
                 </p>
               </div>
               <div className="text-right">
                 <div className="flex items-center gap-1">
-                  {technicalData.analysis.trend === 'BULLISH' ? 
+                  {technicalData.analysis?.trend === 'BULLISH' ? 
                     <TrendingUp className="h-3 w-3 text-green-400" /> : 
                     <TrendingDown className="h-3 w-3 text-red-400" />
                   }
-                  <span className="text-xs text-slate-300">{technicalData.analysis.trend}</span>
+                  <span className="text-xs text-slate-300">{technicalData.analysis?.trend || 'NEUTRAL'}</span>
                 </div>
               </div>
             </div>
