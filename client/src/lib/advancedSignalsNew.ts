@@ -263,34 +263,34 @@ function generateIndicators(
   
   // RSI indicator
   if (direction === 'LONG') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "BUY" as const, strength: "MEDIUM" };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "BUY", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "SELL" as const, strength: "MEDIUM" as const };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "SELL", strength: "MODERATE" };
   } else {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "NEUTRAL" as const, strength: "WEAK" as const };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "NEUTRAL", strength: "WEAK" };
   }
   
   // MACD indicator
   if (direction === 'LONG') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "BUY" as const, strength: "MEDIUM" as const };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "BUY", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "SELL" as const, strength: "MEDIUM" as const };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "SELL", strength: "MODERATE" };
   } else {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "NEUTRAL" as const, strength: "WEAK" as const };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "NEUTRAL", strength: "WEAK" };
   }
   
   // Moving Average indicator
   if (direction === 'LONG') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 100, signal: "BUY" as const, strength: "MEDIUM" as const };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: 100, signal: "BUY", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 100, signal: "SELL" as const, strength: "MEDIUM" as const };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: 100, signal: "SELL", strength: "MODERATE" };
   } else {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 100, signal: "NEUTRAL" as const, strength: "WEAK" as const };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: 100, signal: "NEUTRAL", strength: "WEAK" };
   }
   
   // Bollinger Bands indicator
   if (direction === 'LONG') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0.5, signal: "BUY" as const, strength: "MEDIUM" as const };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: 0.5, signal: "BUY", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
     indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0.5, signal: "SELL" as const, strength: "MEDIUM" as const };
   } else {

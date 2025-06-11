@@ -3,7 +3,7 @@ export type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' 
 export type SignalDirection = 'LONG' | 'SHORT' | 'NEUTRAL';
 
 export type IndicatorSignal = 'BUY' | 'SELL' | 'NEUTRAL';
-export type IndicatorStrength = 'WEAK' | 'MEDIUM' | 'STRONG';
+export type IndicatorStrength = 'WEAK' | 'MODERATE' | 'STRONG';
 export type IndicatorCategory = 'TREND' | 'MOMENTUM' | 'VOLATILITY' | 'VOLUME';
 
 export interface Indicator {
