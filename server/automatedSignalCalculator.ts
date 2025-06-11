@@ -332,72 +332,6 @@ export class AutomatedSignalCalculator {
       // Skip calculation if no authentic technical data available
       console.log(`[AutomatedSignalCalculator] Skipping ${mapping.symbol} ${timeframe} - no authentic technical analysis data`);
       return null;
-      
-      // Calculate base confidence using price momentum
-      const priceBasedConfidence = this.calculatePriceBasedConfidence(change24h, Math.abs(change24h));
-      
-      // Calculate multi-timeframe confluence
-      const confluenceScore = this.calculateTimeframeConfluence(technicalAnalysis, timeframe);
-      
-      // Calculate risk-reward ratio
-      const riskReward = this.calculateRiskReward(currentPrice, technicalAnalysis, technicalAnalysis.trend.direction);
-      
-      // Calculate volatility adjustment
-      const isHighVolatility = Math.abs(change24h) > this.volatilityThresholds.MEDIUM;
-      const volatilityAdjustment = this.calculateVolatilityAdjustment(Math.abs(change24h), isHighVolatility);
-      
-      // Get category-based multiplier
-      const categoryMultiplier = this.getCategoryMultiplier(mapping.category);
-      
-      // Get timeframe-specific weight
-      const timeframeWeight = this.getTimeframeWeight(timeframe);
-      
-      // Composite confidence calculation
-      const rawConfidence = (
-        (priceBasedConfidence * 0.3) +
-        (confluenceScore * 0.25) +
-        (technicalAnalysis.signals.strength * 0.2) +
-        (riskReward * 0.15) +
-        (volatilityAdjustment * 0.1)
-      );
-      
-      const adjustedConfidence = Math.min(95, Math.max(5, 
-        rawConfidence * categoryMultiplier * timeframeWeight
-      ));
-      
-      // Determine signal direction with enhanced logic
-      let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
-      if (technicalAnalysis.signals.action === 'BUY' && adjustedConfidence > 60) {
-        direction = 'LONG';
-      } else if (technicalAnalysis.signals.action === 'SELL' && adjustedConfidence > 60) {
-        direction = 'SHORT';
-      }
-      
-      // Calculate final strength with multiple factors
-      const strength = Math.min(100, Math.max(0, 
-        technicalAnalysis.signals.strength * (adjustedConfidence / 100) * categoryMultiplier
-      ));
-
-      return {
-        symbol: mapping.symbol,
-        timeframe,
-        direction,
-        confidence: Math.round(adjustedConfidence * 100) / 100,
-        strength: Math.round(strength * 100) / 100,
-        price: currentPrice,
-        timestamp: Date.now(),
-        indicators: {
-          rsi: technicalAnalysis.rsi.value,
-          macd: technicalAnalysis.macd.histogram,
-          bb: technicalAnalysis.bollingerBands.position,
-          volume: technicalAnalysis.volume.trend,
-          trend: technicalAnalysis.trend.direction
-        },
-        technicalAnalysis,
-        confluenceScore: Math.round(confluenceScore * 100) / 100,
-        riskReward: Math.round(riskReward * 100) / 100,
-        volatilityAdjustment: Math.round(volatilityAdjustment * 100) / 100
-      };
 
     } catch (error) {
       console.error(`[AutomatedSignalCalculator] Error in calculateSignalForPair for ${mapping.symbol}:`, error);
@@ -437,9 +371,9 @@ export class AutomatedSignalCalculator {
   /**
    * Calculate multi-timeframe confluence score
    */
-  private calculateTimeframeConfluence(analysis: TechnicalAnalysis, currentTimeframe: string): number {
+  private calculateTimeframeConfluence(analysis: any, currentTimeframe: string): number {
     // Simulate confluence across multiple timeframes
-    const baseScore = analysis.signals.strength;
+    const baseScore = analysis?.signals?.strength || 50;
     const timeframeMultiplier = this.getTimeframeWeight(currentTimeframe);
     return Math.min(100, baseScore * timeframeMultiplier * 1.2);
   }
