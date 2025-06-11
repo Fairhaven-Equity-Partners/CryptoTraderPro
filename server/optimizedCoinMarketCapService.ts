@@ -55,13 +55,13 @@ export class OptimizedCoinMarketCapService {
   constructor() {
     this.apiKey = process.env.COINMARKETCAP_API_KEY || 'd129bffe-efd9-4841-9946-f67c10168aed';
     
-    // Initialize rate limiter with realistic limits for development
+    // Initialize rate limiter with proper burst handling
     this.rateLimiter = new AdvancedRateLimiter({
       monthlyLimit: 10000,
       dailyLimit: 333,
       hourlyLimit: 14,
-      minuteLimit: 5,
-      burstLimit: 10
+      minuteLimit: 15,
+      burstLimit: 20
     });
     
     // Initialize intelligent cache manager
@@ -71,7 +71,7 @@ export class OptimizedCoinMarketCapService {
   }
 
   /**
-   * Fetch price with rate limiting and intelligent caching
+   * Fetch price with intelligent caching and batch processing
    */
   async fetchPrice(symbol: string): Promise<CMCPriceData | null> {
     try {
@@ -81,15 +81,24 @@ export class OptimizedCoinMarketCapService {
         return cachedData;
       }
 
-      // Request permission from rate limiter
+      // Add to batch queue for efficient processing
+      this.addToBatchQueue(symbol);
+      
+      // Process batch if queue has symbols
+      if (this.batchQueue.size > 0) {
+        await this.processBatchQueue();
+        
+        // Check cache again after batch processing
+        const batchData = this.cacheManager.get(symbol);
+        if (batchData !== null) {
+          return batchData;
+        }
+      }
+
+      // If batch processing didn't get our symbol, try individual request
       const permission = await this.rateLimiter.requestPermission(`fetch_${symbol}`, 'normal');
       
       if (!permission.allowed) {
-        if (permission.reason === 'rate_limit_exceeded' || permission.reason === 'adaptive_throttling') {
-          console.warn(`[OptimizedCMC] Rate limited for ${symbol}, adding to batch queue`);
-          this.addToBatchQueue(symbol);
-          return null; // Return null instead of throwing to prevent cascading failures
-        }
         console.warn(`[OptimizedCMC] Request blocked: ${permission.reason}`);
         return null;
       }
