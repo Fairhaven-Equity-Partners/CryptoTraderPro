@@ -580,105 +580,155 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { timeframe = '4h' } = req.query;
       console.log(`[OptimizedHeatMap] Generating authentic market analysis heatmap for ${timeframe}`);
       
-      // Get all authentic signals from the optimized calculation engine
-      const allSignals = automatedSignalCalculator.getAllSignals();
-      console.log(`[OptimizedHeatMap] Processing ${allSignals.size} symbols with optimized signals`);
+      // Get crypto assets with real market data
+      const cryptoAssets = await optimizedCoinMarketCapService.getTopCryptocurrencies();
+      console.log(`[OptimizedHeatMap] Processing ${cryptoAssets.length} crypto assets`);
       
       const marketHeatmapData: any[] = [];
       
-      // Process each symbol with authentic market analysis data
-      allSignals.forEach((signalsList, symbol) => {
-        // Find the signal for the requested timeframe
-        const timeframeSignal = signalsList.find((s: { timeframe: any; }) => s.timeframe === timeframe);
-        
-        if (timeframeSignal && timeframeSignal.price > 0) {
-          // Get crypto asset metadata
-          const cryptoAsset = extendedCryptoList.find(crypto => crypto.symbol === symbol);
+      // Process each crypto asset that has real market data
+      for (const asset of cryptoAssets) {
+        if (asset.currentPrice > 0) {
+          const symbol = asset.symbol;
           
-          // Calculate market sentiment strength using optimized confidence formula
-          const baseConfidence = timeframeSignal.confidence || 50;
-          const direction = timeframeSignal.direction || 'NEUTRAL';
+          // Get stored signals from automated calculator for this symbol
+          const allSignals = automatedSignalCalculator.getAllSignals();
+          const signalsList = allSignals.get(symbol);
+          const timeframeSignal = signalsList?.find((s: any) => s.timeframe === timeframe);
           
-          // Apply timeframe reliability multipliers (from our optimization)
-          const timeframeMultipliers = {
-            '1M': 1.15, '1w': 1.25, '3d': 1.35, '1d': 1.50,
-            '4h': 1.40, '1h': 1.30, '30m': 1.15, '15m': 1.00,
-            '5m': 0.85, '1m': 0.75
-          };
-          
-          const reliabilityMultiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
-          const adjustedConfidence = Math.min(95, baseConfidence * reliabilityMultiplier);
-          
-          // Calculate market strength based on optimized indicator weights
-          let marketStrength = 0;
-          if (direction === 'LONG') {
-            marketStrength = adjustedConfidence;
-          } else if (direction === 'SHORT') {
-            marketStrength = -adjustedConfidence;
-          } else {
-            marketStrength = 0; // NEUTRAL
-          }
-          
-          // Calculate price change based on authentic market data
-          const currentPrice = timeframeSignal.price;
-          const priceChange24h = timeframeSignal.change24h || 0;
-          
-          // Determine heat intensity based on signal strength and confidence
-          let heatIntensity = Math.abs(marketStrength) / 100;
-          if (adjustedConfidence >= 80) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
-          if (adjustedConfidence >= 90) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
-          
-          // Generate heatmap entry with authentic market analysis data
-          const heatmapEntry = {
-            id: symbol.toLowerCase().replace('/', ''),
-            symbol: symbol,
-            name: cryptoAsset?.name || symbol.replace('/USDT', ''),
-            currentPrice: currentPrice,
-            priceChange24h: priceChange24h,
-            marketCap: cryptoAsset?.marketCap || null,
+          // If we have an authentic signal, use it; otherwise create a basic entry with market data only
+          if (timeframeSignal) {
+            // Calculate market sentiment strength using optimized confidence formula
+            const baseConfidence = timeframeSignal.confidence || 50;
+            const direction = timeframeSignal.direction || 'NEUTRAL';
             
-            // Core market analysis data from optimized system
-            signals: {
-              [timeframe]: {
+            // Apply timeframe reliability multipliers (from our optimization)
+            const timeframeMultipliers = {
+              '1M': 1.15, '1w': 1.25, '3d': 1.35, '1d': 1.50,
+              '4h': 1.40, '1h': 1.30, '30m': 1.15, '15m': 1.00,
+              '5m': 0.85, '1m': 0.75
+            };
+            
+            const reliabilityMultiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
+            const adjustedConfidence = Math.min(95, baseConfidence * reliabilityMultiplier);
+            
+            // Calculate market strength based on optimized indicator weights
+            let marketStrength = 0;
+            if (direction === 'LONG') {
+              marketStrength = adjustedConfidence;
+            } else if (direction === 'SHORT') {
+              marketStrength = -adjustedConfidence;
+            } else {
+              marketStrength = 0; // NEUTRAL
+            }
+            
+            // Calculate price change based on authentic market data
+            const currentPrice = timeframeSignal.price || asset.currentPrice;
+            const priceChange24h = asset.change24h || 0;
+            
+            // Determine heat intensity based on signal strength and confidence
+            let heatIntensity = Math.abs(marketStrength) / 100;
+            if (adjustedConfidence >= 80) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
+            if (adjustedConfidence >= 90) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
+            
+            // Generate heatmap entry with authentic market analysis data
+            const heatmapEntry = {
+              id: symbol.toLowerCase().replace('/', ''),
+              symbol: symbol,
+              name: asset.name || symbol.replace('/USDT', ''),
+              currentPrice: currentPrice,
+              priceChange24h: priceChange24h,
+              marketCap: asset.marketCap || null,
+              
+              // Core market analysis data from optimized system
+              signals: {
+                [timeframe as string]: {
+                  direction: direction,
+                  confidence: Math.round(adjustedConfidence),
+                  strength: Math.round(Math.abs(marketStrength)),
+                  entryPrice: timeframeSignal.entryPrice || currentPrice,
+                  stopLoss: timeframeSignal.stopLoss || currentPrice * 0.95,
+                  takeProfit: timeframeSignal.takeProfit || currentPrice * 1.05,
+                  riskReward: timeframeSignal.riskReward || 2.1,
+                  successProbability: timeframeSignal.successProbability || Math.round(adjustedConfidence * 0.9),
+                  timestamp: timeframeSignal.timestamp || Date.now()
+                }
+              },
+              
+              // Market sentiment visualization data
+              sentiment: {
                 direction: direction,
-                confidence: Math.round(adjustedConfidence),
-                strength: Math.round(Math.abs(marketStrength)),
-                entryPrice: timeframeSignal.entryPrice || currentPrice,
-                stopLoss: timeframeSignal.stopLoss || currentPrice * 0.95,
-                takeProfit: timeframeSignal.takeProfit || currentPrice * 1.05,
-                riskReward: timeframeSignal.riskReward || 2.1,
-                successProbability: timeframeSignal.successProbability || Math.round(adjustedConfidence * 0.9),
-                timestamp: timeframeSignal.timestamp || Date.now()
-              }
-            },
+                intensity: heatIntensity,
+                strength: marketStrength,
+                reliability: reliabilityMultiplier,
+                timeframe: timeframe
+              },
+              
+              // Technical analysis summary
+              technicalSummary: {
+                trendStrength: direction === 'NEUTRAL' ? 0 : Math.abs(marketStrength) / 100,
+                momentum: direction === 'LONG' ? 1 : direction === 'SHORT' ? -1 : 0,
+                volatility: Math.abs(priceChange24h) / 100,
+                confidence: adjustedConfidence
+              },
+              
+              // Heatmap visual properties
+              heatValue: marketStrength, // -100 to +100 scale
+              color: direction === 'LONG' ? 'green' : direction === 'SHORT' ? 'red' : 'gray',
+              opacity: Math.max(0.3, heatIntensity),
+              size: Math.max(0.5, adjustedConfidence / 100)
+            };
             
-            // Market sentiment visualization data
-            sentiment: {
-              direction: direction,
-              intensity: heatIntensity,
-              strength: marketStrength,
-              reliability: reliabilityMultiplier,
-              timeframe: timeframe
-            },
+            marketHeatmapData.push(heatmapEntry);
+          } else {
+            // Create basic entry for assets without signals yet (show market data only)
+            const heatmapEntry = {
+              id: symbol.toLowerCase().replace('/', ''),
+              symbol: symbol,
+              name: asset.name || symbol.replace('/USDT', ''),
+              currentPrice: asset.currentPrice,
+              priceChange24h: asset.change24h || 0,
+              marketCap: asset.marketCap || null,
+              
+              signals: {
+                [timeframe as string]: {
+                  direction: 'NEUTRAL' as const,
+                  confidence: 50,
+                  strength: 0,
+                  entryPrice: asset.currentPrice,
+                  stopLoss: asset.currentPrice * 0.95,
+                  takeProfit: asset.currentPrice * 1.05,
+                  riskReward: 1.0,
+                  successProbability: 50,
+                  timestamp: Date.now()
+                }
+              },
+              
+              sentiment: {
+                direction: 'NEUTRAL' as const,
+                intensity: 0.3,
+                strength: 0,
+                reliability: 1.0,
+                timeframe: timeframe
+              },
+              
+              technicalSummary: {
+                trendStrength: 0,
+                momentum: 0,
+                volatility: Math.abs(asset.change24h || 0) / 100,
+                confidence: 50
+              },
+              
+              heatValue: 0,
+              color: 'gray',
+              opacity: 0.3,
+              size: 0.5
+            };
             
-            // Technical analysis summary
-            technicalSummary: {
-              trendStrength: direction === 'NEUTRAL' ? 0 : Math.abs(marketStrength) / 100,
-              momentum: direction === 'LONG' ? 1 : direction === 'SHORT' ? -1 : 0,
-              volatility: Math.abs(priceChange24h) / 100,
-              confidence: adjustedConfidence
-            },
-            
-            // Heatmap visual properties
-            heatValue: marketStrength, // -100 to +100 scale
-            color: direction === 'LONG' ? 'green' : direction === 'SHORT' ? 'red' : 'gray',
-            opacity: Math.max(0.3, heatIntensity),
-            size: Math.max(0.5, adjustedConfidence / 100)
-          };
-          
-          marketHeatmapData.push(heatmapEntry);
+            marketHeatmapData.push(heatmapEntry);
+          }
         }
-      });
+      }
       
       // Sort by market strength for consistent ordering
       marketHeatmapData.sort((a, b) => Math.abs(b.sentiment.strength) - Math.abs(a.sentiment.strength));
@@ -691,16 +741,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         bullishSignals: marketHeatmapData.filter(entry => entry.sentiment.direction === 'LONG').length,
         bearishSignals: marketHeatmapData.filter(entry => entry.sentiment.direction === 'SHORT').length,
         neutralSignals: marketHeatmapData.filter(entry => entry.sentiment.direction === 'NEUTRAL').length,
-        averageConfidence: Math.round(
-          marketHeatmapData.reduce((sum, entry) => sum + entry.signals[timeframe].confidence, 0) / marketHeatmapData.length
-        ),
-        highConfidenceSignals: marketHeatmapData.filter(entry => entry.signals[timeframe].confidence >= 80).length,
+        averageConfidence: marketHeatmapData.length > 0 ? Math.round(
+          marketHeatmapData.reduce((sum, entry) => sum + entry.signals[timeframe as string].confidence, 0) / marketHeatmapData.length
+        ) : null,
+        highConfidenceSignals: marketHeatmapData.filter(entry => entry.signals[timeframe as string].confidence >= 80).length,
         timeframe: timeframe,
         timestamp: Date.now()
       };
       
       res.json({
-        data: marketHeatmapData,
+        marketEntries: marketHeatmapData,
         summary: marketSummary,
         success: true
       });
