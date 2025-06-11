@@ -196,10 +196,18 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
       // Fetch authentic chart data from API endpoint
       const encodedSymbol = symbol.replace('/', '%2F');
       const response = await fetch(`${API_BASE_URL}/api/chart/${encodedSymbol}/${timeframe}`);
+      
       if (!response.ok) {
+        if (response.status === 503) {
+          // Rate limited - return empty array to prevent app crash
+          console.warn(`Rate limited for ${symbol} ${timeframe} - returning empty data`);
+          return [];
+        }
         throw new Error(`Failed to fetch chart data for ${symbol} ${timeframe}`);
       }
-      const data = await response.json();
+      
+      const result = await response.json();
+      const data = result.data || [];
       
       // Update the cache
       chartDataCache[symbol][timeframe] = data;

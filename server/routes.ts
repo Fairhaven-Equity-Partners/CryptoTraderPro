@@ -179,11 +179,6 @@ export function registerRoutes(app: Express): Server {
       const symbol = req.params.symbol.replace('%2F', '/');
       const timeframe = req.params.timeframe;
       
-      // Reset circuit breaker if needed
-      if (!optimizedCoinMarketCapService.isOperatingWithinLimits()) {
-        optimizedCoinMarketCapService.resetCircuitBreaker();
-      }
-      
       // Get current price data from CoinMarketCap service
       const cmcSymbol = symbol.replace('/USDT', '').replace('/', '');
       const priceData = await optimizedCoinMarketCapService.fetchPrice(cmcSymbol);
@@ -216,13 +211,13 @@ export function registerRoutes(app: Express): Server {
           });
         }
       } else {
-        // API temporarily unavailable - return error instead of synthetic data
+        // No authentic data available - return empty chart with proper error indication
         console.log(`[Routes] No authentic data available for ${symbol}/${timeframe}`);
         return res.status(503).json({ 
           error: 'Market data temporarily unavailable', 
           symbol,
           timeframe,
-          message: 'Please try again in a moment'
+          message: 'CoinMarketCap API rate limits reached. Please try again in a moment.'
         });
       }
       
