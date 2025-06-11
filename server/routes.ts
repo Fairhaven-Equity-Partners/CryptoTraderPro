@@ -599,6 +599,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const signalsList = allSignals.get(symbol);
           const timeframeSignal = signalsList?.find((s: any) => s.timeframe === timeframe);
           
+          console.log(`[OptimizedHeatMap] Checking ${symbol} for ${timeframe}: found ${signalsList?.length || 0} signals, timeframe signal:`, !!timeframeSignal);
+          
           // Use signal price data when available, otherwise fetch from API
           let currentPrice = 108000; // Default fallback
           let priceChange24h = 0;
