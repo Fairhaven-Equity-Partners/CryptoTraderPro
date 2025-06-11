@@ -742,7 +742,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 trendStrength: direction === 'NEUTRAL' ? 0 : Math.abs(marketStrength) / 100,
                 momentum: direction === 'LONG' ? 1 : direction === 'SHORT' ? -1 : 0,
                 volatility: Math.abs(priceChange24h) / 100,
-                confidence: adjustedConfidence
+                confidence: Math.round(adjustedConfidence)
               },
               
               // Heatmap visual properties
