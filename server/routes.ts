@@ -1702,11 +1702,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           lastUpdated: performanceData?.lastUpdated || Date.now(),
           summary: {
             totalIndicators: uiCompatibleIndicators.length,
-            averageAccuracy: (uiCompatibleIndicators.reduce((sum, ind) => sum + ind.accuracyRate, 0) / uiCompatibleIndicators.length).toFixed(1),
-            bestPerformer: uiCompatibleIndicators.reduce((best, current) => 
-              current.accuracyRate > best.accuracyRate ? current : best
-            ).indicator,
-            totalPredictions: uiCompatibleIndicators.reduce((sum, ind) => sum + ind.totalPredictions, 0)
+            averageAccuracy: uiCompatibleIndicators.length > 0 
+              ? (uiCompatibleIndicators.reduce((sum, ind) => sum + (ind.accuracyRate || 0), 0) / uiCompatibleIndicators.length).toFixed(1)
+              : '0.0',
+            bestPerformer: uiCompatibleIndicators.length > 0 
+              ? uiCompatibleIndicators.reduce((best, current) => 
+                  (current.accuracyRate || 0) > (best.accuracyRate || 0) ? current : best
+                ).indicator
+              : 'N/A',
+            totalPredictions: uiCompatibleIndicators.reduce((sum, ind) => sum + (ind.totalPredictions || 0), 0)
           }
         });
       }
@@ -1726,6 +1730,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         ...stats,
         health,
+        requestsRemaining: stats.apiCalls.remainingMonthly || 110000,
+        requestsUsed: stats.apiCalls.currentMonthly || 0,
         timestamp: new Date().toISOString(),
         summary: {
           status: health.status,
