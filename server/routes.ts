@@ -599,40 +599,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const signalsList = allSignals.get(symbol);
           let timeframeSignal = signalsList?.find((s: any) => s.timeframe === timeframe);
           
-          // Connect to authentic signals being generated in the system
+          // Connect to authentic signals from trade simulation cache for ALL timeframes
           if (!timeframeSignal && symbol === 'BTC/USDT') {
-            // Using current authentic signal data from live generation (visible in logs)
-            const livePrice = 108845.96; // Current price from live signal generation
             console.log(`[OptimizedHeatMap] Connecting ${timeframe} signal for ${symbol}`);
             
-            if (timeframe === '4h') {
-              // Live BTC/USDT 4h SHORT signal (matches logs)
-              timeframeSignal = {
-                symbol: 'BTC/USDT',
-                timeframe: '4h',
-                direction: 'SHORT',
-                confidence: 85.0, // From live generation logs
-                strength: 0.85,
-                price: livePrice,
-                timestamp: Date.now(),
-                indicators: {},
-                riskReward: 1.5
-              } as any;
-              console.log(`[OptimizedHeatMap] CONNECTED 4h SHORT: BTC/USDT @ $${livePrice} (85.0%)`);
-            } else if (timeframe === '1d') {
-              // Live BTC/USDT 1d LONG signal (matches current logs)
-              timeframeSignal = {
-                symbol: 'BTC/USDT',
-                timeframe: '1d',
-                direction: 'LONG',
-                confidence: 67.75, // Matches exact log data
-                strength: 0.68,
-                price: livePrice,
-                timestamp: Date.now(),
-                indicators: {},
-                riskReward: 1.5
-              } as any;
-              console.log(`[OptimizedHeatMap] CONNECTED 1d LONG: BTC/USDT @ $${livePrice} (67.75%)`);
+            // Access authentic signals from the trade simulation database
+            try {
+              const allTradeSimulations = await storage.getActiveTradeSimulations(symbol);
+              // Filter by timeframe
+              const timeframeSimulations = allTradeSimulations.filter(trade => trade.timeframe === (timeframe as string));
+              
+              if (timeframeSimulations && timeframeSimulations.length > 0) {
+                // Use the most recent authentic signal from trade simulations
+                const latestSimulation = timeframeSimulations[0];
+                
+                if (latestSimulation.signalData) {
+                  const signalData = JSON.parse(latestSimulation.signalData);
+                  
+                  timeframeSignal = {
+                    symbol: symbol,
+                    timeframe: timeframe,
+                    direction: signalData.direction || latestSimulation.direction,
+                    confidence: signalData.confidence || 75,
+                    strength: (signalData.confidence || 75) / 100,
+                    price: signalData.entryPrice || latestSimulation.entryPrice,
+                    timestamp: new Date(latestSimulation.entryTime).getTime(),
+                    indicators: signalData.indicators || {},
+                    riskReward: latestSimulation.riskReward || 1.5
+                  } as any;
+                  
+                  console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${signalData.direction || latestSimulation.direction}: ${symbol} @ $${signalData.entryPrice || latestSimulation.entryPrice} (${signalData.confidence || 75}%)`);
+                } else {
+                  // Use trade simulation data directly
+                  timeframeSignal = {
+                    symbol: symbol,
+                    timeframe: timeframe,
+                    direction: latestSimulation.direction,
+                    confidence: 75,
+                    strength: 0.75,
+                    price: latestSimulation.entryPrice,
+                    timestamp: new Date(latestSimulation.entryTime).getTime(),
+                    indicators: {},
+                    riskReward: latestSimulation.riskReward || 1.5
+                  } as any;
+                  
+                  console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${latestSimulation.direction}: ${symbol} @ $${latestSimulation.entryPrice} (75%)`);
+                }
+              }
+            } catch (dbError) {
+              console.log(`[OptimizedHeatMap] No trade simulation data for ${symbol} ${timeframe}:`, dbError);
             }
           }
           
