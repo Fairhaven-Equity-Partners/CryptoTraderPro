@@ -155,18 +155,43 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Crypto asset info
+  // Crypto asset info with live CoinMarketCap data
   app.get("/api/crypto/:symbol", async (req: Request, res: Response) => {
     try {
       const symbol = req.params.symbol.replace('%2F', '/');
-      const allAssets = await storage.getAllCryptoAssets();
-      const asset = allAssets.find(a => a.symbol === symbol);
       
-      if (!asset) {
-        return res.status(404).json({ error: 'Asset not found' });
+      // Convert trading pair symbol to CMC symbol (e.g., BTC/USDT -> BTC)
+      const cmcSymbol = symbol.replace('/USDT', '').replace('/', '');
+      
+      // Fetch live data from CoinMarketCap
+      const liveData = await optimizedCoinMarketCapService.fetchPrice(cmcSymbol);
+      
+      if (liveData) {
+        // Return live authentic data
+        const asset = {
+          id: 1,
+          symbol: symbol,
+          name: cmcSymbol === 'BTC' ? 'Bitcoin' : cmcSymbol === 'ETH' ? 'Ethereum' : cmcSymbol,
+          lastPrice: liveData.price,
+          change24h: liveData.change24h,
+          volume24h: liveData.volume24h,
+          marketCap: liveData.marketCap,
+          updatedAt: liveData.lastUpdated
+        };
+        
+        console.log(`[Routes] Live data for ${symbol}: $${liveData.price.toFixed(2)}`);
+        res.json(asset);
+      } else {
+        // Fallback to storage data if API unavailable
+        const allAssets = await storage.getAllCryptoAssets();
+        const asset = allAssets.find(a => a.symbol === symbol);
+        
+        if (!asset) {
+          return res.status(404).json({ error: 'Asset not found' });
+        }
+        
+        res.json(asset);
       }
-      
-      res.json(asset);
     } catch (error) {
       console.error('[Routes] Crypto asset error:', error);
       res.status(500).json({ error: 'Failed to fetch crypto asset' });
