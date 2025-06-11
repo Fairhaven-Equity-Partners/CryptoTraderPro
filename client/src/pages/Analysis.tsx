@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
-import SimplifiedDashboard from '../components/SimplifiedDashboard';
+import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
@@ -74,7 +74,7 @@ const Analysis: React.FC = () => {
         />
         
         <div className="px-4 py-2">
-          <SimplifiedDashboard 
+          <AdvancedSignalDashboard 
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
           />
