@@ -325,12 +325,78 @@ export class AutomatedSignalCalculator {
     timeframe: string
   ): Promise<CalculatedSignal | null> {
     try {
-      // Generate authentic signals based on real market data from CoinMarketCap
-      const signal = await this.generateAuthenticSignal(mapping.symbol, currentPrice, change24h, volume24h, timeframe);
-      
-      if (signal) {
-        // Create trade simulation for this signal
-        await this.createTradeSimulationFromSignal(signal);
+      // Generate authentic signals based on real CoinMarketCap market data
+      let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
+      let confidence = 50;
+
+      // Analyze price momentum
+      if (Math.abs(change24h) > 0.02) { // 2% threshold
+        direction = change24h > 0 ? 'LONG' : 'SHORT';
+        confidence = Math.min(95, 50 + Math.abs(change24h) * 1000);
+      }
+
+      // Apply timeframe-specific adjustments
+      const timeframeMultipliers = {
+        '1M': 1.15, '1w': 1.25, '3d': 1.35, '1d': 1.50,
+        '4h': 1.40, '1h': 1.30, '30m': 1.15, '15m': 1.00,
+        '5m': 0.85, '1m': 0.75
+      };
+
+      const multiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
+      confidence = Math.min(95, confidence * multiplier);
+
+      const signal: CalculatedSignal = {
+        symbol: mapping.symbol,
+        timeframe,
+        direction,
+        confidence: Math.round(confidence),
+        strength: confidence / 100,
+        price: currentPrice,
+        timestamp: Date.now(),
+        indicators: {
+          change24h,
+          volume24h,
+          volatility: Math.abs(change24h)
+        }
+      };
+
+      // Create trade simulation for this signal
+      try {
+        const { storage } = await import('./storage.js');
+        
+        // Calculate stop loss and take profit levels
+        const stopLossPercent = 0.05; // 5%
+        const takeProfitPercent = 0.10; // 10%
+        
+        let stopLoss, takeProfit;
+        if (signal.direction === 'LONG') {
+          stopLoss = signal.price * (1 - stopLossPercent);
+          takeProfit = signal.price * (1 + takeProfitPercent);
+        } else {
+          stopLoss = signal.price * (1 + stopLossPercent);
+          takeProfit = signal.price * (1 - takeProfitPercent);
+        }
+
+        const tradeSimulationData = {
+          symbol: signal.symbol,
+          timeframe: signal.timeframe,
+          direction: signal.direction,
+          entryPrice: signal.price,
+          stopLoss,
+          takeProfit,
+          confidence: signal.confidence,
+          signalData: JSON.stringify({
+            ...signal,
+            stopLoss,
+            takeProfit,
+            timestamp: signal.timestamp
+          })
+        };
+
+        await storage.createTradeSimulation(tradeSimulationData);
+        console.log(`[AutomatedSignalCalculator] Created trade simulation: ${signal.symbol} ${signal.timeframe} ${signal.direction} @ ${signal.price}`);
+      } catch (tradeError) {
+        console.error(`[AutomatedSignalCalculator] Error creating trade simulation:`, tradeError);
       }
       
       return signal;
@@ -340,6 +406,8 @@ export class AutomatedSignalCalculator {
       return null;
     }
   }
+
+
 
   /**
    * Fetch real historical price data from CoinMarketCap API
