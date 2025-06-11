@@ -581,8 +581,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { timeframe = '4h' } = req.query;
       console.log(`[OptimizedHeatMap] Generating authentic market analysis heatmap for ${timeframe}`);
       
-      // Get crypto symbols that have real market data
-      const cryptoSymbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT', 'SOL/USDT', 'USDC/USD', 'ADA/USDT', 'AVAX/USDT', 'DOGE/USDT', 'TRX/USDT', 'TON/USDT'];
+      // Get all 50 crypto symbols from the optimized symbol mapping
+      const { TOP_50_SYMBOL_MAPPINGS } = await import('./optimizedSymbolMapping');
+      const cryptoSymbols = TOP_50_SYMBOL_MAPPINGS.map(mapping => mapping.symbol);
       console.log(`[OptimizedHeatMap] Processing ${cryptoSymbols.length} crypto symbols`);
       
       const marketHeatmapData: any[] = [];
@@ -651,13 +652,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           }
           
-          // Use signal price data when available, otherwise fetch from API
-          let currentPrice = 108000; // Default fallback
+          // Use signal price data when available, otherwise skip entries without authentic data
+          let currentPrice = 0;
           let priceChange24h = 0;
           let marketCap = 1000000000;
           
           if (timeframeSignal && timeframeSignal.price) {
             currentPrice = timeframeSignal.price;
+          } else {
+            // Skip entries without authentic price data - no synthetic fallback allowed
+            continue;
           }
           
           // If we have an authentic signal, use it; otherwise create a basic entry with market data only
