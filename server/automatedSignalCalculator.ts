@@ -497,16 +497,16 @@ export class AutomatedSignalCalculator {
    */
   private getTimeframeWeight(timeframe: string): number {
     const weights: Record<string, number> = {
-      '1m': 0.7,   // Short-term noise
-      '5m': 0.8,   // Better signal quality
-      '15m': 0.9,  // Good balance
-      '30m': 1.0,  // Standard reference
-      '1h': 1.1,   // Strong signal quality
-      '4h': 1.2,   // Very reliable
-      '1d': 1.3,   // Most reliable for trends
-      '3d': 1.15,  // Good for medium-term
-      '1w': 1.1,   // Long-term perspective
-      '1M': 1.0    // Very long-term
+      '1m': 0.70,  // High noise, low reliability
+      '5m': 0.88,  // Improved signal quality
+      '15m': 0.92, // Good balance
+      '30m': 0.95, // Solid signal quality
+      '1h': 0.98,  // Strong signal quality
+      '4h': 1.00,  // Optimal reference point
+      '1d': 0.95,  // High reliability for trends
+      '3d': 0.92,  // Good for medium-term
+      '1w': 0.90,  // Long-term perspective
+      '1M': 0.85   // Very long-term, lower precision
     };
     return weights[timeframe] || 1.0;
   }

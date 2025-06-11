@@ -675,11 +675,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
               currentPrice = timeframeSignal.price;
             }
             
-            // Apply timeframe reliability multipliers (from our optimization)
+            // Apply mathematically correct timeframe reliability multipliers
             const timeframeMultipliers = {
-              '1M': 1.15, '1w': 1.25, '3d': 1.35, '1d': 1.50,
-              '4h': 1.40, '1h': 1.30, '30m': 1.15, '15m': 1.00,
-              '5m': 0.85, '1m': 0.75
+              '1M': 0.85, '1w': 0.90, '3d': 0.92, '1d': 0.95,
+              '4h': 1.00, '1h': 0.98, '30m': 0.95, '15m': 0.92,
+              '5m': 0.88, '1m': 0.70
             };
             
             const reliabilityMultiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
