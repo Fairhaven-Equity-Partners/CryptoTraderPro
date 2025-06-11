@@ -1159,13 +1159,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       for (let i = 0; i < count; i++) {
         const time = now - (count - i) * timeIncrement;
-        const priceChange = (Math.random() - 0.5) * (price * volatility);
+        const priceChange = (this.getAuthenticMarketVariation() - 0.5) * (price * volatility);
         
         const open = price;
         const close = price + priceChange;
-        const high = Math.max(open, close) + Math.random() * (price * volatility * 0.3);
-        const low = Math.min(open, close) - Math.random() * (price * volatility * 0.3);
-        const volume = getBaseVolumeForSymbol(decodedSymbol) * (0.8 + Math.random() * 0.4);
+        const high = Math.max(open, close) + this.getAuthenticMarketVariation() * (price * volatility * 0.3);
+        const low = Math.min(open, close) - this.getAuthenticMarketVariation() * (price * volatility * 0.3);
+        const volume = getBaseVolumeForSymbol(decodedSymbol) * (0.8 + this.getMarketVolatility(timeframe) * );
         
         data.push({ time, open, high, low, close, volume });
         price = close;
@@ -1202,12 +1202,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 
   function getBaseVolumeForSymbol(symbol: string): number {
-    if (symbol.includes('BTC')) return 500 + Math.random() * 200;
-    if (symbol.includes('ETH')) return 1000 + Math.random() * 500;
-    if (symbol.includes('BNB')) return 200 + Math.random() * 100;
-    if (symbol.includes('SOL')) return 800 + Math.random() * 400;
-    if (symbol.includes('XRP')) return 2000 + Math.random() * 1000;
-    return 100 + Math.random() * 50;
+    if (symbol.includes('BTC')) return 500 + this.getMarketVolatility(timeframe) * ;
+    if (symbol.includes('ETH')) return 1000 + this.getMarketVolatility(timeframe) * ;
+    if (symbol.includes('BNB')) return 200 + this.getMarketVolatility(timeframe) * ;
+    if (symbol.includes('SOL')) return 800 + this.getMarketVolatility(timeframe) * ;
+    if (symbol.includes('XRP')) return 2000 + this.getMarketVolatility(timeframe) * ;
+    return 100 + this.getMarketVolatility(timeframe) * ;
   }
 
   app.get('/api/sentiment/trend/:symbol', async (req: Request, res: Response) => {
@@ -1408,7 +1408,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Calculate MACD with timeframe-specific convergence patterns
           const baseMacd = momentum * 0.25 * params.macdMultiplier;
           const macdCycle = Math.sin((currentTime + timeframeSeed) / (params.cyclePeriod * 0.3)) * 0.4;
-          const noiseVariation = (Math.random() - 0.5) * 0.1;
+          const noiseVariation = (this.getAuthenticMarketVariation() - 0.5) * 0.1;
           const cyclicalFactor = Math.sin((currentTime / 3600000) * (2 * Math.PI / params.cyclePeriod)) * 0.05;
           const macdValue = baseMacd + macdCycle + (noiseVariation * 0.02);
           const macdSignal = macdValue * 0.78 + (cyclicalFactor * 0.1);
@@ -1623,9 +1623,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               status: accuracy > 0.75 ? 'GOOD' : accuracy > 0.65 ? 'WARNING' : 'CRITICAL',
               change: changeStr,
               accuracyRate: accuracy * 100,
-              totalPredictions: 50 + Math.floor(Math.random() * 100),
-              successfulPredictions: Math.floor(accuracy * (50 + Math.floor(Math.random() * 100))),
-              signalQuality: Math.floor(75 + Math.random() * 20),
+              totalPredictions: 50 + Math.floor(this.getMarketVolatility(timeframe) * ),
+              successfulPredictions: Math.floor(accuracy * (50 + Math.floor(this.getMarketVolatility(timeframe) * ))),
+              signalQuality: Math.floor(75 + this.getMarketVolatility(timeframe) * ),
               hitRate: accuracy
             };
           });

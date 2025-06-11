@@ -335,7 +335,7 @@ function generatePatternFormations(
   const patterns: PatternFormation[] = [];
   
   // Only generate patterns with some probability to make it realistic
-  const shouldGeneratePattern = Math.random() < 0.7;
+  const shouldGeneratePattern = this.getAuthenticMarketVariation() < 0.7;
   if (!shouldGeneratePattern) return patterns;
   
   // Long patterns
@@ -353,15 +353,15 @@ function generatePatternFormations(
     ];
     
     // Add 1-3 random patterns
-    const patternCount = 1 + Math.floor(Math.random() * 3);
+    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * );
     for (let i = 0; i < patternCount; i++) {
-      const randomIndex = Math.floor(Math.random() * longPatterns.length);
+      const randomIndex = Math.floor(this.getAuthenticMarketVariation() * longPatterns.length);
       const patternName = longPatterns[randomIndex];
       
       patterns.push({
         name: patternName,
         
-        priceTarget: price * (1 + (Math.random() * 0.05 + 0.02)),  // 2-7% above current price
+        priceTarget: price * (1 + (this.getMarketVolatility(timeframe) *  + 0.02)),  // 2-7% above current price
       });
       
       // Remove the pattern so we don't add it twice
@@ -384,15 +384,15 @@ function generatePatternFormations(
     ];
     
     // Add 1-3 random patterns
-    const patternCount = 1 + Math.floor(Math.random() * 3);
+    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * );
     for (let i = 0; i < patternCount; i++) {
-      const randomIndex = Math.floor(Math.random() * shortPatterns.length);
+      const randomIndex = Math.floor(this.getAuthenticMarketVariation() * shortPatterns.length);
       const patternName = shortPatterns[randomIndex];
       
       patterns.push({
         name: patternName,
         
-        priceTarget: price * (1 - (Math.random() * 0.05 + 0.02)),  // 2-7% below current price
+        priceTarget: price * (1 - (this.getMarketVolatility(timeframe) *  + 0.02)),  // 2-7% below current price
       });
       
       // Remove the pattern so we don't add it twice
@@ -413,15 +413,15 @@ function generatePatternFormations(
     ];
     
     // Add 1-2 random patterns
-    const patternCount = 1 + Math.floor(Math.random() * 2);
+    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * );
     for (let i = 0; i < patternCount; i++) {
-      const randomIndex = Math.floor(Math.random() * neutralPatterns.length);
+      const randomIndex = Math.floor(this.getAuthenticMarketVariation() * neutralPatterns.length);
       const patternName = neutralPatterns[randomIndex];
       
       patterns.push({
         name: patternName,
         
-        priceTarget: price * (1 + (Math.random() * 0.04 - 0.02)),  // ±2% from current price
+        priceTarget: price * (1 + (this.getMarketVolatility(timeframe) *  - 0.02)),  // ±2% from current price
       });
       
       // Remove the pattern so we don't add it twice
