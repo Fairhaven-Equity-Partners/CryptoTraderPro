@@ -5,7 +5,7 @@
  * and ensures all calculations run properly on a synchronized schedule.
  */
 
-import { AdvancedSignal, SignalDirection, TimeFrame, Indicator, PatternFormation } from '../types';
+import { AdvancedSignal, SignalDirection, TimeFrame, Indicator, PatternFormation, IndicatorSignal, IndicatorStrength } from '../types';
 import { getTimeframeSuccessProbability, getSuccessProbabilityDescription } from './timeframeSuccessProbability';
 
 /**
@@ -263,60 +263,60 @@ function generateIndicators(
   
   // RSI indicator
   if (direction === 'LONG') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "BUY" as const, strength: "MEDIUM" };
   } else if (direction === 'SHORT') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "SELL" as const, strength: "MEDIUM" as const };
   } else {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "NEUTRAL" as const, strength: "WEAK" as const };
   }
   
   // MACD indicator
   if (direction === 'LONG') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "BUY" as const, strength: "MEDIUM" as const };
   } else if (direction === 'SHORT') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "SELL" as const, strength: "MEDIUM" as const };
   } else {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "NEUTRAL" as const, strength: "WEAK" as const };
   }
   
   // Moving Average indicator
   if (direction === 'LONG') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 100, signal: "BUY" as const, strength: "MEDIUM" as const };
   } else if (direction === 'SHORT') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 100, signal: "SELL" as const, strength: "MEDIUM" as const };
   } else {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 100, signal: "NEUTRAL" as const, strength: "WEAK" as const };
   }
   
   // Bollinger Bands indicator
   if (direction === 'LONG') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0.5, signal: "BUY" as const, strength: "MEDIUM" as const };
   } else if (direction === 'SHORT') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0.5, signal: "SELL" as const, strength: "MEDIUM" as const };
   } else {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0.5, signal: "NEUTRAL" as const, strength: "WEAK" as const };
   }
   
   // Add more indicators based on timeframe
   if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
     // Ichimoku Cloud for longer timeframes
     if (direction === 'LONG') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "BUY" as const, strength: "MEDIUM" as const };
     } else if (direction === 'SHORT') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "SELL" as const, strength: "MEDIUM" as const };
     } else {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "NEUTRAL" as const, strength: "WEAK" as const };
     }
   }
   
   if (['5m', '15m', '30m', '1h'].includes(timeframe)) {
     // Stochastic for shorter timeframes
     if (direction === 'LONG') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "BUY" as const, strength: "MEDIUM" as const };
     } else if (direction === 'SHORT') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "SELL" as const, strength: "MEDIUM" as const };
     } else {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "NEUTRAL" as const, strength: "WEAK" as const };
     }
   }
   
