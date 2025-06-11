@@ -333,7 +333,7 @@ export function processAllTimeframes(
   } catch (error) {
     console.error('Error processing timeframes:', error);
     // Create a fallback set of calculations to avoid fatal errors
-    const fallback: Record<TimeFrame, CalculationResult> = {};
+    const fallback: Record<TimeFrame, CalculationResult> = {} as Record<TimeFrame, CalculationResult>;
     
     // Generate minimal fallback results for each timeframe
     for (const tf of timeframes) {

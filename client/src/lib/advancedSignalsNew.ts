@@ -385,7 +385,7 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * shortPatterns.length);
       const patternName = shortPatterns[randomIndex];
       
-      patterns.push({ name: , priceTarget: , reliability: 0.8, direction: "BULLISH" as const });
+      patterns.push({ name: patternName, priceTarget: price * (0.9 - Math.random() * 0.1), reliability: 0.8, direction: "BEARISH" as const });
       
       // Remove the pattern so we don't add it twice
       shortPatterns.splice(randomIndex, 1);
@@ -410,7 +410,7 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * neutralPatterns.length);
       const patternName = neutralPatterns[randomIndex];
       
-      patterns.push({ name: , priceTarget: , reliability: 0.8, direction: "BULLISH" as const });
+      patterns.push({ name: patternName, priceTarget: price, reliability: 0.8, direction: "NEUTRAL" as const });
       
       // Remove the pattern so we don't add it twice
       neutralPatterns.splice(randomIndex, 1);
@@ -604,7 +604,7 @@ export function calculateAllTimeframeSignals(
   marketData?: any
 ): Record<TimeFrame, AdvancedSignal | null> {
   // All timeframes to calculate
-  const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '12h', '1d', '3d', '1w', '1M'];
+  const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
   
   // Calculate signals for each timeframe
   const signals: Record<TimeFrame, AdvancedSignal | null> = {} as any;
@@ -728,7 +728,7 @@ function harmonizeTimeframeSignals(
   const result = { ...signals };
   
   // Timeframes in order from highest to lowest
-  const timeframeOrder: TimeFrame[] = ['1M', '1w', '3d', '1d', '12h', '4h', '1h', '30m', '15m', '5m', '1m'];
+  const timeframeOrder: TimeFrame[] = ['1M', '1w', '3d', '1d', '4h', '1h', '30m', '15m', '5m', '1m'];
   
   // First ensure all signals exist (fill in any nulls)
   for (const tf of timeframeOrder) {

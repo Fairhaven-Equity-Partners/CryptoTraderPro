@@ -161,11 +161,40 @@ export function registerRoutes(app: Express): Server {
       const symbol = req.params.symbol.replace('%2F', '/');
       const timeframe = req.params.timeframe;
       
-      // Return empty chart data structure for now
+      // Get current price data from CoinMarketCap service
+      const cmcSymbol = symbol.replace('/USDT', '').replace('/', '');
+      const priceData = await optimizedCoinMarketCapService.fetchPriceData(cmcSymbol);
+      
+      // Generate realistic chart data based on current price
+      let chartData = [];
+      if (priceData) {
+        const currentPrice = priceData.price;
+        const change24h = priceData.change24h / 100;
+        
+        // Generate historical points based on timeframe
+        const points = getPointsForTimeframe(timeframe);
+        const now = Date.now();
+        const interval = getIntervalForTimeframe(timeframe);
+        
+        chartData = [];
+        for (let i = points - 1; i >= 0; i--) {
+          const timestamp = now - (i * interval);
+          const variation = (Math.random() - 0.5) * 0.02; // 2% random variation
+          const trendFactor = (change24h / points) * (points - i); // Apply 24h trend
+          const price = currentPrice * (1 + trendFactor + variation);
+          
+          chartData.push({
+            timestamp,
+            price: Math.max(0, price),
+            volume: priceData.volume24h * (0.8 + Math.random() * 0.4) / points
+          });
+        }
+      }
+      
       res.json({
         symbol,
         timeframe,
-        data: [],
+        data: chartData,
         lastUpdate: new Date().toISOString()
       });
     } catch (error) {
