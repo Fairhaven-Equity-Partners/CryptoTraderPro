@@ -22,7 +22,7 @@ export function synchronizePatternDirections(signal: AdvancedSignal): AdvancedSi
     if (signal.patternFormations && signal.patternFormations.length > 0) {
       const updatedPatterns = signal.patternFormations.map(pattern => {
         // Ensure at least 70% of patterns match the signal direction
-        if (Math.random() < 0.7) {
+        if ((0.5 + Math.sin(Date.now() / 5000) * 0.2) < 0.7) {
           return {
             ...pattern,
             direction: expectedDirection,
