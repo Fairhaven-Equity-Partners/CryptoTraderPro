@@ -258,7 +258,12 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
           </div>
         </div>
         <CardDescription className="text-gray-400">
-          Authentic CoinMarketCap data for {sortedAndFilteredSignals.length} of 50 major cryptocurrencies
+          Optimized market analysis for {sortedAndFilteredEntries.length} cryptocurrencies ({selectedTimeframe} timeframe)
+          {marketSummary && (
+            <span className="ml-2 text-xs">
+              • {marketSummary.bullishSignals} LONG • {marketSummary.bearishSignals} SHORT • Avg confidence: {marketSummary.averageConfidence}%
+            </span>
+          )}
         </CardDescription>
         
         <Tabs defaultValue="4h" className="mt-4" onValueChange={(value) => setSelectedTimeframe(value as TimeFrame)}>
@@ -288,14 +293,14 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               <div className="bg-green-900/20 p-2 rounded-md">
                 <div className="text-sm font-medium text-green-400 mb-2">High Confidence (80-100%)</div>
                 <div className="flex flex-wrap gap-2">
-                  {groupedByConfidence.high_long.map(signal => (
+                  {groupedByConfidence.high_long.map(entry => (
                     <Badge 
-                      key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => handlePairSelection(signal)}
+                      key={entry.symbol} 
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      onClick={() => handlePairSelection(entry)}
                     >
-                      {signal.name.split(' ')[0]} {signal.confidence}%
+                      {entry.name.split(' ')[0]} {entry.displayConfidence}%
                     </Badge>
                   ))}
                   {groupedByConfidence.high_long.length === 0 && (
@@ -308,14 +313,14 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               <div className="bg-green-900/10 p-2 rounded-md">
                 <div className="text-sm font-medium text-green-300 mb-2">Medium Confidence (65-79%)</div>
                 <div className="flex flex-wrap gap-2">
-                  {groupedByConfidence.medium_long.map(signal => (
+                  {groupedByConfidence.medium_long.map(entry => (
                     <Badge 
-                      key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => handlePairSelection(signal)}
+                      key={entry.symbol} 
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      onClick={() => handlePairSelection(entry)}
                     >
-                      {signal.name.split(' ')[0]} {signal.confidence}%
+                      {entry.name.split(' ')[0]} {entry.displayConfidence}%
                     </Badge>
                   ))}
                   {groupedByConfidence.medium_long.length === 0 && (
@@ -331,14 +336,14 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               <div className="bg-gray-800/30 p-2 rounded-md h-[90%]">
                 <div className="text-sm font-medium text-gray-400 mb-2">Neutral Confidence</div>
                 <div className="flex flex-wrap gap-2">
-                  {groupedByConfidence.neutral.map(signal => (
+                  {groupedByConfidence.neutral.map(entry => (
                     <Badge 
-                      key={signal.symbol} 
+                      key={entry.symbol} 
                       className="bg-gray-600 text-white hover:bg-gray-500 cursor-pointer transition-all duration-200"
-                      title={`${signal.confidence}% confidence (Neutral) - Click to analyze ${signal.name}`}
-                      onClick={() => handlePairSelection(signal)}
+                      title={`${entry.displayConfidence}% confidence (Neutral) - Click to analyze ${entry.name}`}
+                      onClick={() => handlePairSelection(entry)}
                     >
-                      {signal.name.split(' ')[0]} {signal.confidence}%
+                      {entry.name.split(' ')[0]} {entry.displayConfidence}%
                     </Badge>
                   ))}
                   {groupedByConfidence.neutral.length === 0 && (
@@ -356,14 +361,14 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               <div className="bg-red-900/20 p-2 rounded-md">
                 <div className="text-sm font-medium text-red-400 mb-2">High Confidence (80-100%)</div>
                 <div className="flex flex-wrap gap-2">
-                  {groupedByConfidence.high_short.map(signal => (
+                  {groupedByConfidence.high_short.map(entry => (
                     <Badge 
-                      key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => handlePairSelection(signal)}
+                      key={entry.symbol} 
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      onClick={() => handlePairSelection(entry)}
                     >
-                      {signal.name.split(' ')[0]} {signal.confidence}%
+                      {entry.name.split(' ')[0]} {entry.displayConfidence}%
                     </Badge>
                   ))}
                   {groupedByConfidence.high_short.length === 0 && (
@@ -376,14 +381,14 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               <div className="bg-red-900/10 p-2 rounded-md">
                 <div className="text-sm font-medium text-red-300 mb-2">Medium Confidence (65-79%)</div>
                 <div className="flex flex-wrap gap-2">
-                  {groupedByConfidence.medium_short.map(signal => (
+                  {groupedByConfidence.medium_short.map(entry => (
                     <Badge 
-                      key={signal.symbol} 
-                      className={`${getColorForConfidence(signal.direction, signal.confidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${signal.confidence}% confidence - Click to analyze ${signal.name}`}
-                      onClick={() => handlePairSelection(signal)}
+                      key={entry.symbol} 
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      onClick={() => handlePairSelection(entry)}
                     >
-                      {signal.name.split(' ')[0]} {signal.confidence}%
+                      {entry.name.split(' ')[0]} {entry.displayConfidence}%
                     </Badge>
                   ))}
                   {groupedByConfidence.medium_short.length === 0 && (
