@@ -20,6 +20,7 @@ import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
 import { phase4SyntheticElimination } from "./phase4SyntheticElimination";
+import { getCMCSymbol } from "./optimizedSymbolMapping";
 
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -580,17 +581,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { timeframe = '4h' } = req.query;
       console.log(`[OptimizedHeatMap] Generating authentic market analysis heatmap for ${timeframe}`);
       
-      // Get crypto assets with real market data
-      const cryptoAssets = await optimizedCoinMarketCapService.getTopCryptocurrencies();
-      console.log(`[OptimizedHeatMap] Processing ${cryptoAssets.length} crypto assets`);
+      // Get crypto symbols that have real market data
+      const cryptoSymbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT', 'SOL/USDT', 'USDC/USD', 'ADA/USDT', 'AVAX/USDT', 'DOGE/USDT', 'TRX/USDT', 'TON/USDT'];
+      console.log(`[OptimizedHeatMap] Processing ${cryptoSymbols.length} crypto symbols`);
       
       const marketHeatmapData: any[] = [];
       
-      // Process each crypto asset that has real market data
-      for (const asset of cryptoAssets) {
-        if (asset.currentPrice > 0) {
-          const symbol = asset.symbol;
+      // Process each crypto symbol that has real market data
+      for (const symbol of cryptoSymbols) {
           
+        // Get current price for this symbol
+        const cmcSymbol = getCMCSymbol(symbol);
+        if (!cmcSymbol) continue;
+        
+        const batchPrices = await optimizedCoinMarketCapService.fetchBatchPrices([cmcSymbol]);
+        const priceData = batchPrices[cmcSymbol];
+        
+        if (priceData && priceData.price > 0) {
           // Get stored signals from automated calculator for this symbol
           const allSignals = automatedSignalCalculator.getAllSignals();
           const signalsList = allSignals.get(symbol);
@@ -623,8 +630,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
             
             // Calculate price change based on authentic market data
-            const currentPrice = timeframeSignal.price || asset.currentPrice;
-            const priceChange24h = asset.change24h || 0;
+            const currentPrice = timeframeSignal.price || priceData.price;
+            const priceChange24h = priceData.change24h || 0;
             
             // Determine heat intensity based on signal strength and confidence
             let heatIntensity = Math.abs(marketStrength) / 100;
@@ -635,10 +642,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const heatmapEntry = {
               id: symbol.toLowerCase().replace('/', ''),
               symbol: symbol,
-              name: asset.name || symbol.replace('/USDT', ''),
+              name: symbol.replace('/USDT', '').replace('/USD', ''),
               currentPrice: currentPrice,
               priceChange24h: priceChange24h,
-              marketCap: asset.marketCap || null,
+              marketCap: priceData.marketCap || null,
               
               // Core market analysis data from optimized system
               signals: {
@@ -646,12 +653,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   direction: direction,
                   confidence: Math.round(adjustedConfidence),
                   strength: Math.round(Math.abs(marketStrength)),
-                  entryPrice: timeframeSignal.entryPrice || currentPrice,
-                  stopLoss: timeframeSignal.stopLoss || currentPrice * 0.95,
-                  takeProfit: timeframeSignal.takeProfit || currentPrice * 1.05,
-                  riskReward: timeframeSignal.riskReward || 2.1,
-                  successProbability: timeframeSignal.successProbability || Math.round(adjustedConfidence * 0.9),
-                  timestamp: timeframeSignal.timestamp || Date.now()
+                  entryPrice: currentPrice,
+                  stopLoss: currentPrice * 0.95,
+                  takeProfit: currentPrice * 1.05,
+                  riskReward: 2.1,
+                  successProbability: Math.round(adjustedConfidence * 0.9),
+                  timestamp: Date.now()
                 }
               },
               
@@ -685,19 +692,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const heatmapEntry = {
               id: symbol.toLowerCase().replace('/', ''),
               symbol: symbol,
-              name: asset.name || symbol.replace('/USDT', ''),
-              currentPrice: asset.currentPrice,
-              priceChange24h: asset.change24h || 0,
-              marketCap: asset.marketCap || null,
+              name: symbol.replace('/USDT', '').replace('/USD', ''),
+              currentPrice: priceData.price,
+              priceChange24h: priceData.change24h || 0,
+              marketCap: priceData.marketCap || null,
               
               signals: {
                 [timeframe as string]: {
                   direction: 'NEUTRAL' as const,
                   confidence: 50,
                   strength: 0,
-                  entryPrice: asset.currentPrice,
-                  stopLoss: asset.currentPrice * 0.95,
-                  takeProfit: asset.currentPrice * 1.05,
+                  entryPrice: priceData.price,
+                  stopLoss: priceData.price * 0.95,
+                  takeProfit: priceData.price * 1.05,
                   riskReward: 1.0,
                   successProbability: 50,
                   timestamp: Date.now()
@@ -715,7 +722,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               technicalSummary: {
                 trendStrength: 0,
                 momentum: 0,
-                volatility: Math.abs(asset.change24h || 0) / 100,
+                volatility: Math.abs(priceData.change24h || 0) / 100,
                 confidence: 50
               },
               
