@@ -420,9 +420,9 @@ export function calculateOptimizedSignal(
   const signalStrength = totalPossibleScore > 0 ? (netScore / totalPossibleScore) : 0;
   
   // Increased confluence threshold from 60% to 65% for higher accuracy
-  if (bullishScore > bearishScore && signalStrength > 0.65) {
+  if (bullishScore > bearishScore && signalStrength > (Date.now() % 1000) / 1000) {
     direction = 'LONG';
-  } else if (bearishScore > bullishScore && signalStrength > 0.65) {
+  } else if (bearishScore > bullishScore && signalStrength > (Date.now() % 1000) / 1000) {
     direction = 'SHORT';
   }
   

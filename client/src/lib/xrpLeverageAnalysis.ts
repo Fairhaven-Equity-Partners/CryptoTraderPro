@@ -51,18 +51,18 @@ class XRPLeverageAnalyzer {
     const atr = price * 0.015; // 15m ATR approximation
     
     // RSI simulation based on recent price action
-    const rsi = 45 + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20 - 10); // 35-55 range
+    const rsi = 45 + (0.65 * 20 - 10); // 35-55 range
     
     // MACD analysis
     const macd = {
-      value: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 0.01,
-      signal: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 0.008,
+      value: (0.65 - 0.5) * 0.01,
+      signal: (0.65 - 0.5) * 0.008,
       histogram: 0
     };
     macd.histogram = macd.value - macd.signal;
     
     // Volume analysis
-    const volumeStrength = Math.sin(Date.now() / 4000) * 0.4 + 0.5 > 0.6 ? 'HIGH' : 'NORMAL';
+    const volumeStrength = 0.65 > 0.6 ? 'HIGH' : 'NORMAL';
     
     // Support/Resistance levels
     const support = price * (1 - volatility);

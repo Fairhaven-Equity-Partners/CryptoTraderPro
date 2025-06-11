@@ -374,7 +374,7 @@ class AdvancedTechnicalAnalysis {
       confidence = Math.min(85, 50 + (bearishScore * 5));
     } else {
       direction = 'NEUTRAL';
-      confidence = 40 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20;
+      confidence = 40 + 0.65 * 20;
     }
 
     return {

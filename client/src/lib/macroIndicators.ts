@@ -54,7 +54,7 @@ function detectMarketRegime(): { confidence: number; description: string } {
     { confidence: 70, description: 'Sideways consolidation phase' },
     { confidence: 65, description: 'Bearish market correction ongoing' }
   ];
-  return regimes[Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * regimes.length)];
+  return regimes[Math.floor((Date.now() % 1000) / 1000 * regimes.length)];
 }
 
 export function analyzeMacroEnvironment(symbol: string): { score: number; classification: string; insights: string[] } {
@@ -476,7 +476,7 @@ function simulateLiquidityFlow(symbol: string, timeframe: TimeFrame): MacroIndic
     symbol.includes('SOL') ? 60 : 50;
   
   // Add random variation
-  const variation = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20) - 10; // -10 to +10
+  const variation = ((Date.now() % 1000) / 1000 * 20) - 10; // -10 to +10
   
   // Calculate flow value (0-100, where >50 means net inflow, <50 means net outflow)
   const flowValue = Math.min(100, Math.max(0, baseFlow + variation));
@@ -511,7 +511,7 @@ function simulateFundingRate(symbol: string, timeframe: TimeFrame): MacroIndicat
     symbol.includes('SOL') ? 0.025 : 0.02;
   
   // Add random variation
-  const variation = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.04) - 0.02; // -0.02% to +0.02%
+  const variation = ((Date.now() % 1000) / 1000 * 0.04) - 0.02; // -0.02% to +0.02%
   
   // Final funding rate
   const fundingRate = Math.min(0.1, Math.max(-0.1, baseFunding + variation));
@@ -548,7 +548,7 @@ function simulateOpenInterest(symbol: string, timeframe: TimeFrame): MacroIndica
     symbol.includes('SOL') ? 30 : 10;
   
   // Add random variation
-  const variation = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 30) - 15; // -15% to +15%
+  const variation = ((Date.now() % 1000) / 1000 * 30) - 15; // -15% to +15%
   
   // Calculate OI change value
   const oiChange = baseOI + variation;
@@ -602,7 +602,7 @@ function simulateOptionsRatio(symbol: string, timeframe: TimeFrame): MacroIndica
     timeframe === '3d' ? 0.05 : 0;
   
   // Add random variation
-  const randomAdjustment = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4) - 0.2; // -0.2 to +0.2
+  const randomAdjustment = ((Date.now() % 1000) / 1000 * 0.4) - 0.2; // -0.2 to +0.2
   
   // Calculate final ratio
   const ratio = Math.max(0.3, baseRatio + timeframeAdjustment + randomAdjustment);
@@ -646,7 +646,7 @@ function simulateWhaleActivity(symbol: string, timeframe: TimeFrame): MacroIndic
     timeframe === '3d' ? 5 : 0;
   
   // Add random variation
-  const randomAdjustment = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 30) - 15; // -15 to +15
+  const randomAdjustment = ((Date.now() % 1000) / 1000 * 30) - 15; // -15 to +15
   
   // Calculate activity score (-100 to +100, positive means accumulation)
   const activityScore = baseActivity + timeframeAdjustment + randomAdjustment;
@@ -681,7 +681,7 @@ function simulateMVRV(symbol: string, timeframe: TimeFrame): MacroIndicator {
   const baseMVRV = symbol.includes('BTC') ? 2.5 : 2.2; // simulate slightly overvalued market (May 2025)
   
   // Add random variation
-  const variation = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.6) - 0.3; // -0.3 to +0.3
+  const variation = ((Date.now() % 1000) / 1000 * 0.6) - 0.3; // -0.3 to +0.3
   
   // Calculate MVRV
   const mvrv = Math.max(0.5, baseMVRV + variation);
@@ -718,7 +718,7 @@ function simulateStablecoinRatio(symbol: string, timeframe: TimeFrame): MacroInd
   const baseRatio = 0.08; // 8% ratio
   
   // Add random variation
-  const variation = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.04) - 0.02; // -2% to +2%
+  const variation = ((Date.now() % 1000) / 1000 * 0.04) - 0.02; // -2% to +2%
   
   // Calculate SSR
   const ssr = Math.max(0.01, baseRatio + variation);
@@ -760,7 +760,7 @@ function simulateExchangeReserve(symbol: string, timeframe: TimeFrame): MacroInd
   const trendAdjustment = -0.02; // -2% year-on-year trend
   
   // Add random variation
-  const randomAdjustment = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.04) - 0.02; // -2% to +2%
+  const randomAdjustment = ((Date.now() % 1000) / 1000 * 0.04) - 0.02; // -2% to +2%
   
   // Calculate reserve
   const reserve = Math.max(0.05, baseReserve + trendAdjustment + randomAdjustment);
@@ -815,7 +815,7 @@ function simulateInstitutionalFlow(symbol: string, timeframe: TimeFrame): MacroI
     timeframe === '3d' ? 1 : 0;
   
   // Add random variation
-  const randomAdjustment = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) - 5; // -5% to +5%
+  const randomAdjustment = ((Date.now() % 1000) / 1000 * 10) - 5; // -5% to +5%
   
   // Calculate flow
   const flow = baseFlow + timeframeAdjustment + randomAdjustment;

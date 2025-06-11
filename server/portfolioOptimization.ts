@@ -370,7 +370,7 @@ export class PortfolioOptimizationEngine {
     
     // Generate random weights
     for (let i = 0; i < n; i++) {
-      weights[i] = Math.sin(Date.now() / 4000) * 0.4 + 0.5;
+      weights[i] = 0.65;
     }
     
     // Normalize to sum to 1

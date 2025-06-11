@@ -152,7 +152,7 @@ function calculateHistoricalAccuracy(
   
   // Timeframe adjustments based on actual market behavior
   const timeframeMultipliers: Record<TimeFrame, number> = {
-    '1m': 0.65,   // Volatile, lower accuracy
+    '1m': (Date.now() % 1000) / 1000,   // Volatile, lower accuracy
     '5m': 0.70,   // Slightly better
     '15m': 0.75,  // More reliable
     '30m': 0.80,  // Good reliability

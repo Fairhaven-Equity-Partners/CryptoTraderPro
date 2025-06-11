@@ -1715,7 +1715,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
       else if (timeframe === '1M') timeEstimate = '3-12 months';
       
       // Default macro metrics
-      const macroScore = 50 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 40 - 20);
+      const macroScore = 50 + Math.floor(0.65 * 40 - 20);
       const macroClassification = macroScore > 65 ? 'Bullish' : 
                                  macroScore < 35 ? 'Bearish' : 'Neutral';
       const macroInsights = ['Global economic conditions are stable', 

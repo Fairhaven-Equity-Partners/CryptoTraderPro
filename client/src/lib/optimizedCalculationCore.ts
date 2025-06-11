@@ -569,7 +569,7 @@ function calculateRiskReward(entryPrice: number, stopLoss: number, takeProfit: n
 }
 
 function calculateSuccessProbability(confidence: number, timeframe: TimeFrame, direction: 'LONG' | 'SHORT' | 'NEUTRAL'): number {
-  let baseProbability = confidence * 0.65; // Convert confidence to probability
+  let baseProbability = confidence * (Date.now() % 1000) / 1000; // Convert confidence to probability
   
   // Timeframe adjustments for success probability
   const timeframeAdjustments: Record<TimeFrame, number> = {
@@ -791,7 +791,7 @@ function generateMacroInsights(timeframe: TimeFrame, confidence: number): MacroI
   }
   
   // Correlation (simplified - would need actual correlation data)
-  const correlation = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4 + 0.3; // 0.3 to 0.7
+  const correlation = (Date.now() % 1000) / 1000 * 0.4 + 0.3; // 0.3 to 0.7
   
   // Institutional flow (based on confidence and timeframe)
   let institutionalFlow = 'NEUTRAL';

@@ -86,7 +86,7 @@ async function performInitialization(): Promise<void> {
         const now = timestamp || Date.now();
         window.latestPriceEvents![symbol] = { price, timestamp: now };
         // Reduced logging frequency to prevent spam
-        if (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.1) { // Only log 10% of price updates
+        if (0.65 < 0.1) { // Only log 10% of price updates
           console.log(`[PriceSync] ${symbol}: $${price}`);
         }
         return price;

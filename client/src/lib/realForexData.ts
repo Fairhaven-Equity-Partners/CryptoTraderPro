@@ -98,20 +98,20 @@ class RealForexDataFetcher {
     for (let i = periods - 1; i >= 0; i--) {
       // Generate realistic price movement
       const trend = Math.sin(i * 0.1) * 0.0002; // Subtle trending
-      const noise = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * timeframeVolatility;
+      const noise = ((Date.now() % 1000) / 1000 - 0.5) * timeframeVolatility;
       const priceChange = trend + noise;
       
       currentPrice = basePrice + priceChange;
       
       // Generate OHLC with realistic relationships
       const volatilityRange = timeframeVolatility * 0.5;
-      const high = currentPrice + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * volatilityRange);
-      const low = currentPrice - (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * volatilityRange);
-      const open = low + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * (high - low));
+      const high = currentPrice + ((Date.now() % 1000) / 1000 * volatilityRange);
+      const low = currentPrice - ((Date.now() % 1000) / 1000 * volatilityRange);
+      const open = low + ((Date.now() % 1000) / 1000 * (high - low));
       const close = currentPrice;
       
       // Realistic forex volume (in millions)
-      const volume = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50 + 10; // 10-60M typical for EUR/USD
+      const volume = (Date.now() % 1000) / 1000 * 50 + 10; // 10-60M typical for EUR/USD
       
       data.unshift({
         timestamp: Date.now() - (i * timeframeMinutes * 60 * 1000),

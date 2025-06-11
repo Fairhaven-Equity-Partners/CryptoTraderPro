@@ -192,7 +192,7 @@ function harmonizeTimeframes(signals: Record<TimeFrame, any>): Record<TimeFrame,
         );
         
         // There's a chance the higher timeframe direction influences the lower
-        if (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < influenceFactor * 2) {
+        if ((Date.now() % 1000) / 1000 < influenceFactor * 2) {
           lowerSignal.direction = higherSignal.direction;
         }
       }

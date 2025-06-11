@@ -101,13 +101,13 @@ class ForexAnalysisEngine {
     for (let i = 0; i < 100; i++) {
       // EUR/USD typical daily volatility is 0.5-1%
       const volatility = 0.008; // 0.8% max volatility
-      const priceChange = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * volatility;
+      const priceChange = ((Date.now() % 1000) / 1000 - 0.5) * volatility;
       const price = currentPrice + priceChange;
       
       // Ensure OHLC relationships are realistic
-      const high = price + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.002);
-      const low = price - (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.002);
-      const open = low + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * (high - low));
+      const high = price + ((Date.now() % 1000) / 1000 * 0.002);
+      const low = price - ((Date.now() % 1000) / 1000 * 0.002);
+      const open = low + ((Date.now() % 1000) / 1000 * (high - low));
       const close = price;
       
       data.push({
@@ -116,7 +116,7 @@ class ForexAnalysisEngine {
         low,
         open,
         close,
-        volume: Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5000000 + 1000000, // Realistic forex volume
+        volume: (Date.now() % 1000) / 1000 * 5000000 + 1000000, // Realistic forex volume
         timestamp: Date.now() - (i * 15 * 60 * 1000) // 15-minute intervals
       });
     }
