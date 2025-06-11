@@ -203,9 +203,10 @@ export class AdvancedRateLimiter {
       console.log('[RateLimiter] Circuit breaker transitioning to HALF_OPEN');
     }
 
-    // Only block if we're actually over limits, not at them
-    if (status.criticalLevel > 1.0) {
-      console.log(`[RateLimiter] API limit exceeded: ${status.criticalLevel}`);
+    // Emergency protection only for genuine API limits (not rate limiting)
+    if (status.criticalLevel >= 1.0) {
+      // Only record as failure if it's a genuine API error, not rate limiting
+      console.log(`[RateLimiter] True API limit reached: ${status.criticalLevel}`);
       this.recordFailure('api_limit');
       return {
         allowed: false,

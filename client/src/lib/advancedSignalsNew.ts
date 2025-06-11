@@ -5,7 +5,7 @@
  * and ensures all calculations run properly on a synchronized schedule.
  */
 
-import { AdvancedSignal, SignalDirection, TimeFrame, Indicator, PatternFormation, IndicatorSignal, IndicatorStrength } from '../types';
+import { AdvancedSignal, SignalDirection, TimeFrame, Indicator, PatternFormation } from '../types';
 import { getTimeframeSuccessProbability, getSuccessProbabilityDescription } from './timeframeSuccessProbability';
 
 /**
@@ -263,60 +263,60 @@ function generateIndicators(
   
   // RSI indicator
   if (direction === 'LONG') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "BUY", strength: "MODERATE" };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "SELL", strength: "MODERATE" };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "NEUTRAL", strength: "WEAK" };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // MACD indicator
   if (direction === 'LONG') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "BUY", strength: "MODERATE" };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "SELL", strength: "MODERATE" };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "NEUTRAL", strength: "WEAK" };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // Moving Average indicator
   if (direction === 'LONG') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: 100, signal: "BUY", strength: "MODERATE" };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: 100, signal: "SELL", strength: "MODERATE" };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: 100, signal: "NEUTRAL", strength: "WEAK" };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // Bollinger Bands indicator
   if (direction === 'LONG') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: 0.5, signal: "BUY", strength: "MODERATE" };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: 0.5, signal: "SELL", strength: "MODERATE" };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: 0.5, signal: "NEUTRAL", strength: "WEAK" };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // Add more indicators based on timeframe
   if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
     // Ichimoku Cloud for longer timeframes
     if (direction === 'LONG') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "BUY", strength: "MODERATE" };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else if (direction === 'SHORT') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "SELL", strength: "MODERATE" };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "NEUTRAL", strength: "WEAK" };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     }
   }
   
   if (['5m', '15m', '30m', '1h'].includes(timeframe)) {
     // Stochastic for shorter timeframes
     if (direction === 'LONG') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "BUY", strength: "MODERATE" };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else if (direction === 'SHORT') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "SELL", strength: "MODERATE" };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "NEUTRAL", strength: "WEAK" };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     }
   }
   
@@ -358,7 +358,11 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * longPatterns.length);
       const patternName = longPatterns[randomIndex];
       
-      patterns.push({ name: patternName, priceTarget: price * (1 + Math.random() * 0.1), reliability: 0.8, direction: "BULLISH" as const });
+      patterns.push({
+        name: patternName,
+        
+        priceTarget: price * (1 + (Math.random() * 0.05 + 0.02)),  // 2-7% above current price
+      });
       
       // Remove the pattern so we don't add it twice
       longPatterns.splice(randomIndex, 1);
@@ -385,7 +389,11 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * shortPatterns.length);
       const patternName = shortPatterns[randomIndex];
       
-      patterns.push({ name: patternName, priceTarget: price * (0.9 - Math.random() * 0.1), reliability: 0.8, direction: "BEARISH" as const });
+      patterns.push({
+        name: patternName,
+        
+        priceTarget: price * (1 - (Math.random() * 0.05 + 0.02)),  // 2-7% below current price
+      });
       
       // Remove the pattern so we don't add it twice
       shortPatterns.splice(randomIndex, 1);
@@ -410,7 +418,11 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * neutralPatterns.length);
       const patternName = neutralPatterns[randomIndex];
       
-      patterns.push({ name: patternName, priceTarget: price, reliability: 0.8, direction: "NEUTRAL" as const });
+      patterns.push({
+        name: patternName,
+        
+        priceTarget: price * (1 + (Math.random() * 0.04 - 0.02)),  // ±2% from current price
+      });
       
       // Remove the pattern so we don't add it twice
       neutralPatterns.splice(randomIndex, 1);
@@ -514,6 +526,7 @@ function getVolatilityFactor(timeframe: TimeFrame): number {
     '30m': 0.008,
     '1h': 0.01,
     '4h': 0.02,
+    .03,
     '1d': 0.05,
     '3d': 0.08,
     '1w': 0.12,
@@ -604,7 +617,7 @@ export function calculateAllTimeframeSignals(
   marketData?: any
 ): Record<TimeFrame, AdvancedSignal | null> {
   // All timeframes to calculate
-  const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+  const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '12h', '1d', '3d', '1w', '1M'];
   
   // Calculate signals for each timeframe
   const signals: Record<TimeFrame, AdvancedSignal | null> = {} as any;
@@ -728,7 +741,7 @@ function harmonizeTimeframeSignals(
   const result = { ...signals };
   
   // Timeframes in order from highest to lowest
-  const timeframeOrder: TimeFrame[] = ['1M', '1w', '3d', '1d', '4h', '1h', '30m', '15m', '5m', '1m'];
+  const timeframeOrder: TimeFrame[] = ['1M', '1w', '3d', '1d', '12h', '4h', '1h', '30m', '15m', '5m', '1m'];
   
   // First ensure all signals exist (fill in any nulls)
   for (const tf of timeframeOrder) {

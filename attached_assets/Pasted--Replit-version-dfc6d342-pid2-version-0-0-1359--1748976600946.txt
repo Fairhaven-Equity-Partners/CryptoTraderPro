@@ -1,0 +1,798 @@
+ Replit version dfc6d342, pid2 version 0.0.1359
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-6d88376a2de377e6.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-6d88376a2de377e6.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-6d88376a2de377e6.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-6d88376a2de377e6.js:1
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+ An aria-label or aria-labelledby prop is required for accessibility.
+(anonymous) @ _app-9d07e48715ffe78d.js:38
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=h9DOHm0COueA' failed: 
+t @ eruda.js:2
+setupWebSocket @ client:536
+(anonymous) @ client:531
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=h9DOHm0COueA' failed: 
+t @ eruda.js:2
+setupWebSocket @ client:536
+(anonymous) @ client:531
+eruda.js:2 Uncaught (in promise) 
+t @ eruda.js:2
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+ Technical indicators module initialized
+ 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+ 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+ Technical indicators module initialized
+ Establishing data connection...
+ Technical indicators module initialized
+ [FinalPriceSystem] Initialized with 60s refresh interval
+ ===================================================
+ Cryptocurrency Analysis Platform Initialized
+ All subsystems ready for signal generation
+ ===================================================
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ Loading chart with 500 data points for BTC/USDT (4h)
+ [PriceOverview] Setting up price updates for BTC/USDT
+ [FinalPriceSystem] Initialized with 180s refresh interval
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Started tracking BTC/USDT
+ [FinalPriceSystem] Subscribed to price updates for BTC/USDT
+ Loading chart data for BTC/USDT (1m)
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart data for BTC/USDT (5m)
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart data for BTC/USDT (15m)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart data for BTC/USDT (30m)
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart data for BTC/USDT (1h)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart data for BTC/USDT (4h)
+ Loading chart data for BTC/USDT (1d)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart data for BTC/USDT (3d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart data for BTC/USDT (1w)
+ Loading chart with 200 data points for BTC/USDT (1w)
+ Loading chart data for BTC/USDT (1M)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Trade simulations query status: Object
+ 🧠 Initializing continuous learning feedback loop for BTC/USDT
+ 🧠 Starting continuous learning for BTC/USDT
+ Data status for BTC/USDT: loaded=false, timeframes=0
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ All timeframe data loaded for BTC/USDT
+ Data status for BTC/USDT: loaded=true, timeframes=10
+ Sample data for BTC/USDT (1m): 1000 points
+ ⚡ Starting synchronized calculation system
+ ⚡ Starting synchronized price & calculation system
+ ✅ Synchronized calculation system ready
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ Trade data: 20 total, 20 active, 0 completed
+ Trade simulations query status: Object
+ Data status for BTC/USDT: loaded=true, timeframes=10
+ Sample data for BTC/USDT (1m): 1000 points
+ Trade data: 20 total, 20 active, 0 completed
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ Trade data: 20 total, 20 active, 0 completed
+ Data connection established
+ ✅ Initializing streamlined calculation system
+ [StreamlinedPriceManager] Initializing optimized price management
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 105982.69
+ 💰 PRICE UPDATE: BTC/USDT = 105982.69 💰
+ 💰 CALCULATIONS COMING SOON 💰
+ [PriceOverview] Price update received: 105982.69
+ [StreamlinedPriceManager] Price update: 105982.69
+ 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105982.69
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ 💯 TIMER-SYNCHRONIZED CALCULATION TRIGGERED for BTC/USDT with price 105982.69
+ Data status: 10 timeframes loaded, allDataLoaded=true
+ 🚀 CALLING calculateAllSignals() function now
+ ⚡ Starting calculation loop for 11 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Using currentAssetPrice: 118088.68156808327 for calculation
+ [1m] Using streamlined engine: SL=118442.95, TP=117380.15
+ [StreamlinedEngine] 1m: SL=118442.94761278751, TP=117380.14947867476
+ Generated 3 patterns for 1m timeframe
+ 🚀 calculateAllSignals() call completed
+ [FinalPriceSystem] Price update broadcast for BTC/USDT: 105982.69
+ [FinalPriceSystem] Price fetch completed for BTC/USDT: 105982.69
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ [5m] Using currentAssetPrice: 118088.68156808327 for calculation
+ [5m] Using streamlined engine: SL=117498.24, TP=119269.57
+ [StreamlinedEngine] 5m: SL=117498.23816024285, TP=119269.5683837641
+ Generated 4 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: LONG
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Using currentAssetPrice: 118088.68156808327 for calculation
+ [15m] Using streamlined engine: SL=119033.39, TP=116199.26
+ [StreamlinedEngine] 15m: SL=119033.39102062794, TP=116199.26266299393
+ Generated 1 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Using currentAssetPrice: 118088.68156808327 for calculation
+ [30m] Using streamlined engine: SL=116671.62, TP=120922.81
+ [StreamlinedEngine] 30m: SL=116671.61738926626, TP=120922.80992571727
+ Generated 4 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: LONG
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Using currentAssetPrice: 118088.68156808327 for calculation
+ [1h] Using streamlined engine: SL=116317.35, TP=121631.34
+ [StreamlinedEngine] 1h: SL=116317.35134456202, TP=121631.34201512577
+ Generated 8 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: LONG
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Using currentAssetPrice: 118088.68156808327 for calculation
+ [4h] Using streamlined engine: SL=121040.90, TP=112184.25
+ [StreamlinedEngine] 4h: SL=121040.89860728534, TP=112184.2474896791
+ Generated 7 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: SHORT
+ ⚡ No chart data available for 12h
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Using currentAssetPrice: 118088.68156808327 for calculation
+ [1d] Using streamlined engine: SL=122812.23, TP=108641.59
+ [StreamlinedEngine] 1d: SL=122812.2288308066, TP=108641.58704263662
+ Generated 7 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: SHORT
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Using currentAssetPrice: 118088.68156808327 for calculation
+ [3d] Using streamlined engine: SL=111003.36, TP=132259.32
+ [StreamlinedEngine] 3d: SL=111003.36067399826, TP=132259.32335625327
+ Generated 6 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ [1w] Using currentAssetPrice: 118088.68156808327 for calculation
+ [1w] Using streamlined engine: SL=127535.78, TP=99194.49
+ [StreamlinedEngine] 1w: SL=127535.77609352993, TP=99194.49251718994
+ Generated 8 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: SHORT
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [1M] Using currentAssetPrice: 118088.68156808327 for calculation
+ [1M] Using streamlined engine: SL=103918.04, TP=146429.97
+ [StreamlinedEngine] 1M: SL=103918.03977991328, TP=146429.96514442324
+ Generated 6 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: LONG
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(11)
+ 🔧 Aligned signals after processing: Array(11)
+ 📊 UPDATING UI STATE with 11 timeframe signals
+ 📊 Signal data being set: Array(11)
+ 📊 About to call setSignals with: Array(11)
+ 📊 Sample signal structure: Array(17)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ 🎯 Recording predictions using live price: 118088.68156808327
+ Trade data: 20 total, 20 active, 0 completed
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ 🔄 Signals updated, resetting timer to 3:00
+ Data status for BTC/USDT: loaded=true, timeframes=10
+ Sample data for BTC/USDT (1m): 1000 points
+ Trade data: 20 total, 20 active, 0 completed
+ 📈 Prediction recorded: BTC/USDT 1m SHORT @ 118088.68156808327
+ 🎯 Stop Loss: 118442.95, Take Profit: 117380.15
+ 📈 Recorded prediction: 1m SHORT @ 118088.68156808327
+ Trade data: 20 total, 20 active, 0 completed
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, USDT/USD, BNB/USDT, SOL/USDT, USDC/USD, XRP/USDT, DOGE/USDT, ADA/USDT, SHIB/USDT, AVAX/USDT, DOT/USDT, LINK/USDT, TRX/USDT, TON/USDT, MATIC/USDT, UNI/USDT, LTC/USDT, BCH/USDT, ICP/USDT, LEO/USDT, INJ/USDT, NEAR/USDT, XLM/USDT, ATOM/USDT, VET/USDT, XMR/USDT, OP/USDT, APT/USDT, KAS/USDT, RUNE/USDT, FIL/USDT, HBAR/USDT, MKR/USDT, ALGO/USDT, SAND/USDT, GRT/USDT, IMX/USDT, FLOW/USDT, ARB/USDT, AXS/USDT, EOS/USDT, MANA/USDT, XTZ/USDT, AAVE/USDT, SUI/USDT, THETA/USDT, KSM/USDT, FET/USDT, EGLD/USDT, KAVA/USDT, MINA/USDT, CHZ/USDT, BLUR/USDT, SNX/USDT, NEO/USDT, XDC/USDT, STX/USDT, ENJ/USDT, DYDX/USDT, ONE/USDT, CRV/USDT, XEC/USDT, ROSE/USDT, BAT/USDT, 1INCH/USDT, IOTA/USDT, QNT/USDT, RSR/USDT, AUDIO/USDT, BAND/USDT, HT/USDT, CAKE/USDT, AR/USDT, RVN/USDT, ICX/USDT, ZRX/USDT, FTM/USDT, LRC/USDT, ANKR/USDT, GLM/USDT, UMA/USDT, CELR/USDT, SKL/USDT, API3/USDT, CVC/USDT, KNC/USDT, CTSI/USDT
+ 📈 Prediction recorded: BTC/USDT 5m LONG @ 118088.68156808327
+ 🎯 Stop Loss: 117498.24, Take Profit: 119269.57
+ 📈 Recorded prediction: 5m LONG @ 118088.68156808327
+ Trade data: 20 total, 20 active, 0 completed
+ 📈 Prediction recorded: BTC/USDT 15m SHORT @ 118088.68156808327
+ 🎯 Stop Loss: 119033.39, Take Profit: 116199.26
+ 📈 Recorded prediction: 15m SHORT @ 118088.68156808327
+ 📈 Prediction recorded: BTC/USDT 30m LONG @ 118088.68156808327
+ 🎯 Stop Loss: 116671.62, Take Profit: 120922.81
+ 📈 Recorded prediction: 30m LONG @ 118088.68156808327
+ 📈 Prediction recorded: BTC/USDT 1h LONG @ 118088.68156808327
+ 🎯 Stop Loss: 116317.35, Take Profit: 121631.34
+ 📈 Recorded prediction: 1h LONG @ 118088.68156808327
+ Trade data: 20 total, 20 active, 0 completed
+ 📈 Prediction recorded: BTC/USDT 4h SHORT @ 118088.68156808327
+ 🎯 Stop Loss: 121040.90, Take Profit: 112184.25
+ 📈 Recorded prediction: 4h SHORT @ 118088.68156808327
+ 📈 Prediction recorded: BTC/USDT 1d SHORT @ 118088.68156808327
+ 🎯 Stop Loss: 122812.23, Take Profit: 108641.59
+ 📈 Recorded prediction: 1d SHORT @ 118088.68156808327
+ 📈 Prediction recorded: BTC/USDT 3d LONG @ 118088.68156808327
+ 🎯 Stop Loss: 111003.36, Take Profit: 132259.32
+ 📈 Recorded prediction: 3d LONG @ 118088.68156808327
+ 📈 Prediction recorded: BTC/USDT 1w SHORT @ 118088.68156808327
+ 🎯 Stop Loss: 127535.78, Take Profit: 99194.49
+ 📈 Recorded prediction: 1w SHORT @ 118088.68156808327
+ 📈 Prediction recorded: BTC/USDT 1M LONG @ 118088.68156808327
+ 🎯 Stop Loss: 103918.04, Take Profit: 146429.97
+ 📈 Recorded prediction: 1M LONG @ 118088.68156808327
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ No signal available for BTC/USDT on 4h
+ Calculation process complete for BTC/USDT - 10 signals generated
+ Trade data: 20 total, 20 active, 0 completed
+ Data status for BTC/USDT: loaded=true, timeframes=10
+ Sample data for BTC/USDT (1m): 1000 points
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ [FinalPriceSystem] Next fetch in 50s
+ [FinalPriceSystem] Next fetch in 170s
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Scheduled price update check (15-second interval) at 12:47:39 PM
+ Trade data: 20 total, 20 active, 0 completed
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 125201.72 → 105989.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 105989
+ [StreamlinedPriceManager] Price update: 105989
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105989
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=14.922s
+ Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+ Loading chart with 500 data points for BTC/USDT (4h)
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105989
+ [useMarketData] Price update for BTC/USDT: 105989 - NOT dispatching extra event
+ Trade data: 20 total, 20 active, 0 completed
+ Data status for BTC/USDT: loaded=true, timeframes=10
+ Sample data for BTC/USDT (1m): 1000 points
+ Data ready for BTC/USDT - but auto-calculation DISABLED to enforce 3-minute intervals
+ ⏰ Calculations will only occur via the synchronized 3-minute timer
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ [FinalPriceSystem] Next fetch in 40s
+ [FinalPriceSystem] Next fetch in 160s
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Tab change to 1h - forcing price level calculation
+ Force calculating 1h with live price: 105982.69
+ [1h] IMMEDIATE CALC: Entry=105982.69, SL=107572.43, TP=102803.21
+ Updating trade recommendation for 1h timeframe
+ Trade data: 20 total, 20 active, 0 completed
+ Loading chart with 720 data points for BTC/USDT (1h)
+ 🔄 Signals updated, resetting timer to 3:00
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ [FinalPriceSystem] Next fetch in 30s
+ Scheduled price update check (15-second interval) at 12:47:54 PM
+ [FinalPriceSystem] Next fetch in 150s
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105989.00 → 105989.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 105989
+ [StreamlinedPriceManager] Price update: 105989
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105989
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=29.705s
+ Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105989
+ [useMarketData] Price update for BTC/USDT: 105989 - NOT dispatching extra event
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Tab change to 4h - forcing price level calculation
+ Force calculating 4h with live price: 105982.69
+ [4h] IMMEDIATE CALC: Entry=105982.69, SL=103333.12, TP=111281.82
+ Updating trade recommendation for 4h timeframe
+ Trade data: 20 total, 20 active, 0 completed
+ Loading chart with 500 data points for BTC/USDT (4h)
+ 🔄 Signals updated, resetting timer to 3:00
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 20 total, 20 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Trade simulations query status: Object
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 1d - forcing price level calculation
+ Force calculating 1d with live price: 105982.69
+ [1d] IMMEDIATE CALC: Entry=105982.69, SL=110222.00, TP=97504.07
+ Updating trade recommendation for 1d timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 3d - forcing price level calculation
+ Force calculating 3d with live price: 105982.69
+ [3d] IMMEDIATE CALC: Entry=105982.69, SL=112341.65, TP=93264.77
+ Updating trade recommendation for 3d timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 150 data points for BTC/USDT (3d)
+ 🔄 Signals updated, resetting timer to 3:00
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 1w - forcing price level calculation
+ Force calculating 1w with live price: 105982.69
+ [1w] IMMEDIATE CALC: Entry=105982.69, SL=114461.31, TP=89025.46
+ Updating trade recommendation for 1w timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 200 data points for BTC/USDT (1w)
+ 🔄 Signals updated, resetting timer to 3:00
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 1M - forcing price level calculation
+ Force calculating 1M with live price: 105982.69
+ [1M] IMMEDIATE CALC: Entry=105982.69, SL=93264.77, TP=131418.54
+ Updating trade recommendation for 1M timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 15m - forcing price level calculation
+ Force calculating 15m with live price: 105982.69
+ [15m] IMMEDIATE CALC: Entry=105982.69, SL=106830.55, TP=104286.97
+ Updating trade recommendation for 15m timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 800 data points for BTC/USDT (15m)
+ 🔄 Signals updated, resetting timer to 3:00
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 1h - forcing price level calculation
+ Force calculating 1h with live price: 105982.69
+ [1h] IMMEDIATE CALC: Entry=105982.69, SL=107572.43, TP=102803.21
+ Updating trade recommendation for 1h timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 720 data points for BTC/USDT (1h)
+ [FinalPriceSystem] Next fetch in 20s
+ [FinalPriceSystem] Next fetch in 140s
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 4h - forcing price level calculation
+ Force calculating 4h with live price: 105982.69
+ [4h] IMMEDIATE CALC: Entry=105982.69, SL=103333.12, TP=111281.82
+ Updating trade recommendation for 4h timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 500 data points for BTC/USDT (4h)
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 1d - forcing price level calculation
+ Force calculating 1d with live price: 105982.69
+ [1d] IMMEDIATE CALC: Entry=105982.69, SL=110222.00, TP=97504.07
+ Updating trade recommendation for 1d timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 3d - forcing price level calculation
+ Force calculating 3d with live price: 105982.69
+ [3d] IMMEDIATE CALC: Entry=105982.69, SL=112341.65, TP=93264.77
+ Updating trade recommendation for 3d timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Scheduled price update check (15-second interval) at 12:48:09 PM
+ Trade data: 30 total, 30 active, 0 completed
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105989.00 → 105989.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 105989
+ [StreamlinedPriceManager] Price update: 105989
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105989
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=44.763s
+ Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105989
+ [useMarketData] Price update for BTC/USDT: 105989 - NOT dispatching extra event
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ [FinalPriceSystem] Next fetch in 10s
+ [FinalPriceSystem] Next fetch in 130s
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 15m - forcing price level calculation
+ Force calculating 15m with live price: 105982.69
+ [15m] IMMEDIATE CALC: Entry=105982.69, SL=106830.55, TP=104286.97
+ Updating trade recommendation for 15m timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 1h - forcing price level calculation
+ Force calculating 1h with live price: 105982.69
+ [1h] IMMEDIATE CALC: Entry=105982.69, SL=107572.43, TP=102803.21
+ Updating trade recommendation for 1h timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 4h - forcing price level calculation
+ Force calculating 4h with live price: 105982.69
+ [4h] IMMEDIATE CALC: Entry=105982.69, SL=108632.26, TP=100683.56
+ Updating trade recommendation for 4h timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 500 data points for BTC/USDT (4h)
+ 🔄 Signals updated, resetting timer to 3:00
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 1d - forcing price level calculation
+ Force calculating 1d with live price: 105982.69
+ [1d] IMMEDIATE CALC: Entry=105982.69, SL=110222.00, TP=97504.07
+ Updating trade recommendation for 1d timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Tab change to 3d - forcing price level calculation
+ Force calculating 3d with live price: 105982.69
+ [3d] IMMEDIATE CALC: Entry=105982.69, SL=112341.65, TP=93264.77
+ Updating trade recommendation for 3d timeframe
+ Trade data: 30 total, 30 active, 0 completed
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ Trade data: 30 total, 30 active, 0 completed
+ [FinalPriceSystem] 3-minute interval reached - fetching fresh price and triggering calculation
+ [FinalPriceSystem] Fetching fresh price for BTC/USDT
+ [FinalPriceSystem] Next fetch in 180s
+ Scheduled price update check (15-second interval) at 12:48:24 PM
+ [FinalPriceSystem] Next fetch in 120s
+ Trade data: 30 total, 30 active, 0 completed
+ CoinGecko real-time price data: Object
+ Price update for BTC/USDT: 105989.00 → 105989.00
+ [API] Price update received for BTC/USDT - dispatching calculation event
+ [PriceOverview] Price update received: 105989
+ [StreamlinedPriceManager] Price update: 105989
+ 🔥 RAW LIVE PRICE EVENT: Object
+ 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105989
+ ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+ Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=59.748s
+ Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+ ✅ LIVE PRICE RECEIVED for BTC/USDT: 105989
+ [useMarketData] Price update for BTC/USDT: 105989 - NOT dispatching extra event
+ Trade data: 30 total, 30 active, 0 completed
+ [FinalPriceSystem] Successfully fetched price for BTC/USDT: 105989.08
+ 💰 PRICE UPDATE: BTC/USDT = 105989.08 💰
+ 💰 CALCULATIONS COMING SOON 💰
+Console.js:61 [PriceOverview] Price update received: 105989.08
+Console.js:61 [StreamlinedPriceManager] Price update: 105989.08
+Console.js:61 💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark
+Console.js:61 🔥 RAW LIVE PRICE EVENT: Object
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105989.08
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=59.829s
+Console.js:61 Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+Console.js:61 [FinalPriceSystem] Price update broadcast for BTC/USDT: 105989.08
+Console.js:61 [FinalPriceSystem] Price fetch completed for BTC/USDT: 105989.08
+Console.js:61 [FinalPriceSystem] Price updated to 105989.08 - calculation will follow automatically
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 170s
+Console.js:61 [FinalPriceSystem] Next fetch in 110s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Scheduled price update check (15-second interval) at 12:48:39 PM
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 CoinGecko real-time price data: Object
+Console.js:61 Price update for BTC/USDT: 105989.00 → 105989.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [PriceOverview] Price update received: 105989
+Console.js:61 [StreamlinedPriceManager] Price update: 105989
+Console.js:61 🔥 RAW LIVE PRICE EVENT: Object
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105989
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=74.756s
+Console.js:61 Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 105989
+Console.js:61 [useMarketData] Price update for BTC/USDT: 105989 - NOT dispatching extra event
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 160s
+Console.js:61 [FinalPriceSystem] Next fetch in 100s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 150s
+Console.js:61 Scheduled price update check (15-second interval) at 12:48:54 PM
+Console.js:61 [FinalPriceSystem] Next fetch in 90s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 CoinGecko real-time price data: Object
+Console.js:61 Price update for BTC/USDT: 105989.00 → 105998.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [PriceOverview] Price update received: 105998
+Console.js:61 [StreamlinedPriceManager] Price update: 105998
+Console.js:61 🔥 RAW LIVE PRICE EVENT: Object
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105998
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=89.791s
+Console.js:61 Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 105998
+Console.js:61 [useMarketData] Price update for BTC/USDT: 105998 - NOT dispatching extra event
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 140s
+Console.js:61 [FinalPriceSystem] Next fetch in 80s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Scheduled price update check (15-second interval) at 12:49:09 PM
+Console.js:61 CoinGecko real-time price data: Object
+Console.js:61 Price update for BTC/USDT: 105998.00 → 105998.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [PriceOverview] Price update received: 105998
+Console.js:61 [StreamlinedPriceManager] Price update: 105998
+Console.js:61 🔥 RAW LIVE PRICE EVENT: Object
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105998
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=104.709s
+Console.js:61 Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 105998
+Console.js:61 [useMarketData] Price update for BTC/USDT: 105998 - NOT dispatching extra event
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 130s
+Console.js:61 [FinalPriceSystem] Next fetch in 70s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
+Console.js:61 [FinalPriceSystem] Next fetch in 120s
+Console.js:61 Scheduled price update check (15-second interval) at 12:49:24 PM
+Console.js:61 [FinalPriceSystem] Next fetch in 60s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 CoinGecko real-time price data: {binancecoin: {…}, bitcoin: {…}, ethereum: {…}, ripple: {…}, solana: {…}}
+Console.js:61 Price update for BTC/USDT: 105998.00 → 105998.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [PriceOverview] Price update received: 105998
+Console.js:61 [StreamlinedPriceManager] Price update: 105998
+Console.js:61 🔥 RAW LIVE PRICE EVENT: {symbol: 'BTC/USDT', price: 105998, timestamp: 1748976564166, forceCalculate: true}
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105998
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=119.8s
+Console.js:61 Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 105998
+Console.js:61 [useMarketData] Price update for BTC/USDT: 105998 - NOT dispatching extra event
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 110s
+Console.js:61 [FinalPriceSystem] Next fetch in 50s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Scheduled price update check (15-second interval) at 12:49:39 PM
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 CoinGecko real-time price data: {binancecoin: {…}, bitcoin: {…}, ethereum: {…}, ripple: {…}, solana: {…}}
+Console.js:61 Price update for BTC/USDT: 105998.00 → 105998.00
+Console.js:61 [API] Price update received for BTC/USDT - dispatching calculation event
+Console.js:61 [PriceOverview] Price update received: 105998
+Console.js:61 [StreamlinedPriceManager] Price update: 105998
+Console.js:61 🔥 RAW LIVE PRICE EVENT: {symbol: 'BTC/USDT', price: 105998, timestamp: 1748976579118, forceCalculate: true}
+Console.js:61 🚀 LIVE PRICE EVENT RECEIVED: BTC/USDT price=105998
+Console.js:61 ⚡ Event details: forceCalculate=true, isTimerTriggered=true
+Console.js:61 Calculation blocked: hasMinimumData=true, isCalculating=false, isTimerTriggered=true, timeSinceLastCalc=134.752s
+Console.js:61 Available timeframes: 1m, 5m, 15m, 30m, 1h, 1d, 3d, 1w, 1M, 4h
+Console.js:61 ✅ LIVE PRICE RECEIVED for BTC/USDT: 105998
+Console.js:61 [useMarketData] Price update for BTC/USDT: 105998 - NOT dispatching extra event
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 [FinalPriceSystem] Next fetch in 100s
+Console.js:61 [FinalPriceSystem] Next fetch in 40s
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed
+Console.js:61 Trade data: 30 total, 30 active, 0 completed

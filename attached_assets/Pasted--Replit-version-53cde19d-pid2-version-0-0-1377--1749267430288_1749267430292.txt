@@ -1,0 +1,1183 @@
+ Replit version 53cde19d, pid2 version 0.0.1377
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-e1da276d31eec737.js:1
+(anonymous) @ framework-e1da276d31eec737.js:1
+uD @ framework-e1da276d31eec737.js:1
+uI @ framework-e1da276d31eec737.js:1
+uM @ framework-e1da276d31eec737.js:1
+uS @ framework-e1da276d31eec737.js:1
+C @ framework-e1da276d31eec737.js:1
+z @ framework-e1da276d31eec737.js:1
+CryptoTraderPro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/?token=7if5sWoJpC1F' failed: 
+t @ eruda.js:2
+setupWebSocket @ client:536
+(anonymous) @ client:531
+24815458-70a0-4db2-a37e-c6220a0da15a-00-9sera5ch6rhd.worf.replit.dev/api/technical-analysis/BTC%2FUSDT?timeframe=1d:1  Failed to load resource: the server responded with a status of 404 (Not Found)
+ [HeatMap] Syncing with ultimate system timer - refreshing heatmap data
+ [HeatMap] Fetching synchronized heatmap data for 4h
+ [UltimateManager] Fallback price synchronized: BTC/USDT = $104745.83
+ [SignalDashboard] Immediate calculation triggered by UltimateManager
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1m timeframe. Skipping.
+ ⚡ Successfully calculated 1m: null
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (240s remaining)
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 5m timeframe. Skipping.
+ ⚡ Successfully calculated 5m: null
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 15m timeframe. Skipping.
+ ⚡ Successfully calculated 15m: null
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 30m timeframe. Skipping.
+ ⚡ Successfully calculated 30m: null
+ [UltimateManager] Fallback price synchronized: ETH/USDT = $2485.3
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1h timeframe. Skipping.
+ ⚡ Successfully calculated 1h: null
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 4h timeframe. Skipping.
+ ⚡ Successfully calculated 4h: null
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1d timeframe. Skipping.
+ ⚡ Successfully calculated 1d: null
+ [UltimateManager] Fallback price synchronized: BNB/USDT = $646.11
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 3d timeframe. Skipping.
+ ⚡ Successfully calculated 3d: null
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1w timeframe. Skipping.
+ ⚡ Successfully calculated 1w: null
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1M timeframe. Skipping.
+ ⚡ Successfully calculated 1M: null
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: no 1d signal
+ 📊 Sample 1d signal: null
+ 📊 setSignals call completed successfully
+ Recording predictions using live price: 104791.14
+ Found 0 valid signals for recommendation for BTC/USDT
+ Calculation process complete for BTC/USDT - 0 signals generated
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (239s remaining)
+ [UltimateManager] Fallback price synchronized: XRP/USDT = $2.17
+ [UltimateManager] Fallback price synchronized: SOL/USDT = $148.5
+ [UltimateManager] Fallback price synchronized: USDC/USD = $0.99918
+ [UltimateManager] Fallback price synchronized: ADA/USDT = $0.658731
+ [UltimateManager] Fallback price synchronized: AVAX/USDT = $19.94
+ [UltimateManager] Fallback price synchronized: DOGE/USDT = $0.18159
+ [UltimateManager] Fallback price synchronized: TRX/USDT = $0.278468
+ [UltimateManager] Fallback price synchronized: TON/USDT = $3.16
+ [UltimateManager] Fallback price synchronized: LINK/USDT = $13.75
+ [UltimateManager] Fallback price synchronized: MATIC/USDT = $0.215726
+ [UltimateManager] Fallback price synchronized: SHIB/USDT = $0.000013
+ [UltimateManager] Fallback price synchronized: LTC/USDT = $87.81
+ [UltimateManager] Fallback price synchronized: BCH/USDT = $398.12
+ [UltimateManager] Fallback price synchronized: UNI/USDT = $6.15
+ [UltimateManager] Fallback price synchronized: DOT/USDT = $3.97
+ [UltimateManager] Fallback price synchronized: XLM/USDT = $0.263739
+ [UltimateManager] Fallback price synchronized: ATOM/USDT = $4.26
+ [UltimateManager] Fallback price synchronized: XMR/USDT = $322.47
+ [UltimateManager] Fallback price synchronized: ETC/USDT = $17.1
+ [UltimateManager] Fallback price synchronized: HBAR/USDT = $0.166729
+ [UltimateManager] Fallback price synchronized: FIL/USDT = $2.46
+ [UltimateManager] Fallback price synchronized: ICP/USDT = $5
+ [UltimateManager] Fallback price synchronized: VET/USDT = $0.023857
+ [UltimateManager] Fallback price synchronized: APT/USDT = $4.71
+ [UltimateManager] Fallback price synchronized: NEAR/USDT = $2.37
+ [UltimateManager] Fallback price synchronized: AAVE/USDT = $252.25
+ [UltimateManager] Fallback price synchronized: ARB/USDT = $0.340117
+ [UltimateManager] Fallback price synchronized: OP/USDT = $0.617139
+ [UltimateManager] Fallback price synchronized: MKR/USDT = $1706.87
+ [UltimateManager] Fallback price synchronized: GRT/USDT = $0.091728
+ [UltimateManager] Fallback price synchronized: STX/USDT = $0.64823
+ [UltimateManager] Fallback price synchronized: INJ/USDT = $12.18
+ [UltimateManager] Fallback price synchronized: ALGO/USDT = $0.189448
+ [UltimateManager] Fallback price synchronized: LDO/USDT = $0.788102
+ [UltimateManager] Fallback price synchronized: THETA/USDT = $0.770829
+ [UltimateManager] Fallback price synchronized: SUI/USDT = $3.27
+ [UltimateManager] Fallback price synchronized: RUNE/USDT = $1.6
+ [UltimateManager] Fallback price synchronized: MANA/USDT = $0.274984
+ [UltimateManager] Fallback price synchronized: SAND/USDT = $0.274173
+ [UltimateManager] Fallback price synchronized: FET/USDT = $0.748431
+ [UltimateManager] Fallback price synchronized: RNDR/USDT = $3.83
+ [UltimateManager] Fallback price synchronized: KAVA/USDT = $0.431887
+ [UltimateManager] Fallback price synchronized: MINA/USDT = $0.200344
+ [UltimateManager] Fallback price synchronized: FLOW/USDT = $0.360297
+ [UltimateManager] Fallback price synchronized: XTZ/USDT = $0.56265
+ [UltimateManager] Fallback price synchronized: BLUR/USDT = $0.087064
+ [UltimateManager] Fallback price synchronized: QNT/USDT = $116.65
+ [UltimateManager] Multi-pair fetch: 50 symbols updated
+ [UltimateManager] Next fetch in 220s
+ [UltimateManager] Next fetch in 200s
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104737.22
+ [PriceOverview] Centralized price update for BTC/USDT: $104737.22
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104737.22
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (193s remaining)
+ [UltimateManager] Next fetch in 180s
+ [UltimateManager] Next fetch in 160s
+ [UltimateManager] Next fetch in 140s
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104717.95
+ [PriceOverview] Centralized price update for BTC/USDT: $104717.95
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104717.95
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (132s remaining)
+ [UltimateManager] Next fetch in 120s
+ [UltimateManager] Next fetch in 100s
+ [UltimateManager] Next fetch in 80s
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104660.52
+ [PriceOverview] Centralized price update for BTC/USDT: $104660.52
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104660.52
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (72s remaining)
+ [UltimateManager] Next fetch in 60s
+ [UltimateManager] Next fetch in 40s
+ [UltimateManager] Next fetch in 20s
+ [CentralizedPriceManager] Fetching prices for 1 symbols
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104644.95
+ [PriceOverview] Centralized price update for BTC/USDT: $104644.95
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104644.95
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (11s remaining)
+ [UltimateManager] Next fetch in 0s
+ [UltimateManager] 4-minute synchronized calculation starting
+ [HeatMap] Received synchronized calculation event - updating heatmap
+ [HeatMap] Syncing with ultimate system timer - refreshing heatmap data
+ [HeatMap] Fetching synchronized heatmap data for 4h
+ [UltimateManager] Fallback price synchronized: BTC/USDT = $104691.91
+ [SignalDashboard] Immediate calculation triggered by UltimateManager
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1m timeframe. Skipping.
+ ⚡ Successfully calculated 1m: null
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (240s remaining)
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 5m timeframe. Skipping.
+ ⚡ Successfully calculated 5m: null
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 15m timeframe. Skipping.
+ ⚡ Successfully calculated 15m: null
+ [UltimateManager] Fallback price synchronized: ETH/USDT = $2487.45
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 30m timeframe. Skipping.
+ ⚡ Successfully calculated 30m: null
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1h timeframe. Skipping.
+ ⚡ Successfully calculated 1h: null
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 4h timeframe. Skipping.
+ ⚡ Successfully calculated 4h: null
+ [UltimateManager] Fallback price synchronized: BNB/USDT = $646.22
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1d timeframe. Skipping.
+ ⚡ Successfully calculated 1d: null
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 3d timeframe. Skipping.
+ ⚡ Successfully calculated 3d: null
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1w timeframe. Skipping.
+ ⚡ Successfully calculated 1w: null
+ [UltimateManager] Fallback price synchronized: XRP/USDT = $2.17
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: Not enough data for BTC/USDT on 1M timeframe. Skipping.
+ ⚡ Successfully calculated 1M: null
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: no 1d signal
+ 📊 Sample 1d signal: null
+ 📊 setSignals call completed successfully
+ Recording predictions using live price: 104644.95
+ Found 0 valid signals for recommendation for BTC/USDT
+ Calculation process complete for BTC/USDT - 0 signals generated
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (239s remaining)
+ [UltimateManager] Fallback price synchronized: SOL/USDT = $148.73
+ [UltimateManager] Fallback price synchronized: USDC/USD = $1.000332
+ [UltimateManager] Fallback price synchronized: ADA/USDT = $0.65952
+ [UltimateManager] Fallback price synchronized: AVAX/USDT = $19.96
+ [UltimateManager] Fallback price synchronized: DOGE/USDT = $0.181864
+ [UltimateManager] Fallback price synchronized: TRX/USDT = $0.278488
+ [UltimateManager] Fallback price synchronized: TON/USDT = $3.16
+ [UltimateManager] Fallback price synchronized: LINK/USDT = $13.76
+ [UltimateManager] Fallback price synchronized: MATIC/USDT = $0.216344
+ [UltimateManager] Fallback price synchronized: SHIB/USDT = $0.000013
+ [UltimateManager] Fallback price synchronized: LTC/USDT = $87.82
+ [UltimateManager] Fallback price synchronized: BCH/USDT = $398.75
+ [UltimateManager] Fallback price synchronized: UNI/USDT = $6.14
+ [UltimateManager] Fallback price synchronized: DOT/USDT = $3.97
+ [UltimateManager] Fallback price synchronized: XLM/USDT = $0.264144
+ [UltimateManager] Fallback price synchronized: ATOM/USDT = $4.26
+ [UltimateManager] Fallback price synchronized: XMR/USDT = $323.22
+ [UltimateManager] Fallback price synchronized: ETC/USDT = $17.09
+ [UltimateManager] Fallback price synchronized: HBAR/USDT = $0.166566
+ [UltimateManager] Fallback price synchronized: FIL/USDT = $2.46
+ [UltimateManager] Fallback price synchronized: ICP/USDT = $5
+ [UltimateManager] Fallback price synchronized: VET/USDT = $0.023874
+ [UltimateManager] Fallback price synchronized: APT/USDT = $4.71
+ [UltimateManager] Fallback price synchronized: NEAR/USDT = $2.38
+ [UltimateManager] Fallback price synchronized: AAVE/USDT = $252.64
+ [UltimateManager] Fallback price synchronized: ARB/USDT = $0.34024
+ [UltimateManager] Fallback price synchronized: OP/USDT = $0.618646
+ [UltimateManager] Fallback price synchronized: MKR/USDT = $1707.53
+ [UltimateManager] Fallback price synchronized: GRT/USDT = $0.091646
+ [UltimateManager] Fallback price synchronized: STX/USDT = $0.649849
+ [UltimateManager] Fallback price synchronized: INJ/USDT = $12.19
+ [UltimateManager] Fallback price synchronized: ALGO/USDT = $0.189614
+ [UltimateManager] Fallback price synchronized: LDO/USDT = $0.790152
+ [UltimateManager] Fallback price synchronized: THETA/USDT = $0.77203
+ [UltimateManager] Fallback price synchronized: SUI/USDT = $3.28
+ [UltimateManager] Fallback price synchronized: RUNE/USDT = $1.6
+ [UltimateManager] Fallback price synchronized: MANA/USDT = $0.275243
+ [UltimateManager] Fallback price synchronized: SAND/USDT = $0.274549
+ [UltimateManager] Fallback price synchronized: FET/USDT = $0.749386
+ [UltimateManager] Fallback price synchronized: RNDR/USDT = $3.83
+ [UltimateManager] Fallback price synchronized: KAVA/USDT = $0.431497
+ [UltimateManager] Fallback price synchronized: MINA/USDT = $0.200469
+ [UltimateManager] Fallback price synchronized: FLOW/USDT = $0.360206
+ [UltimateManager] Fallback price synchronized: XTZ/USDT = $0.56253
+ [UltimateManager] Fallback price synchronized: BLUR/USDT = $0.087026
+ [UltimateManager] Fallback price synchronized: QNT/USDT = $116.48
+ [UltimateManager] Multi-pair fetch: 50 symbols updated
+ [UltimateManager] Next fetch in 220s
+ [UltimateManager] Next fetch in 200s
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104739.78
+ [PriceOverview] Centralized price update for BTC/USDT: $104739.78
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104739.78
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (190s remaining)
+ [UltimateManager] Next fetch in 180s
+ [UltimateManager] Next fetch in 160s
+ [UltimateManager] Next fetch in 140s
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104815.8
+ [PriceOverview] Centralized price update for BTC/USDT: $104815.8
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104815.8
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (129s remaining)
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104690.77
+ [PriceOverview] Centralized price update for BTC/USDT: $104690.77
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104690.77
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (39s remaining)
+ [CentralizedPriceManager] Fetching prices for 1 symbols
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104679.23
+ [PriceOverview] Centralized price update for BTC/USDT: $104679.23
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104679.23
+ [SignalDashboard] Data ready for BTC/USDT - triggering calculation (4-minute interval)
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Fresh price fetched for BTC/USDT: 104679.23
+ [1m] Using live price: 104679.23 for calculation
+ [1m] Preparing chart data with 1000 candles
+ [1m] Updating market data in unified core
+ [1m] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 1m: Object
+ FINAL Support/Resistance for BTC/USDT 1m: Object
+ [1m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 1m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 0 patterns for 1m timeframe
+ ⚡ Successfully calculated 1m: NEUTRAL
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [5m] Fresh price fetched for BTC/USDT: 104679.23
+ [5m] Using live price: 104679.23 for calculation
+ [5m] Preparing chart data with 1000 candles
+ [5m] Updating market data in unified core
+ [5m] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 5m: Object
+ FINAL Support/Resistance for BTC/USDT 5m: Object
+ [5m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 2 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ [15m] Fresh price fetched for BTC/USDT: 104679.23
+ [15m] Using live price: 104679.23 for calculation
+ [15m] Preparing chart data with 800 candles
+ [15m] Updating market data in unified core
+ [15m] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 15m: Object
+ FINAL Support/Resistance for BTC/USDT 15m: Object
+ [15m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 4 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: NEUTRAL
+ [30m] Fresh price fetched for BTC/USDT: 104679.23
+ [30m] Using live price: 104679.23 for calculation
+ [30m] Preparing chart data with 800 candles
+ [30m] Updating market data in unified core
+ [30m] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 30m: Object
+ FINAL Support/Resistance for BTC/USDT 30m: Object
+ [30m] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 4 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ [1h] Fresh price fetched for BTC/USDT: 104679.23
+ [1h] Using live price: 104679.23 for calculation
+ [1h] Preparing chart data with 720 candles
+ [1h] Updating market data in unified core
+ [1h] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 1h: Object
+ FINAL Support/Resistance for BTC/USDT 1h: Object
+ [1h] Unified signal result: NEUTRAL (58%)
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=58%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=NEUTRAL, Confidence=58%
+ Generated 3 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: NEUTRAL
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for BTC/USDT on 1w timeframe
+ DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for BTC/USDT (1w)
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for BTC/USDT on 1M timeframe
+ DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for BTC/USDT (1M)
+ [4h] Fresh price fetched for BTC/USDT: 104679.23
+ [4h] Using live price: 104679.23 for calculation
+ [4h] Preparing chart data with 500 candles
+ [4h] Updating market data in unified core
+ [4h] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 4h: Object
+ FINAL Support/Resistance for BTC/USDT 4h: Object
+ [4h] Unified signal result: LONG (98%)
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 8 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ [1d] Fresh price fetched for BTC/USDT: 104679.23
+ [1d] Using live price: 104679.23 for calculation
+ [1d] Preparing chart data with 365 candles
+ [1d] Updating market data in unified core
+ [1d] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 1d: Object
+ FINAL Support/Resistance for BTC/USDT 1d: Object
+ [1d] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 9 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ [3d] Fresh price fetched for BTC/USDT: 104679.23
+ [3d] Using live price: 104679.23 for calculation
+ [3d] Preparing chart data with 150 candles
+ [3d] Updating market data in unified core
+ [3d] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 3d: Object
+ FINAL Support/Resistance for BTC/USDT 3d: Object
+ [3d] Unified signal result: LONG (98%)
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 3 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ [1w] Fresh price fetched for BTC/USDT: 104679.23
+ [1w] Using live price: 104679.23 for calculation
+ [1w] Preparing chart data with 200 candles
+ [1w] Updating market data in unified core
+ [1w] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 1w: Object
+ FINAL Support/Resistance for BTC/USDT 1w: Object
+ [1w] Unified signal result: SHORT (98%)
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 8 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: SHORT
+ [1M] Fresh price fetched for BTC/USDT: 104679.23
+ [1M] Using live price: 104679.23 for calculation
+ [1M] Preparing chart data with 60 candles
+ [1M] Updating market data in unified core
+ [1M] Generating signal with live price 104679.23
+ Support/Resistance calculation for BTC/USDT 1M: Object
+ FINAL Support/Resistance for BTC/USDT 1M: Object
+ [1M] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: NEUTRAL
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ Recording predictions using live price: 104644.95
+ 📈 Prediction recorded: BTC/USDT 4h LONG @ 104644.95
+ 🎯 Stop Loss: 99412.70, Take Profit: 115109.45
+ Recorded prediction: 4h LONG @ 104644.95
+ 📈 Prediction recorded: BTC/USDT 3d LONG @ 104644.95
+ 🎯 Stop Loss: 96273.35, Take Profit: 121388.14
+ Recorded prediction: 3d LONG @ 104644.95
+ 📈 Prediction recorded: BTC/USDT 1w SHORT @ 104644.95
+ 🎯 Stop Loss: 115109.45, Take Profit: 83715.96
+ Recorded prediction: 1w SHORT @ 104644.95
+ Found 10 valid signals for recommendation for BTC/USDT
+ Updating trade recommendation for 4h timeframe
+ No signal available for BTC/USDT on 4h
+ Calculation process complete for BTC/USDT - 10 signals generated
+ [SignalDashboard] Data ready for BTC/USDT but calculation blocked by 4-minute timer (238s remaining)
+ 🔄 Signals updated, syncing timer with actual calculation time
+ [UltimateManager] Next fetch in 120s
+ [UltimateManager] Next fetch in 100s
+ Selected new asset: ADA/USDT - analysis will run automatically
+ [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+ [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ [CentralizedPriceManager] Stopped fetch interval - no subscribers
+ [CentralizedPriceManager] New subscriber for ADA/USDT
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ [CentralizedPriceManager] Starting 4-minute fetch interval
+ Fetching data for symbol: ADA/USDT, encoded as: ADA%2FUSDT
+ Fetching data for symbol: ADA/USDT, encoded as: ADA%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [PriceOverview] Centralized price update for ADA/USDT: $104679.23
+ Loading chart data for ADA/USDT (1m)
+ Loading chart data for ADA/USDT (5m)
+ Loading chart data for ADA/USDT (15m)
+ Loading chart data for ADA/USDT (30m)
+ Loading chart data for ADA/USDT (1h)
+ Loading chart data for ADA/USDT (4h)
+ Loading chart data for ADA/USDT (1d)
+ Loading chart data for ADA/USDT (3d)
+ Loading chart data for ADA/USDT (1w)
+ Loading chart data for ADA/USDT (1M)
+ [CentralizedPriceManager] New subscriber for ADA/USDT
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ [AdvancedSignalDashboard] Centralized price update for ADA/USDT: $104679.23
+ 🧠 Initializing continuous learning feedback loop for ADA/USDT
+ 🧠 Starting continuous learning for ADA/USDT
+ Symbol changed from BTC/USDT to ADA/USDT - resetting calculation status
+ [SignalDashboard] Data ready for ADA/USDT - triggering calculation (initial)
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for ADA/USDT on 1m timeframe
+ DATA CHECK: ADA/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for ADA/USDT (1m)
+ Fetching data for symbol: ADA/USDT, encoded as: ADA%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Automatically running analysis for ADA/USDT
+ [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for ADA/USDT on 5m timeframe
+ DATA CHECK: ADA/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for ADA/USDT (5m)
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for ADA/USDT on 15m timeframe
+ DATA CHECK: ADA/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for ADA/USDT (15m)
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for ADA/USDT on 30m timeframe
+ DATA CHECK: ADA/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for ADA/USDT (30m)
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 500 data points for ADA/USDT (4h)
+ [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for ADA/USDT on 1h timeframe
+ DATA CHECK: ADA/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for ADA/USDT (1h)
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ Loading chart with 800 data points for ADA/USDT (15m)
+ [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+ [CentralizedPriceManager] Using existing fetch for ADA/USDT
+ [CentralizedPriceManager] Updated price for ADA/USDT: $0.659728
+ [1m] Fresh price fetched for ADA/USDT: 0.659728
+ [1m] Using live price: 0.659728 for calculation
+ [1m] Preparing chart data with 1000 candles
+ [1m] Updating market data in unified core
+ [1m] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 1m: Object
+ FINAL Support/Resistance for ADA/USDT 1m: Object
+ [1m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 0 patterns for 1m timeframe
+ [5m] Fresh price fetched for ADA/USDT: 0.659728
+ [5m] Using live price: 0.659728 for calculation
+ [5m] Preparing chart data with 1000 candles
+ [5m] Updating market data in unified core
+ [5m] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 5m: Object
+ FINAL Support/Resistance for ADA/USDT 5m: Object
+ [5m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 3 patterns for 5m timeframe
+ [15m] Fresh price fetched for ADA/USDT: 0.659728
+ [15m] Using live price: 0.659728 for calculation
+ [15m] Preparing chart data with 800 candles
+ [15m] Updating market data in unified core
+ [15m] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 15m: Object
+ FINAL Support/Resistance for ADA/USDT 15m: Object
+ [15m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 4 patterns for 15m timeframe
+ [30m] Fresh price fetched for ADA/USDT: 0.659728
+ [30m] Using live price: 0.659728 for calculation
+ [30m] Preparing chart data with 800 candles
+ [30m] Updating market data in unified core
+ [30m] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 30m: Object
+ FINAL Support/Resistance for ADA/USDT 30m: Object
+ [30m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 30m timeframe
+ [1h] Fresh price fetched for ADA/USDT: 0.659728
+ [1h] Using live price: 0.659728 for calculation
+ [1h] Preparing chart data with 720 candles
+ [1h] Updating market data in unified core
+ [1h] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 1h: Object
+ FINAL Support/Resistance for ADA/USDT 1h: Object
+ [1h] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 1h timeframe
+ ⚡ Successfully calculated 1m: NEUTRAL
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ Successfully calculated 15m: NEUTRAL
+ ⚡ Successfully calculated 30m: NEUTRAL
+ ⚡ Successfully calculated 1h: NEUTRAL
+ [PriceOverview] Centralized price update for ADA/USDT: $0.659728
+ [AdvancedSignalDashboard] Centralized price update for ADA/USDT: $0.659728
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for ADA/USDT on 4h timeframe
+ DATA CHECK: ADA/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for ADA/USDT (4h)
+ Loading chart with 1000 data points for ADA/USDT (1m)
+ Loading chart with 1000 data points for ADA/USDT (5m)
+ Loading chart with 800 data points for ADA/USDT (30m)
+ [4h] Fresh price fetched for ADA/USDT: 0.659728
+ [4h] Using live price: 0.659728 for calculation
+ [4h] Preparing chart data with 500 candles
+ [4h] Updating market data in unified core
+ [4h] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 4h: Object
+ FINAL Support/Resistance for ADA/USDT 4h: Object
+ [4h] Unified signal result: LONG (98%)
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 6 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ Loading chart with 720 data points for ADA/USDT (1h)
+ Loading chart with 150 data points for ADA/USDT (3d)
+ Loading chart with 200 data points for ADA/USDT (1w)
+ Loading chart with 60 data points for ADA/USDT (1M)
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for ADA/USDT on 1d timeframe
+ DATA CHECK: ADA/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for ADA/USDT (1d)
+ [1d] Fresh price fetched for ADA/USDT: 0.659728
+ [1d] Using live price: 0.659728 for calculation
+ [1d] Preparing chart data with 365 candles
+ [1d] Updating market data in unified core
+ [1d] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 1d: Object
+ FINAL Support/Resistance for ADA/USDT 1d: Object
+ [1d] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 12 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ Loading chart with 365 data points for ADA/USDT (1d)
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for ADA/USDT on 3d timeframe
+ DATA CHECK: ADA/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for ADA/USDT (3d)
+ [3d] Fresh price fetched for ADA/USDT: 0.659728
+ [3d] Using live price: 0.659728 for calculation
+ [3d] Preparing chart data with 150 candles
+ [3d] Updating market data in unified core
+ [3d] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 3d: Object
+ FINAL Support/Resistance for ADA/USDT 3d: Object
+ [3d] Unified signal result: LONG (98%)
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 9 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ Fetching data for symbol: ADA/USDT, encoded as: ADA%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: ADA/USDT, encoded as: ADA%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for ADA/USDT on 1w timeframe
+ DATA CHECK: ADA/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for ADA/USDT (1w)
+ [1w] Fresh price fetched for ADA/USDT: 0.659728
+ [1w] Using live price: 0.659728 for calculation
+ [1w] Preparing chart data with 200 candles
+ [1w] Updating market data in unified core
+ [1w] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 1w: Object
+ FINAL Support/Resistance for ADA/USDT 1w: Object
+ [1w] Unified signal result: SHORT (98%)
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 9 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: SHORT
+ ⚡ About to calculate 1M timeframe
+ Calculating signal for ADA/USDT on 1M timeframe
+ DATA CHECK: ADA/USDT on 1M timeframe has 60 data points.
+ Starting signal calculation for ADA/USDT (1M)
+ [1M] Fresh price fetched for ADA/USDT: 0.659728
+ [1M] Using live price: 0.659728 for calculation
+ [1M] Preparing chart data with 60 candles
+ [1M] Updating market data in unified core
+ [1M] Generating signal with live price 0.659728
+ Support/Resistance calculation for ADA/USDT 1M: Object
+ FINAL Support/Resistance for ADA/USDT 1M: Object
+ [1M] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 7 patterns for 1M timeframe
+ ⚡ Successfully calculated 1M: NEUTRAL
+ ⚡ Calculation loop completed
+ 🔧 Raw signals before alignment: Array(10)
+ 🔧 Aligned signals after processing: Array(10)
+ 📊 UPDATING UI STATE with 10 timeframe signals
+ 📊 Signal data being set: Array(10)
+ 📊 About to call setSignals with: Array(10)
+ 📊 Sample signal structure: Array(18)
+ 📊 Sample 1d signal: Object
+ 📊 setSignals call completed successfully
+ Recording predictions using live price: 104679.23
+ 📈 Prediction recorded: ADA/USDT 4h LONG @ 104679.23
+ 🎯 Stop Loss: 99445.27, Take Profit: 115147.15
+ Recorded prediction: 4h LONG @ 104679.23
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ 📈 Prediction recorded: ADA/USDT 3d LONG @ 104679.23
+ 🎯 Stop Loss: 96304.89, Take Profit: 121427.91
+ Recorded prediction: 3d LONG @ 104679.23
+ 📈 Prediction recorded: ADA/USDT 1w SHORT @ 104679.23
+ 🎯 Stop Loss: 115147.15, Take Profit: 83743.38
+ Recorded prediction: 1w SHORT @ 104679.23
+ Found 10 valid signals for recommendation for ADA/USDT
+ Updating trade recommendation for 4h timeframe
+ Calculation process complete for ADA/USDT - 10 signals generated
+ 🔄 Signals updated, syncing timer with actual calculation time
+ [UltimateManager] Next fetch in 80s
+ [UltimateManager] Next fetch in 60s
+ [UltimateManager] Next fetch in 40s
+ [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+ [CentralizedPriceManager] Updated price for ADA/USDT: $0.65952
+ [PriceOverview] Centralized price update for ADA/USDT: $0.65952
+ [AdvancedSignalDashboard] Centralized price update for ADA/USDT: $0.65952
+ [UltimateManager] Next fetch in 20s
+ [UltimateManager] Next fetch in 0s
+ [UltimateManager] 4-minute synchronized calculation starting
+ [HeatMap] Received synchronized calculation event - updating heatmap
+ [HeatMap] Syncing with ultimate system timer - refreshing heatmap data
+ [HeatMap] Fetching synchronized heatmap data for 4h
+ [UltimateManager] Fallback price synchronized: BTC/USDT = $104689.06
+ [UltimateManager] Fallback price synchronized: ETH/USDT = $2488.9
+ [UltimateManager] Fallback price synchronized: BNB/USDT = $647.32
+ [UltimateManager] Fallback price synchronized: XRP/USDT = $2.17
+ [UltimateManager] Fallback price synchronized: SOL/USDT = $148.6
+ [UltimateManager] Fallback price synchronized: USDC/USD = $0.999245
+ [UltimateManager] Fallback price synchronized: ADA/USDT = $0.659522
+ [SignalDashboard] Immediate calculation triggered by UltimateManager
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for ADA/USDT on 1m timeframe
+ DATA CHECK: ADA/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for ADA/USDT (1m)
+ [1m] Fresh price fetched for ADA/USDT: 0.65952
+ [1m] Using live price: 0.65952 for calculation
+ [1m] Preparing chart data with 1000 candles
+ [1m] Updating market data in unified core
+ [1m] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 1m: Object
+ FINAL Support/Resistance for ADA/USDT 1m: Object
+ [1m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1m: Market Regime=Market Regime: NORMAL, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 2 patterns for 1m timeframe
+ ⚡ Successfully calculated 1m: NEUTRAL
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for ADA/USDT on 5m timeframe
+ DATA CHECK: ADA/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for ADA/USDT (5m)
+ [5m] Fresh price fetched for ADA/USDT: 0.65952
+ [5m] Using live price: 0.65952 for calculation
+ [5m] Preparing chart data with 1000 candles
+ [5m] Updating market data in unified core
+ [5m] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 5m: Object
+ FINAL Support/Resistance for ADA/USDT 5m: Object
+ [5m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 5m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 5m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 3 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: NEUTRAL
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for ADA/USDT on 15m timeframe
+ DATA CHECK: ADA/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for ADA/USDT (15m)
+ [15m] Fresh price fetched for ADA/USDT: 0.65952
+ [15m] Using live price: 0.65952 for calculation
+ [15m] Preparing chart data with 800 candles
+ [15m] Updating market data in unified core
+ [15m] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 15m: Object
+ FINAL Support/Resistance for ADA/USDT 15m: Object
+ [15m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 15m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 15m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 5 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: NEUTRAL
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for ADA/USDT on 30m timeframe
+ DATA CHECK: ADA/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for ADA/USDT (30m)
+ [30m] Fresh price fetched for ADA/USDT: 0.65952
+ [30m] Using live price: 0.65952 for calculation
+ [30m] Preparing chart data with 800 candles
+ [30m] Updating market data in unified core
+ [30m] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 30m: Object
+ FINAL Support/Resistance for ADA/USDT 30m: Object
+ [30m] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 30m: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 30m: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 3 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: NEUTRAL
+ [UltimateManager] Fallback price synchronized: AVAX/USDT = $20.06
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for ADA/USDT on 1h timeframe
+ DATA CHECK: ADA/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for ADA/USDT (1h)
+ [1h] Fresh price fetched for ADA/USDT: 0.65952
+ [1h] Using live price: 0.65952 for calculation
+ [1h] Preparing chart data with 720 candles
+ [1h] Updating market data in unified core
+ [1h] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 1h: Object
+ FINAL Support/Resistance for ADA/USDT 1h: Object
+ [1h] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1h: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 6 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: NEUTRAL
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for ADA/USDT on 4h timeframe
+ DATA CHECK: ADA/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for ADA/USDT (4h)
+ [4h] Fresh price fetched for ADA/USDT: 0.65952
+ [4h] Using live price: 0.65952 for calculation
+ [4h] Preparing chart data with 500 candles
+ [4h] Updating market data in unified core
+ [4h] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 4h: Object
+ FINAL Support/Resistance for ADA/USDT 4h: Object
+ [4h] Unified signal result: LONG (98%)
+ [UnifiedEngine] 4h: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 4h: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 9 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: LONG
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for ADA/USDT on 1d timeframe
+ DATA CHECK: ADA/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for ADA/USDT (1d)
+ [1d] Fresh price fetched for ADA/USDT: 0.65952
+ [1d] Using live price: 0.65952 for calculation
+ [1d] Preparing chart data with 365 candles
+ [1d] Updating market data in unified core
+ [1d] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 1d: Object
+ FINAL Support/Resistance for ADA/USDT 1d: Object
+ [1d] Unified signal result: NEUTRAL (50%)
+ [UnifiedEngine] 1d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+ [EnhancedEngine] 1d: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+ Generated 10 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: NEUTRAL
+ [UltimateManager] Fallback price synchronized: DOGE/USDT = $0.182032
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for ADA/USDT on 3d timeframe
+ DATA CHECK: ADA/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for ADA/USDT (3d)
+ [3d] Fresh price fetched for ADA/USDT: 0.65952
+ [3d] Using live price: 0.65952 for calculation
+ [3d] Preparing chart data with 150 candles
+ [3d] Updating market data in unified core
+ [3d] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 3d: Object
+ FINAL Support/Resistance for ADA/USDT 3d: Object
+ [3d] Unified signal result: LONG (98%)
+ [UnifiedEngine] 3d: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=LONG, Confidence=98%
+ [EnhancedEngine] 3d: Enhanced signal ready - Direction=LONG, Confidence=98%
+ Generated 8 patterns for 3d timeframe
+ ⚡ Successfully calculated 3d: LONG
+ ⚡ About to calculate 1w timeframe
+ Calculating signal for ADA/USDT on 1w timeframe
+ DATA CHECK: ADA/USDT on 1w timeframe has 200 data points.
+ Starting signal calculation for ADA/USDT (1w)
+ [1w] Fresh price fetched for ADA/USDT: 0.65952
+ [1w] Using live price: 0.65952 for calculation
+ [1w] Preparing chart data with 200 candles
+ [1w] Updating market data in unified core
+ [1w] Generating signal with live price 0.65952
+ Support/Resistance calculation for ADA/USDT 1w: Object
+ FINAL Support/Resistance for ADA/USDT 1w: Object
+ [1w] Unified signal result: SHORT (98%)
+ [UnifiedEngine] 1w: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=SHORT, Confidence=98%
+ [EnhancedEngine] 1w: Enhanced signal ready - Direction=SHORT, Confidence=98%
+ Generated 10 patterns for 1w timeframe
+ ⚡ Successfully calculated 1w: SHORT
+ ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for ADA/USDT on 1M timeframe
+Console.js:61 DATA CHECK: ADA/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for ADA/USDT (1M)
+Console.js:61 [1M] Fresh price fetched for ADA/USDT: 0.65952
+Console.js:61 [1M] Using live price: 0.65952 for calculation
+Console.js:61 [1M] Preparing chart data with 60 candles
+Console.js:61 [1M] Updating market data in unified core
+Console.js:61 [1M] Generating signal with live price 0.65952
+Console.js:61 Support/Resistance calculation for ADA/USDT 1M: Object
+Console.js:61 FINAL Support/Resistance for ADA/USDT 1M: Object
+Console.js:61 [1M] Unified signal result: NEUTRAL (50%)
+Console.js:61 [UnifiedEngine] 1M: Market Regime=Market Regime: HIGH_VOLATILITY, Direction=NEUTRAL, Confidence=50%
+Console.js:61 [EnhancedEngine] 1M: Enhanced signal ready - Direction=NEUTRAL, Confidence=50%
+Console.js:61 Generated 8 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: NEUTRAL
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: Array(18)
+Console.js:61 📊 Sample 1d signal: Object
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 Recording predictions using live price: 104679.23
+Console.js:61 📈 Prediction recorded: ADA/USDT 4h LONG @ 104679.23
+Console.js:61 🎯 Stop Loss: 99445.27, Take Profit: 115147.15
+Console.js:61 Recorded prediction: 4h LONG @ 104679.23
+Console.js:61 [UltimateManager] Fallback price synchronized: TRX/USDT = $0.278358
+Console.js:61 📈 Prediction recorded: ADA/USDT 3d LONG @ 104679.23
+Console.js:61 🎯 Stop Loss: 96304.89, Take Profit: 121427.91
+Console.js:61 Recorded prediction: 3d LONG @ 104679.23
+Console.js:61 📈 Prediction recorded: ADA/USDT 1w SHORT @ 104679.23
+Console.js:61 🎯 Stop Loss: 115147.15, Take Profit: 83743.38
+Console.js:61 Recorded prediction: 1w SHORT @ 104679.23
+Console.js:61 [UltimateManager] Fallback price synchronized: TON/USDT = $3.16
+Console.js:61 Found 10 valid signals for recommendation for ADA/USDT
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 Calculation process complete for ADA/USDT - 10 signals generated
+Console.js:61 [UltimateManager] Fallback price synchronized: LINK/USDT = $13.79
+Console.js:61 🔄 Signals updated, syncing timer with actual calculation time
+Console.js:61 [UltimateManager] Fallback price synchronized: MATIC/USDT = $0.216522
+Console.js:61 [UltimateManager] Fallback price synchronized: SHIB/USDT = $0.000013
+Console.js:61 [UltimateManager] Fallback price synchronized: LTC/USDT = $87.77
+Console.js:61 [UltimateManager] Fallback price synchronized: BCH/USDT = $398.12
+Console.js:61 [UltimateManager] Fallback price synchronized: UNI/USDT = $6.16
+Console.js:61 [UltimateManager] Fallback price synchronized: DOT/USDT = $3.97
+Console.js:61 [UltimateManager] Fallback price synchronized: XLM/USDT = $0.263873
+Console.js:61 [UltimateManager] Fallback price synchronized: ATOM/USDT = $4.26
+Console.js:61 [UltimateManager] Fallback price synchronized: XMR/USDT = $322.71
+Console.js:61 [UltimateManager] Fallback price synchronized: ETC/USDT = $17.13
+Console.js:61 [UltimateManager] Fallback price synchronized: HBAR/USDT = $0.166591
+Console.js:61 [UltimateManager] Fallback price synchronized: FIL/USDT = $2.46
+Console.js:61 [UltimateManager] Fallback price synchronized: ICP/USDT = $5
+Console.js:61 [UltimateManager] Fallback price synchronized: VET/USDT = $0.02386
+Console.js:61 [UltimateManager] Fallback price synchronized: APT/USDT = $4.71
+Console.js:61 [UltimateManager] Fallback price synchronized: NEAR/USDT = $2.38
+Console.js:61 [UltimateManager] Fallback price synchronized: AAVE/USDT = $253.38
+Console.js:61 [UltimateManager] Fallback price synchronized: ARB/USDT = $0.340959
+Console.js:61 [UltimateManager] Fallback price synchronized: OP/USDT = $0.618535
+Console.js:61 [UltimateManager] Fallback price synchronized: MKR/USDT = $1707.94
+Console.js:61 [UltimateManager] Fallback price synchronized: GRT/USDT = $0.091695
+Console.js:61 [UltimateManager] Fallback price synchronized: STX/USDT = $0.650962
+Console.js:61 [UltimateManager] Fallback price synchronized: INJ/USDT = $12.17
+Console.js:61 [UltimateManager] Fallback price synchronized: ALGO/USDT = $0.189662
+Console.js:61 [UltimateManager] Fallback price synchronized: LDO/USDT = $0.790612
+Console.js:61 [UltimateManager] Fallback price synchronized: THETA/USDT = $0.77161
+Console.js:61 [UltimateManager] Fallback price synchronized: SUI/USDT = $3.28
+Console.js:61 [UltimateManager] Fallback price synchronized: RUNE/USDT = $1.6
+Console.js:61 [UltimateManager] Fallback price synchronized: MANA/USDT = $0.274948
+Console.js:61 [UltimateManager] Fallback price synchronized: SAND/USDT = $0.274329
+Console.js:61 [UltimateManager] Fallback price synchronized: FET/USDT = $0.74931
+Console.js:61 [UltimateManager] Fallback price synchronized: RNDR/USDT = $3.83
+Console.js:61 [UltimateManager] Fallback price synchronized: KAVA/USDT = $0.431005
+Console.js:61 [UltimateManager] Fallback price synchronized: MINA/USDT = $0.200388
+Console.js:61 [UltimateManager] Fallback price synchronized: FLOW/USDT = $0.360448
+Console.js:61 [UltimateManager] Fallback price synchronized: XTZ/USDT = $0.562002
+Console.js:61 [UltimateManager] Fallback price synchronized: BLUR/USDT = $0.087205
+Console.js:61 [UltimateManager] Fallback price synchronized: QNT/USDT = $116.48
+Console.js:61 [UltimateManager] Multi-pair fetch: 50 symbols updated
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+Console.js:61 [CentralizedPriceManager] Updated price for ADA/USDT: $0.66012
+Console.js:61 [PriceOverview] Centralized price update for ADA/USDT: $0.66012
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for ADA/USDT: $0.66012
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [UltimateManager] Next fetch in 160s
+Console.js:61 [CentralizedPriceManager] No cached price for ADA/USDT, fetching immediately
+Console.js:61 [CentralizedPriceManager] Updated price for ADA/USDT: $0.659538
+Console.js:61 [PriceOverview] Centralized price update for ADA/USDT: $0.659538
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for ADA/USDT: $0.659538
+Console.js:61 [UltimateManager] Next fetch in 140s
+Console.js:61 [UltimateManager] Next fetch in 120s
+
+                
+          
+          
+          
+         Chrome is moving towards a new experience that allows users to choose to browse without third-party cookies.
