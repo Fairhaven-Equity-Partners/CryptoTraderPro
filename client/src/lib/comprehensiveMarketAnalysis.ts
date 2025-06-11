@@ -299,55 +299,58 @@ export function calculateStopLossAndTakeProfit(
   takeProfit: number;
   riskReward: number;
 } {
-  // Use percentage-based risk calculations instead of ATR multipliers for accuracy
+  // Mathematically correct percentage-based risk calculations
   const timeframeRisks = {
-    '1M': { stopLoss: 0.120, takeProfit: 0.240 },
-    '1w': { stopLoss: 0.080, takeProfit: 0.160 },
-    '3d': { stopLoss: 0.060, takeProfit: 0.120 },
-    '1d': { stopLoss: 0.040, takeProfit: 0.080 },
-    '12h': { stopLoss: 0.032, takeProfit: 0.064 },
-    '4h': { stopLoss: 0.025, takeProfit: 0.050 },
-    '1h': { stopLoss: 0.015, takeProfit: 0.030 },
-    '30m': { stopLoss: 0.012, takeProfit: 0.024 },
-    '15m': { stopLoss: 0.008, takeProfit: 0.016 },
-    '5m': { stopLoss: 0.004, takeProfit: 0.008 },
-    '1m': { stopLoss: 0.002, takeProfit: 0.004 }
-  }[timeframe] || { stopLoss: 0.015, takeProfit: 0.030 };
+    '1M': { stopLoss: 8.0, takeProfit: 24.0 },
+    '1w': { stopLoss: 6.0, takeProfit: 18.0 },
+    '3d': { stopLoss: 4.5, takeProfit: 13.5 },
+    '1d': { stopLoss: 3.0, takeProfit: 7.5 },
+    '4h': { stopLoss: 1.5, takeProfit: 3.75 },
+    '1h': { stopLoss: 0.8, takeProfit: 1.6 },
+    '30m': { stopLoss: 0.6, takeProfit: 1.2 },
+    '15m': { stopLoss: 0.4, takeProfit: 0.8 },
+    '5m': { stopLoss: 0.25, takeProfit: 0.5 },
+    '1m': { stopLoss: 0.15, takeProfit: 0.3 }
+  }[timeframe] || { stopLoss: 0.8, takeProfit: 1.6 };
   
   let stopLoss: number;
   let takeProfit: number;
   
   if (direction === 'LONG') {
-    // Use percentage-based calculation for realistic stop loss
-    const percentageStopLoss = entryPrice * (1 - timeframeRisks.stopLoss);
-    stopLoss = supportLevel 
-      ? Math.min(supportLevel * 0.995, percentageStopLoss)
-      : percentageStopLoss;
+    // LONG: Stop loss below entry, take profit above entry
+    stopLoss = entryPrice * (1 - timeframeRisks.stopLoss / 100);
+    takeProfit = entryPrice * (1 + timeframeRisks.takeProfit / 100);
     
-    // Use percentage-based calculation for realistic take profit
-    const percentageTakeProfit = entryPrice * (1 + timeframeRisks.takeProfit);
-    takeProfit = resistanceLevel
-      ? Math.max(resistanceLevel * 0.995, percentageTakeProfit)
-      : percentageTakeProfit;
+    // Adjust for support/resistance if provided
+    if (supportLevel && supportLevel < entryPrice) {
+      stopLoss = Math.max(stopLoss, supportLevel * 0.995);
+    }
+    if (resistanceLevel && resistanceLevel > entryPrice) {
+      takeProfit = Math.min(takeProfit, resistanceLevel * 0.995);
+    }
   } else {
-    // SHORT position
-    const percentageStopLoss = entryPrice * (1 + timeframeRisks.stopLoss);
-    stopLoss = resistanceLevel
-      ? Math.max(resistanceLevel * 1.005, percentageStopLoss)
-      : percentageStopLoss;
+    // SHORT: Stop loss above entry, take profit below entry
+    stopLoss = entryPrice * (1 + timeframeRisks.stopLoss / 100);
+    takeProfit = entryPrice * (1 - timeframeRisks.takeProfit / 100);
     
-    const percentageTakeProfit = entryPrice * (1 - timeframeRisks.takeProfit);
-    takeProfit = supportLevel
-      ? Math.min(supportLevel * 1.005, percentageTakeProfit)
-      : percentageTakeProfit;
+    // Adjust for support/resistance if provided
+    if (resistanceLevel && resistanceLevel > entryPrice) {
+      stopLoss = Math.min(stopLoss, resistanceLevel * 1.005);
+    }
+    if (supportLevel && supportLevel < entryPrice) {
+      takeProfit = Math.max(takeProfit, supportLevel * 1.005);
+    }
   }
   
-  const actualRiskReward = Math.abs(takeProfit - entryPrice) / Math.abs(entryPrice - stopLoss);
+  // Calculate actual risk/reward ratio
+  const riskAmount = Math.abs(entryPrice - stopLoss);
+  const rewardAmount = Math.abs(takeProfit - entryPrice);
+  const actualRiskReward = rewardAmount / riskAmount;
   
   return {
-    stopLoss: Math.round(stopLoss * 100) / 100,
-    takeProfit: Math.round(takeProfit * 100) / 100,
-    riskReward: Math.round(actualRiskReward * 100) / 100
+    stopLoss: Number(stopLoss.toFixed(2)),
+    takeProfit: Number(takeProfit.toFixed(2)),
+    riskReward: Number(actualRiskReward.toFixed(2))
   };
 }
 

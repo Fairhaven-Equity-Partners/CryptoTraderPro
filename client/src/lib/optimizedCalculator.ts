@@ -72,35 +72,40 @@ export function calculateDeterministicSignal(
   confidence += Math.min(Math.floor(tfNumericValue / 100), 10);
   confidence = Math.min(confidence, 95); // Cap at 95
   
-  // Calculate volatility-based stop loss and take profit (1-10%)
-  const volatilityPercentage = 1 + (volatilityHash % 10);
-  const pricePercentile = (price % 100) / 100; // 0-1 value for additional variation
+  // Use timeframe-based risk parameters for consistency
+  const timeframeRisks = {
+    '1m': { stopLoss: 0.15, takeProfit: 0.30 },
+    '5m': { stopLoss: 0.25, takeProfit: 0.50 },
+    '15m': { stopLoss: 0.40, takeProfit: 0.80 },
+    '30m': { stopLoss: 0.60, takeProfit: 1.20 },
+    '1h': { stopLoss: 0.80, takeProfit: 1.60 },
+    '4h': { stopLoss: 1.50, takeProfit: 3.75 },
+    '1d': { stopLoss: 3.00, takeProfit: 7.50 },
+    '3d': { stopLoss: 4.50, takeProfit: 13.50 },
+    '1w': { stopLoss: 6.00, takeProfit: 18.00 },
+    '1M': { stopLoss: 8.00, takeProfit: 24.00 }
+  };
+
+  const risks = timeframeRisks[timeframe as keyof typeof timeframeRisks] || { stopLoss: 0.80, takeProfit: 1.60 };
   
-  // Dynamic risk/reward based on direction and confidence
-  const riskPercentage = 
-    direction === 'LONG' ? 
-      volatilityPercentage * (1 - (confidence / 200)) : // Lower risk for high confidence
-      volatilityPercentage * (1 + (confidence / 200));  // Higher risk for low confidence in shorts
+  // Calculate mathematically correct levels
+  let stopLoss: number;
+  let takeProfit: number;
   
-  // Create realistic stop loss and take profit levels
-  const stopLossPct = direction === 'LONG' ? 
-    -riskPercentage / 100 : 
-    riskPercentage / 100;
-  
-  // Take profit has 1.5-3x risk/reward ratio based on confidence
-  const rewardMultiplier = 1.5 + (confidence / 100 * 1.5);
-  const takeProfitPct = direction === 'LONG' ? 
-    riskPercentage * rewardMultiplier / 100 : 
-    -riskPercentage * rewardMultiplier / 100;
-  
-  // Calculate final price levels
-  const stopLoss = direction === 'NEUTRAL' ? 
-    price * 0.98 : 
-    price * (1 + stopLossPct);
-  
-  const takeProfit = direction === 'NEUTRAL' ? 
-    price * 1.02 : 
-    price * (1 + takeProfitPct);
+  if (direction === 'LONG') {
+    // LONG: Stop loss below entry, take profit above entry
+    stopLoss = price * (1 - risks.stopLoss / 100);
+    takeProfit = price * (1 + risks.takeProfit / 100);
+  } else if (direction === 'SHORT') {
+    // SHORT: Stop loss above entry, take profit below entry
+    stopLoss = price * (1 + risks.stopLoss / 100);
+    takeProfit = price * (1 - risks.takeProfit / 100);
+  } else {
+    // NEUTRAL: Conservative symmetric levels
+    const neutralRisk = risks.stopLoss * 0.5;
+    stopLoss = price * (1 - neutralRisk / 100);
+    takeProfit = price * (1 + neutralRisk / 100);
+  }
   
   // Calculate success probability (correlated with confidence but not identical)
   // Success probability considers the timeframe (longer = more reliable)

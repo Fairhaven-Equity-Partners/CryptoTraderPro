@@ -418,33 +418,35 @@ export function calculateOptimizedSignal(
   confidence += trendStrength * 5;
   confidence = Math.min(95, Math.max(35, confidence));
   
-  // Calculate entry, stop loss, and take profit using historically accurate percentages
+  // Calculate entry, stop loss, and take profit using mathematically correct percentages
   const timeframeRisks: Record<string, { stopLoss: number; takeProfit: number }> = {
-    '1m': { stopLoss: 0.002, takeProfit: 0.004 },
-    '5m': { stopLoss: 0.004, takeProfit: 0.008 },
-    '15m': { stopLoss: 0.008, takeProfit: 0.016 },
-    '30m': { stopLoss: 0.012, takeProfit: 0.024 },
-    '1h': { stopLoss: 0.015, takeProfit: 0.030 },
-    '4h': { stopLoss: 0.025, takeProfit: 0.050 },
-    '1d': { stopLoss: 0.040, takeProfit: 0.080 },
-    '3d': { stopLoss: 0.060, takeProfit: 0.120 },
-    '1w': { stopLoss: 0.080, takeProfit: 0.160 },
-    '1M': { stopLoss: 0.120, takeProfit: 0.240 }
+    '1m': { stopLoss: 0.15, takeProfit: 0.30 },
+    '5m': { stopLoss: 0.25, takeProfit: 0.50 },
+    '15m': { stopLoss: 0.40, takeProfit: 0.80 },
+    '30m': { stopLoss: 0.60, takeProfit: 1.20 },
+    '1h': { stopLoss: 0.80, takeProfit: 1.60 },
+    '4h': { stopLoss: 1.50, takeProfit: 3.75 },
+    '1d': { stopLoss: 3.00, takeProfit: 7.50 },
+    '3d': { stopLoss: 4.50, takeProfit: 13.50 },
+    '1w': { stopLoss: 6.00, takeProfit: 18.00 },
+    '1M': { stopLoss: 8.00, takeProfit: 24.00 }
   };
   
-  const risks = timeframeRisks[timeframe] || { stopLoss: 0.015, takeProfit: 0.030 };
+  const risks = timeframeRisks[timeframe] || { stopLoss: 0.80, takeProfit: 1.60 };
   
   let entryPrice = currentPrice;
   let stopLoss: number;
   let takeProfit: number;
   
   if (direction === 'LONG') {
-    stopLoss = currentPrice * (1 - risks.stopLoss);
-    takeProfit = currentPrice * (1 + risks.takeProfit);
-    console.log(`[OptimizedEngine] LONG ${timeframe}: Entry=${currentPrice}, SL=${stopLoss.toFixed(2)} (${risks.stopLoss*100}% below), TP=${takeProfit.toFixed(2)} (${risks.takeProfit*100}% above)`);
+    // LONG: Stop loss below entry, take profit above entry
+    stopLoss = currentPrice * (1 - risks.stopLoss / 100);
+    takeProfit = currentPrice * (1 + risks.takeProfit / 100);
+    console.log(`[OptimizedEngine] LONG ${timeframe}: Entry=${currentPrice}, SL=${stopLoss.toFixed(2)} (${risks.stopLoss}% below), TP=${takeProfit.toFixed(2)} (${risks.takeProfit}% above)`);
   } else if (direction === 'SHORT') {
-    stopLoss = currentPrice * (1 + risks.stopLoss);
-    takeProfit = currentPrice * (1 - risks.takeProfit);
+    // SHORT: Stop loss above entry, take profit below entry
+    stopLoss = currentPrice * (1 + risks.stopLoss / 100);
+    takeProfit = currentPrice * (1 - risks.takeProfit / 100);
     console.log(`[OptimizedEngine] SHORT ${timeframe}: Entry=${currentPrice}, SL=${stopLoss.toFixed(2)} (${risks.stopLoss*100}% above), TP=${takeProfit.toFixed(2)} (${risks.takeProfit*100}% below)`);
   } else {
     // NEUTRAL - conservative levels

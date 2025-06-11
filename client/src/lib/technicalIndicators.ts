@@ -1722,20 +1722,38 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
                             'Institutional interest remains strong',
                             'Retail sentiment is cautiously optimistic'];
       
-      // Calculate stop loss and take profit properly based on direction
+      // Calculate stop loss and take profit using unified timeframe-based percentages
+      const timeframeRisks = {
+        '1m': { stopLoss: 0.15, takeProfit: 0.30 },
+        '5m': { stopLoss: 0.25, takeProfit: 0.50 },
+        '15m': { stopLoss: 0.40, takeProfit: 0.80 },
+        '30m': { stopLoss: 0.60, takeProfit: 1.20 },
+        '1h': { stopLoss: 0.80, takeProfit: 1.60 },
+        '4h': { stopLoss: 1.50, takeProfit: 3.75 },
+        '1d': { stopLoss: 3.00, takeProfit: 7.50 },
+        '3d': { stopLoss: 4.50, takeProfit: 13.50 },
+        '1w': { stopLoss: 6.00, takeProfit: 18.00 },
+        '1M': { stopLoss: 8.00, takeProfit: 24.00 }
+      };
+
+      const risks = timeframeRisks[timeframe as keyof typeof timeframeRisks] || { stopLoss: 0.80, takeProfit: 1.60 };
+      
       let calculatedStopLoss: number;
       let calculatedTakeProfit: number;
       
       if (direction === 'LONG') {
-        calculatedStopLoss = entryPrice * (1 - adjustedStopDistance); // Below entry for LONG
-        calculatedTakeProfit = entryPrice * (1 + adjustedTpDistance); // Above entry for LONG
+        // LONG: Stop loss below entry, take profit above entry
+        calculatedStopLoss = entryPrice * (1 - risks.stopLoss / 100);
+        calculatedTakeProfit = entryPrice * (1 + risks.takeProfit / 100);
       } else if (direction === 'SHORT') {
-        calculatedStopLoss = entryPrice * (1 + adjustedStopDistance); // Above entry for SHORT
-        calculatedTakeProfit = entryPrice * (1 - adjustedTpDistance); // Below entry for SHORT
+        // SHORT: Stop loss above entry, take profit below entry
+        calculatedStopLoss = entryPrice * (1 + risks.stopLoss / 100);
+        calculatedTakeProfit = entryPrice * (1 - risks.takeProfit / 100);
       } else {
-        // NEUTRAL - conservative levels
-        calculatedStopLoss = entryPrice * (1 - Math.abs(adjustedStopDistance));
-        calculatedTakeProfit = entryPrice * (1 + Math.abs(adjustedTpDistance));
+        // NEUTRAL: Conservative symmetric levels
+        const neutralRisk = risks.stopLoss * 0.5;
+        calculatedStopLoss = entryPrice * (1 - neutralRisk / 100);
+        calculatedTakeProfit = entryPrice * (1 + neutralRisk / 100);
       }
 
       return {
