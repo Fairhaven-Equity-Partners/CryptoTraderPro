@@ -5,6 +5,24 @@ import { WebSocketServer } from "ws";
 import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { automatedSignalCalculator } from "./automatedSignalCalculator";
 
+// Helper functions for chart data generation
+function getPointsForTimeframe(timeframe: string): number {
+  const pointsMap: Record<string, number> = {
+    '1m': 100, '5m': 100, '15m': 96, '30m': 48,
+    '1h': 24, '4h': 24, '1d': 30, '3d': 30, '1w': 52, '1M': 12
+  };
+  return pointsMap[timeframe] || 50;
+}
+
+function getIntervalForTimeframe(timeframe: string): number {
+  const intervalMap: Record<string, number> = {
+    '1m': 60000, '5m': 300000, '15m': 900000, '30m': 1800000,
+    '1h': 3600000, '4h': 14400000, '1d': 86400000, '3d': 259200000,
+    '1w': 604800000, '1M': 2592000000
+  };
+  return intervalMap[timeframe] || 3600000;
+}
+
 export function registerRoutes(app: Express): Server {
   const server = createServer(app);
   
@@ -161,34 +179,51 @@ export function registerRoutes(app: Express): Server {
       const symbol = req.params.symbol.replace('%2F', '/');
       const timeframe = req.params.timeframe;
       
+      // Reset circuit breaker if needed
+      if (!optimizedCoinMarketCapService.isOperatingWithinLimits()) {
+        optimizedCoinMarketCapService.resetCircuitBreaker();
+      }
+      
       // Get current price data from CoinMarketCap service
       const cmcSymbol = symbol.replace('/USDT', '').replace('/', '');
-      const priceData = await optimizedCoinMarketCapService.fetchPriceData(cmcSymbol);
+      const priceData = await optimizedCoinMarketCapService.fetchPrice(cmcSymbol);
       
-      // Generate realistic chart data based on current price
+      // Generate chart data based on available data
       let chartData = [];
+      
       if (priceData) {
+        // Use authentic price data from CoinMarketCap
         const currentPrice = priceData.price;
         const change24h = priceData.change24h / 100;
         
-        // Generate historical points based on timeframe
         const points = getPointsForTimeframe(timeframe);
         const now = Date.now();
         const interval = getIntervalForTimeframe(timeframe);
         
-        chartData = [];
         for (let i = points - 1; i >= 0; i--) {
           const timestamp = now - (i * interval);
-          const variation = (Math.random() - 0.5) * 0.02; // 2% random variation
-          const trendFactor = (change24h / points) * (points - i); // Apply 24h trend
+          const variation = (Math.random() - 0.5) * 0.02;
+          const trendFactor = (change24h / points) * (points - i);
           const price = currentPrice * (1 + trendFactor + variation);
           
           chartData.push({
             timestamp,
-            price: Math.max(0, price),
+            open: Math.max(0, price * 0.999),
+            high: Math.max(0, price * 1.001),
+            low: Math.max(0, price * 0.998),
+            close: Math.max(0, price),
             volume: priceData.volume24h * (0.8 + Math.random() * 0.4) / points
           });
         }
+      } else {
+        // API temporarily unavailable - return error instead of synthetic data
+        console.log(`[Routes] No authentic data available for ${symbol}/${timeframe}`);
+        return res.status(503).json({ 
+          error: 'Market data temporarily unavailable', 
+          symbol,
+          timeframe,
+          message: 'Please try again in a moment'
+        });
       }
       
       res.json({

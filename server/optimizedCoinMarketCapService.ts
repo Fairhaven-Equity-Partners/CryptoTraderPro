@@ -55,13 +55,13 @@ export class OptimizedCoinMarketCapService {
   constructor() {
     this.apiKey = process.env.COINMARKETCAP_API_KEY || 'd129bffe-efd9-4841-9946-f67c10168aed';
     
-    // Initialize rate limiter with optimized limits for 110k monthly credits
+    // Initialize rate limiter with realistic limits for development
     this.rateLimiter = new AdvancedRateLimiter({
-      monthlyLimit: 30000,
-      dailyLimit: 1000,
-      hourlyLimit: 41,
-      minuteLimit: 2,
-      burstLimit: 5
+      monthlyLimit: 10000,
+      dailyLimit: 333,
+      hourlyLimit: 14,
+      minuteLimit: 5,
+      burstLimit: 10
     });
     
     // Initialize intelligent cache manager
