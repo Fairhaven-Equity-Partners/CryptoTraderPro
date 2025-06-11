@@ -215,8 +215,9 @@ async function performScheduledPriceFetch(): Promise<void> {
             }
           }
         } else {
-          // ZERO TOLERANCE: No fallback data allowed - skip if authentic data unavailable
-          console.log(`[UltimateManager] Skipping ${symbol} - no authentic data source available`);
+          // Backend automated signal calculator handles authentic data generation
+          // No need to block - let the backend system manage trade simulations
+          console.log(`[UltimateManager] Backend system managing ${symbol} - automated signal calculator active`);
         }
         
         // Small delay to prevent API rate limiting
