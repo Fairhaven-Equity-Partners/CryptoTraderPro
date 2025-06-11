@@ -292,31 +292,31 @@ function generateIndicators(
   if (direction === 'LONG') {
     indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: 0.5, signal: "BUY", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0.5, signal: "SELL" as const, strength: "MEDIUM" as const };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: 0.5, signal: "SELL", strength: "MODERATE" };
   } else {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0.5, signal: "NEUTRAL" as const, strength: "WEAK" as const };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: 0.5, signal: "NEUTRAL", strength: "WEAK" };
   }
   
   // Add more indicators based on timeframe
   if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
     // Ichimoku Cloud for longer timeframes
     if (direction === 'LONG') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "BUY" as const, strength: "MEDIUM" as const };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "BUY", strength: "MODERATE" };
     } else if (direction === 'SHORT') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "SELL" as const, strength: "MEDIUM" as const };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "SELL", strength: "MODERATE" };
     } else {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 0, signal: "NEUTRAL" as const, strength: "WEAK" as const };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: 0, signal: "NEUTRAL", strength: "WEAK" };
     }
   }
   
   if (['5m', '15m', '30m', '1h'].includes(timeframe)) {
     // Stochastic for shorter timeframes
     if (direction === 'LONG') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "BUY" as const, strength: "MEDIUM" as const };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "BUY", strength: "MODERATE" };
     } else if (direction === 'SHORT') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "SELL" as const, strength: "MEDIUM" as const };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "SELL", strength: "MODERATE" };
     } else {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: 50, signal: "NEUTRAL" as const, strength: "WEAK" as const };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: 50, signal: "NEUTRAL", strength: "WEAK" };
     }
   }
   
@@ -358,7 +358,7 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * longPatterns.length);
       const patternName = longPatterns[randomIndex];
       
-      patterns.push({ name: , priceTarget: , reliability: 0.8, direction: "BULLISH" as const });
+      patterns.push({ name: patternName, priceTarget: price * (1 + Math.random() * 0.1), reliability: 0.8, direction: "BULLISH" as const });
       
       // Remove the pattern so we don't add it twice
       longPatterns.splice(randomIndex, 1);
