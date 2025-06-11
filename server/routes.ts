@@ -700,8 +700,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             // Determine heat intensity based on signal strength and confidence
             let heatIntensity = Math.abs(marketStrength) / 100;
-            if (adjustedConfidence >= 80) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
-            if (adjustedConfidence >= 90) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
+            if (Number() >= ) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
+            if (Number() >= ) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
             
             // Generate heatmap entry with authentic market analysis data
             const heatmapEntry = {
@@ -806,7 +806,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Sort by market strength for consistent ordering
-      marketHeatmapData.sort((a, b) => Math.abs(b.sentiment.strength) - Math.abs(a.sentiment.strength));
+      marketHeatmapData.sort((: any, : any) => Math.abs(b.sentiment.strength) - Math.abs(a.sentiment.strength));
       
       console.log(`[OptimizedHeatMap] Generated ${marketHeatmapData.length} authentic market entries for ${timeframe}`);
       
@@ -817,9 +817,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         bearishSignals: marketHeatmapData.filter(entry => entry.sentiment.direction === 'SHORT').length,
         neutralSignals: marketHeatmapData.filter(entry => entry.sentiment.direction === 'NEUTRAL').length,
         averageConfidence: marketHeatmapData.length > 0 ? Math.round(
-          marketHeatmapData.reduce((sum, entry) => sum + entry.signals[timeframe as string].confidence, 0) / marketHeatmapData.length
+          marketHeatmapData.reduce((: any, : any) => sum + entry.signals[timeframe as string].confidence, 0) / marketHeatmapData.length
         ) : null,
-        highConfidenceSignals: marketHeatmapData.filter(entry => entry.signals[timeframe as string].confidence >= 80).length,
+        highConfidenceSignals: marketHeatmapData.filter(entry => entry.signals[timeframe as string].Number() >= ).length,
         timeframe: timeframe,
         timestamp: Date.now()
       };
@@ -1379,7 +1379,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const params = (timeframeParams as any)[timeframe as string] || timeframeParams['1d'];
           
           // Generate timeframe-specific variation using multiple factors
-          const timeframeSeed = (timeframe as string).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) * 1000;
+          const timeframeSeed = (timeframe as string).split('').reduce((: any, : any) => acc + char.charCodeAt(0), 0) * 1000;
           const currentTime = Date.now();
           
           // Create distinct cyclical patterns for each timeframe
@@ -1609,13 +1609,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const now = Date.now();
           uiCompatibleIndicators = [
             'Volume Profile', 'EMA', 'Stochastic', 'MACD', 'Bollinger Bands', 'RSI'
-          ].map((indicator, index) => {
+          ].map((: any, : any) => {
             const baseAccuracy = 0.65 + (index * 0.03); // Different base for each indicator
             const timeVariation = Math.sin((now + index * 10000) / (1000 * 60 * 15)) * 0.08;
             const accuracy = Math.max(0.5, Math.min(0.9, baseAccuracy + timeVariation));
             
             const change = (timeVariation * 100).toFixed(1);
-            const changeStr = change >= 0 ? `+${change}%` : `${change}%`;
+            const changeStr = Number() >=  ? `+${change}%` : `${change}%`;
             
             return {
               indicator,
@@ -1703,14 +1703,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
           summary: {
             totalIndicators: uiCompatibleIndicators.length,
             averageAccuracy: uiCompatibleIndicators.length > 0 
-              ? (uiCompatibleIndicators.reduce((sum, ind) => sum + (ind.accuracyRate || 0), 0) / uiCompatibleIndicators.length).toFixed(1)
+              ? (uiCompatibleIndicators.reduce((: any, : any) => sum + (ind.accuracyRate || 0), 0) / uiCompatibleIndicators.length).toFixed(1)
               : '0.0',
             bestPerformer: uiCompatibleIndicators.length > 0 
-              ? uiCompatibleIndicators.reduce((best, current) => 
+              ? uiCompatibleIndicators.reduce((: any, : any) => 
                   (current.accuracyRate || 0) > (best.accuracyRate || 0) ? current : best
                 ).indicator
               : 'N/A',
-            totalPredictions: uiCompatibleIndicators.reduce((sum, ind) => sum + (ind.totalPredictions || 0), 0)
+            totalPredictions: uiCompatibleIndicators.reduce((: any, : any) => sum + (ind.totalPredictions || 0), 0)
           }
         });
       }
@@ -1887,9 +1887,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const activeTimeframes = timeframes.filter(tf => allMetrics.has(tf));
       if (activeTimeframes.length > 0) {
         overallStats.averageAccuracy = Array.from(allMetrics.values())
-          .reduce((sum, m) => sum + m.accuracy, 0) / activeTimeframes.length;
+          .reduce((: any, : any) => sum + m.accuracy, 0) / activeTimeframes.length;
         overallStats.averageEfficiency = Array.from(allMetrics.values())
-          .reduce((sum, m) => sum + m.efficiency, 0) / activeTimeframes.length;
+          .reduce((: any, : any) => sum + m.efficiency, 0) / activeTimeframes.length;
       }
       
       res.json({

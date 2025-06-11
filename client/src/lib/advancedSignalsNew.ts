@@ -263,132 +263,60 @@ function generateIndicators(
   
   // RSI indicator
   if (direction === 'LONG') {
-    indicators['RSI'] = {
-      value: 30 + Math.floor(Math.random() * 15),
-      signal: 'BUY',
-      strength: confidence > 70 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['RSI'] = {
-      value: 70 + Math.floor(Math.random() * 15),
-      signal: 'SELL',
-      strength: confidence > 70 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['RSI'] = {
-      value: 45 + Math.floor(Math.random() * 10),
-      signal: 'NEUTRAL',
-      strength: 'WEAK'
-    };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // MACD indicator
   if (direction === 'LONG') {
-    indicators['MACD'] = {
-      value: 0.5 + Math.random() * 2,
-      signal: 'BUY',
-      strength: confidence > 65 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['MACD'] = {
-      value: -0.5 - Math.random() * 2,
-      signal: 'SELL',
-      strength: confidence > 65 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['MACD'] = {
-      value: -0.2 + Math.random() * 0.4,
-      signal: 'NEUTRAL',
-      strength: 'WEAK'
-    };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // Moving Average indicator
   if (direction === 'LONG') {
-    indicators['MA'] = {
-      value: 1 + Math.random() * 3,
-      signal: 'BUY',
-      strength: confidence > 60 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['MA'] = {
-      value: -1 - Math.random() * 3,
-      signal: 'SELL',
-      strength: confidence > 60 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['MA'] = {
-      value: -0.5 + Math.random(),
-      signal: 'NEUTRAL',
-      strength: 'WEAK'
-    };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // Bollinger Bands indicator
   if (direction === 'LONG') {
-    indicators['BB'] = {
-      value: -2 - Math.random(),
-      signal: 'BUY',
-      strength: confidence > 75 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['BB'] = {
-      value: 2 + Math.random(),
-      signal: 'SELL',
-      strength: confidence > 75 ? 'STRONG' : 'MODERATE'
-    };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   } else {
-    indicators['BB'] = {
-      value: -0.5 + Math.random(),
-      signal: 'NEUTRAL',
-      strength: 'WEAK'
-    };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
   }
   
   // Add more indicators based on timeframe
   if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
     // Ichimoku Cloud for longer timeframes
     if (direction === 'LONG') {
-      indicators['ICHIMOKU'] = {
-        value: 1,
-        signal: 'BUY',
-        strength: confidence > 80 ? 'STRONG' : 'MODERATE'
-      };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else if (direction === 'SHORT') {
-      indicators['ICHIMOKU'] = {
-        value: -1,
-        signal: 'SELL',
-        strength: confidence > 80 ? 'STRONG' : 'MODERATE'
-      };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else {
-      indicators['ICHIMOKU'] = {
-        value: 0,
-        signal: 'NEUTRAL',
-        strength: 'WEAK'
-      };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     }
   }
   
   if (['5m', '15m', '30m', '1h'].includes(timeframe)) {
     // Stochastic for shorter timeframes
     if (direction === 'LONG') {
-      indicators['STOCH'] = {
-        value: 20 + Math.random() * 15,
-        signal: 'BUY',
-        strength: confidence > 70 ? 'STRONG' : 'MODERATE'
-      };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else if (direction === 'SHORT') {
-      indicators['STOCH'] = {
-        value: 80 + Math.random() * 15,
-        signal: 'SELL',
-        strength: confidence > 70 ? 'STRONG' : 'MODERATE'
-      };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     } else {
-      indicators['STOCH'] = {
-        value: 45 + Math.random() * 10,
-        signal: 'NEUTRAL',
-        strength: 'WEAK'
-      };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
     }
   }
   
@@ -432,7 +360,7 @@ function generatePatternFormations(
       
       patterns.push({
         name: patternName,
-        significance: confidence > 75 ? 'HIGH' : confidence > 60 ? 'MEDIUM' : 'LOW',
+        
         priceTarget: price * (1 + (Math.random() * 0.05 + 0.02)),  // 2-7% above current price
       });
       
@@ -463,7 +391,7 @@ function generatePatternFormations(
       
       patterns.push({
         name: patternName,
-        significance: confidence > 75 ? 'HIGH' : confidence > 60 ? 'MEDIUM' : 'LOW',
+        
         priceTarget: price * (1 - (Math.random() * 0.05 + 0.02)),  // 2-7% below current price
       });
       
@@ -492,7 +420,7 @@ function generatePatternFormations(
       
       patterns.push({
         name: patternName,
-        significance: confidence > 70 ? 'MEDIUM' : 'LOW',
+        
         priceTarget: price * (1 + (Math.random() * 0.04 - 0.02)),  // ±2% from current price
       });
       
@@ -598,7 +526,7 @@ function getVolatilityFactor(timeframe: TimeFrame): number {
     '30m': 0.008,
     '1h': 0.01,
     '4h': 0.02,
-    '12h': 0.03,
+    .03,
     '1d': 0.05,
     '3d': 0.08,
     '1w': 0.12,
@@ -619,7 +547,6 @@ function getExpectedDuration(timeframe: TimeFrame): string {
     '30m': '2-8 hours',
     '1h': '4-24 hours',
     '4h': '1-3 days',
-    '12h': '2-5 days',
     '1d': '3-10 days',
     '3d': '1-3 weeks',
     '1w': '2-8 weeks',
@@ -645,7 +572,6 @@ function calculateRecommendedLeverage(
     '30m': 1.8,
     '1h': 2,
     '4h': 2.5,
-    '12h': 3,
     '1d': 3.5,
     '3d': 4,
     '1w': 5,
