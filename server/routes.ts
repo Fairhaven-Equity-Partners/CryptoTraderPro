@@ -1645,19 +1645,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const multiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
         
         // Adjust indicator performance based on timeframe characteristics
-        const adjustedIndicators = uiCompatibleIndicators.map(indicator => {
-          const baseAccuracy = parseFloat(indicator.value);
+        const adjustedIndicators = uiCompatibleIndicators.map((indicator: any) => {
+          const baseAccuracy = parseFloat(indicator.value || '0');
           const adjustedAccuracy = Math.max(45, Math.min(95, baseAccuracy * multiplier));
           
           return {
-            indicator: indicator.indicator,
+            indicator: indicator.indicator || 'Unknown',
             value: adjustedAccuracy.toFixed(1),
-            status: indicator.status,
-            change: indicator.change,
+            status: indicator.status || 'NEUTRAL',
+            change: indicator.change || '+0.0%',
             accuracyRate: adjustedAccuracy,
-            totalPredictions: indicator.totalPredictions,
-            successfulPredictions: Math.floor(indicator.totalPredictions * (adjustedAccuracy / 100)),
-            signalQuality: Math.max(70, Math.min(98, indicator.signalQuality * multiplier)),
+            totalPredictions: indicator.totalPredictions || 0,
+            successfulPredictions: Math.floor((indicator.totalPredictions || 0) * (adjustedAccuracy / 100)),
+            signalQuality: Math.max(70, Math.min(98, (indicator.signalQuality || 75) * multiplier)),
             hitRate: adjustedAccuracy / 100
           };
         });
