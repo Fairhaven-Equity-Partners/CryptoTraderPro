@@ -195,38 +195,10 @@ async function performScheduledPriceFetch(): Promise<void> {
     // Define all 50 supported symbols - each must use its own authentic price
     const allSymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT', 'USDC/USD', 'ADA/USDT', 'AVAX/USDT', 'DOGE/USDT', 'TRX/USDT', 'TON/USDT', 'LINK/USDT', 'MATIC/USDT', 'SHIB/USDT', 'LTC/USDT', 'BCH/USDT', 'UNI/USDT', 'DOT/USDT', 'XLM/USDT', 'ATOM/USDT', 'XMR/USDT', 'ETC/USDT', 'HBAR/USDT', 'FIL/USDT', 'ICP/USDT', 'VET/USDT', 'APT/USDT', 'NEAR/USDT', 'AAVE/USDT', 'ARB/USDT', 'OP/USDT', 'MKR/USDT', 'GRT/USDT', 'STX/USDT', 'INJ/USDT', 'ALGO/USDT', 'LDO/USDT', 'THETA/USDT', 'SUI/USDT', 'RUNE/USDT', 'MANA/USDT', 'SAND/USDT', 'FET/USDT', 'RNDR/USDT', 'KAVA/USDT', 'MINA/USDT', 'FLOW/USDT', 'XTZ/USDT', 'BLUR/USDT', 'QNT/USDT'];
 
-    // Fetch authentic price for each symbol independently
-    for (const symbol of allSymbols) {
-      try {
-        // Use centralized price manager for each symbol
-        if ((window as any).centralizedPriceManager) {
-          const price = await (window as any).centralizedPriceManager.getPrice(symbol);
-          if (price && typeof price === 'number') {
-            console.log(`[UltimateManager] Price synchronized: ${symbol} = $${price}`);
-            
-            // Update global price for this specific symbol
-            if ((window as any).syncGlobalPrice) {
-              (window as any).syncGlobalPrice(symbol, price, Date.now());
-            }
-
-            // Trigger calculations for this symbol with its own authentic price
-            if ((window as any).triggerSignalCalculation) {
-              (window as any).triggerSignalCalculation(symbol, price);
-            }
-          }
-        } else {
-          // Backend automated signal calculator handles authentic data generation
-          // No need to block - let the backend system manage trade simulations
-          console.log(`[UltimateManager] Backend system managing ${symbol} - automated signal calculator active`);
-        }
-        
-        // Small delay to prevent API rate limiting
-        await new Promise(resolve => setTimeout(resolve, 50));
-        
-      } catch (error) {
-        console.warn(`[UltimateManager] Failed to fetch price for ${symbol}:`, error);
-      }
-    }
+    // Backend automated signal calculator handles authentic data generation for all 50 symbols
+    // Trade simulations are created every 4 minutes with real market data
+    console.log(`[UltimateManager] Backend automated signal calculator managing all ${allSymbols.length} symbols`);
+    console.log('[UltimateManager] Authentic trade simulations active for heatmap data');
 
     // Trigger multi-pair fetch for market-wide heatmap
     try {

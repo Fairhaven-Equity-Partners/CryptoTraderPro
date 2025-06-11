@@ -174,12 +174,8 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
         const timeframeSignal = entry.signals[selectedTimeframe];
         
         if (!timeframeSignal) {
-          return {
-            ...entry,
-            displayDirection: 'NEUTRAL' as const,
-            displayConfidence: 50,
-            displayStrength: 0
-          };
+          // Skip entries without authentic signal data - no synthetic fallback allowed
+          return null;
         }
         
         const processedEntry = {
@@ -203,7 +199,8 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
         }
         
         return processedEntry;
-      });
+      })
+      .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
       
     console.log('[HeatMap Debug] Processed entries:', {
       total: processed.length,
@@ -262,11 +259,6 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
 
   return (
     <Card className="w-full border-gray-800 bg-gray-900 text-white shadow-lg">
-      {/* Debug display for troubleshooting */}
-      <div className="text-xs text-yellow-400 p-2 border-b border-gray-700">
-        DEBUG: {marketEntries.length} entries, HIGH SHORT: {groupedByConfidence.high_short.length}, 
-        BTC signals: {marketEntries.find(e => e.symbol === 'BTC/USDT')?.signals[selectedTimeframe] ? 'FOUND' : 'NONE'}
-      </div>
       <CardHeader className="pb-3">
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl font-bold">Market Signals Heat Map</CardTitle>
