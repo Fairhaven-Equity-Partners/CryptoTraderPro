@@ -149,8 +149,15 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   });
 
   // Extract data and summary from the new response structure
-  const marketEntries: OptimizedMarketEntry[] = heatmapResponse?.data || [];
+  const marketEntries: OptimizedMarketEntry[] = heatmapResponse?.marketEntries || [];
   const marketSummary: MarketSummary | undefined = heatmapResponse?.summary;
+  
+  // Debug logging to trace data flow
+  console.log('[HeatMap Debug] Raw response:', { 
+    hasData: !!heatmapResponse, 
+    entriesCount: marketEntries.length,
+    firstEntry: marketEntries[0]
+  });
 
   // Force refetch when timeframe changes
   React.useEffect(() => {
@@ -161,7 +168,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const processedMarketEntries = useMemo(() => {
     if (!marketEntries || !Array.isArray(marketEntries)) return [];
     
-    return marketEntries
+    const processed = marketEntries
       .filter((entry: OptimizedMarketEntry) => entry.currentPrice > 0)
       .map((entry: OptimizedMarketEntry) => {
         const timeframeSignal = entry.signals[selectedTimeframe];
@@ -175,7 +182,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
           };
         }
         
-        return {
+        const processedEntry = {
           ...entry,
           displayDirection: timeframeSignal.direction,
           displayConfidence: timeframeSignal.confidence,
@@ -183,7 +190,28 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
           displayRiskReward: timeframeSignal.riskReward,
           displaySuccessProbability: timeframeSignal.successProbability
         };
+        
+        // Debug BTC/USDT specifically
+        if (entry.symbol === 'BTC/USDT') {
+          console.log('[HeatMap Debug] BTC/USDT processed:', {
+            timeframe: selectedTimeframe,
+            hasSignal: !!timeframeSignal,
+            direction: processedEntry.displayDirection,
+            confidence: processedEntry.displayConfidence,
+            rawSignal: timeframeSignal
+          });
+        }
+        
+        return processedEntry;
       });
+      
+    console.log('[HeatMap Debug] Processed entries:', {
+      total: processed.length,
+      shortSignals: processed.filter(e => e.displayDirection === 'SHORT').length,
+      highConfShorts: processed.filter(e => e.displayDirection === 'SHORT' && e.displayConfidence >= 80).length
+    });
+    
+    return processed;
   }, [marketEntries, selectedTimeframe]);
 
   // Apply direction filtering and sort by confidence (highest to lowest)
@@ -217,8 +245,16 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
       high_short: sortedAndFilteredEntries.filter(s => s.displayDirection === 'SHORT' && s.displayConfidence >= 80),
     };
     
+    console.log('[HeatMap Debug] Grouped signals:', {
+      highShort: groups.high_short.length,
+      highShortSymbols: groups.high_short.map(s => `${s.symbol}(${s.displayConfidence}%)`),
+      totalEntries: sortedAndFilteredEntries.length,
+      filterDirection,
+      selectedTimeframe
+    });
+    
     return groups;
-  }, [sortedAndFilteredEntries]);
+  }, [sortedAndFilteredEntries, filterDirection, selectedTimeframe]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center min-h-[300px]">Loading market data...</div>;
