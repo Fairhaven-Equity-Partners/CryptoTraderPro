@@ -514,7 +514,6 @@ function getVolatilityFactor(timeframe: TimeFrame): number {
     '30m': 0.008,
     '1h': 0.01,
     '4h': 0.02,
-    .03,
     '1d': 0.05,
     '3d': 0.08,
     '1w': 0.12,
