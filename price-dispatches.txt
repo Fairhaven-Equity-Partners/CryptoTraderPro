@@ -1,6 +1,0 @@
-client/src/components/AdvancedSignalDashboard.tsx:      // We don't dispatch additional price-update events here since
-client/src/hooks/useMarketData.ts:        document.dispatchEvent(new CustomEvent('live-price-update', { 
-client/src/lib/uniformPriceSystem.ts:    window.dispatchEvent(new CustomEvent('price-update', {
-client/src/lib/uniformPriceSystem.ts:    document.dispatchEvent(new CustomEvent('live-price-update', {
-client/src/lib/uniformPriceSystem.ts:    window.dispatchEvent(new CustomEvent('uniform-price-update', {
-client/src/lib/api.ts:              document.dispatchEvent(new CustomEvent('live-price-update', { 

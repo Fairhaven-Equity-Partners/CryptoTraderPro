@@ -1,5 +1,0 @@
-client/src/components/AdvancedSignalDashboard_restored.tsx:        console.log(`Triggering calculation (data-loaded) for ${symbol}`);
-client/src/components/AdvancedSignalDashboard_fixed.tsx:        console.log(`Triggering calculation (data-loaded) for ${symbol}`);
-client/src/components/AdvancedSignalDashboard_new.tsx:        console.log(`Triggering calculation (data-loaded) for ${symbol}`);
-client/src/components/AdvancedSignalDashboard.tsx:        console.log(`Triggering calculation for ${symbol} after waiting for data to load`);
-client/src/components/AdvancedSignalDashboard.tsx:          console.log(`Triggering calculation after ${Math.round(timeSinceLastUpdate/1000)}s since last update`);

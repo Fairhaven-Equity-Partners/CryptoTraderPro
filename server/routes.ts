@@ -700,8 +700,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             // Determine heat intensity based on signal strength and confidence
             let heatIntensity = Math.abs(marketStrength) / 100;
-            if (Number() >= ) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
-            if (Number() >= ) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
+            if (Number(confidence) >= 80) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
+            if (Number(confidence) >= 90) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
             
             // Generate heatmap entry with authentic market analysis data
             const heatmapEntry = {
@@ -819,7 +819,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         averageConfidence: marketHeatmapData.length > 0 ? Math.round(
           marketHeatmapData.reduce((: any, : any) => sum + entry.signals[timeframe as string].confidence, 0) / marketHeatmapData.length
         ) : null,
-        highConfidenceSignals: marketHeatmapData.filter(entry => entry.signals[timeframe as string].Number() >= ).length,
+        highConfidenceSignals: marketHeatmapData.filter(entry => entry.signals[timeframe as string].confidence >= ).length,
         timeframe: timeframe,
         timestamp: Date.now()
       };
@@ -1615,7 +1615,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const accuracy = Math.max(0.5, Math.min(0.9, baseAccuracy + timeVariation));
             
             const change = (timeVariation * 100).toFixed(1);
-            const changeStr = Number() >=  ? `+${change}%` : `${change}%`;
+            const changeStr = confidence >=  ? `+${change}%` : `${change}%`;
             
             return {
               indicator,

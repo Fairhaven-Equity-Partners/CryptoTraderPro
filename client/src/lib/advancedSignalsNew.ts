@@ -263,60 +263,60 @@ function generateIndicators(
   
   // RSI indicator
   if (direction === 'LONG') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   }
   
   // MACD indicator
   if (direction === 'LONG') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   }
   
   // Moving Average indicator
   if (direction === 'LONG') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   }
   
   // Bollinger Bands indicator
   if (direction === 'LONG') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else if (direction === 'SHORT') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   } else {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
   }
   
   // Add more indicators based on timeframe
   if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
     // Ichimoku Cloud for longer timeframes
     if (direction === 'LONG') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
     } else if (direction === 'SHORT') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
     } else {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
     }
   }
   
   if (['5m', '15m', '30m', '1h'].includes(timeframe)) {
     // Stochastic for shorter timeframes
     if (direction === 'LONG') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
     } else if (direction === 'SHORT') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
     } else {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND" as const, value: , signal: , strength:  };
     }
   }
   
@@ -358,11 +358,7 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * longPatterns.length);
       const patternName = longPatterns[randomIndex];
       
-      patterns.push({
-        name: patternName,
-        
-        priceTarget: price * (1 + (Math.random() * 0.05 + 0.02)),  // 2-7% above current price
-      });
+      patterns.push({ name: , priceTarget: , reliability: 0.8, direction: "BULLISH" as const });
       
       // Remove the pattern so we don't add it twice
       longPatterns.splice(randomIndex, 1);
@@ -389,11 +385,7 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * shortPatterns.length);
       const patternName = shortPatterns[randomIndex];
       
-      patterns.push({
-        name: patternName,
-        
-        priceTarget: price * (1 - (Math.random() * 0.05 + 0.02)),  // 2-7% below current price
-      });
+      patterns.push({ name: , priceTarget: , reliability: 0.8, direction: "BULLISH" as const });
       
       // Remove the pattern so we don't add it twice
       shortPatterns.splice(randomIndex, 1);
@@ -418,11 +410,7 @@ function generatePatternFormations(
       const randomIndex = Math.floor(Math.random() * neutralPatterns.length);
       const patternName = neutralPatterns[randomIndex];
       
-      patterns.push({
-        name: patternName,
-        
-        priceTarget: price * (1 + (Math.random() * 0.04 - 0.02)),  // ±2% from current price
-      });
+      patterns.push({ name: , priceTarget: , reliability: 0.8, direction: "BULLISH" as const });
       
       // Remove the pattern so we don't add it twice
       neutralPatterns.splice(randomIndex, 1);

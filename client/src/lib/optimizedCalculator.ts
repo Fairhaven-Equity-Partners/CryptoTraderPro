@@ -272,7 +272,7 @@ export function processAllTimeframes(
     console.log(`Processing timeframes for ${symbol} with price ${price}`);
     
     // Calculate raw signals for all timeframes
-    const rawResults: Partial<Record<TimeFrame, CalculationResult>> = {} as any;
+    const rawResults: Record<TimeFrame, CalculationResult> = {} as any;
     
     // 1. First pass: Calculate base signals for each timeframe independently
     for (const tf of timeframes) {
@@ -333,7 +333,7 @@ export function processAllTimeframes(
   } catch (error) {
     console.error('Error processing timeframes:', error);
     // Create a fallback set of calculations to avoid fatal errors
-    const fallback: Partial<Record<TimeFrame, CalculationResult>> = {};
+    const fallback: Record<TimeFrame, CalculationResult> = {};
     
     // Generate minimal fallback results for each timeframe
     for (const tf of timeframes) {
