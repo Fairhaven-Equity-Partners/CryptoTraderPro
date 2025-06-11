@@ -263,60 +263,60 @@ function generateIndicators(
   
   // RSI indicator
   if (direction === 'LONG') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['RSI'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['RSI'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else {
-    indicators['RSI'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['RSI'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   }
   
   // MACD indicator
   if (direction === 'LONG') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MACD'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MACD'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else {
-    indicators['MACD'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MACD'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   }
   
   // Moving Average indicator
   if (direction === 'LONG') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MA'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MA'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else {
-    indicators['MA'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['MA'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   }
   
   // Bollinger Bands indicator
   if (direction === 'LONG') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['BB'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else if (direction === 'SHORT') {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['BB'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   } else {
-    indicators['BB'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+    indicators['BB'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
   }
   
   // Add more indicators based on timeframe
   if (['1d', '3d', '1w', '1M'].includes(timeframe)) {
     // Ichimoku Cloud for longer timeframes
     if (direction === 'LONG') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
     } else if (direction === 'SHORT') {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
     } else {
-      indicators['ICHIMOKU'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['ICHIMOKU'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
     }
   }
   
   if (['5m', '15m', '30m', '1h'].includes(timeframe)) {
     // Stochastic for shorter timeframes
     if (direction === 'LONG') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
     } else if (direction === 'SHORT') {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
     } else {
-      indicators['STOCH'] = { id: "generated", name: "Generated", category: "TREND", value: , signal: , strength:  };
+      indicators['STOCH'] = { id: "rsi", name: "RSI", category: "MOMENTUM", value: 50, signal: "NEUTRAL", strength: "MODERATE" };
     }
   }
   

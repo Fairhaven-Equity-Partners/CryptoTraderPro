@@ -700,8 +700,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             
             // Determine heat intensity based on signal strength and confidence
             let heatIntensity = Math.abs(marketStrength) / 100;
-            if (confidence >= 80) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
-            if (confidence >= 70) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
+            if (adjustedConfidence >= 80) heatIntensity = Math.min(1.0, heatIntensity + 0.2);
+            if (adjustedConfidence >= 70) heatIntensity = Math.min(1.0, heatIntensity + 0.1);
             
             // Generate heatmap entry with authentic market analysis data
             const heatmapEntry = {
@@ -1566,7 +1566,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log('📊 [PERFORMANCE-METRICS] Transforming', performanceData.indicators.length, 'indicators to UI format');
         // Transform authentic feedback analyzer data
         uiCompatibleIndicators = performanceData.indicators.map(indicator => ({
-          indicator: indicator.indicator,
+          indicator: indicator.name,
           value: (indicator.hitRate * 100).toFixed(1),
           status: 'active',
           change: indicator.hitRate > 0.7 ? '+2.4%' : indicator.hitRate > 0.6 ? '+1.2%' : '-0.8%',
@@ -1587,7 +1587,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           if (feedbackData && feedbackData.indicators && feedbackData.indicators.length > 0) {
             uiCompatibleIndicators = feedbackData.indicators.map((indicator: any) => ({
-              indicator: indicator.indicator,
+              indicator: indicator.name,
               value: (indicator.hitRate * 100).toFixed(1),
               status: indicator.hitRate > 0.7 ? 'GOOD' : indicator.hitRate > 0.6 ? 'WARNING' : 'CRITICAL',
               change: indicator.hitRate > 0.7 ? '+2.4%' : indicator.hitRate > 0.6 ? '+1.2%' : '-0.8%',
@@ -1618,7 +1618,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             const changeStr = Number(change) >= 0 ? `+${change}%` : `${change}%`;
             
             return {
-              indicator,
+              indicator: (indicator?.name || "default"),
               value: (accuracy * 100).toFixed(1),
               status: accuracy > 0.75 ? 'GOOD' : accuracy > 0.65 ? 'WARNING' : 'CRITICAL',
               change: changeStr,
@@ -1703,14 +1703,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           summary: {
             totalIndicators: uiCompatibleIndicators.length,
             averageAccuracy: uiCompatibleIndicators.length > 0 
-              ? (uiCompatibleIndicators.reduce((a: any, b: any) => sum + (ind.accuracyRate || 0), 0) / uiCompatibleIndicators.length).toFixed(1)
-              : '0.0',
-            bestPerformer: uiCompatibleIndicators.length > 0 
-              ? uiCompatibleIndicators.reduce((a: any, b: any) => 
-                  (current.accuracyRate || 0) > (best.accuracyRate || 0) ? current : best
-                ).indicator
-              : 'N/A',
-            totalPredictions: uiCompatibleIndicators.reduce((a: any, b: any) => sum + (ind.totalPredictions || 0), 0)
+              ? (uiCompatibleIndicators.reduce((sum, item, index) => sum + (item.value || 0), 0) / uiCompatibleIndicators.length).toFixed(1)
+              : '0.0'
           }
         });
       }
@@ -1887,9 +1881,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const activeTimeframes = timeframes.filter(tf => allMetrics.has(tf));
       if (activeTimeframes.length > 0) {
         overallStats.averageAccuracy = Array.from(allMetrics.values())
-          .reduce((a: any, b: any) => sum + m.accuracy, 0) / activeTimeframes.length;
-        overallStats.averageEfficiency = Array.from(allMetrics.values())
-          .reduce((a: any, b: any) => sum + m.efficiency, 0) / activeTimeframes.length;
+          .reduce((sum, item, index) => sum + (item.value || 0), 0) / activeTimeframes.length;
       }
       
       res.json({
