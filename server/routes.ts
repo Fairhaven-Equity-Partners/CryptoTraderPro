@@ -1159,13 +1159,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       for (let i = 0; i < count; i++) {
         const time = now - (count - i) * timeIncrement;
-        const priceChange = (this.getAuthenticMarketVariation() - 0.5) * (price * volatility);
+        const priceChange = (Math.random() - 0.5) * (price * volatility);
         
         const open = price;
         const close = price + priceChange;
-        const high = Math.max(open, close) + this.getAuthenticMarketVariation() * (price * volatility * 0.3);
-        const low = Math.min(open, close) - this.getAuthenticMarketVariation() * (price * volatility * 0.3);
-        const volume = getBaseVolumeForSymbol(decodedSymbol) * (0.8 + this.getMarketVolatility(timeframe) * 0.4);
+        const high = Math.max(open, close) + Math.random() * (price * volatility * 0.3);
+        const low = Math.min(open, close) - Math.random() * (price * volatility * 0.3);
+        const volume = getBaseVolumeForSymbol(decodedSymbol) * (0.8 + Math.random() * 0.4);
         
         data.push({ time, open, high, low, close, volume });
         price = close;
