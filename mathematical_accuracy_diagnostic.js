@@ -4,8 +4,8 @@
  * Identifies duplicate calculations, conflicting multipliers, and accuracy issues
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 class MathematicalAccuracyDiagnostic {
   constructor() {
@@ -301,35 +301,30 @@ function calculateCorrectedConfidence(baseConfidence, timeframe) {
 }`;
     
     // Write corrected framework to file
-    fs.writeFileSync(
-      'corrected_calculation_framework.js',
-      `/**
- * Corrected Mathematical Calculation Framework
- * Unified system to eliminate calculation inconsistencies
- */
+    const frameworkContent = [
+      '/**',
+      ' * Corrected Mathematical Calculation Framework',
+      ' * Unified system to eliminate calculation inconsistencies',
+      ' */',
+      '',
+      correctedConfidenceCalculation,
+      '',
+      '// Unified timeframe weights for all components',
+      'export const UNIFIED_TIMEFRAME_WEIGHTS = ' + JSON.stringify(unifiedTimeframeWeights, null, 2) + ';',
+      '',
+      '// Corrected heatmap calculation method',
+      'export function calculateHeatmapEntry(signal, timeframe) {',
+      '  const baseConfidence = signal.confidence || 50;',
+      '  const adjustedConfidence = calculateCorrectedConfidence(baseConfidence, timeframe);',
+      '  ',
+      '  return {',
+      '    confidence: adjustedConfidence,',
+      '    // ... other properties',
+      '  };',
+      '}'
+    ].join('\n');
 
-${correctedConfidenceCalculation}
-
-// Unified timeframe weights for all components
-export const UNIFIED_TIMEFRAME_WEIGHTS = ${JSON.stringify(unifiedTimeframeWeights, null, 2)};
-
-// Corrected heatmap calculation method
-export function calculateHeatmapEntry(signal, timeframe) {
-  const baseConfidence = signal.confidence || 50;
-  const adjustedConfidence = calculateCorrectedConfidence(baseConfidence, timeframe);
-  
-  return {
-    confidence: adjustedConfidence,
-    // ... other properties
-  };
-}
-
-module.exports = {
-  UNIFIED_TIMEFRAME_WEIGHTS,
-  calculateCorrectedConfidence,
-  calculateHeatmapEntry
-};`
-    );
+    fs.writeFileSync('corrected_calculation_framework.js', frameworkContent);
     
     console.log('✅ Corrected calculation framework generated\n');
   }
@@ -393,6 +388,7 @@ module.exports = {
 
   async makeRequest(endpoint) {
     try {
+      const { default: fetch } = await import('node-fetch');
       const response = await fetch(`http://localhost:5000${endpoint}`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -415,8 +411,5 @@ async function main() {
   await diagnostic.runComprehensiveDiagnostic();
 }
 
-if (require.main === module) {
-  main().catch(console.error);
-}
-
-module.exports = { MathematicalAccuracyDiagnostic };
+// Execute if this file is run directly
+main().catch(console.error);
