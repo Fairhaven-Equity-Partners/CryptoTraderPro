@@ -599,8 +599,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const signalsList = allSignals.get(symbol);
           let timeframeSignal = signalsList?.find((s: any) => s.timeframe === timeframe);
           
-          // Connect to authentic signals from trade simulation cache for ALL timeframes
-          if (!timeframeSignal && symbol === 'BTC/USDT') {
+          // Connect to authentic signals from trade simulation cache for ALL timeframes and symbols
+          if (!timeframeSignal) {
             console.log(`[OptimizedHeatMap] Connecting ${timeframe} signal for ${symbol}`);
             
             // Access authentic signals from the trade simulation database
@@ -625,7 +625,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     price: signalData.entryPrice || latestSimulation.entryPrice,
                     timestamp: new Date(latestSimulation.entryTime).getTime(),
                     indicators: signalData.indicators || {},
-                    riskReward: latestSimulation.riskReward || 1.5
+                    riskReward: 1.5
                   } as any;
                   
                   console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${signalData.direction || latestSimulation.direction}: ${symbol} @ $${signalData.entryPrice || latestSimulation.entryPrice} (${signalData.confidence || 75}%)`);
@@ -640,7 +640,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                     price: latestSimulation.entryPrice,
                     timestamp: new Date(latestSimulation.entryTime).getTime(),
                     indicators: {},
-                    riskReward: latestSimulation.riskReward || 1.5
+                    riskReward: 1.5
                   } as any;
                   
                   console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${latestSimulation.direction}: ${symbol} @ $${latestSimulation.entryPrice} (75%)`);

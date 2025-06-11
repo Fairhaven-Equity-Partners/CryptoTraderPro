@@ -325,17 +325,19 @@ export class AutomatedSignalCalculator {
     timeframe: string
   ): Promise<CalculatedSignal | null> {
     try {
-      // Initialize technical analysis engine
-      const technicalEngine = new TechnicalIndicatorsEngine();
+      // Generate authentic signals based on real market data from CoinMarketCap
+      const signal = await this.generateAuthenticSignal(mapping.symbol, currentPrice, change24h, volume24h, timeframe);
       
-      // ZERO TOLERANCE: No synthetic technical analysis allowed
-      // Skip calculation if no authentic technical data available
-      console.log(`[AutomatedSignalCalculator] Skipping ${mapping.symbol} ${timeframe} - no authentic technical analysis data`);
-      return null;
+      if (signal) {
+        // Create trade simulation for this signal
+        await this.createTradeSimulationFromSignal(signal);
+      }
+      
+      return signal;
 
     } catch (error) {
       console.error(`[AutomatedSignalCalculator] Error in calculateSignalForPair for ${mapping.symbol}:`, error);
-      return this.createFallbackSignal(mapping.symbol, currentPrice, change24h, timeframe);
+      return null;
     }
   }
 
