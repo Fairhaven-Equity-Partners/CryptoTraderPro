@@ -675,14 +675,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
               currentPrice = timeframeSignal.price;
             }
             
-            // Apply mathematically correct timeframe reliability multipliers
-            const timeframeMultipliers = {
-              '1M': 0.85, '1w': 0.90, '3d': 0.92, '1d': 0.95,
-              '4h': 1.00, '1h': 0.98, '30m': 0.95, '15m': 0.92,
-              '5m': 0.88, '1m': 0.70
+            // Apply unified timeframe reliability multipliers (matches AutomatedSignalCalculator)
+            const UNIFIED_TIMEFRAME_WEIGHTS = {
+              '1m': 0.70, '5m': 0.88, '15m': 0.92, '30m': 0.95, '1h': 0.98,
+              '4h': 1.00, '1d': 0.95, '3d': 0.92, '1w': 0.90, '1M': 0.85
             };
             
-            const reliabilityMultiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
+            const reliabilityMultiplier = UNIFIED_TIMEFRAME_WEIGHTS[timeframe as keyof typeof UNIFIED_TIMEFRAME_WEIGHTS] || 1.0;
             const adjustedConfidence = Math.min(95, baseConfidence * reliabilityMultiplier);
             
             // Calculate market strength based on optimized indicator weights
@@ -712,6 +711,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               currentPrice: signalPrice,
               priceChange24h: priceChange24h,
               marketCap: marketCap,
+              confidence: Math.round(adjustedConfidence), // Top-level confidence for validation
               
               // Core market analysis data from optimized system
               signals: {

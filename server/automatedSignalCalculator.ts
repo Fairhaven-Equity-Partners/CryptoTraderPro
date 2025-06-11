@@ -496,7 +496,7 @@ export class AutomatedSignalCalculator {
    * Get optimized timeframe-specific weight multiplier for enhanced precision
    */
   private getTimeframeWeight(timeframe: string): number {
-    const weights: Record<string, number> = {
+    const UNIFIED_TIMEFRAME_WEIGHTS: Record<string, number> = {
       '1m': 0.70,  // High noise, low reliability
       '5m': 0.88,  // Improved signal quality
       '15m': 0.92, // Good balance
@@ -508,7 +508,7 @@ export class AutomatedSignalCalculator {
       '1w': 0.90,  // Long-term perspective
       '1M': 0.85   // Very long-term, lower precision
     };
-    return weights[timeframe] || 1.0;
+    return UNIFIED_TIMEFRAME_WEIGHTS[timeframe] || 1.0;
   }
 
   /**
