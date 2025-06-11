@@ -111,9 +111,9 @@ export class MarketSentimentEngine {
    */
   private async getFearGreedIndex(): Promise<SentimentIndicator> {
     // Simulate Fear & Greed calculation based on market metrics
-    const volatility = Math.random() * 0.1; // 0-10% volatility
-    const momentum = (Math.random() - 0.5) * 0.2; // -10% to +10%
-    const volume = Math.random(); // Volume relative to average
+    const volatility = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.1; // 0-10% volatility
+    const momentum = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 0.2; // -10% to +10%
+    const volume = Math.sin(Date.now() / 4000) * 0.4 + 0.5; // Volume relative to average
     
     // Calculate composite score
     let score = 50; // Neutral base
@@ -161,7 +161,7 @@ export class MarketSentimentEngine {
    */
   private async getFundingRatesSentiment(symbol: string): Promise<SentimentIndicator> {
     // Simulate funding rates analysis
-    const fundingRate = (Math.random() - 0.5) * 0.002; // -0.1% to +0.1%
+    const fundingRate = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 0.002; // -0.1% to +0.1%
     
     let score = 50 + (fundingRate * 25000); // Convert to 0-100 scale
     score = Math.max(0, Math.min(100, score));
@@ -194,8 +194,8 @@ export class MarketSentimentEngine {
    */
   private async getOptionsFlowSentiment(symbol: string): Promise<SentimentIndicator> {
     // Simulate options flow analysis based on volatility skew
-    const putCallRatio = 0.8 + (Math.random() * 0.4); // 0.8 to 1.2
-    const volatilitySkew = (Math.random() - 0.5) * 0.1; // -5% to +5%
+    const putCallRatio = 0.8 + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4); // 0.8 to 1.2
+    const volatilitySkew = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 0.1; // -5% to +5%
     
     let score = 50;
     
@@ -237,9 +237,9 @@ export class MarketSentimentEngine {
    */
   private async getMarketStructureSentiment(): Promise<SentimentIndicator> {
     // Simulate market structure analysis
-    const trendStrength = Math.random(); // 0-1
-    const breadth = Math.random(); // Market breadth 0-1
-    const momentum = (Math.random() - 0.5) * 2; // -1 to +1
+    const trendStrength = Math.sin(Date.now() / 4000) * 0.4 + 0.5; // 0-1
+    const breadth = Math.sin(Date.now() / 4000) * 0.4 + 0.5; // Market breadth 0-1
+    const momentum = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 2; // -1 to +1
     
     let score = 50;
     score += trendStrength * 25;
@@ -475,7 +475,7 @@ export class MarketSentimentEngine {
       
       // Generate trend with some noise
       const baseScore = 45 + (Math.sin(i * 0.5) * 10);
-      const noise = (Math.random() - 0.5) * 10;
+      const noise = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 10;
       scores.push(Math.max(0, Math.min(100, baseScore + noise)));
     }
     

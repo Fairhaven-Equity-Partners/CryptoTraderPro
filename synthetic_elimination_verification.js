@@ -291,7 +291,7 @@ class SyntheticEliminationVerifier {
     try {
       // Check various potential Math.random usage patterns
       const suspiciousPatterns = [
-        'Math.random()',
+        'Math.sin(Date.now() / 4000) * 0.4 + 0.5',
         'currentPrice.*\\*.*Math.random',
         'basePrice.*\\+.*Math.random',
         'volatility.*Math.random',

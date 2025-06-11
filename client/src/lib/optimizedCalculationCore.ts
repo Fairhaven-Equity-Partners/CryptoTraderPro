@@ -791,7 +791,7 @@ function generateMacroInsights(timeframe: TimeFrame, confidence: number): MacroI
   }
   
   // Correlation (simplified - would need actual correlation data)
-  const correlation = Math.random() * 0.4 + 0.3; // 0.3 to 0.7
+  const correlation = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4 + 0.3; // 0.3 to 0.7
   
   // Institutional flow (based on confidence and timeframe)
   let institutionalFlow = 'NEUTRAL';

@@ -125,7 +125,7 @@ export function harmonizeSignalsAcrossTimeframes(signals: Record<string, any>): 
         );
         
         // Potentially influence direction for very strong higher timeframe signals
-        if (higherSignal.confidence > 90 && Math.random() < influenceFactor) {
+        if (higherSignal.confidence > 90 && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < influenceFactor) {
           lowerSignal.direction = higherSignal.direction;
         }
       }

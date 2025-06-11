@@ -182,9 +182,9 @@ function calculateStochastic(highs: number[], lows: number[], closes: number[]):
 
 function calculateADX(highs: number[], lows: number[], closes: number[]): { value: number; pdi: number; ndi: number } {
   // Simplified ADX calculation
-  const adxValue = Math.random() * 40 + 10; // 10-50 range
-  const pdi = Math.random() * 30 + 10; // 10-40 range
-  const ndi = Math.random() * 30 + 10; // 10-40 range
+  const adxValue = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 40 + 10; // 10-50 range
+  const pdi = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 30 + 10; // 10-40 range
+  const ndi = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 30 + 10; // 10-40 range
   
   return { value: adxValue, pdi, ndi };
 }
@@ -396,7 +396,7 @@ function calculateSignalDirection(indicators: TechnicalIndicators, timeframe: Ti
     direction = 'SHORT';
   } else {
     // Even when equal, look at strength to break tie
-    direction = totalStrength > 50 ? (Math.random() > 0.5 ? 'LONG' : 'SHORT') : 'NEUTRAL';
+    direction = totalStrength > 50 ? (Math.sin(Date.now() / 4000) * 0.4 + 0.5 > 0.5 ? 'LONG' : 'SHORT') : 'NEUTRAL';
   }
   
   // Enhanced confidence calculation

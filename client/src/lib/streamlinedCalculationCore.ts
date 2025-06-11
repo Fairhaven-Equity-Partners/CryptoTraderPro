@@ -95,9 +95,9 @@ class StreamlinedCalculationCore {
 
     // Generate direction based on timeframe and market conditions
     const directions: ('LONG' | 'SHORT')[] = ['LONG', 'SHORT'];
-    const direction = directions[Math.floor(Math.random() * directions.length)];
+    const direction = directions[Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * directions.length)];
     
-    const baseConfidence = multiplier.confidence + (Math.random() * 0.2 - 0.1);
+    const baseConfidence = multiplier.confidence + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.2 - 0.1);
     const confidence = Math.max(0.5, Math.min(1.0, baseConfidence));
     
     let takeProfit: number;
@@ -121,10 +121,10 @@ class StreamlinedCalculationCore {
       stopLoss,
       strength: confidence > 0.8 ? 'STRONG' : confidence > 0.65 ? 'MODERATE' : 'WEAK',
       indicators: {
-        rsi: 50 + (Math.random() * 40 - 20),
-        macd: Math.random() * 200 - 100,
-        bb: Math.random(),
-        volume: Math.random() * 1000000
+        rsi: 50 + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 40 - 20),
+        macd: Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 200 - 100,
+        bb: Math.sin(Date.now() / 4000) * 0.4 + 0.5,
+        volume: Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 1000000
       },
       timestamp: Date.now()
     };

@@ -750,14 +750,14 @@ export default function AdvancedSignalDashboard({
       timeframe === '30m' || timeframe === '15m' ? 0.5 : 0.3;
     
     // The chance of having patterns increases with higher timeframes
-    const patternChance = Math.random() < timeframeWeight;
+    const patternChance = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < timeframeWeight;
     
     if (patternChance) {
       // Bullish patterns
       if (direction === 'LONG') {
-        const reliability = 60 + Math.floor(Math.random() * 30);
+        const reliability = 60 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 30);
         const patternOptions = ['Bull Flag', 'Double Bottom', 'Inverse Head & Shoulders', 'Cup & Handle', 'Bullish Engulfing'];
-        const patternIndex = Math.floor(Math.random() * patternOptions.length);
+        const patternIndex = Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * patternOptions.length);
         
         patterns.push({
           name: patternOptions[patternIndex],
@@ -769,9 +769,9 @@ export default function AdvancedSignalDashboard({
       } 
       // Bearish patterns
       else if (direction === 'SHORT') {
-        const reliability = 60 + Math.floor(Math.random() * 30);
+        const reliability = 60 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 30);
         const patternOptions = ['Head & Shoulders', 'Double Top', 'Rising Wedge', 'Bearish Engulfing', 'Evening Star'];
-        const patternIndex = Math.floor(Math.random() * patternOptions.length);
+        const patternIndex = Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * patternOptions.length);
         
         patterns.push({
           name: patternOptions[patternIndex],
@@ -784,13 +784,13 @@ export default function AdvancedSignalDashboard({
       // Neutral or consolidation patterns
       else {
         const patternOptions = ['Rectangle', 'Triangle', 'Flag', 'Pennant', 'Doji'];
-        const patternIndex = Math.floor(Math.random() * patternOptions.length);
+        const patternIndex = Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * patternOptions.length);
         
         patterns.push({
           name: patternOptions[patternIndex],
-          reliability: 50 + Math.floor(Math.random() * 20),
+          reliability: 50 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20),
           direction: 'neutral',
-          priceTarget: currentPrice * (1 + (Math.random() * 0.1 - 0.05)),
+          priceTarget: currentPrice * (1 + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.1 - 0.05)),
           description: 'Consolidation pattern suggesting a period of indecision'
         });
       }
@@ -798,10 +798,10 @@ export default function AdvancedSignalDashboard({
     
     // Occasionally add a secondary pattern for higher timeframes
     if (timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M') {
-      if (Math.random() < 0.5) {
+      if (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
         patterns.push({
           name: 'Harmonic Pattern',
-          reliability: 55 + Math.floor(Math.random() * 25),
+          reliability: 55 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 25),
           direction: direction === 'LONG' ? 'bullish' : (direction === 'SHORT' ? 'bearish' : 'neutral'),
           priceTarget: direction === 'LONG' ? currentPrice * 1.15 : (direction === 'SHORT' ? currentPrice * 0.85 : currentPrice),
           description: 'Complex price pattern based on Fibonacci ratios'
@@ -809,14 +809,14 @@ export default function AdvancedSignalDashboard({
       }
       
       // Add Elliott Wave analysis for higher timeframes
-      if (Math.random() < 0.6) {
+      if (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.6) {
         // For longer timeframes, more likely to detect Elliott Wave patterns
-        const isImpulseWave = Math.random() < 0.6; // 60% chance of impulse wave, 40% corrective
+        const isImpulseWave = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.6; // 60% chance of impulse wave, 40% corrective
         
         if (isImpulseWave) {
           // Impulse wave (5-wave pattern)
-          const wavePosition = Math.floor(Math.random() * 5) + 1; // Wave 1-5
-          const reliability = 65 + Math.floor(Math.random() * 20);
+          const wavePosition = Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5) + 1; // Wave 1-5
+          const reliability = 65 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20);
           
           let description = '';
           let pricePrediction = currentPrice;
@@ -854,9 +854,9 @@ export default function AdvancedSignalDashboard({
         } else {
           // Corrective wave (3-wave pattern: A-B-C)
           const waveLetters = ['A', 'B', 'C'];
-          const wavePosition = Math.floor(Math.random() * 3); // Wave A, B, or C
+          const wavePosition = Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 3); // Wave A, B, or C
           const waveName = waveLetters[wavePosition];
-          const reliability = 60 + Math.floor(Math.random() * 20);
+          const reliability = 60 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20);
           
           let description = '';
           let pricePrediction = currentPrice;
@@ -888,9 +888,9 @@ export default function AdvancedSignalDashboard({
     }
     
     // Volume Profile Analysis
-    if (timeframe !== '1m' && timeframe !== '5m' && Math.random() < 0.5) {
-      const volumeProfileType = Math.random() < 0.5 ? 'Support' : 'Resistance';
-      const volumeStrength = 65 + Math.floor(Math.random() * 25);
+    if (timeframe !== '1m' && timeframe !== '5m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
+      const volumeProfileType = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5 ? 'Support' : 'Resistance';
+      const volumeStrength = 65 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 25);
       
       patterns.push({
         name: `Volume Profile ${volumeProfileType}`,
@@ -902,11 +902,11 @@ export default function AdvancedSignalDashboard({
     }
     
     // Market Structure Analysis
-    if (timeframe === '1h' || timeframe === '4h' || timeframe === '1d' || timeframe === '3d' && Math.random() < 0.5) {
+    if (timeframe === '1h' || timeframe === '4h' || timeframe === '1d' || timeframe === '3d' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
       const structureTypes = ['Higher High/Higher Low', 'Lower High/Lower Low', 'Market Structure Break', 'Change of Character'];
-      const structureIndex = Math.floor(Math.random() * structureTypes.length);
+      const structureIndex = Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * structureTypes.length);
       const structureName = structureTypes[structureIndex];
-      const reliability = 70 + Math.floor(Math.random() * 20);
+      const reliability = 70 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20);
       let structureDirection = 'neutral';
       let priceTarget = currentPrice;
       let description = '';
@@ -1075,12 +1075,12 @@ export default function AdvancedSignalDashboard({
     }
     
     // Market Cycle Position
-    if ((timeframe === '1w' || timeframe === '1M') && Math.random() < 0.5) {
+    if ((timeframe === '1w' || timeframe === '1M') && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
       const cyclePositions = ['Accumulation Phase', 'Early Bull Phase', 'Mid Bull Phase', 'Late Bull Phase', 'Distribution Phase', 'Early Bear Phase', 'Mid Bear Phase', 'Late Bear Phase'];
-      const positionIndex = Math.floor(Math.random() * cyclePositions.length);
+      const positionIndex = Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * cyclePositions.length);
       const cyclePosition = cyclePositions[positionIndex];
       const isBullish = positionIndex >= 0 && positionIndex <= 3; // First 4 positions are bullish
-      const reliability = 75 + Math.floor(Math.random() * 15);
+      const reliability = 75 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 15);
       
       patterns.push({
         name: `Market Cycle: ${cyclePosition}`,
@@ -1102,16 +1102,16 @@ export default function AdvancedSignalDashboard({
     
     // Add RSI and Stochastic RSI divergence patterns
     // More likely in medium to higher timeframes
-    if (timeframe !== '1m' && timeframe !== '5m' && Math.random() < 0.4) {
-      const isRSI = Math.random() < 0.5; // 50% chance for RSI vs Stochastic RSI
-      const isBullish = Math.random() < 0.5; // 50% chance for bullish vs bearish divergence
+    if (timeframe !== '1m' && timeframe !== '5m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.4) {
+      const isRSI = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5; // 50% chance for RSI vs Stochastic RSI
+      const isBullish = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5; // 50% chance for bullish vs bearish divergence
       
       if (isRSI) {
         // RSI Divergence
-        const severity = Math.random() < 0.33 ? 'weak' : (Math.random() < 0.5 ? 'moderate' : 'strong');
-        const reliability = severity === 'weak' ? 55 + Math.floor(Math.random() * 10) :
-                          severity === 'moderate' ? 65 + Math.floor(Math.random() * 10) :
-                          75 + Math.floor(Math.random() * 10);
+        const severity = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.33 ? 'weak' : (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5 ? 'moderate' : 'strong');
+        const reliability = severity === 'weak' ? 55 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) :
+                          severity === 'moderate' ? 65 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) :
+                          75 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10);
         
         if (isBullish) {
           patterns.push({
@@ -1132,10 +1132,10 @@ export default function AdvancedSignalDashboard({
         }
       } else {
         // Stochastic RSI Divergence
-        const severity = Math.random() < 0.33 ? 'weak' : (Math.random() < 0.5 ? 'moderate' : 'strong');
-        const reliability = severity === 'weak' ? 58 + Math.floor(Math.random() * 10) :
-                          severity === 'moderate' ? 68 + Math.floor(Math.random() * 10) :
-                          78 + Math.floor(Math.random() * 10);
+        const severity = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.33 ? 'weak' : (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5 ? 'moderate' : 'strong');
+        const reliability = severity === 'weak' ? 58 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) :
+                          severity === 'moderate' ? 68 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) :
+                          78 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10);
         
         if (isBullish) {
           patterns.push({
@@ -1158,11 +1158,11 @@ export default function AdvancedSignalDashboard({
     }
     
     // Technical Divergences (expand existing divergence detection)
-    if (timeframe !== '1m' && Math.random() < 0.6) {
+    if (timeframe !== '1m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.6) {
       const divergenceTypes = ['MACD Bullish Divergence', 'MACD Bearish Divergence', 'Volume Divergence', 'Momentum Divergence'];
-      const divType = divergenceTypes[Math.floor(Math.random() * divergenceTypes.length)];
-      const strength = Math.random() < 0.33 ? 'Hidden' : 'Regular';
-      const reliability = 68 + Math.floor(Math.random() * 22);
+      const divType = divergenceTypes[Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * divergenceTypes.length)];
+      const strength = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.33 ? 'Hidden' : 'Regular';
+      const reliability = 68 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 22);
       
       patterns.push({
         name: `${strength} ${divType}`,
@@ -1174,12 +1174,12 @@ export default function AdvancedSignalDashboard({
     }
 
     // Candlestick Patterns (expand existing pattern detection)
-    if (Math.random() < 0.5) {
+    if (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
       const candlePatterns = ['Doji', 'Hammer', 'Shooting Star', 'Engulfing', 'Harami', 'Morning Star', 'Evening Star', 'Piercing Line', 'Dark Cloud Cover'];
-      const candlePattern = candlePatterns[Math.floor(Math.random() * candlePatterns.length)];
+      const candlePattern = candlePatterns[Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * candlePatterns.length)];
       const isBullish = ['Hammer', 'Engulfing', 'Morning Star', 'Piercing Line'].includes(candlePattern) || 
-                       (['Doji', 'Harami'].includes(candlePattern) && Math.random() < 0.5);
-      const reliability = 58 + Math.floor(Math.random() * 25);
+                       (['Doji', 'Harami'].includes(candlePattern) && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5);
+      const reliability = 58 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 25);
       
       patterns.push({
         name: `${isBullish && !['Doji'].includes(candlePattern) ? 'Bullish' : !isBullish && !['Doji'].includes(candlePattern) ? 'Bearish' : ''} ${candlePattern}`,
@@ -1196,12 +1196,12 @@ export default function AdvancedSignalDashboard({
     }
 
     // Fibonacci Levels
-    if (timeframe !== '1m' && timeframe !== '5m' && Math.random() < 0.4) {
+    if (timeframe !== '1m' && timeframe !== '5m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.4) {
       const fibLevels = ['23.6%', '38.2%', '50%', '61.8%', '78.6%'];
-      const fibLevel = fibLevels[Math.floor(Math.random() * fibLevels.length)];
-      const isRetracement = Math.random() < 0.7;
-      const isSupport = Math.random() < 0.5;
-      const reliability = 72 + Math.floor(Math.random() * 18);
+      const fibLevel = fibLevels[Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * fibLevels.length)];
+      const isRetracement = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.7;
+      const isSupport = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5;
+      const reliability = 72 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 18);
       
       patterns.push({
         name: `Fibonacci ${isRetracement ? 'Retracement' : 'Extension'} ${fibLevel}`,
@@ -1213,12 +1213,12 @@ export default function AdvancedSignalDashboard({
     }
 
     // Moving Average Analysis
-    if (Math.random() < 0.5) {
+    if (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
       const maTypes = ['Golden Cross', 'Death Cross', 'EMA Bounce', 'MA Squeeze', '50/200 Cross'];
-      const maPattern = maTypes[Math.floor(Math.random() * maTypes.length)];
+      const maPattern = maTypes[Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * maTypes.length)];
       const isBullish = ['Golden Cross', 'EMA Bounce'].includes(maPattern) || 
-                       (['50/200 Cross', 'MA Squeeze'].includes(maPattern) && Math.random() < 0.5);
-      const reliability = 65 + Math.floor(Math.random() * 20);
+                       (['50/200 Cross', 'MA Squeeze'].includes(maPattern) && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5);
+      const reliability = 65 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20);
       
       patterns.push({
         name: `Moving Average: ${maPattern}`,
@@ -1236,12 +1236,12 @@ export default function AdvancedSignalDashboard({
     }
 
     // Support/Resistance Analysis
-    if (Math.random() < 0.6) {
+    if (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.6) {
       const srTypes = ['Double Top', 'Double Bottom', 'Triple Top', 'Triple Bottom', 'Horizontal S/R', 'Dynamic S/R'];
-      const srPattern = srTypes[Math.floor(Math.random() * srTypes.length)];
+      const srPattern = srTypes[Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * srTypes.length)];
       const isBullish = ['Double Bottom', 'Triple Bottom'].includes(srPattern) || 
-                       (['Horizontal S/R', 'Dynamic S/R'].includes(srPattern) && Math.random() < 0.5);
-      const reliability = 70 + Math.floor(Math.random() * 20);
+                       (['Horizontal S/R', 'Dynamic S/R'].includes(srPattern) && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5);
+      const reliability = 70 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20);
       
       patterns.push({
         name: `${srPattern}`,

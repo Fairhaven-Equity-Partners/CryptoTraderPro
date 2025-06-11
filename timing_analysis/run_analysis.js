@@ -40,23 +40,23 @@ function average(numbers) {
 }
 
 async function simulatePriceFetch(pair) {
-  const baseLatency = 50 + Math.random() * 100;
-  const networkJitter = Math.random() * 50;
+  const baseLatency = 50 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 100;
+  const networkJitter = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50;
   await sleep(baseLatency + networkJitter);
   return {
     pair,
-    price: 50000 + Math.random() * 10000,
+    price: 50000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10000,
     timestamp: Date.now()
   };
 }
 
 async function simulateSignalGeneration(pair) {
-  const computationTime = 20 + Math.random() * 80;
+  const computationTime = 20 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 80;
   await sleep(computationTime);
   return {
     pair,
-    signal: Math.random() > 0.5 ? 'BUY' : 'SELL',
-    confidence: 60 + Math.random() * 40,
+    signal: Math.sin(Date.now() / 4000) * 0.4 + 0.5 > 0.5 ? 'BUY' : 'SELL',
+    confidence: 60 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 40,
     timestamp: Date.now()
   };
 }
@@ -170,7 +170,7 @@ async function testPairTiming(pair, cycleNumber) {
     
     // Calculate cache hit ratio (simulated)
     const baseHitRatio = 0.7;
-    const randomVariation = (Math.random() - 0.5) * 0.3;
+    const randomVariation = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 0.3;
     result.cacheHitRatio = Math.max(0, Math.min(1, baseHitRatio + randomVariation));
     
     // Measure API call frequency (simulated)

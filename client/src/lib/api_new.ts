@@ -84,11 +84,11 @@ export async function fetchAllAssets(): Promise<AssetPrice[]> {
     console.error('Error fetching assets:', error);
     // Return mock data if server fails
     return [
-      { symbol: 'BTC/USDT', name: 'Bitcoin', price: 60000 + Math.random() * 5000, change24h: (Math.random() * 5) - 2 },
-      { symbol: 'ETH/USDT', name: 'Ethereum', price: 3000 + Math.random() * 300, change24h: (Math.random() * 8) - 3 },
-      { symbol: 'BNB/USDT', name: 'Binance Coin', price: 600 + Math.random() * 50, change24h: (Math.random() * 6) - 2 },
-      { symbol: 'SOL/USDT', name: 'Solana', price: 150 + Math.random() * 20, change24h: (Math.random() * 10) - 4 },
-      { symbol: 'XRP/USDT', name: 'Ripple', price: 2 + Math.random() * 0.5, change24h: (Math.random() * 7) - 3 }
+      { symbol: 'BTC/USDT', name: 'Bitcoin', price: 60000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5000, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5) - 2 },
+      { symbol: 'ETH/USDT', name: 'Ethereum', price: 3000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 300, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 8) - 3 },
+      { symbol: 'BNB/USDT', name: 'Binance Coin', price: 600 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 6) - 2 },
+      { symbol: 'SOL/USDT', name: 'Solana', price: 150 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) - 4 },
+      { symbol: 'XRP/USDT', name: 'Ripple', price: 2 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.5, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 7) - 3 }
     ];
   }
 }
@@ -105,17 +105,17 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
     console.error(`Error fetching ${symbol} data:`, error);
     // Return mock data
     if (symbol.includes('BTC')) {
-      return { symbol, name: 'Bitcoin', price: 60000 + Math.random() * 5000, change24h: (Math.random() * 5) - 2 };
+      return { symbol, name: 'Bitcoin', price: 60000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5000, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5) - 2 };
     } else if (symbol.includes('ETH')) {
-      return { symbol, name: 'Ethereum', price: 3000 + Math.random() * 300, change24h: (Math.random() * 8) - 3 };
+      return { symbol, name: 'Ethereum', price: 3000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 300, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 8) - 3 };
     } else if (symbol.includes('BNB')) {
-      return { symbol, name: 'Binance Coin', price: 600 + Math.random() * 50, change24h: (Math.random() * 6) - 2 };
+      return { symbol, name: 'Binance Coin', price: 600 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 6) - 2 };
     } else if (symbol.includes('SOL')) {
-      return { symbol, name: 'Solana', price: 150 + Math.random() * 20, change24h: (Math.random() * 10) - 4 };
+      return { symbol, name: 'Solana', price: 150 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) - 4 };
     } else if (symbol.includes('XRP')) {
-      return { symbol, name: 'Ripple', price: 2 + Math.random() * 0.5, change24h: (Math.random() * 7) - 3 };
+      return { symbol, name: 'Ripple', price: 2 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.5, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 7) - 3 };
     } else {
-      return { symbol, name: symbol, price: 100 + Math.random() * 10, change24h: (Math.random() * 5) - 2 };
+      return { symbol, name: symbol, price: 100 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10, change24h: (Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5) - 2 };
     }
   }
 }
@@ -237,9 +237,9 @@ export function startRealTimeUpdates() {
               change24h = realPriceData['XRP/USDT']?.change24h || 0;
             } else {
               // For unsupported symbols, just do a small random change
-              const priceChange = (Math.random() - 0.48) * 0.003; 
+              const priceChange = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.48) * 0.003; 
               newPrice = currentPrice * (1 + priceChange);
-              change24h = (Math.random() - 0.48) * 5;
+              change24h = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.48) * 5;
             }
             
             // Only log if we have a price
@@ -336,11 +336,11 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
   // Starting price based on symbol
   let basePrice = 0;
   if (symbol.includes('BTC')) {
-    basePrice = 65000 + Math.random() * 2000;
+    basePrice = 65000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 2000;
   } else if (symbol.includes('ETH')) {
-    basePrice = 3500 + Math.random() * 200;
+    basePrice = 3500 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 200;
   } else {
-    basePrice = 100 + Math.random() * 50;
+    basePrice = 100 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50;
   }
   
   let price = basePrice;
@@ -367,16 +367,16 @@ function generateChartData(timeframe: TimeFrame, symbol: string): ChartData[] {
     const currentBias = trendCycles[cycleIndex].bias;
     
     // Calculate price change with the current trend bias
-    const change = (Math.random() - currentBias) * (price * 0.01);
+    const change = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - currentBias) * (price * 0.01);
     price += change;
     
     const volatility = getVolatilityForTimeframe(timeframe);
     
     const open = price;
-    const close = price + (Math.random() - 0.5) * (price * volatility);
-    const high = Math.max(open, close) + Math.random() * (price * volatility * 0.5);
-    const low = Math.min(open, close) - Math.random() * (price * volatility * 0.5);
-    const volume = getBaseVolumeForSymbol(symbol) * (0.8 + Math.random() * 0.4);
+    const close = price + (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * (price * volatility);
+    const high = Math.max(open, close) + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * (price * volatility * 0.5);
+    const low = Math.min(open, close) - Math.sin(Date.now() / 4000) * 0.4 + 0.5 * (price * volatility * 0.5);
+    const volume = getBaseVolumeForSymbol(symbol) * (0.8 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4);
     
     data.push({
       time,
@@ -414,11 +414,11 @@ function getVolatilityForTimeframe(timeframe: TimeFrame): number {
 // Helper function to get base volume for a symbol
 function getBaseVolumeForSymbol(symbol: string): number {
   if (symbol.includes('BTC')) {
-    return 5000000 + Math.random() * 2000000;
+    return 5000000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 2000000;
   } else if (symbol.includes('ETH')) {
-    return 3000000 + Math.random() * 1000000;
+    return 3000000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 1000000;
   } else {
-    return 500000 + Math.random() * 300000;
+    return 500000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 300000;
   }
 }
 

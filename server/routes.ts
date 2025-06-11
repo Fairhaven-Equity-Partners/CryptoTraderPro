@@ -1202,12 +1202,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 
   function getBaseVolumeForSymbol(symbol: string): number {
-    if (symbol.includes('BTC')) return 500 + Math.random() * 200;
-    if (symbol.includes('ETH')) return 1000 + Math.random() * 300;
-    if (symbol.includes('BNB')) return 200 + Math.random() * 100;
-    if (symbol.includes('SOL')) return 800 + Math.random() * 250;
-    if (symbol.includes('XRP')) return 2000 + Math.random() * 500;
-    return 100 + Math.random() * 50;
+    if (symbol.includes('BTC')) return 500 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 200;
+    if (symbol.includes('ETH')) return 1000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 300;
+    if (symbol.includes('BNB')) return 200 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 100;
+    if (symbol.includes('SOL')) return 800 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 250;
+    if (symbol.includes('XRP')) return 2000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 500;
+    return 100 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50;
   }
 
   app.get('/api/sentiment/trend/:symbol', async (req: Request, res: Response) => {
@@ -1623,9 +1623,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               status: accuracy > 0.75 ? 'GOOD' : accuracy > 0.65 ? 'WARNING' : 'CRITICAL',
               change: changeStr,
               accuracyRate: accuracy * 100,
-              totalPredictions: 50 + Math.floor(Math.random() * 20),
-              successfulPredictions: Math.floor(accuracy * (50 + Math.floor(Math.random() * 20))),
-              signalQuality: Math.floor(75 + Math.random() * 15),
+              totalPredictions: 50 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20),
+              successfulPredictions: Math.floor(accuracy * (50 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 20))),
+              signalQuality: Math.floor(75 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 15),
               hitRate: accuracy
             };
           });

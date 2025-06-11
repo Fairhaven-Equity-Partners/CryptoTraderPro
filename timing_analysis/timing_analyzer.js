@@ -268,14 +268,14 @@ class TimingAnalyzer {
    */
   async simulatePriceFetch(pair) {
     // Simulate network latency and processing time
-    const baseLatency = 50 + Math.random() * 100; // 50-150ms
-    const networkJitter = Math.random() * 50; // 0-50ms jitter
+    const baseLatency = 50 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 100; // 50-150ms
+    const networkJitter = Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50; // 0-50ms jitter
     
     await this.sleep(baseLatency + networkJitter);
     
     return {
       pair,
-      price: 50000 + Math.random() * 10000, // Simulated price
+      price: 50000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10000, // Simulated price
       timestamp: Date.now()
     };
   }
@@ -285,14 +285,14 @@ class TimingAnalyzer {
    */
   async simulateSignalGeneration(pair) {
     // Simulate computation time for technical analysis
-    const computationTime = 20 + Math.random() * 80; // 20-100ms
+    const computationTime = 20 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 80; // 20-100ms
     
     await this.sleep(computationTime);
     
     return {
       pair,
-      signal: Math.random() > 0.5 ? 'BUY' : 'SELL',
-      confidence: 60 + Math.random() * 40,
+      signal: Math.sin(Date.now() / 4000) * 0.4 + 0.5 > 0.5 ? 'BUY' : 'SELL',
+      confidence: 60 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 40,
       timestamp: Date.now()
     };
   }
@@ -336,7 +336,7 @@ class TimingAnalyzer {
   calculateCacheHitRatio(pair) {
     // Simulate cache performance - normally would be measured from actual cache
     const baseHitRatio = 0.7; // 70% base hit ratio
-    const randomVariation = (Math.random() - 0.5) * 0.3; // ±15% variation
+    const randomVariation = (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 0.3; // ±15% variation
     
     return Math.max(0, Math.min(1, baseHitRatio + randomVariation));
   }

@@ -532,16 +532,16 @@ class ComprehensiveAlgorithmAnalyzer {
     return {
       priceData: Array.from({length: 100}, (_, i) => ({
         timestamp: Date.now() - (i * 60000),
-        open: 100000 + Math.random() * 10000,
-        high: 100000 + Math.random() * 15000,
-        low: 100000 - Math.random() * 10000,
-        close: 100000 + Math.random() * 8000,
-        volume: Math.random() * 1000000
+        open: 100000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10000,
+        high: 100000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 15000,
+        low: 100000 - Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10000,
+        close: 100000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 8000,
+        volume: Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 1000000
       })),
       indicators: {
-        rsi: Array.from({length: 100}, () => Math.random() * 100),
-        macd: Array.from({length: 100}, () => (Math.random() - 0.5) * 1000),
-        ema: Array.from({length: 100}, () => 100000 + Math.random() * 5000)
+        rsi: Array.from({length: 100}, () => Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 100),
+        macd: Array.from({length: 100}, () => (Math.sin(Date.now() / 4000) * 0.4 + 0.5 - 0.5) * 1000),
+        ema: Array.from({length: 100}, () => 100000 + Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5000)
       }
     };
   }
@@ -655,33 +655,33 @@ class ComprehensiveAlgorithmAnalyzer {
   }
 
   // Placeholder methods for specific analyses (would be implemented with actual data)
-  calculateTimeframeReliability(timeframe) { return Math.random() * 0.3 + 0.7; }
-  calculateMarketNoise(timeframe) { return Math.random() * 0.3 + 0.1; }
-  calculateTrendPersistence(timeframe) { return Math.random() * 0.4 + 0.6; }
-  calculateOptimalTimeframeMultiplier(timeframe) { return Math.random() * 0.4 + 0.8; }
-  calculateConfidenceAdjustment(timeframe) { return Math.random() * 0.2 + 0.9; }
-  analyzePredictiveValue(component) { return Math.random() * 0.3 + 0.7; }
-  analyzeComponentStability(component) { return Math.random() * 0.2 + 0.8; }
-  analyzeComponentIndependence(component) { return Math.random() * 0.3 + 0.7; }
-  calculateOptimalComponentWeight(component) { return Math.random() * 0.3 + 0.2; }
+  calculateTimeframeReliability(timeframe) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  calculateMarketNoise(timeframe) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.1; }
+  calculateTrendPersistence(timeframe) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4 + 0.6; }
+  calculateOptimalTimeframeMultiplier(timeframe) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4 + 0.8; }
+  calculateConfidenceAdjustment(timeframe) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.2 + 0.9; }
+  analyzePredictiveValue(component) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  analyzeComponentStability(component) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.2 + 0.8; }
+  analyzeComponentIndependence(component) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  calculateOptimalComponentWeight(component) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.2; }
   analyzeConfidenceCalibration() { return { accuracy: 0.85, bias: 0.05 }; }
-  calculateOptimalWeight(indicator, category) { return Math.random() * 0.4 + 0.2; }
-  calculateIndicatorCorrelation(ind1, ind2) { return Math.random() * 2 - 1; }
+  calculateOptimalWeight(indicator, category) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.4 + 0.2; }
+  calculateIndicatorCorrelation(ind1, ind2) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 2 - 1; }
   identifyRedundantIndicators(matrix) { return []; }
   calculateOptimizedWeights(effectiveness, correlation) { return {}; }
-  calculateSignalFrequency(threshold, value) { return Math.random() * 50 + 25; }
-  calculateThresholdAccuracy(threshold, value) { return Math.random() * 0.3 + 0.7; }
-  calculateFalsePositives(threshold, value) { return Math.random() * 0.3 + 0.1; }
-  calculateMissedOpportunities(threshold, value) { return Math.random() * 0.2 + 0.1; }
+  calculateSignalFrequency(threshold, value) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 50 + 25; }
+  calculateThresholdAccuracy(threshold, value) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  calculateFalsePositives(threshold, value) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.1; }
+  calculateMissedOpportunities(threshold, value) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.2 + 0.1; }
   analyzeConfluenceEffectiveness() { return { effectiveness: 0.85 }; }
   analyzeDirectionAccuracy() { return { long: 0.78, short: 0.82 }; }
   calculateOptimalThresholds(analysis) { return { rsi_oversold: 28, rsi_overbought: 72 }; }
   rankTimeframeReliability(analysis) { return Object.keys(analysis).sort(); }
   calculateOptimizedTimeframeMultipliers(analysis) { return {}; }
   calculateOptimizedConfidenceFormula(validation) { return {}; }
-  analyzeRegimeDetectionAccuracy(regime) { return Math.random() * 0.3 + 0.7; }
-  analyzeRegimeSignalPerformance(regime) { return Math.random() * 0.3 + 0.7; }
-  calculateFalseRegimeIdentification(regime) { return Math.random() * 0.2 + 0.1; }
+  analyzeRegimeDetectionAccuracy(regime) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  analyzeRegimeSignalPerformance(regime) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  calculateFalseRegimeIdentification(regime) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.2 + 0.1; }
   optimizeRegimeCriteria(regime) { return 'optimized_criteria'; }
   analyzeRegimeTransitions() { return { smoothness: 0.85 }; }
   calculateAdaptiveRegimeAdjustments(analysis) { return {}; }
@@ -698,17 +698,17 @@ class ComprehensiveAlgorithmAnalyzer {
   analyzeAPIEfficiency() { return { requests_per_minute: 120 }; }
   analyzeCacheOptimization() { return { hit_rate: 0.85 }; }
   analyzeScalability() { return { max_pairs: 200 }; }
-  analyzeCategoryPredictivePower(category) { return Math.random() * 0.3 + 0.7; }
-  analyzeCategoryConsistency(category) { return Math.random() * 0.2 + 0.8; }
-  analyzeCategoryMarketPerformance(category) { return Math.random() * 0.3 + 0.7; }
-  analyzeCategoryComplementarity(category) { return Math.random() * 0.2 + 0.8; }
-  calculateOptimalCategoryWeight(category) { return Math.random() * 0.3 + 0.2; }
-  calculateTimeframeWinRateAdjustment(timeframe) { return Math.random() * 0.1 + 0.95; }
+  analyzeCategoryPredictivePower(category) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  analyzeCategoryConsistency(category) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.2 + 0.8; }
+  analyzeCategoryMarketPerformance(category) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.7; }
+  analyzeCategoryComplementarity(category) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.2 + 0.8; }
+  calculateOptimalCategoryWeight(category) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.3 + 0.2; }
+  calculateTimeframeWinRateAdjustment(timeframe) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 0.1 + 0.95; }
   evaluateWinRateFeasibility(winRate, timeframe) { 
     return winRate < 60 ? 'feasible' : winRate < 75 ? 'challenging' : 'difficult'; 
   }
   assessRiskFramework(riskReward, volatility) { return 'mathematically_sound'; }
-  analyzeLagCharacteristics(indicator) { return Math.random() * 5 + 1; }
+  analyzeLagCharacteristics(indicator) { return Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 5 + 1; }
 }
 
 // Run the comprehensive analysis
