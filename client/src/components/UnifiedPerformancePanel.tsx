@@ -218,36 +218,36 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
 
       {/* Key Indicators Grid - Always show for consistency */}
       <div className="grid grid-cols-2 gap-3 text-xs">
-        {technicalData?.success ? (
+        {technicalData?.success && technicalData?.indicators ? (
           <>
             <div className="space-y-1">
               <div className="flex justify-between">
                 <span className="text-slate-300">RSI:</span>
                 <span className={`font-semibold ${
-                  (technicalData.indicators.rsi?.value || 0) > 70 ? 'text-red-400' : 
-                  (technicalData.indicators.rsi?.value || 0) < 30 ? 'text-green-400' : 'text-white'
-                }`}>{technicalData.indicators.rsi?.value?.toFixed(1) || 'N/A'}</span>
+                  (technicalData.indicators?.rsi?.value || 0) > 70 ? 'text-red-400' : 
+                  (technicalData.indicators?.rsi?.value || 0) < 30 ? 'text-green-400' : 'text-white'
+                }`}>{technicalData.indicators?.rsi?.value?.toFixed(1) || 'N/A'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-300">MACD:</span>
                 <span className={`font-semibold ${
-                  (technicalData.indicators.macd?.value || 0) > (technicalData.indicators.macd?.signal || 0) ? 'text-green-400' : 'text-red-400'
-                }`}>{technicalData.indicators.macd?.value?.toFixed(3) || 'N/A'}</span>
+                  (technicalData.indicators?.macd?.value || 0) > (technicalData.indicators?.macd?.signal || 0) ? 'text-green-400' : 'text-red-400'
+                }`}>{technicalData.indicators?.macd?.value?.toFixed(3) || 'N/A'}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-300">EMA:</span>
                 <span className={`font-semibold ${
-                  (technicalData.indicators.ema?.value || 0) > (technicalData.indicators.sma?.value || 0) ? 'text-green-400' : 'text-red-400'
-                }`}>${Math.round(technicalData.indicators.ema?.value || 0).toLocaleString()}</span>
+                  (technicalData.indicators?.ema?.value || 0) > (technicalData.indicators?.sma?.value || 0) ? 'text-green-400' : 'text-red-400'
+                }`}>${Math.round(technicalData.indicators?.ema?.value || 0).toLocaleString()}</span>
               </div>
             </div>
             <div className="space-y-1">
               <div className="flex justify-between">
                 <span className="text-slate-300">Stochastic:</span>
                 <span className={`font-semibold ${
-                  (technicalData.indicators.stochastic?.k || 0) > 80 ? 'text-red-400' : 
-                  (technicalData.indicators.stochastic?.k || 0) < 20 ? 'text-green-400' : 'text-white'
-                }`}>{technicalData.indicators.stochastic?.k?.toFixed(1) || 'N/A'}%</span>
+                  (technicalData.indicators?.stochastic?.k || 0) > 80 ? 'text-red-400' : 
+                  (technicalData.indicators?.stochastic?.k || 0) < 20 ? 'text-green-400' : 'text-white'
+                }`}>{technicalData.indicators?.stochastic?.k?.toFixed(1) || 'N/A'}%</span>
               </div>
               {currentSignal && (
                 <>
