@@ -161,16 +161,9 @@ export function generateSignalForTimeframe(
   } catch (error) {
     console.error(`Error generating signal for ${timeframe}:`, error);
     
-    // Create a fallback signal for the given timeframe
-    // Use special treatment for higher timeframes to ensure visual indicators match
-    const signal = createFallbackSignal(timeframe, price, "unknown");
-    
-    if (!signal) {
-      console.error(`Failed to create even a fallback signal for ${timeframe}`);
-      return null;
-    }
-    
-    return signal;
+    // ZERO TOLERANCE: No synthetic data allowed
+    console.log(`[AdvancedSignals] Failed to generate authentic signal for ${timeframe} - skipping`);
+    return null;
   }
 }
 
@@ -711,16 +704,17 @@ export function calculateAllTimeframeSignals(
   for (const timeframe of timeframes) {
     console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
     
-    // Direct fallback for weekly and monthly to prevent any errors
+    // ZERO TOLERANCE: Skip weekly and monthly without authentic data
     if (['1w', '1M'].includes(timeframe)) {
-      signals[timeframe] = createFallbackSignal(timeframe, price, symbol);
+      console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic data for higher timeframes`);
+      signals[timeframe] = null;
     } else {
       // Standard generation for stable timeframes
       signals[timeframe] = generateSignalForTimeframe(timeframe, price, marketData);
       
-      // Verify signal and create a fallback if needed
+      // ZERO TOLERANCE: Skip timeframes without authentic data
       if (!signals[timeframe]) {
-        signals[timeframe] = createFallbackSignal(timeframe, price, symbol);
+        console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic signal generated`);
       }
     }
   }
@@ -728,11 +722,10 @@ export function calculateAllTimeframeSignals(
   // Apply cross-timeframe analysis to make signals consistent
   const harmonizedSignals = harmonizeTimeframeSignals(signals);
   
-  // Final verification to ensure all timeframes have a valid signal
+  // ZERO TOLERANCE: Skip timeframes without authentic signals
   for (const timeframe of timeframes) {
     if (!harmonizedSignals[timeframe]) {
-      console.log(`Final fallback for ${timeframe} - missing after harmonization`);
-      harmonizedSignals[timeframe] = createFallbackSignal(timeframe, price, symbol);
+      console.log(`[AdvancedSignals] Skipping ${timeframe} after harmonization - no authentic data`);
     }
   }
   
