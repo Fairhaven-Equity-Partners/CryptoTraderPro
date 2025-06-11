@@ -9,6 +9,37 @@ import { TimeFrame } from '../types';
 import { formatCurrency, formatPercentage } from '../lib/calculations';
 import { useQuery } from '@tanstack/react-query';
 
+interface MarketData {
+  id: number;
+  symbol: string;
+  name: string;
+  lastPrice: number;
+  change24h: number;
+  volume24h: number;
+  marketCap: number;
+  updatedAt: string;
+}
+
+interface TechnicalData {
+  success: boolean;
+  status: string;
+  indicators?: {
+    rsi?: number;
+    macd?: number;
+    sma20?: number;
+    ema20?: number;
+    stochastic?: number;
+  };
+}
+
+interface AccuracyData {
+  winRate: number;
+  totalTrades: number;
+  avgReturn: number;
+  successfulTrades: number;
+  failedTrades: number;
+}
+
 interface SimplifiedDashboardProps {
   symbol: string;
   onTimeframeSelect?: (timeframe: TimeFrame) => void;
@@ -22,26 +53,27 @@ const SimplifiedDashboard: React.FC<SimplifiedDashboardProps> = ({
   const [isCalculating, setIsCalculating] = useState(false);
 
   // Fetch authentic market data
-  const { data: marketData, isLoading: marketLoading } = useQuery({
+  const { data: marketData, isLoading: marketLoading } = useQuery<MarketData>({
     queryKey: ['/api/crypto', symbol],
     refetchInterval: 30000
   });
 
   // Fetch authentic technical analysis
-  const { data: technicalData, isLoading: technicalLoading } = useQuery({
+  const { data: technicalData, isLoading: technicalLoading } = useQuery<TechnicalData>({
     queryKey: ['/api/technical-analysis', symbol],
     refetchInterval: 60000
   });
 
   // Fetch accuracy metrics
-  const { data: accuracyData, isLoading: accuracyLoading } = useQuery({
+  const { data: accuracyData, isLoading: accuracyLoading } = useQuery<AccuracyData>({
     queryKey: ['/api/accuracy', symbol.replace('/', '/USDT').replace('/USDT/USDT', '/USDT')],
     refetchInterval: 30000
   });
 
   const timeframes: TimeFrame[] = ['15m', '1h', '4h', '1d', '3d', '1w'];
 
-  const handleTimeframeChange = (timeframe: TimeFrame) => {
+  const handleTimeframeChange = (value: string) => {
+    const timeframe = value as TimeFrame;
     setSelectedTimeframe(timeframe);
     onTimeframeSelect?.(timeframe);
   };
@@ -166,8 +198,8 @@ const SimplifiedDashboard: React.FC<SimplifiedDashboardProps> = ({
                 <div className="flex justify-between">
                   <span className="text-gray-400">RSI:</span>
                   <span className={`font-medium ${
-                    technicalData.indicators.rsi > 70 ? 'text-red-400' :
-                    technicalData.indicators.rsi < 30 ? 'text-green-400' : 'text-yellow-400'
+                    (technicalData.indicators.rsi || 0) > 70 ? 'text-red-400' :
+                    (technicalData.indicators.rsi || 0) < 30 ? 'text-green-400' : 'text-yellow-400'
                   }`}>
                     {technicalData.indicators.rsi?.toFixed(1) || 'N/A'}
                   </span>
@@ -175,21 +207,21 @@ const SimplifiedDashboard: React.FC<SimplifiedDashboardProps> = ({
                 <div className="flex justify-between">
                   <span className="text-gray-400">MACD:</span>
                   <span className={`font-medium ${
-                    technicalData.indicators.macd > 0 ? 'text-green-400' : 'text-red-400'
+                    (technicalData.indicators?.macd || 0) > 0 ? 'text-green-400' : 'text-red-400'
                   }`}>
-                    {technicalData.indicators.macd?.toFixed(4) || 'N/A'}
+                    {technicalData.indicators?.macd?.toFixed(4) || 'N/A'}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">SMA 20:</span>
                   <span className="text-white font-medium">
-                    {formatCurrency(technicalData.indicators.sma20) || 'N/A'}
+                    {technicalData.indicators.sma20 ? formatCurrency(technicalData.indicators.sma20) : 'N/A'}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-400">EMA 20:</span>
                   <span className="text-white font-medium">
-                    {formatCurrency(technicalData.indicators.ema20) || 'N/A'}
+                    {technicalData.indicators.ema20 ? formatCurrency(technicalData.indicators.ema20) : 'N/A'}
                   </span>
                 </div>
               </div>
