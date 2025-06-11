@@ -1165,7 +1165,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const close = price + priceChange;
         const high = Math.max(open, close) + this.getAuthenticMarketVariation() * (price * volatility * 0.3);
         const low = Math.min(open, close) - this.getAuthenticMarketVariation() * (price * volatility * 0.3);
-        const volume = getBaseVolumeForSymbol(decodedSymbol) * (0.8 + this.getMarketVolatility(timeframe) * );
+        const volume = getBaseVolumeForSymbol(decodedSymbol) * (0.8 + this.getMarketVolatility(timeframe) * 0.4);
         
         data.push({ time, open, high, low, close, volume });
         price = close;
@@ -1202,12 +1202,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   }
 
   function getBaseVolumeForSymbol(symbol: string): number {
-    if (symbol.includes('BTC')) return 500 + this.getMarketVolatility(timeframe) * ;
-    if (symbol.includes('ETH')) return 1000 + this.getMarketVolatility(timeframe) * ;
-    if (symbol.includes('BNB')) return 200 + this.getMarketVolatility(timeframe) * ;
-    if (symbol.includes('SOL')) return 800 + this.getMarketVolatility(timeframe) * ;
-    if (symbol.includes('XRP')) return 2000 + this.getMarketVolatility(timeframe) * ;
-    return 100 + this.getMarketVolatility(timeframe) * ;
+    if (symbol.includes('BTC')) return 500 + Math.random() * 200;
+    if (symbol.includes('ETH')) return 1000 + Math.random() * 300;
+    if (symbol.includes('BNB')) return 200 + Math.random() * 100;
+    if (symbol.includes('SOL')) return 800 + Math.random() * 250;
+    if (symbol.includes('XRP')) return 2000 + Math.random() * 500;
+    return 100 + Math.random() * 50;
   }
 
   app.get('/api/sentiment/trend/:symbol', async (req: Request, res: Response) => {
@@ -1623,9 +1623,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
               status: accuracy > 0.75 ? 'GOOD' : accuracy > 0.65 ? 'WARNING' : 'CRITICAL',
               change: changeStr,
               accuracyRate: accuracy * 100,
-              totalPredictions: 50 + Math.floor(this.getMarketVolatility(timeframe) * ),
-              successfulPredictions: Math.floor(accuracy * (50 + Math.floor(this.getMarketVolatility(timeframe) * ))),
-              signalQuality: Math.floor(75 + this.getMarketVolatility(timeframe) * ),
+              totalPredictions: 50 + Math.floor(Math.random() * 20),
+              successfulPredictions: Math.floor(accuracy * (50 + Math.floor(Math.random() * 20))),
+              signalQuality: Math.floor(75 + Math.random() * 15),
               hitRate: accuracy
             };
           });
