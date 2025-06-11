@@ -215,25 +215,8 @@ async function performScheduledPriceFetch(): Promise<void> {
             }
           }
         } else {
-          // Fallback to direct API call for this specific symbol
-          const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
-          if (response.ok) {
-            const data = await response.json();
-            const symbolPrice = data.lastPrice || data.currentPrice;
-            if (symbolPrice && typeof symbolPrice === 'number') {
-              console.log(`[UltimateManager] Fallback price synchronized: ${symbol} = $${symbolPrice}`);
-              
-              // Update global price for this specific symbol
-              if ((window as any).syncGlobalPrice) {
-                (window as any).syncGlobalPrice(symbol, symbolPrice, Date.now());
-              }
-
-              // Trigger calculations for this symbol with its own authentic price
-              if ((window as any).triggerSignalCalculation) {
-                (window as any).triggerSignalCalculation(symbol, symbolPrice);
-              }
-            }
-          }
+          // ZERO TOLERANCE: No fallback data allowed - skip if authentic data unavailable
+          console.log(`[UltimateManager] Skipping ${symbol} - no authentic data source available`);
         }
         
         // Small delay to prevent API rate limiting

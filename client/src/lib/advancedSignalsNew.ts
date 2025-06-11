@@ -21,9 +21,10 @@ export function generateSignalForTimeframe(
   price: number,
   marketData?: any
 ): AdvancedSignal | null {
-  // Immediately redirect weekly and monthly timeframes to avoid errors
+  // ZERO TOLERANCE: No synthetic data for any timeframe
   if (['1w', '1M'].includes(timeframe)) {
-    return createFallbackSignal(timeframe, price, 'direct');
+    console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic data available`);
+    return null;
   }
 
   try {
@@ -741,149 +742,8 @@ export function calculateAllTimeframeSignals(
 /**
  * Create a fallback signal when normal generation fails
  */
-function createFallbackSignal(timeframe: TimeFrame, price: number, symbol: string): AdvancedSignal {
-  // Special handling for higher timeframes to ensure arrow-indicator alignment
-  if (['1w', '1M'].includes(timeframe)) {
-    try {
-      // Safe implementation for higher timeframes
-      const direction: SignalDirection = Math.random() < 0.4 ? 'LONG' : Math.random() < 0.8 ? 'SHORT' : 'NEUTRAL';
-      const confidence = timeframe === '1M' ? 80 : 75;
-      
-      // Base risk parameters
-      const stopLossPercent = timeframe === '1M' ? 15 : 10;
-      const stopLoss = direction === 'LONG' 
-        ? price * (1 - stopLossPercent / 100) 
-        : price * (1 + stopLossPercent / 100);
-      
-      const riskRewardRatio = timeframe === '1M' ? 5 : 4;
-      const priceDiff = Math.abs(price - stopLoss);
-      const takeProfit = direction === 'LONG'
-        ? price + (priceDiff * riskRewardRatio)
-        : price - (priceDiff * riskRewardRatio);
-      
-      // Success probability based on timeframe
-      const successProbability = timeframe === '1M' ? 72 : 68;
-      
-      return {
-        direction,
-        confidence,
-        entryPrice: price,
-        stopLoss,
-        takeProfit,
-        timeframe,
-        timestamp: Date.now(),
-        successProbability,
-        successProbabilityDescription: getSuccessProbabilityDescription(successProbability),
-        indicators: generateIndicators(direction, confidence, timeframe),
-        patternFormations: generatePatternFormations(direction, confidence, timeframe, price),
-        supportLevels: calculateKeyLevels(price, timeframe).supportLevels,
-        resistanceLevels: calculateKeyLevels(price, timeframe).resistanceLevels,
-        expectedDuration: getExpectedDuration(timeframe),
-        riskRewardRatio,
-        optimalRiskReward: {
-          ideal: riskRewardRatio,
-          range: [riskRewardRatio * 0.8, riskRewardRatio * 1.2]
-        },
-        recommendedLeverage: calculateRecommendedLeverage(timeframe, direction, confidence),
-        macroInsights: generateMacroInsights(direction, timeframe, price)
-      };
-    } catch (error) {
-      console.log(`Using simplified fallback for ${timeframe} - error handling`);
-      // Even simpler fallback with direct return
-      // Create a basic signal with minimal complexity
-      const direction: SignalDirection = timeframe === '1M' ? 'LONG' : 'SHORT';
-      const confidence = 60;
-      
-      return {
-        direction,
-        confidence,
-        entryPrice: price,
-        stopLoss: price * 0.9,
-        takeProfit: price * 1.1,
-        timeframe,
-        timestamp: Date.now(),
-        successProbability: 50,
-        successProbabilityDescription: 'Moderate',
-        indicators: {},
-        patternFormations: [],
-        supportLevels: [price * 0.95, price * 0.9, price * 0.85],
-        resistanceLevels: [price * 1.05, price * 1.1, price * 1.15],
-        expectedDuration: timeframe === '1M' ? '1-6 months' : '2-8 weeks',
-        riskRewardRatio: timeframe === '1M' ? 5 : 4,
-        optimalRiskReward: {
-          ideal: timeframe === '1M' ? 5 : 4,
-          range: [2, 5]
-        },
-        recommendedLeverage: {
-          conservative: 2,
-          moderate: 3,
-          aggressive: 5,
-          recommendation: 'conservative'
-        },
-        macroInsights: [`${timeframe} trend analysis shows consolidation.`, 'Market is currently at equilibrium.']
-      };
-    }
-  }
-
-  // Use a deterministic but simplified approach for other timeframes
-  const timeframeValue = getTimeframeValue(timeframe);
-  const seed = Math.floor(price * 100) + timeframeValue;
-  
-  // Determine direction based on timeframe characteristics
-  let direction: SignalDirection;
-  const random = (seed % 100) / 100;
-  
-  // Adjust thresholds to create more consistent signals
-  if (['1d', '3d'].includes(timeframe)) {
-    direction = random < 0.4 ? 'LONG' : random < 0.8 ? 'SHORT' : 'NEUTRAL';
-  } else {
-    direction = random < 0.33 ? 'LONG' : random < 0.66 ? 'SHORT' : 'NEUTRAL';
-  }
-  
-  // Set reasonable confidence based on timeframe
-  const baseConfidence = getBaseConfidence(timeframe);
-  const confidence = Math.min(Math.max(baseConfidence + ((seed % 20) - 10), 40), 85);
-  
-  // Calculate appropriate risk parameters
-  const stopLossPercent = getStopLossPercent(timeframe, direction);
-  const stopLoss = direction === 'LONG' 
-    ? price * (1 - stopLossPercent / 100) 
-    : price * (1 + stopLossPercent / 100);
-  
-  const riskRewardRatio = getRiskRewardRatio(timeframe);
-  const priceDiff = Math.abs(price - stopLoss);
-  const takeProfit = direction === 'LONG'
-    ? price + (priceDiff * riskRewardRatio)
-    : price - (priceDiff * riskRewardRatio);
-  
-  // Calculate success probability
-  const successProbability = getTimeframeSuccessProbability(timeframe, direction);
-  
-  // Generate complete fallback signal
-  return {
-    direction,
-    confidence,
-    entryPrice: price,
-    stopLoss,
-    takeProfit,
-    timeframe,
-    timestamp: Date.now(),
-    successProbability,
-    successProbabilityDescription: getSuccessProbabilityDescription(successProbability),
-    indicators: generateIndicators(direction, confidence, timeframe),
-    patternFormations: generatePatternFormations(direction, confidence, timeframe, price),
-    supportLevels: calculateKeyLevels(price, timeframe).supportLevels,
-    resistanceLevels: calculateKeyLevels(price, timeframe).resistanceLevels,
-    expectedDuration: getExpectedDuration(timeframe),
-    riskRewardRatio,
-    optimalRiskReward: {
-      ideal: riskRewardRatio,
-      range: [riskRewardRatio * 0.8, riskRewardRatio * 1.2]
-    },
-    recommendedLeverage: calculateRecommendedLeverage(timeframe, direction, confidence),
-    macroInsights: generateMacroInsights(direction, timeframe, price)
-  };
-}
+// ZERO TOLERANCE: All synthetic signal generation functions removed
+// This function previously generated synthetic data and has been eliminated
 
 /**
  * Special handling for weekly and monthly timeframes

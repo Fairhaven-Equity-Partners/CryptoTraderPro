@@ -328,18 +328,10 @@ export class AutomatedSignalCalculator {
       // Initialize technical analysis engine
       const technicalEngine = new TechnicalIndicatorsEngine();
       
-      // Create simplified technical analysis based on price data
-      const technicalAnalysis = {
-        rsi: { value: 50 + (change24h * 2) },
-        macd: { histogram: change24h > 0 ? 1 : -1 },
-        bollingerBands: { position: change24h / 10 },
-        volume: { trend: volume24h > 1000000 ? 'high' : 'low' },
-        trend: { direction: change24h > 2 ? 'bullish' : change24h < -2 ? 'bearish' : 'neutral' },
-        signals: {
-          action: change24h > 3 ? 'BUY' : change24h < -3 ? 'SELL' : 'HOLD',
-          strength: Math.min(100, Math.abs(change24h) * 10)
-        }
-      };
+      // ZERO TOLERANCE: No synthetic technical analysis allowed
+      // Skip calculation if no authentic technical data available
+      console.log(`[AutomatedSignalCalculator] Skipping ${mapping.symbol} ${timeframe} - no authentic technical analysis data`);
+      return null;
       
       // Calculate base confidence using price momentum
       const priceBasedConfidence = this.calculatePriceBasedConfidence(change24h, Math.abs(change24h));
