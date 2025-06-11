@@ -10,14 +10,54 @@ import { Badge } from '@/components/ui/badge';
 import { ChevronUp, ChevronDown, CircleDot } from 'lucide-react';
 import { apiRequest } from '../lib/queryClient';
 
-interface CryptoSignal {
+interface OptimizedMarketEntry {
+  id: string;
   symbol: string;
   name: string;
-  marketCap: number;
-  direction: 'LONG' | 'SHORT' | 'NEUTRAL';
-  confidence: number;
-  price: number;
-  change24h: number;
+  currentPrice: number;
+  priceChange24h: number;
+  marketCap?: number;
+  signals: {
+    [timeframe: string]: {
+      direction: 'LONG' | 'SHORT' | 'NEUTRAL';
+      confidence: number;
+      strength: number;
+      entryPrice: number;
+      stopLoss: number;
+      takeProfit: number;
+      riskReward: number;
+      successProbability: number;
+      timestamp: number;
+    };
+  };
+  sentiment: {
+    direction: 'LONG' | 'SHORT' | 'NEUTRAL';
+    intensity: number;
+    strength: number;
+    reliability: number;
+    timeframe: string;
+  };
+  technicalSummary: {
+    trendStrength: number;
+    momentum: number;
+    volatility: number;
+    confidence: number;
+  };
+  heatValue: number; // -100 to +100 scale
+  color: string;
+  opacity: number;
+  size: number;
+}
+
+interface MarketSummary {
+  totalPairs: number;
+  bullishSignals: number;
+  bearishSignals: number;
+  neutralSignals: number;
+  averageConfidence: number;
+  highConfidenceSignals: number;
+  timeframe: string;
+  timestamp: number;
 }
 
 interface SignalHeatMapProps {
@@ -57,13 +97,14 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const [filterDirection, setFilterDirection] = useState<'ALL' | 'LONG' | 'SHORT' | 'NEUTRAL'>('ALL');
 
   // Function to handle pair selection with immediate calculation trigger
-  const handlePairSelection = (signal: CryptoSignal) => {
-    console.log(`Heatmap selection: ${signal.symbol} (${signal.direction} ${signal.confidence}%)`);
-    onSelectAsset && onSelectAsset(signal.symbol);
+  const handlePairSelection = (entry: OptimizedMarketEntry) => {
+    const timeframeSignal = entry.signals[selectedTimeframe];
+    console.log(`Heatmap selection: ${entry.symbol} (${timeframeSignal?.direction} ${timeframeSignal?.confidence}%)`);
+    onSelectAsset && onSelectAsset(entry.symbol);
     
     // Trigger immediate calculation for selected pair
     const event = new CustomEvent('immediate-pair-calculation', {
-      detail: { symbol: signal.symbol, trigger: 'heatmap-selection' }
+      detail: { symbol: entry.symbol, trigger: 'heatmap-selection' }
     });
     document.dispatchEvent(event);
   };
@@ -92,11 +133,11 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
     };
   }, []);
 
-  // Fetch market heatmap data synchronized with calculation engine
-  const { data: cryptoAssets, isLoading, refetch } = useQuery({
+  // Fetch optimized market heatmap data from new backend structure
+  const { data: heatmapResponse, isLoading, refetch } = useQuery({
     queryKey: ['/api/market-heatmap', selectedTimeframe],
     queryFn: async () => {
-      console.log(`[HeatMap] Fetching synchronized heatmap data for ${selectedTimeframe}`);
+      console.log(`[OptimizedHeatMap] Fetching market analysis data for ${selectedTimeframe}`);
       const response = await fetch(`/api/market-heatmap?timeframe=${selectedTimeframe}`);
       if (!response.ok) throw new Error('Failed to fetch heatmap data');
       return response.json();
@@ -107,89 +148,77 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
     refetchOnWindowFocus: false
   });
 
+  // Extract data and summary from the new response structure
+  const marketEntries: OptimizedMarketEntry[] = heatmapResponse?.data || [];
+  const marketSummary: MarketSummary | undefined = heatmapResponse?.summary;
+
   // Force refetch when timeframe changes
   React.useEffect(() => {
     refetch();
   }, [selectedTimeframe, refetch]);
 
-  // Process comprehensive market signals with full technical analysis from calculation system
-  const cryptoSignals = useMemo(() => {
-    if (!cryptoAssets || !Array.isArray(cryptoAssets)) return [];
+  // Process optimized market entries from the new backend structure
+  const processedMarketEntries = useMemo(() => {
+    if (!marketEntries || !Array.isArray(marketEntries)) return [];
     
-    // Use comprehensive calculated signals from the automated signal calculator
-    return cryptoAssets
-      .filter((asset: any) => asset.currentPrice > 0) // Only include assets with valid prices
-      .map((asset: any) => {
-        const price = asset.currentPrice;
-        const change24h = asset.change24h || 0;
+    return marketEntries
+      .filter((entry: OptimizedMarketEntry) => entry.currentPrice > 0)
+      .map((entry: OptimizedMarketEntry) => {
+        const timeframeSignal = entry.signals[selectedTimeframe];
         
-        // Extract comprehensive signal data with full technical analysis
-        const signalData = asset.signals?.[selectedTimeframe] || { 
-          direction: 'NEUTRAL', 
-          confidence: 50,
-          technicalAnalysis: null,
-          confluenceScore: 0,
-          riskReward: 1.0
-        };
-        
-        const direction = signalData.direction as 'LONG' | 'SHORT' | 'NEUTRAL';
-        const confidence = Math.round(signalData.confidence || 50);
-        
-        // Enhanced confidence based on technical analysis confluence
-        const enhancedConfidence = signalData.confluenceScore ? 
-          Math.min(95, confidence + (signalData.confluenceScore * 10)) : confidence;
+        if (!timeframeSignal) {
+          return {
+            ...entry,
+            displayDirection: 'NEUTRAL' as const,
+            displayConfidence: 50,
+            displayStrength: 0
+          };
+        }
         
         return {
-          symbol: asset.symbol,
-          name: asset.name,
-          marketCap: asset.marketCap || 0,
-          direction,
-          confidence: enhancedConfidence,
-          price,
-          change24h,
-          technicalAnalysis: signalData.technicalAnalysis,
-          riskReward: signalData.riskReward,
-          category: asset.category
+          ...entry,
+          displayDirection: timeframeSignal.direction,
+          displayConfidence: timeframeSignal.confidence,
+          displayStrength: timeframeSignal.strength,
+          displayRiskReward: timeframeSignal.riskReward,
+          displaySuccessProbability: timeframeSignal.successProbability
         };
-      })
-      .filter((signal, index, self) => 
-        index === self.findIndex(s => s.symbol === signal.symbol)
-      ); // Remove duplicates by symbol
-  }, [cryptoAssets, selectedTimeframe]);
+      });
+  }, [marketEntries, selectedTimeframe]);
 
   // Apply direction filtering and sort by confidence (highest to lowest)
-  const sortedAndFilteredSignals = useMemo(() => {
-    if (!cryptoSignals) return [];
+  const sortedAndFilteredEntries = useMemo(() => {
+    if (!processedMarketEntries) return [];
     
-    let filtered = cryptoSignals;
+    let filtered = processedMarketEntries;
     
     // Apply direction filtering
     if (filterDirection !== 'ALL') {
-      filtered = cryptoSignals.filter((signal: any) => signal.direction === filterDirection);
+      filtered = processedMarketEntries.filter((entry) => entry.displayDirection === filterDirection);
     }
     
     // Sort by confidence percentage (highest to lowest)
-    return filtered.sort((a: any, b: any) => {
-      if (a.direction === 'NEUTRAL' && b.direction !== 'NEUTRAL') return 1;
-      if (b.direction === 'NEUTRAL' && a.direction !== 'NEUTRAL') return -1;
-      return b.confidence - a.confidence;
+    return filtered.sort((a, b) => {
+      if (a.displayDirection === 'NEUTRAL' && b.displayDirection !== 'NEUTRAL') return 1;
+      if (b.displayDirection === 'NEUTRAL' && a.displayDirection !== 'NEUTRAL') return -1;
+      return b.displayConfidence - a.displayConfidence;
     });
-  }, [cryptoSignals, filterDirection]);
+  }, [processedMarketEntries, filterDirection]);
 
   // Group signals by confidence ranges for the heat map
   const groupedByConfidence = useMemo(() => {
     const groups = {
-      high_long: sortedAndFilteredSignals.filter(s => s.direction === 'LONG' && s.confidence >= 80),
-      medium_long: sortedAndFilteredSignals.filter(s => s.direction === 'LONG' && s.confidence >= 65 && s.confidence < 80),
-      low_long: sortedAndFilteredSignals.filter(s => s.direction === 'LONG' && s.confidence < 65),
-      neutral: sortedAndFilteredSignals.filter(s => s.direction === 'NEUTRAL'),
-      low_short: sortedAndFilteredSignals.filter(s => s.direction === 'SHORT' && s.confidence < 65),
-      medium_short: sortedAndFilteredSignals.filter(s => s.direction === 'SHORT' && s.confidence >= 65 && s.confidence < 80),
-      high_short: sortedAndFilteredSignals.filter(s => s.direction === 'SHORT' && s.confidence >= 80),
+      high_long: sortedAndFilteredEntries.filter(s => s.displayDirection === 'LONG' && s.displayConfidence >= 80),
+      medium_long: sortedAndFilteredEntries.filter(s => s.displayDirection === 'LONG' && s.displayConfidence >= 65 && s.displayConfidence < 80),
+      low_long: sortedAndFilteredEntries.filter(s => s.displayDirection === 'LONG' && s.displayConfidence < 65),
+      neutral: sortedAndFilteredEntries.filter(s => s.displayDirection === 'NEUTRAL'),
+      low_short: sortedAndFilteredEntries.filter(s => s.displayDirection === 'SHORT' && s.displayConfidence < 65),
+      medium_short: sortedAndFilteredEntries.filter(s => s.displayDirection === 'SHORT' && s.displayConfidence >= 65 && s.displayConfidence < 80),
+      high_short: sortedAndFilteredEntries.filter(s => s.displayDirection === 'SHORT' && s.displayConfidence >= 80),
     };
     
     return groups;
-  }, [sortedAndFilteredSignals]);
+  }, [sortedAndFilteredEntries]);
 
   if (isLoading) {
     return <div className="flex justify-center items-center min-h-[300px]">Loading market data...</div>;
