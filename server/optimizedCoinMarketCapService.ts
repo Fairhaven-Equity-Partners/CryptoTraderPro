@@ -3,9 +3,9 @@
  * Reduces API usage from 4.3M to under 30k calls/month
  */
 
-import { getCMCSymbol } from './optimizedSymbolMapping.js';
 import { AdvancedRateLimiter } from './advancedRateLimiter.js';
 import { IntelligentCacheManager } from './intelligentCacheManager.js';
+import { getCMCSymbol, getSymbolTier } from './symbolMapping.js';
 
 interface CMCPriceData {
   price: number;
@@ -94,53 +94,73 @@ export class OptimizedCoinMarketCapService {
         return null;
       }
 
-      // Make API call
-      const url = `${this.baseUrl}/cryptocurrency/quotes/latest?symbol=${symbol}&convert=USD`;
-      const response = await fetch(url, {
-        headers: {
-          'X-CMC_PRO_API_KEY': this.apiKey,
-          'Accept': 'application/json'
+      // Get enhanced symbol mapping with fallbacks
+      const cmcSymbols = getCMCSymbol(symbol);
+      const tier = getSymbolTier(symbol);
+      
+      // Try primary symbol first, then fallbacks
+      for (const cmcSymbol of cmcSymbols) {
+        try {
+          const url = `${this.baseUrl}/cryptocurrency/quotes/latest?symbol=${cmcSymbol}&convert=USD`;
+          const response = await fetch(url, {
+            headers: {
+              'X-CMC_PRO_API_KEY': this.apiKey,
+              'Accept': 'application/json'
+            }
+          });
+
+          if (response.status === 429) {
+            this.rateLimiter.recordFailure('rate_limit_429');
+            console.warn(`[OptimizedCMC] Rate limited by API for ${cmcSymbol}`);
+            continue; // Try next fallback
+          }
+
+          if (!response.ok) {
+            console.warn(`[OptimizedCMC] API error for ${cmcSymbol}: ${response.status}`);
+            continue; // Try next fallback
+          }
+
+          const data: CMCQuoteResponse = await response.json();
+          
+          if (data.status.error_code !== 0) {
+            console.warn(`[OptimizedCMC] CMC error for ${cmcSymbol}: ${data.status.error_message}`);
+            continue; // Try next fallback
+          }
+
+          // Extract price data - use the CMC symbol we actually fetched
+          const symbolData = data.data[cmcSymbol];
+          if (!symbolData) {
+            console.warn(`[OptimizedCMC] No data for ${cmcSymbol}`);
+            continue; // Try next fallback
+          }
+
+          const priceData: CMCPriceData = {
+            price: symbolData.quote.USD.price,
+            change24h: symbolData.quote.USD.percent_change_24h,
+            volume24h: symbolData.quote.USD.volume_24h,
+            marketCap: symbolData.quote.USD.market_cap,
+            lastUpdated: symbolData.quote.USD.last_updated
+          };
+
+          // Calculate volatility and cache intelligently using tier-based caching
+          const volatility = Math.abs(symbolData.quote.USD.percent_change_24h) / 100;
+          this.cacheManager.set(symbol, priceData, volatility);
+          
+          this.rateLimiter.recordSuccess();
+          this.requestCount++;
+          
+          console.log(`[OptimizedCMC] Successfully fetched ${symbol} using ${cmcSymbol}: $${priceData.price.toFixed(2)}`);
+          return priceData;
+          
+        } catch (error) {
+          console.warn(`[OptimizedCMC] Failed to fetch ${cmcSymbol}:`, error instanceof Error ? error.message : 'Unknown error');
+          continue; // Try next fallback
         }
-      });
-
-      if (response.status === 429) {
-        this.rateLimiter.recordFailure('rate_limit_429');
-        console.warn(`[OptimizedCMC] Rate limited by API for ${symbol}`);
-        return null;
       }
-
-      if (!response.ok) {
-        throw new Error(`API response: ${response.status}`);
-      }
-
-      const data: CMCQuoteResponse = await response.json();
       
-      if (data.status.error_code !== 0) {
-        throw new Error(data.status.error_message || 'API error');
-      }
-
-      // Extract price data
-      const symbolData = data.data[symbol];
-      if (!symbolData) {
-        throw new Error(`No data for symbol ${symbol}`);
-      }
-
-      const priceData: CMCPriceData = {
-        price: symbolData.quote.USD.price,
-        change24h: symbolData.quote.USD.percent_change_24h,
-        volume24h: symbolData.quote.USD.volume_24h,
-        marketCap: symbolData.quote.USD.market_cap,
-        lastUpdated: symbolData.quote.USD.last_updated
-      };
-
-      // Calculate volatility and cache intelligently
-      const volatility = Math.abs(symbolData.quote.USD.percent_change_24h) / 100;
-      this.cacheManager.set(symbol, priceData, volatility);
-      
-      this.rateLimiter.recordSuccess();
-      this.requestCount++;
-      
-      return priceData;
+      // All symbols failed
+      console.warn(`[OptimizedCMC] All fallbacks failed for ${symbol}`);
+      return null;
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
