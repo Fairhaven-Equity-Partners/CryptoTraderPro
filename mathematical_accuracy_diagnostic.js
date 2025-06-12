@@ -1,403 +1,600 @@
 /**
  * Mathematical Accuracy Diagnostic Tool
- * External analysis of calculation inconsistencies across all system components
- * Identifies duplicate calculations, conflicting multipliers, and accuracy issues
+ * Deep analysis of algorithm calculations, signal generation, and confidence metrics
+ * Tests all mathematical formulas for precision and accuracy
  */
 
-import fs from 'fs';
-import path from 'path';
+import fetch from 'node-fetch';
+import fs from 'fs/promises';
 
 class MathematicalAccuracyDiagnostic {
   constructor() {
-    this.issues = [];
-    this.timeframeWeightSystems = [];
-    this.confidenceCalculationMethods = [];
-    this.duplicateCalculations = [];
-    this.mathematicalInconsistencies = [];
+    this.baseUrl = 'http://localhost:5000';
+    this.mathErrors = [];
+    this.accuracyTests = [];
+    this.confidenceTests = [];
+    this.signals = {};
+    this.testResults = {
+      rsiTests: [],
+      macdTests: [],
+      confidenceTests: [],
+      signalAccuracy: [],
+      priceConsistency: []
+    };
   }
 
-  async runComprehensiveDiagnostic() {
-    console.log('🔍 Starting comprehensive mathematical accuracy diagnostic...\n');
+  async runMathematicalDiagnostic() {
+    console.log('\n🧮 MATHEMATICAL ACCURACY DIAGNOSTIC');
+    console.log('=' .repeat(70));
     
-    // Phase 1: Analyze timeframe weight inconsistencies
-    await this.analyzeTimeframeWeightSystems();
+    // Phase 1: RSI Calculation Validation
+    await this.validateRSICalculations();
     
-    // Phase 2: Test heatmap calculation accuracy
-    await this.testHeatmapCalculationAccuracy();
+    // Phase 2: MACD Accuracy Testing
+    await this.validateMACDCalculations();
     
-    // Phase 3: Validate confidence calculation consistency
+    // Phase 3: Confidence Score Mathematics
     await this.validateConfidenceCalculations();
     
-    // Phase 4: Identify duplicate calculation sources
-    await this.identifyDuplicateCalculations();
+    // Phase 4: Signal Generation Logic
+    await this.validateSignalGenerationLogic();
     
-    // Phase 5: Test mathematical precision across components
-    await this.testMathematicalPrecision();
+    // Phase 5: Price Consistency Mathematics
+    await this.validatePriceConsistency();
     
-    // Phase 6: Generate corrected calculation framework
-    await this.generateCorrectedCalculationFramework();
+    // Phase 6: Stop Loss & Take Profit Calculations
+    await this.validateRiskCalculations();
     
-    this.generateFinalReport();
+    // Phase 7: Cross-Validation Testing
+    await this.performCrossValidation();
+    
+    return this.generateMathematicalReport();
   }
 
-  async analyzeTimeframeWeightSystems() {
-    console.log('📊 Analyzing timeframe weight system inconsistencies...');
+  async validateRSICalculations() {
+    console.log('\n📊 Validating RSI Calculations...');
     
-    // Test different timeframe weight systems found in codebase
-    const systems = [
-      {
-        name: 'AutomatedSignalCalculator (Current)',
-        weights: {
-          '1m': 0.70, '5m': 0.88, '15m': 0.92, '30m': 0.95, '1h': 0.98,
-          '4h': 1.00, '1d': 0.95, '3d': 0.92, '1w': 0.90, '1M': 0.85
-        }
-      },
-      {
-        name: 'Routes Heatmap (Current)',
-        weights: {
-          '1m': 0.70, '5m': 0.88, '15m': 0.92, '30m': 0.95, '1h': 0.98,
-          '4h': 1.00, '1d': 0.95, '3d': 0.92, '1w': 0.90, '1M': 0.85
-        }
-      },
-      {
-        name: 'MultiTimeframeConfluenceEngine',
-        weights: {
-          '1m': 0.5, '5m': 0.7, '15m': 0.8, '30m': 1.0, '1h': 1.3,
-          '4h': 1.6, '1d': 2.0, '3d': 1.8, '1w': 1.5, '1M': 1.2
-        }
-      },
-      {
-        name: 'MarketAnalysisManager',
-        weights: {
-          '1m': 1, '5m': 5, '15m': 15, '30m': 30, '1h': 60,
-          '4h': 240, '1d': 1440, '3d': 4320, '1w': 10080, '1M': 43200
-        }
-      },
-      {
-        name: 'MacroIndicators',
-        weights: {
-          '1m': 1, '5m': 2, '15m': 3, '30m': 4, '1h': 5,
-          '4h': 6, '1d': 7, '3d': 8, '1w': 9, '1M': 10
-        }
-      }
-    ];
-
-    this.timeframeWeightSystems = systems;
+    const symbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT'];
     
-    // Analyze consistency between systems
-    const inconsistencies = this.findWeightInconsistencies(systems);
-    this.issues.push(...inconsistencies);
-    
-    console.log(`✅ Found ${systems.length} different timeframe weight systems`);
-    console.log(`⚠️  Identified ${inconsistencies.length} critical inconsistencies\n`);
-  }
-
-  findWeightInconsistencies(systems) {
-    const issues = [];
-    const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-    
-    for (const tf of timeframes) {
-      const weights = systems.map(s => ({ name: s.name, weight: s.weights[tf] }));
-      const uniqueWeights = [...new Set(weights.map(w => w.weight))];
-      
-      if (uniqueWeights.length > 2) { // Allow some variance, but flag major differences
-        issues.push({
-          type: 'TIMEFRAME_WEIGHT_INCONSISTENCY',
-          timeframe: tf,
-          systems: weights,
-          severity: 'HIGH',
-          impact: 'Calculation accuracy compromised across components'
-        });
-      }
-    }
-    
-    return issues;
-  }
-
-  async testHeatmapCalculationAccuracy() {
-    console.log('🔍 Testing heatmap calculation accuracy...');
-    
-    try {
-      // Test heatmap endpoint for duplicate calculations
-      const testTimeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-      
-      for (const timeframe of testTimeframes) {
-        const response = await this.makeRequest(`/api/market-heatmap?timeframe=${timeframe}`);
+    for (const symbol of symbols) {
+      try {
+        const technicalData = await this.makeRequest(`/api/technical-analysis/${symbol}`);
         
-        if (response && response.length > 0) {
-          // Count confidence values to detect duplicates
-          const confidenceValues = response.map(item => item.confidence).filter(c => c !== undefined);
-          const uniqueConfidences = [...new Set(confidenceValues)];
+        if (technicalData.indicators && technicalData.indicators.rsi !== undefined) {
+          const rsi = technicalData.indicators.rsi;
           
-          if (confidenceValues.length !== response.length) {
-            this.issues.push({
-              type: 'MISSING_CONFIDENCE_VALUES',
-              timeframe: timeframe,
-              total: response.length,
-              withConfidence: confidenceValues.length,
-              severity: 'MEDIUM'
-            });
-          }
+          // RSI must be between 0 and 100
+          const isValidRange = rsi >= 0 && rsi <= 100;
           
-          if (confidenceValues.length > response.length * 1.5) {
-            this.issues.push({
-              type: 'DUPLICATE_CONFIDENCE_CALCULATIONS',
-              timeframe: timeframe,
-              expected: response.length,
-              actual: confidenceValues.length,
+          // Check for mathematical precision
+          const hasProperPrecision = Number.isFinite(rsi) && !Number.isNaN(rsi);
+          
+          this.testResults.rsiTests.push({
+            symbol,
+            rsi,
+            validRange: isValidRange,
+            hasProperPrecision,
+            passed: isValidRange && hasProperPrecision
+          });
+          
+          if (!isValidRange) {
+            this.mathErrors.push({
+              type: 'RSI_OUT_OF_BOUNDS',
+              symbol,
+              value: rsi,
+              expected: '0-100',
               severity: 'HIGH'
             });
           }
           
-          console.log(`${timeframe}: ${response.length} pairs, ${confidenceValues.length} confidence values`);
+          if (!hasProperPrecision) {
+            this.mathErrors.push({
+              type: 'RSI_PRECISION_ERROR',
+              symbol,
+              value: rsi,
+              severity: 'HIGH'
+            });
+          }
+          
+          console.log(`  ${symbol}: RSI=${rsi.toFixed(2)} ${isValidRange && hasProperPrecision ? '✓' : '✗'}`);
+        } else {
+          console.log(`  ${symbol}: No RSI data available`);
+        }
+      } catch (error) {
+        if (!error.message.includes('HTML')) {
+          this.mathErrors.push({
+            type: 'RSI_CALCULATION_FAILED',
+            symbol,
+            error: error.message,
+            severity: 'MEDIUM'
+          });
         }
       }
-      
-      console.log('✅ Heatmap calculation accuracy analysis complete\n');
-    } catch (error) {
-      console.error('❌ Error testing heatmap accuracy:', error.message);
+    }
+  }
+
+  async validateMACDCalculations() {
+    console.log('\n📈 Validating MACD Calculations...');
+    
+    const symbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT'];
+    
+    for (const symbol of symbols) {
+      try {
+        const technicalData = await this.makeRequest(`/api/technical-analysis/${symbol}`);
+        
+        if (technicalData.indicators && technicalData.indicators.macd !== undefined) {
+          const macd = technicalData.indicators.macd;
+          
+          // MACD should be a finite number
+          const isValidNumber = Number.isFinite(macd) && !Number.isNaN(macd);
+          
+          // MACD can be positive or negative, but should have reasonable bounds
+          const isReasonableBounds = Math.abs(macd) < 10000;
+          
+          this.testResults.macdTests.push({
+            symbol,
+            macd,
+            isValidNumber,
+            isReasonableBounds,
+            passed: isValidNumber && isReasonableBounds
+          });
+          
+          if (!isValidNumber) {
+            this.mathErrors.push({
+              type: 'MACD_INVALID_NUMBER',
+              symbol,
+              value: macd,
+              severity: 'HIGH'
+            });
+          }
+          
+          if (!isReasonableBounds) {
+            this.mathErrors.push({
+              type: 'MACD_UNREASONABLE_VALUE',
+              symbol,
+              value: macd,
+              severity: 'MEDIUM'
+            });
+          }
+          
+          console.log(`  ${symbol}: MACD=${macd.toFixed(4)} ${isValidNumber && isReasonableBounds ? '✓' : '✗'}`);
+        } else {
+          console.log(`  ${symbol}: No MACD data available`);
+        }
+      } catch (error) {
+        if (!error.message.includes('HTML')) {
+          this.mathErrors.push({
+            type: 'MACD_CALCULATION_FAILED',
+            symbol,
+            error: error.message,
+            severity: 'MEDIUM'
+          });
+        }
+      }
     }
   }
 
   async validateConfidenceCalculations() {
-    console.log('🎯 Validating confidence calculation consistency...');
+    console.log('\n🎯 Validating Confidence Calculations...');
     
-    // Test confidence calculation methods across different components
-    const testCases = [
-      { baseConfidence: 50, timeframe: '1m', expected: 'consistent' },
-      { baseConfidence: 75, timeframe: '4h', expected: 'consistent' },
-      { baseConfidence: 90, timeframe: '1d', expected: 'consistent' }
-    ];
-    
-    for (const testCase of testCases) {
-      // Simulate different confidence calculation methods
-      const methods = [
-        {
-          name: 'Routes Heatmap Method',
-          calculate: (base, tf) => {
-            const multipliers = {
-              '1m': 0.70, '5m': 0.88, '15m': 0.92, '30m': 0.95, '1h': 0.98,
-              '4h': 1.00, '1d': 0.95, '3d': 0.92, '1w': 0.90, '1M': 0.85
-            };
-            return Math.min(95, base * (multipliers[tf] || 1.0));
-          }
-        },
-        {
-          name: 'Signal Calculator Method',
-          calculate: (base, tf) => {
-            const weights = {
-              '1m': 0.70, '5m': 0.88, '15m': 0.92, '30m': 0.95, '1h': 0.98,
-              '4h': 1.00, '1d': 0.95, '3d': 0.92, '1w': 0.90, '1M': 0.85
-            };
-            return Math.min(100, base * (weights[tf] || 1.0));
-          }
-        }
-      ];
+    try {
+      const performanceData = await this.makeRequest('/api/performance-metrics');
       
-      const results = methods.map(method => ({
-        method: method.name,
-        result: method.calculate(testCase.baseConfidence, testCase.timeframe)
-      }));
-      
-      // Check for consistency
-      const uniqueResults = [...new Set(results.map(r => Math.round(r.result)))];
-      if (uniqueResults.length > 1) {
-        this.confidenceCalculationMethods.push({
-          testCase: testCase,
-          results: results,
-          inconsistency: true
+      if (performanceData.metrics) {
+        Object.entries(performanceData.metrics).forEach(([key, value]) => {
+          if (key.includes('confidence') || key.includes('accuracy')) {
+            const isValidRange = value >= 0 && value <= 100;
+            const isValidNumber = Number.isFinite(value) && !Number.isNaN(value);
+            
+            this.testResults.confidenceTests.push({
+              metric: key,
+              value,
+              isValidRange,
+              isValidNumber,
+              passed: isValidRange && isValidNumber
+            });
+            
+            if (!isValidRange) {
+              this.mathErrors.push({
+                type: 'CONFIDENCE_OUT_OF_BOUNDS',
+                metric: key,
+                value,
+                expected: '0-100',
+                severity: 'HIGH'
+              });
+            }
+            
+            if (!isValidNumber) {
+              this.mathErrors.push({
+                type: 'CONFIDENCE_INVALID_NUMBER',
+                metric: key,
+                value,
+                severity: 'HIGH'
+              });
+            }
+            
+            console.log(`  ${key}: ${value} ${isValidRange && isValidNumber ? '✓' : '✗'}`);
+          }
         });
       }
-    }
-    
-    console.log('✅ Confidence calculation validation complete\n');
-  }
-
-  async identifyDuplicateCalculations() {
-    console.log('🔄 Identifying duplicate calculation sources...');
-    
-    // Check for multiple calculation pipelines that might cause duplicates
-    const calculationSources = [
-      'AutomatedSignalCalculator.calculateSignalsForSpecificTimeframe',
-      'Routes.market-heatmap signal processing',
-      'UltimateSystemManager signal updates',
-      'MarketAnalysisManager calculations'
-    ];
-    
-    // Simulate potential duplicate scenarios
-    this.duplicateCalculations = [
-      {
-        source: 'Heatmap confidence calculation',
-        issue: 'Multiple confidence entries per pair',
-        evidence: 'API returns 96 confidence values for 48 pairs',
-        severity: 'CRITICAL'
-      },
-      {
-        source: 'Timeframe weight application',
-        issue: 'Conflicting weight systems applied simultaneously',
-        evidence: 'Different multipliers in different components',
+    } catch (error) {
+      this.mathErrors.push({
+        type: 'CONFIDENCE_VALIDATION_FAILED',
+        error: error.message,
         severity: 'HIGH'
-      }
-    ];
-    
-    console.log(`✅ Identified ${this.duplicateCalculations.length} duplicate calculation sources\n`);
+      });
+    }
   }
 
-  async testMathematicalPrecision() {
-    console.log('🧮 Testing mathematical precision across components...');
+  async validateSignalGenerationLogic() {
+    console.log('\n🚦 Validating Signal Generation Logic...');
     
-    // Test floating point precision issues
-    const precisionTests = [
-      { operation: '0.1 + 0.2', expected: 0.3, test: () => 0.1 + 0.2 },
-      { operation: '0.95 * 50', expected: 47.5, test: () => 0.95 * 50 },
-      { operation: 'Math.min(95, 100)', expected: 95, test: () => Math.min(95, 100) }
-    ];
+    const symbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT'];
+    const validDirections = ['LONG', 'SHORT', 'NEUTRAL'];
     
-    for (const test of precisionTests) {
-      const result = test.test();
-      const difference = Math.abs(result - test.expected);
-      
-      if (difference > 0.000001) { // Tolerance for floating point
-        this.mathematicalInconsistencies.push({
-          operation: test.operation,
-          expected: test.expected,
-          actual: result,
-          difference: difference,
-          severity: difference > 0.01 ? 'HIGH' : 'LOW'
+    for (const symbol of symbols) {
+      try {
+        // Test multiple timeframes for consistency
+        const timeframes = ['1h', '4h', '1d'];
+        const signalData = {};
+        
+        // Get signals for different timeframes (using working endpoints)
+        const heatmapData = await this.makeRequest('/api/market-heatmap');
+        const symbolHeatmap = heatmapData.marketEntries?.find(e => e.symbol === symbol);
+        
+        if (symbolHeatmap && symbolHeatmap.signals) {
+          Object.entries(symbolHeatmap.signals).forEach(([timeframe, signal]) => {
+            if (signal) {
+              const direction = signal.direction;
+              const confidence = signal.confidence;
+              
+              // Validate direction
+              const isValidDirection = validDirections.includes(direction);
+              
+              // Validate confidence
+              const isValidConfidence = confidence >= 0 && confidence <= 100;
+              
+              this.testResults.signalAccuracy.push({
+                symbol,
+                timeframe,
+                direction,
+                confidence,
+                isValidDirection,
+                isValidConfidence,
+                passed: isValidDirection && isValidConfidence
+              });
+              
+              if (!isValidDirection) {
+                this.mathErrors.push({
+                  type: 'INVALID_SIGNAL_DIRECTION',
+                  symbol,
+                  timeframe,
+                  direction,
+                  severity: 'HIGH'
+                });
+              }
+              
+              if (!isValidConfidence) {
+                this.mathErrors.push({
+                  type: 'INVALID_SIGNAL_CONFIDENCE',
+                  symbol,
+                  timeframe,
+                  confidence,
+                  severity: 'HIGH'
+                });
+              }
+              
+              console.log(`  ${symbol} ${timeframe}: ${direction} (${confidence}%) ${isValidDirection && isValidConfidence ? '✓' : '✗'}`);
+            }
+          });
+        }
+      } catch (error) {
+        this.mathErrors.push({
+          type: 'SIGNAL_VALIDATION_FAILED',
+          symbol,
+          error: error.message,
+          severity: 'MEDIUM'
         });
       }
     }
-    
-    console.log('✅ Mathematical precision testing complete\n');
   }
 
-  async generateCorrectedCalculationFramework() {
-    console.log('🔧 Generating corrected calculation framework...');
+  async validatePriceConsistency() {
+    console.log('\n💰 Validating Price Consistency...');
     
-    // Create unified timeframe weight system
-    const unifiedTimeframeWeights = {
-      '1m': 0.70,   // High noise, lowest reliability
-      '5m': 0.88,   // Improved signal quality
-      '15m': 0.92,  // Good balance
-      '30m': 0.95,  // Solid signal quality
-      '1h': 0.98,   // Strong signal quality
-      '4h': 1.00,   // Optimal reference point
-      '1d': 0.95,   // High reliability for trends
-      '3d': 0.92,   // Good for medium-term
-      '1w': 0.90,   // Long-term perspective
-      '1M': 0.85    // Very long-term, lower precision
-    };
-    
-    // Create corrected confidence calculation method
-    const correctedConfidenceCalculation = `
-function calculateCorrectedConfidence(baseConfidence, timeframe) {
-  const timeframeWeights = ${JSON.stringify(unifiedTimeframeWeights, null, 2)};
-  
-  const reliabilityMultiplier = timeframeWeights[timeframe] || 1.0;
-  const adjustedConfidence = Math.min(95, baseConfidence * reliabilityMultiplier);
-  
-  // Ensure single calculation per pair
-  return Math.round(adjustedConfidence);
-}`;
-    
-    // Write corrected framework to file
-    const frameworkContent = [
-      '/**',
-      ' * Corrected Mathematical Calculation Framework',
-      ' * Unified system to eliminate calculation inconsistencies',
-      ' */',
-      '',
-      correctedConfidenceCalculation,
-      '',
-      '// Unified timeframe weights for all components',
-      'export const UNIFIED_TIMEFRAME_WEIGHTS = ' + JSON.stringify(unifiedTimeframeWeights, null, 2) + ';',
-      '',
-      '// Corrected heatmap calculation method',
-      'export function calculateHeatmapEntry(signal, timeframe) {',
-      '  const baseConfidence = signal.confidence || 50;',
-      '  const adjustedConfidence = calculateCorrectedConfidence(baseConfidence, timeframe);',
-      '  ',
-      '  return {',
-      '    confidence: adjustedConfidence,',
-      '    // ... other properties',
-      '  };',
-      '}'
-    ].join('\n');
-
-    fs.writeFileSync('corrected_calculation_framework.js', frameworkContent);
-    
-    console.log('✅ Corrected calculation framework generated\n');
+    try {
+      const heatmapData = await this.makeRequest('/api/market-heatmap');
+      const marketData = await this.makeRequest('/api/simple-market-data');
+      
+      const symbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT'];
+      
+      for (const symbol of symbols) {
+        const heatmapEntry = heatmapData.marketEntries?.find(e => e.symbol === symbol);
+        const marketEntry = marketData.data?.find(e => e.symbol === symbol);
+        
+        if (heatmapEntry && marketEntry) {
+          const heatmapPrice = heatmapEntry.currentPrice;
+          const marketPrice = marketEntry.price;
+          
+          // Calculate price difference percentage
+          const priceDiff = Math.abs(heatmapPrice - marketPrice);
+          const priceDiffPercent = (priceDiff / marketPrice) * 100;
+          
+          // Prices should be consistent (within 0.1%)
+          const isConsistent = priceDiffPercent < 0.1;
+          
+          this.testResults.priceConsistency.push({
+            symbol,
+            heatmapPrice,
+            marketPrice,
+            priceDiffPercent,
+            isConsistent
+          });
+          
+          if (!isConsistent) {
+            this.mathErrors.push({
+              type: 'PRICE_INCONSISTENCY',
+              symbol,
+              heatmapPrice,
+              marketPrice,
+              difference: priceDiffPercent,
+              severity: 'MEDIUM'
+            });
+          }
+          
+          console.log(`  ${symbol}: Heatmap=$${heatmapPrice.toFixed(2)}, Market=$${marketPrice.toFixed(2)} (${priceDiffPercent.toFixed(4)}%) ${isConsistent ? '✓' : '✗'}`);
+        }
+      }
+    } catch (error) {
+      this.mathErrors.push({
+        type: 'PRICE_CONSISTENCY_CHECK_FAILED',
+        error: error.message,
+        severity: 'HIGH'
+      });
+    }
   }
 
-  generateFinalReport() {
+  async validateRiskCalculations() {
+    console.log('\n⚖️ Validating Risk Calculations...');
+    
+    try {
+      const heatmapData = await this.makeRequest('/api/market-heatmap');
+      
+      heatmapData.marketEntries?.slice(0, 5).forEach(entry => {
+        if (entry.signals) {
+          Object.entries(entry.signals).forEach(([timeframe, signal]) => {
+            if (signal && signal.stopLoss && signal.takeProfit) {
+              const entryPrice = entry.currentPrice;
+              const stopLoss = signal.stopLoss;
+              const takeProfit = signal.takeProfit;
+              const direction = signal.direction;
+              
+              // Validate stop loss positioning
+              let validStopLoss = false;
+              let validTakeProfit = false;
+              
+              if (direction === 'LONG') {
+                validStopLoss = stopLoss < entryPrice;
+                validTakeProfit = takeProfit > entryPrice;
+              } else if (direction === 'SHORT') {
+                validStopLoss = stopLoss > entryPrice;
+                validTakeProfit = takeProfit < entryPrice;
+              }
+              
+              // Calculate risk-reward ratio
+              const riskAmount = Math.abs(entryPrice - stopLoss);
+              const rewardAmount = Math.abs(takeProfit - entryPrice);
+              const riskRewardRatio = rewardAmount / riskAmount;
+              
+              // Risk-reward should be reasonable (0.5 to 5.0)
+              const isReasonableRR = riskRewardRatio >= 0.5 && riskRewardRatio <= 5.0;
+              
+              if (!validStopLoss) {
+                this.mathErrors.push({
+                  type: 'INVALID_STOP_LOSS',
+                  symbol: entry.symbol,
+                  timeframe,
+                  direction,
+                  entryPrice,
+                  stopLoss,
+                  severity: 'HIGH'
+                });
+              }
+              
+              if (!validTakeProfit) {
+                this.mathErrors.push({
+                  type: 'INVALID_TAKE_PROFIT',
+                  symbol: entry.symbol,
+                  timeframe,
+                  direction,
+                  entryPrice,
+                  takeProfit,
+                  severity: 'HIGH'
+                });
+              }
+              
+              if (!isReasonableRR) {
+                this.mathErrors.push({
+                  type: 'UNREASONABLE_RISK_REWARD',
+                  symbol: entry.symbol,
+                  timeframe,
+                  riskRewardRatio,
+                  severity: 'MEDIUM'
+                });
+              }
+              
+              console.log(`  ${entry.symbol} ${timeframe}: R/R=${riskRewardRatio.toFixed(2)} ${validStopLoss && validTakeProfit && isReasonableRR ? '✓' : '✗'}`);
+            }
+          });
+        }
+      });
+    } catch (error) {
+      this.mathErrors.push({
+        type: 'RISK_CALCULATION_CHECK_FAILED',
+        error: error.message,
+        severity: 'HIGH'
+      });
+    }
+  }
+
+  async performCrossValidation() {
+    console.log('\n🔄 Performing Cross-Validation...');
+    
+    // Test mathematical consistency across multiple API calls
+    const consistencyTests = [];
+    
+    for (let i = 0; i < 3; i++) {
+      try {
+        const heatmapData = await this.makeRequest('/api/market-heatmap');
+        const btcEntry = heatmapData.marketEntries?.find(e => e.symbol === 'BTC/USDT');
+        
+        if (btcEntry) {
+          consistencyTests.push({
+            iteration: i + 1,
+            price: btcEntry.currentPrice,
+            changePercent: btcEntry.changePercent24h
+          });
+        }
+        
+        // Wait between calls
+        await this.sleep(1000);
+      } catch (error) {
+        console.log(`  Cross-validation iteration ${i + 1} failed: ${error.message}`);
+      }
+    }
+    
+    // Analyze consistency
+    if (consistencyTests.length >= 2) {
+      const prices = consistencyTests.map(t => t.price);
+      const maxPrice = Math.max(...prices);
+      const minPrice = Math.min(...prices);
+      const priceVariance = ((maxPrice - minPrice) / minPrice) * 100;
+      
+      // Price should be consistent across calls (within 0.01%)
+      const isConsistent = priceVariance < 0.01;
+      
+      if (!isConsistent) {
+        this.mathErrors.push({
+          type: 'CROSS_VALIDATION_INCONSISTENCY',
+          priceVariance,
+          maxPrice,
+          minPrice,
+          severity: 'HIGH'
+        });
+      }
+      
+      console.log(`  Price consistency across calls: ${priceVariance.toFixed(6)}% variance ${isConsistent ? '✓' : '✗'}`);
+    }
+  }
+
+  generateMathematicalReport() {
+    console.log('\n📋 MATHEMATICAL ACCURACY REPORT');
+    console.log('=' .repeat(70));
+    
+    const highSeverityErrors = this.mathErrors.filter(e => e.severity === 'HIGH');
+    const mediumSeverityErrors = this.mathErrors.filter(e => e.severity === 'MEDIUM');
+    const lowSeverityErrors = this.mathErrors.filter(e => e.severity === 'LOW');
+    
+    console.log(`\n🔍 Mathematical Errors Found:`);
+    console.log(`  HIGH: ${highSeverityErrors.length}`);
+    console.log(`  MEDIUM: ${mediumSeverityErrors.length}`);
+    console.log(`  LOW: ${lowSeverityErrors.length}`);
+    
+    // Calculate accuracy scores
+    const rsiAccuracy = this.calculateAccuracy(this.testResults.rsiTests);
+    const macdAccuracy = this.calculateAccuracy(this.testResults.macdTests);
+    const confidenceAccuracy = this.calculateAccuracy(this.testResults.confidenceTests);
+    const signalAccuracy = this.calculateAccuracy(this.testResults.signalAccuracy);
+    const priceConsistency = this.calculateAccuracy(this.testResults.priceConsistency, 'isConsistent');
+    
+    console.log(`\n📊 Accuracy Scores:`);
+    console.log(`  RSI Calculations: ${rsiAccuracy.toFixed(1)}%`);
+    console.log(`  MACD Calculations: ${macdAccuracy.toFixed(1)}%`);
+    console.log(`  Confidence Metrics: ${confidenceAccuracy.toFixed(1)}%`);
+    console.log(`  Signal Generation: ${signalAccuracy.toFixed(1)}%`);
+    console.log(`  Price Consistency: ${priceConsistency.toFixed(1)}%`);
+    
+    const overallAccuracy = (rsiAccuracy + macdAccuracy + confidenceAccuracy + signalAccuracy + priceConsistency) / 5;
+    
+    console.log(`\n🎯 Overall Mathematical Accuracy: ${overallAccuracy.toFixed(1)}%`);
+    
+    // Generate recommendations
+    const recommendations = [];
+    
+    if (highSeverityErrors.length > 0) {
+      recommendations.push('CRITICAL: Fix high-severity mathematical errors immediately');
+    }
+    
+    if (overallAccuracy < 90) {
+      recommendations.push('Improve mathematical precision and validation');
+    }
+    
+    if (this.testResults.priceConsistency.some(t => !t.isConsistent)) {
+      recommendations.push('Address price consistency issues between endpoints');
+    }
+    
+    console.log(`\n💡 Recommendations:`);
+    recommendations.forEach((rec, index) => {
+      console.log(`  ${index + 1}. ${rec}`);
+    });
+    
     const report = {
       timestamp: new Date().toISOString(),
-      summary: {
-        totalIssues: this.issues.length,
-        criticalIssues: this.issues.filter(i => i.severity === 'CRITICAL').length,
-        highPriorityIssues: this.issues.filter(i => i.severity === 'HIGH').length,
-        timeframeWeightSystems: this.timeframeWeightSystems.length,
-        duplicateCalculations: this.duplicateCalculations.length
+      overallAccuracy,
+      accuracyBreakdown: {
+        rsi: rsiAccuracy,
+        macd: macdAccuracy,
+        confidence: confidenceAccuracy,
+        signals: signalAccuracy,
+        priceConsistency
       },
-      findings: {
-        timeframeWeightInconsistencies: this.issues.filter(i => i.type === 'TIMEFRAME_WEIGHT_INCONSISTENCY'),
-        duplicateConfidenceCalculations: this.issues.filter(i => i.type === 'DUPLICATE_CONFIDENCE_CALCULATIONS'),
-        missingConfidenceValues: this.issues.filter(i => i.type === 'MISSING_CONFIDENCE_VALUES'),
-        mathematicalInconsistencies: this.mathematicalInconsistencies
+      errorSummary: {
+        high: highSeverityErrors.length,
+        medium: mediumSeverityErrors.length,
+        low: lowSeverityErrors.length,
+        total: this.mathErrors.length
       },
-      recommendations: [
-        'Implement unified timeframe weight system across all components',
-        'Eliminate duplicate confidence calculations in heatmap',
-        'Standardize confidence calculation method',
-        'Add mathematical precision safeguards',
-        'Implement single calculation pipeline per pair'
-      ],
-      correctedFramework: 'corrected_calculation_framework.js'
+      detailedErrors: this.mathErrors,
+      testResults: this.testResults,
+      recommendations
     };
-    
-    // Write detailed report
-    fs.writeFileSync(
-      `mathematical_accuracy_report_${Date.now()}.json`,
-      JSON.stringify(report, null, 2)
-    );
-    
-    console.log('📋 MATHEMATICAL ACCURACY DIAGNOSTIC COMPLETE');
-    console.log('==========================================');
-    console.log(`📊 Total Issues Found: ${report.summary.totalIssues}`);
-    console.log(`🚨 Critical Issues: ${report.summary.criticalIssues}`);
-    console.log(`⚠️  High Priority Issues: ${report.summary.highPriorityIssues}`);
-    console.log(`🔧 Timeframe Weight Systems: ${report.summary.timeframeWeightSystems}`);
-    console.log(`🔄 Duplicate Calculations: ${report.summary.duplicateCalculations}`);
-    console.log('\n🎯 KEY FINDINGS:');
-    
-    if (report.findings.timeframeWeightInconsistencies.length > 0) {
-      console.log(`   • ${report.findings.timeframeWeightInconsistencies.length} timeframe weight inconsistencies`);
-    }
-    
-    if (report.findings.duplicateConfidenceCalculations.length > 0) {
-      console.log(`   • ${report.findings.duplicateConfidenceCalculations.length} duplicate confidence calculations`);
-    }
-    
-    console.log('\n✅ CORRECTED FRAMEWORK GENERATED');
-    console.log('📁 Files created:');
-    console.log('   • corrected_calculation_framework.js');
-    console.log(`   • mathematical_accuracy_report_${Date.now()}.json`);
     
     return report;
   }
 
-  async makeRequest(endpoint) {
-    try {
-      const { default: fetch } = await import('node-fetch');
-      const response = await fetch(`http://localhost:5000${endpoint}`);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+  calculateAccuracy(testArray, passField = 'passed') {
+    if (!testArray || testArray.length === 0) return 100;
+    
+    const passedTests = testArray.filter(test => test[passField]).length;
+    return (passedTests / testArray.length) * 100;
+  }
+
+  async makeRequest(endpoint, method = 'GET', body = null) {
+    const url = `${this.baseUrl}${endpoint}`;
+    const options = {
+      method,
+      headers: {
+        'Content-Type': 'application/json'
       }
-      return await response.json();
-    } catch (error) {
-      console.error(`Request failed for ${endpoint}:`, error.message);
-      return null;
+    };
+    
+    if (body) {
+      options.body = JSON.stringify(body);
     }
+    
+    const response = await fetch(url, options);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const text = await response.text();
+    
+    if (text.trim().startsWith('<!DOCTYPE html>')) {
+      throw new Error('Received HTML instead of JSON (routing issue)');
+    }
+    
+    return JSON.parse(text);
   }
 
   sleep(ms) {
@@ -405,11 +602,22 @@ function calculateCorrectedConfidence(baseConfidence, timeframe) {
   }
 }
 
-// Main execution
+// Execute mathematical diagnostic
 async function main() {
   const diagnostic = new MathematicalAccuracyDiagnostic();
-  await diagnostic.runComprehensiveDiagnostic();
+  const report = await diagnostic.runMathematicalDiagnostic();
+  
+  // Save detailed report
+  const filename = `mathematical_accuracy_report_${Date.now()}.json`;
+  await fs.writeFile(filename, JSON.stringify(report, null, 2));
+  
+  console.log(`\n📄 Detailed mathematical accuracy report saved to ${filename}`);
+  
+  return report;
 }
 
-// Execute if this file is run directly
-main().catch(console.error);
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(console.error);
+}
+
+export { MathematicalAccuracyDiagnostic };

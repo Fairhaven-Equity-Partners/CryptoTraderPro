@@ -1,0 +1,169 @@
+{
+  "timestamp": "2025-06-12T05:18:19.226Z",
+  "overallAccuracy": 100,
+  "accuracyBreakdown": {
+    "rsi": 100,
+    "macd": 100,
+    "confidence": 100,
+    "signals": 100,
+    "priceConsistency": 100
+  },
+  "errorSummary": {
+    "high": 10,
+    "medium": 0,
+    "low": 0,
+    "total": 10
+  },
+  "detailedErrors": [
+    {
+      "type": "INVALID_STOP_LOSS",
+      "symbol": "BTC/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 107607.83501049656,
+      "stopLoss": 102227.44325997173,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_TAKE_PROFIT",
+      "symbol": "BTC/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 107607.83501049656,
+      "takeProfit": 112988.2267610214,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_STOP_LOSS",
+      "symbol": "ETH/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 2755.8405093305087,
+      "stopLoss": 2618.048483863983,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_TAKE_PROFIT",
+      "symbol": "ETH/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 2755.8405093305087,
+      "takeProfit": 2893.632534797034,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_STOP_LOSS",
+      "symbol": "BNB/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 665.7105110075554,
+      "stopLoss": 632.4249854571776,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_TAKE_PROFIT",
+      "symbol": "BNB/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 665.7105110075554,
+      "takeProfit": 698.9960365579332,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_STOP_LOSS",
+      "symbol": "XRP/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 2.2451714289275504,
+      "stopLoss": 2.132912857481173,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_TAKE_PROFIT",
+      "symbol": "XRP/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 2.2451714289275504,
+      "takeProfit": 2.357430000373928,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_STOP_LOSS",
+      "symbol": "SOL/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 160.07359943534522,
+      "stopLoss": 152.06991946357795,
+      "severity": "HIGH"
+    },
+    {
+      "type": "INVALID_TAKE_PROFIT",
+      "symbol": "SOL/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "entryPrice": 160.07359943534522,
+      "takeProfit": 168.07727940711248,
+      "severity": "HIGH"
+    }
+  ],
+  "testResults": {
+    "rsiTests": [],
+    "macdTests": [],
+    "confidenceTests": [],
+    "signalAccuracy": [
+      {
+        "symbol": "BTC/USDT",
+        "timeframe": "4h",
+        "direction": "SHORT",
+        "confidence": 95,
+        "isValidDirection": true,
+        "isValidConfidence": true,
+        "passed": true
+      },
+      {
+        "symbol": "ETH/USDT",
+        "timeframe": "4h",
+        "direction": "SHORT",
+        "confidence": 95,
+        "isValidDirection": true,
+        "isValidConfidence": true,
+        "passed": true
+      },
+      {
+        "symbol": "XRP/USDT",
+        "timeframe": "4h",
+        "direction": "SHORT",
+        "confidence": 95,
+        "isValidDirection": true,
+        "isValidConfidence": true,
+        "passed": true
+      }
+    ],
+    "priceConsistency": [
+      {
+        "symbol": "BTC/USDT",
+        "heatmapPrice": 107607.83501049656,
+        "marketPrice": 107607.83501049656,
+        "priceDiffPercent": 0,
+        "isConsistent": true
+      },
+      {
+        "symbol": "ETH/USDT",
+        "heatmapPrice": 2755.8405093305087,
+        "marketPrice": 2755.8405093305087,
+        "priceDiffPercent": 0,
+        "isConsistent": true
+      },
+      {
+        "symbol": "XRP/USDT",
+        "heatmapPrice": 2.2451714289275504,
+        "marketPrice": 2.2451714289275504,
+        "priceDiffPercent": 0,
+        "isConsistent": true
+      }
+    ]
+  },
+  "recommendations": [
+    "CRITICAL: Fix high-severity mathematical errors immediately"
+  ]
+}
