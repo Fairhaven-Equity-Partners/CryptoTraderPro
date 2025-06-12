@@ -1405,9 +1405,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { AdvancedAnalyticsEngine } = await import('./advancedAnalytics.js');
       const metrics = AdvancedAnalyticsEngine.calculateAdvancedMetrics(simulations);
       
+      // Add synchronized technical analysis matching heatmap signals
+      let technicalAnalysis = {};
+      
+      try {
+        console.log(`[Analytics] Generating technical analysis for ${symbol}`);
+        
+        // Get current price for synchronized signal generation
+        let currentPrice = enhancedPriceStreamer.getPrice(symbol);
+        
+        if (!currentPrice) {
+          const baseSymbol = symbol.split('/')[0];
+          const marketData = await optimizedCoinMarketCapService.fetchPrice(baseSymbol);
+          currentPrice = marketData?.price || 100; // Fallback for calculation
+        }
+        
+        const price = typeof currentPrice === 'number' ? currentPrice : ((currentPrice as any).price || 100);
+        let change24h = 0;
+        
+        try {
+          const baseSymbol = symbol.split('/')[0];
+          const marketData = await optimizedCoinMarketCapService.fetchPrice(baseSymbol);
+          change24h = marketData?.change24h || 0;
+        } catch (error) {
+          change24h = 0;
+        }
+        
+        console.log(`[Analytics] Using price ${price}, change24h ${change24h} for ${symbol}`);
+        
+        // Generate synchronized signals for all timeframes
+        const allTimeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+        
+        allTimeframes.forEach(tf => {
+          try {
+            const tfSignal = generateBalancedHeatmapSignal(symbol, price, change24h, tf);
+            technicalAnalysis[tf] = {
+              trend: {
+                signal: tfSignal.direction === 'LONG' ? 'BUY' : 
+                       tfSignal.direction === 'SHORT' ? 'SELL' : 'HOLD',
+                confidence: tfSignal.confidence,
+                direction: tfSignal.direction
+              },
+              momentum: {
+                rsi: tfSignal.indicators?.rsi || 50,
+                macd: tfSignal.indicators?.macd || 0,
+                signal: tfSignal.direction
+              }
+            };
+            console.log(`[Analytics] Generated ${tf} signal: ${tfSignal.direction} (${tfSignal.confidence}%)`);
+          } catch (signalError) {
+            console.error(`[Analytics] Failed to generate ${tf} signal:`, signalError);
+          }
+        });
+        
+        console.log(`[Analytics] Generated technical analysis for ${Object.keys(technicalAnalysis).length} timeframes`);
+        
+      } catch (error) {
+        console.error('[Analytics] Technical analysis generation failed:', error);
+        // Provide fallback technical analysis structure
+        technicalAnalysis = {
+          '1h': {
+            trend: { signal: 'HOLD', confidence: 50, direction: 'NEUTRAL' },
+            momentum: { rsi: 50, macd: 0, signal: 'NEUTRAL' }
+          }
+        };
+      }
+      
       res.json({
         success: true,
         metrics,
+        technicalAnalysis,
         summary: {
           winRate: metrics.winRate,
           sharpeRatio: metrics.sharpeRatio,
