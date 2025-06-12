@@ -60,8 +60,8 @@ export class AdvancedRateLimiter {
       monthlyLimit: config.monthlyLimit || 30000,
       dailyLimit: config.dailyLimit || 1000,
       hourlyLimit: config.hourlyLimit || 41,
-      minuteLimit: config.minuteLimit || 1,
-      burstLimit: config.burstLimit || 3
+      minuteLimit: config.minuteLimit || 2, // Increased from 1 to 2 for better performance
+      burstLimit: config.burstLimit || 5   // Increased from 3 to 5 for legitimate rapid requests
     };
 
     this.counters = {

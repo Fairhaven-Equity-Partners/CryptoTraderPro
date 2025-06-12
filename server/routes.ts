@@ -1883,7 +1883,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           summary: {
             totalIndicators: uiCompatibleIndicators.length,
             averageAccuracy: uiCompatibleIndicators.length > 0 
-              ? (uiCompatibleIndicators.reduce((sum, item, index) => sum + (item.value || 0), 0) / uiCompatibleIndicators.length).toFixed(1)
+              ? (uiCompatibleIndicators.reduce((sum: number, item: any) => sum + (item.value || 0), 0) / uiCompatibleIndicators.length).toFixed(1)
               : '0.0'
           }
         });

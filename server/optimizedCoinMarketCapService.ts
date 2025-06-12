@@ -143,8 +143,9 @@ export class OptimizedCoinMarketCapService {
       return priceData;
 
     } catch (error) {
-      this.rateLimiter.recordFailure(error.message);
-      console.error(`[OptimizedCMC] Error fetching ${symbol}:`, error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.rateLimiter.recordFailure(errorMessage);
+      console.error(`[OptimizedCMC] Error fetching ${symbol}:`, errorMessage);
       return null;
     }
   }
@@ -229,8 +230,9 @@ export class OptimizedCoinMarketCapService {
           console.log(`[OptimizedCMC] Batch fetched ${uncachedSymbols.length} symbols, ${Object.keys(results).length - uncachedSymbols.length} from cache (${this.cacheManager.getHitRate().toFixed(1)}% hit rate)`);
           
         } catch (error) {
-          this.rateLimiter.recordFailure(error.message);
-          console.error('[OptimizedCMC] Batch API call failed:', error.message);
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          this.rateLimiter.recordFailure(errorMessage);
+          console.error('[OptimizedCMC] Batch API call failed:', errorMessage);
         }
       } else {
         console.log(`[OptimizedCMC] All ${symbols.length} symbols served from cache (100% hit rate)`);
