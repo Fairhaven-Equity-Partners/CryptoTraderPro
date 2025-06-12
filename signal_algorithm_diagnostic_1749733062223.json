@@ -1,0 +1,40 @@
+{
+  "timestamp": 1749733062223,
+  "analysisResults": {
+    "signalDistribution": {
+      "4h": {
+        "LONG": 0,
+        "SHORT": 42,
+        "NEUTRAL": 6
+      },
+      "1h": {
+        "LONG": 0,
+        "SHORT": 42,
+        "NEUTRAL": 6
+      },
+      "1d": {
+        "LONG": 0,
+        "SHORT": 42,
+        "NEUTRAL": 6
+      },
+      "1w": {
+        "LONG": 0,
+        "SHORT": 42,
+        "NEUTRAL": 6
+      }
+    },
+    "algorithmBias": {
+      "extremeShortBias": true
+    },
+    "mathematicalIssues": [
+      "Unbalanced threshold ranges",
+      "Synthetic data pattern in client/src/lib/advancedSignalsNew.ts"
+    ],
+    "recommendations": []
+  },
+  "summary": {
+    "extremeBias": true,
+    "issuesFound": 2,
+    "complianceStatus": "NON_COMPLIANT"
+  }
+}

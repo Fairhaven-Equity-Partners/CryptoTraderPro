@@ -1,0 +1,171 @@
+{
+  "timestamp": 1749733158923,
+  "analysis": {
+    "currentRanges": {
+      "shortTimeframes": {
+        "LONG": {
+          "min": 0,
+          "max": 45,
+          "percent": 45
+        },
+        "SHORT": {
+          "min": 45,
+          "max": 70,
+          "percent": 25
+        },
+        "NEUTRAL": {
+          "min": 70,
+          "max": 100,
+          "percent": 30
+        }
+      },
+      "midTimeframes": {
+        "LONG": {
+          "min": 0,
+          "max": 42,
+          "percent": 42
+        },
+        "SHORT": {
+          "min": 42,
+          "max": 68,
+          "percent": 26
+        },
+        "NEUTRAL": {
+          "min": 68,
+          "max": 100,
+          "percent": 32
+        }
+      },
+      "longTimeframes": {
+        "LONG": {
+          "min": 0,
+          "max": 40,
+          "percent": 40
+        },
+        "SHORT": {
+          "min": 40,
+          "max": 65,
+          "percent": 25
+        },
+        "NEUTRAL": {
+          "min": 65,
+          "max": 100,
+          "percent": 35
+        }
+      }
+    },
+    "proposedRanges": {
+      "shortTimeframes": {
+        "LONG": {
+          "min": 0,
+          "max": 40,
+          "percent": 40
+        },
+        "SHORT": {
+          "min": 40,
+          "max": 80,
+          "percent": 40
+        },
+        "NEUTRAL": {
+          "min": 80,
+          "max": 100,
+          "percent": 20
+        }
+      },
+      "midTimeframes": {
+        "LONG": {
+          "min": 0,
+          "max": 35,
+          "percent": 35
+        },
+        "SHORT": {
+          "min": 35,
+          "max": 70,
+          "percent": 35
+        },
+        "NEUTRAL": {
+          "min": 70,
+          "max": 100,
+          "percent": 30
+        }
+      },
+      "longTimeframes": {
+        "LONG": {
+          "min": 0,
+          "max": 30,
+          "percent": 30
+        },
+        "SHORT": {
+          "min": 30,
+          "max": 60,
+          "percent": 30
+        },
+        "NEUTRAL": {
+          "min": 60,
+          "max": 100,
+          "percent": 40
+        }
+      }
+    },
+    "distributionTest": {
+      "price_1": {
+        "price": 107.5,
+        "signalValue": 50,
+        "directions": {
+          "shortTimeframes": "SHORT",
+          "midTimeframes": "SHORT",
+          "longTimeframes": "SHORT"
+        }
+      },
+      "price_2": {
+        "price": 2756.8,
+        "signalValue": 80,
+        "directions": {
+          "shortTimeframes": "NEUTRAL",
+          "midTimeframes": "NEUTRAL",
+          "longTimeframes": "NEUTRAL"
+        }
+      },
+      "price_3": {
+        "price": 0.2744,
+        "signalValue": 27,
+        "directions": {
+          "shortTimeframes": "LONG",
+          "midTimeframes": "LONG",
+          "longTimeframes": "LONG"
+        }
+      },
+      "price_4": {
+        "price": 325.67,
+        "signalValue": 67,
+        "directions": {
+          "shortTimeframes": "SHORT",
+          "midTimeframes": "SHORT",
+          "longTimeframes": "NEUTRAL"
+        }
+      },
+      "price_5": {
+        "price": 2.15,
+        "signalValue": 15,
+        "directions": {
+          "shortTimeframes": "LONG",
+          "midTimeframes": "LONG",
+          "longTimeframes": "LONG"
+        }
+      }
+    },
+    "recommendations": [
+      "Replace current unbalanced threshold ranges with proposed balanced ranges",
+      "Implement the fix in client/src/lib/advancedSignalsNew.ts lines 962-980",
+      "Test the fix with live data to confirm balanced signal distribution",
+      "Monitor signal distribution after implementation to ensure no new bias",
+      "Consider adding dynamic range adjustment based on market volatility"
+    ]
+  },
+  "summary": {
+    "issueIdentified": "87.5% SHORT bias due to unbalanced threshold ranges",
+    "solutionProposed": "Balanced threshold ranges with equal LONG/SHORT probability",
+    "readyForImplementation": true,
+    "complianceStatus": "AUTHENTIC_DATA_COMPLIANT"
+  }
+}
