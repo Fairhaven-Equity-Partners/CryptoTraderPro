@@ -1,0 +1,644 @@
+{
+  "testsPassed": 62,
+  "testsFailed": 2,
+  "uiComponents": {
+    "MarketHeatmap": {
+      "dataStructure": 50000,
+      "apiIntegration": true,
+      "realTimeUpdates": true,
+      "errorHandling": true,
+      "performance": 33.302992954580134
+    },
+    "SignalDashboard": {
+      "dataStructure": true,
+      "apiIntegration": true,
+      "realTimeUpdates": false,
+      "errorHandling": true,
+      "performance": 16.1818336462093
+    },
+    "TradingSignals": {
+      "dataStructure": true,
+      "apiIntegration": true,
+      "realTimeUpdates": true,
+      "errorHandling": true,
+      "performance": 17.568744105424294
+    },
+    "TechnicalAnalysis": {
+      "dataStructure": true,
+      "apiIntegration": false,
+      "realTimeUpdates": true,
+      "errorHandling": true,
+      "performance": 17.540433875506334
+    },
+    "PerformanceMetrics": {
+      "dataStructure": true,
+      "apiIntegration": true,
+      "realTimeUpdates": true,
+      "errorHandling": true,
+      "performance": 16.91276873301218
+    },
+    "RiskManagement": {
+      "dataStructure": true,
+      "apiIntegration": true,
+      "realTimeUpdates": true,
+      "errorHandling": true,
+      "performance": 9.476727254180357
+    }
+  },
+  "apiEndpoints": {
+    "/api/signals/:symbol": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 6,
+      "statusCode": 500
+    },
+    "/api/market-heatmap": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 12,
+      "statusCode": 200
+    },
+    "/api/technical-analysis/:symbol": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 3,
+      "statusCode": 200
+    },
+    "/api/trade-simulations/:symbol": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 2,
+      "statusCode": 200
+    },
+    "/api/accuracy/:symbol": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 2,
+      "statusCode": 200
+    },
+    "/api/crypto/:symbol": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 18,
+      "statusCode": 200
+    },
+    "/api/performance-metrics": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 4,
+      "statusCode": 200
+    },
+    "/api/automation/status": {
+      "structure": true,
+      "validation": true,
+      "errorHandling": true,
+      "responseTime": 5,
+      "statusCode": 200
+    }
+  },
+  "performanceMetrics": {
+    "Signal Generation": {
+      "average": 1.167,
+      "min": 0,
+      "max": 9,
+      "total": 1169,
+      "throughput": 855.4319931565441
+    },
+    "Risk Calculation": {
+      "average": 1.147,
+      "min": 0,
+      "max": 11,
+      "total": 1148,
+      "throughput": 871.0801393728224
+    },
+    "Technical Analysis": {
+      "average": 1.116,
+      "min": 0,
+      "max": 4,
+      "total": 559,
+      "throughput": 894.4543828264758
+    },
+    "Market Heatmap": {
+      "average": 1.21,
+      "min": 0,
+      "max": 10,
+      "total": 121,
+      "throughput": 826.4462809917355
+    },
+    "Full System Cycle": {
+      "average": 1.1,
+      "min": 0,
+      "max": 2,
+      "total": 55,
+      "throughput": 909.0909090909091
+    }
+  },
+  "signalDistribution": {
+    "BTC/USDT": {
+      "regime": "BULLISH",
+      "signals": {
+        "1h": {
+          "direction": "LONG",
+          "confidence": 73,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "1h",
+          "trendStrength": 0.15757353535953314,
+          "volatility": 0.023903036001713576,
+          "timestamp": 1749741719053
+        },
+        "4h": {
+          "direction": "LONG",
+          "confidence": 76,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "4h",
+          "trendStrength": 0.15757353535953314,
+          "volatility": 0.023903036001713576,
+          "timestamp": 1749741719054
+        },
+        "1d": {
+          "direction": "LONG",
+          "confidence": 79,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "1d",
+          "trendStrength": 0.15757353535953314,
+          "volatility": 0.023903036001713576,
+          "timestamp": 1749741719054
+        },
+        "1w": {
+          "direction": "LONG",
+          "confidence": 81,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "1w",
+          "trendStrength": 0.15757353535953314,
+          "volatility": 0.023903036001713576,
+          "timestamp": 1749741719054
+        }
+      },
+      "marketData": {
+        "trendStrength": 0.15757353535953314,
+        "volatility": 0.023903036001713576,
+        "volume": "HIGH_ACTIVITY"
+      }
+    },
+    "ETH/USDT": {
+      "regime": "BEARISH",
+      "signals": {
+        "1h": {
+          "direction": "SHORT",
+          "confidence": 64,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "1h",
+          "trendStrength": -0.12862885166684243,
+          "volatility": 0.028939911632210526,
+          "timestamp": 1749741719054
+        },
+        "4h": {
+          "direction": "SHORT",
+          "confidence": 67,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "4h",
+          "trendStrength": -0.12862885166684243,
+          "volatility": 0.028939911632210526,
+          "timestamp": 1749741719054
+        },
+        "1d": {
+          "direction": "SHORT",
+          "confidence": 70,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "1d",
+          "trendStrength": -0.12862885166684243,
+          "volatility": 0.028939911632210526,
+          "timestamp": 1749741719054
+        },
+        "1w": {
+          "direction": "SHORT",
+          "confidence": 72,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "1w",
+          "trendStrength": -0.12862885166684243,
+          "volatility": 0.028939911632210526,
+          "timestamp": 1749741719055
+        }
+      },
+      "marketData": {
+        "trendStrength": -0.12862885166684243,
+        "volatility": 0.028939911632210526,
+        "volume": "NORMAL"
+      }
+    },
+    "BNB/USDT": {
+      "regime": "SIDEWAYS",
+      "signals": {
+        "1h": {
+          "direction": "NEUTRAL",
+          "confidence": 52,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "1h",
+          "trendStrength": 0.013660318646799672,
+          "volatility": 0.0097517570619913,
+          "timestamp": 1749741719055
+        },
+        "4h": {
+          "direction": "NEUTRAL",
+          "confidence": 55,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "4h",
+          "trendStrength": 0.013660318646799672,
+          "volatility": 0.0097517570619913,
+          "timestamp": 1749741719055
+        },
+        "1d": {
+          "direction": "NEUTRAL",
+          "confidence": 58,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "1d",
+          "trendStrength": 0.013660318646799672,
+          "volatility": 0.0097517570619913,
+          "timestamp": 1749741719055
+        },
+        "1w": {
+          "direction": "NEUTRAL",
+          "confidence": 60,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "1w",
+          "trendStrength": 0.013660318646799672,
+          "volatility": 0.0097517570619913,
+          "timestamp": 1749741719055
+        }
+      },
+      "marketData": {
+        "trendStrength": 0.013660318646799672,
+        "volatility": 0.0097517570619913,
+        "volume": "NORMAL"
+      }
+    },
+    "XRP/USDT": {
+      "regime": "VOLATILE",
+      "signals": {
+        "1h": {
+          "direction": "SHORT",
+          "confidence": 58,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "1h",
+          "trendStrength": -0.04780185861394142,
+          "volatility": 0.05871137841492092,
+          "timestamp": 1749741719055
+        },
+        "4h": {
+          "direction": "SHORT",
+          "confidence": 61,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "4h",
+          "trendStrength": -0.04780185861394142,
+          "volatility": 0.05871137841492092,
+          "timestamp": 1749741719056
+        },
+        "1d": {
+          "direction": "SHORT",
+          "confidence": 64,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "1d",
+          "trendStrength": -0.04780185861394142,
+          "volatility": 0.05871137841492092,
+          "timestamp": 1749741719056
+        },
+        "1w": {
+          "direction": "SHORT",
+          "confidence": 66,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "1w",
+          "trendStrength": -0.04780185861394142,
+          "volatility": 0.05871137841492092,
+          "timestamp": 1749741719056
+        }
+      },
+      "marketData": {
+        "trendStrength": -0.04780185861394142,
+        "volatility": 0.05871137841492092,
+        "volume": "HIGH_ACTIVITY"
+      }
+    },
+    "SOL/USDT": {
+      "regime": "BULLISH",
+      "signals": {
+        "1h": {
+          "direction": "LONG",
+          "confidence": 73,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "1h",
+          "trendStrength": 0.18499736481064072,
+          "volatility": 0.019361624064357184,
+          "timestamp": 1749741719056
+        },
+        "4h": {
+          "direction": "LONG",
+          "confidence": 76,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "4h",
+          "trendStrength": 0.18499736481064072,
+          "volatility": 0.019361624064357184,
+          "timestamp": 1749741719056
+        },
+        "1d": {
+          "direction": "LONG",
+          "confidence": 79,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "1d",
+          "trendStrength": 0.18499736481064072,
+          "volatility": 0.019361624064357184,
+          "timestamp": 1749741719056
+        },
+        "1w": {
+          "direction": "LONG",
+          "confidence": 81,
+          "reasoning": [
+            "Strong upward trend"
+          ],
+          "regime": "BULLISH",
+          "timeframe": "1w",
+          "trendStrength": 0.18499736481064072,
+          "volatility": 0.019361624064357184,
+          "timestamp": 1749741719056
+        }
+      },
+      "marketData": {
+        "trendStrength": 0.18499736481064072,
+        "volatility": 0.019361624064357184,
+        "volume": "HIGH_ACTIVITY"
+      }
+    },
+    "ADA/USDT": {
+      "regime": "BEARISH",
+      "signals": {
+        "1h": {
+          "direction": "SHORT",
+          "confidence": 65,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "1h",
+          "trendStrength": -0.13639605075640893,
+          "volatility": 0.02882181504138323,
+          "timestamp": 1749741719056
+        },
+        "4h": {
+          "direction": "SHORT",
+          "confidence": 68,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "4h",
+          "trendStrength": -0.13639605075640893,
+          "volatility": 0.02882181504138323,
+          "timestamp": 1749741719057
+        },
+        "1d": {
+          "direction": "SHORT",
+          "confidence": 71,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "1d",
+          "trendStrength": -0.13639605075640893,
+          "volatility": 0.02882181504138323,
+          "timestamp": 1749741719057
+        },
+        "1w": {
+          "direction": "SHORT",
+          "confidence": 73,
+          "reasoning": [
+            "Strong downward trend"
+          ],
+          "regime": "BEARISH",
+          "timeframe": "1w",
+          "trendStrength": -0.13639605075640893,
+          "volatility": 0.02882181504138323,
+          "timestamp": 1749741719057
+        }
+      },
+      "marketData": {
+        "trendStrength": -0.13639605075640893,
+        "volatility": 0.02882181504138323,
+        "volume": "NORMAL"
+      }
+    },
+    "AVAX/USDT": {
+      "regime": "SIDEWAYS",
+      "signals": {
+        "1h": {
+          "direction": "NEUTRAL",
+          "confidence": 56,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "1h",
+          "trendStrength": 0.0066986961238646005,
+          "volatility": 0.013045661422267742,
+          "timestamp": 1749741719057
+        },
+        "4h": {
+          "direction": "NEUTRAL",
+          "confidence": 59,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "4h",
+          "trendStrength": 0.0066986961238646005,
+          "volatility": 0.013045661422267742,
+          "timestamp": 1749741719057
+        },
+        "1d": {
+          "direction": "NEUTRAL",
+          "confidence": 62,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "1d",
+          "trendStrength": 0.0066986961238646005,
+          "volatility": 0.013045661422267742,
+          "timestamp": 1749741719057
+        },
+        "1w": {
+          "direction": "NEUTRAL",
+          "confidence": 64,
+          "reasoning": [
+            "Neutral market conditions"
+          ],
+          "regime": "SIDEWAYS",
+          "timeframe": "1w",
+          "trendStrength": 0.0066986961238646005,
+          "volatility": 0.013045661422267742,
+          "timestamp": 1749741719057
+        }
+      },
+      "marketData": {
+        "trendStrength": 0.0066986961238646005,
+        "volatility": 0.013045661422267742,
+        "volume": "HIGH_ACTIVITY"
+      }
+    },
+    "DOGE/USDT": {
+      "regime": "VOLATILE",
+      "signals": {
+        "1h": {
+          "direction": "SHORT",
+          "confidence": 58,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "1h",
+          "trendStrength": -0.02310078844778403,
+          "volatility": 0.04418995251636827,
+          "timestamp": 1749741719057
+        },
+        "4h": {
+          "direction": "SHORT",
+          "confidence": 61,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "4h",
+          "trendStrength": -0.02310078844778403,
+          "volatility": 0.04418995251636827,
+          "timestamp": 1749741719057
+        },
+        "1d": {
+          "direction": "SHORT",
+          "confidence": 64,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "1d",
+          "trendStrength": -0.02310078844778403,
+          "volatility": 0.04418995251636827,
+          "timestamp": 1749741719057
+        },
+        "1w": {
+          "direction": "SHORT",
+          "confidence": 66,
+          "reasoning": [
+            "High volume confirmation"
+          ],
+          "regime": "VOLATILE",
+          "timeframe": "1w",
+          "trendStrength": -0.02310078844778403,
+          "volatility": 0.04418995251636827,
+          "timestamp": 1749741719057
+        }
+      },
+      "marketData": {
+        "trendStrength": -0.02310078844778403,
+        "volatility": 0.04418995251636827,
+        "volume": "HIGH_ACTIVITY"
+      }
+    }
+  },
+  "deploymentReadiness": {
+    "Code Quality": {
+      "passed": true,
+      "score": 95.5768208549765
+    },
+    "Security Measures": {
+      "passed": true,
+      "score": 89.06838034151822
+    },
+    "Error Handling": {
+      "passed": true,
+      "score": 97.56009134740349
+    },
+    "Logging System": {
+      "passed": true,
+      "score": 92.30460394612705
+    },
+    "Rate Limiting": {
+      "passed": true,
+      "score": 88.53501874511385
+    },
+    "Data Validation": {
+      "passed": true,
+      "score": 97.27654394511579
+    },
+    "Scalability": {
+      "passed": true,
+      "score": 91.03914809982298
+    },
+    "Monitoring": {
+      "passed": true,
+      "score": 91.40706618427433
+    }
+  },
+  "validationResults": []
+}

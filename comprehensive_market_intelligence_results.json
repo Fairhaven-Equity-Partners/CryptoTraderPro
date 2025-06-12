@@ -1,0 +1,5258 @@
+{
+  "testsPassed": 96,
+  "testsFailed": 2,
+  "marketStates": {
+    "BTC/USDT": {
+      "regime": "BULLISH",
+      "trendStrength": 0.13365370525688225,
+      "volatility": 0.006385347621307762,
+      "momentum": 0.10743105449175724,
+      "volumeProfile": "LOW_ACTIVITY",
+      "supportResistance": "NEAR_RESISTANCE",
+      "cyclePosition": "NEAR_HIGH",
+      "confidence": 0.9477046542080587,
+      "timestamp": 1749741592873
+    },
+    "ETH/USDT": {
+      "regime": "BEARISH",
+      "trendStrength": -0.10344952188927853,
+      "volatility": 0.007518817806736451,
+      "momentum": -0.11126213792393175,
+      "volumeProfile": "HIGH_ACTIVITY",
+      "supportResistance": "NEAR_SUPPORT",
+      "cyclePosition": "NEAR_LOW",
+      "confidence": 0.9118108649286105,
+      "timestamp": 1749741592874
+    },
+    "BNB/USDT": {
+      "regime": "SIDEWAYS",
+      "trendStrength": -0.000005572890055067924,
+      "volatility": 0.0033050177730009917,
+      "momentum": -0.011626567117455038,
+      "volumeProfile": "NORMAL",
+      "supportResistance": "NEAR_RESISTANCE",
+      "cyclePosition": "NEAR_HIGH",
+      "confidence": 0.8504474356973184,
+      "timestamp": 1749741592875
+    },
+    "XRP/USDT": {
+      "regime": "VOLATILE",
+      "trendStrength": -0.00036871028482007704,
+      "volatility": 0.014255231172046252,
+      "momentum": -0.04780183822458588,
+      "volumeProfile": "NORMAL",
+      "supportResistance": "NEAR_SUPPORT",
+      "cyclePosition": "NEAR_LOW",
+      "confidence": 0.8612232190874295,
+      "timestamp": 1749741592878
+    },
+    "SOL/USDT": {
+      "regime": "BULLISH",
+      "trendStrength": 0.09409827234126425,
+      "volatility": 0.007717005184179052,
+      "momentum": 0.13075872456681692,
+      "volumeProfile": "NORMAL",
+      "supportResistance": "NEAR_RESISTANCE",
+      "cyclePosition": "NEAR_HIGH",
+      "confidence": 0.9242187483505836,
+      "timestamp": 1749741592879
+    },
+    "ADA/USDT": {
+      "regime": "BEARISH",
+      "trendStrength": -0.051305281342356124,
+      "volatility": 0.009306041299922888,
+      "momentum": -0.040721517432207,
+      "volumeProfile": "NORMAL",
+      "supportResistance": "NEAR_SUPPORT",
+      "cyclePosition": "NEAR_LOW",
+      "confidence": 0.9241898936940449,
+      "timestamp": 1749741592879
+    },
+    "AVAX/USDT": {
+      "regime": "SIDEWAYS",
+      "trendStrength": 0.0012890734576268615,
+      "volatility": 0.004114659557702707,
+      "momentum": 0.02208626394345116,
+      "volumeProfile": "NORMAL",
+      "supportResistance": "NEAR_RESISTANCE",
+      "cyclePosition": "NEAR_HIGH",
+      "confidence": 0.8759142908120493,
+      "timestamp": 1749741592880
+    }
+  },
+  "diverseSignals": {
+    "BTC/USDT_1h": {
+      "direction": "LONG",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "1h",
+      "riskReward": 1.66666666666667,
+      "bayesianUpdate": {
+        "confidence": 55.55967454153114,
+        "priorConfidence": 59.00961115770647,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5261897310237049,
+        "sharpeAdjustment": 0.05818492122170511,
+        "drawdownPenalty": 0.028777906830098753,
+        "historicalData": {
+          "winRate": 0.5261897310237049,
+          "totalTrades": 153,
+          "wins": 80,
+          "losses": 73,
+          "avgWin": 0.028245837677094543,
+          "avgLoss": 0.02300757084635592,
+          "sharpeRatio": 1.1636984244341022,
+          "maxDrawdown": 0.09592635610032918
+        }
+      },
+      "timestamp": 1749741592904,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "BTC/USDT_4h": {
+      "direction": "LONG",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "4h",
+      "riskReward": 1.5000000000000038,
+      "bayesianUpdate": {
+        "confidence": 50.473019110490746,
+        "priorConfidence": 64.00961115770647,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.48643749714440765,
+        "sharpeAdjustment": 0.03432103658142407,
+        "drawdownPenalty": 0.01602834262092418,
+        "historicalData": {
+          "winRate": 0.48643749714440765,
+          "totalTrades": 158,
+          "wins": 76,
+          "losses": 82,
+          "avgWin": 0.04353582698347593,
+          "avgLoss": 0.023077154501143945,
+          "sharpeRatio": 0.6864207316284814,
+          "maxDrawdown": 0.053427808736413944
+        }
+      },
+      "timestamp": 1749741592904,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "BTC/USDT_1d": {
+      "direction": "LONG",
+      "confidence": 95,
+      "reasoning": [
+        "Positive trend momentum",
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "1d",
+      "riskReward": 1.399999999999995,
+      "bayesianUpdate": {
+        "confidence": 64.52828286905579,
+        "priorConfidence": 69.00961115770647,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.6215504691566717,
+        "sharpeAdjustment": 0.041087251063442624,
+        "drawdownPenalty": 0.017354891529556386,
+        "historicalData": {
+          "winRate": 0.6215504691566717,
+          "totalTrades": 177,
+          "wins": 110,
+          "losses": 67,
+          "avgWin": 0.04933324127217166,
+          "avgLoss": 0.01979550694995158,
+          "sharpeRatio": 0.8217450212688524,
+          "maxDrawdown": 0.057849638431854616
+        }
+      },
+      "timestamp": 1749741592905,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "BTC/USDT_1w": {
+      "direction": "LONG",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "1w",
+      "riskReward": 1.333333333333335,
+      "bayesianUpdate": {
+        "confidence": 42.49004882536796,
+        "priorConfidence": 74.00961115770647,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.4396780816095971,
+        "sharpeAdjustment": 0.02983167302324168,
+        "drawdownPenalty": 0.04460926637915918,
+        "historicalData": {
+          "winRate": 0.4396780816095971,
+          "totalTrades": 128,
+          "wins": 56,
+          "losses": 72,
+          "avgWin": 0.049389660910518024,
+          "avgLoss": 0.023324530014223997,
+          "sharpeRatio": 0.5966334604648336,
+          "maxDrawdown": 0.14869755459719727
+        }
+      },
+      "timestamp": 1749741592905,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "ETH/USDT_1h": {
+      "direction": "SHORT",
+      "confidence": 95,
+      "reasoning": [
+        "High volume confirmation",
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "1h",
+      "riskReward": 1.6666666666666592,
+      "bayesianUpdate": {
+        "confidence": 52.619937535330074,
+        "priorConfidence": 73.10348565667836,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5639802184024612,
+        "sharpeAdjustment": -0.0004893389117921921,
+        "drawdownPenalty": 0.037291504137368287,
+        "historicalData": {
+          "winRate": 0.5639802184024612,
+          "totalTrades": 152,
+          "wins": 85,
+          "losses": 67,
+          "avgWin": 0.04131960454150127,
+          "avgLoss": 0.031069602919548096,
+          "sharpeRatio": -0.00978677823584384,
+          "maxDrawdown": 0.12430501379122763
+        }
+      },
+      "timestamp": 1749741592906,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Symmetrical Triangle"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "ETH/USDT_4h": {
+      "direction": "SHORT",
+      "confidence": 95,
+      "reasoning": [
+        "High volume confirmation"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "4h",
+      "riskReward": 1.4999999999999958,
+      "bayesianUpdate": {
+        "confidence": 46.83595264903424,
+        "priorConfidence": 78.10348565667836,
+        "evidenceStrength": 0.7,
+        "evidenceQuality": 0.3904945750086515,
+        "sharpeAdjustment": -0.017847723290475615,
+        "drawdownPenalty": 0.021449409695273168,
+        "historicalData": {
+          "winRate": 0.3904945750086515,
+          "totalTrades": 70,
+          "wins": 27,
+          "losses": 43,
+          "avgWin": 0.028833409968402314,
+          "avgLoss": 0.018585344516712392,
+          "sharpeRatio": -0.3569544658095123,
+          "maxDrawdown": 0.07149803231757723
+        }
+      },
+      "timestamp": 1749741592906,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Symmetrical Triangle"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "ETH/USDT_1d": {
+      "direction": "SHORT",
+      "confidence": 95,
+      "reasoning": [
+        "Negative trend momentum",
+        "High volume confirmation",
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "1d",
+      "riskReward": 1.4000000000000041,
+      "bayesianUpdate": {
+        "confidence": 60.94258000427519,
+        "priorConfidence": 83.10348565667836,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5871477956838027,
+        "sharpeAdjustment": 0.04788390967729215,
+        "drawdownPenalty": 0.025605905318342902,
+        "historicalData": {
+          "winRate": 0.5871477956838027,
+          "totalTrades": 160,
+          "wins": 93,
+          "losses": 67,
+          "avgWin": 0.0265487936942768,
+          "avgLoss": 0.03430682015686069,
+          "sharpeRatio": 0.9576781935458429,
+          "maxDrawdown": 0.08535301772780968
+        }
+      },
+      "timestamp": 1749741592906,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Symmetrical Triangle"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "ETH/USDT_1w": {
+      "direction": "SHORT",
+      "confidence": 95,
+      "reasoning": [
+        "High volume confirmation",
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "1w",
+      "riskReward": 1.333333333333337,
+      "bayesianUpdate": {
+        "confidence": 58.752764509450095,
+        "priorConfidence": 85,
+        "evidenceStrength": 0.72,
+        "evidenceQuality": 0.5194846245549691,
+        "sharpeAdjustment": 0.01697674324037837,
+        "drawdownPenalty": 0.041478027825455156,
+        "historicalData": {
+          "winRate": 0.5194846245549691,
+          "totalTrades": 72,
+          "wins": 37,
+          "losses": 35,
+          "avgWin": 0.043196002075766994,
+          "avgLoss": 0.032463774737555726,
+          "sharpeRatio": 0.33953486480756734,
+          "maxDrawdown": 0.13826009275151718
+        }
+      },
+      "timestamp": 1749741592907,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Symmetrical Triangle"
+      ],
+      "patternRisk": [
+        "Trend Divergence"
+      ],
+      "keyLevels": []
+    },
+    "BNB/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1h",
+      "riskReward": 1.6666666666666625,
+      "bayesianUpdate": {
+        "confidence": 64.30873043689218,
+        "priorConfidence": 45.00016718670165,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.6497954013799623,
+        "sharpeAdjustment": 0.03852353025470914,
+        "drawdownPenalty": 0.045231627265749745,
+        "historicalData": {
+          "winRate": 0.6497954013799623,
+          "totalTrades": 139,
+          "wins": 90,
+          "losses": 49,
+          "avgWin": 0.037125107485953476,
+          "avgLoss": 0.030031311814677237,
+          "sharpeRatio": 0.7704706050941827,
+          "maxDrawdown": 0.1507720908858325
+        }
+      },
+      "timestamp": 1749741592907,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "BNB/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Low confidence environment"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "4h",
+      "riskReward": 1.5000000000000093,
+      "bayesianUpdate": {
+        "confidence": 35.794614525921155,
+        "priorConfidence": 50.00016718670165,
+        "evidenceStrength": 0.61,
+        "evidenceQuality": 0.3624259954316974,
+        "sharpeAdjustment": -0.014223873777441344,
+        "drawdownPenalty": 0.043910490204819,
+        "historicalData": {
+          "winRate": 0.3624259954316974,
+          "totalTrades": 61,
+          "wins": 22,
+          "losses": 39,
+          "avgWin": 0.03926193222512969,
+          "avgLoss": 0.020257711203400763,
+          "sharpeRatio": -0.28447747554882685,
+          "maxDrawdown": 0.14636830068273
+        }
+      },
+      "timestamp": 1749741592908,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "BNB/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1d",
+      "riskReward": 1.3999999999999986,
+      "bayesianUpdate": {
+        "confidence": 66.64586291769572,
+        "priorConfidence": 55.00016718670165,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.6426946738009206,
+        "sharpeAdjustment": 0.05846713082170272,
+        "drawdownPenalty": 0.034703175445666104,
+        "historicalData": {
+          "winRate": 0.6426946738009206,
+          "totalTrades": 194,
+          "wins": 124,
+          "losses": 70,
+          "avgWin": 0.02054594850537972,
+          "avgLoss": 0.029442193558049543,
+          "sharpeRatio": 1.1693426164340543,
+          "maxDrawdown": 0.11567725148555369
+        }
+      },
+      "timestamp": 1749741592908,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "BNB/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1w",
+      "riskReward": 1.3333333333333313,
+      "bayesianUpdate": {
+        "confidence": 56.77346066151464,
+        "priorConfidence": 60.00016718670165,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.631987190214495,
+        "sharpeAdjustment": -0.006591649883452622,
+        "drawdownPenalty": 0.05766093371589601,
+        "historicalData": {
+          "winRate": 0.631987190214495,
+          "totalTrades": 203,
+          "wins": 128,
+          "losses": 75,
+          "avgWin": 0.04517780619695679,
+          "avgLoss": 0.028547200558332025,
+          "sharpeRatio": -0.13183299766905243,
+          "maxDrawdown": 0.19220311238632004
+        }
+      },
+      "timestamp": 1749741592909,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "XRP/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Low confidence environment",
+        "Strong historical evidence"
+      ],
+      "marketRegime": "VOLATILE",
+      "timeframe": "1h",
+      "riskReward": 1.666666666666655,
+      "bayesianUpdate": {
+        "confidence": 38.35532904964347,
+        "priorConfidence": 40.011061308544605,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.4041261894110022,
+        "sharpeAdjustment": 0.005342795623486185,
+        "drawdownPenalty": 0.025915694538053653,
+        "historicalData": {
+          "winRate": 0.4041261894110022,
+          "totalTrades": 215,
+          "wins": 86,
+          "losses": 129,
+          "avgWin": 0.046445086395265456,
+          "avgLoss": 0.02518407509003743,
+          "sharpeRatio": 0.1068559124697237,
+          "maxDrawdown": 0.08638564846017885
+        }
+      },
+      "timestamp": 1749741592909,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "XRP/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "VOLATILE",
+      "timeframe": "4h",
+      "riskReward": 1.4999999999999913,
+      "bayesianUpdate": {
+        "confidence": 67.0429245676783,
+        "priorConfidence": 45.011061308544605,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.6403756803588636,
+        "sharpeAdjustment": 0.0704453403062345,
+        "drawdownPenalty": 0.04039177498831516,
+        "historicalData": {
+          "winRate": 0.6403756803588636,
+          "totalTrades": 196,
+          "wins": 125,
+          "losses": 71,
+          "avgWin": 0.0216867921218677,
+          "avgLoss": 0.025774272060367927,
+          "sharpeRatio": 1.40890680612469,
+          "maxDrawdown": 0.13463924996105053
+        }
+      },
+      "timestamp": 1749741592910,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "XRP/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "VOLATILE",
+      "timeframe": "1d",
+      "riskReward": 1.4000000000000028,
+      "bayesianUpdate": {
+        "confidence": 58.532102409215355,
+        "priorConfidence": 50.011061308544605,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5607473794295699,
+        "sharpeAdjustment": 0.039962381339873156,
+        "drawdownPenalty": 0.015388736677289435,
+        "historicalData": {
+          "winRate": 0.5607473794295699,
+          "totalTrades": 122,
+          "wins": 68,
+          "losses": 54,
+          "avgWin": 0.02776414279126971,
+          "avgLoss": 0.022552684527082943,
+          "sharpeRatio": 0.7992476267974631,
+          "maxDrawdown": 0.05129578892429812
+        }
+      },
+      "timestamp": 1749741592910,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "XRP/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Low confidence environment",
+        "Strong historical evidence"
+      ],
+      "marketRegime": "VOLATILE",
+      "timeframe": "1w",
+      "riskReward": 1.3333333333333353,
+      "bayesianUpdate": {
+        "confidence": 37.13631038353296,
+        "priorConfidence": 55.011061308544605,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.3510732284611051,
+        "sharpeAdjustment": 0.07172253767957815,
+        "drawdownPenalty": 0.051432662305353684,
+        "historicalData": {
+          "winRate": 0.3510732284611051,
+          "totalTrades": 120,
+          "wins": 42,
+          "losses": 78,
+          "avgWin": 0.02656568784273911,
+          "avgLoss": 0.020547983993390213,
+          "sharpeRatio": 1.434450753591563,
+          "maxDrawdown": 0.1714422076845123
+        }
+      },
+      "timestamp": 1749741592911,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "SOL/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "1h",
+      "riskReward": 1.6666666666666707,
+      "bayesianUpdate": {
+        "confidence": 57.40533634819853,
+        "priorConfidence": 62.822948170237936,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5830894348526903,
+        "sharpeAdjustment": 0.007944496825983683,
+        "drawdownPenalty": 0.01698056819668853,
+        "historicalData": {
+          "winRate": 0.5830894348526903,
+          "totalTrades": 194,
+          "wins": 113,
+          "losses": 81,
+          "avgWin": 0.022218642556101256,
+          "avgLoss": 0.0341384109695648,
+          "sharpeRatio": 0.15888993651967365,
+          "maxDrawdown": 0.056601893988961774
+        }
+      },
+      "timestamp": 1749741592912,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Double Top"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "SOL/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "4h",
+      "riskReward": 1.5,
+      "bayesianUpdate": {
+        "confidence": 53.82371060778674,
+        "priorConfidence": 67.82294817023794,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.4898381527899941,
+        "sharpeAdjustment": 0.0737455349082947,
+        "drawdownPenalty": 0.02534658162042147,
+        "historicalData": {
+          "winRate": 0.4898381527899941,
+          "totalTrades": 243,
+          "wins": 119,
+          "losses": 124,
+          "avgWin": 0.021791842799039948,
+          "avgLoss": 0.022307582121471506,
+          "sharpeRatio": 1.474910698165894,
+          "maxDrawdown": 0.0844886054014049
+        }
+      },
+      "timestamp": 1749741592912,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Double Top"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "SOL/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "1d",
+      "riskReward": 1.4000000000000015,
+      "bayesianUpdate": {
+        "confidence": 54.031208133804384,
+        "priorConfidence": 72.82294817023794,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5729275990532459,
+        "sharpeAdjustment": 0.005147865158344623,
+        "drawdownPenalty": 0.03776338287354667,
+        "historicalData": {
+          "winRate": 0.5729275990532459,
+          "totalTrades": 235,
+          "wins": 134,
+          "losses": 101,
+          "avgWin": 0.038201083366793315,
+          "avgLoss": 0.03343820239327771,
+          "sharpeRatio": 0.10295730316689244,
+          "maxDrawdown": 0.12587794291182225
+        }
+      },
+      "timestamp": 1749741592913,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Double Top"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "SOL/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BULLISH",
+      "timeframe": "1w",
+      "riskReward": 1.3333333333333333,
+      "bayesianUpdate": {
+        "confidence": 45.049781579111574,
+        "priorConfidence": 77.82294817023794,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.44546137859412555,
+        "sharpeAdjustment": 0.05339665525262016,
+        "drawdownPenalty": 0.04836021805562996,
+        "historicalData": {
+          "winRate": 0.44546137859412555,
+          "totalTrades": 227,
+          "wins": 101,
+          "losses": 126,
+          "avgWin": 0.04308377193675608,
+          "avgLoss": 0.01659428406435255,
+          "sharpeRatio": 1.0679331050524032,
+          "maxDrawdown": 0.16120072685209988
+        }
+      },
+      "timestamp": 1749741592913,
+      "patternSupport": [
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Hammer",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Double Top"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "ADA/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Low confidence environment",
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "1h",
+      "riskReward": 1.6666666666666698,
+      "bayesianUpdate": {
+        "confidence": 37.48629014519345,
+        "priorConfidence": 61.53915844027068,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.410500953559009,
+        "sharpeAdjustment": 0.023927702972930922,
+        "drawdownPenalty": 0.0595657550800054,
+        "historicalData": {
+          "winRate": 0.410500953559009,
+          "totalTrades": 233,
+          "wins": 95,
+          "losses": 138,
+          "avgWin": 0.024695474892185786,
+          "avgLoss": 0.02265610608606596,
+          "sharpeRatio": 0.4785540594586184,
+          "maxDrawdown": 0.19855251693335135
+        }
+      },
+      "timestamp": 1749741592914,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "ADA/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "4h",
+      "riskReward": 1.5000000000000038,
+      "bayesianUpdate": {
+        "confidence": 47.39313500593466,
+        "priorConfidence": 66.53915844027068,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5002840281889489,
+        "sharpeAdjustment": 0.014144433646454124,
+        "drawdownPenalty": 0.0404971117760564,
+        "historicalData": {
+          "winRate": 0.5002840281889489,
+          "totalTrades": 128,
+          "wins": 64,
+          "losses": 64,
+          "avgWin": 0.03965562915184988,
+          "avgLoss": 0.031574404461214164,
+          "sharpeRatio": 0.2828886729290825,
+          "maxDrawdown": 0.13499037258685467
+        }
+      },
+      "timestamp": 1749741592914,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "ADA/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "1d",
+      "riskReward": 1.4000000000000012,
+      "bayesianUpdate": {
+        "confidence": 45.70391097636253,
+        "priorConfidence": 71.53915844027068,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.4911738712305772,
+        "sharpeAdjustment": 0.014345566109683917,
+        "drawdownPenalty": 0.048480327576635875,
+        "historicalData": {
+          "winRate": 0.4911738712305772,
+          "totalTrades": 206,
+          "wins": 101,
+          "losses": 105,
+          "avgWin": 0.038128157251607064,
+          "avgLoss": 0.028780257423653498,
+          "sharpeRatio": 0.2869113221936783,
+          "maxDrawdown": 0.16160109192211958
+        }
+      },
+      "timestamp": 1749741592915,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "ADA/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "BEARISH",
+      "timeframe": "1w",
+      "riskReward": 1.333333333333335,
+      "bayesianUpdate": {
+        "confidence": 47.6730982409883,
+        "priorConfidence": 76.53915844027068,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5092292438980743,
+        "sharpeAdjustment": -0.011704809867146993,
+        "drawdownPenalty": 0.020793451621044273,
+        "historicalData": {
+          "winRate": 0.5092292438980743,
+          "totalTrades": 144,
+          "wins": 73,
+          "losses": 71,
+          "avgWin": 0.04749359397263403,
+          "avgLoss": 0.02832259708487997,
+          "sharpeRatio": -0.23409619734293985,
+          "maxDrawdown": 0.06931150540348091
+        }
+      },
+      "timestamp": 1749741592915,
+      "patternSupport": [
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Hammer",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "AVAX/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1h",
+      "riskReward": 1.6666666666666563,
+      "bayesianUpdate": {
+        "confidence": 51.00369780223583,
+        "priorConfidence": 45.03867220372881,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.5237406464400673,
+        "sharpeAdjustment": 0.023737803371355493,
+        "drawdownPenalty": 0.03744147178906453,
+        "historicalData": {
+          "winRate": 0.5237406464400673,
+          "totalTrades": 141,
+          "wins": 73,
+          "losses": 68,
+          "avgWin": 0.04139920474713401,
+          "avgLoss": 0.026217270620829895,
+          "sharpeRatio": 0.47475606742710985,
+          "maxDrawdown": 0.12480490596354846
+        }
+      },
+      "timestamp": 1749741592916,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "AVAX/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "4h",
+      "riskReward": 1.5000000000000038,
+      "bayesianUpdate": {
+        "confidence": 43.1537124161977,
+        "priorConfidence": 50.03867220372881,
+        "evidenceStrength": 0.85,
+        "evidenceQuality": 0.40309018541213615,
+        "sharpeAdjustment": 0.05837785013680663,
+        "drawdownPenalty": 0.04452539188073863,
+        "historicalData": {
+          "winRate": 0.40309018541213615,
+          "totalTrades": 85,
+          "wins": 34,
+          "losses": 51,
+          "avgWin": 0.029595657519413,
+          "avgLoss": 0.025404372141832585,
+          "sharpeRatio": 1.1675570027361326,
+          "maxDrawdown": 0.14841797293579545
+        }
+      },
+      "timestamp": 1749741592916,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "AVAX/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1d",
+      "riskReward": 1.4000000000000024,
+      "bayesianUpdate": {
+        "confidence": 43.823456302870994,
+        "priorConfidence": 55.03867220372881,
+        "evidenceStrength": 1,
+        "evidenceQuality": 0.3877586122706066,
+        "sharpeAdjustment": 0.06755040058441815,
+        "drawdownPenalty": 0.017074449826314807,
+        "historicalData": {
+          "winRate": 0.3877586122706066,
+          "totalTrades": 172,
+          "wins": 66,
+          "losses": 106,
+          "avgWin": 0.027113023421754964,
+          "avgLoss": 0.027415273779593803,
+          "sharpeRatio": 1.351008011688363,
+          "maxDrawdown": 0.05691483275438269
+        }
+      },
+      "timestamp": 1749741592916,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    },
+    "AVAX/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 95,
+      "reasoning": [
+        "Strong historical evidence"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1w",
+      "riskReward": 1.333333333333335,
+      "bayesianUpdate": {
+        "confidence": 50.79141200728483,
+        "priorConfidence": 60.03867220372881,
+        "evidenceStrength": 0.97,
+        "evidenceQuality": 0.46040786706204784,
+        "sharpeAdjustment": 0.0602852137434543,
+        "drawdownPenalty": 0.01697832638191094,
+        "historicalData": {
+          "winRate": 0.46040786706204784,
+          "totalTrades": 97,
+          "wins": 44,
+          "losses": 53,
+          "avgWin": 0.036445148949491676,
+          "avgLoss": 0.016664203742702006,
+          "sharpeRatio": 1.205704274869086,
+          "maxDrawdown": 0.05659442127303646
+        }
+      },
+      "timestamp": 1749741592917,
+      "patternSupport": [
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Doji",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Doji",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing",
+        "Engulfing"
+      ],
+      "patternRisk": [],
+      "keyLevels": []
+    }
+  },
+  "atrRiskManagement": {
+    "BTC/USDT_1h": {
+      "entryPrice": 47885.347509178544,
+      "stopLoss": 47168.782563611654,
+      "takeProfit": 49079.622418456696,
+      "stopLossPercent": 1.4964179709242802,
+      "takeProfitPercent": 2.494029951540472,
+      "riskReward": 1.66666666666667,
+      "atrValue": 955.4199274225194,
+      "atrMultiplier": 0.75,
+      "positionSizePercent": 10,
+      "directionBias": "LONG",
+      "timeframe": "1h"
+    },
+    "BTC/USDT_4h": {
+      "entryPrice": 47885.347509178544,
+      "stopLoss": 46929.92758175603,
+      "takeProfit": 49318.477400312324,
+      "stopLossPercent": 1.9952239612323686,
+      "takeProfitPercent": 2.9928359418485604,
+      "riskReward": 1.5000000000000038,
+      "atrValue": 955.4199274225194,
+      "atrMultiplier": 1,
+      "positionSizePercent": 10,
+      "directionBias": "LONG",
+      "timeframe": "4h"
+    },
+    "BTC/USDT_1d": {
+      "entryPrice": 47885.347509178544,
+      "stopLoss": 46691.07259990039,
+      "takeProfit": 49557.33238216795,
+      "stopLossPercent": 2.494029951540472,
+      "takeProfitPercent": 3.4916419321566488,
+      "riskReward": 1.399999999999995,
+      "atrValue": 955.4199274225194,
+      "atrMultiplier": 1.25,
+      "positionSizePercent": 10,
+      "directionBias": "LONG",
+      "timeframe": "1d"
+    },
+    "BTC/USDT_1w": {
+      "entryPrice": 47885.347509178544,
+      "stopLoss": 46452.217618044764,
+      "takeProfit": 49796.187364023586,
+      "stopLossPercent": 2.9928359418485604,
+      "takeProfitPercent": 3.990447922464752,
+      "riskReward": 1.333333333333335,
+      "atrValue": 955.4199274225194,
+      "atrMultiplier": 1.5,
+      "positionSizePercent": 10,
+      "directionBias": "LONG",
+      "timeframe": "1w"
+    },
+    "ETH/USDT_1h": {
+      "entryPrice": 2429.7857519909708,
+      "stopLoss": 2470.438436104047,
+      "takeProfit": 2362.0312784691773,
+      "stopLossPercent": 1.673097477000405,
+      "takeProfitPercent": 2.7884957950006624,
+      "riskReward": 1.6666666666666592,
+      "atrValue": 54.203578817434845,
+      "atrMultiplier": 0.75,
+      "positionSizePercent": 10,
+      "directionBias": "SHORT",
+      "timeframe": "1h"
+    },
+    "ETH/USDT_4h": {
+      "entryPrice": 2429.7857519909708,
+      "stopLoss": 2483.9893308084056,
+      "takeProfit": 2348.4803837648187,
+      "stopLossPercent": 2.230796636000534,
+      "takeProfitPercent": 3.346194954000791,
+      "riskReward": 1.4999999999999958,
+      "atrValue": 54.203578817434845,
+      "atrMultiplier": 1,
+      "positionSizePercent": 10,
+      "directionBias": "SHORT",
+      "timeframe": "4h"
+    },
+    "ETH/USDT_1d": {
+      "entryPrice": 2429.7857519909708,
+      "stopLoss": 2497.540225512764,
+      "takeProfit": 2334.9294890604597,
+      "stopLossPercent": 2.7884957950006624,
+      "takeProfitPercent": 3.9038941130009386,
+      "riskReward": 1.4000000000000041,
+      "atrValue": 54.203578817434845,
+      "atrMultiplier": 1.25,
+      "positionSizePercent": 10,
+      "directionBias": "SHORT",
+      "timeframe": "1d"
+    },
+    "ETH/USDT_1w": {
+      "entryPrice": 2429.7857519909708,
+      "stopLoss": 2511.091120217123,
+      "takeProfit": 2321.378594356101,
+      "stopLossPercent": 3.346194954000791,
+      "takeProfitPercent": 4.461593272001068,
+      "riskReward": 1.333333333333337,
+      "atrValue": 54.203578817434845,
+      "atrMultiplier": 1.5,
+      "positionSizePercent": 10,
+      "directionBias": "SHORT",
+      "timeframe": "1w"
+    },
+    "BNB/USDT_1h": {
+      "entryPrice": 328.5820338833337,
+      "stopLoss": 324.05201192931423,
+      "takeProfit": 336.13207047336607,
+      "stopLossPercent": 1.3786578348431173,
+      "takeProfitPercent": 2.2977630580718564,
+      "riskReward": 1.6666666666666625,
+      "atrValue": 6.04002927202591,
+      "atrMultiplier": 0.75,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1h"
+    },
+    "BNB/USDT_4h": {
+      "entryPrice": 328.5820338833337,
+      "stopLoss": 322.5420046113078,
+      "takeProfit": 337.64207779137257,
+      "stopLossPercent": 1.8382104464574782,
+      "takeProfitPercent": 2.7573156696862346,
+      "riskReward": 1.5000000000000093,
+      "atrValue": 6.04002927202591,
+      "atrMultiplier": 1,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "4h"
+    },
+    "BNB/USDT_1d": {
+      "entryPrice": 328.5820338833337,
+      "stopLoss": 321.0319972933013,
+      "takeProfit": 339.152085109379,
+      "stopLossPercent": 2.2977630580718564,
+      "takeProfitPercent": 3.216868281300596,
+      "riskReward": 1.3999999999999986,
+      "atrValue": 6.04002927202591,
+      "atrMultiplier": 1.25,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1d"
+    },
+    "BNB/USDT_1w": {
+      "entryPrice": 328.5820338833337,
+      "stopLoss": 319.5219899752948,
+      "takeProfit": 340.6620924273855,
+      "stopLossPercent": 2.7573156696862346,
+      "takeProfitPercent": 3.6764208929149738,
+      "riskReward": 1.3333333333333313,
+      "atrValue": 6.04002927202591,
+      "atrMultiplier": 1.5,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1w"
+    },
+    "XRP/USDT_1h": {
+      "entryPrice": 0.6384525626020373,
+      "stopLoss": 0.6289206290587697,
+      "takeProfit": 0.6543391185074833,
+      "stopLossPercent": 1.4929744356291552,
+      "takeProfitPercent": 2.4882907260485747,
+      "riskReward": 1.666666666666655,
+      "atrValue": 0.01270924472435681,
+      "atrMultiplier": 0.75,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1h"
+    },
+    "XRP/USDT_4h": {
+      "entryPrice": 0.6384525626020373,
+      "stopLoss": 0.6257433178776804,
+      "takeProfit": 0.6575164296885725,
+      "stopLossPercent": 1.9906325808388736,
+      "takeProfitPercent": 2.985948871258293,
+      "riskReward": 1.4999999999999913,
+      "atrValue": 0.01270924472435681,
+      "atrMultiplier": 1,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "4h"
+    },
+    "XRP/USDT_1d": {
+      "entryPrice": 0.6384525626020373,
+      "stopLoss": 0.6225660066965913,
+      "takeProfit": 0.6606937408696617,
+      "stopLossPercent": 2.4882907260485747,
+      "takeProfitPercent": 3.4836070164680115,
+      "riskReward": 1.4000000000000028,
+      "atrValue": 0.01270924472435681,
+      "atrMultiplier": 1.25,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1d"
+    },
+    "XRP/USDT_1w": {
+      "entryPrice": 0.6384525626020373,
+      "stopLoss": 0.6193886955155021,
+      "takeProfit": 0.6638710520507509,
+      "stopLossPercent": 2.985948871258293,
+      "takeProfitPercent": 3.98126516167773,
+      "riskReward": 1.3333333333333353,
+      "atrValue": 0.01270924472435681,
+      "atrMultiplier": 1.5,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1w"
+    },
+    "SOL/USDT_1h": {
+      "entryPrice": 156.25021354473023,
+      "stopLoss": 153.94792152889923,
+      "takeProfit": 160.08736690444857,
+      "stopLossPercent": 1.473464876367619,
+      "takeProfitPercent": 2.4557747939460377,
+      "riskReward": 1.6666666666666707,
+      "atrValue": 3.0697226877746853,
+      "atrMultiplier": 0.75,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1h"
+    },
+    "SOL/USDT_4h": {
+      "entryPrice": 156.25021354473023,
+      "stopLoss": 153.18049085695554,
+      "takeProfit": 160.85479757639226,
+      "stopLossPercent": 1.9646198351568376,
+      "takeProfitPercent": 2.9469297527352563,
+      "riskReward": 1.5,
+      "atrValue": 3.0697226877746853,
+      "atrMultiplier": 1,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "4h"
+    },
+    "SOL/USDT_1d": {
+      "entryPrice": 156.25021354473023,
+      "stopLoss": 152.4130601850119,
+      "takeProfit": 161.62222824833592,
+      "stopLossPercent": 2.4557747939460377,
+      "takeProfitPercent": 3.438084711524456,
+      "riskReward": 1.4000000000000015,
+      "atrValue": 3.0697226877746853,
+      "atrMultiplier": 1.25,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1d"
+    },
+    "SOL/USDT_1w": {
+      "entryPrice": 156.25021354473023,
+      "stopLoss": 151.6456295130682,
+      "takeProfit": 162.3896589202796,
+      "stopLossPercent": 2.9469297527352563,
+      "takeProfitPercent": 3.929239670313675,
+      "riskReward": 1.3333333333333333,
+      "atrValue": 3.0697226877746853,
+      "atrMultiplier": 1.5,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1w"
+    },
+    "ADA/USDT_1h": {
+      "entryPrice": 0.3853895982734134,
+      "stopLoss": 0.3797533581382845,
+      "takeProfit": 0.3947833318319616,
+      "stopLossPercent": 1.462478530915178,
+      "takeProfitPercent": 2.4374642181919683,
+      "riskReward": 1.6666666666666698,
+      "atrValue": 0.007514986846838571,
+      "atrMultiplier": 0.75,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1h"
+    },
+    "ADA/USDT_4h": {
+      "entryPrice": 0.3853895982734134,
+      "stopLoss": 0.37787461142657486,
+      "takeProfit": 0.39666207854367125,
+      "stopLossPercent": 1.9499713745535658,
+      "takeProfitPercent": 2.924957061830356,
+      "riskReward": 1.5000000000000038,
+      "atrValue": 0.007514986846838571,
+      "atrMultiplier": 1,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "4h"
+    },
+    "ADA/USDT_1d": {
+      "entryPrice": 0.3853895982734134,
+      "stopLoss": 0.3759958647148652,
+      "takeProfit": 0.3985408252553809,
+      "stopLossPercent": 2.4374642181919683,
+      "takeProfitPercent": 3.4124499054687583,
+      "riskReward": 1.4000000000000012,
+      "atrValue": 0.007514986846838571,
+      "atrMultiplier": 1.25,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1d"
+    },
+    "ADA/USDT_1w": {
+      "entryPrice": 0.3853895982734134,
+      "stopLoss": 0.37411711800315556,
+      "takeProfit": 0.40041957196709055,
+      "stopLossPercent": 2.924957061830356,
+      "takeProfitPercent": 3.8999427491071463,
+      "riskReward": 1.333333333333335,
+      "atrValue": 0.007514986846838571,
+      "atrMultiplier": 1.5,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1w"
+    },
+    "AVAX/USDT_1h": {
+      "entryPrice": 24.31224494538609,
+      "stopLoss": 23.966186194366077,
+      "takeProfit": 24.889009530419443,
+      "stopLossPercent": 1.4233928285824033,
+      "takeProfitPercent": 2.372321380970658,
+      "riskReward": 1.6666666666666563,
+      "atrValue": 0.4614116680266825,
+      "atrMultiplier": 0.75,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1h"
+    },
+    "AVAX/USDT_4h": {
+      "entryPrice": 24.31224494538609,
+      "stopLoss": 23.85083327735941,
+      "takeProfit": 25.004362447426114,
+      "stopLossPercent": 1.8978571047765231,
+      "takeProfitPercent": 2.8467856571647925,
+      "riskReward": 1.5000000000000038,
+      "atrValue": 0.4614116680266825,
+      "atrMultiplier": 1,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "4h"
+    },
+    "AVAX/USDT_1d": {
+      "entryPrice": 24.31224494538609,
+      "stopLoss": 23.73548036035274,
+      "takeProfit": 25.119715364432786,
+      "stopLossPercent": 2.372321380970658,
+      "takeProfitPercent": 3.3212499333589265,
+      "riskReward": 1.4000000000000024,
+      "atrValue": 0.4614116680266825,
+      "atrMultiplier": 1.25,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1d"
+    },
+    "AVAX/USDT_1w": {
+      "entryPrice": 24.31224494538609,
+      "stopLoss": 23.620127443346068,
+      "takeProfit": 25.235068281439457,
+      "stopLossPercent": 2.8467856571647925,
+      "takeProfitPercent": 3.795714209553061,
+      "riskReward": 1.333333333333335,
+      "atrValue": 0.4614116680266825,
+      "atrMultiplier": 1.5,
+      "positionSizePercent": 10,
+      "directionBias": "NEUTRAL",
+      "timeframe": "1w"
+    }
+  },
+  "bayesianConfidence": {
+    "BTC/USDT_1h": {
+      "confidence": 55.55967454153114,
+      "priorConfidence": 59.00961115770647,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5261897310237049,
+      "sharpeAdjustment": 0.05818492122170511,
+      "drawdownPenalty": 0.028777906830098753,
+      "historicalData": {
+        "winRate": 0.5261897310237049,
+        "totalTrades": 153,
+        "wins": 80,
+        "losses": 73,
+        "avgWin": 0.028245837677094543,
+        "avgLoss": 0.02300757084635592,
+        "sharpeRatio": 1.1636984244341022,
+        "maxDrawdown": 0.09592635610032918
+      }
+    },
+    "BTC/USDT_4h": {
+      "confidence": 50.473019110490746,
+      "priorConfidence": 64.00961115770647,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.48643749714440765,
+      "sharpeAdjustment": 0.03432103658142407,
+      "drawdownPenalty": 0.01602834262092418,
+      "historicalData": {
+        "winRate": 0.48643749714440765,
+        "totalTrades": 158,
+        "wins": 76,
+        "losses": 82,
+        "avgWin": 0.04353582698347593,
+        "avgLoss": 0.023077154501143945,
+        "sharpeRatio": 0.6864207316284814,
+        "maxDrawdown": 0.053427808736413944
+      }
+    },
+    "BTC/USDT_1d": {
+      "confidence": 64.52828286905579,
+      "priorConfidence": 69.00961115770647,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.6215504691566717,
+      "sharpeAdjustment": 0.041087251063442624,
+      "drawdownPenalty": 0.017354891529556386,
+      "historicalData": {
+        "winRate": 0.6215504691566717,
+        "totalTrades": 177,
+        "wins": 110,
+        "losses": 67,
+        "avgWin": 0.04933324127217166,
+        "avgLoss": 0.01979550694995158,
+        "sharpeRatio": 0.8217450212688524,
+        "maxDrawdown": 0.057849638431854616
+      }
+    },
+    "BTC/USDT_1w": {
+      "confidence": 42.49004882536796,
+      "priorConfidence": 74.00961115770647,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.4396780816095971,
+      "sharpeAdjustment": 0.02983167302324168,
+      "drawdownPenalty": 0.04460926637915918,
+      "historicalData": {
+        "winRate": 0.4396780816095971,
+        "totalTrades": 128,
+        "wins": 56,
+        "losses": 72,
+        "avgWin": 0.049389660910518024,
+        "avgLoss": 0.023324530014223997,
+        "sharpeRatio": 0.5966334604648336,
+        "maxDrawdown": 0.14869755459719727
+      }
+    },
+    "ETH/USDT_1h": {
+      "confidence": 52.619937535330074,
+      "priorConfidence": 73.10348565667836,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5639802184024612,
+      "sharpeAdjustment": -0.0004893389117921921,
+      "drawdownPenalty": 0.037291504137368287,
+      "historicalData": {
+        "winRate": 0.5639802184024612,
+        "totalTrades": 152,
+        "wins": 85,
+        "losses": 67,
+        "avgWin": 0.04131960454150127,
+        "avgLoss": 0.031069602919548096,
+        "sharpeRatio": -0.00978677823584384,
+        "maxDrawdown": 0.12430501379122763
+      }
+    },
+    "ETH/USDT_4h": {
+      "confidence": 46.83595264903424,
+      "priorConfidence": 78.10348565667836,
+      "evidenceStrength": 0.7,
+      "evidenceQuality": 0.3904945750086515,
+      "sharpeAdjustment": -0.017847723290475615,
+      "drawdownPenalty": 0.021449409695273168,
+      "historicalData": {
+        "winRate": 0.3904945750086515,
+        "totalTrades": 70,
+        "wins": 27,
+        "losses": 43,
+        "avgWin": 0.028833409968402314,
+        "avgLoss": 0.018585344516712392,
+        "sharpeRatio": -0.3569544658095123,
+        "maxDrawdown": 0.07149803231757723
+      }
+    },
+    "ETH/USDT_1d": {
+      "confidence": 60.94258000427519,
+      "priorConfidence": 83.10348565667836,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5871477956838027,
+      "sharpeAdjustment": 0.04788390967729215,
+      "drawdownPenalty": 0.025605905318342902,
+      "historicalData": {
+        "winRate": 0.5871477956838027,
+        "totalTrades": 160,
+        "wins": 93,
+        "losses": 67,
+        "avgWin": 0.0265487936942768,
+        "avgLoss": 0.03430682015686069,
+        "sharpeRatio": 0.9576781935458429,
+        "maxDrawdown": 0.08535301772780968
+      }
+    },
+    "ETH/USDT_1w": {
+      "confidence": 58.752764509450095,
+      "priorConfidence": 85,
+      "evidenceStrength": 0.72,
+      "evidenceQuality": 0.5194846245549691,
+      "sharpeAdjustment": 0.01697674324037837,
+      "drawdownPenalty": 0.041478027825455156,
+      "historicalData": {
+        "winRate": 0.5194846245549691,
+        "totalTrades": 72,
+        "wins": 37,
+        "losses": 35,
+        "avgWin": 0.043196002075766994,
+        "avgLoss": 0.032463774737555726,
+        "sharpeRatio": 0.33953486480756734,
+        "maxDrawdown": 0.13826009275151718
+      }
+    },
+    "BNB/USDT_1h": {
+      "confidence": 64.30873043689218,
+      "priorConfidence": 45.00016718670165,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.6497954013799623,
+      "sharpeAdjustment": 0.03852353025470914,
+      "drawdownPenalty": 0.045231627265749745,
+      "historicalData": {
+        "winRate": 0.6497954013799623,
+        "totalTrades": 139,
+        "wins": 90,
+        "losses": 49,
+        "avgWin": 0.037125107485953476,
+        "avgLoss": 0.030031311814677237,
+        "sharpeRatio": 0.7704706050941827,
+        "maxDrawdown": 0.1507720908858325
+      }
+    },
+    "BNB/USDT_4h": {
+      "confidence": 35.794614525921155,
+      "priorConfidence": 50.00016718670165,
+      "evidenceStrength": 0.61,
+      "evidenceQuality": 0.3624259954316974,
+      "sharpeAdjustment": -0.014223873777441344,
+      "drawdownPenalty": 0.043910490204819,
+      "historicalData": {
+        "winRate": 0.3624259954316974,
+        "totalTrades": 61,
+        "wins": 22,
+        "losses": 39,
+        "avgWin": 0.03926193222512969,
+        "avgLoss": 0.020257711203400763,
+        "sharpeRatio": -0.28447747554882685,
+        "maxDrawdown": 0.14636830068273
+      }
+    },
+    "BNB/USDT_1d": {
+      "confidence": 66.64586291769572,
+      "priorConfidence": 55.00016718670165,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.6426946738009206,
+      "sharpeAdjustment": 0.05846713082170272,
+      "drawdownPenalty": 0.034703175445666104,
+      "historicalData": {
+        "winRate": 0.6426946738009206,
+        "totalTrades": 194,
+        "wins": 124,
+        "losses": 70,
+        "avgWin": 0.02054594850537972,
+        "avgLoss": 0.029442193558049543,
+        "sharpeRatio": 1.1693426164340543,
+        "maxDrawdown": 0.11567725148555369
+      }
+    },
+    "BNB/USDT_1w": {
+      "confidence": 56.77346066151464,
+      "priorConfidence": 60.00016718670165,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.631987190214495,
+      "sharpeAdjustment": -0.006591649883452622,
+      "drawdownPenalty": 0.05766093371589601,
+      "historicalData": {
+        "winRate": 0.631987190214495,
+        "totalTrades": 203,
+        "wins": 128,
+        "losses": 75,
+        "avgWin": 0.04517780619695679,
+        "avgLoss": 0.028547200558332025,
+        "sharpeRatio": -0.13183299766905243,
+        "maxDrawdown": 0.19220311238632004
+      }
+    },
+    "XRP/USDT_1h": {
+      "confidence": 38.35532904964347,
+      "priorConfidence": 40.011061308544605,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.4041261894110022,
+      "sharpeAdjustment": 0.005342795623486185,
+      "drawdownPenalty": 0.025915694538053653,
+      "historicalData": {
+        "winRate": 0.4041261894110022,
+        "totalTrades": 215,
+        "wins": 86,
+        "losses": 129,
+        "avgWin": 0.046445086395265456,
+        "avgLoss": 0.02518407509003743,
+        "sharpeRatio": 0.1068559124697237,
+        "maxDrawdown": 0.08638564846017885
+      }
+    },
+    "XRP/USDT_4h": {
+      "confidence": 67.0429245676783,
+      "priorConfidence": 45.011061308544605,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.6403756803588636,
+      "sharpeAdjustment": 0.0704453403062345,
+      "drawdownPenalty": 0.04039177498831516,
+      "historicalData": {
+        "winRate": 0.6403756803588636,
+        "totalTrades": 196,
+        "wins": 125,
+        "losses": 71,
+        "avgWin": 0.0216867921218677,
+        "avgLoss": 0.025774272060367927,
+        "sharpeRatio": 1.40890680612469,
+        "maxDrawdown": 0.13463924996105053
+      }
+    },
+    "XRP/USDT_1d": {
+      "confidence": 58.532102409215355,
+      "priorConfidence": 50.011061308544605,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5607473794295699,
+      "sharpeAdjustment": 0.039962381339873156,
+      "drawdownPenalty": 0.015388736677289435,
+      "historicalData": {
+        "winRate": 0.5607473794295699,
+        "totalTrades": 122,
+        "wins": 68,
+        "losses": 54,
+        "avgWin": 0.02776414279126971,
+        "avgLoss": 0.022552684527082943,
+        "sharpeRatio": 0.7992476267974631,
+        "maxDrawdown": 0.05129578892429812
+      }
+    },
+    "XRP/USDT_1w": {
+      "confidence": 37.13631038353296,
+      "priorConfidence": 55.011061308544605,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.3510732284611051,
+      "sharpeAdjustment": 0.07172253767957815,
+      "drawdownPenalty": 0.051432662305353684,
+      "historicalData": {
+        "winRate": 0.3510732284611051,
+        "totalTrades": 120,
+        "wins": 42,
+        "losses": 78,
+        "avgWin": 0.02656568784273911,
+        "avgLoss": 0.020547983993390213,
+        "sharpeRatio": 1.434450753591563,
+        "maxDrawdown": 0.1714422076845123
+      }
+    },
+    "SOL/USDT_1h": {
+      "confidence": 57.40533634819853,
+      "priorConfidence": 62.822948170237936,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5830894348526903,
+      "sharpeAdjustment": 0.007944496825983683,
+      "drawdownPenalty": 0.01698056819668853,
+      "historicalData": {
+        "winRate": 0.5830894348526903,
+        "totalTrades": 194,
+        "wins": 113,
+        "losses": 81,
+        "avgWin": 0.022218642556101256,
+        "avgLoss": 0.0341384109695648,
+        "sharpeRatio": 0.15888993651967365,
+        "maxDrawdown": 0.056601893988961774
+      }
+    },
+    "SOL/USDT_4h": {
+      "confidence": 53.82371060778674,
+      "priorConfidence": 67.82294817023794,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.4898381527899941,
+      "sharpeAdjustment": 0.0737455349082947,
+      "drawdownPenalty": 0.02534658162042147,
+      "historicalData": {
+        "winRate": 0.4898381527899941,
+        "totalTrades": 243,
+        "wins": 119,
+        "losses": 124,
+        "avgWin": 0.021791842799039948,
+        "avgLoss": 0.022307582121471506,
+        "sharpeRatio": 1.474910698165894,
+        "maxDrawdown": 0.0844886054014049
+      }
+    },
+    "SOL/USDT_1d": {
+      "confidence": 54.031208133804384,
+      "priorConfidence": 72.82294817023794,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5729275990532459,
+      "sharpeAdjustment": 0.005147865158344623,
+      "drawdownPenalty": 0.03776338287354667,
+      "historicalData": {
+        "winRate": 0.5729275990532459,
+        "totalTrades": 235,
+        "wins": 134,
+        "losses": 101,
+        "avgWin": 0.038201083366793315,
+        "avgLoss": 0.03343820239327771,
+        "sharpeRatio": 0.10295730316689244,
+        "maxDrawdown": 0.12587794291182225
+      }
+    },
+    "SOL/USDT_1w": {
+      "confidence": 45.049781579111574,
+      "priorConfidence": 77.82294817023794,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.44546137859412555,
+      "sharpeAdjustment": 0.05339665525262016,
+      "drawdownPenalty": 0.04836021805562996,
+      "historicalData": {
+        "winRate": 0.44546137859412555,
+        "totalTrades": 227,
+        "wins": 101,
+        "losses": 126,
+        "avgWin": 0.04308377193675608,
+        "avgLoss": 0.01659428406435255,
+        "sharpeRatio": 1.0679331050524032,
+        "maxDrawdown": 0.16120072685209988
+      }
+    },
+    "ADA/USDT_1h": {
+      "confidence": 37.48629014519345,
+      "priorConfidence": 61.53915844027068,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.410500953559009,
+      "sharpeAdjustment": 0.023927702972930922,
+      "drawdownPenalty": 0.0595657550800054,
+      "historicalData": {
+        "winRate": 0.410500953559009,
+        "totalTrades": 233,
+        "wins": 95,
+        "losses": 138,
+        "avgWin": 0.024695474892185786,
+        "avgLoss": 0.02265610608606596,
+        "sharpeRatio": 0.4785540594586184,
+        "maxDrawdown": 0.19855251693335135
+      }
+    },
+    "ADA/USDT_4h": {
+      "confidence": 47.39313500593466,
+      "priorConfidence": 66.53915844027068,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5002840281889489,
+      "sharpeAdjustment": 0.014144433646454124,
+      "drawdownPenalty": 0.0404971117760564,
+      "historicalData": {
+        "winRate": 0.5002840281889489,
+        "totalTrades": 128,
+        "wins": 64,
+        "losses": 64,
+        "avgWin": 0.03965562915184988,
+        "avgLoss": 0.031574404461214164,
+        "sharpeRatio": 0.2828886729290825,
+        "maxDrawdown": 0.13499037258685467
+      }
+    },
+    "ADA/USDT_1d": {
+      "confidence": 45.70391097636253,
+      "priorConfidence": 71.53915844027068,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.4911738712305772,
+      "sharpeAdjustment": 0.014345566109683917,
+      "drawdownPenalty": 0.048480327576635875,
+      "historicalData": {
+        "winRate": 0.4911738712305772,
+        "totalTrades": 206,
+        "wins": 101,
+        "losses": 105,
+        "avgWin": 0.038128157251607064,
+        "avgLoss": 0.028780257423653498,
+        "sharpeRatio": 0.2869113221936783,
+        "maxDrawdown": 0.16160109192211958
+      }
+    },
+    "ADA/USDT_1w": {
+      "confidence": 47.6730982409883,
+      "priorConfidence": 76.53915844027068,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5092292438980743,
+      "sharpeAdjustment": -0.011704809867146993,
+      "drawdownPenalty": 0.020793451621044273,
+      "historicalData": {
+        "winRate": 0.5092292438980743,
+        "totalTrades": 144,
+        "wins": 73,
+        "losses": 71,
+        "avgWin": 0.04749359397263403,
+        "avgLoss": 0.02832259708487997,
+        "sharpeRatio": -0.23409619734293985,
+        "maxDrawdown": 0.06931150540348091
+      }
+    },
+    "AVAX/USDT_1h": {
+      "confidence": 51.00369780223583,
+      "priorConfidence": 45.03867220372881,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.5237406464400673,
+      "sharpeAdjustment": 0.023737803371355493,
+      "drawdownPenalty": 0.03744147178906453,
+      "historicalData": {
+        "winRate": 0.5237406464400673,
+        "totalTrades": 141,
+        "wins": 73,
+        "losses": 68,
+        "avgWin": 0.04139920474713401,
+        "avgLoss": 0.026217270620829895,
+        "sharpeRatio": 0.47475606742710985,
+        "maxDrawdown": 0.12480490596354846
+      }
+    },
+    "AVAX/USDT_4h": {
+      "confidence": 43.1537124161977,
+      "priorConfidence": 50.03867220372881,
+      "evidenceStrength": 0.85,
+      "evidenceQuality": 0.40309018541213615,
+      "sharpeAdjustment": 0.05837785013680663,
+      "drawdownPenalty": 0.04452539188073863,
+      "historicalData": {
+        "winRate": 0.40309018541213615,
+        "totalTrades": 85,
+        "wins": 34,
+        "losses": 51,
+        "avgWin": 0.029595657519413,
+        "avgLoss": 0.025404372141832585,
+        "sharpeRatio": 1.1675570027361326,
+        "maxDrawdown": 0.14841797293579545
+      }
+    },
+    "AVAX/USDT_1d": {
+      "confidence": 43.823456302870994,
+      "priorConfidence": 55.03867220372881,
+      "evidenceStrength": 1,
+      "evidenceQuality": 0.3877586122706066,
+      "sharpeAdjustment": 0.06755040058441815,
+      "drawdownPenalty": 0.017074449826314807,
+      "historicalData": {
+        "winRate": 0.3877586122706066,
+        "totalTrades": 172,
+        "wins": 66,
+        "losses": 106,
+        "avgWin": 0.027113023421754964,
+        "avgLoss": 0.027415273779593803,
+        "sharpeRatio": 1.351008011688363,
+        "maxDrawdown": 0.05691483275438269
+      }
+    },
+    "AVAX/USDT_1w": {
+      "confidence": 50.79141200728483,
+      "priorConfidence": 60.03867220372881,
+      "evidenceStrength": 0.97,
+      "evidenceQuality": 0.46040786706204784,
+      "sharpeAdjustment": 0.0602852137434543,
+      "drawdownPenalty": 0.01697832638191094,
+      "historicalData": {
+        "winRate": 0.46040786706204784,
+        "totalTrades": 97,
+        "wins": 44,
+        "losses": 53,
+        "avgWin": 0.036445148949491676,
+        "avgLoss": 0.016664203742702006,
+        "sharpeRatio": 1.205704274869086,
+        "maxDrawdown": 0.05659442127303646
+      }
+    }
+  },
+  "patternRecognition": {
+    "BTC/USDT": {
+      "candlestickPatterns": [
+        {
+          "type": "Engulfing",
+          "index": 2,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 6,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 7,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 8,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 11,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 13,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 17,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 21,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 22,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Hammer",
+          "index": 27,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 37,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 38,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 41,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 42,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 48,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 50,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 52,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 60,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 66,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 72,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 77,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 80,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Doji",
+          "index": 84,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 85,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 90,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 94,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 96,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 97,
+          "strength": "STRONG"
+        }
+      ],
+      "chartPatterns": [],
+      "fibonacciLevels": {
+        "23.6%": 60172.187381863645,
+        "38.2%": 58116.021420404926,
+        "50.0%": 56454.18865703419,
+        "61.8%": 54792.35589366344,
+        "78.6%": 52426.35670513561
+      },
+      "supportResistance": {
+        "support": [
+          54907.02255537911,
+          58006.71269759824,
+          60208.10722038193
+        ],
+        "resistance": [
+          60042.81567733775,
+          63495.85290860513,
+          62033.843267086944
+        ]
+      },
+      "trendLines": {
+        "slope": -16.448765900843124,
+        "strength": 16448.765900843126,
+        "direction": "DOWN"
+      }
+    },
+    "ETH/USDT": {
+      "candlestickPatterns": [
+        {
+          "type": "Doji",
+          "index": 8,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 9,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 10,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 11,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Hammer",
+          "index": 11,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 17,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 23,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 24,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 30,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 33,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 35,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 42,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 51,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 57,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 62,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 67,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 70,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 72,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 74,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 78,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 79,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 94,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 95,
+          "strength": "STRONG"
+        }
+      ],
+      "chartPatterns": [
+        {
+          "type": "Symmetrical Triangle",
+          "strength": "MODERATE"
+        }
+      ],
+      "fibonacciLevels": {
+        "23.6%": 3058.9672053023087,
+        "38.2%": 2987.6249182108754,
+        "50.0%": 2929.9647135753335,
+        "61.8%": 2872.3045089397915,
+        "78.6%": 2790.2120142044437
+      },
+      "supportResistance": {
+        "support": [
+          2685.6418125772743,
+          2843.8387676455764,
+          2963.976705441119
+        ],
+        "resistance": [
+          3055.768790902926,
+          3009.3604247696835,
+          3110.6283188383027
+        ]
+      },
+      "trendLines": {
+        "slope": 9.378242980283229,
+        "strength": 9378.242980283228,
+        "direction": "UP"
+      }
+    },
+    "BNB/USDT": {
+      "candlestickPatterns": [
+        {
+          "type": "Engulfing",
+          "index": 4,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 5,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 6,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 22,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 32,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 41,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 43,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 47,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 56,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 58,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 70,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 78,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 87,
+          "strength": "STRONG"
+        }
+      ],
+      "chartPatterns": [],
+      "fibonacciLevels": {
+        "23.6%": 331.5009569455155,
+        "38.2%": 322.97893893494995,
+        "50.0%": 316.09128054284906,
+        "61.8%": 309.2036221507481,
+        "78.6%": 299.39746443996034
+      },
+      "supportResistance": {
+        "support": [
+          298.3327698196079,
+          286.90628735598074,
+          297.63538230111084
+        ],
+        "resistance": [
+          311.12752978963647,
+          303.75164126481906,
+          310.8893970083648
+        ]
+      },
+      "trendLines": {
+        "slope": 0.09573659366831758,
+        "strength": 95.73659366831758,
+        "direction": "UP"
+      }
+    },
+    "XRP/USDT": {
+      "candlestickPatterns": [
+        {
+          "type": "Engulfing",
+          "index": 2,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 5,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 8,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 12,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 18,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 21,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Doji",
+          "index": 22,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 22,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 23,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 27,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 28,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Doji",
+          "index": 29,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 31,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 33,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 35,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 40,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 46,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 48,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 49,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 53,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 63,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 66,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 76,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 78,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 87,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 96,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 98,
+          "strength": "STRONG"
+        }
+      ],
+      "chartPatterns": [],
+      "fibonacciLevels": {
+        "23.6%": 0.6166521782584264,
+        "38.2%": 0.6042320193463078,
+        "50.0%": 0.594193808718705,
+        "61.8%": 0.5841555980911022,
+        "78.6%": 0.5698639083840068
+      },
+      "supportResistance": {
+        "support": [
+          0.5591511140816205,
+          0.5660092434635651,
+          0.578891121958694
+        ],
+        "resistance": [
+          0.6198757674689142,
+          0.6367285995136319,
+          0.5869055902704532
+        ]
+      },
+      "trendLines": {
+        "slope": 0.002316811106144921,
+        "strength": 2.3168111061449213,
+        "direction": "UP"
+      }
+    },
+    "SOL/USDT": {
+      "candlestickPatterns": [
+        {
+          "type": "Engulfing",
+          "index": 5,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 8,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Doji",
+          "index": 12,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Doji",
+          "index": 13,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 13,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 15,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 27,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 30,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 31,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 33,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Doji",
+          "index": 37,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 39,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 50,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 52,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 64,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 66,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 70,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Hammer",
+          "index": 72,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 79,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 82,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 84,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 89,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 95,
+          "strength": "STRONG"
+        }
+      ],
+      "chartPatterns": [
+        {
+          "type": "Double Top",
+          "strength": "MODERATE"
+        }
+      ],
+      "fibonacciLevels": {
+        "23.6%": 148.3922560889462,
+        "38.2%": 144.5327928686373,
+        "50.0%": 141.4135006768808,
+        "61.8%": 138.29420848512427,
+        "78.6%": 133.85318231380992
+      },
+      "supportResistance": {
+        "support": [
+          128.19616088130235,
+          129.62859567471855,
+          135.81727044159246
+        ],
+        "resistance": [
+          138.24844059481018,
+          139.2518531469497,
+          139.16345107218754
+        ]
+      },
+      "trendLines": {
+        "slope": -0.22148719654156374,
+        "strength": 221.48719654156375,
+        "direction": "DOWN"
+      }
+    },
+    "ADA/USDT": {
+      "candlestickPatterns": [
+        {
+          "type": "Doji",
+          "index": 4,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 15,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 17,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 22,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 26,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 38,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 40,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 47,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 61,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 62,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 66,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 69,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 70,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 85,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 87,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Hammer",
+          "index": 87,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 88,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 89,
+          "strength": "STRONG"
+        }
+      ],
+      "chartPatterns": [],
+      "fibonacciLevels": {
+        "23.6%": 0.41191351382468244,
+        "38.2%": 0.40414057484236154,
+        "50.0%": 0.3978583364867871,
+        "61.8%": 0.39157609813121264,
+        "78.6%": 0.38263189437073375
+      },
+      "supportResistance": {
+        "support": [
+          0.38127934349800296,
+          0.38954408121671147,
+          0.37123868243774283
+        ],
+        "resistance": [
+          0.3998382975001781,
+          0.40429324600307615,
+          0.42447799053583135
+        ]
+      },
+      "trendLines": {
+        "slope": -0.00020397522630198584,
+        "strength": 0.20397522630198583,
+        "direction": "DOWN"
+      }
+    },
+    "AVAX/USDT": {
+      "candlestickPatterns": [
+        {
+          "type": "Engulfing",
+          "index": 19,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 24,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 25,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 30,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 47,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 48,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Doji",
+          "index": 50,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 52,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 56,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 60,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 65,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 73,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 84,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 85,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Doji",
+          "index": 86,
+          "strength": "MODERATE"
+        },
+        {
+          "type": "Engulfing",
+          "index": 89,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 92,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 96,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 98,
+          "strength": "STRONG"
+        },
+        {
+          "type": "Engulfing",
+          "index": 99,
+          "strength": "STRONG"
+        }
+      ],
+      "chartPatterns": [],
+      "fibonacciLevels": {
+        "23.6%": 26.70161361016842,
+        "38.2%": 26.261911313743244,
+        "50.0%": 25.906535485125637,
+        "61.8%": 25.551159656508027,
+        "78.6%": 25.04520084966262
+      },
+      "supportResistance": {
+        "support": [
+          25.38236904159456,
+          25.00178665210791,
+          24.400705702847635
+        ],
+        "resistance": [
+          26.373186844533123,
+          26.059843647636985,
+          27.412365267403636
+        ]
+      },
+      "trendLines": {
+        "slope": -0.06170455540028069,
+        "strength": 61.70455540028069,
+        "direction": "DOWN"
+      }
+    }
+  },
+  "performanceTracking": {},
+  "validationResults": [
+    {
+      "distribution": {
+        "LONG": 4,
+        "SHORT": 4,
+        "NEUTRAL": 20,
+        "total": 28,
+        "diversity": 0.2857142857142857
+      },
+      "regimeCorrelation": {
+        "BULLISH": {
+          "LONG": "50.0",
+          "SHORT": "0.0",
+          "NEUTRAL": "50.0",
+          "total": 8
+        },
+        "BEARISH": {
+          "LONG": "0.0",
+          "SHORT": "50.0",
+          "NEUTRAL": "50.0",
+          "total": 8
+        },
+        "SIDEWAYS": {
+          "LONG": "0.0",
+          "SHORT": "0.0",
+          "NEUTRAL": "100.0",
+          "total": 8
+        },
+        "VOLATILE": {
+          "LONG": "0.0",
+          "SHORT": "0.0",
+          "NEUTRAL": "100.0",
+          "total": 4
+        },
+        "correlation": 0.8
+      },
+      "confidenceStats": {
+        "average": 95,
+        "min": 95,
+        "max": 95,
+        "range": 0,
+        "stdDev": 0
+      },
+      "riskValidation": {
+        "atrConsistency": true,
+        "avgRiskReward": 1.4750000000000003,
+        "positionSizing": true
+      },
+      "performanceTest": {
+        "signalGeneration": 0,
+        "riskCalculation": 0,
+        "patternAnalysis": 0.05,
+        "totalSystem": 0.05
+      },
+      "uiData": {
+        "heatmap": {
+          "marketEntries": [
+            {
+              "id": "btcusdt",
+              "symbol": "BTC/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "LONG",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                },
+                "4h": {
+                  "direction": "LONG",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                },
+                "1d": {
+                  "direction": "LONG",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Positive trend momentum",
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                },
+                "1w": {
+                  "direction": "LONG",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                }
+              },
+              "price": 50000,
+              "marketState": "BULLISH"
+            },
+            {
+              "id": "ethusdt",
+              "symbol": "ETH/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "SHORT",
+                  "confidence": 95,
+                  "reasoning": [
+                    "High volume confirmation",
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BEARISH"
+                },
+                "4h": {
+                  "direction": "SHORT",
+                  "confidence": 95,
+                  "reasoning": [
+                    "High volume confirmation"
+                  ],
+                  "marketRegime": "BEARISH"
+                },
+                "1d": {
+                  "direction": "SHORT",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Negative trend momentum",
+                    "High volume confirmation",
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BEARISH"
+                },
+                "1w": {
+                  "direction": "SHORT",
+                  "confidence": 95,
+                  "reasoning": [
+                    "High volume confirmation",
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BEARISH"
+                }
+              },
+              "price": 3000,
+              "marketState": "BEARISH"
+            },
+            {
+              "id": "bnbusdt",
+              "symbol": "BNB/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Low confidence environment"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                }
+              },
+              "price": 300,
+              "marketState": "SIDEWAYS"
+            },
+            {
+              "id": "xrpusdt",
+              "symbol": "XRP/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Low confidence environment",
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "VOLATILE"
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "VOLATILE"
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "VOLATILE"
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Low confidence environment",
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "VOLATILE"
+                }
+              },
+              "price": 0.6,
+              "marketState": "VOLATILE"
+            },
+            {
+              "id": "solusdt",
+              "symbol": "SOL/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BULLISH"
+                }
+              },
+              "price": 150,
+              "marketState": "BULLISH"
+            },
+            {
+              "id": "adausdt",
+              "symbol": "ADA/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Low confidence environment",
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BEARISH"
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BEARISH"
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BEARISH"
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "BEARISH"
+                }
+              },
+              "price": 0.4,
+              "marketState": "BEARISH"
+            },
+            {
+              "id": "avaxusdt",
+              "symbol": "AVAX/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 95,
+                  "reasoning": [
+                    "Strong historical evidence"
+                  ],
+                  "marketRegime": "SIDEWAYS"
+                }
+              },
+              "price": 25,
+              "marketState": "SIDEWAYS"
+            }
+          ]
+        },
+        "signals": {
+          "BTC/USDT": {
+            "1h": {
+              "direction": "LONG",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            },
+            "4h": {
+              "direction": "LONG",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            },
+            "1d": {
+              "direction": "LONG",
+              "confidence": 95,
+              "reasoning": [
+                "Positive trend momentum",
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            },
+            "1w": {
+              "direction": "LONG",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            }
+          },
+          "ETH/USDT": {
+            "1h": {
+              "direction": "SHORT",
+              "confidence": 95,
+              "reasoning": [
+                "High volume confirmation",
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BEARISH"
+            },
+            "4h": {
+              "direction": "SHORT",
+              "confidence": 95,
+              "reasoning": [
+                "High volume confirmation"
+              ],
+              "marketRegime": "BEARISH"
+            },
+            "1d": {
+              "direction": "SHORT",
+              "confidence": 95,
+              "reasoning": [
+                "Negative trend momentum",
+                "High volume confirmation",
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BEARISH"
+            },
+            "1w": {
+              "direction": "SHORT",
+              "confidence": 95,
+              "reasoning": [
+                "High volume confirmation",
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BEARISH"
+            }
+          },
+          "BNB/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "SIDEWAYS"
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Low confidence environment"
+              ],
+              "marketRegime": "SIDEWAYS"
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "SIDEWAYS"
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "SIDEWAYS"
+            }
+          },
+          "XRP/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Low confidence environment",
+                "Strong historical evidence"
+              ],
+              "marketRegime": "VOLATILE"
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "VOLATILE"
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "VOLATILE"
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Low confidence environment",
+                "Strong historical evidence"
+              ],
+              "marketRegime": "VOLATILE"
+            }
+          },
+          "SOL/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BULLISH"
+            }
+          },
+          "ADA/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Low confidence environment",
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BEARISH"
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BEARISH"
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BEARISH"
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "BEARISH"
+            }
+          },
+          "AVAX/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "SIDEWAYS"
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "SIDEWAYS"
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "SIDEWAYS"
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 95,
+              "reasoning": [
+                "Strong historical evidence"
+              ],
+              "marketRegime": "SIDEWAYS"
+            }
+          }
+        },
+        "technicalAnalysis": {},
+        "riskManagement": {
+          "BTC/USDT": {
+            "1h": {
+              "stopLoss": 47168.782563611654,
+              "takeProfit": 49079.622418456696,
+              "riskReward": 1.66666666666667,
+              "positionSize": 10
+            },
+            "4h": {
+              "stopLoss": 46929.92758175603,
+              "takeProfit": 49318.477400312324,
+              "riskReward": 1.5000000000000038,
+              "positionSize": 10
+            },
+            "1d": {
+              "stopLoss": 46691.07259990039,
+              "takeProfit": 49557.33238216795,
+              "riskReward": 1.399999999999995,
+              "positionSize": 10
+            },
+            "1w": {
+              "stopLoss": 46452.217618044764,
+              "takeProfit": 49796.187364023586,
+              "riskReward": 1.333333333333335,
+              "positionSize": 10
+            }
+          },
+          "ETH/USDT": {
+            "1h": {
+              "stopLoss": 2470.438436104047,
+              "takeProfit": 2362.0312784691773,
+              "riskReward": 1.6666666666666592,
+              "positionSize": 10
+            },
+            "4h": {
+              "stopLoss": 2483.9893308084056,
+              "takeProfit": 2348.4803837648187,
+              "riskReward": 1.4999999999999958,
+              "positionSize": 10
+            },
+            "1d": {
+              "stopLoss": 2497.540225512764,
+              "takeProfit": 2334.9294890604597,
+              "riskReward": 1.4000000000000041,
+              "positionSize": 10
+            },
+            "1w": {
+              "stopLoss": 2511.091120217123,
+              "takeProfit": 2321.378594356101,
+              "riskReward": 1.333333333333337,
+              "positionSize": 10
+            }
+          },
+          "BNB/USDT": {
+            "1h": {
+              "stopLoss": 324.05201192931423,
+              "takeProfit": 336.13207047336607,
+              "riskReward": 1.6666666666666625,
+              "positionSize": 10
+            },
+            "4h": {
+              "stopLoss": 322.5420046113078,
+              "takeProfit": 337.64207779137257,
+              "riskReward": 1.5000000000000093,
+              "positionSize": 10
+            },
+            "1d": {
+              "stopLoss": 321.0319972933013,
+              "takeProfit": 339.152085109379,
+              "riskReward": 1.3999999999999986,
+              "positionSize": 10
+            },
+            "1w": {
+              "stopLoss": 319.5219899752948,
+              "takeProfit": 340.6620924273855,
+              "riskReward": 1.3333333333333313,
+              "positionSize": 10
+            }
+          },
+          "XRP/USDT": {
+            "1h": {
+              "stopLoss": 0.6289206290587697,
+              "takeProfit": 0.6543391185074833,
+              "riskReward": 1.666666666666655,
+              "positionSize": 10
+            },
+            "4h": {
+              "stopLoss": 0.6257433178776804,
+              "takeProfit": 0.6575164296885725,
+              "riskReward": 1.4999999999999913,
+              "positionSize": 10
+            },
+            "1d": {
+              "stopLoss": 0.6225660066965913,
+              "takeProfit": 0.6606937408696617,
+              "riskReward": 1.4000000000000028,
+              "positionSize": 10
+            },
+            "1w": {
+              "stopLoss": 0.6193886955155021,
+              "takeProfit": 0.6638710520507509,
+              "riskReward": 1.3333333333333353,
+              "positionSize": 10
+            }
+          },
+          "SOL/USDT": {
+            "1h": {
+              "stopLoss": 153.94792152889923,
+              "takeProfit": 160.08736690444857,
+              "riskReward": 1.6666666666666707,
+              "positionSize": 10
+            },
+            "4h": {
+              "stopLoss": 153.18049085695554,
+              "takeProfit": 160.85479757639226,
+              "riskReward": 1.5,
+              "positionSize": 10
+            },
+            "1d": {
+              "stopLoss": 152.4130601850119,
+              "takeProfit": 161.62222824833592,
+              "riskReward": 1.4000000000000015,
+              "positionSize": 10
+            },
+            "1w": {
+              "stopLoss": 151.6456295130682,
+              "takeProfit": 162.3896589202796,
+              "riskReward": 1.3333333333333333,
+              "positionSize": 10
+            }
+          },
+          "ADA/USDT": {
+            "1h": {
+              "stopLoss": 0.3797533581382845,
+              "takeProfit": 0.3947833318319616,
+              "riskReward": 1.6666666666666698,
+              "positionSize": 10
+            },
+            "4h": {
+              "stopLoss": 0.37787461142657486,
+              "takeProfit": 0.39666207854367125,
+              "riskReward": 1.5000000000000038,
+              "positionSize": 10
+            },
+            "1d": {
+              "stopLoss": 0.3759958647148652,
+              "takeProfit": 0.3985408252553809,
+              "riskReward": 1.4000000000000012,
+              "positionSize": 10
+            },
+            "1w": {
+              "stopLoss": 0.37411711800315556,
+              "takeProfit": 0.40041957196709055,
+              "riskReward": 1.333333333333335,
+              "positionSize": 10
+            }
+          },
+          "AVAX/USDT": {
+            "1h": {
+              "stopLoss": 23.966186194366077,
+              "takeProfit": 24.889009530419443,
+              "riskReward": 1.6666666666666563,
+              "positionSize": 10
+            },
+            "4h": {
+              "stopLoss": 23.85083327735941,
+              "takeProfit": 25.004362447426114,
+              "riskReward": 1.5000000000000038,
+              "positionSize": 10
+            },
+            "1d": {
+              "stopLoss": 23.73548036035274,
+              "takeProfit": 25.119715364432786,
+              "riskReward": 1.4000000000000024,
+              "positionSize": 10
+            },
+            "1w": {
+              "stopLoss": 23.620127443346068,
+              "takeProfit": 25.235068281439457,
+              "riskReward": 1.333333333333335,
+              "positionSize": 10
+            }
+          }
+        },
+        "patterns": {
+          "BTC/USDT": {
+            "candlestickPatterns": [
+              {
+                "type": "Engulfing",
+                "index": 2,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 6,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 7,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 8,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 11,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 13,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 17,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 21,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 22,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Hammer",
+                "index": 27,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 37,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 38,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 41,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 42,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 48,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 50,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 52,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 60,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 66,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 72,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 77,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 80,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Doji",
+                "index": 84,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 85,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 90,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 94,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 96,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 97,
+                "strength": "STRONG"
+              }
+            ],
+            "chartPatterns": [],
+            "fibonacciLevels": {
+              "23.6%": 60172.187381863645,
+              "38.2%": 58116.021420404926,
+              "50.0%": 56454.18865703419,
+              "61.8%": 54792.35589366344,
+              "78.6%": 52426.35670513561
+            },
+            "supportResistance": {
+              "support": [
+                54907.02255537911,
+                58006.71269759824,
+                60208.10722038193
+              ],
+              "resistance": [
+                60042.81567733775,
+                63495.85290860513,
+                62033.843267086944
+              ]
+            },
+            "trendLines": {
+              "slope": -16.448765900843124,
+              "strength": 16448.765900843126,
+              "direction": "DOWN"
+            }
+          },
+          "ETH/USDT": {
+            "candlestickPatterns": [
+              {
+                "type": "Doji",
+                "index": 8,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 9,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 10,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 11,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Hammer",
+                "index": 11,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 17,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 23,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 24,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 30,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 33,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 35,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 42,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 51,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 57,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 62,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 67,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 70,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 72,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 74,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 78,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 79,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 94,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 95,
+                "strength": "STRONG"
+              }
+            ],
+            "chartPatterns": [
+              {
+                "type": "Symmetrical Triangle",
+                "strength": "MODERATE"
+              }
+            ],
+            "fibonacciLevels": {
+              "23.6%": 3058.9672053023087,
+              "38.2%": 2987.6249182108754,
+              "50.0%": 2929.9647135753335,
+              "61.8%": 2872.3045089397915,
+              "78.6%": 2790.2120142044437
+            },
+            "supportResistance": {
+              "support": [
+                2685.6418125772743,
+                2843.8387676455764,
+                2963.976705441119
+              ],
+              "resistance": [
+                3055.768790902926,
+                3009.3604247696835,
+                3110.6283188383027
+              ]
+            },
+            "trendLines": {
+              "slope": 9.378242980283229,
+              "strength": 9378.242980283228,
+              "direction": "UP"
+            }
+          },
+          "BNB/USDT": {
+            "candlestickPatterns": [
+              {
+                "type": "Engulfing",
+                "index": 4,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 5,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 6,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 22,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 32,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 41,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 43,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 47,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 56,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 58,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 70,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 78,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 87,
+                "strength": "STRONG"
+              }
+            ],
+            "chartPatterns": [],
+            "fibonacciLevels": {
+              "23.6%": 331.5009569455155,
+              "38.2%": 322.97893893494995,
+              "50.0%": 316.09128054284906,
+              "61.8%": 309.2036221507481,
+              "78.6%": 299.39746443996034
+            },
+            "supportResistance": {
+              "support": [
+                298.3327698196079,
+                286.90628735598074,
+                297.63538230111084
+              ],
+              "resistance": [
+                311.12752978963647,
+                303.75164126481906,
+                310.8893970083648
+              ]
+            },
+            "trendLines": {
+              "slope": 0.09573659366831758,
+              "strength": 95.73659366831758,
+              "direction": "UP"
+            }
+          },
+          "XRP/USDT": {
+            "candlestickPatterns": [
+              {
+                "type": "Engulfing",
+                "index": 2,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 5,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 8,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 12,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 18,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 21,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Doji",
+                "index": 22,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 22,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 23,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 27,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 28,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Doji",
+                "index": 29,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 31,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 33,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 35,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 40,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 46,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 48,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 49,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 53,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 63,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 66,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 76,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 78,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 87,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 96,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 98,
+                "strength": "STRONG"
+              }
+            ],
+            "chartPatterns": [],
+            "fibonacciLevels": {
+              "23.6%": 0.6166521782584264,
+              "38.2%": 0.6042320193463078,
+              "50.0%": 0.594193808718705,
+              "61.8%": 0.5841555980911022,
+              "78.6%": 0.5698639083840068
+            },
+            "supportResistance": {
+              "support": [
+                0.5591511140816205,
+                0.5660092434635651,
+                0.578891121958694
+              ],
+              "resistance": [
+                0.6198757674689142,
+                0.6367285995136319,
+                0.5869055902704532
+              ]
+            },
+            "trendLines": {
+              "slope": 0.002316811106144921,
+              "strength": 2.3168111061449213,
+              "direction": "UP"
+            }
+          },
+          "SOL/USDT": {
+            "candlestickPatterns": [
+              {
+                "type": "Engulfing",
+                "index": 5,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 8,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Doji",
+                "index": 12,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Doji",
+                "index": 13,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 13,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 15,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 27,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 30,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 31,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 33,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Doji",
+                "index": 37,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 39,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 50,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 52,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 64,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 66,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 70,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Hammer",
+                "index": 72,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 79,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 82,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 84,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 89,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 95,
+                "strength": "STRONG"
+              }
+            ],
+            "chartPatterns": [
+              {
+                "type": "Double Top",
+                "strength": "MODERATE"
+              }
+            ],
+            "fibonacciLevels": {
+              "23.6%": 148.3922560889462,
+              "38.2%": 144.5327928686373,
+              "50.0%": 141.4135006768808,
+              "61.8%": 138.29420848512427,
+              "78.6%": 133.85318231380992
+            },
+            "supportResistance": {
+              "support": [
+                128.19616088130235,
+                129.62859567471855,
+                135.81727044159246
+              ],
+              "resistance": [
+                138.24844059481018,
+                139.2518531469497,
+                139.16345107218754
+              ]
+            },
+            "trendLines": {
+              "slope": -0.22148719654156374,
+              "strength": 221.48719654156375,
+              "direction": "DOWN"
+            }
+          },
+          "ADA/USDT": {
+            "candlestickPatterns": [
+              {
+                "type": "Doji",
+                "index": 4,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 15,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 17,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 22,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 26,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 38,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 40,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 47,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 61,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 62,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 66,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 69,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 70,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 85,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 87,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Hammer",
+                "index": 87,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 88,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 89,
+                "strength": "STRONG"
+              }
+            ],
+            "chartPatterns": [],
+            "fibonacciLevels": {
+              "23.6%": 0.41191351382468244,
+              "38.2%": 0.40414057484236154,
+              "50.0%": 0.3978583364867871,
+              "61.8%": 0.39157609813121264,
+              "78.6%": 0.38263189437073375
+            },
+            "supportResistance": {
+              "support": [
+                0.38127934349800296,
+                0.38954408121671147,
+                0.37123868243774283
+              ],
+              "resistance": [
+                0.3998382975001781,
+                0.40429324600307615,
+                0.42447799053583135
+              ]
+            },
+            "trendLines": {
+              "slope": -0.00020397522630198584,
+              "strength": 0.20397522630198583,
+              "direction": "DOWN"
+            }
+          },
+          "AVAX/USDT": {
+            "candlestickPatterns": [
+              {
+                "type": "Engulfing",
+                "index": 19,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 24,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 25,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 30,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 47,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 48,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Doji",
+                "index": 50,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 52,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 56,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 60,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 65,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 73,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 84,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 85,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Doji",
+                "index": 86,
+                "strength": "MODERATE"
+              },
+              {
+                "type": "Engulfing",
+                "index": 89,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 92,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 96,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 98,
+                "strength": "STRONG"
+              },
+              {
+                "type": "Engulfing",
+                "index": 99,
+                "strength": "STRONG"
+              }
+            ],
+            "chartPatterns": [],
+            "fibonacciLevels": {
+              "23.6%": 26.70161361016842,
+              "38.2%": 26.261911313743244,
+              "50.0%": 25.906535485125637,
+              "61.8%": 25.551159656508027,
+              "78.6%": 25.04520084966262
+            },
+            "supportResistance": {
+              "support": [
+                25.38236904159456,
+                25.00178665210791,
+                24.400705702847635
+              ],
+              "resistance": [
+                26.373186844533123,
+                26.059843647636985,
+                27.412365267403636
+              ]
+            },
+            "trendLines": {
+              "slope": -0.06170455540028069,
+              "strength": 61.70455540028069,
+              "direction": "DOWN"
+            }
+          }
+        },
+        "isValid": true
+      },
+      "passedChecks": 4,
+      "totalChecks": 6
+    }
+  ]
+}

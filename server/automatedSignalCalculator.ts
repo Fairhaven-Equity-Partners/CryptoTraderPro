@@ -380,54 +380,69 @@ export class AutomatedSignalCalculator {
         else if (bearishSignals > bullishSignals) bearishSignals += 1;
       }
       
-      // FIXED BALANCED SIGNAL DETERMINATION - Eliminates 87.5% SHORT bias
+      // AUTHENTIC MARKET-DRIVEN SIGNAL DETERMINATION
       let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
       let confidence = 50;
+      const reasoning: string[] = [];
       
-      // MATHEMATICALLY PERFECT 50/50 BALANCE - Guaranteed distribution
-      // Create balanced hash from symbol+timeframe+price for deterministic but balanced results
-      const hashInput = `${mapping.symbol}-${timeframe}-${Math.floor(currentPrice * 1000)}`;
-      let hash = 0;
-      for (let i = 0; i < hashInput.length; i++) {
-        hash = ((hash << 5) - hash + hashInput.charCodeAt(i)) & 0xffffffff;
-      }
-      const normalizedHash = Math.abs(hash) % 10000; // 0-9999 range
-      
-      // Perfect mathematical distribution: exactly 50% LONG, 50% SHORT
-      // Use modulo to ensure perfect balance across all symbols
-      const symbolIndex = mapping.symbol.charCodeAt(0) + mapping.symbol.charCodeAt(1);
-      const balanceAdjustment = (symbolIndex + timeframeWeight) % 2; // 0 or 1
-      
-      let signalScore = normalizedHash;
-      
-      // Apply perfect 50/50 distribution with timeframe-appropriate NEUTRAL percentages
-      if (['1m', '5m', '15m', '30m', '1h'].includes(timeframe)) {
-        // 40% LONG, 40% SHORT, 20% NEUTRAL
-        if (signalScore < 4000) direction = balanceAdjustment === 0 ? 'LONG' : 'SHORT';
-        else if (signalScore < 8000) direction = balanceAdjustment === 0 ? 'SHORT' : 'LONG';
-        else direction = 'NEUTRAL';
-      }
-      else if (['1d', '3d'].includes(timeframe)) {
-        // 35% LONG, 35% SHORT, 30% NEUTRAL
-        if (signalScore < 3500) direction = balanceAdjustment === 0 ? 'LONG' : 'SHORT';
-        else if (signalScore < 7000) direction = balanceAdjustment === 0 ? 'SHORT' : 'LONG';
-        else direction = 'NEUTRAL';
-      }
-      else {
-        // 30% LONG, 30% SHORT, 40% NEUTRAL
-        if (signalScore < 3000) direction = balanceAdjustment === 0 ? 'LONG' : 'SHORT';
-        else if (signalScore < 6000) direction = balanceAdjustment === 0 ? 'SHORT' : 'LONG';
-        else direction = 'NEUTRAL';
-      }
-      
-      // Calculate confidence based on signal strength and technical indicators
+      // Market-driven signal generation based on technical confluence
       const signalDifference = bullishSignals - bearishSignals;
-      if (Math.abs(signalDifference) >= 2) {
-        confidence = Math.min(95, 70 + (Math.abs(signalDifference) * 5) + volatility);
-      } else if (Math.abs(signalDifference) === 1) {
-        confidence = Math.min(80, 60 + volatility * 2);
+      
+      // Generate signals based on actual technical analysis
+      if (signalDifference >= 3) {
+        direction = 'LONG';
+        confidence = Math.min(95, 70 + (signalDifference * 5));
+        reasoning.push('Strong bullish confluence');
+      } else if (signalDifference <= -3) {
+        direction = 'SHORT';
+        confidence = Math.min(95, 70 + (Math.abs(signalDifference) * 5));
+        reasoning.push('Strong bearish confluence');
+      } else if (signalDifference === 2) {
+        direction = 'LONG';
+        confidence = Math.min(80, 60 + volatility * 10);
+        reasoning.push('Moderate bullish signals');
+      } else if (signalDifference === -2) {
+        direction = 'SHORT';
+        confidence = Math.min(80, 60 + volatility * 10);
+        reasoning.push('Moderate bearish signals');
+      } else if (signalDifference === 1) {
+        if (volatility > 2 && change24h > 0) {
+          direction = 'LONG';
+          confidence = Math.min(70, 55 + volatility * 5);
+          reasoning.push('Weak bullish with momentum');
+        } else {
+          direction = 'NEUTRAL';
+          confidence = Math.max(40, 50 + volatility);
+          reasoning.push('Insufficient bullish signals');
+        }
+      } else if (signalDifference === -1) {
+        if (volatility > 2 && change24h < 0) {
+          direction = 'SHORT';
+          confidence = Math.min(70, 55 + volatility * 5);
+          reasoning.push('Weak bearish with momentum');
+        } else {
+          direction = 'NEUTRAL';
+          confidence = Math.max(40, 50 + volatility);
+          reasoning.push('Insufficient bearish signals');
+        }
       } else {
-        confidence = Math.max(40, 50 + volatility);
+        // No clear directional bias from technical indicators
+        direction = 'NEUTRAL';
+        confidence = Math.max(35, 45 + volatility * 2);
+        reasoning.push('Neutral technical conditions');
+      }
+      
+      // Market state bias for neutral signals
+      if (direction === 'NEUTRAL' && Math.abs(change24h) > 3) {
+        if (change24h > 0 && isTrendBullish) {
+          direction = 'LONG';
+          confidence += 10;
+          reasoning.push('Strong positive momentum');
+        } else if (change24h < 0 && !isTrendBullish) {
+          direction = 'SHORT';
+          confidence += 10;
+          reasoning.push('Strong negative momentum');
+        }
       }
 
       // Apply timeframe-specific adjustments
@@ -748,6 +763,195 @@ export class AutomatedSignalCalculator {
    */
   getTimingManager(): AdaptiveTimingManager {
     return this.timingManager;
+  }
+
+  /**
+   * Generate realistic OHLCV data for technical analysis
+   */
+  private generateRealisticOHLCVData(currentPrice: number, change24h: number, periods: number): {
+    open: number[], high: number[], low: number[], close: number[], volume: number[]
+  } {
+    const data = { open: [], high: [], low: [], close: [], volume: [] };
+    let price = currentPrice * (1 - change24h / 100); // Start price 24h ago
+    
+    for (let i = 0; i < periods; i++) {
+      const openPrice = price;
+      const volatility = 0.01 + Math.random() * 0.02; // 1-3% volatility per period
+      const priceChange = (Math.random() - 0.5) * volatility;
+      
+      const closePrice = openPrice * (1 + priceChange);
+      const highPrice = Math.max(openPrice, closePrice) * (1 + Math.random() * 0.005);
+      const lowPrice = Math.min(openPrice, closePrice) * (1 - Math.random() * 0.005);
+      
+      data.open.push(openPrice);
+      data.high.push(highPrice);
+      data.low.push(lowPrice);
+      data.close.push(closePrice);
+      data.volume.push(1000000 + Math.random() * 5000000);
+      
+      price = closePrice;
+    }
+    
+    return data;
+  }
+
+  /**
+   * Calculate real RSI indicator
+   */
+  private calculateRealRSI(prices: number[], period: number = 14): number {
+    if (prices.length < period + 1) return 50;
+    
+    const gains = [];
+    const losses = [];
+    
+    for (let i = 1; i < prices.length; i++) {
+      const change = prices[i] - prices[i - 1];
+      gains.push(change > 0 ? change : 0);
+      losses.push(change < 0 ? Math.abs(change) : 0);
+    }
+    
+    // Calculate initial average gain and loss
+    let avgGain = gains.slice(0, period).reduce((sum, gain) => sum + gain, 0) / period;
+    let avgLoss = losses.slice(0, period).reduce((sum, loss) => sum + loss, 0) / period;
+    
+    // Apply Wilder's smoothing
+    for (let i = period; i < gains.length; i++) {
+      avgGain = (avgGain * (period - 1) + gains[i]) / period;
+      avgLoss = (avgLoss * (period - 1) + losses[i]) / period;
+    }
+    
+    if (avgLoss === 0) return 100;
+    const rs = avgGain / avgLoss;
+    return 100 - (100 / (1 + rs));
+  }
+
+  /**
+   * Calculate real MACD indicator
+   */
+  private calculateRealMACD(prices: number[], fastPeriod: number = 12, slowPeriod: number = 26, signalPeriod: number = 9): {
+    macdLine: number, signalLine: number, histogram: number
+  } {
+    if (prices.length < slowPeriod) return { macdLine: 0, signalLine: 0, histogram: 0 };
+    
+    const fastEMA = this.calculateEMA(prices, fastPeriod);
+    const slowEMA = this.calculateEMA(prices, slowPeriod);
+    
+    const macdLine = fastEMA - slowEMA;
+    
+    // Calculate signal line (EMA of MACD line)
+    const macdArray = [];
+    for (let i = slowPeriod - 1; i < prices.length; i++) {
+      const fastEMAValue = this.calculateEMAAtIndex(prices, fastPeriod, i);
+      const slowEMAValue = this.calculateEMAAtIndex(prices, slowPeriod, i);
+      macdArray.push(fastEMAValue - slowEMAValue);
+    }
+    
+    const signalLine = this.calculateEMA(macdArray, signalPeriod);
+    const histogram = macdLine - signalLine;
+    
+    return { macdLine, signalLine, histogram };
+  }
+
+  /**
+   * Calculate real Bollinger Bands
+   */
+  private calculateRealBollingerBands(prices: number[], period: number = 20, stdDev: number = 2): {
+    upper: number, middle: number, lower: number
+  } {
+    if (prices.length < period) {
+      const currentPrice = prices[prices.length - 1];
+      return { upper: currentPrice * 1.02, middle: currentPrice, lower: currentPrice * 0.98 };
+    }
+    
+    const recentPrices = prices.slice(-period);
+    const middle = recentPrices.reduce((sum, price) => sum + price, 0) / period;
+    
+    const variance = recentPrices.reduce((sum, price) => sum + Math.pow(price - middle, 2), 0) / period;
+    const standardDeviation = Math.sqrt(variance);
+    
+    return {
+      upper: middle + (standardDeviation * stdDev),
+      middle,
+      lower: middle - (standardDeviation * stdDev)
+    };
+  }
+
+  /**
+   * Calculate real ATR (Average True Range)
+   */
+  private calculateRealATR(high: number[], low: number[], close: number[], period: number = 14): number {
+    if (high.length < period + 1) return 0;
+    
+    const trueRanges = [];
+    
+    for (let i = 1; i < high.length; i++) {
+      const tr1 = high[i] - low[i];
+      const tr2 = Math.abs(high[i] - close[i - 1]);
+      const tr3 = Math.abs(low[i] - close[i - 1]);
+      trueRanges.push(Math.max(tr1, tr2, tr3));
+    }
+    
+    // Simple average for initial ATR
+    let atr = trueRanges.slice(0, period).reduce((sum, tr) => sum + tr, 0) / period;
+    
+    // Exponential smoothing for subsequent values
+    for (let i = period; i < trueRanges.length; i++) {
+      atr = (atr * (period - 1) + trueRanges[i]) / period;
+    }
+    
+    return atr;
+  }
+
+  /**
+   * Calculate EMA for an array
+   */
+  private calculateEMA(prices: number[], period: number): number {
+    if (prices.length === 0) return 0;
+    
+    const multiplier = 2 / (period + 1);
+    let ema = prices[0];
+    
+    for (let i = 1; i < prices.length; i++) {
+      ema = (prices[i] * multiplier) + (ema * (1 - multiplier));
+    }
+    
+    return ema;
+  }
+
+  /**
+   * Calculate EMA at specific index
+   */
+  private calculateEMAAtIndex(prices: number[], period: number, index: number): number {
+    if (index < period - 1) return prices[index];
+    
+    const multiplier = 2 / (period + 1);
+    let ema = prices[index - period + 1];
+    
+    for (let i = index - period + 2; i <= index; i++) {
+      ema = (prices[i] * multiplier) + (ema * (1 - multiplier));
+    }
+    
+    return ema;
+  }
+
+  /**
+   * Get ATR multiplier for timeframe-specific risk management
+   */
+  private getATRMultiplier(timeframe: string): { stopLoss: number, takeProfit: number } {
+    const multipliers = {
+      '1m': { stopLoss: 1.0, takeProfit: 2.0 },
+      '5m': { stopLoss: 1.2, takeProfit: 2.4 },
+      '15m': { stopLoss: 1.5, takeProfit: 3.0 },
+      '30m': { stopLoss: 1.8, takeProfit: 3.6 },
+      '1h': { stopLoss: 2.0, takeProfit: 4.0 },
+      '4h': { stopLoss: 2.5, takeProfit: 5.0 },
+      '1d': { stopLoss: 3.0, takeProfit: 6.0 },
+      '3d': { stopLoss: 3.5, takeProfit: 7.0 },
+      '1w': { stopLoss: 4.0, takeProfit: 8.0 },
+      '1M': { stopLoss: 5.0, takeProfit: 10.0 }
+    };
+    
+    return multipliers[timeframe] || multipliers['1d'];
   }
 
   /**
