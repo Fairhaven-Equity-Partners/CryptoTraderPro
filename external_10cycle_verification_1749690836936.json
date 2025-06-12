@@ -1,0 +1,1727 @@
+{
+  "summary": {
+    "totalTests": 100,
+    "passedTests": 100,
+    "failedTests": 0,
+    "errorTests": 0,
+    "successRate": "100.0",
+    "overallSuccess": true,
+    "criticalIssuesCount": 0
+  },
+  "consistencyReport": {
+    "1m": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 14,
+      "maxResponseTime": 104,
+      "minResponseTime": 3
+    },
+    "5m": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 6,
+      "maxResponseTime": 15,
+      "minResponseTime": 3
+    },
+    "15m": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 7,
+      "maxResponseTime": 29,
+      "minResponseTime": 3
+    },
+    "30m": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 5,
+      "maxResponseTime": 11,
+      "minResponseTime": 3
+    },
+    "1h": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 6,
+      "maxResponseTime": 9,
+      "minResponseTime": 4
+    },
+    "4h": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 6,
+      "maxResponseTime": 9,
+      "minResponseTime": 3
+    },
+    "1d": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 6,
+      "maxResponseTime": 10,
+      "minResponseTime": 4
+    },
+    "3d": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 5,
+      "maxResponseTime": 8,
+      "minResponseTime": 3
+    },
+    "1w": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 7,
+      "maxResponseTime": 16,
+      "minResponseTime": 4
+    },
+    "1M": {
+      "totalTests": 10,
+      "passedTests": 10,
+      "successRate": "100.0",
+      "pairCountConsistency": {
+        "consistent": true,
+        "range": "50",
+        "target": 50,
+        "meetsTarget": true
+      },
+      "avgResponseTime": 5,
+      "maxResponseTime": 8,
+      "minResponseTime": 3
+    }
+  },
+  "criticalIssues": [],
+  "detailedResults": [
+    {
+      "cycle": 1,
+      "duration": 229,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 104,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 15,
+          "signalDistribution": {
+            "long": 22,
+            "short": 19,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 29,
+          "signalDistribution": {
+            "long": 21,
+            "short": 20,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 11,
+          "signalDistribution": {
+            "long": 19,
+            "short": 23,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 9,
+          "signalDistribution": {
+            "long": 21,
+            "short": 20,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 8,
+          "signalDistribution": {
+            "long": 15,
+            "short": 27,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 10,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 8,
+          "signalDistribution": {
+            "long": 12,
+            "short": 30,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 10,
+          "signalDistribution": {
+            "long": 15,
+            "short": 28,
+            "neutral": 7,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 1,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 8,
+          "signalDistribution": {
+            "long": 19,
+            "short": 23,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:54.402Z"
+    },
+    {
+      "cycle": 2,
+      "duration": 56,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 22,
+            "short": 19,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 21,
+            "short": 20,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 19,
+            "short": 23,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 21,
+            "short": 20,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 15,
+            "short": 27,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 30,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 15,
+            "short": 28,
+            "neutral": 7,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 2,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 19,
+            "short": 23,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:54.661Z"
+    },
+    {
+      "cycle": 3,
+      "duration": 62,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 23,
+            "short": 17,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 22,
+            "short": 18,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 7,
+          "signalDistribution": {
+            "long": 22,
+            "short": 19,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 8,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 13,
+            "short": 29,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 16,
+            "short": 27,
+            "neutral": 7,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 3,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:54.925Z"
+    },
+    {
+      "cycle": 4,
+      "duration": 52,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 23,
+            "short": 17,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 22,
+            "short": 18,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 21,
+            "short": 21,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 23,
+            "short": 18,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 16,
+            "short": 25,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 13,
+            "short": 29,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 4,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 21,
+            "short": 21,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:55.178Z"
+    },
+    {
+      "cycle": 5,
+      "duration": 54,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 23,
+            "short": 18,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 21,
+            "short": 19,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 22,
+            "short": 18,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 30,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 16,
+            "short": 27,
+            "neutral": 7,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 5,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:55.432Z"
+    },
+    {
+      "cycle": 6,
+      "duration": 54,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 23,
+            "short": 18,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 21,
+            "short": 19,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 22,
+            "short": 19,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 7,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 30,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 16,
+            "short": 27,
+            "neutral": 7,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 6,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 8,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:55.686Z"
+    },
+    {
+      "cycle": 7,
+      "duration": 49,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 23,
+            "short": 17,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 21,
+            "short": 19,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 22,
+            "short": 19,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 30,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 16,
+            "short": 27,
+            "neutral": 7,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 7,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:55.935Z"
+    },
+    {
+      "cycle": 8,
+      "duration": 65,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 7,
+          "signalDistribution": {
+            "long": 23,
+            "short": 18,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 21,
+            "short": 19,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 7,
+          "signalDistribution": {
+            "long": 22,
+            "short": 18,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 9,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 33,
+            "neutral": 5,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 30,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 16,
+            "short": 27,
+            "neutral": 7,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 8,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 20,
+            "short": 22,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:56.201Z"
+    },
+    {
+      "cycle": 9,
+      "duration": 81,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 8,
+          "signalDistribution": {
+            "long": 23,
+            "short": 18,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 21,
+            "short": 18,
+            "neutral": 11,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 20,
+            "short": 21,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 6,
+          "signalDistribution": {
+            "long": 23,
+            "short": 18,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 7,
+          "signalDistribution": {
+            "long": 16,
+            "short": 25,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 10,
+          "signalDistribution": {
+            "long": 12,
+            "short": 32,
+            "neutral": 6,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 7,
+          "signalDistribution": {
+            "long": 13,
+            "short": 29,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 16,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 9,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 21,
+            "short": 21,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:56.484Z"
+    },
+    {
+      "cycle": 10,
+      "duration": 46,
+      "results": [
+        {
+          "timeframe": "1m",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 2,
+            "short": 47,
+            "neutral": 1,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "5m",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 23,
+            "short": 17,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "15m",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 22,
+            "short": 18,
+            "neutral": 10,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "30m",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 21,
+            "short": 21,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1h",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 23,
+            "short": 18,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "4h",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 16,
+            "short": 25,
+            "neutral": 9,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1d",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 12,
+            "short": 32,
+            "neutral": 6,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "3d",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 3,
+          "signalDistribution": {
+            "long": 13,
+            "short": 29,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1w",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 5,
+          "signalDistribution": {
+            "long": 16,
+            "short": 26,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        },
+        {
+          "timeframe": "1M",
+          "cycle": 10,
+          "status": "PASSED",
+          "pairCount": 50,
+          "responseTime": 4,
+          "signalDistribution": {
+            "long": 21,
+            "short": 21,
+            "neutral": 8,
+            "invalid": 0
+          },
+          "issues": [],
+          "missingPairs": []
+        }
+      ],
+      "timestamp": "2025-06-12T01:13:56.731Z"
+    }
+  ],
+  "timestamp": "2025-06-12T01:13:56.936Z"
+}
