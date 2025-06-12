@@ -441,27 +441,64 @@ export class AutomatedSignalCalculator {
 
       const multiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
       confidence = Math.min(95, confidence * multiplier);
-        direction = 'NEUTRAL';
-        confidence = Math.max(35, 45 + volatility * 2);
-        reasoning.push('Neutral technical conditions');
-      }
+
+      // ATR-based stop loss and take profit calculation
+      const atrMultiplier = this.getATRMultiplier(timeframe);
+      let stopLoss: number;
+      let takeProfit: number;
       
-      // Market state bias for neutral signals
-      if (direction === 'NEUTRAL' && Math.abs(change24h) > 3) {
-        if (change24h > 0 && isTrendBullish) {
-          direction = 'LONG';
-          confidence += 10;
-          reasoning.push('Strong positive momentum');
-        } else if (change24h < 0 && !isTrendBullish) {
-          direction = 'SHORT';
-          confidence += 10;
-          reasoning.push('Strong negative momentum');
-        }
+      if (direction === 'LONG') {
+        stopLoss = currentPrice - (realATR * atrMultiplier.stopLoss);
+        takeProfit = currentPrice + (realATR * atrMultiplier.takeProfit);
+      } else if (direction === 'SHORT') {
+        stopLoss = currentPrice + (realATR * atrMultiplier.stopLoss);
+        takeProfit = currentPrice - (realATR * atrMultiplier.takeProfit);
+      } else {
+        // NEUTRAL positions use smaller ATR ranges
+        stopLoss = currentPrice - (realATR * atrMultiplier.stopLoss * 0.5);
+        takeProfit = currentPrice + (realATR * atrMultiplier.takeProfit * 0.5);
       }
 
-      // Apply timeframe-specific adjustments
-      const timeframeMultipliers = {
-        '1M': 1.15, '1w': 1.25, '3d': 1.35, '1d': 1.50,
+      const signal: CalculatedSignal = {
+        symbol: mapping.symbol,
+        timeframe,
+        direction,
+        confidence: Math.min(70, Math.max(30, confidence)),
+        strength: Math.min(80, confidence * 0.8),
+        price: currentPrice,
+        entryPrice: currentPrice,
+        stopLoss: Math.round(stopLoss * 100) / 100,
+        takeProfit: Math.round(takeProfit * 100) / 100,
+        timestamp: Date.now(),
+        indicators: {
+          change24h,
+          volume24h,
+          volatility: Math.abs(change24h),
+          rsi: realRSI,
+          macd: realMACD,
+          bollingerBands: realBB,
+          atr: realATR,
+          bbPosition,
+          reasoning
+        },
+        confluenceScore: Math.abs(signalDifference) * 15 + 30,
+        riskReward: Math.abs(takeProfit - currentPrice) / Math.abs(currentPrice - stopLoss),
+        volatilityAdjustment: Math.abs(change24h)
+      };
+
+      // Create trade simulation for this signal
+      try {
+        await this.createTradeSimulation(signal);
+      } catch (error) {
+        console.error('Failed to create trade simulation:', error);
+      }
+
+      return signal;
+    } catch (error) {
+      console.error(`Error calculating signal for ${mapping.symbol}:`, error);
+      return this.createauthenticSignal(mapping, timeframe, currentPrice, change24h, volume24h);
+    }
+  }
         '4h': 1.40, '1h': 1.30, '30m': 1.15, '15m': 1.00,
         '5m': 0.85, '1m': 0.75
       };
