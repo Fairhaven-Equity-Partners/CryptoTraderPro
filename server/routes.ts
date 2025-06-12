@@ -844,40 +844,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const timeframe = (req.query.timeframe as string) || '4h';
       
-      // Get current market heatmap data
-      const symbols = extendedCryptoList.map(crypto => crypto.symbol);
-      const marketData = [];
+      // Reuse existing heatmap data but simplify the response
+      const heatmapUrl = `http://localhost:${process.env.PORT || 5000}/api/market-heatmap?timeframe=${timeframe}`;
+      const response = await fetch(heatmapUrl);
       
-      for (const symbol of symbols) {
-        try {
-          const price = await optimizedCoinMarketCapService.getPrice(symbol);
-          const change24h = await optimizedCoinMarketCapService.get24hChange(symbol);
-          
-          if (price) {
-            // Generate authentic signal
-            const signal = await authenticTechnicalAnalysis.generateAdvancedSignal(symbol, timeframe, price);
-            
-            const entry = {
-              symbol: symbol,
-              name: extendedCryptoList.find(c => c.symbol === symbol)?.name || symbol,
-              price: price,
-              change24h: change24h || 0,
-              confidence: signal?.confidence || 0,
-              signal: signal?.direction || 'NEUTRAL',
-              volume: signal?.volume || 0
-            };
-            
-            marketData.push(entry);
-          }
-        } catch (error) {
-          // Skip failed symbols to maintain data integrity
-        }
+      if (!response.ok) {
+        throw new Error('Failed to fetch market data');
       }
       
-      // Sort by confidence for better UX
-      marketData.sort((a, b) => b.confidence - a.confidence);
+      const heatmapData = await response.json();
       
-      const response = {
+      // Transform to simplified format
+      const marketData = heatmapData.marketEntries?.map((entry: any) => ({
+        symbol: entry.symbol,
+        name: entry.name,
+        price: entry.currentPrice,
+        change24h: entry.priceChange24h || 0,
+        confidence: entry.confidence || 0,
+        signal: entry.signals?.[timeframe]?.direction || entry.sentiment?.direction || 'NEUTRAL',
+        volume: entry.signals?.[timeframe]?.volume || 0
+      })) || [];
+      
+      // Sort by confidence for better UX
+      marketData.sort((a: any, b: any) => b.confidence - a.confidence);
+      
+      const simplifiedResponse = {
         data: marketData,
         metadata: {
           totalPairs: marketData.length,
@@ -889,7 +880,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Set cache headers for 30 seconds
       res.set('Cache-Control', 'public, max-age=30');
-      res.json(response);
+      res.json(simplifiedResponse);
       
     } catch (error) {
       console.error('[SimpleMarketData] Error:', error);

@@ -3,7 +3,7 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
-import SignalHeatMap from '../components/SignalHeatMap';
+import SimpleMarketList from '../components/SimpleMarketList';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -82,11 +82,11 @@ const Analysis: React.FC = () => {
         
 
         
-        {/* Heat Map Section */}
+        {/* Market Analysis Section */}
         <div className="px-4 py-4">
           <Collapsible open={isHeatMapOpen} onOpenChange={setIsHeatMapOpen}>
             <div className="flex items-center justify-between mb-2">
-              <h2 className="text-xl font-bold text-white">Market-Wide Signal Analysis</h2>
+              <h2 className="text-xl font-bold text-white">Market Analysis</h2>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" size="sm" className="w-9 p-0">
                   {isHeatMapOpen ? (
@@ -99,7 +99,10 @@ const Analysis: React.FC = () => {
             </div>
             
             <CollapsibleContent>
-              <SignalHeatMap onSelectAsset={handleChangeAsset} />
+              <SimpleMarketList 
+                timeframe={currentTimeframe}
+                onRefresh={() => console.log('Market data refreshed')}
+              />
             </CollapsibleContent>
           </Collapsible>
         </div>
