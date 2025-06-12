@@ -24,6 +24,7 @@ import { ultimateHealthOptimizer } from "./ultimateHealthOptimizer";
 import { perfectSystemOptimizer } from "./perfectSystemOptimizer";
 import { comprehensiveSystemFix } from "./comprehensiveSystemFix";
 import { systemHealthValidator } from "./systemHealthValidator";
+import { unifiedDataSynchronizer } from "./unifiedDataSynchronizer";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
 
@@ -2657,6 +2658,93 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('[Routes] Error getting health status:', error);
       res.status(500).json({ 
         error: 'Failed to get system health status',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Unified Synchronized Data Endpoint - Fixes Dashboard-Signals Mismatch
+  app.get('/api/unified/market-data', async (req: Request, res: Response) => {
+    try {
+      const timeframe = (req.query.timeframe as string) || '4h';
+      const synchronizedData = await unifiedDataSynchronizer.getSynchronizedMarketData(timeframe);
+      
+      res.json({
+        success: true,
+        data: synchronizedData,
+        dataSource: 'unified_synchronizer',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('[Routes] Error getting unified data:', error);
+      res.status(500).json({ 
+        error: 'Failed to get unified market data',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Synchronized Signals Endpoint - Matches Dashboard Data
+  app.get('/api/unified/signals/:symbol', async (req: Request, res: Response) => {
+    try {
+      const symbol = decodeURIComponent(req.params.symbol);
+      const timeframe = (req.query.timeframe as string) || '4h';
+      
+      const symbolData = await unifiedDataSynchronizer.getUnifiedSymbolData(symbol, timeframe);
+      
+      if (!symbolData) {
+        return res.status(404).json({ 
+          error: 'Symbol not found',
+          symbol: symbol 
+        });
+      }
+      
+      res.json({
+        symbol: symbolData.symbol,
+        signals: symbolData.signals,
+        direction: symbolData.direction,
+        confidence: symbolData.confidence,
+        price: symbolData.price,
+        technicalAnalysis: symbolData.technicalAnalysis,
+        timestamp: symbolData.timestamp
+      });
+    } catch (error) {
+      console.error('[Routes] Error getting unified signals:', error);
+      res.status(500).json({ 
+        error: 'Failed to get unified signals',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Synchronized Market Analysis Endpoint
+  app.get('/api/unified/market-analysis/:symbol', async (req: Request, res: Response) => {
+    try {
+      const symbol = decodeURIComponent(req.params.symbol);
+      const timeframe = (req.query.timeframe as string) || '4h';
+      
+      const symbolData = await unifiedDataSynchronizer.getUnifiedSymbolData(symbol, timeframe);
+      
+      if (!symbolData) {
+        return res.status(404).json({ 
+          error: 'Symbol not found',
+          symbol: symbol 
+        });
+      }
+      
+      res.json({
+        symbol: symbolData.symbol,
+        analysis: symbolData.technicalAnalysis,
+        recommendation: symbolData.technicalAnalysis.recommendation,
+        signals: symbolData.signals,
+        price: symbolData.price,
+        confidence: symbolData.confidence,
+        timestamp: symbolData.timestamp
+      });
+    } catch (error) {
+      console.error('[Routes] Error getting unified analysis:', error);
+      res.status(500).json({ 
+        error: 'Failed to get unified market analysis',
         timestamp: new Date().toISOString()
       });
     }
