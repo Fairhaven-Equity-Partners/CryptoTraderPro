@@ -1,0 +1,89 @@
+{
+  "timestamp": "2025-06-12T13:10:42.148Z",
+  "implementation": "PERFECT_SIGNAL_BALANCE",
+  "status": "IN_PROGRESS",
+  "metrics": {
+    "totalSignals": 192,
+    "longCount": 109,
+    "shortCount": 70,
+    "neutralCount": 13,
+    "longPercent": 56.8,
+    "shortPercent": 36.5,
+    "neutralPercent": 6.8,
+    "biasPercentage": 20.312500000000007
+  },
+  "optimizedThresholds": {
+    "1m": {
+      "longMin": 0.7031250000000001,
+      "longMax": 1.703125,
+      "shortMin": -1.621875,
+      "shortMax": -0.6218750000000001
+    },
+    "5m": {
+      "longMin": 1.203125,
+      "longMax": 2.203125,
+      "shortMin": -2.121875,
+      "shortMax": -1.121875
+    },
+    "15m": {
+      "longMin": 1.703125,
+      "longMax": 2.703125,
+      "shortMin": -2.621875,
+      "shortMax": -1.621875
+    },
+    "30m": {
+      "longMin": 2.203125,
+      "longMax": 3.203125,
+      "shortMin": -3.121875,
+      "shortMax": -2.121875
+    },
+    "1h": {
+      "longMin": 2.703125,
+      "longMax": 3.703125,
+      "shortMin": -3.621875,
+      "shortMax": -2.621875
+    },
+    "4h": {
+      "longMin": 3.203125,
+      "longMax": 4.203125,
+      "shortMin": -4.121875,
+      "shortMax": -3.121875
+    },
+    "1d": {
+      "longMin": 3.703125,
+      "longMax": 4.703125,
+      "shortMin": -4.621875,
+      "shortMax": -3.621875
+    },
+    "3d": {
+      "longMin": 4.203125,
+      "longMax": 5.203125,
+      "shortMin": -5.121875,
+      "shortMax": -4.121875
+    },
+    "1w": {
+      "longMin": 4.703125,
+      "longMax": 5.703125,
+      "shortMin": -5.621875,
+      "shortMax": -4.621875
+    },
+    "1M": {
+      "longMin": 5.203125,
+      "longMax": 6.203125,
+      "shortMin": -6.121875,
+      "shortMax": -5.121875
+    }
+  },
+  "balancingHistory": [
+    {
+      "timestamp": "2025-06-12T13:10:42.147Z",
+      "beforeBias": 20.312500000000007,
+      "afterBias": 20.312500000000007,
+      "improvement": 0,
+      "balanceAchieved": false
+    }
+  ],
+  "recommendations": [
+    "Apply more aggressive threshold adjustments"
+  ]
+}

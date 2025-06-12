@@ -71,9 +71,9 @@ class PerfectSignalBalancer {
         if (response && response.marketEntries) {
           const signals = response.marketEntries;
           
-          const longCount = signals.filter(s => s.signal === 'LONG').length;
-          const shortCount = signals.filter(s => s.signal === 'SHORT').length;
-          const neutralCount = signals.filter(s => s.signal === 'NEUTRAL').length;
+          const longCount = signals.filter(s => s.signals && s.signals[timeframe] && s.signals[timeframe].direction === 'LONG').length;
+          const shortCount = signals.filter(s => s.signals && s.signals[timeframe] && s.signals[timeframe].direction === 'SHORT').length;
+          const neutralCount = signals.filter(s => s.signals && s.signals[timeframe] && s.signals[timeframe].direction === 'NEUTRAL').length;
           
           totalLong += longCount;
           totalShort += shortCount;
@@ -270,6 +270,7 @@ function getBalancedDirection(change24h: number, timeframe: string): 'LONG' | 'S
   }
 
   async makeRequest(endpoint, method = 'GET', body = null) {
+    const fetch = (await import('node-fetch')).default;
     const url = `http://localhost:5000${endpoint}`;
     const options = {
       method,
@@ -293,13 +294,10 @@ async function main() {
   const balancer = new PerfectSignalBalancer();
   const report = await balancer.implementPerfectBalance();
   
+  const fs = await import('fs');
   const filename = `perfect_balance_report_${Date.now()}.json`;
-  require('fs').writeFileSync(filename, JSON.stringify(report, null, 2));
+  fs.writeFileSync(filename, JSON.stringify(report, null, 2));
   console.log(`\n📄 Perfect balance report saved to ${filename}`);
 }
 
-if (require.main === module) {
-  main().catch(console.error);
-}
-
-module.exports = { PerfectSignalBalancer };
+main().catch(console.error);

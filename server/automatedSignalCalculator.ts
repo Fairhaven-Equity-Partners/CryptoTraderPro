@@ -391,26 +391,27 @@ export class AutomatedSignalCalculator {
       // Apply balanced threshold ranges for equal LONG/SHORT probability
       let signalScore = baseSignalValue;
       
-      // Short timeframes (1m, 5m, 15m, 30m, 1h) - More reactive with balanced distribution
+      // Aggressive bias correction: Reduce LONG threshold, expand SHORT threshold
+      // Short timeframes (1m, 5m, 15m, 30m, 1h) - Corrected for LONG bias
       if (['1m', '5m', '15m', '30m', '1h'].includes(timeframe)) {
         signalScore = (signalScore * 0.9) + (lastDigits * 0.1);
-        if (signalScore < 40) direction = 'LONG';        // 40% LONG
-        else if (signalScore < 80) direction = 'SHORT';  // 40% SHORT  
-        else direction = 'NEUTRAL';                      // 20% NEUTRAL
+        if (signalScore < 25) direction = 'LONG';        // 25% LONG (reduced from 40%)
+        else if (signalScore < 75) direction = 'SHORT';  // 50% SHORT (increased from 40%)
+        else direction = 'NEUTRAL';                      // 25% NEUTRAL
       }
-      // Mid timeframes (1d, 3d) - Balanced approach with equal LONG/SHORT probability
+      // Mid timeframes (1d, 3d) - Corrected for LONG bias
       else if (['1d', '3d'].includes(timeframe)) {
         signalScore = (signalScore * 0.8) + (lastDigits * 0.2);
-        if (signalScore < 35) direction = 'LONG';        // 35% LONG
-        else if (signalScore < 70) direction = 'SHORT';  // 35% SHORT
+        if (signalScore < 20) direction = 'LONG';        // 20% LONG (reduced from 35%)
+        else if (signalScore < 70) direction = 'SHORT';  // 50% SHORT (increased from 35%)
         else direction = 'NEUTRAL';                      // 30% NEUTRAL
       }
-      // Long timeframes (4h, 12h, 1w, 1M) - More conservative with higher NEUTRAL percentage
+      // Long timeframes (4h, 12h, 1w, 1M) - Corrected for LONG bias
       else {
         signalScore = (signalScore * 0.7) + (lastDigits * 0.3);
-        if (signalScore < 30) direction = 'LONG';        // 30% LONG
-        else if (signalScore < 60) direction = 'SHORT';  // 30% SHORT
-        else direction = 'NEUTRAL';                      // 40% NEUTRAL
+        if (signalScore < 15) direction = 'LONG';        // 15% LONG (reduced from 30%)
+        else if (signalScore < 65) direction = 'SHORT';  // 50% SHORT (increased from 30%)
+        else direction = 'NEUTRAL';                      // 35% NEUTRAL
       }
       
       // Calculate confidence based on signal strength and technical indicators

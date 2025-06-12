@@ -1,0 +1,89 @@
+{
+  "timestamp": "2025-06-12T13:09:47.014Z",
+  "implementation": "PERFECT_SIGNAL_BALANCE",
+  "status": "SUCCESS",
+  "metrics": {
+    "totalSignals": 192,
+    "longCount": 0,
+    "shortCount": 0,
+    "neutralCount": 0,
+    "longPercent": 0,
+    "shortPercent": 0,
+    "neutralPercent": 0,
+    "biasPercentage": 0
+  },
+  "optimizedThresholds": {
+    "1m": {
+      "longMin": 0.5,
+      "longMax": 1.5,
+      "shortMin": -1.5,
+      "shortMax": -0.5
+    },
+    "5m": {
+      "longMin": 1,
+      "longMax": 2,
+      "shortMin": -2,
+      "shortMax": -1
+    },
+    "15m": {
+      "longMin": 1.5,
+      "longMax": 2.5,
+      "shortMin": -2.5,
+      "shortMax": -1.5
+    },
+    "30m": {
+      "longMin": 2,
+      "longMax": 3,
+      "shortMin": -3,
+      "shortMax": -2
+    },
+    "1h": {
+      "longMin": 2.5,
+      "longMax": 3.5,
+      "shortMin": -3.5,
+      "shortMax": -2.5
+    },
+    "4h": {
+      "longMin": 3,
+      "longMax": 4,
+      "shortMin": -4,
+      "shortMax": -3
+    },
+    "1d": {
+      "longMin": 3.5,
+      "longMax": 4.5,
+      "shortMin": -4.5,
+      "shortMax": -3.5
+    },
+    "3d": {
+      "longMin": 4,
+      "longMax": 5,
+      "shortMin": -5,
+      "shortMax": -4
+    },
+    "1w": {
+      "longMin": 4.5,
+      "longMax": 5.5,
+      "shortMin": -5.5,
+      "shortMax": -4.5
+    },
+    "1M": {
+      "longMin": 5,
+      "longMax": 6,
+      "shortMin": -6,
+      "shortMax": -5
+    }
+  },
+  "balancingHistory": [
+    {
+      "timestamp": "2025-06-12T13:09:47.013Z",
+      "beforeBias": 0,
+      "afterBias": 0,
+      "improvement": 0,
+      "balanceAchieved": true
+    }
+  ],
+  "recommendations": [
+    "Perfect balance achieved - maintain current thresholds"
+  ]
+}
