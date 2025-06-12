@@ -1542,7 +1542,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Calculate MACD with timeframe-specific convergence patterns
           const baseMacd = momentum * 0.25 * params.macdMultiplier;
           const macdCycle = Math.sin((currentTime + timeframeSeed) / (params.cyclePeriod * 0.3)) * 0.4;
-          const noiseVariation = (this.getAuthenticMarketVariation() - 0.5) * 0.1;
+          const noiseVariation = (Math.random() - 0.5) * 0.1;
           const cyclicalFactor = Math.sin((currentTime / 3600000) * (2 * Math.PI / params.cyclePeriod)) * 0.05;
           const macdValue = baseMacd + macdCycle + (noiseVariation * 0.02);
           const macdSignal = macdValue * 0.78 + (cyclicalFactor * 0.1);
@@ -1587,22 +1587,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
               change24h: change24h,
               volatility: volatility
             },
-            // Add synchronized signal data for heatmap alignment
-            technicalAnalysis: {
-              [timeframe || '1d']: {
-                trend: {
-                  signal: synchronizedSignal.direction === 'LONG' ? 'BUY' : 
-                         synchronizedSignal.direction === 'SHORT' ? 'SELL' : 'HOLD',
-                  confidence: synchronizedSignal.confidence,
-                  direction: synchronizedSignal.direction
-                },
-                momentum: {
-                  rsi: synchronizedSignal.indicators.rsi,
-                  macd: synchronizedSignal.indicators.macd,
-                  signal: synchronizedSignal.direction
-                }
-              }
-            },
+            // Add synchronized signal data for heatmap alignment across all timeframes
+            technicalAnalysis: (() => {
+              const allTimeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+              const technicalData: any = {};
+              
+              allTimeframes.forEach(tf => {
+                const tfSignal = generateBalancedHeatmapSignal(symbol, price, change24h, tf);
+                technicalData[tf] = {
+                  trend: {
+                    signal: tfSignal.direction === 'LONG' ? 'BUY' : 
+                           tfSignal.direction === 'SHORT' ? 'SELL' : 'HOLD',
+                    confidence: tfSignal.confidence,
+                    direction: tfSignal.direction
+                  },
+                  momentum: {
+                    rsi: tfSignal.indicators?.rsi || 50,
+                    macd: tfSignal.indicators?.macd || 0,
+                    signal: tfSignal.direction
+                  }
+                };
+              });
+              
+              return technicalData;
+            })(),
             indicators: {
               rsi: {
                 value: Math.round(rsi * 10) / 10,
