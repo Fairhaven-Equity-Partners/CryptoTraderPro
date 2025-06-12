@@ -3,7 +3,7 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
-import SimpleSignalGrid from '../components/SimpleSignalGrid';
+import SignalHeatMap from '../components/SignalHeatMap';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -28,7 +28,9 @@ const Analysis: React.FC = () => {
   // Effect to trigger analysis when asset changes
   useEffect(() => {
     // Skip the initial render
-    if (assetChangeCounter > 0) {// Allow time for data to load first
+    if (assetChangeCounter > 0) {
+      console.log(`Automatically running analysis for ${currentAsset}`);
+      // Allow time for data to load first
       const timer = setTimeout(() => {
         setShouldRunAnalysis(true);
       }, 1000);
@@ -40,8 +42,13 @@ const Analysis: React.FC = () => {
   const handleChangeAsset = (symbol: string) => {
     setCurrentAsset(symbol);
     setShouldRunAnalysis(true); // Directly set to run analysis
-    setAssetChangeCounter(prev => prev + 1);// Dispatch immediate calculation event with delay to ensure component is ready
-    setTimeout(() => {const event = new CustomEvent('immediate-pair-calculation', {
+    setAssetChangeCounter(prev => prev + 1);
+    console.log(`Selected new asset: ${symbol} - analysis will run automatically`);
+    
+    // Dispatch immediate calculation event with delay to ensure component is ready
+    setTimeout(() => {
+      console.log(`[Analysis] Dispatching immediate calculation event for ${symbol}`);
+      const event = new CustomEvent('immediate-pair-calculation', {
         detail: { symbol: symbol, trigger: 'dropdown-selection' }
       });
       document.dispatchEvent(event);
@@ -92,7 +99,7 @@ const Analysis: React.FC = () => {
             </div>
             
             <CollapsibleContent>
-              <SimpleSignalGrid />
+              <SignalHeatMap onSelectAsset={handleChangeAsset} />
             </CollapsibleContent>
           </Collapsible>
         </div>

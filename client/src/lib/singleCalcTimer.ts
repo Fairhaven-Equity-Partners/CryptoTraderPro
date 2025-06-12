@@ -24,7 +24,10 @@ const CALCULATION_INTERVAL = 180000; // 3 minutes
  * Initialize the timer system
  * - Sets up a timer to allow calculations every 3 minutes
  */
-export function initSingleCalcTimer(): void {// Set initial state
+export function initSingleCalcTimer(): void {
+  console.log('[SINGLE-CALC-TIMER] Initializing calculation timer system');
+  
+  // Set initial state
   resetCalcTimer();
   
   // DISABLED: This was triggering additional calculations beyond our 2-minute throttle
@@ -32,27 +35,36 @@ export function initSingleCalcTimer(): void {// Set initial state
   
   /*
   setInterval(() => {
-    if (!globalState.calculationAllowed) {globalState.calculationAllowed = true;
+    if (!globalState.calculationAllowed) {
+      console.log('[SINGLE-CALC-TIMER] 3-minute mark reached - allowing ONE calculation');
+      globalState.calculationAllowed = true;
       
       // Broadcast that calculation is allowed
       broadcastCalcAllowed();
     }
   }, CALCULATION_INTERVAL);
-  */}
+  */
+  
+  console.log('[SINGLE-CALC-TIMER] AUTO-TRIGGER DISABLED - throttling handled by AdvancedSignalDashboard');
+}
 
 /**
  * Reset the calculation timer
  */
 export function resetCalcTimer(): void {
   globalState.lastCalculationTime = Date.now();
-  globalState.calculationAllowed = false;}
+  globalState.calculationAllowed = false;
+  console.log('[SINGLE-CALC-TIMER] Timer reset, next calculation in 3 minutes');
+}
 
 /**
  * Check if calculation is allowed
  */
 export function isCalcAllowed(): boolean {
   // Don't allow calculation if we're already calculating
-  if (globalState.isCalculating) {return false;
+  if (globalState.isCalculating) {
+    console.log('[SINGLE-CALC-TIMER] Calculation in progress, not allowing another');
+    return false;
   }
   
   return globalState.calculationAllowed;
@@ -63,7 +75,9 @@ export function isCalcAllowed(): boolean {
  */
 export function startCalculation(): void {
   if (globalState.calculationAllowed) {
-    globalState.isCalculating = true;}
+    globalState.isCalculating = true;
+    console.log('[SINGLE-CALC-TIMER] Starting calculation - locking calculation state');
+  }
 }
 
 /**
@@ -72,13 +86,18 @@ export function startCalculation(): void {
 export function completeCalculation(): void {
   globalState.isCalculating = false;
   globalState.calculationAllowed = false; // Don't allow another calculation until the next 3-minute mark
-  globalState.lastCalculationTime = Date.now();}
+  globalState.lastCalculationTime = Date.now();
+  console.log('[SINGLE-CALC-TIMER] Calculation complete - locked until next 3-minute cycle');
+}
 
 /**
  * Broadcast that calculation is allowed - DISABLED
  */
 function broadcastCalcAllowed(): void {
-  // Disabled to prevent triggering extra calculations/* DISABLED TO PREVENT MULTIPLE CALCULATIONS
+  // Disabled to prevent triggering extra calculations
+  console.log('[SINGLE-CALC-TIMER] Auto broadcasting disabled - using direct API only');
+  
+  /* DISABLED TO PREVENT MULTIPLE CALCULATIONS
   const event = new CustomEvent('calculation-allowed', {
     detail: { 
       timestamp: Date.now(),

@@ -19,8 +19,13 @@ let systemInitialized = false;
  * Initialize the auto calculation system
  */
 export function initAutoCalculationSystem() {
-  if (systemInitialized) {return;
-  }systemInitialized = true;
+  if (systemInitialized) {
+    console.log('[AutoCalculation] System already initialized');
+    return;
+  }
+  
+  console.log('[AutoCalculation] System initialized and listening for price updates');
+  systemInitialized = true;
   
   // Listen for price update events
   window.addEventListener('priceUpdate', handlePriceUpdate as EventListener);
@@ -33,22 +38,32 @@ export function initAutoCalculationSystem() {
  * Handle price update events
  */
 function handlePriceUpdate(event: CustomEvent) {
-  const { symbol, price } = event.detail;// Check if enough time has passed since the last calculation
+  const { symbol, price } = event.detail;
+  
+  console.log(`🔄 Price update detected for ${symbol}: ${price}`);
+  
+  // Check if enough time has passed since the last calculation
   const now = Date.now();
   const lastCalcTime = lastCalculationTimes[symbol] || 0;
   const timeSinceLastCalc = Math.floor((now - lastCalcTime) / 1000);
   
-  if (timeSinceLastCalc < MIN_CALCULATION_INTERVAL) {`);
+  if (timeSinceLastCalc < MIN_CALCULATION_INTERVAL) {
+    console.log(`[AutoCalculation] Skipping calculation for ${symbol} (calculated ${timeSinceLastCalc}s ago)`);
     return;
   }
   
-  // Trigger calculationtriggerCalculation(symbol, price);
+  // Trigger calculation
+  console.log(`[AutoCalculation] Triggering calculation for ${symbol} at price ${price}`);
+  triggerCalculation(symbol, price);
 }
 
 /**
  * Trigger a full calculation for all timeframes
  */
-function triggerCalculation(symbol: string, price: number) {try {
+function triggerCalculation(symbol: string, price: number) {
+  console.log(`[AutoCalculation] Calculating signals for ${symbol} at price ${price}`);
+  
+  try {
     // Dispatch calculation event
     const calculationEvent = new CustomEvent('calculateSignals', {
       detail: { symbol, price }
@@ -57,7 +72,9 @@ function triggerCalculation(symbol: string, price: number) {try {
     
     // Update last calculation time
     lastCalculationTimes[symbol] = Date.now();
-  } catch (error) {}
+  } catch (error) {
+    console.error(`[AutoCalculation] Error triggering calculation:`, error);
+  }
 }
 
 /**
@@ -70,7 +87,10 @@ function setupSynchronizedCalculations() {
     const now = new Date();
     
     // Trigger calculations at the 0, 5, 10, 15... minute marks for better synchronization
-    if (now.getMinutes() % 5 === 0 && now.getSeconds() < 30) {// Fetch current price and trigger calculation for active symbols
+    if (now.getMinutes() % 5 === 0 && now.getSeconds() < 30) {
+      console.log('Synchronized calculation triggered at 5-minute mark');
+      
+      // Fetch current price and trigger calculation for active symbols
       const activeSymbol = document.querySelector('[data-active-symbol]')?.getAttribute('data-active-symbol') || 'BTC/USDT';
       const priceElement = document.querySelector('[data-current-price]');
       const currentPrice = priceElement ? parseFloat(priceElement.textContent || '0') : 0;
@@ -85,5 +105,7 @@ function setupSynchronizedCalculations() {
 /**
  * Mark signals as calculated for a symbol
  */
-export function markCalculationComplete(symbol: string, signalCount: number) {lastCalculationTimes[symbol] = Date.now();
+export function markCalculationComplete(symbol: string, signalCount: number) {
+  console.log(`[AutoCalculation] Generated ${signalCount} valid signals for ${symbol}`);
+  lastCalculationTimes[symbol] = Date.now();
 }

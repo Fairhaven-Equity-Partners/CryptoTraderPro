@@ -65,7 +65,9 @@ export function setSyncedPrice(symbol: string, price: number): void {
   subscribers.forEach(callback => {
     try {
       callback(symbol, price);
-    } catch (e) {}
+    } catch (e) {
+      console.error('Error in price subscriber:', e);
+    }
   });
   
   // Also update server (with throttling)

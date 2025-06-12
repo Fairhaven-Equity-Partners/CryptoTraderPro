@@ -17,7 +17,7 @@ export class OptimizedDashboard {
   }
 
   async calculateSignalsForSymbol(symbol: string, currentPrice: number): Promise<Record<TimeFrame, AdvancedSignal | null>> {
-    const cacheKey = `${symbol}-${Math.floor(currentPrice / 100) * 100`}`;
+    const cacheKey = `${symbol}-${Math.floor(currentPrice / 100) * 100}`;
     
     if (this.signalCache.has(cacheKey)) {
       return this.signalCache.get(cacheKey)!;
@@ -159,8 +159,8 @@ export class OptimizedDashboard {
     const confidence = Math.round(signal.confidence);
     const confluencePercent = Math.round(confluence * 100);
     
-    return `${confidence}% confidence ${direction} signal with ${confluencePercent}% timeframe confluence.` ` +
-           `Success probability: ${signal.successProbability}%`.`;
+    return `${confidence}% confidence ${direction} signal with ${confluencePercent}% timeframe confluence. ` +
+           `Success probability: ${signal.successProbability}%.`;
   }
 
   private getEmptySignals(): Record<TimeFrame, AdvancedSignal | null> {

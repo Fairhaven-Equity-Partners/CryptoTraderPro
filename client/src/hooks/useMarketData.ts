@@ -34,12 +34,15 @@ export function useMarketData(symbol: string) {
     
     // Function to load data for a specific timeframe
     const loadTimeframeData = async (tf: TimeFrame) => {
-      try {`);
+      try {
+        console.log(`Loading chart data for ${symbol} (${tf})`);
         const data = await fetchChartData(symbol, tf);
         setChartData(prev => ({ ...prev, [tf]: data }));
         loadedTimeframes.current.add(tf);
         checkAllLoaded();
-      } catch (err) {// Even if there's an error, mark this timeframe as attempted
+      } catch (err) {
+        console.error(`Error loading ${tf} data for ${symbol}:`, err);
+        // Even if there's an error, mark this timeframe as attempted
         loadedTimeframes.current.add(tf);
         checkAllLoaded();
       }
@@ -55,7 +58,10 @@ export function useMarketData(symbol: string) {
     // Function to directly handle the price update events that come from the server
     function handlePriceUpdate(data: any) {
       // Only respond to updates for our specific symbol
-      if (data && data.symbol === symbol && data.price) {// Update timestamp and set the flag to trigger calculations
+      if (data && data.symbol === symbol && data.price) {
+        console.log(`✅ LIVE PRICE RECEIVED for ${symbol}: ${data.price}`);
+        
+        // Update timestamp and set the flag to trigger calculations
         liveDataTimestamp.current = Date.now();
         
         // We need to force this to be true to trigger calculations
@@ -64,7 +70,10 @@ export function useMarketData(symbol: string) {
         // Disabled this event dispatch to prevent duplicate calculations
         // The AdvancedSignalDashboard will track isLiveDataReady state directly
         
-        // Log for debugging only/* DISABLED TO PREVENT DUPLICATE CALCULATIONS
+        // Log for debugging only
+        console.log(`[useMarketData] Price update for ${symbol}: ${data.price} - NOT dispatching extra event`);
+        
+        /* DISABLED TO PREVENT DUPLICATE CALCULATIONS
         document.dispatchEvent(new CustomEvent('live-price-update', { 
           detail: { symbol, price: data.price, timestamp: Date.now() }
         }));
@@ -89,7 +98,9 @@ export function useMarketData(symbol: string) {
     const allTimeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
     const allLoaded = allTimeframes.every(tf => loadedTimeframes.current.has(tf));
     
-    if (allLoaded && !isAllDataLoaded) {setIsAllDataLoaded(true);
+    if (allLoaded && !isAllDataLoaded) {
+      console.log(`All timeframe data loaded for ${symbol}`);
+      setIsAllDataLoaded(true);
     }
   }, [isAllDataLoaded, symbol]);
   
@@ -124,7 +135,9 @@ export function useAssetPrice(symbol: string) {
       };
       
       setRealtimePrice(livePrice);
-      setIsLiveDataConnected(true);}
+      setIsLiveDataConnected(true);
+      console.log(`[useMarketData] Using live price for ${symbol}: ${initialPrice.price}`);
+    }
   }, [symbol, initialPrice]);
   
   // Subscribe to price updates with proper 3-minute synchronization
@@ -146,7 +159,9 @@ export function useAssetPrice(symbol: string) {
         });
         setIsLiveDataConnected(true);
         
-        // CRITICAL FIX: Only update price display, never trigger calculations here}
+        // CRITICAL FIX: Only update price display, never trigger calculations here
+        console.log(`[useMarketData] Price updated to ${price} for ${symbol} - display only`);
+      }
     };
     
     // Set up synchronized 3-minute price fetching without calculation triggers
@@ -165,7 +180,8 @@ export function useAssetPrice(symbol: string) {
       // Set up a dummy interval that doesn't actually do anything
     // We now use the centralized stable price system instead 
     // This is kept for backward compatibility
-      priceUpdateInterval = setInterval(() => {`);
+      priceUpdateInterval = setInterval(() => {
+        console.log(`Using centralized stable price system (3-minute update interval)`);
         // No actual price fetch happens here anymore
       }, 999999999);
     };
@@ -218,7 +234,7 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   const fetchData = useCallback(async () => {
     try {
       // Don't show loading state if we have previous data for this symbol
-      const cacheKey = `${symbol}_${timeframe`}`;
+      const cacheKey = `${symbol}_${timeframe}`;
       const hasPreviousData = previousDataRef.current[cacheKey]?.length > 0;
       
       if (!hasPreviousData) {
@@ -247,7 +263,7 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   // Initial fetch
   useEffect(() => {
     // Check cache first to prevent flickering
-    const cacheKey = `${symbol}_${timeframe`}`;
+    const cacheKey = `${symbol}_${timeframe}`;
     if (previousDataRef.current[cacheKey]?.length > 0) {
       // Use cached data immediately to avoid loading state
       setChartData(previousDataRef.current[cacheKey]);

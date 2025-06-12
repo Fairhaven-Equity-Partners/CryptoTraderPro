@@ -33,7 +33,7 @@ export class OptimizedSignalEngine {
    * Generate optimized trading signal for specific timeframe
    */
   generateSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): AdvancedSignal {
-    const cacheKey = `${symbol}_${timeframe}_${Math.floor(currentPrice / 10) * 10`}`;
+    const cacheKey = `${symbol}_${timeframe}_${Math.floor(currentPrice / 10) * 10}`;
     
     if (this.signalCache.has(cacheKey)) {
       return this.signalCache.get(cacheKey)!;

@@ -107,6 +107,7 @@ function analyzeMarketStructureFromData(signal: AdvancedSignal): { strength: num
   } else {
     return { strength: 55, description: 'Mixed signals indicating consolidation' };
   }
+}
 
 function analyzeVolatilityFromData(signal: AdvancedSignal): { confidence: number; description: string } {
   const { indicators } = signal;
@@ -128,6 +129,7 @@ function analyzeVolatilityFromData(signal: AdvancedSignal): { confidence: number
   } else {
     return { confidence: 75, description: 'Normal volatility within expected range' };
   }
+}
 
 function calculateHistoricalAccuracyFromData(signal: AdvancedSignal): number {
   if (!signal) return 0;
@@ -221,7 +223,7 @@ interface AdvancedSignalDashboardProps {
 }
 
 // Main component
-function AdvancedSignalDashboard({ 
+export default function AdvancedSignalDashboard({ 
   symbol, 
   onTimeframeSelect 
 }: AdvancedSignalDashboardProps) {
@@ -274,7 +276,9 @@ function AdvancedSignalDashboard({
   
   // Symbol change detection for immediate calculations
   useEffect(() => {
-    if (lastSymbolRef.current !== symbol) {lastSymbolRef.current = symbol;
+    if (lastSymbolRef.current !== symbol) {
+      console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
+      lastSymbolRef.current = symbol;
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
       
@@ -287,6 +291,7 @@ function AdvancedSignalDashboard({
       // Trigger immediate calculation for new symbol after data loads
       const immediateCalcTimer = setTimeout(() => {
         if (isAllDataLoaded && !isCalculating) {
+          console.log(`⚡ Triggering immediate calculation for new symbol: ${symbol}`);
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
@@ -357,8 +362,11 @@ function AdvancedSignalDashboard({
   useEffect(() => {
     if (!window.triggerSignalCalculation) {
       window.triggerSignalCalculation = (symbolToCalc: string, priceValue: number) => {
-        if (symbolToCalc === symbol && priceValue > 0) {calculateAllSignals(); // Force immediate calculation
-        };
+        if (symbolToCalc === symbol && priceValue > 0) {
+          console.log('[SignalDashboard] Immediate calculation triggered by UltimateManager');
+          calculateAllSignals(); // Force immediate calculation
+        }
+      };
     }
 
     return () => {
@@ -373,18 +381,35 @@ function AdvancedSignalDashboard({
   useEffect(() => {
     const handleCentralizedPriceUpdate = (event: any) => {
       if (event.detail?.symbol === symbol && event.detail?.price) {
-        setLivePriceState(event.detail.price);};
+        setLivePriceState(event.detail.price);
+        console.log(`[AdvancedSignalDashboard] Centralized price update for ${symbol}: $${event.detail.price}`);
+      }
+    };
 
     // Listen for immediate pair selection calculations
     const handleImmediatePairCalculation = (event: any) => {
-      if (event.detail?.symbol === symbol) {// Always attempt immediate calculation - remove all blocking conditions
-        if (!isCalculating) {setTimeout(() => {
-            if (calculateAllSignalsRef.current && !isCalculating) {setIsCalculating(true);
+      if (event.detail?.symbol === symbol) {
+        console.log(`[AdvancedSignalDashboard] Immediate calculation triggered for ${symbol} via ${event.detail.trigger}`);
+        
+        // Always attempt immediate calculation - remove all blocking conditions
+        if (!isCalculating) {
+          console.log(`⚡ Starting immediate calculation for ${symbol}`);
+          setTimeout(() => {
+            if (calculateAllSignalsRef.current && !isCalculating) {
+              console.log(`⚡ Executing immediate calculation for ${symbol}`);
+              setIsCalculating(true);
               lastCalculationRef.current = Date.now();
               lastCalculationTimeRef.current = Date.now() / 1000;
               calculateAllSignalsRef.current('pair-selection');
-            } else {}, 800);
-        } else {};
+            } else {
+              console.log(`⚠️ Calculation function not ready: calculateAllSignalsRef=${!!calculateAllSignalsRef.current}, isCalculating=${isCalculating}`);
+            }
+          }, 800);
+        } else {
+          console.log(`Skipping immediate calculation - already in progress for ${symbol}`);
+        }
+      }
+    };
 
     // Only listen to centralized price updates to reduce API calls
     document.addEventListener('centralized-price-update', handleCentralizedPriceUpdate);
@@ -401,13 +426,18 @@ function AdvancedSignalDashboard({
   
   // Update when centralized price changes
   useEffect(() => {
-    if (centralizedPrice && centralizedPrice > 0) {}, [centralizedPrice, symbol]);
+    if (centralizedPrice && centralizedPrice > 0) {
+      console.log(`[AdvancedSignalDashboard] Centralized price update for ${symbol}: $${centralizedPrice}`);
+    }
+  }, [centralizedPrice, symbol]);
   
   // Get the current price from centralized manager with null safety
   const currentAssetPrice = centralizedPrice || 0;
   
   // Initialize continuous learning for this symbol
-  useEffect(() => {startContinuousLearning(symbol).catch(error => {
+  useEffect(() => {
+    console.log(`🧠 Initializing continuous learning feedback loop for ${symbol}`);
+    startContinuousLearning(symbol).catch(error => {
       // Silently handle learning initialization errors
     });
   }, [symbol]);
@@ -419,7 +449,8 @@ function AdvancedSignalDashboard({
     if (!isTimerInitialized) {
       setTimeUntilNextCalc(240); // Initialize to 4 minutes
       setIsTimerInitialized(true);
-    }, [isTimerInitialized]);
+    }
+  }, [isTimerInitialized]);
 
   // Synchronized timer system using UltimateManager's 4-minute intervals
   useEffect(() => {
@@ -442,8 +473,12 @@ function AdvancedSignalDashboard({
           .filter(s => s !== null)
           .map(s => s!.timestamp || 0)) / 1000;
         
-        if (signalTimestamp > actualLastCalculationTime) {setActualLastCalculationTime(signalTimestamp);
-        }, 1000);
+        if (signalTimestamp > actualLastCalculationTime) {
+          console.log('🔄 Signals updated, syncing timer with actual calculation time');
+          setActualLastCalculationTime(signalTimestamp);
+        }
+      }
+    }, 1000);
 
     return () => clearInterval(timerInterval);
   }, [signals, actualLastCalculationTime]);
@@ -464,7 +499,9 @@ function AdvancedSignalDashboard({
         
         if (shouldCalculate && !isCalculating) {
           const triggerType = event.detail.immediate ? 'immediate pair selection' : 
-                             event.detail.interval === '4-minute' ? '4-minute sync' : 'manual';setIsCalculating(true);
+                             event.detail.interval === '4-minute' ? '4-minute sync' : 'manual';
+          console.log(`⚡ Starting ${triggerType} calculation for ${symbol}`);
+          setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals(event.detail.immediate ? 'pair-selection' : '4-minute-sync');
@@ -472,9 +509,14 @@ function AdvancedSignalDashboard({
           // Broadcast completion to heatmap and other components for perfect synchronization
           setTimeout(() => {
             window.dispatchEvent(new CustomEvent('calculation-loop-complete', {
-              detail: { symbol, timestamp: Date.now(), triggerType }));
+              detail: { symbol, timestamp: Date.now(), triggerType }
+            }));
           }, 1000); // Delay to ensure calculation completion
-        } else {};
+        } else {
+          console.log(`Calculation blocked: isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
+        }
+      }
+    };
 
     // Handler for real-time price updates to enable continuous calculations
     const handlePriceUpdate = (event: CustomEvent) => {
@@ -483,24 +525,34 @@ function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         
         // DISABLED: Real-time calculations - wait for 4-minute synchronized events only
-        if (timeSinceLastCalc >= 240 && hasMinimumData && !isCalculating && event.detail.interval === '4-minute') {calculateAllSignals('4-minute-sync');
-        };
+        if (timeSinceLastCalc >= 240 && hasMinimumData && !isCalculating && event.detail.interval === '4-minute') {
+          console.log(`⏰ 4-minute synchronized calculation for ${symbol}`);
+          calculateAllSignals('4-minute-sync');
+        }
+      }
+    };
     
     // DISABLED ALL EXCESSIVE EVENT LISTENERS - Only allow 4-minute synchronized events
     const handleUltimateSystemTrigger = (event: CustomEvent) => {
       const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
       
       // STRICT: Only 4-minute intervals with proper timing
-      if (event.detail.interval === '4-minute' && timeSinceLastCalc >= 240) {`;
+      if (event.detail.interval === '4-minute' && timeSinceLastCalc >= 240) {
+        console.log(`[${symbol}] 4-minute synchronized calculation (${timeSinceLastCalc}s since last)`);
         
         if (!isCalculating) {
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals('4-minute-sync').catch(error => {
+            console.error(`[${symbol}] 4-minute calculation failed:`, error);
             setIsCalculating(false);
           });
-        };
+        }
+      } else {
+        console.log(`[${symbol}] Calculation blocked - ${Math.round(240 - timeSinceLastCalc)}s until next 4-minute sync`);
+      }
+    };
 
     // MINIMAL EVENT LISTENERS - Only 4-minute synchronized events and immediate pair selections
     document.addEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
@@ -523,8 +575,17 @@ function AdvancedSignalDashboard({
     const now = Date.now() / 1000;
     const timeSinceLastCalc = now - lastCalculationTimeRef.current;
     
+    console.log(`Attempt to trigger calculation (${trigger}) for ${symbol}:
+      - Already triggered: ${calculationTriggeredRef.current}
+      - Currently calculating: ${isCalculating}
+      - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
+      - All data loaded: ${isAllDataLoaded}
+      - Live data ready: ${isLiveDataReady}`);
+    
     // Always allow manual triggers to recalculate
-    if (trigger === 'manual' || trigger === 'timer') {calculationTriggeredRef.current = true;
+    if (trigger === 'manual' || trigger === 'timer') {
+      console.log(`${trigger} calculation requested for ${symbol}`);
+      calculationTriggeredRef.current = true;
       
       // For timer-triggered refreshes, use a delayed toast to avoid React warning
       if (trigger === 'timer') {
@@ -532,7 +593,7 @@ function AdvancedSignalDashboard({
         setTimeout(() => {
           toast({
             title: "Auto-Refresh",
-            description: "Automatically refreshing signals for " + symbol,
+            description: `Automatically refreshing signals for ${symbol}`,
             variant: "default"
           });
         }, 100);
@@ -550,7 +611,9 @@ function AdvancedSignalDashboard({
     
     // For data-loaded triggers, we want to be less restrictive
     if (trigger === 'data-loaded') {
-      if (isCalculating) {return;
+      if (isCalculating) {
+        console.log(`Already calculating for ${symbol}, will retry when complete`);
+        return;
       }
       
       // Proceed with calculation regardless of other conditions
@@ -591,7 +654,9 @@ function AdvancedSignalDashboard({
   // Each time data is loaded or symbol changes, trigger calculation ONLY when timer allows
   useEffect(() => {
     // Reset calculation status when symbol changes
-    if (lastSymbolRef.current !== symbol) {calculationTriggeredRef.current = false;
+    if (lastSymbolRef.current !== symbol) {
+      console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
+      calculationTriggeredRef.current = false;
       // Initialize signals for all timeframes defined in the TimeFrame type
       setSignals({
         '1m': null,
@@ -627,6 +692,7 @@ function AdvancedSignalDashboard({
       if (shouldAllowCalculation) {
         const triggerReason = lastCalculationRef.current === 0 ? 'initial' : 
                             isAutomatedTrigger ? 'automated-system' : '4-minute interval';
+        console.log(`[SignalDashboard] Data ready for ${symbol} - triggering calculation (${triggerReason})`);
         calculationTriggeredRef.current = true;
         
         if (calculationTimeoutRef.current) {
@@ -635,11 +701,16 @@ function AdvancedSignalDashboard({
         
         // Execute calculation
         if (!isCalculating) {
-          calculateAllSignals().catch(error => {setIsCalculating(false);
+          calculateAllSignals().catch(error => {
+            console.error('[SignalDashboard] Calculation error:', error);
+            setIsCalculating(false);
           });
-        } else {
-        // Waiting for calculation interval
-      }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData, isCalculating]);
+        }
+      } else {
+        console.log(`[SignalDashboard] Data ready for ${symbol} but calculation blocked by 4-minute timer (${Math.round((240000 - timeSinceLastCalc) / 1000)}s remaining)`);
+      }
+    }
+  }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData, isCalculating]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
   useEffect(() => {
@@ -723,6 +794,7 @@ function AdvancedSignalDashboard({
           description: 'Consolidation pattern suggesting a period of indecision'
         });
       }
+    }
     
     // Occasionally add a secondary pattern for higher timeframes
     if (timeframe === '1d' || timeframe === '3d' || timeframe === '1w' || timeframe === '1M') {
@@ -773,7 +845,7 @@ function AdvancedSignalDashboard({
           }
           
           patterns.push({
-            name: `Elliott Wave (Impulse ${wavePosition}`)`,
+            name: `Elliott Wave (Impulse ${wavePosition})`,
             reliability: reliability,
             direction: direction === 'LONG' ? 'bullish' : 'bearish',
             priceTarget: pricePrediction,
@@ -805,13 +877,15 @@ function AdvancedSignalDashboard({
           }
           
           patterns.push({
-            name: `Elliott Wave (Corrective ${waveName}`)`,
+            name: `Elliott Wave (Corrective ${waveName})`,
             reliability: reliability,
             direction: direction === 'LONG' ? 'bearish' : 'bullish', // Corrective waves typically move against the main trend
             priceTarget: pricePrediction,
             description: description
           });
         }
+      }
+    }
     
     // Volume Profile Analysis
     if (timeframe !== '1m' && timeframe !== '5m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
@@ -823,7 +897,7 @@ function AdvancedSignalDashboard({
         reliability: volumeStrength,
         direction: volumeProfileType === 'Support' ? 'bullish' : 'bearish',
         priceTarget: volumeProfileType === 'Support' ? currentPrice * 1.08 : currentPrice * 0.92,
-        description: `High volume ${volumeProfileType.toLowerCase()} zone indicating institutional interest. High-probability reversal area`.`
+        description: `High volume ${volumeProfileType.toLowerCase()} zone indicating institutional interest. High-probability reversal area.`
       });
     }
     
@@ -850,13 +924,13 @@ function AdvancedSignalDashboard({
         const breakDirection = (currentPrice + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
         structureDirection = breakDirection;
         priceTarget = breakDirection === 'bullish' ? currentPrice * 1.15 : currentPrice * 0.85;
-        description = `${breakDirection === 'bullish' ? 'Bullish' : 'Bearish'} market structure break indicating potential trend reversal. High-probability turning point`.`;
+        description = `${breakDirection === 'bullish' ? 'Bullish' : 'Bearish'} market structure break indicating potential trend reversal. High-probability turning point.`;
       } else {
         // Use deterministic direction based on timeframe and current price for consistency
         const chochDirection = (Math.floor(currentPrice / 1000) + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
         structureDirection = chochDirection;
         priceTarget = chochDirection === 'bullish' ? currentPrice * 1.10 : currentPrice * 0.90;
-        description = `Change of character detected in price action, suggesting ${chochDirection === 'bullish' ? 'bullish' : 'bearish'} momentum shift. Watch for confirmation`.`;
+        description = `Change of character detected in price action, suggesting ${chochDirection === 'bullish' ? 'bullish' : 'bearish'} momentum shift. Watch for confirmation.`;
       }
       
       patterns.push({
@@ -880,8 +954,8 @@ function AdvancedSignalDashboard({
         direction: isLong ? 'bullish' : 'bearish',
         priceTarget: isLong ? currentPrice * 1.12 : currentPrice * 0.88,
         description: liquidityType === 'Stop Hunt' ? 
-          `${isLong ? 'Bullish' : 'Bearish'} stop hunt detected. Price likely engineered to trigger stops before ${isLong ? 'moving up' : 'dropping'}`.` : 
-          `Institutional liquidity pool identified. High probability of ${isLong ? 'upward' : 'downward'} movement after liquidity is absorbed`.`
+          `${isLong ? 'Bullish' : 'Bearish'} stop hunt detected. Price likely engineered to trigger stops before ${isLong ? 'moving up' : 'dropping'}.` : 
+          `Institutional liquidity pool identified. High probability of ${isLong ? 'upward' : 'downward'} movement after liquidity is absorbed.`
       });
     }
     
@@ -919,7 +993,7 @@ function AdvancedSignalDashboard({
         case 'Secondary Test':
           wyckoffDirection = (Math.floor(currentPrice / 1000) + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
           priceTarget = wyckoffDirection === 'bullish' ? currentPrice * 1.10 : currentPrice * 0.90;
-          description = `Wyckoff Secondary Test: ${wyckoffDirection === 'bullish' ? 'Bullish' : 'Bearish'} retest of critical level. Watch for ${wyckoffDirection === 'bullish' ? 'strength' : 'weakness'} on this test`.`;
+          description = `Wyckoff Secondary Test: ${wyckoffDirection === 'bullish' ? 'Bullish' : 'Bearish'} retest of critical level. Watch for ${wyckoffDirection === 'bullish' ? 'strength' : 'weakness'} on this test.`;
           break;
       }
       
@@ -951,7 +1025,7 @@ function AdvancedSignalDashboard({
           component === 'Price-Kumo Relationship' ? 'Price ' + (isBullish ? 'above' : 'below') + ' the Cloud with ' + (isStrong ? 'strong' : 'moderate') + ' momentum.' :
           component === 'Kumo Twist' ? (isBullish ? 'Bullish' : 'Bearish') + ' Cloud twist forming in future, suggesting trend change.' :
           'Chikou Span ' + (isBullish ? 'above' : 'below') + ' price, confirming ' + (isBullish ? 'bullish' : 'bearish') + ' momentum.'
-        `}`
+        }`
       });
     }
     
@@ -974,7 +1048,7 @@ function AdvancedSignalDashboard({
           relation === 'BTC Dominance' ? 'BTC dominance ' + (isBullish ? 'decreasing' : 'increasing') + ', suggesting ' + (isBullish ? 'altcoin season' : 'bitcoin preference') + '.' :
           relation === 'Sector Rotation' ? 'Crypto sector rotation favoring ' + (isBullish ? 'this asset class' : 'other segments') + '.' :
           'Market sentiment shifting to ' + (isBullish ? 'risk-on' : 'risk-off') + ' mode across global markets.'
-        `}`
+        }`
       });
     }
     
@@ -996,7 +1070,7 @@ function AdvancedSignalDashboard({
           orderFlowType === 'Imbalance' ? 'Significant ' + (isBullish ? 'buying' : 'selling') + ' imbalance detected in recent price action.' :
           orderFlowType === 'Delta Divergence' ? 'Price and delta ' + (isBullish ? 'bullish' : 'bearish') + ' divergence indicating potential ' + (isBullish ? 'upside' : 'downside') + '.' :
           'Large ' + (isBullish ? 'buy' : 'sell') + ' block detected, suggesting institutional ' + (isBullish ? 'accumulation' : 'distribution') + '.'
-        `}`
+        }`
       });
     }
     
@@ -1022,7 +1096,7 @@ function AdvancedSignalDashboard({
           cyclePosition === 'Early Bear Phase' ? 'Beginning of bear trend. Initial sharp decline with lower prices ahead.' :
           cyclePosition === 'Mid Bear Phase' ? 'Strongest part of bear trend. Capitulation and strong selling pressure.' :
           'Final stage of bear market. Apathy and disinterest prevalent. Consider accumulating.'
-        `}`
+        }`
       });
     }
     
@@ -1041,21 +1115,22 @@ function AdvancedSignalDashboard({
         
         if (isBullish) {
           patterns.push({
-            name: `RSI Bullish Divergence (${severity}`)`,
+            name: `RSI Bullish Divergence (${severity})`,
             reliability: reliability,
             direction: 'bullish',
             priceTarget: currentPrice * (1 + (reliability / 100)),
-            description: `Price making lower lows while RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal`.`
+            description: `Price making lower lows while RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal.`
           });
         } else {
           patterns.push({
-            name: `RSI Bearish Divergence (${severity}`)`,
+            name: `RSI Bearish Divergence (${severity})`,
             reliability: reliability,
             direction: 'bearish',
             priceTarget: currentPrice * (1 - (reliability / 100)),
-            description: `Price making higher highs while RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal`.`
+            description: `Price making higher highs while RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal.`
           });
-        } else {
+        }
+      } else {
         // Stochastic RSI Divergence
         const severity = Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.33 ? 'weak' : (Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5 ? 'moderate' : 'strong');
         const reliability = severity === 'weak' ? 58 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 10) :
@@ -1064,21 +1139,23 @@ function AdvancedSignalDashboard({
         
         if (isBullish) {
           patterns.push({
-            name: `Stoch RSI Bullish Divergence (${severity}`)`,
+            name: `Stoch RSI Bullish Divergence (${severity})`,
             reliability: reliability,
             direction: 'bullish',
             priceTarget: currentPrice * (1 + (reliability / 100)),
-            description: `Price making lower lows while Stochastic RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal`.`
+            description: `Price making lower lows while Stochastic RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal.`
           });
         } else {
           patterns.push({
-            name: `Stoch RSI Bearish Divergence (${severity}`)`,
+            name: `Stoch RSI Bearish Divergence (${severity})`,
             reliability: reliability,
             direction: 'bearish',
             priceTarget: currentPrice * (1 - (reliability / 100)),
-            description: `Price making higher highs while Stochastic RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal`.`
+            description: `Price making higher highs while Stochastic RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal.`
           });
         }
+      }
+    }
     
     // Technical Divergences (expand existing divergence detection)
     if (timeframe !== '1m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.6) {
@@ -1088,11 +1165,11 @@ function AdvancedSignalDashboard({
       const reliability = 68 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 22);
       
       patterns.push({
-        name: `${strength} ${divType`}`,
+        name: `${strength} ${divType}`,
         reliability,
         direction: divType.includes('Bullish') ? 'bullish' : divType.includes('Bearish') ? 'bearish' : 'neutral',
         priceTarget: divType.includes('Bullish') ? currentPrice * 1.06 : currentPrice * 0.94,
-        description: `${strength} divergence detected between price and ${divType.split(' ')[0]} indicator. ${strength === 'Hidden' ? 'Trend continuation' : 'Reversal'} signal`.`
+        description: `${strength} divergence detected between price and ${divType.split(' ')[0]} indicator. ${strength === 'Hidden' ? 'Trend continuation' : 'Reversal'} signal.`
       });
     }
 
@@ -1105,7 +1182,7 @@ function AdvancedSignalDashboard({
       const reliability = 58 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 25);
       
       patterns.push({
-        name: `${isBullish && !['Doji'].includes(candlePattern) ? 'Bullish' : !isBullish && !['Doji'].includes(candlePattern) ? 'Bearish' : ''} ${candlePattern`}`,
+        name: `${isBullish && !['Doji'].includes(candlePattern) ? 'Bullish' : !isBullish && !['Doji'].includes(candlePattern) ? 'Bearish' : ''} ${candlePattern}`,
         reliability,
         direction: candlePattern === 'Doji' ? 'neutral' : isBullish ? 'bullish' : 'bearish',
         priceTarget: candlePattern === 'Doji' ? currentPrice : isBullish ? currentPrice * 1.04 : currentPrice * 0.96,
@@ -1114,7 +1191,7 @@ function AdvancedSignalDashboard({
           candlePattern === 'Hammer' ? 'Bullish reversal pattern at support levels.' :
           candlePattern === 'Shooting Star' ? 'Bearish reversal pattern at resistance levels.' :
           'Strong reversal or continuation signal depending on context.'
-        `}`
+        }`
       });
     }
 
@@ -1127,11 +1204,11 @@ function AdvancedSignalDashboard({
       const reliability = 72 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 18);
       
       patterns.push({
-        name: `Fibonacci ${isRetracement ? 'Retracement' : 'Extension'} ${fibLevel`}`,
+        name: `Fibonacci ${isRetracement ? 'Retracement' : 'Extension'} ${fibLevel}`,
         reliability,
         direction: isSupport ? 'bullish' : 'bearish',
         priceTarget: isSupport ? currentPrice * 1.05 : currentPrice * 0.95,
-        description: `Price interacting with ${fibLevel} Fibonacci ${isRetracement ? 'retracement' : 'extension'} level. Key ${isSupport ? 'support' : 'resistance'} zone`.`
+        description: `Price interacting with ${fibLevel} Fibonacci ${isRetracement ? 'retracement' : 'extension'} level. Key ${isSupport ? 'support' : 'resistance'} zone.`
       });
     }
 
@@ -1154,7 +1231,7 @@ function AdvancedSignalDashboard({
           maPattern === 'EMA Bounce' ? 'Price bouncing off exponential moving average support.' :
           maPattern === 'MA Squeeze' ? 'Moving averages converging, breakout expected.' :
           'Significant moving average crossover signal.'
-        `}`
+        }`
       });
     }
 
@@ -1175,12 +1252,15 @@ function AdvancedSignalDashboard({
           srPattern.includes('Double') ? 'Strong reversal pattern with two touches.' :
           srPattern.includes('Triple') ? 'Very strong reversal pattern with three touches.' :
           'Key support/resistance level providing trading opportunities.'
-        `}`
+        }`
       });
     }
 
     // Sort patterns by reliability percentage (highest to lowest)
-    patterns.sort((a, b) => b.reliability - a.reliability);return patterns;
+    patterns.sort((a, b) => b.reliability - a.reliability);
+    
+    console.log(`Generated ${patterns.length} patterns for ${timeframe} timeframe`);
+    return patterns;
   };
 
   // Cache for consistent signals across timeframe switches
@@ -1196,23 +1276,43 @@ function AdvancedSignalDashboard({
       return; // Kill switch handles logging
     }
     
-    if (isCalculating) {return;
+    if (isCalculating) {
+      console.log(`Calculation already in progress for ${symbol}, skipping new request`);
+      return;
     }
     
     // Mark as calculating to prevent overlapping calculations
-    const now = Date.now();setIsCalculating(true);
+    const now = Date.now();
+    console.log(`✅ Calculation allowed: ${trigger}`);
+    setIsCalculating(true);
     lastCalculationRef.current = now;
-    lastCalculationTimeRef.current = now / 1000;// Use promise to allow proper async calculation
+    lastCalculationTimeRef.current = now / 1000;
+    
+    console.log(`⚡ Starting calculation loop for 10 timeframes`);
+    
+    // Use promise to allow proper async calculation
     try {
       // Helper to process one timeframe
       const calculateTimeframe = async (timeframe: TimeFrame, delay: number = 0) => {
         // Staggered start times for resource management
         if (delay > 0) {
           await new Promise(resolve => setTimeout(resolve, delay));
-        }try {
+        }
+        
+        console.log(`⚡ About to calculate ${timeframe} timeframe`);
+        console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
+        
+        try {
           // Check if we have data for this timeframe
-          if (!chartData[timeframe] || !Array.isArray(chartData[timeframe]) || chartData[timeframe].length < 20) {return null;
-          }// Start calculation with realistic logging`;
+          if (!chartData[timeframe] || !Array.isArray(chartData[timeframe]) || chartData[timeframe].length < 20) {
+            console.log(`DATA CHECK: Not enough data for ${symbol} on ${timeframe} timeframe. Skipping.`);
+            return null;
+          }
+          
+          console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${chartData[timeframe].length} data points.`);
+          
+          // Start calculation with realistic logging
+          console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
           
           // CRITICAL FIX: Always fetch fresh price for this specific symbol to avoid cached BTC price
           let livePrice = 0;
@@ -1221,25 +1321,46 @@ function AdvancedSignalDashboard({
             const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
             // Force immediate fetch to get the authentic price for this symbol
             const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
-            livePrice = fetchedPrice && fetchedPrice > 0 ? fetchedPrice : 0;} catch (error) {}
+            livePrice = fetchedPrice && fetchedPrice > 0 ? fetchedPrice : 0;
+            console.log(`[${timeframe}] Fresh price fetched for ${symbol}: ${livePrice}`);
+          } catch (error) {
+            console.warn(`Failed to fetch fresh price for ${symbol}:`, error);
+          }
           
           // If fresh fetch failed, use asset data as authentic
           if (!livePrice || livePrice <= 0) {
             livePrice = (asset as any)?.lastPrice || 
                        (asset as any)?.currentPrice || 
-                       (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);}
-          
-          // Verify price is reasonable for this symbol (prevent BTC price inheritance)
-          if (symbol === 'DOT/USDT' && livePrice > 100) {// Force correct price range for DOT
-            livePrice = 3.95; // Use known current DOT price as emergency authentic
-          }// Ensure we have valid price data before proceeding
-          if (!livePrice || livePrice <= 0) {return null;
+                       (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);
+            console.log(`[${timeframe}] authentic price for ${symbol}: ${livePrice}`);
           }
           
-          // Generate signal using unified calculation core with live price dataconst chartDataWithTimestamp = chartData[timeframe].map(d => ({
+          // Verify price is reasonable for this symbol (prevent BTC price inheritance)
+          if (symbol === 'DOT/USDT' && livePrice > 100) {
+            console.error(`[${timeframe}] PRICE ERROR: DOT/USDT showing ${livePrice} - likely BTC price inheritance bug`);
+            // Force correct price range for DOT
+            livePrice = 3.95; // Use known current DOT price as emergency authentic
+          }
+          
+          console.log(`[${timeframe}] Using live price: ${livePrice} for calculation`);
+          
+          // Ensure we have valid price data before proceeding
+          if (!livePrice || livePrice <= 0) {
+            console.log(`[${timeframe}] No valid price data available, skipping calculation`);
+            return null;
+          }
+          
+          // Generate signal using unified calculation core with live price data
+          console.log(`[${timeframe}] Preparing chart data with ${chartData[timeframe].length} candles`);
+          const chartDataWithTimestamp = chartData[timeframe].map(d => ({
             ...d,
             timestamp: d.time || Date.now()
-          }));let consolidatedSignal = await calculateConsolidatedSignal(symbol, timeframe, chartDataWithTimestamp, livePrice);` : 'null');
+          }));
+          
+          console.log(`[${timeframe}] Using consolidated calculation engine with live price ${livePrice}`);
+          let consolidatedSignal = await calculateConsolidatedSignal(symbol, timeframe, chartDataWithTimestamp, livePrice);
+          
+          console.log(`[${timeframe}] Consolidated signal result:`, consolidatedSignal ? `${consolidatedSignal.direction} (${consolidatedSignal.confidence}%)` : 'null');
           
           // Convert consolidated signal to AdvancedSignal format for UI compatibility
           let signal: AdvancedSignal | null = null;
@@ -1326,15 +1447,18 @@ function AdvancedSignalDashboard({
               macroInsights: [
                 `Market Regime: ${consolidatedSignal.marketStructure.regime}`,
                 `Direction: ${consolidatedSignal.direction}`,
-                `Success Probability: ${consolidatedSignal.successProbability.toFixed(1)}`%`,
+                `Success Probability: ${consolidatedSignal.successProbability.toFixed(1)}%`,
                 `Risk/Reward: ${consolidatedSignal.riskReward.toFixed(2)}`,
-                `Recommended Leverage: ${consolidatedSignal.recommendedLeverage}`x`
+                `Recommended Leverage: ${consolidatedSignal.recommendedLeverage}x`
               ]
             } as AdvancedSignal;
           }
           
           // Enhanced signal with consolidated calculation engine
-          if (signal) {}
+          if (signal) {
+            console.log(`[ConsolidatedEngine] ${timeframe}: ${signal.macroInsights?.[0]}, Direction=${signal.direction}, Confidence=${signal.confidence}%`);
+            console.log(`[ConsolidatedEngine] ${timeframe}: Signal ready - Direction=${signal?.direction || 'NEUTRAL'}, Confidence=${signal?.confidence || 0}%`);
+          }
           
           // Generate pattern formations based on signal direction and timeframe
           if (signal) {
@@ -1352,12 +1476,14 @@ function AdvancedSignalDashboard({
             
             const convergenceAnalysis = analyzeIndicatorConvergence(authenticIndicators);
             if (convergenceAnalysis.confidence > 70) {
-              enhancedMacroInsights.push(}
+              enhancedMacroInsights.push(`Correlation: ${convergenceAnalysis.description}`);
+            }
             
             // Add market regime insight
             const regimeAnalysis = detectMarketRegimeFromData(signal);
             if (regimeAnalysis.confidence > 60) {
-              enhancedMacroInsights.push(}
+              enhancedMacroInsights.push(`Regime: ${regimeAnalysis.description}`);
+            }
             
             // Add enhanced validation insight with optimized accuracy calculation
             const baseAccuracy = signal.confidence;
@@ -1367,17 +1493,19 @@ function AdvancedSignalDashboard({
                                        timeframe === '1d' ? 0.98 : timeframe === '3d' ? 0.95 :
                                        timeframe === '1w' ? 0.90 : 0.85;
             const historicalAccuracy = Math.max(65, Math.min(96, Math.round(baseAccuracy * timeframeMultiplier)));
-            enhancedMacroInsights.push(`Validation: ${historicalAccuracy}% historical accurac`y`;
+            enhancedMacroInsights.push(`Validation: ${historicalAccuracy}% historical accuracy`);
             
             // Add market structure analysis using authentic data
             const marketStructure = analyzeMarketStructureFromData(signal);
             if (marketStructure.strength > 65) {
-              enhancedMacroInsights.push(}
+              enhancedMacroInsights.push(`Structure: ${marketStructure.description}`);
+            }
             
             // Add volatility analysis using authentic data
             const volatilityAnalysis = analyzeVolatilityFromData(signal);
             if (volatilityAnalysis.confidence > 70) {
-              enhancedMacroInsights.push(}
+              enhancedMacroInsights.push(`Volatility: ${volatilityAnalysis.description}`);
+            }
             
             // Add indicator consensus analysis
             const totalIndicators = [
@@ -1388,9 +1516,9 @@ function AdvancedSignalDashboard({
             const bearishCount = totalIndicators.filter(ind => ind.signal === 'SELL').length;
             
             if (bullishCount > bearishCount) {
-              enhancedMacroInsights.push(`Consensus: ${bullishCount}/${totalIndicators.length} indicators bullis`h`;
+              enhancedMacroInsights.push(`Consensus: ${bullishCount}/${totalIndicators.length} indicators bullish`);
             } else if (bearishCount > bullishCount) {
-              enhancedMacroInsights.push(`Consensus: ${bearishCount}/${totalIndicators.length} indicators bearis`h`;
+              enhancedMacroInsights.push(`Consensus: ${bearishCount}/${totalIndicators.length} indicators bearish`);
             }
             
             signal.macroInsights = enhancedMacroInsights;
@@ -1433,7 +1561,8 @@ function AdvancedSignalDashboard({
             volumeProfile: { volumeWeightedPrice: currentAssetPrice, highVolumeNodes: [], lowVolumeNodes: [] },
             macroInsights: ['NEUTRAL_MARKET', 'LOW_VOLATILITY']
           };
-        };
+        }
+      };
       
       // PHASE 2: Parallel timeframe processing for synchronized calculations
       const newSignals: Record<TimeFrame, AdvancedSignal | null> = { ...signals };
@@ -1443,9 +1572,13 @@ function AdvancedSignalDashboard({
       const calculationPromises = timeframes.map((timeframe, index) => {
         const delay = index * 100; // 100ms stagger between each timeframe
         return calculateTimeframe(timeframe, delay)
-          .then(result => {return { timeframe, result };
+          .then(result => {
+            console.log(`⚡ Successfully calculated ${timeframe}: ${result?.direction || 'null'}`);
+            return { timeframe, result };
           })
-          .catch(error => {return { timeframe, result: null };
+          .catch(error => {
+            console.error(`⚡ Error calculating ${timeframe}:`, error);
+            return { timeframe, result: null };
           });
       });
       
@@ -1455,12 +1588,20 @@ function AdvancedSignalDashboard({
       // Apply results to signals object
       results.forEach(({ timeframe, result }) => {
         newSignals[timeframe] = result;
-      });.map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'`}`));
+      });
+      
+      console.log(`⚡ Calculation loop completed`);  
+      
+      console.log(`🔧 Raw signals before alignment:`, Object.keys(newSignals).map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'}`));
       
       // Apply time frame hierarchy alignment to ensure signal consistency
-      const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'`}`));
+      const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);
       
-      // Update the signals state.length} timeframe signals`;.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'`}`));
+      console.log(`🔧 Aligned signals after processing:`, Object.keys(alignedSignals).map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
+      
+      // Update the signals state
+      console.log(`📊 UPDATING UI STATE with ${Object.keys(alignedSignals).length} timeframe signals`);
+      console.log(`📊 Signal data being set:`, Object.keys(alignedSignals).map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
       
       // Force a state update by creating a completely new object
       try {
@@ -1483,10 +1624,19 @@ function AdvancedSignalDashboard({
             };
           } else {
             cleanSignals[tf as TimeFrame] = null;
-          });
+          }
+        });
         
         // Store the calculated signals for consistency
-        lastCalculationSignalsRef.current = { ...cleanSignals };);: 'no 1d signal');setSignals(cleanSignals);// LIVE ACCURACY TRACKING: Record predictions for each timeframe
+        lastCalculationSignalsRef.current = { ...cleanSignals };
+        
+        console.log(`📊 About to call setSignals with:`, Object.keys(cleanSignals));
+        console.log(`📊 Sample signal structure:`, cleanSignals['1d'] ? Object.keys(cleanSignals['1d']!) : 'no 1d signal');
+        console.log(`📊 Sample 1d signal:`, cleanSignals['1d']);
+        setSignals(cleanSignals);
+        console.log(`📊 setSignals call completed successfully`);
+
+        // LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
           // CRITICAL FIX: Use the exact same fresh price that was used for signal calculations
           // This ensures trade levels match the actual calculated entry prices
@@ -1497,13 +1647,22 @@ function AdvancedSignalDashboard({
             // Force fresh fetch to get the exact price used in calculations
             const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
             if (fetchedPrice !== null && fetchedPrice > 0) {
-              authenticLivePrice = fetchedPrice;} catch (error) {}
+              authenticLivePrice = fetchedPrice;
+              console.log(`Recording predictions using fresh fetched price: ${authenticLivePrice}`);
+            }
+          } catch (error) {
+            console.warn('Failed to fetch fresh price for prediction recording:', error);
+          }
           
           // authentic only if fresh fetch fails
           if (!authenticLivePrice || authenticLivePrice <= 0) {
-            authenticLivePrice = (asset as any)?.lastPrice || currentAssetPrice || centralizedPrice;}
+            authenticLivePrice = (asset as any)?.lastPrice || currentAssetPrice || centralizedPrice;
+            console.log(`Recording predictions using authentic price: ${authenticLivePrice}`);
+          }
           
-          if (!authenticLivePrice || authenticLivePrice <= 0) {return;
+          if (!authenticLivePrice || authenticLivePrice <= 0) {
+            console.warn('No valid live price available for accuracy tracking - skipping prediction recording');
+            return;
           }
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
@@ -1533,21 +1692,30 @@ function AdvancedSignalDashboard({
 
               // CRITICAL: Validate that we're using the correct symbol's price
               // Prevent cross-symbol price contamination for all pairs
-              const symbolPriceRanges: { [key: string]: { min: number; max: number } = {
+              const symbolPriceRanges: { [key: string]: { min: number; max: number } } = {
                 'DOT/USDT': { min: 1, max: 50 },
                 'ADA/USDT': { min: 0.1, max: 5 },
                 'ETH/USDT': { min: 1000, max: 10000 },
                 'SOL/USDT': { min: 50, max: 500 },
                 'XRP/USDT': { min: 0.1, max: 10 },
-                'BNB/USDT': { min: 200, max: 2000 };
+                'BNB/USDT': { min: 200, max: 2000 }
+              };
               
               const expectedRange = symbolPriceRanges[symbol];
-              if (expectedRange && (authenticLivePrice < expectedRange.min || authenticLivePrice > expectedRange.max)) {// Force re-fetch instead of using authentic to ensure authenticity
+              if (expectedRange && (authenticLivePrice < expectedRange.min || authenticLivePrice > expectedRange.max)) {
+                console.error(`PRICE VALIDATION FAILED: ${symbol} showing ${authenticLivePrice} - outside expected range ${expectedRange.min}-${expectedRange.max}`);
+                // Force re-fetch instead of using authentic to ensure authenticity
                 try {
                   const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
                   const correctedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
                   if (correctedPrice !== null && correctedPrice > 0) {
-                    authenticLivePrice = correctedPrice;} catch (error) {}
+                    authenticLivePrice = correctedPrice;
+                    console.log(`Price corrected for ${symbol}: ${authenticLivePrice}`);
+                  }
+                } catch (error) {
+                  console.error(`Failed to correct price for ${symbol}:`, error);
+                }
+              }
               
               const predictionSignal = {
                 symbol: symbol,
@@ -1563,9 +1731,13 @@ function AdvancedSignalDashboard({
               };
               
               // Record prediction for accuracy tracking
-              await recordPrediction(predictionSignal, authenticLivePrice);// Trigger learning from accumulated accuracy data
+              await recordPrediction(predictionSignal, authenticLivePrice);
+              console.log(`Recorded prediction: ${timeframe} ${signal.direction} @ ${authenticLivePrice}`);
+              
+              // Trigger learning from accumulated accuracy data
               await learnFromAccuracy(symbol, signal.timeframe);
             }
+          }
           
           // Update live price monitoring
           await updateWithLivePrice(authenticLivePrice, symbol);
@@ -1581,7 +1753,13 @@ function AdvancedSignalDashboard({
             isActive: true // Ensure feedback loop is marked as active
           }));
           
-        } catch (trackingError) {} catch (error) {setIsCalculating(false); // Reset calculation state on error
+        } catch (trackingError) {
+          console.error('[SignalDashboard] Accuracy tracking error:', trackingError);
+        }
+
+      } catch (error) {
+        console.error('[SignalDashboard] Signal state update error:', error);
+        setIsCalculating(false); // Reset calculation state on error
       }
       
       // Store the signals for this symbol in our persistent ref
@@ -1594,22 +1772,29 @@ function AdvancedSignalDashboard({
       if (validSignalCount > 0) {
         toast({
           title: "Auto-Calculation Complete",
-          description: "Updated " + validSignalCount + " signals for " + symbol + " at " + new Date().toLocaleTimeString(),
+          description: `Updated ${validSignalCount} signals for ${symbol} at ${new Date().toLocaleTimeString()}`,
           variant: "default", 
           duration: 10000
         });
       }
+      console.log(`Found ${validSignalCount} valid signals for recommendation for ${symbol}`);
       
       // Generate a recommendation from the signals if we have enough data
       if (validSignalCount > 0) {
+        console.log(`Updating trade recommendation for 4h timeframe`);
         const recommendation = generateTradeRecommendation('4h');
         setRecommendation(recommendation);
-      } catch (error) {
+      }
+      
+      console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
+    } catch (error) {
+      console.error('[SignalDashboard] Calculation process error:', error);
       setIsCalculating(false); // Reset calculation state on error
     } finally {
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
-    }, [chartData, isCalculating, signals, symbol]);
+    }
+  }, [chartData, isCalculating, signals, symbol]);
 
   // Generate a trade recommendation based on signals across timeframes
   const generateTradeRecommendation = useCallback((timeframe: TimeFrame) => {
@@ -1617,6 +1802,7 @@ function AdvancedSignalDashboard({
     const signal = signals[currentTimeframe];
     
     if (!signal) {
+      console.log(`No signal available for ${symbol} on ${currentTimeframe}`);
       return null;
     }
     
@@ -1629,25 +1815,32 @@ function AdvancedSignalDashboard({
       if (trendIndicators && trendIndicators.length > 0) {
         const strongestTrend = trendIndicators.find(i => i.strength === 'STRONG');
         if (strongestTrend) {
-          indicators.push(`${strongestTrend.name}
+          indicators.push(`${strongestTrend.name} (${strongestTrend.signal})`);
+        }
+      }
       
       // Add strongest momentum indicator
       const momentumIndicators = primarySignal.indicators.momentum;
       if (momentumIndicators && momentumIndicators.length > 0) {
         const strongestMomentum = momentumIndicators.find(i => i.strength === 'STRONG');
         if (strongestMomentum) {
-          indicators.push(`${strongestMomentum.name}
+          indicators.push(`${strongestMomentum.name} (${strongestMomentum.signal})`);
+        }
+      }
       
       // Add pattern indicator if available
       const patternIndicators = primarySignal.indicators.pattern;
       if (patternIndicators && patternIndicators.length > 0) {
         const strongestPattern = patternIndicators.find(i => i.strength === 'STRONG');
         if (strongestPattern) {
-          indicators.push(`${strongestPattern.name}
+          indicators.push(`${strongestPattern.name} (${strongestPattern.signal})`);
+        }
+      }
       
       // Ensure we have at least something
       if (indicators.length === 0 && trendIndicators && trendIndicators.length > 0) {
-        indicators.push(`${trendIndicators[0].name}
+        indicators.push(`${trendIndicators[0].name} (${trendIndicators[0].signal})`);
+      }
       
       return indicators;
     };
@@ -1659,13 +1852,14 @@ function AdvancedSignalDashboard({
       
       if (signal.direction === 'LONG') {
         const riskReward = typeof signal.riskRewardRatio === 'number' ? signal.riskRewardRatio.toFixed(1) : '1.5';
-        return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}`.`;
+        return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else if (signal.direction === 'SHORT') {
         const riskReward = typeof signal.riskRewardRatio === 'number' ? signal.riskRewardRatio.toFixed(1) : '1.5';
-        return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}`.`;
+        return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
       } else {
-        return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals`.`;
-      };
+        return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals.`;
+      }
+    };
     
     // Create timeframe summary data
     const tfSummary = Object.entries(signals)
@@ -1702,7 +1896,9 @@ function AdvancedSignalDashboard({
   }, [signals, symbol, selectedTimeframe]);
 
   // Update the recommendation when the timeframe changes
-  const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {const newRecommendation = generateTradeRecommendation(timeframe);
+  const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {
+    console.log(`Updating trade recommendation for ${timeframe} timeframe`);
+    const newRecommendation = generateTradeRecommendation(timeframe);
     setRecommendation(newRecommendation);
   }, [generateTradeRecommendation]);
 
@@ -1712,7 +1908,10 @@ function AdvancedSignalDashboard({
   }, [calculateAllSignals]);
 
   // Handle timeframe selection - FIXED to preserve synchronized signals
-  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {// Use existing synchronized signal instead of forcing immediate calculation
+  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
+    console.log(`Tab change to ${timeframe} - using synchronized auto-calculated signal`);
+    
+    // Use existing synchronized signal instead of forcing immediate calculation
     // This preserves the auto-calculated signals from the 3-minute timer system
     setSelectedTimeframe(timeframe);
     updateRecommendationForTimeframe(timeframe);
@@ -1720,7 +1919,8 @@ function AdvancedSignalDashboard({
     // Notify parent component if callback is provided
     if (onTimeframeSelect) {
       onTimeframeSelect(timeframe);
-    }, [updateRecommendationForTimeframe, onTimeframeSelect]);
+    }
+  }, [updateRecommendationForTimeframe, onTimeframeSelect]);
 
   // Format price for display, with appropriate decimal places
   function formatCurrency(price: number): string {
@@ -1747,6 +1947,7 @@ function AdvancedSignalDashboard({
       default:
         return 'bg-gradient-to-br from-slate-800/50 to-slate-900/80 border-slate-700/50';
     }
+  }
 
   // Render the component
   return (
@@ -1792,11 +1993,11 @@ function AdvancedSignalDashboard({
             {/* Live Accuracy Metrics */}
             <div className="p-2 bg-emerald-600/20 rounded-lg text-center">
               <div className="text-xs font-bold text-green-400">
-                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total`}` : 
-                 realAccuracy.activeTrades > 0 ? `${realAccuracy.activeTrades} Activ`e` : 'No Data'}
+                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total}` : 
+                 realAccuracy.activeTrades > 0 ? `${realAccuracy.activeTrades} Active` : 'No Data'}
               </div>
               <div className="text-emerald-200 text-xs">
-                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accurac`y` : 
+                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accuracy` : 
                  realAccuracy.activeTrades > 0 ? 'Predictions' : 'Accuracy'}
               </div>
             </div>
@@ -1899,6 +2100,7 @@ function AdvancedSignalDashboard({
           </div>
           
 
+
           {/* Enhanced Market Analysis - All 4 Improvements */}
           <div className="mt-4 p-3 bg-gradient-to-r from-emerald-900/20 to-cyan-900/20 rounded-lg border border-emerald-500/30">
             <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
@@ -1939,7 +2141,8 @@ function AdvancedSignalDashboard({
                           return direction === 'LONG' ? 'MAJOR_UPTREND' : 'MAJOR_DOWNTREND';
                         }
                         return 'WEEKLY_BALANCE';
-                      })()}
+                      }
+                    })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -1959,7 +2162,8 @@ function AdvancedSignalDashboard({
                         return direction === 'SHORT' && confidence > 55 ? Math.floor(confidence / 12) : 2;
                       } else {
                         return direction === 'SHORT' && confidence > 50 ? Math.floor(confidence / 10) : 3;
-                      })()}
+                      }
+                    })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -1979,7 +2183,8 @@ function AdvancedSignalDashboard({
                         return direction === 'LONG' && confidence > 55 ? Math.floor(confidence / 12) : 2;
                       } else {
                         return direction === 'LONG' && confidence > 50 ? Math.floor(confidence / 10) : 3;
-                      })()}
+                      }
+                    })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -1998,7 +2203,8 @@ function AdvancedSignalDashboard({
                       return confidence > 55 && direction === 'LONG' ? 'text-green-400' : 'text-red-400';
                     } else {
                       return confidence > 50 && direction === 'LONG' ? 'text-green-400' : 'text-red-400';
-                    })()`}`}>
+                    }
+                  })()}`}>
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
                       if (!currentSignal) return 'Neutral';
@@ -2013,7 +2219,8 @@ function AdvancedSignalDashboard({
                         return confidence > 55 && direction === 'LONG' ? 'Above' : confidence > 55 && direction === 'SHORT' ? 'Below' : 'At VWAP';
                       } else {
                         return confidence > 50 && direction === 'LONG' ? 'Above' : confidence > 50 && direction === 'SHORT' ? 'Below' : 'At VWAP';
-                      })()}
+                      }
+                    })()}
                   </span>
                 </div>
               </div>
@@ -2030,14 +2237,15 @@ function AdvancedSignalDashboard({
                       const patternFormations = currentSignal.patternFormations || [];
                       
                       if (['1m', '5m', '15m'].includes(selectedTimeframe)) {
-                        return `${Math.min(Math.floor(confidence * 0.8), 85)}`%`;
+                        return `${Math.min(Math.floor(confidence * 0.8), 85)}%`;
                       } else if (['30m', '1h', '4h'].includes(selectedTimeframe)) {
                         const fibBonus = patternFormations.length > 0 ? 15 : 0;
-                        return `${Math.min(Math.floor(confidence * 0.9) + fibBonus, 92)}`%`;
+                        return `${Math.min(Math.floor(confidence * 0.9) + fibBonus, 92)}%`;
                       } else {
                         const strongFib = confidence > 65 ? 20 : 10;
-                        return `${Math.min(Math.floor(confidence * 1.1) + strongFib, 95)}`%`;
-                      })()}
+                        return `${Math.min(Math.floor(confidence * 1.1) + strongFib, 95)}%`;
+                      }
+                    })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -2058,7 +2266,8 @@ function AdvancedSignalDashboard({
                         return confidence > 60 ? Math.floor(confidence / 20) + 1 : Math.floor(confidence / 30);
                       } else {
                         return confidence > 50 ? Math.floor(confidence / 15) + 2 : Math.floor(confidence / 25) + 1;
-                      })()}
+                      }
+                    })()}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -2081,7 +2290,7 @@ function AdvancedSignalDashboard({
                     }
                     
                     return isConfirmed ? 'text-green-400' : 'text-red-400';
-                  })()`}`}>
+                  })()}`}>
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
                       if (!currentSignal) return 'No';
@@ -2123,7 +2332,8 @@ function AdvancedSignalDashboard({
                       return (confidence > 60 && direction !== 'NEUTRAL') ? 'text-green-400' : 'text-red-400';
                     } else {
                       return (confidence > 65 && direction !== 'NEUTRAL') ? 'text-green-400' : 'text-red-400';
-                    })()`}`}>
+                    }
+                  })()}`}>
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
                       if (!currentSignal) return 'No';
@@ -2137,7 +2347,8 @@ function AdvancedSignalDashboard({
                         return (confidence > 60 && direction !== 'NEUTRAL') ? 'Yes' : 'No';
                       } else {
                         return (confidence > 65 && direction !== 'NEUTRAL') ? 'Yes' : 'No';
-                      })()}
+                      }
+                    })()}
                   </span>
                 </div>
               </div>
@@ -2225,7 +2436,7 @@ function AdvancedSignalDashboard({
                               title: "Auto-calculation active",
                               description: "Signals refresh automatically every 3 minutes.",
                             });
-                          }
+                          }}
                         >
                           Calculate Now
                         </Button>
@@ -2340,7 +2551,7 @@ function AdvancedSignalDashboard({
                                 <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
                                   <div 
                                     className={`h-3 rounded-full ${barColorClass}`}
-                                    style={{ width: `${probability}`%` }
+                                    style={{ width: `${probability}%` }}
                                   />
                                 </div>
                                 <div className="flex justify-between items-center">
@@ -2369,7 +2580,7 @@ function AdvancedSignalDashboard({
                                 Math.round(currentSignal.macroScore || 50) >= 70 ? 'bg-green-600' : 
                                 Math.round(currentSignal.macroScore || 50) >= 45 ? 'bg-yellow-600' : 'bg-red-600'
                               }`}
-                              style={{ width: `${Math.round(currentSignal.macroScore || 50)}`%` }
+                              style={{ width: `${Math.round(currentSignal.macroScore || 50)}%` }}
                             />
                           </div>
                           <div className="flex justify-between items-center">
@@ -2395,7 +2606,7 @@ function AdvancedSignalDashboard({
                                     ${pattern.direction === 'bullish' ? 'text-green-400 border-green-500 bg-green-900/30' : 
                                       pattern.direction === 'bearish' ? 'text-red-400 border-red-500 bg-red-900/30' :
                                       'text-yellow-400 border-yellow-500 bg-yellow-900/30'} 
-                                    font-medium px-1 py-0.5 text-xs ml-2 flex-shrink-`0`}>
+                                    font-medium px-1 py-0.5 text-xs ml-2 flex-shrink-0`}>
                                     {pattern.direction.charAt(0).toUpperCase()}
                                   </Badge>
                                 </div>
@@ -2442,7 +2653,8 @@ function AdvancedSignalDashboard({
                                     'TON/USDT': { min: 2, max: 6, authentic: 3.17 },
                                     'TRX/USDT': { min: 0.1, max: 0.3, authentic: 0.22 },
                                     'MATIC/USDT': { min: 0.3, max: 1.5, authentic: 0.724 },
-                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, authentic: 0.000025 };
+                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, authentic: 0.000025 }
+                                  };
                                   
                                   const validation = priceValidation[symbol as keyof typeof priceValidation];
                                   if (validation && (currentPrice < validation.min || currentPrice > validation.max)) {
@@ -2501,7 +2713,8 @@ function AdvancedSignalDashboard({
                                     'TON/USDT': { min: 2, max: 6, authentic: 3.17 },
                                     'TRX/USDT': { min: 0.1, max: 0.3, authentic: 0.22 },
                                     'MATIC/USDT': { min: 0.3, max: 1.5, authentic: 0.724 },
-                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, authentic: 0.000025 };
+                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, authentic: 0.000025 }
+                                  };
                                   
                                   const validation = priceValidation[symbol as keyof typeof priceValidation];
                                   if (validation && (currentPrice < validation.min || currentPrice > validation.max)) {
@@ -2518,7 +2731,7 @@ function AdvancedSignalDashboard({
                                   ];
                                   
                                   return finalSupports.slice(0, 3).map((support: number, i: number) => (
-                                    <div key=`{`supp-${i}`} className="flex justify-between items-center">
+                                    <div key={`supp-${i}`} className="flex justify-between items-center">
                                       <span className="text-xs text-gray-400">{labels[i]}</span>
                                       <span className="text-green-400 font-medium text-xs">
                                         ${formatCurrency(support)}
@@ -2531,6 +2744,7 @@ function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
+
 
                       </div>
                       
@@ -2595,6 +2809,7 @@ function AdvancedSignalDashboard({
                                   } else {
                                     return formatCurrency(entryPrice * 1.01);
                                   }
+                                }
                                 return formatCurrency(0);
                               })()}
                             </span>
@@ -2631,6 +2846,7 @@ function AdvancedSignalDashboard({
                                   } else {
                                     return formatCurrency(entryPrice * 0.99);
                                   }
+                                }
                                 return formatCurrency(0);
                               })()}
                             </span>
@@ -2695,11 +2911,11 @@ function AdvancedSignalDashboard({
                           {/* Dynamic indicators that change based on timeframe */}
                           <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
                             <span className="text-gray-100 font-medium text-xs">Moving Average</span>
-                            <Badge variant="outline" className=`{`${
+                            <Badge variant="outline" className={`${
                               (selectedTimeframe === '15m' || selectedTimeframe === '1h')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-x`s`}>
+                            } px-1 py-0.5 text-xs`}>
                               {(selectedTimeframe === '15m' || selectedTimeframe === '1h') ? 'BUY (M)' : 'BUY (S)'}
                             </Badge>
                           </div>
@@ -2709,7 +2925,7 @@ function AdvancedSignalDashboard({
                               (selectedTimeframe === '15m')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-x`s`}>
+                            } px-1 py-0.5 text-xs`}>
                               {selectedTimeframe === '15m' ? 'NEUTRAL (M)' : 'BUY (S)'}
                             </Badge>
                           </div>
@@ -2719,7 +2935,7 @@ function AdvancedSignalDashboard({
                               (selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-x`s`}>
+                            } px-1 py-0.5 text-xs`}>
                               {(selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h') 
                                 ? 'BUY (M)' : 'BUY (S)'}
                             </Badge>
@@ -2730,7 +2946,7 @@ function AdvancedSignalDashboard({
                               (selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M')
                                 ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
                                 : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
-                            } px-1 py-0.5 text-x`s`}>
+                            } px-1 py-0.5 text-xs`}>
                               {(selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M') 
                                 ? 'BUY (S)' : 'BUY (M)'}
                             </Badge>
@@ -2792,7 +3008,7 @@ function AdvancedSignalDashboard({
                                       moonPhase.impactStrength > 1.05 ? 'bg-green-500' : 
                                       moonPhase.impactStrength < 0.95 ? 'bg-red-500' : 'bg-gray-500'
                                     }`}
-                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}`%` }
+                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}%` }}
                                   />
                                 </div>
                               </div>
@@ -2816,5 +3032,3 @@ function AdvancedSignalDashboard({
     </div>
   );
 }
-
-export default AdvancedSignalDashboard;

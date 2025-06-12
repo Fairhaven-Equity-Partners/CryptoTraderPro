@@ -286,7 +286,7 @@ export async function runComprehensiveBacktest(
             { tf: '1h' as TimeFrame, score: 0 });
   
   if (bestTimeframe.score > 60) {
-    recommendations.push(`🎯 Best performance on ${bestTimeframe.tf} timeframe (${bestTimeframe.score}% accuracy`)`);
+    recommendations.push(`🎯 Best performance on ${bestTimeframe.tf} timeframe (${bestTimeframe.score}% accuracy)`);
   }
 
   if (confidenceCalibration > 80) {
@@ -297,7 +297,7 @@ export async function runComprehensiveBacktest(
 
   const highProfitFactorResults = validResults.filter(r => r.profitFactor > 1.5);
   if (highProfitFactorResults.length > 0) {
-    recommendations.push(`💰 Strong profit factor detected in ${highProfitFactorResults.length} timeframe(s`)`);
+    recommendations.push(`💰 Strong profit factor detected in ${highProfitFactorResults.length} timeframe(s)`);
   }
 
   return {

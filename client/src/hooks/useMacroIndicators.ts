@@ -35,7 +35,9 @@ export function useMacroIndicators() {
           setIsLoading(false);
         }
       } catch (err) {
-        if (isMounted) {setError(err as Error);
+        if (isMounted) {
+          console.error('Error fetching macro indicators:', err);
+          setError(err as Error);
           setIsLoading(false);
         }
       }

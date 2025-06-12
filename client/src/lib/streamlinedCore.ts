@@ -27,7 +27,7 @@ export class StreamlinedCore {
     timeframe: TimeFrame, 
     currentPrice: number
   ): Promise<AdvancedSignal> {
-    const cacheKey = `${symbol}-${timeframe}-${currentPrice`}`;
+    const cacheKey = `${symbol}-${timeframe}-${currentPrice}`;
     
     if (this.calculationCache.has(cacheKey)) {
       return this.calculationCache.get(cacheKey)!;

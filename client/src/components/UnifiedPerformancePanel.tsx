@@ -89,7 +89,7 @@ interface Props {
 export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, signals }: Props) {
   const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
     queryKey: ['/api/technical-analysis', symbol, selectedTimeframe],
-    queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}?timeframe=${selectedTimeframe`}`).then(res => res.json()),
+    queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}?timeframe=${selectedTimeframe}`).then(res => res.json()),
     refetchInterval: 30000,
   });
 
@@ -122,13 +122,13 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
     return `$${price.toLocaleString('en-US', { 
       minimumFractionDigits: 2, 
       maximumFractionDigits: 2 
-    })`}`;
+    })}`;
   };
 
   const formatPercent = (percent: number | undefined) => {
     if (percent === undefined || percent === null) return '+0.00%';
     const sign = percent >= 0 ? '+' : '';
-    return `${sign}${percent.toFixed(2)}`%`;
+    return `${sign}${percent.toFixed(2)}%`;
   };
 
   // Get timeframe-specific signal data
@@ -145,12 +145,12 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
   };
 
   const getAIRecommendation = () => {
-    if (!currentSignal) return `Analyzing ${selectedTimeframe} timefram`e`;
+    if (!currentSignal) return `Analyzing ${selectedTimeframe} timeframe`;
     const confidence = currentSignal.confidence || 0;
     const direction = currentSignal.direction || 'NEUTRAL';
     
-    if (confidence > 75) return `Strong ${direction} signal on ${selectedTimeframe`}`;
-    if (confidence > 50) return `Moderate ${direction} signal on ${selectedTimeframe`}`;
+    if (confidence > 75) return `Strong ${direction} signal on ${selectedTimeframe}`;
+    if (confidence > 50) return `Moderate ${direction} signal on ${selectedTimeframe}`;
     return `Low confidence on ${selectedTimeframe}`;
   };
 
@@ -244,7 +244,7 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
             <div className="space-y-1">
               <div className="flex justify-between">
                 <span className="text-slate-300">Stochastic:</span>
-                <span className=`{`font-semibold ${
+                <span className={`font-semibold ${
                   (technicalData.indicators.stochastic?.k || 0) > 80 ? 'text-red-400' : 
                   (technicalData.indicators.stochastic?.k || 0) < 20 ? 'text-green-400' : 'text-white'
                 }`}>{technicalData.indicators.stochastic?.k?.toFixed(1) || 'N/A'}%</span>
@@ -359,7 +359,7 @@ export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, sig
               <div key={index} className="flex justify-between">
                 <span className="text-slate-300">{indicator.indicator}:</span>
                 <div className="flex items-center gap-1">
-                  <span className=`{`font-medium ${
+                  <span className={`font-medium ${
                     indicator.status === 'GOOD' ? 'text-green-400' : 
                     indicator.status === 'WARNING' ? 'text-yellow-400' : 
                     indicator.status === 'CRITICAL' ? 'text-red-400' : 'text-white'

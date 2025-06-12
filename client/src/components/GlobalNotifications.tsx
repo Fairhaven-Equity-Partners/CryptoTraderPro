@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, ArrowUp, ArrowDown } from 'lucide-react';
 import { useAlerts } from '../hooks/useAlerts';
+import { registerMessageHandler } from '../lib/api';
 import { Alert } from '../types';
 
 interface NotificationProps {
@@ -35,8 +36,30 @@ const GlobalNotifications: React.FC = () => {
   const [newSignals, setNewSignals] = useState<any[]>([]);
   
   useEffect(() => {
-    // Message handler functionality disabled
-  }, []);
+    // Register handler for new signals (only when real signals are detected)
+    const unsubscribe = registerMessageHandler('new_signal', (data) => {
+      if (data && data.direction) {
+        // Create notification for the new signal
+        const signalAlert: Alert = {
+          id: Date.now(),
+          symbol: data.symbol,
+          direction: data.direction,
+          description: 'Multiple indicators aligned',
+          targetPrice: data.price,
+          isActive: true,
+          isTriggered: true
+        };
+        
+        showAlertNotification(signalAlert);
+      }
+    });
+    
+    // No more automatic sample alerts
+    
+    return () => {
+      unsubscribe();
+    };
+  }, [showAlertNotification]);
   
   return (
     <>

@@ -40,7 +40,11 @@ export class MultiSymbolEngine {
       const response = await fetch('/api/crypto');
       const cryptoAssets = await response.json();
       
-      this.config.symbols = cryptoAssets.map((asset: any) => asset.symbol);} catch (error) {// authentic to major cryptocurrencies
+      this.config.symbols = cryptoAssets.map((asset: any) => asset.symbol);
+      console.log(`Initialized multi-symbol engine with ${this.config.symbols.length} supported symbols`);
+    } catch (error) {
+      console.error('Failed to initialize supported symbols:', error);
+      // authentic to major cryptocurrencies
       this.config.symbols = [
         'BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT',
         'ADA/USDT', 'AVAX/USDT', 'DOT/USDT', 'MATIC/USDT', 'UNI/USDT'
@@ -66,7 +70,9 @@ export class MultiSymbolEngine {
             const data = await response.json();
             authenticPrice = data.lastPrice || 0;
           }
-        } catch (error) {authenticPrice = currentPrices.get(symbol) || 0;
+        } catch (error) {
+          console.warn(`Failed to fetch authentic price for ${symbol}, using cached:`, error);
+          authenticPrice = currentPrices.get(symbol) || 0;
         }
         
         return this.processSymbol(symbol, authenticPrice);
@@ -110,7 +116,9 @@ export class MultiSymbolEngine {
           if (signal) {
             symbolResults.set(timeframe, signal);
           }
-        } catch (error) {}
+        } catch (error) {
+          console.error(`Error processing ${symbol} ${timeframe}:`, error);
+        }
       }
 
       return symbolResults;

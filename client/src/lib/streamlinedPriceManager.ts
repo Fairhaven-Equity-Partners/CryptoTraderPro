@@ -48,14 +48,18 @@ export class StreamlinedPriceManager {
       });
     });
 
-    this.isInitialized = true;}
+    this.isInitialized = true;
+    console.log(`[StreamlinedPriceManager] Initialized for ${supportedSymbols.length} cryptocurrency pairs`);
+  }
 
   /**
    * Subscribe to price updates for a symbol
    */
   subscribe(symbol: string, callback: (data: PriceData) => void): () => void {
     const entry = this.cache.get(symbol);
-    if (!entry) {return () => {};
+    if (!entry) {
+      console.warn(`[StreamlinedPriceManager] Symbol ${symbol} not supported`);
+      return () => {};
     }
 
     entry.subscribers.add(callback);
@@ -115,13 +119,17 @@ export class StreamlinedPriceManager {
           entry.subscribers.forEach(callback => {
             try {
               callback(priceData);
-            } catch (error) {}
+            } catch (error) {
+              console.error(`[StreamlinedPriceManager] Subscriber error for ${symbol}:`, error);
+            }
           });
 
           return priceData;
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(`[StreamlinedPriceManager] Fetch error for ${symbol}:`, error);
+    }
 
     return null;
   }
@@ -167,7 +175,9 @@ export const streamlinedPriceManager = new StreamlinedPriceManager();
 /**
  * Initialize the price manager system
  */
-export function initPriceManager(): void {}
+export function initPriceManager(): void {
+  console.log('[StreamlinedPriceManager] Initialized for 50 cryptocurrency pairs');
+}
 
 /**
  * React hook for streamlined price data

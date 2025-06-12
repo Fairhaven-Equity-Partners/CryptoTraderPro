@@ -30,25 +30,34 @@ let globalTimer: NodeJS.Timeout | null = null;
  * Get the current price for a symbol
  * Returns cached price if available and not expired, otherwise fetches new price
  */
-export async function getCurrentPrice(symbol: string): Promise<number> {const now = Date.now();
+export async function getCurrentPrice(symbol: string): Promise<number> {
+  console.log(`[PriceSystem] getCurrentPrice called for ${symbol}`);
+  const now = Date.now();
   const cachedData = priceCache[symbol];
   
   // Add this symbol to our tracking list
   if (!activeSymbols.has(symbol)) {
-    activeSymbols.add(symbol);}
+    activeSymbols.add(symbol);
+    console.log(`[PriceSystem] Added ${symbol} to active tracking list`);
+  }
   
   // If we have a recent price (less than 3 minutes old), use it
-  if (cachedData && (now - cachedData.timestamp) < REFRESH_INTERVAL) {return cachedData.price;
+  if (cachedData && (now - cachedData.timestamp) < REFRESH_INTERVAL) {
+    console.log(`[PriceSystem] Using cached price for ${symbol}: ${cachedData.price}`);
+    return cachedData.price;
   }
   
   // Fetch a fresh price - but only if enough time has passed since last fetch
   const timeSinceLastFetch = now - lastFetchTime;
-  if (timeSinceLastFetch < REFRESH_INTERVAL && cachedData) {}s since last fetch`);
+  if (timeSinceLastFetch < REFRESH_INTERVAL && cachedData) {
+    console.log(`[PriceSystem] Using slightly outdated price - only ${Math.floor(timeSinceLastFetch/1000)}s since last fetch`);
     return cachedData.price; // Use slightly outdated data to avoid too frequent fetches
   }
   
   // If we reach here, we need to fetch fresh data
-  try {const data = await fetchAssetBySymbol(symbol);
+  try {
+    console.log(`[PriceSystem] Fetching fresh price for ${symbol}...`);
+    const data = await fetchAssetBySymbol(symbol);
     if (!data || !data.price) {
       // If fetch fails but we have a cached price, use it regardless of age
       if (cachedData) return cachedData.price;
@@ -68,7 +77,9 @@ export async function getCurrentPrice(symbol: string): Promise<number> {const no
     broadcastPriceUpdate(symbol, data.price);
     
     return data.price;
-  } catch (error) {// Return cached price if available, otherwise 0
+  } catch (error) {
+    console.error(`[PriceSystem] Error fetching price for ${symbol}:`, error);
+    // Return cached price if available, otherwise 0
     return cachedData ? cachedData.price : 0;
   }
 }
@@ -84,7 +95,9 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
   
   // Broadcast to both window and document to maximize capture
   window.dispatchEvent(event);
-  document.dispatchEvent(event);`);
+  document.dispatchEvent(event);
+  
+  console.log(`[PriceSystem] Broadcast price update: ${symbol} = ${price} (3-minute system)`);
   
   // Reset the countdown timer in all components
   notifyTimerReset();
@@ -93,7 +106,10 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
 /**
  * Tell all components to reset their countdown displays
  */
-export function notifyTimerReset() {// Send a timer reset notification
+export function notifyTimerReset() {
+  console.log(`[PriceSystem] Reset countdown timers - new 3 minute cycle begins`);
+  
+  // Send a timer reset notification
   const resetEvent = new CustomEvent('price-timer-reset', {
     detail: { timestamp: lastFetchTime }
   });
@@ -136,11 +152,21 @@ export function startPricePolling(symbol: string): () => void {
   getCurrentPrice(symbol);
   
   // Setup the global timer if it doesn't exist yet
-  if (!globalTimer) {// Check every minute if we need to fetch prices
+  if (!globalTimer) {
+    console.log(`[PriceSystem] Starting master 4-minute price polling timer`);
+    
+    // Check every minute if we need to fetch prices
     globalTimer = setInterval(() => {
       const now = Date.now();
-      const secondsSinceLastFetch = Math.floor((now - lastFetchTime) / 1000);// If 4 minutes (240 seconds) have passed, fetch for all active symbols
-      if (secondsSinceLastFetch >= 240) {// Fetch prices for all tracked symbols
+      const secondsSinceLastFetch = Math.floor((now - lastFetchTime) / 1000);
+      
+      console.log(`[PriceSystem] Timer check: ${secondsSinceLastFetch}s since last fetch`);
+      
+      // If 4 minutes (240 seconds) have passed, fetch for all active symbols
+      if (secondsSinceLastFetch >= 240) {
+        console.log(`[PriceSystem] 4-MINUTE MARK REACHED - Fetching fresh prices`);
+        
+        // Fetch prices for all tracked symbols
         activeSymbols.forEach(trackedSymbol => {
           getCurrentPrice(trackedSymbol);
         });
@@ -155,7 +181,8 @@ export function startPricePolling(symbol: string): () => void {
     // If no more symbols to track, clear the global timer
     if (activeSymbols.size === 0 && globalTimer) {
       clearInterval(globalTimer);
-      globalTimer = null;`);
+      globalTimer = null;
+      console.log(`[PriceSystem] Stopped price polling (no active symbols)`);
     }
   };
 }
@@ -177,5 +204,5 @@ export function getFormattedCountdown(): string {
   const seconds = getSecondsUntilNextRefresh();
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')`}`;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }

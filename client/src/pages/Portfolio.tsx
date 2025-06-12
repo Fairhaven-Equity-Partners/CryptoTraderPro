@@ -177,7 +177,7 @@ const Portfolio: React.FC = () => {
                           </div>
                           <div className="text-right">
                             <div className="text-white font-medium">{formatCurrency(currentValue, 'USD')}</div>
-                            <div className={`text-sm ${getChangeClass(pnlPercent)} mt-`1`}>
+                            <div className={`text-sm ${getChangeClass(pnlPercent)} mt-1`}>
                               {formatPercentage(pnlPercent)}
                             </div>
                           </div>
@@ -304,7 +304,7 @@ const Portfolio: React.FC = () => {
                           <span className={`text-xs py-1 px-2 rounded ${
                             asset.signal === 'LONG' ? 'bg-success' : 
                             asset.signal === 'SHORT' ? 'bg-danger' : 'bg-neutral'
-                          } text-white font-mediu`m`}>
+                          } text-white font-medium`}>
                             {asset.signal} {asset.signalStrength}%
                           </span>
                         </div>

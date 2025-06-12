@@ -144,11 +144,11 @@ export function calculateMoonPhaseImpact(baseMacroScore: number): {
   // Generate impact description
   let impactDetails: string;
   if (moonData.marketBias === 'BULLISH') {
-    impactDetails = `${moonData.phaseName} adds +${Math.round(adjustment * baseMacroScore)} to macro score (bullish lunar influence`)`;
+    impactDetails = `${moonData.phaseName} adds +${Math.round(adjustment * baseMacroScore)} to macro score (bullish lunar influence)`;
   } else if (moonData.marketBias === 'BEARISH') {
-    impactDetails = `${moonData.phaseName} reduces macro score by ${Math.round(Math.abs(adjustment * baseMacroScore))} (bearish lunar influence`)`;
+    impactDetails = `${moonData.phaseName} reduces macro score by ${Math.round(Math.abs(adjustment * baseMacroScore))} (bearish lunar influence)`;
   } else {
-    impactDetails = `${moonData.phaseName} has minimal impact on macro score (neutral lunar phase`)`;
+    impactDetails = `${moonData.phaseName} has minimal impact on macro score (neutral lunar phase)`;
   }
   
   return {

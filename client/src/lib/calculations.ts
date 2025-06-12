@@ -15,7 +15,7 @@
  */
 export function formatCurrency(price: number, currencySymbol = '$', precision?: number): string {
   if (price === 0 || isNaN(price)) {
-    return `${currencySymbol}`0`;
+    return `${currencySymbol}0`;
   }
   
   // Determine appropriate precision based on price magnitude if not specified
@@ -27,7 +27,7 @@ export function formatCurrency(price: number, currencySymbol = '$', precision?: 
     maximumFractionDigits: calculatedPrecision
   });
   
-  return `${currencySymbol}${formattedPrice`}`;
+  return `${currencySymbol}${formattedPrice}`;
 }
 
 /**
@@ -47,7 +47,7 @@ export function formatPercentage(value: number, convertFromDecimal = false, prec
   const percentValue = convertFromDecimal ? value * 100 : value;
   
   // Format with specified precision
-  return `${percentValue.toFixed(precision)}`%`;
+  return `${percentValue.toFixed(precision)}%`;
 }
 
 /**
@@ -246,6 +246,8 @@ export function getCurrentPrice(): number | null {
   
   try {
     return parseFloat(priceData.getAttribute('data-price') || '0');
-  } catch (error) {return null;
+  } catch (error) {
+    console.error('Error parsing current price:', error);
+    return null;
   }
 }

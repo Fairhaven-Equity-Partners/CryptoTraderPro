@@ -59,7 +59,7 @@ export class UltimateCalculationEngine {
 
   // Update prediction accuracy for feedback loop
   updatePredictionAccuracy(symbol: string, timeframe: TimeFrame, wasCorrect: boolean): void {
-    const key = `${symbol}_${timeframe`}`;
+    const key = `${symbol}_${timeframe}`;
     const current = this.predictionAccuracy.get(key) || { correct: 0, total: 0, winRate: 0 };
     
     current.total += 1;
@@ -75,7 +75,7 @@ export class UltimateCalculationEngine {
 
   // Get adaptive weight for symbol-timeframe combination
   private getAdaptiveWeight(symbol: string, timeframe: TimeFrame): number {
-    const key = `${symbol}_${timeframe`}`;
+    const key = `${symbol}_${timeframe}`;
     return this.adaptiveWeights.get(key) || 1.0;
   }
 
@@ -83,7 +83,7 @@ export class UltimateCalculationEngine {
   private calculateRSI(data: ChartData[], period: number = 14): number {
     if (data.length < period + 1) return 50;
     
-    const cacheKey = `rsi_${data.length}_${period`}`;
+    const cacheKey = `rsi_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     let gains = 0;
@@ -116,7 +116,7 @@ export class UltimateCalculationEngine {
   private calculateEMA(data: ChartData[], period: number): number {
     if (data.length < period) return data[data.length - 1].close;
     
-    const cacheKey = `ema_${data.length}_${period`}`;
+    const cacheKey = `ema_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const alpha = 2 / (period + 1);
@@ -134,7 +134,7 @@ export class UltimateCalculationEngine {
   private calculateMACD(data: ChartData[], fast: number = 12, slow: number = 26, signal: number = 9) {
     if (data.length < slow) return { value: 0, signal: 0, histogram: 0 };
     
-    const cacheKey = `macd_${data.length}_${fast}_${slow}_${signal`}`;
+    const cacheKey = `macd_${data.length}_${fast}_${slow}_${signal}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const fastEMA = this.calculateEMA(data, fast);
@@ -152,7 +152,7 @@ export class UltimateCalculationEngine {
   private calculateStochastic(data: ChartData[], kPeriod: number = 14, dPeriod: number = 3) {
     if (data.length < kPeriod) return { k: 50, d: 50 };
     
-    const cacheKey = `stoch_${data.length}_${kPeriod}_${dPeriod`}`;
+    const cacheKey = `stoch_${data.length}_${kPeriod}_${dPeriod}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const recent = data.slice(-kPeriod);
@@ -182,7 +182,7 @@ export class UltimateCalculationEngine {
       return { upper: price * 1.02, middle: price, lower: price * 0.98, width: 0.04, percentB: 50 };
     }
 
-    const cacheKey = `bb_${data.length}_${period}_${stdDev`}`;
+    const cacheKey = `bb_${data.length}_${period}_${stdDev}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const recent = data.slice(-period);
@@ -210,7 +210,7 @@ export class UltimateCalculationEngine {
   private calculateADX(data: ChartData[], period: number = 14) {
     if (data.length < period + 1) return { value: 25, pdi: 25, ndi: 25 };
     
-    const cacheKey = `adx_${data.length}_${period`}`;
+    const cacheKey = `adx_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     // Simplified ADX calculation for performance
@@ -239,7 +239,7 @@ export class UltimateCalculationEngine {
   private calculateATR(data: ChartData[], period: number = 14): number {
     if (data.length < period + 1) return data[data.length - 1].close * 0.02;
     
-    const cacheKey = `atr_${data.length}_${period`}`;
+    const cacheKey = `atr_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     let trSum = 0;

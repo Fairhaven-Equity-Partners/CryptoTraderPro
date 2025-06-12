@@ -22,12 +22,16 @@ export function generateSignalForTimeframe(
   marketData?: any
 ): AdvancedSignal | null {
   // ZERO TOLERANCE: No authentic data for any timeframe
-  if (['1w', '1M'].includes(timeframe)) {return null;
+  if (['1w', '1M'].includes(timeframe)) {
+    console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic data available`);
+    return null;
   }
 
   try {
     // Validate inputs
-    if (!timeframe || !price || isNaN(price) || price <= 0) {return null;
+    if (!timeframe || !price || isNaN(price) || price <= 0) {
+      console.warn(`Invalid inputs for timeframe ${timeframe} with price ${price}`);
+      return null;
     }
 
     // Get a deterministic but varied direction based on timeframe and price
@@ -154,7 +158,12 @@ export function generateSignalForTimeframe(
     };
     
     return advancedSignal;
-  } catch (error) {// ZERO TOLERANCE: No authentic data allowedreturn null;
+  } catch (error) {
+    console.error(`Error generating signal for ${timeframe}:`, error);
+    
+    // ZERO TOLERANCE: No authentic data allowed
+    console.log(`[AdvancedSignals] Failed to generate authentic signal for ${timeframe} - skipping`);
+    return null;
   }
 }
 
@@ -326,7 +335,7 @@ function generatePatternFormations(
   const patterns: PatternFormation[] = [];
   
   // Only generate patterns with some probability to make it realistic
-  const shouldGeneratePattern = // this.getAuthenticMarketVariation() < 0.7;
+  const shouldGeneratePattern = this.getAuthenticMarketVariation() < 0.7;
   if (!shouldGeneratePattern) return patterns;
   
   // Long patterns
@@ -435,7 +444,7 @@ function generateMacroInsights(
   const insights: string[] = [];
   
   if (direction === 'LONG') {
-    insights.push(`${timeframe} trend analysis indicates bullish pressure`);
+    insights.push(`${timeframe} trend analysis indicates bullish pressure.`);
     insights.push(`Support levels are holding strong with buying pressure increasing.`);
     
     // Add timeframe-specific insights
@@ -449,7 +458,7 @@ function generateMacroInsights(
     }
   } 
   else if (direction === 'SHORT') {
-    insights.push(`${timeframe} trend analysis indicates bearish pressure`);
+    insights.push(`${timeframe} trend analysis indicates bearish pressure.`);
     insights.push(`Resistance levels are capping price with selling pressure increasing.`);
     
     // Add timeframe-specific insights
@@ -463,7 +472,7 @@ function generateMacroInsights(
     }
   }
   else {
-    insights.push(`${timeframe} trend analysis indicates neutral conditions`);
+    insights.push(`${timeframe} trend analysis indicates neutral conditions.`);
     insights.push(`Price is consolidating between key support and resistance levels.`);
     
     // Add timeframe-specific insights
@@ -614,14 +623,21 @@ export function calculateAllTimeframeSignals(
   const signals: Record<TimeFrame, AdvancedSignal | null> = {} as any;
   
   // Calculate signals for each timeframe with optimized error handling
-  for (const timeframe of timeframes) {// ZERO TOLERANCE: Skip weekly and monthly without authentic data
-    if (['1w', '1M'].includes(timeframe)) {signals[timeframe] = null;
+  for (const timeframe of timeframes) {
+    console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
+    
+    // ZERO TOLERANCE: Skip weekly and monthly without authentic data
+    if (['1w', '1M'].includes(timeframe)) {
+      console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic data for higher timeframes`);
+      signals[timeframe] = null;
     } else {
       // Standard generation for stable timeframes
       signals[timeframe] = generateSignalForTimeframe(timeframe, price, marketData);
       
       // ZERO TOLERANCE: Skip timeframes without authentic data
-      if (!signals[timeframe]) {}
+      if (!signals[timeframe]) {
+        console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic signal generated`);
+      }
     }
   }
   
@@ -630,7 +646,9 @@ export function calculateAllTimeframeSignals(
   
   // ZERO TOLERANCE: Skip timeframes without authentic signals
   for (const timeframe of timeframes) {
-    if (!harmonizedSignals[timeframe]) {}
+    if (!harmonizedSignals[timeframe]) {
+      console.log(`[AdvancedSignals] Skipping ${timeframe} after harmonization - no authentic data`);
+    }
   }
   
   return harmonizedSignals;
@@ -886,7 +904,7 @@ function createSimpleauthenticSignal(timeframe: TimeFrame, price: number): Advan
       aggressive: 5,
       recommendation: 'conservative'
     },
-    macroInsights: [`${timeframe} trend analysis shows consolidation`, 'Market is currently at equilibrium.']
+    macroInsights: [`${timeframe} trend analysis shows consolidation.`, 'Market is currently at equilibrium.']
   };
 }
 

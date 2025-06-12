@@ -57,7 +57,7 @@ export class AccuracyTracker {
     takeProfit: number,
     confidence: number
   ): string {
-    const predictionId = `${symbol}_${timeframe}_${Date.now()`}`;
+    const predictionId = `${symbol}_${timeframe}_${Date.now()}`;
     
     const prediction: PredictionRecord = {
       symbol,
@@ -71,7 +71,10 @@ export class AccuracyTracker {
       isResolved: false
     };
 
-    this.predictions.set(predictionId, prediction);return predictionId;
+    this.predictions.set(predictionId, prediction);
+    console.log(`📊 Recorded prediction: ${symbol} ${timeframe} ${direction} @ ${entryPrice}`);
+    
+    return predictionId;
   }
 
   /**
@@ -171,7 +174,9 @@ export class AccuracyTracker {
     prediction.wasCorrect = wasCorrect;
     prediction.exitPrice = exitPrice;
     prediction.exitTime = Date.now();
-    prediction.profitLoss = profitLoss;}%)`);
+    prediction.profitLoss = profitLoss;
+
+    console.log(`✅ Resolved prediction: ${prediction.symbol} ${prediction.timeframe} ${prediction.direction} - ${wasCorrect ? 'WIN' : 'LOSS'} (${profitLoss.toFixed(2)}%)`);
 
     // Update accuracy metrics
     this.updateAccuracyMetrics(prediction);
@@ -186,7 +191,7 @@ export class AccuracyTracker {
    * Update accuracy metrics for the symbol-timeframe combination
    */
   private updateAccuracyMetrics(prediction: PredictionRecord): void {
-    const key = `${prediction.symbol}_${prediction.timeframe`}`;
+    const key = `${prediction.symbol}_${prediction.timeframe}`;
     const current = this.accuracyHistory.get(key) || {
       totalPredictions: 0,
       correctPredictions: 0,
@@ -229,13 +234,16 @@ export class AccuracyTracker {
       prediction.symbol,
       prediction.timeframe,
       prediction.wasCorrect || false
-    );}
+    );
+
+    console.log(`🧠 Feedback provided: ${prediction.symbol} ${prediction.timeframe} accuracy updated`);
+  }
 
   /**
    * Get accuracy metrics for a symbol-timeframe combination
    */
   getAccuracyMetrics(symbol: string, timeframe: TimeFrame): AccuracyMetrics {
-    const key = `${symbol}_${timeframe`}`;
+    const key = `${symbol}_${timeframe}`;
     return this.accuracyHistory.get(key) || {
       totalPredictions: 0,
       correctPredictions: 0,
@@ -303,7 +311,9 @@ export class AccuracyTracker {
    * Enable or disable learning mode
    */
   setLearningMode(enabled: boolean): void {
-    this.learningEnabled = enabled;}
+    this.learningEnabled = enabled;
+    console.log(`🧠 Learning mode ${enabled ? 'enabled' : 'disabled'}`);
+  }
 
   /**
    * Clear old predictions to manage memory
@@ -318,7 +328,9 @@ export class AccuracyTracker {
       }
     }
 
-    toRemove.forEach(id => this.predictions.delete(id));}
+    toRemove.forEach(id => this.predictions.delete(id));
+    console.log(`🧹 Cleared ${toRemove.length} old predictions`);
+  }
 }
 
 export const accuracyTracker = AccuracyTracker.getInstance();

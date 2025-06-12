@@ -65,7 +65,7 @@ const SignalSummary: React.FC<SignalSummaryProps> = ({ symbol, timeframe }) => {
     <div className="mb-3 bg-secondary rounded-lg p-3 mx-2">
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-white text-lg font-medium">Signal Summary</h2>
-        <span className={`text-xs py-1 px-2 rounded ${directionColor} text-white font-mediu`m`}>
+        <span className={`text-xs py-1 px-2 rounded ${directionColor} text-white font-medium`}>
           {direction} {strength}%
         </span>
       </div>

@@ -281,11 +281,11 @@ function generateMacroInsights(timeframe: TimeFrame, signal: AccurateSignal): st
   const insights = [];
   
   if (signal.confidence > 80) {
-    insights.push(`High confidence ${signal.direction} signal on ${timeframe} timefram`e`);
+    insights.push(`High confidence ${signal.direction} signal on ${timeframe} timeframe`);
   }
   
   if (signal.riskReward > 2) {
-    insights.push(`Excellent risk/reward ratio of ${signal.riskReward}:`1`);
+    insights.push(`Excellent risk/reward ratio of ${signal.riskReward}:1`);
   }
   
   if (signal.indicators.rsi > 70) {

@@ -388,7 +388,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           }
         }
         */
-      } catch (error) {}
+      } catch (error) {
+        console.error('Error saving chart state:', error);
+      }
     }
   }, []);
 
@@ -490,7 +492,8 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     if (!chartContainerRef.current) return;
     
     // Log the number of data points for debugging
-    if (formattedCandlesticks) {`);
+    if (formattedCandlesticks) {
+      console.log(`Loading chart with ${formattedCandlesticks.length} data points for ${symbol} (${timeframe})`);
     }
     
     // Save chart view state before removing old chart
@@ -1069,7 +1072,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
     
     // Add event listeners to track chart state changes when user interacts with the chart
     chart.timeScale().subscribeVisibleLogicalRangeChange(range => {
-      if (range) {chartState.current.timeRange = {
+      if (range) {
+        console.log('Chart timeRange changed:', range);
+        chartState.current.timeRange = {
           from: range.from,
           to: range.to
         };
@@ -1081,14 +1086,20 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
       const priceScale = mainSeriesRef.priceScale();
       if (priceScale) {
         // Store options when they change
-        const options = priceScale.options();}
+        const options = priceScale.options();
+        console.log('Current price scale options:', options);
+      }
     }
     
     // Restore the previous view state if available
     if (chartState.current.timeRange) {
-      try {// Restore time range
+      try {
+        console.log('Restoring chart timeRange:', chartState.current.timeRange);
+        // Restore time range
         chart.timeScale().setVisibleLogicalRange(chartState.current.timeRange);
-      } catch (error) {// If restoring fails, fit content
+      } catch (error) {
+        console.log('Error restoring time range:', error);
+        // If restoring fails, fit content
         chart.timeScale().fitContent();
       }
     } else {
@@ -1130,7 +1141,9 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
             });
           }
         }, 100);
-      } catch (error) {// If restoring manual price range fails, use auto scale
+      } catch (error) {
+        console.log('Error restoring price range:', error);
+        // If restoring manual price range fails, use auto scale
         if (mainSeriesRef) {
           mainSeriesRef.priceScale().applyOptions({
             autoScale: true
@@ -1186,11 +1199,15 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
   };
   
   // Toggle panel expansion/collapse
-  const togglePanelExpansion = (panelName: string) => {setExpandedPanels(prev => {
+  const togglePanelExpansion = (panelName: string) => {
+    console.log('Toggling panel:', panelName, 'Current state:', expandedPanels[panelName]);
+    setExpandedPanels(prev => {
       const newState = {
         ...prev,
         [panelName]: !prev[panelName]
-      };return newState;
+      };
+      console.log('New panel state:', newState);
+      return newState;
     });
   };
   

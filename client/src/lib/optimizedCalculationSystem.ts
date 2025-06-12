@@ -29,7 +29,11 @@ const MIN_CALCULATION_INTERVAL = 10000; // 10 seconds
 export function initOptimizedCalculations() {
   // Set up event listeners for price updates
   window.addEventListener('price-update', handlePriceUpdate as EventListener);
-  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);return () => {
+  window.addEventListener('live-price-update', handlePriceUpdate as EventListener);
+  
+  console.log('✅ Optimized calculation system initialized');
+  
+  return () => {
     // Cleanup function
     window.removeEventListener('price-update', handlePriceUpdate as EventListener);
     window.removeEventListener('live-price-update', handlePriceUpdate as EventListener);
@@ -47,8 +51,14 @@ function handlePriceUpdate(event: Event) {
   const now = Date.now();
   const lastCalcTime = lastCalculationTimes[symbol] || 0;
   
-  if (now - lastCalcTime < MIN_CALCULATION_INTERVAL) {return;
-  }// Update last calculation time
+  if (now - lastCalcTime < MIN_CALCULATION_INTERVAL) {
+    console.log(`Skipping calculation for ${symbol} - too soon since last calculation`);
+    return;
+  }
+  
+  console.log(`🔄 Price update detected for ${symbol}: ${price} - triggering calculation`);
+  
+  // Update last calculation time
   lastCalculationTimes[symbol] = now;
   
   // Perform calculation and broadcast results
@@ -109,7 +119,9 @@ function calculateForSymbol(symbol: string, price: number) {
       
       // Store result
       results[timeframe] = signal;
-    } catch (error) {// Use previous signal if available, otherwise null
+    } catch (error) {
+      console.error(`Error calculating ${timeframe} for ${symbol}:`, error);
+      // Use previous signal if available, otherwise null
       results[timeframe] = previousSignals[timeframe] || null;
     }
   });
@@ -127,7 +139,9 @@ function calculateForSymbol(symbol: string, price: number) {
     }
   });
   
-  window.dispatchEvent(calculationEvent);}
+  window.dispatchEvent(calculationEvent);
+  console.log(`✅ Calculation completed for ${symbol}`);
+}
 
 /**
  * Get cached signals for a symbol
@@ -139,7 +153,9 @@ export function getCachedSignals(symbol: string): Record<TimeFrame, any> | null 
 /**
  * Manually trigger a calculation for a symbol
  */
-export function triggerCalculation(symbol: string, price: number) {calculateForSymbol(symbol, price);
+export function triggerCalculation(symbol: string, price: number) {
+  console.log(`Manual calculation triggered for ${symbol} at price ${price}`);
+  calculateForSymbol(symbol, price);
 }
 
 /**

@@ -254,7 +254,7 @@ export class MarketStructureEngine {
    * Update prediction accuracy for feedback loop
    */
   updateAccuracy(symbol: string, timeframe: TimeFrame, wasCorrect: boolean): void {
-    const key = `${symbol}_${timeframe`}`;
+    const key = `${symbol}_${timeframe}`;
     const current = this.accuracyMetrics.get(key) || { 
       winRate: 0, 
       totalPredictions: 0, 
@@ -272,7 +272,7 @@ export class MarketStructureEngine {
    * Get accuracy metrics
    */
   getAccuracyMetrics(symbol: string, timeframe: TimeFrame): { winRate: number; totalPredictions: number } {
-    const key = `${symbol}_${timeframe`}`;
+    const key = `${symbol}_${timeframe}`;
     const metrics = this.accuracyMetrics.get(key) || { winRate: 0, totalPredictions: 0, correctPredictions: 0 };
     return { winRate: metrics.winRate, totalPredictions: metrics.totalPredictions };
   }

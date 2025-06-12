@@ -600,6 +600,8 @@ class UnifiedCalculationCore {
     return ema;
   }
 
+
+
   /**
    * Optimized ADX calculation with memory efficiency and performance improvements
    */
@@ -725,7 +727,9 @@ class UnifiedCalculationCore {
     let currentPrice = data[data.length - 1].close;
     
     // CRITICAL: Prevent BTC price contamination for other symbols
-    if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {// Use symbol-specific authentic prices instead of contaminated BTC values
+    if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {
+      console.error(`Price contamination detected in support/resistance calculation for ${symbol}: ${currentPrice} - using authentic`);
+      // Use symbol-specific authentic prices instead of contaminated BTC values
       const authenticPrices: Record<string, number> = {
         'DOT/USDT': 3.98,
         'ADA/USDT': 0.66,
@@ -873,7 +877,7 @@ class UnifiedCalculationCore {
    * Generate unified signal with all indicators
    */
   public generateSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): UnifiedSignal | null {
-    const cacheKey = `${symbol}_${timeframe`}`;
+    const cacheKey = `${symbol}_${timeframe}`;
     const data = this.dataCache.get(cacheKey);
     
     if (!data || data.length < 50) return null;
@@ -899,7 +903,16 @@ class UnifiedCalculationCore {
     // Calculate support and resistance levels with symbol validation
     const supportResistance = this.calculateSupportResistance(data, 12, symbol);
     
-    // Debug logging// Ensure we always have support and resistance levels
+    // Debug logging
+    console.log(`Support/Resistance calculation for ${symbol} ${timeframe}:`, {
+      dataLength: data.length,
+      supports: supportResistance.supports.length,
+      resistances: supportResistance.resistances.length,
+      supportLevels: supportResistance.supports,
+      resistanceLevels: supportResistance.resistances
+    });
+    
+    // Ensure we always have support and resistance levels
     const finalSupports = supportResistance.supports.length > 0 ? supportResistance.supports : [
       currentPrice * 0.985,
       currentPrice * 0.970,
@@ -910,7 +923,15 @@ class UnifiedCalculationCore {
       currentPrice * 1.015,
       currentPrice * 1.030,
       currentPrice * 1.045
-    ];const indicators: TechnicalIndicators = {
+    ];
+
+    console.log(`FINAL Support/Resistance for ${symbol} ${timeframe}:`, {
+      supports: finalSupports,
+      resistances: finalResistances,
+      currentPrice
+    });
+
+    const indicators: TechnicalIndicators = {
       rsi: {
         value: rsi,
         signal: rsi > 70 ? 'SELL' : rsi < 30 ? 'BUY' : 'NEUTRAL',
@@ -1102,14 +1123,14 @@ class UnifiedCalculationCore {
       macroInsights: [
         `Market Regime: ${indicators.marketRegime}`,
         `Fractal Structure: ${marketStructure.fractalStructure}`,
-        `VWAP Position: ${currentPrice > vwapAnalysis.daily ? 'Above' : 'Below'} Daily VWA`P`,
+        `VWAP Position: ${currentPrice > vwapAnalysis.daily ? 'Above' : 'Below'} Daily VWAP`,
         `Supply Zones: ${marketStructure.supplyZones.length}`,
         `Demand Zones: ${marketStructure.demandZones.length}`,
-        `Fib Confluence: ${fibonacciLevels.confluence.toFixed(0)}`%`,
-        `RSI: ${indicators.rsi.value.toFixed(2)} (${indicators.rsi.signal}`)`,
-        `MACD: ${indicators.macd.value.toFixed(2)} (${indicators.macd.signal}`)`,
+        `Fib Confluence: ${fibonacciLevels.confluence.toFixed(0)}%`,
+        `RSI: ${indicators.rsi.value.toFixed(2)} (${indicators.rsi.signal})`,
+        `MACD: ${indicators.macd.value.toFixed(2)} (${indicators.macd.signal})`,
         `ADX: ${indicators.adx.value.toFixed(2)}`,
-        `Volatility: ${(indicators.volatility * 100).toFixed(2)}`%`,
+        `Volatility: ${(indicators.volatility * 100).toFixed(2)}%`,
         `Structure Confirmed: ${structureConfirmation ? 'Yes' : 'No'}`,
         `VWAP Aligned: ${vwapAlignment ? 'Yes' : 'No'}`,
         `Candlestick Patterns: ${candlestickPatterns.length}`
@@ -1141,7 +1162,7 @@ class UnifiedCalculationCore {
   }
 
   public updateMarketData(symbol: string, timeframe: TimeFrame, data: OHLCData[]): void {
-    const cacheKey = `${symbol}_${timeframe`}`;
+    const cacheKey = `${symbol}_${timeframe}`;
     this.dataCache.set(cacheKey, data);
   }
 }

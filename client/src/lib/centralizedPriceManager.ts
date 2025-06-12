@@ -30,7 +30,9 @@ class CentralizedPriceManager {
   // API deduplication for efficiency
   private activeFetches: Map<string, Promise<void>> = new Map();
 
-  constructor() {}
+  constructor() {
+    console.log('[CentralizedPriceManager] Initializing with 4-minute intervals');
+  }
 
   /**
    * Subscribe to price updates for a symbol
@@ -41,7 +43,11 @@ class CentralizedPriceManager {
     }
     
     const subscriber: PriceSubscriber = { callback, symbol };
-    this.subscribers.get(symbol)!.push(subscriber);// Provide current price immediately if available
+    this.subscribers.get(symbol)!.push(subscriber);
+    
+    console.log(`[CentralizedPriceManager] New subscriber for ${symbol}`);
+    
+    // Provide current price immediately if available
     const currentPrice = this.priceData.get(symbol);
     if (currentPrice) {
       callback(currentPrice.price);
@@ -71,7 +77,9 @@ class CentralizedPriceManager {
       // Stop interval if no more subscribers
       if (this.subscribers.size === 0 && this.fetchInterval) {
         clearInterval(this.fetchInterval);
-        this.fetchInterval = null;}
+        this.fetchInterval = null;
+        console.log('[CentralizedPriceManager] Stopped fetch interval - no subscribers');
+      }
     };
   }
 
@@ -87,12 +95,16 @@ class CentralizedPriceManager {
       // Price validation to prevent BTC price being used for other symbols
       if (this.validatePriceForSymbol(symbol, data.price)) {
         return data.price;
-      } else {this.priceData.delete(symbol); // Clear invalid cached price
+      } else {
+        console.warn(`[CentralizedPriceManager] Invalid price ${data.price} for ${symbol}, clearing cache`);
+        this.priceData.delete(symbol); // Clear invalid cached price
       }
     }
     
     // Only fetch if cache is stale or missing
-    if (!data || (now - data.timestamp) >= this.MIN_CACHE_TIME) {this.fetchPriceForSymbol(symbol);
+    if (!data || (now - data.timestamp) >= this.MIN_CACHE_TIME) {
+      console.log(`[CentralizedPriceManager] No cached price for ${symbol}, fetching immediately`);
+      this.fetchPriceForSymbol(symbol);
     }
     
     return data?.price || null;
@@ -126,7 +138,9 @@ class CentralizedPriceManager {
     const range = priceRanges[baseAsset];
     if (range) {
       const isValid = price >= range.min && price <= range.max;
-      if (!isValid) {}
+      if (!isValid) {
+        console.error(`[CentralizedPriceManager] Price validation failed: ${symbol} price ${price} outside range ${range.min}-${range.max}`);
+      }
       return isValid;
     }
     
@@ -173,7 +187,11 @@ class CentralizedPriceManager {
    * Start the 4-minute fetch interval
    */
   private startFetchInterval() {
-    if (this.fetchInterval) return;this.fetchInterval = setInterval(() => {
+    if (this.fetchInterval) return;
+    
+    console.log('[CentralizedPriceManager] Starting 4-minute fetch interval');
+    
+    this.fetchInterval = setInterval(() => {
       this.fetchAllSubscribedPrices();
     }, this.FETCH_INTERVAL_MS);
   }
@@ -183,7 +201,11 @@ class CentralizedPriceManager {
    */
   private async fetchAllSubscribedPrices() {
     const symbols = Array.from(this.subscribers.keys());
-    if (symbols.length === 0) return;for (const symbol of symbols) {
+    if (symbols.length === 0) return;
+    
+    console.log(`[CentralizedPriceManager] Fetching prices for ${symbols.length} symbols`);
+    
+    for (const symbol of symbols) {
       await this.fetchPriceForSymbol(symbol);
       // Small delay between requests to respect rate limits
       await new Promise(resolve => setTimeout(resolve, 100));
@@ -204,7 +226,9 @@ class CentralizedPriceManager {
 
     // Check if there's already an active fetch for this symbol
     const existingFetch = this.activeFetches.get(symbol);
-    if (existingFetch) {return existingFetch;
+    if (existingFetch) {
+      console.log(`[CentralizedPriceManager] Using existing fetch for ${symbol}`);
+      return existingFetch;
     }
 
     // Create new fetch promise and cache it
@@ -240,7 +264,10 @@ class CentralizedPriceManager {
           };
           
           this.priceData.set(symbol, priceData);
-          this.lastFetchTime = Date.now();// Notify all subscribers with the exact same price
+          this.lastFetchTime = Date.now();
+          console.log(`[CentralizedPriceManager] Updated price for ${symbol}: $${price}`);
+          
+          // Notify all subscribers with the exact same price
           const subscribers = this.subscribers.get(symbol);
           if (subscribers) {
             subscribers.forEach(subscriber => {
@@ -251,7 +278,9 @@ class CentralizedPriceManager {
           return price;
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(`[CentralizedPriceManager] Error fetching price for ${symbol}:`, error);
+    }
     return null;
   }
 

@@ -15,7 +15,10 @@ const signalCache: Record<string, {
 }> = {};
 
 // Register for price update events
-export function initMarketAnalysis() {// We've disabled these event listeners to centralize price update handling
+export function initMarketAnalysis() {
+  console.log('🚀 Initializing Market Analysis System - NO LISTENERS');
+  
+  // We've disabled these event listeners to centralize price update handling
   // in the AdvancedSignalDashboard component
   
   return () => {
@@ -26,9 +29,17 @@ export function initMarketAnalysis() {// We've disabled these event listeners to
 // Handle price update events
 function handlePriceUpdate(event: Event) {
   // FUNCTION DISABLED - now the AdvancedSignalDashboard component
-  // is responsible for handling price updates and throttling calculations/* DISABLED TO PREVENT DUPLICATE CALCULATIONS
+  // is responsible for handling price updates and throttling calculations
+  
+  console.log(`[MarketAnalysisManager] Legacy handler called - should not happen`);
+  
+  /* DISABLED TO PREVENT DUPLICATE CALCULATIONS
   const priceEvent = event as CustomEvent;
-  const { symbol, price } = priceEvent.detail;// Trigger analysis with the new price
+  const { symbol, price } = priceEvent.detail;
+  
+  console.log(`💹 Price update for ${symbol}: ${price}`);
+  
+  // Trigger analysis with the new price
   triggerAnalysis(symbol, price);
   */
 }
@@ -43,7 +54,10 @@ export function triggerAnalysis(symbol: string, price: number) {
     (now - cache.timestamp > 60000) || // Cache older than 1 minute
     (Math.abs(price - cache.price) / cache.price > 0.005); // Price changed by more than 0.5%
   
-  if (needsRecalculation) {// Calculate signals for all timeframes
+  if (needsRecalculation) {
+    console.log(`⚙️ Triggering market analysis for ${symbol} at price ${price}`);
+    
+    // Calculate signals for all timeframes
     const signals = calculateSignals(symbol, price);
     
     // Cache the results
@@ -64,7 +78,8 @@ export function triggerAnalysis(symbol: string, price: number) {
     });
     
     window.dispatchEvent(analysisEvent);
-  } else {`);
+  } else {
+    console.log(`📊 Using cached signals for ${symbol} (price change too small or recent calculation)`);
     
     // Broadcast cached signals
     const analysisEvent = new CustomEvent('market-analysis-complete', {
@@ -137,7 +152,9 @@ function calculateSignals(symbol: string, price: number): Record<TimeFrame, any>
         patternFormations: generatePatterns(direction, price, confidence),
         macroInsights: generateMacroInsights(direction, timeframe)
       };
-    } catch (error) {signals[timeframe] = null;
+    } catch (error) {
+      console.error(`Error calculating ${timeframe} for ${symbol}:`, error);
+      signals[timeframe] = null;
     }
   });
   
@@ -279,13 +296,13 @@ function generateMacroInsights(direction: string, timeframe: TimeFrame): string[
   const insights = [];
   
   if (direction === 'LONG') {
-    insights.push(`${timeframe} trend shows bullish momentu`m`);
+    insights.push(`${timeframe} trend shows bullish momentum`);
     insights.push('Support levels are holding strong');
   } else if (direction === 'SHORT') {
-    insights.push(`${timeframe} trend shows bearish pressur`e`);
+    insights.push(`${timeframe} trend shows bearish pressure`);
     insights.push('Resistance levels are limiting upside');
   } else {
-    insights.push(`${timeframe} trend is currently neutra`l`);
+    insights.push(`${timeframe} trend is currently neutral`);
     insights.push('Price is consolidating between support and resistance');
   }
   

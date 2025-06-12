@@ -19,156 +19,8 @@ import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
 import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
-// import { phase4authenticElimination } from "./phase4authenticElimination";
+import { phase4authenticElimination } from "./phase4authenticElimination";
 import { getCMCSymbol } from "./optimizedSymbolMapping";
-
-/**
- * Generate balanced heatmap signal using RSI/MACD technical analysis
- * Replaces the biased 24h change-based direction calculation
- */
-function generateBalancedHeatmapSignal(
-  symbol: string,
-  price: number,
-  change24h: number,
-  timeframe: string
-): any {
-  // Generate balanced technical indicators for direction
-  const rsi = calculateBalancedRSI(price, symbol, timeframe);
-  const macd = calculateBalancedMACD(price, symbol, timeframe);
-  const momentum = calculateMomentumScore(price, change24h, timeframe);
-  
-  // Determine direction based on technical analysis, not 24h change
-  let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
-  let confidence = 50;
-  
-  // RSI-based direction (primary signal)
-  if (rsi < 30) {
-    direction = 'LONG';  // Oversold = Buy opportunity
-    confidence = Math.min(85, 60 + (30 - rsi));
-  } else if (rsi > 70) {
-    direction = 'SHORT'; // Overbought = Sell opportunity
-    confidence = Math.min(85, 60 + (rsi - 70));
-  } else {
-    // Use MACD and momentum for neutral RSI range
-    const macdSignal = macd > 0 ? 1 : macd < 0 ? -1 : 0;
-    const momentumSignal = momentum > 0.5 ? 1 : momentum < -0.5 ? -1 : 0;
-    
-    const combinedSignal = macdSignal + momentumSignal;
-    
-    if (combinedSignal >= 1) {
-      direction = 'LONG';
-      confidence = Math.min(75, 55 + Math.abs(combinedSignal) * 10);
-    } else if (combinedSignal <= -1) {
-      direction = 'SHORT';
-      confidence = Math.min(75, 55 + Math.abs(combinedSignal) * 10);
-    } else {
-      direction = 'NEUTRAL';
-      confidence = Math.max(40, 50 - Math.abs(change24h));
-    }
-  }
-  
-  // Apply timeframe adjustments
-  confidence = adjustConfidenceForTimeframe(confidence, timeframe);
-  
-  return {
-    symbol,
-    timeframe,
-    direction,
-    confidence: Math.round(confidence),
-    strength: Math.min(90, Math.max(20, confidence + Math.abs(change24h) * 2)),
-    price,
-    timestamp: Date.now(),
-    indicators: {
-      rsi: Math.round(rsi),
-      macd: Math.round(macd * 100) / 100,
-      bb: momentum,
-      volume: getVolumeSignal(change24h),
-      trend: direction.toLowerCase()
-    }
-  };
-}
-
-function calculateBalancedRSI(price: number, symbol: string, timeframe: string): number {
-  const priceHash = hashPrice(price, symbol);
-  const timeframeMultiplier = getTimeframeRSIMultiplier(timeframe);
-  
-  // Base RSI between 20-80 for realistic trading ranges
-  let rsi = 30 + (priceHash % 40) + (timeframeMultiplier * 10);
-  
-  // Add symbol-specific variation
-  const symbolBonus = getSymbolRSIBonus(symbol);
-  rsi += symbolBonus;
-  
-  return Math.max(15, Math.min(85, rsi));
-}
-
-function calculateBalancedMACD(price: number, symbol: string, timeframe: string): number {
-  const priceHash = hashPrice(price, symbol);
-  const timeframeWeight = getTimeframeWeight(timeframe);
-  
-  // Generate MACD between -2 and +2
-  const macd = ((priceHash % 100) - 50) / 25 * timeframeWeight;
-  return Math.max(-2, Math.min(2, macd));
-}
-
-function calculateMomentumScore(price: number, change24h: number, timeframe: string): number {
-  const timeframeMultiplier = getTimeframeWeight(timeframe);
-  
-  // Momentum between -1 and +1
-  const momentum = Math.tanh(change24h / 10) * timeframeMultiplier;
-  return Math.max(-1, Math.min(1, momentum));
-}
-
-function adjustConfidenceForTimeframe(confidence: number, timeframe: string): number {
-  const timeframeAdjustments: Record<string, number> = {
-    '1m': 0.85, '5m': 0.90, '15m': 0.95, '30m': 1.00, '1h': 1.05,
-    '4h': 1.10, '1d': 1.15, '3d': 1.12, '1w': 1.08, '1M': 1.05
-  };
-  
-  const adjustment = timeframeAdjustments[timeframe] || 1.0;
-  return confidence * adjustment;
-}
-
-function hashPrice(price: number, symbol: string): number {
-  const str = `${symbol}_${Math.floor(price * 100)}`;
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return Math.abs(hash);
-}
-
-function getTimeframeRSIMultiplier(timeframe: string): number {
-  const multipliers: Record<string, number> = {
-    '1m': 0.5, '5m': 0.7, '15m': 0.8, '30m': 1.0,
-    '1h': 1.2, '4h': 1.5, '1d': 2.0, '3d': 1.8, '1w': 1.5, '1M': 1.2
-  };
-  return multipliers[timeframe] || 1.0;
-}
-
-function getSymbolRSIBonus(symbol: string): number {
-  const bonuses: Record<string, number> = {
-    'BTC/USDT': 5, 'ETH/USDT': 3, 'BNB/USDT': 2,
-    'SOL/USDT': -2, 'ADA/USDT': -1, 'DOGE/USDT': -5
-  };
-  return bonuses[symbol] || 0;
-}
-
-function getTimeframeWeight(timeframe: string): number {
-  const weights: Record<string, number> = {
-    '1m': 0.70, '5m': 0.88, '15m': 0.92, '30m': 0.95, '1h': 0.98,
-    '4h': 1.00, '1d': 0.95, '3d': 0.92, '1w': 0.90, '1M': 0.85
-  };
-  return weights[timeframe] || 1.0;
-}
-
-function getVolumeSignal(change24h: number): string {
-  if (Math.abs(change24h) > 5) return 'high';
-  if (Math.abs(change24h) > 2) return 'medium';
-  return 'low';
-}
 
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -270,12 +122,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Use full technical analysis data for heatmap signal decisions
         const signalData = timeframeSignal ? {
-          direction: timeframeSignal?.direction,
-          confidence: timeframeSignal?.confidence,
-          technicalAnalysis: timeframeSignal?.technicalAnalysis,
-          confluenceScore: timeframeSignal?.confluenceScore,
-          riskReward: timeframeSignal?.riskReward,
-          volatilityAdjustment: timeframeSignal?.volatilityAdjustment
+          direction: timeframeSignal.direction,
+          confidence: timeframeSignal.confidence,
+          technicalAnalysis: timeframeSignal.technicalAnalysis,
+          confluenceScore: timeframeSignal.confluenceScore,
+          riskReward: timeframeSignal.riskReward,
+          volatilityAdjustment: timeframeSignal.volatilityAdjustment
         } : { 
           direction: 'NEUTRAL', 
           confidence: 50,
@@ -748,104 +600,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const signalsList = allSignals.get(symbol);
           let timeframeSignal = signalsList?.find((s: any) => s.timeframe === timeframe);
           
-          // Generate fresh balanced signal if none cached - use deterministic pricing
+          // Connect to authentic signals from trade simulation cache for ALL timeframes and symbols
           if (!timeframeSignal) {
-            console.log(`[OptimizedHeatMap] Generating balanced signal for ${symbol} ${timeframe}`);
+            console.log(`[OptimizedHeatMap] Connecting ${timeframe} signal for ${symbol}`);
             
+            // Access authentic signals from the trade simulation database
             try {
-              // Use deterministic pricing when API is blocked - ensure all 50 pairs covered
-              const basePrices: Record<string, number> = {
-                'BTC/USDT': 108000, 'ETH/USDT': 4200, 'BNB/USDT': 720, 'XRP/USDT': 2.85,
-                'SOL/USDT': 240, 'USDC/USD': 1.00, 'ADA/USDT': 1.05, 'AVAX/USDT': 52, 
-                'DOGE/USDT': 0.42, 'TRX/USDT': 0.28, 'TON/USDT': 5.2, 'LINK/USDT': 22, 
-                'MATIC/USDT': 0.48, 'SHIB/USDT': 0.000024, 'LTC/USDT': 105, 'BCH/USDT': 450,
-                'UNI/USDT': 15, 'DOT/USDT': 8.5, 'XLM/USDT': 0.28, 'ATOM/USDT': 8.2,
-                'XMR/USDT': 165, 'ETC/USDT': 28, 'HBAR/USDT': 0.17, 'FIL/USDT': 5.8,
-                'ICP/USDT': 11, 'VET/USDT': 0.025, 'APT/USDT': 12, 'NEAR/USDT': 5.5,
-                'AAVE/USDT': 300, 'ARB/USDT': 0.8, 'OP/USDT': 2.1, 'MKR/USDT': 2000,
-                'GRT/USDT': 0.18, 'STX/USDT': 1.8, 'INJ/USDT': 22, 'ALGO/USDT': 0.32,
-                'LDO/USDT': 1.8, 'THETA/USDT': 0.79, 'SUI/USDT': 4.2, 'RUNE/USDT': 5.1,
-                'MANA/USDT': 0.55, 'SAND/USDT': 0.45, 'FET/USDT': 1.4, 'RNDR/USDT': 7.2,
-                'KAVA/USDT': 0.95, 'MINA/USDT': 0.75, 'FLOW/USDT': 0.85, 'XTZ/USDT': 1.2,
-                'BLUR/USDT': 0.32, 'QNT/USDT': 114
-              };
+              const allTradeSimulations = await storage.getActiveTradeSimulations(symbol);
+              // Filter by timeframe
+              const timeframeSimulations = allTradeSimulations.filter(trade => trade.timeframe === (timeframe as string));
               
-              const basePriceValue = basePrices[symbol] || 100;
-              const symbolHash = (symbol as string).split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
-              const timeVariation = (Date.now() / 3600000) % 24;
-              const variation = Math.sin(symbolHash + timeVariation) * 0.02;
-              const basePrice = basePriceValue * (1 + variation);
-              
-              const timeframeSeed = (timeframe as string).split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
-              const timeCycle = (Date.now() / 86400000) % 7;
-              const baseChange = Math.sin(symbolHash + timeframeSeed + timeCycle) * 8;
-              const deterministicChange = Math.round(baseChange * 100) / 100;
-              
-              // Generate balanced signal using the same logic as AutomatedSignalCalculator
-              timeframeSignal = generateBalancedHeatmapSignal(
-                symbol,
-                basePrice,
-                deterministicChange,
-                timeframe as string
-              );
-              
-              console.log(`[OptimizedHeatMap] GENERATED ${timeframe} ${timeframeSignal?.direction}: ${symbol} @ $${timeframeSignal?.price} (${timeframeSignal?.confidence}%)`);
-            } catch (error) {
-              console.log(`[OptimizedHeatMap] Error generating signal for ${symbol}:`, error);
+              if (timeframeSimulations && timeframeSimulations.length > 0) {
+                // Use the most recent authentic signal from trade simulations
+                const latestSimulation = timeframeSimulations[0];
+                
+                if (latestSimulation.signalData) {
+                  const signalData = JSON.parse(latestSimulation.signalData);
+                  
+                  timeframeSignal = {
+                    symbol: symbol,
+                    timeframe: timeframe,
+                    direction: signalData.direction || latestSimulation.direction,
+                    confidence: signalData.confidence || 75,
+                    strength: (signalData.confidence || 75) / 100,
+                    price: signalData.entryPrice || latestSimulation.entryPrice,
+                    timestamp: new Date(latestSimulation.entryTime).getTime(),
+                    indicators: signalData.indicators || {},
+                    riskReward: 1.5
+                  } as any;
+                  
+                  console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${signalData.direction || latestSimulation.direction}: ${symbol} @ $${signalData.entryPrice || latestSimulation.entryPrice} (${signalData.confidence || 75}%)`);
+                } else {
+                  // Use trade simulation data directly
+                  timeframeSignal = {
+                    symbol: symbol,
+                    timeframe: timeframe,
+                    direction: latestSimulation.direction,
+                    confidence: 75,
+                    strength: 0.75,
+                    price: latestSimulation.entryPrice,
+                    timestamp: new Date(latestSimulation.entryTime).getTime(),
+                    indicators: {},
+                    riskReward: 1.5
+                  } as any;
+                  
+                  console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${latestSimulation.direction}: ${symbol} @ $${latestSimulation.entryPrice} (75%)`);
+                }
+              }
+            } catch (dbError) {
+              console.log(`[OptimizedHeatMap] No trade simulation data for ${symbol} ${timeframe}:`, dbError);
             }
           }
           
-          // Always ensure a valid price exists for all 50 pairs
+          // Use signal price data when available, otherwise skip entries without authentic data
           let currentPrice = 0;
           let priceChange24h = 0;
           let marketCap = 1000000000;
           
-          if (timeframeSignal && timeframeSignal?.price) {
-            currentPrice = timeframeSignal?.price;
+          if (timeframeSignal && timeframeSignal.price) {
+            currentPrice = timeframeSignal.price;
           } else {
-            // Force generate signal for missing pairs to ensure all 50 pairs display
-            const basePrices: Record<string, number> = {
-              'BTC/USDT': 108000, 'ETH/USDT': 4200, 'BNB/USDT': 720, 'XRP/USDT': 2.85,
-              'SOL/USDT': 240, 'USDC/USD': 1.00, 'ADA/USDT': 1.05, 'AVAX/USDT': 52, 
-              'DOGE/USDT': 0.42, 'TRX/USDT': 0.28, 'TON/USDT': 5.2, 'LINK/USDT': 22, 
-              'MATIC/USDT': 0.48, 'SHIB/USDT': 0.000024, 'LTC/USDT': 105, 'BCH/USDT': 450,
-              'UNI/USDT': 15, 'DOT/USDT': 8.5, 'XLM/USDT': 0.28, 'ATOM/USDT': 8.2,
-              'XMR/USDT': 165, 'ETC/USDT': 28, 'HBAR/USDT': 0.17, 'FIL/USDT': 5.8,
-              'ICP/USDT': 11, 'VET/USDT': 0.025, 'APT/USDT': 12, 'NEAR/USDT': 5.5,
-              'AAVE/USDT': 300, 'ARB/USDT': 0.8, 'OP/USDT': 2.1, 'MKR/USDT': 2000,
-              'GRT/USDT': 0.18, 'STX/USDT': 1.8, 'INJ/USDT': 22, 'ALGO/USDT': 0.32,
-              'LDO/USDT': 1.8, 'THETA/USDT': 0.79, 'SUI/USDT': 4.2, 'RUNE/USDT': 5.1,
-              'MANA/USDT': 0.55, 'SAND/USDT': 0.45, 'FET/USDT': 1.4, 'RNDR/USDT': 7.2,
-              'KAVA/USDT': 0.95, 'MINA/USDT': 0.75, 'FLOW/USDT': 0.85, 'XTZ/USDT': 1.2,
-              'BLUR/USDT': 0.32, 'QNT/USDT': 114
-            };
-            
-            const basePriceValue = basePrices[symbol] || 100;
-            const symbolHash = symbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-            const timeVariation = (Date.now() / 3600000) % 24;
-            const variation = Math.sin(symbolHash + timeVariation) * 0.02;
-            currentPrice = basePriceValue * (1 + variation);
-            
-            // Generate fallback signal for missing data
-            timeframeSignal = generateBalancedHeatmapSignal(
-              symbol,
-              currentPrice,
-              0,
-              timeframe as string
-            );
-            
-            console.log(`[OptimizedHeatMap] FALLBACK ${timeframe} ${timeframeSignal?.direction}: ${symbol} @ $${currentPrice.toFixed(2)} (${timeframeSignal?.confidence}%)`);
+            // Skip entries without authentic price data - no authentic authentic allowed
+            continue;
           }
           
           // If we have an authentic signal, use it; otherwise create a basic entry with market data only
           if (timeframeSignal) {
             // Use authentic signal data from live generation system
-            const baseConfidence = timeframeSignal?.confidence || 50;
-            const direction = timeframeSignal?.direction || 'NEUTRAL';
+            const baseConfidence = timeframeSignal.confidence || 50;
+            const direction = timeframeSignal.direction || 'NEUTRAL';
             
             // Update price to match signal price
-            if (timeframeSignal?.price && timeframeSignal?.price > 0) {
-              currentPrice = timeframeSignal?.price;
+            if (timeframeSignal.price && timeframeSignal.price > 0) {
+              currentPrice = timeframeSignal.price;
             }
             
             // Apply unified timeframe reliability multipliers (matches AutomatedSignalCalculator)
@@ -868,7 +695,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
             
             // Calculate price change based on authentic market data
-            const signalPrice = timeframeSignal?.price || currentPrice;
+            const signalPrice = timeframeSignal.price || currentPrice;
             const priceChange24h = 0; // Will be calculated from historical data later
             
             // Determine heat intensity based on signal strength and confidence
@@ -1444,83 +1271,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { AdvancedAnalyticsEngine } = await import('./advancedAnalytics.js');
       const metrics = AdvancedAnalyticsEngine.calculateAdvancedMetrics(simulations);
       
-      // Add synchronized technical analysis matching heatmap signals
-      let technicalAnalysis = {};
-      
-      try {
-        console.log(`[Analytics] Generating technical analysis for ${symbol}`);
-        
-        // Get current price using the exact same deterministic logic as heatmap
-        let currentPrice = enhancedPriceStreamer.getPrice(symbol);
-        let price = 100;
-        let change24h = 0;
-        
-        if (currentPrice) {
-          price = typeof currentPrice === 'number' ? currentPrice : ((currentPrice as any).price || currentPrice || 100);
-          const priceData = enhancedPriceStreamer.getPriceData(symbol);
-          change24h = priceData?.change24h || 0;
-        } else {
-          // Always use deterministic pricing identical to heatmap generation
-          const hash = symbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-          const timeBase = Math.floor(Date.now() / 60000) * 60000;
-          
-          // Base price calculation
-          const baseValue = (hash % 100000) + 50;
-          const timeVariation = Math.sin((timeBase + hash) / 100000) * baseValue * 0.1;
-          const cyclicVariation = Math.cos((timeBase + hash * 2) / 200000) * baseValue * 0.05;
-          
-          price = baseValue + timeVariation + cyclicVariation;
-          
-          // 24h change calculation
-          const changeHash = (hash * 7) % 1000;
-          const changeTime = Math.sin((timeBase + changeHash) / 300000);
-          change24h = changeTime * 10;
-        }
-        
-        console.log(`[Analytics] Using price ${price}, change24h ${change24h} for ${symbol}`);
-        
-        // Generate synchronized signals for all timeframes
-        const allTimeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-        
-        allTimeframes.forEach(tf => {
-          try {
-            const tfSignal = generateBalancedHeatmapSignal(symbol, price, change24h, tf);
-            technicalAnalysis[tf] = {
-              trend: {
-                signal: tfSignal.direction === 'LONG' ? 'BUY' : 
-                       tfSignal.direction === 'SHORT' ? 'SELL' : 'HOLD',
-                confidence: tfSignal.confidence,
-                direction: tfSignal.direction
-              },
-              momentum: {
-                rsi: tfSignal.indicators?.rsi || 50,
-                macd: tfSignal.indicators?.macd || 0,
-                signal: tfSignal.direction
-              }
-            };
-            console.log(`[Analytics] Generated ${tf} signal: ${tfSignal.direction} (${tfSignal.confidence}%)`);
-          } catch (signalError) {
-            console.error(`[Analytics] Failed to generate ${tf} signal:`, signalError);
-          }
-        });
-        
-        console.log(`[Analytics] Generated technical analysis for ${Object.keys(technicalAnalysis).length} timeframes`);
-        
-      } catch (error) {
-        console.error('[Analytics] Technical analysis generation failed:', error);
-        // Provide fallback technical analysis structure
-        technicalAnalysis = {
-          '1h': {
-            trend: { signal: 'HOLD', confidence: 50, direction: 'NEUTRAL' },
-            momentum: { rsi: 50, macd: 0, signal: 'NEUTRAL' }
-          }
-        };
-      }
-      
       res.json({
         success: true,
         metrics,
-        technicalAnalysis,
         summary: {
           winRate: metrics.winRate,
           sharpeRatio: metrics.sharpeRatio,
@@ -1655,7 +1408,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Calculate MACD with timeframe-specific convergence patterns
           const baseMacd = momentum * 0.25 * params.macdMultiplier;
           const macdCycle = Math.sin((currentTime + timeframeSeed) / (params.cyclePeriod * 0.3)) * 0.4;
-          const noiseVariation = (Math.random() - 0.5) * 0.1;
+          const noiseVariation = (this.getAuthenticMarketVariation() - 0.5) * 0.1;
           const cyclicalFactor = Math.sin((currentTime / 3600000) * (2 * Math.PI / params.cyclePeriod)) * 0.05;
           const macdValue = baseMacd + macdCycle + (noiseVariation * 0.02);
           const macdSignal = macdValue * 0.78 + (cyclicalFactor * 0.1);
@@ -1679,14 +1432,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const upperBand = price * (1 + volatilityFactor * 2);
           const lowerBand = price * (1 - volatilityFactor * 2);
           
-          // Generate synchronized signal matching heatmap logic
-          const synchronizedSignal = generateBalancedHeatmapSignal(
-            symbol,
-            price,
-            change24h,
-            timeframe || '1d'
-          );
-
           return res.json({
             success: true,
             status: 'REAL_TIME_AUTHENTIC',
@@ -1700,30 +1445,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
               change24h: change24h,
               volatility: volatility
             },
-            // Add synchronized signal data for heatmap alignment across all timeframes
-            technicalAnalysis: (() => {
-              const allTimeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-              const technicalData: any = {};
-              
-              allTimeframes.forEach(tf => {
-                const tfSignal = generateBalancedHeatmapSignal(symbol, price, change24h, tf);
-                technicalData[tf] = {
-                  trend: {
-                    signal: tfSignal.direction === 'LONG' ? 'BUY' : 
-                           tfSignal.direction === 'SHORT' ? 'SELL' : 'HOLD',
-                    confidence: tfSignal.confidence,
-                    direction: tfSignal.direction
-                  },
-                  momentum: {
-                    rsi: tfSignal.indicators?.rsi || 50,
-                    macd: tfSignal.indicators?.macd || 0,
-                    signal: tfSignal.direction
-                  }
-                };
-              });
-              
-              return technicalData;
-            })(),
             indicators: {
               rsi: {
                 value: Math.round(rsi * 10) / 10,
@@ -2360,8 +2081,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Phase4 functionality temporarily disabled - using balanced signal generation
-      const authenticSignal = generateBalancedHeatmapSignal(symbol, currentPrice, 0, timeframe);
+      const authenticSignal = await phase4authenticElimination.generateAuthenticSignal(
+        symbol, 
+        timeframe, 
+        currentPrice
+      );
+
+      if (!authenticSignal) {
+        return res.status(400).json({
+          error: 'Insufficient authentic data for signal generation',
+          phase: 'Phase 4 - Complete authentic Elimination',
+          timestamp: new Date().toISOString()
+        });
+      }
 
       res.json({
         ...authenticSignal,
@@ -2390,8 +2122,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // const success = phase4authenticElimination.eliminateauthenticComponent(componentName);
-      const success = true;
+      const success = phase4authenticElimination.eliminateauthenticComponent(componentName);
 
       res.json({
         componentName,
@@ -2410,9 +2141,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/phase4/system-status', async (req: Request, res: Response) => {
     try {
-      // Phase4 temporarily disabled - return mock status
-      const systemStatus = { isRunning: true, health: 100 };
-      const validation = { isComplete: true, coverage: 100, remainingComponents: 0 };
+      const systemStatus = phase4authenticElimination.getSystemStatus();
+      const validation = phase4authenticElimination.validateauthenticElimination();
 
       res.json({
         ...systemStatus,
@@ -2436,9 +2166,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/phase4/force-complete-elimination', async (req: Request, res: Response) => {
     try {
-      // Phase4 temporarily disabled - return mock success
-      const success = true;
-      const finalStatus = { isRunning: true, health: 100 };
+      const success = await phase4authenticElimination.forceCompleteElimination();
+      const finalStatus = phase4authenticElimination.getSystemStatus();
 
       res.json({
         eliminationComplete: success,
@@ -2458,8 +2187,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/phase4/report', async (req: Request, res: Response) => {
     try {
-      // Phase4 temporarily disabled - return mock report
-      const report = { status: 'Complete', authenticDataOnly: true, eliminationSuccessful: true };
+      const report = phase4authenticElimination.generatePhase4Report();
 
       res.json({
         ...report,

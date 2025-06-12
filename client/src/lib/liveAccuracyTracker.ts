@@ -57,14 +57,16 @@ class LiveAccuracyTracker {
   };
 
   constructor() {
-    this.startMonitoring();}
+    this.startMonitoring();
+    console.log('🎯 Live Accuracy Tracker initialized - tracking real market outcomes');
+  }
 
   /**
    * Record a new prediction for accuracy tracking
    */
   async recordPrediction(signal: AdvancedSignal, currentPrice: number): Promise<void> {
     try {
-      const predictionId = `${signal.symbol}_${signal.timeframe}_${Date.now()`}`;
+      const predictionId = `${signal.symbol}_${signal.timeframe}_${Date.now()}`;
       
       // Create trade simulation in backend
       const tradeData: InsertTradeSimulation = {
@@ -95,12 +97,17 @@ class LiveAccuracyTracker {
         actualOutcome: 'PENDING',
       };
 
-      this.activePredictions.set(predictionId, prediction);}, Take Profit: ${tradeData.takeProfit.toFixed(2)}`);
+      this.activePredictions.set(predictionId, prediction);
+      
+      console.log(`📈 Prediction recorded: ${signal.symbol} ${signal.timeframe} ${signal.direction} @ ${currentPrice}`);
+      console.log(`🎯 Stop Loss: ${tradeData.stopLoss.toFixed(2)}, Take Profit: ${tradeData.takeProfit.toFixed(2)}`);
       
       // Set up automatic closure based on timeframe duration
       this.scheduleAutomaticClosure(predictionId, signal.timeframe);
       
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error recording prediction:', error);
+    }
   }
 
   /**
@@ -175,11 +182,14 @@ class LiveAccuracyTracker {
       );
 
       if (activeTrade) {
-        await apiRequest(`/api/trade-simulations/${activeTrade.id}/clos`e`, { 
+        await apiRequest(`/api/trade-simulations/${activeTrade.id}/close`, { 
           exitPrice, 
           exitReason 
         });
-      }}%`);
+      }
+
+      console.log(`📊 Prediction closed: ${prediction.symbol} ${prediction.timeframe} ${outcome}`);
+      console.log(`🎯 Entry: ${prediction.entryPrice}, Exit: ${exitPrice}, Accuracy: ${accuracyScore.toFixed(2)}%`);
       
       // Remove from active tracking
       this.activePredictions.delete(predictionId);
@@ -242,9 +252,13 @@ class LiveAccuracyTracker {
    */
   private async updateAccuracyMetrics(symbol: string, timeframe: string): Promise<void> {
     try {
-      await apiRequest(`/api/accuracy/${symbol}/${timeframe}/calculat`e`, {
+      await apiRequest(`/api/accuracy/${symbol}/${timeframe}/calculate`, {
         method: 'POST',
-      });} catch (error) {}
+      });
+      console.log(`📈 Accuracy metrics updated for ${symbol} ${timeframe}`);
+    } catch (error) {
+      console.error('Error updating accuracy metrics:', error);
+    }
   }
 
   /**
@@ -253,7 +267,10 @@ class LiveAccuracyTracker {
   async getAccuracyStats(symbol: string, timeframe?: string): Promise<AccuracyMetrics[]> {
     try {
       const params = timeframe ? `?timeframe=${timeframe}` : '';
-      return await apiRequest(} catch (error) {return [];
+      return await apiRequest(`/api/accuracy/${symbol}${params}`);
+    } catch (error) {
+      console.error('Error fetching accuracy stats:', error);
+      return [];
     }
   }
 

@@ -44,10 +44,13 @@ export async function fetchJson(url: string, options?: RequestInit): Promise<any
     });
     
     if (!response.ok) {
-      throw new Error(}
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     
     return await response.json();
-  } catch (error) {throw error;
+  } catch (error) {
+    console.error(`Error fetching ${url}:`, error);
+    throw error;
   }
 }
 
@@ -70,7 +73,11 @@ const lastPrices: Record<string, number> = {};
 const lastChangePercentages: Record<string, number> = {};
 
 // Connect to simulated WebSocket
-export function connectWebSocket(symbols: string[] = []) {setTimeout(() => {if (symbols.length > 0) {
+export function connectWebSocket(symbols: string[] = []) {
+  console.log('Establishing data connection...');
+  setTimeout(() => {
+    console.log('Data connection established');
+    if (symbols.length > 0) {
       subscribeToSymbols(symbols);
     }
     if (messageHandlers['connectionStatus']) {
@@ -88,7 +95,8 @@ export function subscribeToSymbols(symbols: string[]) {
     if (!subscribedSymbols.includes(symbol)) {
       subscribedSymbols.push(symbol);
     }
-  });}`);
+  });
+  console.log(`Subscribed to symbols: ${subscribedSymbols.join(', ')}`);
   if (messageHandlers['subscriptionUpdate']) {
     messageHandlers['subscriptionUpdate'].forEach(handler => 
       handler({ symbols: subscribedSymbols })
@@ -110,12 +118,13 @@ export function registerMessageHandler(type: string, handler: (data: any) => voi
 // Fetch all assets
 export async function fetchAllAssets(): Promise<AssetPrice[]> {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/crypt`o`);
+    const response = await fetch(`${API_BASE_URL}/api/crypto`);
     if (!response.ok) {
       throw new Error('Failed to fetch assets from server');
     }
     return await response.json();
   } catch (error) {
+    console.error('Error fetching assets:', error);
     throw new Error('Failed to fetch authentic market data - requires valid API connection');
   }
 }
@@ -125,12 +134,16 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
   try {
     // Replace any forward slashes in the symbol with an encoded format for the API endpoint
     const encodedSymbol = symbol.replace('/', '%2F');
-    const response = await fetch(`${API_BASE_URL}/api/crypto/${encodedSymbol`}`);
+    console.log(`Fetching data for symbol: ${symbol}, encoded as: ${encodedSymbol}`);
+    
+    const response = await fetch(`${API_BASE_URL}/api/crypto/${encodedSymbol}`);
     if (!response.ok) {
-      throw new Error(`Failed to fetch ${symbol} data from serve`r`);
+      throw new Error(`Failed to fetch ${symbol} data from server`);
     }
     return await response.json();
-  } catch (error) {throw new Error(`Failed to fetch authentic data for ${symbol} - requires valid API connectio`n`);
+  } catch (error) {
+    console.error(`Error fetching ${symbol} data:`, error);
+    throw new Error(`Failed to fetch authentic data for ${symbol} - requires valid API connection`);
   }
 }
 
@@ -173,7 +186,8 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
                          lastFetchTime && 
                          (now - lastFetchTime < CACHE_EXPIRATION[timeframe]);
     
-    if (isCacheValid) {`);
+    if (isCacheValid) {
+      console.log(`Loading chart with ${cachedData.length} data points for ${symbol} (${timeframe})`);
       return [...cachedData];
     }
     
@@ -181,9 +195,10 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     pendingRequests[symbol][timeframe] = (async () => {
       // Fetch authentic chart data from API endpoint
       const encodedSymbol = symbol.replace('/', '%2F');
-      const response = await fetch(`${API_BASE_URL}/api/chart/${encodedSymbol}/${timeframe`}`);
+      const response = await fetch(`${API_BASE_URL}/api/chart/${encodedSymbol}/${timeframe}`);
       if (!response.ok) {
-        throw new Error(}
+        throw new Error(`Failed to fetch chart data for ${symbol} ${timeframe}`);
+      }
       const data = await response.json();
       
       // Update the cache
@@ -199,7 +214,9 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
       if (!currentSymbols.includes(symbol)) {
         currentSymbols.push(symbol);
         subscribeToSymbols(currentSymbols);
-      }`);
+      }
+      
+      console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
       return [...data];
     })();
     
@@ -210,7 +227,10 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     delete pendingRequests[symbol][timeframe];
     
     return result;
-  } catch (error) {// Clear pending request on error
+  } catch (error) {
+    console.error(`Error fetching ${symbol} data:`, error);
+    
+    // Clear pending request on error
     if (pendingRequests[symbol]) {
       delete pendingRequests[symbol][timeframe];
       
@@ -243,7 +263,7 @@ export function startRealTimeUpdates() {
           lastCandle.high = Math.max(lastCandle.high, data.price);
           lastCandle.low = Math.min(lastCandle.low, data.price);
           
-          const listenerKey = `${data.symbol}_${timeframe`}`;
+          const listenerKey = `${data.symbol}_${timeframe}`;
           if (chartUpdateListeners[listenerKey]) {
             chartUpdateListeners[listenerKey].forEach(listener => listener());
           }
@@ -265,7 +285,7 @@ export function getCurrentPrice(symbol: string): number {
 
 // Add chart update listener
 export function addChartUpdateListener(symbol: string, timeframe: TimeFrame, callback: () => void) {
-  const key = `${symbol}_${timeframe`}`;
+  const key = `${symbol}_${timeframe}`;
   if (!chartUpdateListeners[key]) {
     chartUpdateListeners[key] = [];
   }
@@ -284,8 +304,8 @@ export function registerChartUpdateListener(symbol: string, timeframe: TimeFrame
 // Fetch alerts
 export async function fetchAlerts(userId?: number): Promise<Alert[]> {
   const url = userId 
-    ? `${API_BASE_URL}/api/alerts?userId=${userId`}`
-    : `${API_BASE_URL}/api/alert`s`;
+    ? `${API_BASE_URL}/api/alerts?userId=${userId}`
+    : `${API_BASE_URL}/api/alerts`;
     
   const response = await fetch(url);
   if (!response.ok) {
@@ -295,7 +315,7 @@ export async function fetchAlerts(userId?: number): Promise<Alert[]> {
 }
 
 export async function createAlert(alert: Omit<Alert, 'id' | 'isTriggered'>): Promise<Alert> {
-  const response = await fetch(`${API_BASE_URL}/api/alert`s`, {
+  const response = await fetch(`${API_BASE_URL}/api/alerts`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -310,7 +330,7 @@ export async function createAlert(alert: Omit<Alert, 'id' | 'isTriggered'>): Pro
 }
 
 export async function updateAlert(id: number, alert: Partial<Alert>): Promise<Alert> {
-  const response = await fetch(`${API_BASE_URL}/api/alerts/${id`}`, {
+  const response = await fetch(`${API_BASE_URL}/api/alerts/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -325,7 +345,7 @@ export async function updateAlert(id: number, alert: Partial<Alert>): Promise<Al
 }
 
 export async function deleteAlert(id: number): Promise<void> {
-  const response = await fetch(`${API_BASE_URL}/api/alerts/${id`}`, {
+  const response = await fetch(`${API_BASE_URL}/api/alerts/${id}`, {
     method: 'DELETE'
   });
   
@@ -336,7 +356,7 @@ export async function deleteAlert(id: number): Promise<void> {
 
 // Leverage calculator API call
 export async function calculateLeverage(params: LeverageParams): Promise<LeverageResult> {
-  const response = await fetch(`${API_BASE_URL}/api/calculate-leverag`e`, {
+  const response = await fetch(`${API_BASE_URL}/api/calculate-leverage`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

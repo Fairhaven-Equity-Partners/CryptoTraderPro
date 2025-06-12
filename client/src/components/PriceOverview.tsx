@@ -33,7 +33,10 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
   
   // Update price state when centralized price changes
   useEffect(() => {
-    if (centralizedPrice && centralizedPrice > 0) {setPriceState(prev => {
+    if (centralizedPrice && centralizedPrice > 0) {
+      console.log(`[PriceOverview] Centralized price update for ${symbol}: $${centralizedPrice}`);
+      
+      setPriceState(prev => {
         const hasChanged = prev.price !== centralizedPrice && prev.price > 0;
         return {
           previousPrice: prev.price,

@@ -18,7 +18,7 @@ function ConfidenceIndicator({ value }: { value: number }) {
   
   return (
     <div className="w-12 h-1.5 bg-gray-700 rounded-full overflow-hidden">
-      <div className={`h-full ${getColor(value)}`} style={{ width: `${value}`%` }}></div>
+      <div className={`h-full ${getColor(value)}`} style={{ width: `${value}%` }}></div>
     </div>
   );
 }
@@ -80,7 +80,7 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                     ? 'bg-danger' 
                     : 'bg-neutral'
               }`} 
-              style={{ width: `${dominantStrength}`%` }}
+              style={{ width: `${dominantStrength}%` }}
             ></div>
           </div>
         </div>
@@ -116,7 +116,7 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                           ? 'bg-danger' 
                           : 'bg-neutral'
                     }`}
-                    title={`${tf.timeframe}: ${tf.signal`}`}
+                    title={`${tf.timeframe}: ${tf.signal}`}
                   ></div>
                 ))}
               </div>
@@ -133,7 +133,7 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                           ? 'bg-danger' 
                           : 'bg-neutral'
                     }`}
-                    title={`${tf.timeframe}: ${tf.signal`}`}
+                    title={`${tf.timeframe}: ${tf.signal}`}
                   ></div>
                 ))}
               </div>
@@ -150,7 +150,7 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                           ? 'bg-danger' 
                           : 'bg-neutral'
                     }`}
-                    title={`${tf.timeframe}: ${tf.signal`}`}
+                    title={`${tf.timeframe}: ${tf.signal}`}
                   ></div>
                 ))}
               </div>
@@ -194,7 +194,7 @@ const TimeframeAnalysis: React.FC<TimeframeAnalysisProps> = ({ symbol }) => {
                                 ? 'bg-danger' 
                                 : 'bg-neutral'
                           }`} 
-                          style={{ width: `${tf.strength}`%` }}
+                          style={{ width: `${tf.strength}%` }}
                         ></div>
                       </div>
                     </div>

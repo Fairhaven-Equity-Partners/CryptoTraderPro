@@ -73,7 +73,8 @@ export function setPrice(symbol: string, price: number): void {
         timestamp: Date.now()
       }
     });
-    window.dispatchEvent(updateEvent);}`);
+    window.dispatchEvent(updateEvent);
+    console.log(`Price update for ${symbol}: ${price.toFixed(2)}`);
   }
 }
 
@@ -97,7 +98,8 @@ export function syncPrice(symbol: string, newPrice?: number): number {
   
   // STOP CASCADE: If we updated recently (<10 seconds ago), do nothing
   // This is a critical fix to prevent the cascading updates
-  if (timeSinceLastUpdate < 10000) {`);
+  if (timeSinceLastUpdate < 10000) {
+    console.log(`🛑 Price update for ${symbol} throttled (last update ${timeSinceLastUpdate}ms ago)`);
     return currentPrice;
   }
   
@@ -118,7 +120,11 @@ export function syncPrice(symbol: string, newPrice?: number): number {
     window.latestPrices[symbol] = newPrice;
     if (symbol === 'BTC/USDT') {
       window.currentPrice = newPrice;
-    }// Broadcast a SINGLE event for price-aware components
+    }
+    
+    console.log(`✅ Price updated for ${symbol}: ${newPrice}`);
+    
+    // Broadcast a SINGLE event for price-aware components
     const updateEvent = new CustomEvent('price-update', {
       detail: { 
         symbol, 
@@ -159,7 +165,13 @@ function updatePriceDisplays(symbol: string, price: number): void {
   const liveEvent = new CustomEvent('live-price-update', {
     detail: { symbol, price, timestamp: Date.now() }
   });
-  window.dispatchEvent(liveEvent);// 3. Trigger immediate calculation// 4. Update global variables for backward compatibility
+  window.dispatchEvent(liveEvent);
+  console.log(`🚀 LIVE PRICE EVENT RECEIVED: ${symbol} price=${price}`);
+  
+  // 3. Trigger immediate calculation
+  console.log(`💯 IMMEDIATE CALCULATION TRIGGERED for ${symbol} with price ${price}`);
+  
+  // 4. Update global variables for backward compatibility
   window.currentPrice = price;
   window.latestPrices = window.latestPrices || {};
   window.latestPrices[symbol] = price;

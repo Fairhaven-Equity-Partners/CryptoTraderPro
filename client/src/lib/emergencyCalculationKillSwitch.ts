@@ -17,19 +17,26 @@ export function isCalculationAllowed(trigger: string): boolean {
   
   // Always allow manual calculations and pair selections
   if (trigger === 'manual' || trigger === 'pair-selection' || trigger === 'heatmap-selection' || trigger === 'dropdown-selection') {
-    lastAllowedCalculation = now;return true;
+    lastAllowedCalculation = now;
+    console.log(`✅ ${trigger} calculation allowed - bypassing 4-minute restriction`);
+    return true;
   }
   
   // Block all automatic calculations if less than 4 minutes
   if (timeSinceLastCalc < MIN_CALCULATION_INTERVAL) {
-    const remaining = Math.round((MIN_CALCULATION_INTERVAL - timeSinceLastCalc) / 1000);return false;
+    const remaining = Math.round((MIN_CALCULATION_INTERVAL - timeSinceLastCalc) / 1000);
+    console.log(`🛑 Calculation blocked: ${remaining}s until next 4-minute interval`);
+    return false;
   }
   
   // Allow 4-minute synchronized calculations with multiple valid triggers
   if (trigger === '4-minute-sync' || trigger === 'automated-system' || trigger === 'timer-trigger' || trigger === 'scheduled' || trigger === 'unknown' || trigger === 'initial' || trigger === 'data-loaded') {
-    lastAllowedCalculation = now;`);
+    lastAllowedCalculation = now;
+    console.log(`✅ 4-minute calculation allowed (trigger: ${trigger})`);
     return true;
-  }`);
+  }
+  
+  console.log(`🛑 Calculation blocked: ${trigger} not allowed (only manual and 4-minute intervals permitted)`);
   return false;
 }
 
@@ -37,13 +44,17 @@ export function isCalculationAllowed(trigger: string): boolean {
  * Force allow manual calculation
  */
 export function allowManualCalculation(): void {
-  lastAllowedCalculation = Date.now();}
+  lastAllowedCalculation = Date.now();
+  console.log('🔓 Manual calculation override activated');
+}
 
 /**
  * Reset calculation timer (for testing)
  */
 export function resetCalculationTimer(): void {
-  lastAllowedCalculation = 0;}
+  lastAllowedCalculation = 0;
+  console.log('🔄 Calculation timer reset');
+}
 
 /**
  * Get time until next allowed calculation

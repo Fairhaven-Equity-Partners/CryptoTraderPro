@@ -33,7 +33,9 @@ class LiveForexTradeGenerator {
         return this.currentEurUsdPrice;
       }
       return 1.1400;
-    } catch (error) {return 1.1400;
+    } catch (error) {
+      console.error('Error fetching EUR/USD price:', error);
+      return 1.1400;
     }
   }
   
@@ -51,7 +53,7 @@ class LiveForexTradeGenerator {
       const riskReward = this.calculateRiskReward(signal.entryPrice, signal.stopLoss, signal.takeProfit);
       
       const trade: LiveForexTrade = {
-        id: `EUR_USD_${signal.timeframe}_${Date.now()}_${index`}`,
+        id: `EUR_USD_${signal.timeframe}_${Date.now()}_${index}`,
         pair: 'EUR/USD',
         timeframe: signal.timeframe,
         direction: signal.direction,
@@ -111,7 +113,7 @@ class LiveForexTradeGenerator {
   }
   
   private generateDetailedReasoning(signal: any): string {
-    let reasoning = `${signal.timeframe} Analysis:` `;
+    let reasoning = `${signal.timeframe} Analysis: `;
     
     // VWAP reasoning
     if (signal.vwapAnalysis.position === 'above') {
@@ -129,7 +131,7 @@ class LiveForexTradeGenerator {
     
     // Price action
     if (signal.priceAction.pattern !== 'Neutral') {
-      reasoning += `${signal.priceAction.pattern} formation provides directional bias.` `;
+      reasoning += `${signal.priceAction.pattern} formation provides directional bias. `;
     }
     
     // Fibonacci analysis
@@ -137,7 +139,7 @@ class LiveForexTradeGenerator {
       Math.abs(signal.entryPrice - fib.price) < 0.002
     );
     if (nearFibLevel) {
-      reasoning += `Price near key Fibonacci ${(nearFibLevel.level * 100).toFixed(1)}% level provides confluence.` `;
+      reasoning += `Price near key Fibonacci ${(nearFibLevel.level * 100).toFixed(1)}% level provides confluence. `;
     }
     
     return reasoning.trim();

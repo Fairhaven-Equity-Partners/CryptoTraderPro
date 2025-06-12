@@ -532,7 +532,7 @@ function detectTrianglePatterns(data: ChartData[]): PatternResult[] {
           stopLoss: direction === 'bullish' ? 
             findSupportLevel(section, troughs) : 
             findResistanceLevel(section, peaks),
-          description: `${direction === 'bullish' ? 'Bullish' : 'Bearish'} continuation pattern with converging trendline`s`
+          description: `${direction === 'bullish' ? 'Bullish' : 'Bearish'} continuation pattern with converging trendlines`
         });
       }
     }

@@ -24,9 +24,11 @@ export function stabilizeSignals(newSignal: any, previousSignal: any): any {
   if (previousSignal.direction !== newSignal.direction) {
     // Only switch if the new signal has much higher confidence
     if (newSignal.confidence > previousSignal.confidence + 15) {
-      // Allow the switch to the new direction`);
+      // Allow the switch to the new direction
+      console.log(`Signal direction changed from ${previousSignal.direction} to ${newSignal.direction} (confident switch)`);
     } else {
-      // Keep the previous direction but with slightly reduced confidence`);
+      // Keep the previous direction but with slightly reduced confidence
+      console.log(`Maintaining previous direction ${previousSignal.direction} (new direction ${newSignal.direction} not confident enough)`);
       newSignal = {
         ...newSignal,
         direction: previousSignal.direction,

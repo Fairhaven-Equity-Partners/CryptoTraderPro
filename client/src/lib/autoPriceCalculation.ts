@@ -18,7 +18,11 @@ const MIN_CALCULATION_INTERVAL = 5000; // 5 seconds minimum between calculations
 export function initAutoCalculation() {
   if (isInitialized) {
     return;
-  }// NO LONGER LISTENING TO PRICE EVENTS TO PREVENT DUPLICATE CALCULATION TRIGGERS
+  }
+  
+  console.log('✅ Auto-calculation system is now DISABLED - using AdvancedSignalDashboard throttling only');
+  
+  // NO LONGER LISTENING TO PRICE EVENTS TO PREVENT DUPLICATE CALCULATION TRIGGERS
   // window.addEventListener('price-update', handlePriceUpdate);
   // window.addEventListener('live-price-update', handlePriceUpdate);
   
@@ -53,14 +57,18 @@ function handlePriceUpdate(event: any) {
   // IMPORTANT: This function is now DISABLED to prevent conflicts with 
   // the throttling in AdvancedSignalDashboard
   
-  // Just log that we received the price but won't do anything, but not triggering calculation - throttling in dashboard`);
+  // Just log that we received the price but won't do anything
+  console.log(`🔄 Price update detected for ${symbol} (${price}), but not triggering calculation - throttling in dashboard`);
   
   /* DISABLED to prevent conflicts with dashboard throttling
   // Determine if we should calculate now
   const now = Date.now();
   const lastCalc = lastCalculationTime[symbol] || 0;
   
-  if (now - lastCalc > MIN_CALCULATION_INTERVAL) {// Trigger a calculation-needed event that the dashboard can listen for
+  if (now - lastCalc > MIN_CALCULATION_INTERVAL) {
+    console.log(`🔄 Price update detected, triggering automatic calculation for ${symbol} at price ${price}`);
+    
+    // Trigger a calculation-needed event that the dashboard can listen for
     const calcEvent = new CustomEvent('calculation-needed', {
       detail: {
         symbol,
@@ -89,7 +97,10 @@ export function isAutoCalculationEnabled(): boolean {
 /**
  * Manually trigger a calculation for a symbol
  */
-export function triggerCalculation(symbol: string, price: number) {const calcEvent = new CustomEvent('calculation-needed', {
+export function triggerCalculation(symbol: string, price: number) {
+  console.log(`Manual calculation triggered for ${symbol} at price ${price}`);
+  
+  const calcEvent = new CustomEvent('calculation-needed', {
     detail: {
       symbol,
       price,

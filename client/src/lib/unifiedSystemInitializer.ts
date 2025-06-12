@@ -27,10 +27,14 @@ const systemStatus: SystemStatus = {
  * Initialize all systems once and only once
  */
 export async function initializeUnifiedSystem(): Promise<void> {
-  if (isInitialized) {return;
+  if (isInitialized) {
+    console.log('[UnifiedSystem] Already initialized, skipping');
+    return;
   }
 
-  if (initializationPromise) {return initializationPromise;
+  if (initializationPromise) {
+    console.log('[UnifiedSystem] Initialization in progress, waiting...');
+    return initializationPromise;
   }
 
   initializationPromise = performInitialization();
@@ -38,7 +42,10 @@ export async function initializeUnifiedSystem(): Promise<void> {
 }
 
 async function performInitialization(): Promise<void> {
-  try {// Initialize technical indicators (once)
+  try {
+    console.log('[UnifiedSystem] Starting comprehensive system initialization');
+
+    // Initialize technical indicators (once)
     if (!systemStatus.technicalIndicators) {
       const { initTechnicalIndicatorsModule } = await import('./technicalIndicators');
       initTechnicalIndicatorsModule();
@@ -79,12 +86,19 @@ async function performInitialization(): Promise<void> {
         const now = timestamp || Date.now();
         window.latestPriceEvents![symbol] = { price, timestamp: now };
         // Reduced logging frequency to prevent spam
-        if (0.724 < 0.1) { // Only log 10% of price updates}
+        if (0.724 < 0.1) { // Only log 10% of price updates
+          console.log(`[PriceSync] ${symbol}: $${price}`);
+        }
         return price;
       };
     }
 
-    isInitialized = true;} catch (error) {throw error;
+    isInitialized = true;
+    console.log('[UnifiedSystem] All subsystems initialized successfully');
+    
+  } catch (error) {
+    console.error('[UnifiedSystem] Initialization failed:', error);
+    throw error;
   }
 }
 

@@ -27,10 +27,15 @@ const componentStatus: SystemComponents = {
  * This is the ONLY function that should be called to start the system
  */
 export async function initializeMasterSystem(): Promise<void> {
-  if (isSystemActive) {return;
+  if (isSystemActive) {
+    console.log('[MasterController] System already active, skipping initialization');
+    return;
   }
 
-  try {// Initialize core components exactly once
+  try {
+    console.log('[MasterController] Starting unified system initialization');
+
+    // Initialize core components exactly once
     await initializeComponents();
 
     // Disabled timer - using UltimateManager timer only
@@ -39,7 +44,12 @@ export async function initializeMasterSystem(): Promise<void> {
     // Setup global price sync function
     setupGlobalPriceSync();
 
-    isSystemActive = true;} catch (error) {throw error;
+    isSystemActive = true;
+    console.log('[MasterController] System initialization complete - using UltimateManager timer');
+
+  } catch (error) {
+    console.error('[MasterController] Initialization failed:', error);
+    throw error;
   }
 }
 
@@ -80,10 +90,14 @@ function startMasterTimer(): void {
     countdownSeconds -= 1;
 
     // Log countdown every 10 seconds to reduce spam
-    if (countdownSeconds % 10 === 0) {}
+    if (countdownSeconds % 10 === 0) {
+      console.log(`[MasterController] Next fetch in ${countdownSeconds}s`);
+    }
 
     // When timer reaches zero, trigger price fetch and reset
-    if (countdownSeconds <= 0) {triggerPriceFetch();
+    if (countdownSeconds <= 0) {
+      console.log('[MasterController] 4-minute interval reached - triggering price update');
+      triggerPriceFetch();
       countdownSeconds = 240; // Reset to exactly 4 minutes
     }
   }, 1000);
@@ -97,12 +111,17 @@ async function triggerPriceFetch(): Promise<void> {
     // Fetch price for BTC/USDT as the primary symbol
     const response = await fetch('/api/crypto/BTC/USDT');
     if (response.ok) {
-      const data = await response.json();// Update global price events
+      const data = await response.json();
+      console.log(`[MasterController] Price updated: BTC/USDT = $${data.currentPrice}`);
+      
+      // Update global price events
       if (window.syncGlobalPrice) {
         window.syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
       }
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error('[MasterController] Error fetching price:', error);
+  }
 }
 
 /**
@@ -141,4 +160,6 @@ export function cleanupMasterSystem(): void {
   isSystemActive = false;
   Object.keys(componentStatus).forEach(key => {
     componentStatus[key as keyof SystemComponents] = false;
-  });}
+  });
+  console.log('[MasterController] System cleaned up');
+}

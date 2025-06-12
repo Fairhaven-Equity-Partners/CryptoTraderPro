@@ -24,7 +24,7 @@ class OptimizedAccuracyTracker {
   private metrics: Map<string, AccuracyMetrics> = new Map();
 
   async recordPrediction(signal: any): Promise<void> {
-    const predictionId = `${signal.symbol}-${signal.timeframe}-${Date.now()`}`;
+    const predictionId = `${signal.symbol}-${signal.timeframe}-${Date.now()}`;
     
     const prediction: OptimizedPrediction = {
       id: predictionId,
@@ -52,16 +52,20 @@ class OptimizedAccuracyTracker {
         signalData: JSON.stringify(signal)
       };
 
-      await apiRequest('/api/trade-simulations', tradeData);} catch (error) {}
+      await apiRequest('/api/trade-simulations', tradeData);
+      console.log(`📈 Recorded prediction: ${signal.timeframe} ${signal.direction} @ ${signal.entryPrice}`);
+    } catch (error) {
+      console.log('Error recording prediction:', error);
+    }
   }
 
   async updateAccuracy(symbol: string, timeframe: string): Promise<void> {
     try {
-      const accuracyData = await apiRequest(`/api/accuracy/${symbol}?timeframe=${timeframe`}`);
+      const accuracyData = await apiRequest(`/api/accuracy/${symbol}?timeframe=${timeframe}`);
       
       if (accuracyData && accuracyData.length > 0) {
         const metric = accuracyData[0];
-        const key = `${symbol}-${timeframe`}`;
+        const key = `${symbol}-${timeframe}`;
         
         this.metrics.set(key, {
           totalPredictions: metric.totalTrades || 0,
@@ -70,11 +74,13 @@ class OptimizedAccuracyTracker {
           profitLoss: metric.totalProfit || 0
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log('Error in adaptive learning:', error);
+    }
   }
 
   getMetrics(symbol: string, timeframe: string): AccuracyMetrics | null {
-    const key = `${symbol}-${timeframe`}`;
+    const key = `${symbol}-${timeframe}`;
     return this.metrics.get(key) || null;
   }
 

@@ -24,7 +24,9 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
       setSignals(analysis);
       setTrades(liveTrades);
       setLastUpdate(new Date());
-    } catch (error) {} finally {
+    } catch (error) {
+      console.error('Error generating forex analysis:', error);
+    } finally {
       setIsLoading(false);
     }
   }, []);
@@ -83,7 +85,7 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
             size="sm"
             variant="outline"
           >
-            <RefreshCw className="w-4 h-4 mr-2 " />
+            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
         </div>
@@ -107,7 +109,7 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
                       <h4 className="font-semibold text-lg">{trade.timeframe} Trade</h4>
                       <div className="flex items-center gap-2 mt-1">
                         {getDirectionIcon(trade.direction)}
-                        <Badge className=" border">
+                        <Badge className={`${getDirectionColor(trade.direction)} border`}>
                           {trade.direction}
                         </Badge>
                         <Badge variant="outline" className={getConfidenceColor(trade.confidence)}>
@@ -198,7 +200,7 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
               {/* Confidence */}
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-500">Confidence</span>
-                <span className="text-sm font-bold text-blue-600">
+                <span className={`text-sm ${getConfidenceColor(signal.confidence)}`}>
                   {signal.confidence}%
                 </span>
               </div>
@@ -241,7 +243,9 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
                     <div key={i} className="flex justify-between">
                       <span>{(fib.level * 100).toFixed(1)}%</span>
                       <span className="font-semibold">{formatPrice(fib.price)}</span>
-                      <span className="px-1 rounded text-xs ">
+                      <span className={`px-1 rounded text-xs ${
+                        fib.type === 'support' ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                      }`}>
                         {fib.type}
                       </span>
                     </div>

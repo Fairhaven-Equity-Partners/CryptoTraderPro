@@ -241,7 +241,7 @@ class RealTimeAccuracyDisplay {
                            trend.recentPerformance === 'average' ? 'text-yellow-400' : 'text-red-400';
 
     return {
-      accuracy: `${metric.accuracy.toFixed(1)}`%`,
+      accuracy: `${metric.accuracy.toFixed(1)}%`,
       predictions: metric.totalPredictions.toString(),
       profitLoss: `$${metric.profitLoss.toFixed(2)}`,
       trend: metric.trend,

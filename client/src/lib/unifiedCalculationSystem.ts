@@ -27,7 +27,7 @@ export class UnifiedCalculationSystem {
     timeframe: TimeFrame,
     currentPrice: number
   ): Promise<AdvancedSignal> {
-    const cacheKey = `${symbol}-${timeframe}-${Math.floor(currentPrice)`}`;
+    const cacheKey = `${symbol}-${timeframe}-${Math.floor(currentPrice)}`;
     
     if (this.calculationCache.has(cacheKey)) {
       return this.calculationCache.get(cacheKey)!;

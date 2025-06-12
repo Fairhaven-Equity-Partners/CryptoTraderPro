@@ -61,7 +61,7 @@ export class EnhancedCalculationEngine {
   private calculateRSI(data: ChartData[], period: number = 14): number {
     if (data.length < period + 1) return 50;
     
-    const cacheKey = `rsi_enhanced_${data.length}_${period`}`;
+    const cacheKey = `rsi_enhanced_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     let avgGain = 0;
@@ -100,7 +100,7 @@ export class EnhancedCalculationEngine {
     if (data.length < 1) return 0;
     if (data.length === 1) return data[0].close;
     
-    const cacheKey = `ema_enhanced_${data.length}_${period`}`;
+    const cacheKey = `ema_enhanced_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const multiplier = 2 / (period + 1);
@@ -124,7 +124,7 @@ export class EnhancedCalculationEngine {
   private calculateMACD(data: ChartData[], fast: number = 12, slow: number = 26, signal: number = 9) {
     if (data.length < slow + signal) return { value: 0, signal: 0, histogram: 0 };
     
-    const cacheKey = `macd_enhanced_${data.length}_${fast}_${slow}_${signal`}`;
+    const cacheKey = `macd_enhanced_${data.length}_${fast}_${slow}_${signal}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     // Calculate MACD line for each point
@@ -137,7 +137,7 @@ export class EnhancedCalculationEngine {
     }
 
     // Store MACD history for signal line calculation
-    const historyKey = `${fast}_${slow}_${data.length`}`;
+    const historyKey = `${fast}_${slow}_${data.length}`;
     this.macdHistoryCache.set(historyKey, macdLine);
 
     // Calculate signal line as EMA of MACD line
@@ -156,7 +156,7 @@ export class EnhancedCalculationEngine {
   private calculateADX(data: ChartData[], period: number = 14) {
     if (data.length < period * 2) return { value: 25, pdi: 25, ndi: 25 };
     
-    const cacheKey = `adx_enhanced_${data.length}_${period`}`;
+    const cacheKey = `adx_enhanced_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const trueRanges: number[] = [];
@@ -220,7 +220,7 @@ export class EnhancedCalculationEngine {
   private calculateStochastic(data: ChartData[], kPeriod: number = 14, dPeriod: number = 3) {
     if (data.length < kPeriod) return { k: 50, d: 50 };
     
-    const cacheKey = `stoch_enhanced_${data.length}_${kPeriod}_${dPeriod`}`;
+    const cacheKey = `stoch_enhanced_${data.length}_${kPeriod}_${dPeriod}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const kValues: number[] = [];
@@ -254,7 +254,7 @@ export class EnhancedCalculationEngine {
       return { upper: price * 1.02, middle: price, lower: price * 0.98, width: 0.04, percentB: 50 };
     }
 
-    const cacheKey = `bb_enhanced_${data.length}_${period}_${stdDev`}`;
+    const cacheKey = `bb_enhanced_${data.length}_${period}_${stdDev}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const recent = data.slice(-period);
@@ -282,7 +282,7 @@ export class EnhancedCalculationEngine {
   private calculateATR(data: ChartData[], period: number = 14): number {
     if (data.length < period + 1) return data[data.length - 1].close * 0.02;
     
-    const cacheKey = `atr_enhanced_${data.length}_${period`}`;
+    const cacheKey = `atr_enhanced_${data.length}_${period}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     const trueRanges: number[] = [];
@@ -319,7 +319,7 @@ export class EnhancedCalculationEngine {
 
   // Market regime detection for dynamic rule adjustment
   private detectMarketRegime(data: ChartData[], ema: any, adx: any, atr: number, currentPrice: number): MarketRegime {
-    const cacheKey = `regime_${data.length}_${currentPrice`}`;
+    const cacheKey = `regime_${data.length}_${currentPrice}`;
     if (this.cache.has(cacheKey)) return this.cache.get(cacheKey);
 
     // Trend detection using EMA alignment

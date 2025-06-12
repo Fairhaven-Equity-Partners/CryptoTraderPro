@@ -499,13 +499,13 @@ export function enhanceSignalWithAdvancedIndicators(
     
     // Generate insight message
     if (fibLevels.isSupport) {
-      fibMessage = `Price at key Fibonacci support (${fibLevels.nearestLevel.replace('level', '')}).` `;
+      fibMessage = `Price at key Fibonacci support (${fibLevels.nearestLevel.replace('level', '')}). `;
       confidenceAdjustment += direction === 'LONG' ? 15 : -5;
     } else if (fibLevels.isResistance) {
-      fibMessage = `Price at key Fibonacci resistance (${fibLevels.nearestLevel.replace('level', '')}).` `;
+      fibMessage = `Price at key Fibonacci resistance (${fibLevels.nearestLevel.replace('level', '')}). `;
       confidenceAdjustment += direction === 'SHORT' ? 15 : -5;
     } else {
-      fibMessage = `Price between Fibonacci levels, nearest is ${fibLevels.nearestLevel.replace('level', '')}.` `;
+      fibMessage = `Price between Fibonacci levels, nearest is ${fibLevels.nearestLevel.replace('level', '')}. `;
     }
   } else {
     // Downtrend - reverse the high and low for proper retracement
@@ -521,13 +521,13 @@ export function enhanceSignalWithAdvancedIndicators(
     
     // Generate insight message
     if (fibLevels.isSupport) {
-      fibMessage = `Price at key Fibonacci support (${fibLevels.nearestLevel.replace('level', '')}).` `;
+      fibMessage = `Price at key Fibonacci support (${fibLevels.nearestLevel.replace('level', '')}). `;
       confidenceAdjustment += direction === 'LONG' ? 15 : -5;
     } else if (fibLevels.isResistance) {
-      fibMessage = `Price at key Fibonacci resistance (${fibLevels.nearestLevel.replace('level', '')}).` `;
+      fibMessage = `Price at key Fibonacci resistance (${fibLevels.nearestLevel.replace('level', '')}). `;
       confidenceAdjustment += direction === 'SHORT' ? 15 : -5;
     } else {
-      fibMessage = `Price between Fibonacci levels, nearest is ${fibLevels.nearestLevel.replace('level', '')}.` `;
+      fibMessage = `Price between Fibonacci levels, nearest is ${fibLevels.nearestLevel.replace('level', '')}. `;
     }
   }
   
@@ -536,7 +536,7 @@ export function enhanceSignalWithAdvancedIndicators(
   // 3. Detect market structure breaks
   const msbResult = detectMarketStructureBreak(data);
   if (msbResult.isBullishMSB) {
-    result.additionalInsights.push(`Bullish market structure break detected (${msbResult.confidence}% confidence)`.`);
+    result.additionalInsights.push(`Bullish market structure break detected (${msbResult.confidence}% confidence).`);
     confidenceAdjustment += direction === 'LONG' ? 20 : -10;
     
     result.keyLevels.push({ 
@@ -545,7 +545,7 @@ export function enhanceSignalWithAdvancedIndicators(
       strength: 85
     });
   } else if (msbResult.isBearishMSB) {
-    result.additionalInsights.push(`Bearish market structure break detected (${msbResult.confidence}% confidence)`.`);
+    result.additionalInsights.push(`Bearish market structure break detected (${msbResult.confidence}% confidence).`);
     confidenceAdjustment += direction === 'SHORT' ? 20 : -10;
     
     result.keyLevels.push({ 
@@ -563,7 +563,7 @@ export function enhanceSignalWithAdvancedIndicators(
     const recentBearishFVG = fvgResults.bearish.sort((a, b) => b.index - a.index)[0];
     
     if (recentBullishFVG) {
-      result.additionalInsights.push(`Bullish fair value gap at ${recentBullishFVG.low.toFixed(2)}-${recentBullishFVG.high.toFixed(2)}`.`);
+      result.additionalInsights.push(`Bullish fair value gap at ${recentBullishFVG.low.toFixed(2)}-${recentBullishFVG.high.toFixed(2)}.`);
       result.keyLevels.push({ 
         type: 'Bullish FVG', 
         price: (recentBullishFVG.low + recentBullishFVG.high) / 2, 
@@ -576,7 +576,7 @@ export function enhanceSignalWithAdvancedIndicators(
     }
     
     if (recentBearishFVG) {
-      result.additionalInsights.push(`Bearish fair value gap at ${recentBearishFVG.low.toFixed(2)}-${recentBearishFVG.high.toFixed(2)}`.`);
+      result.additionalInsights.push(`Bearish fair value gap at ${recentBearishFVG.low.toFixed(2)}-${recentBearishFVG.high.toFixed(2)}.`);
       result.keyLevels.push({ 
         type: 'Bearish FVG', 
         price: (recentBearishFVG.low + recentBearishFVG.high) / 2, 

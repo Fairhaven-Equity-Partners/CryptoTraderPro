@@ -180,7 +180,7 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
                       : alert.direction === 'SHORT' 
                         ? 'text-red-500 bg-red-900/30' 
                         : 'text-yellow-500 bg-yellow-900/30'
-                  } text-xs font-bold px-2 py-0.5 rounded mr-`2`}>
+                  } text-xs font-bold px-2 py-0.5 rounded mr-2`}>
                     {alert.direction}
                   </span>
                   <span className="text-white text-sm font-medium">{alert.symbol}</span>
@@ -196,7 +196,7 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
                     alert.isActive 
                       ? 'text-green-400 bg-green-900/30' 
                       : 'text-amber-400 bg-amber-900/30'
-                    } text-xs font-medium px-2 py-0.5 rounde`d`}>
+                    } text-xs font-medium px-2 py-0.5 rounded`}>
                     {alert.isActive ? 'Active' : 'Waiting'}
                   </div>
                 </div>

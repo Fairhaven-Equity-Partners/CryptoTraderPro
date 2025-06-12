@@ -113,7 +113,10 @@ export function setPrice(symbol: string, price: number): boolean {
       timestamp: now
     }
   });
-  window.dispatchEvent(updateEvent);return true;
+  window.dispatchEvent(updateEvent);
+  
+  console.log(`✅ Price updated for ${symbol}: ${price}`);
+  return true;
 }
 
 /**
@@ -170,23 +173,33 @@ export function setupPriceListener(): void {
       if (data.type === 'PRICE_UPDATE') {
         syncPrice(data.symbol, data.price);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error('Error processing WebSocket message:', e);
+    }
   };
   
   // Connect to WebSocket if available
   try {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/w`s`;
+    const wsUrl = `${protocol}//${window.location.host}/ws`;
     const ws = new WebSocket(wsUrl);
     
     ws.addEventListener('message', priceUpdateHandler);
     
-    ws.addEventListener('open', () => {});
+    ws.addEventListener('open', () => {
+      console.log('WebSocket connection established for price updates');
+    });
     
-    ws.addEventListener('close', () => {// Reconnect after delay
+    ws.addEventListener('close', () => {
+      console.log('WebSocket connection closed');
+      // Reconnect after delay
       setTimeout(() => setupPriceListener(), 5000);
     });
     
-    ws.addEventListener('error', (error) => {});
-  } catch (e) {}
+    ws.addEventListener('error', (error) => {
+      console.error('WebSocket error:', error);
+    });
+  } catch (e) {
+    console.error('Failed to connect to WebSocket:', e);
+  }
 }

@@ -13,7 +13,7 @@ import { ChartData, TimeFrame } from '../types';
  * @param period Number of periods to average
  * @param priceKey Which price point to use (default: 'close')
  */
-export const calculateSMA = function(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
+export function calculateSMA(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
   const result: number[] = [];
   
   if (data.length < period) {
@@ -37,7 +37,7 @@ export const calculateSMA = function(data: ChartData[], period: number, priceKey
  * @param period Number of periods for EMA
  * @param priceKey Which price point to use (default: 'close')
  */
-export const calculateEMA = function(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
+export function calculateEMA(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
   const result: number[] = [];
   
   if (data.length < period) {
@@ -69,7 +69,7 @@ export const calculateEMA = function(data: ChartData[], period: number, priceKey
  * @param data Array of price data points
  * @param period RSI period (typically 14)
  */
-export const calculateRSI = function(data: ChartData[], period: number = 14): number[] {
+export function calculateRSI(data: ChartData[], period: number = 14): number[] {
   const result: number[] = [];
   
   if (!data || data.length < period + 1) {
@@ -78,15 +78,12 @@ export const calculateRSI = function(data: ChartData[], period: number = 14): nu
   }
   
   try {
-      // Calculate price changes
+    // Calculate price changes
     const changes: number[] = [];
     for (let i = 1; i < data.length; i++) {
       changes.push(data[i].close - data[i - 1].close);
-    
-    } catch (error) {
-      console.error("Technical indicator error:", error);
-      return null;
     }
+    
     // Calculate average gains and losses over the specified period
     let gains = 0;
     let losses = 0;
@@ -122,9 +119,9 @@ export const calculateRSI = function(data: ChartData[], period: number = 14): nu
       rsi = 100 - (100 / (1 + rs));
       result.push(rsi);
     }
-  } try {
-      // Fixed missing try block
-    } catch (error) {return [50]; // Return neutral value on error
+  } catch (error) {
+    console.error("Error calculating RSI:", error);
+    return [50]; // Return neutral value on error
   }
   
   return result;
@@ -137,7 +134,7 @@ export const calculateRSI = function(data: ChartData[], period: number = 14): nu
  * @param slowPeriod Period for slow EMA (typically 26)
  * @param signalPeriod Period for signal line (typically 9)
  */
-export const calculateMACD = function(
+export function calculateMACD(
   data: ChartData[], 
   fastPeriod: number = 12, 
   slowPeriod: number = 26, 
@@ -195,7 +192,7 @@ export const calculateMACD = function(
  * @param period Period for SMA (typically 20)
  * @param multiplier Standard deviation multiplier (typically 2)
  */
-export const calculateBollingerBands = function(
+export function calculateBollingerBands(
   data: ChartData[], 
   period: number = 20, 
   multiplier: number = 2
@@ -238,7 +235,7 @@ export const calculateBollingerBands = function(
  * @param data Array of price data points
  * @param period ATR period (typically 14)
  */
-export const calculateATR = function(data: ChartData[], period: number = 14): number[] {
+export function calculateATR(data: ChartData[], period: number = 14): number[] {
   const result: number[] = [];
   const trueRanges: number[] = [];
   
@@ -285,7 +282,7 @@ export const calculateATR = function(data: ChartData[], period: number = 14): nu
  * @param kPeriod %K period (typically 14)
  * @param dPeriod %D period (typically 3)
  */
-export const calculateStochastic = function(
+export function calculateStochastic(
   data: ChartData[], 
   kPeriod: number = 14, 
   dPeriod: number = 3
@@ -337,7 +334,7 @@ export const calculateStochastic = function(
  * @param data Array of price data points
  * @param period ADX period (typically 14)
  */
-export const calculateADX = function(data: ChartData[], period: number = 14): { adx: number[], pdi: number[], ndi: number[] } {
+export function calculateADX(data: ChartData[], period: number = 14): { adx: number[], pdi: number[], ndi: number[] } {
   const result = {
     adx: [] as number[],
     pdi: [] as number[],
@@ -398,7 +395,7 @@ export const calculateADX = function(data: ChartData[], period: number = 14): { 
  * @param timeframe The timeframe to get a multiplier for
  * @returns A multiplier value that increases with longer timeframes
  */
-export const getTimeframeMultiplier = function(timeframe: TimeFrame): number {
+export function getTimeframeMultiplier(timeframe: TimeFrame): number {
   // Each timeframe gets a different multiplier to ensure distinct values
   switch (timeframe) {
     case '1m': return 0.5;
@@ -421,7 +418,7 @@ export const getTimeframeMultiplier = function(timeframe: TimeFrame): number {
  * @param confidence The signal confidence
  * @returns A multiplier for stop loss distance
  */
-export const getStopLossMultiplier = function(timeframe: TimeFrame, confidence: number): number {
+export function getStopLossMultiplier(timeframe: TimeFrame, confidence: number): number {
   // Base multiplier adjusted by timeframe and confidence
   const baseMultiplier = getTimeframeMultiplier(timeframe);
   // Higher confidence = tighter stop
@@ -436,7 +433,7 @@ export const getStopLossMultiplier = function(timeframe: TimeFrame, confidence: 
  * @param confidence The signal confidence
  * @returns A multiplier for take profit distance
  */
-export const getTakeProfitMultiplier = function(timeframe: TimeFrame, confidence: number): number {
+export function getTakeProfitMultiplier(timeframe: TimeFrame, confidence: number): number {
   // Base multiplier adjusted by timeframe and confidence
   const baseMultiplier = getTimeframeMultiplier(timeframe);
   // Higher confidence = wider take profit
@@ -449,7 +446,7 @@ export const getTakeProfitMultiplier = function(timeframe: TimeFrame, confidence
  * Get maximum recommended leverage based on timeframe
  * @param timeframe The timeframe for the trade
  */
-export const getMaxLeverageForTimeframe = function(timeframe: TimeFrame): number {
+export function getMaxLeverageForTimeframe(timeframe: TimeFrame): number {
   // Longer timeframes generally support higher leverage due to lower volatility
   switch (timeframe) {
     case '1m': return 5;  // Very short timeframes have highest risk
@@ -471,7 +468,7 @@ export const getMaxLeverageForTimeframe = function(timeframe: TimeFrame): number
  * @param data Array of price data points
  * @param sensitivity Number of periods to consider for pivot points
  */
-export const calculateSupportResistance = function(data: ChartData[], sensitivity: number = 5): { supports: number[], resistances: number[] } {
+export function calculateSupportResistance(data: ChartData[], sensitivity: number = 5): { supports: number[], resistances: number[] } {
   const result = {
     supports: [] as number[],
     resistances: [] as number[]
@@ -546,7 +543,7 @@ export const calculateSupportResistance = function(data: ChartData[], sensitivit
  * @param levels Array of price levels
  * @param tolerance Percentage tolerance for grouping (e.g. 0.5 = 0.5%)
  */
-const clusterLevels = function(levels: number[], tolerance: number): number[] {
+function clusterLevels(levels: number[], tolerance: number): number[] {
   if (levels.length <= 1) {
     return levels;
   }
@@ -585,7 +582,7 @@ const clusterLevels = function(levels: number[], tolerance: number): number[] {
  * @param data Historical price data
  * @returns Array of support levels
  */
-export const generateSupportLevels = function(price: number, data: ChartData[]): number[] {
+export function generateSupportLevels(price: number, data: ChartData[]): number[] {
   // Calculate support levels using various technical methods
   const { supports } = calculateSupportResistance(data);
   
@@ -605,7 +602,7 @@ export const generateSupportLevels = function(price: number, data: ChartData[]):
  * @param data Historical price data
  * @returns Array of resistance levels
  */
-export const generateResistanceLevels = function(price: number, data: ChartData[]): number[] {
+export function generateResistanceLevels(price: number, data: ChartData[]): number[] {
   // Calculate resistance levels using various technical methods
   const { resistances } = calculateSupportResistance(data);
   
@@ -623,7 +620,7 @@ export const generateResistanceLevels = function(price: number, data: ChartData[
  * Initialize the technical indicators module and expose the functions globally
  * for the advanced signal dashboard to use
  */
-export const initTechnicalIndicatorsModule = function() {
+export function initTechnicalIndicatorsModule() {
   // Add global access to essential technical indicator functions
   window.technicalIndicators = {
     calculateMACD,
@@ -648,7 +645,10 @@ export const initTechnicalIndicatorsModule = function() {
     harmonizeSignalsAcrossTimeframes: (timeframeSignals: Record<string, any>) => {
       return timeframeSignals;
     }
-  };}
+  };
+  
+  console.log('Technical indicators module initialized');
+}
 
 // Run the initialization 
 if (typeof window !== 'undefined') {
@@ -663,7 +663,7 @@ if (typeof window !== 'undefined') {
  * @param spanPeriod Senkou Span B period (typically 52)
  * @param displacement Displacement period (typically 26)
  */
-export const calculateIchimoku = function(
+export function calculateIchimoku(
   data: ChartData[],
   conversionPeriod: number = 9,
   basePeriod: number = 26,
@@ -748,7 +748,7 @@ export const calculateIchimoku = function(
  * Calculate Momentum indicators for a specific timeframe
  * @param data Price data for the timeframe
  */
-export const calculateIndicatorsForTimeframe = function(data: ChartData[]): {
+export function calculateIndicatorsForTimeframe(data: ChartData[]): {
   rsi: number,
   macd: { value: number, signal: number, histogram: number },
   ema: { short: number, medium: number, long: number },
@@ -867,7 +867,7 @@ export const calculateIndicatorsForTimeframe = function(data: ChartData[]): {
  * Determine market environment based on indicators
  * @param indicators Calculated technical indicators
  */
-export const determineMarketEnvironment = function(indicators: any): {
+export function determineMarketEnvironment(indicators: any): {
   trend: 'STRONG_UPTREND' | 'UPTREND' | 'NEUTRAL' | 'DOWNTREND' | 'STRONG_DOWNTREND',
   volatility: 'VERY_HIGH' | 'HIGH' | 'MODERATE' | 'LOW' | 'VERY_LOW',
   momentum: 'STRONG_BULLISH' | 'BULLISH' | 'NEUTRAL' | 'BEARISH' | 'STRONG_BEARISH'
@@ -925,7 +925,7 @@ export const determineMarketEnvironment = function(indicators: any): {
  * @param data Price data
  * @param timeframe The timeframe of the data
  */
-export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
+export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,
@@ -948,15 +948,18 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
 } {
   // Prevent errors for weekly and monthly timeframes by using simplified signal
   if (['1w', '1M'].includes(timeframe)) {
-    return generateSignal(data, timeframe, symbol);
+    return generateSimplifiedSignal(data, timeframe, symbol);
   }
   
   try {
-      // Make sure we have enough data
+    // Make sure we have enough data
     // Monthly timeframe requires fewer data points than other timeframes
     const minRequiredPoints = timeframe === '1M' ? 30 : 50;
-    if (!data || data.length < minRequiredPoints) {// Generate basic signal
-      const simplifiedSignal = generateSignal(data, timeframe);
+    if (!data || data.length < minRequiredPoints) {
+      console.log(`Not enough data points for ${timeframe}, using simplified analysis`);
+      
+      // Generate basic signal
+      const simplifiedSignal = generateSimplifiedSignal(data, timeframe);
       
       // Use Bollinger Bands as support and resistance levels
       if (data && data.length > 20) {
@@ -966,11 +969,7 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
         let sum = 0;
         for (let i = data.length - 20; i < data.length; i++) {
           sum += data[i].close;
-        
-    } catch (error) {
-      console.error("Technical indicator error:", error);
-      return null;
-    }
+        }
         const sma = sum / 20;
         
         // Calculate standard deviation
@@ -1075,6 +1074,8 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
     const bearishPercentage = (bearishSignals / totalSignals) * 100;
     const neutralPercentage = (neutralSignals / totalSignals) * 100;
     
+    console.log(`Signal percentages: Bullish=${bullishPercentage.toFixed(1)}%, Bearish=${bearishPercentage.toFixed(1)}%, Neutral=${neutralPercentage.toFixed(1)}%`);
+    
     // Determine final signal direction with adjustments to make SHORT signals more likely
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 0;
@@ -1142,9 +1143,14 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
         // Very high confidence for monthly signals, but slightly lower for shorts
         confidence = longTermTrend === 'LONG' ? 
           92 + (dayOfMonth % 4) : // 92-95% confidence for longs
-          88 + (dayOfMonth % 5);  // 88-92% confidence for shorts} else {
+          88 + (dayOfMonth % 5);  // 88-92% confidence for shorts
+        
+        console.log(`Monthly timeframe showing ${direction} signal based on long-term trend with ${confidence}% confidence`);
+      } else {
         // Rarely (~10%), respond to dramatic market shifts when they occur
-        // This ensures monthly signals can eventually change during major market reversals}
+        // This ensures monthly signals can eventually change during major market reversals
+        console.log("Monthly timeframe using calculated signals for significant market reversal");
+      }
       
       // Always maintain high confidence for monthly timeframe
       if (confidence < 85) confidence = 85 + (dayOfMonth % 10); // 85-94%
@@ -1254,8 +1260,13 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
         const symbolSeed = assetSymbol.charCodeAt(0) % 5;
         confidence = mediumTermTrend === 'LONG' ? 
           86 + symbolSeed : // 86-90% confidence for longs 
-          83 + symbolSeed;  // 83-87% confidence for shorts} else {
-        // Rarely (~15%), use calculated signals to respond to significant market moves}
+          83 + symbolSeed;  // 83-87% confidence for shorts
+        
+        console.log(`Weekly timeframe showing ${direction} signal based on medium-term trend with ${confidence}% confidence`);
+      } else {
+        // Rarely (~15%), use calculated signals to respond to significant market moves
+        console.log("Weekly timeframe using calculated signals for market responsiveness");
+      }
       
       // Set minimum confidence level for weekly
       if (confidence < 80) confidence = 80 + (weekNumber % 6); // Minimum 80-85% confidence
@@ -1321,7 +1332,7 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
         currentDay * 4 + currentHour;
         
     // Combine timeframe characteristics with time component
-    const timeframeHash = (timeframe as string).charCodeAt(0) + ((timeframe as string).length > 1 ? (timeframe as string).charCodeAt(1) : 0);
+    const timeframeHash = timeframe.charCodeAt(0) + (timeframe.length > 1 ? timeframe.charCodeAt(1) : 0);
     const stabilityFactor = timeframeWeights[timeframe as keyof typeof timeframeWeights] || 0.5;
     
     // Calculate a signal bias that changes less frequently for longer timeframes
@@ -1339,16 +1350,27 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
       
       // Calculate confidence based on the strength of bullish dominance
       const dominanceRatio = bearishPercentage > 0 ? bullishPercentage / bearishPercentage : 2;
-      confidence = Math.min(95, Math.max(65, 50 + (dominanceRatio * 15) + (bullishPercentage * 0.5)));} else if (bearishPercentage > bullishPercentage) {
+      confidence = Math.min(95, Math.max(65, 50 + (dominanceRatio * 15) + (bullishPercentage * 0.5)));
+      
+      console.log(`LONG signal: ${bullishPercentage}% bullish vs ${bearishPercentage}% bearish, confidence: ${confidence}%`);
+      
+    } else if (bearishPercentage > bullishPercentage) {
       // More bearish signals than bullish - this should be SHORT
       direction = 'SHORT';
       
       // Calculate confidence based on the strength of bearish dominance
       const dominanceRatio = bullishPercentage > 0 ? bearishPercentage / bullishPercentage : 2;
-      confidence = Math.min(90, Math.max(60, 50 + (dominanceRatio * 12) + (bearishPercentage * 0.4)));} else {
+      confidence = Math.min(90, Math.max(60, 50 + (dominanceRatio * 12) + (bearishPercentage * 0.4)));
+      
+      console.log(`SHORT signal: ${bearishPercentage}% bearish vs ${bullishPercentage}% bullish, confidence: ${confidence}%`);
+      
+    } else {
       // Equal bullish and bearish signals - only then use NEUTRAL
       direction = 'NEUTRAL';
-      confidence = Math.max(50, 55 + Math.abs(bullishPercentage - bearishPercentage) * 0.3);}
+      confidence = Math.max(50, 55 + Math.abs(bullishPercentage - bearishPercentage) * 0.3);
+      
+      console.log(`NEUTRAL signal: Equal ${bullishPercentage}% bullish and ${bearishPercentage}% bearish`);
+    }
     
     // Modify confidence based on market environment
     if (environment.volatility === 'VERY_HIGH') {
@@ -1420,9 +1442,9 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
         timeEstimate: timeframe
       }
     };
-  } try {
-      // Fixed missing try block
-    } catch (error) {return generateSignal(data, timeframe, symbol);
+  } catch (error) {
+    console.error(`Error generating signal for ${timeframe}:`, error);
+    return generateSimplifiedSignal(data, timeframe, symbol);
   }
 }
 
@@ -1430,7 +1452,7 @@ export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, 
  * Generate a simplified signal when full technical analysis isn't possible
  * This serves as a authentic when we don't have enough data
  */
-const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
+function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,
@@ -1501,7 +1523,7 @@ const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol:
       
       // Get recent significant price levels
       try {
-      // Calculate significant swing highs and lows over the last 50 candles
+        // Calculate significant swing highs and lows over the last 50 candles
         const lookbackPeriod = Math.min(50, data.length - 1);
         
         // Find local highs and lows
@@ -1512,11 +1534,7 @@ const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol:
             if (data[j].high > data[i].high) {
               isHigh = false;
               break;
-            
-    } catch (error) {
-      console.error("Technical indicator error:", error);
-      return null;
-    }
+            }
           }
           for (let j = i+1; j <= i+5 && j < data.length; j++) {
             if (data[j].high > data[i].high) {
@@ -1571,9 +1589,9 @@ const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol:
           }
           supportLevels.push(lowestLow);
         }
-      } try {
-      // Fixed missing try block
-    } catch (err) {}
+      } catch (err) {
+        console.error("Error calculating support/resistance:", err);
+      }
       
       // Ensure we have at least basic levels if calculation failed
       if (resistanceLevels.length === 0) {
@@ -1782,9 +1800,9 @@ const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol:
         timestamp: Date.now()
       };
     }
-  } try {
-      // Fixed missing try block
-    } catch (err) {}
+  } catch (err) {
+    console.error("Error in simplified signal generation:", err);
+  }
   
   // If all else fails, create a truly default signal
   const currentPrice = data && data.length > 0 ? data[data.length - 1].close : 1000;
@@ -1834,7 +1852,7 @@ const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol:
  * Adjust signals based on a hierarchy of timeframes
  * Higher timeframes influence lower timeframes
  */
-export const alignSignalsWithTimeframeHierarchy = function(
+export function alignSignalsWithTimeframeHierarchy(
   signals: Record<TimeFrame, any>,
   timeframeWeights: Record<TimeFrame, number>
 ): Record<TimeFrame, any> {

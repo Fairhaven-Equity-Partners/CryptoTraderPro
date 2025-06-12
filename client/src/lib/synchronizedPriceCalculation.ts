@@ -82,7 +82,10 @@ export function processAllTimeframes(
   symbol: string,
   price: number,
   timeframes: TimeFrame[]
-): Record<TimeFrame, CalculationResult> {try {
+): Record<TimeFrame, CalculationResult> {
+  console.log(`Processing timeframes for ${symbol} with price ${price}`);
+  
+  try {
     // Create base results for all timeframes
     const results: Record<TimeFrame, CalculationResult> = {} as any;
     
@@ -104,7 +107,10 @@ export function processAllTimeframes(
     lastCalculation[symbol] = { time: Date.now(), price };
     
     return results;
-  } catch (error) {// Create authentic results
+  } catch (error) {
+    console.error("Error in synchronized calculation:", error);
+    
+    // Create authentic results
     const authentic: Record<TimeFrame, CalculationResult> = {} as any;
     for (const timeframe of timeframes) {
       authentic[timeframe] = {
@@ -184,9 +190,14 @@ export function setupSynchronizedCalculation(
   
   // Listen for standard price updates 
   window.addEventListener('price-update', (event: any) => {
-    const { symbol, price } = event.detail;// Skip if price hasn't changed significantly (0.05% threshold)
+    const { symbol, price } = event.detail;
+    console.log(`[SYNC-SYSTEM] Price update detected for ${symbol}: ${price}`);
+    
+    // Skip if price hasn't changed significantly (0.05% threshold)
     if (lastCalculation[symbol] && 
-        Math.abs(price - lastCalculation[symbol].price) / lastCalculation[symbol].price < 0.0005) {return;
+        Math.abs(price - lastCalculation[symbol].price) / lastCalculation[symbol].price < 0.0005) {
+      console.log(`[SYNC-SYSTEM] Price change too small, skipping calculation`);
+      return;
     }
     
     // Calculate signals for all timeframes
@@ -198,9 +209,15 @@ export function setupSynchronizedCalculation(
   
   // Listen for direct calculation requests
   window.addEventListener('sync-calculation', (event: any) => {
-    const { symbol, price } = event.detail;// Calculate signals for all timeframes
+    const { symbol, price } = event.detail;
+    console.log(`[SYNC-SYSTEM] Direct calculation request for ${symbol}: ${price}`);
+    
+    // Calculate signals for all timeframes
     const results = processAllTimeframes(symbol, price, timeframes);
     
     // Invoke the callback with the results
     callback(symbol, price, results);
-  });}
+  });
+  
+  console.log('[SYNC-SYSTEM] Synchronized calculation system initialized');
+}

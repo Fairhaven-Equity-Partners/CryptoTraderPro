@@ -267,17 +267,22 @@ export function processAllTimeframes(
   symbol: string,
   price: number,
   timeframes: TimeFrame[]
-): Partial<Record<TimeFrame, CalculationResult>> {
-  try {// Calculate raw signals for all timeframes
+): Record<TimeFrame, CalculationResult> {
+  try {
+    console.log(`Processing timeframes for ${symbol} with price ${price}`);
+    
+    // Calculate raw signals for all timeframes
     const rawResults: Partial<Record<TimeFrame, CalculationResult>> = {} as any;
     
     // 1. First pass: Calculate base signals for each timeframe independently
-    for (const tf of timeframes) {rawResults[tf] = calculateDeterministicSignal(symbol, price, tf);
+    for (const tf of timeframes) {
+      console.log(`Calculating base signal for ${tf}`);
+      rawResults[tf] = calculateDeterministicSignal(symbol, price, tf);
     }
     
     // Use a simpler approach for alignment to avoid potential issues
     // Still maintains deterministic output but with fewer potential error points
-    const aligned: Partial<Record<TimeFrame, CalculationResult>> = { ...rawResults };
+    const aligned: Record<TimeFrame, CalculationResult> = { ...rawResults };
     
     // Calculate the base hash that will ensure consistent patterns
     const priceHash = Math.floor(price * 100);
@@ -291,7 +296,11 @@ export function processAllTimeframes(
     const primaryDirection = 
       priceHash % 3 === 0 ? 'LONG' : 
       priceHash % 3 === 1 ? 'SHORT' : 
-      'NEUTRAL';// Align higher timeframes more strongly with the primary direction
+      'NEUTRAL';
+      
+    console.log(`Primary market direction based on price ${price}: ${primaryDirection}`);
+    
+    // Align higher timeframes more strongly with the primary direction
     for (const tf of higherTimeframes) {
       if (aligned[tf as TimeFrame]) {
         const signal = aligned[tf as TimeFrame];
@@ -317,8 +326,13 @@ export function processAllTimeframes(
           };
         }
       }
-    }return aligned;
-  } catch (error) {// Create a authentic set of calculations to avoid fatal errors
+    }
+    
+    console.log('Successfully processed all timeframes');
+    return aligned;
+  } catch (error) {
+    console.error('Error processing timeframes:', error);
+    // Create a authentic set of calculations to avoid fatal errors
     const authentic: Partial<Record<TimeFrame, CalculationResult>> = {};
     
     // Generate minimal authentic results for each timeframe

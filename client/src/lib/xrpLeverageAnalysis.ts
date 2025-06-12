@@ -26,7 +26,9 @@ class XRPLeverageAnalyzer {
       const xrpData = await apiRequest('/api/crypto/XRP/USDT');
       const currentPrice = xrpData.lastPrice;
       
-      if (!currentPrice) {return null;
+      if (!currentPrice) {
+        console.error('Unable to fetch XRP price data');
+        return null;
       }
 
       // Calculate 15m technical analysis
@@ -37,7 +39,9 @@ class XRPLeverageAnalyzer {
       
       return position;
       
-    } catch (error) {return null;
+    } catch (error) {
+      console.error('Error analyzing XRP position:', error);
+      return null;
     }
   }
 

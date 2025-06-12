@@ -15,7 +15,7 @@ const AlertNotification: React.FC<AlertNotificationProps> = ({ alert, onDismiss 
   
   return (
     <div className="fixed top-16 left-0 right-0 flex justify-center items-center px-4 z-20">
-      <div className={`${bgColor} bg-opacity-90 text-white rounded-lg shadow-lg p-3 w-full max-w-xs flex items-center justify-between animate-bounc`e`}>
+      <div className={`${bgColor} bg-opacity-90 text-white rounded-lg shadow-lg p-3 w-full max-w-xs flex items-center justify-between animate-bounce`}>
         <div className="flex items-center">
           <span className="material-icons mr-2">{icon}</span>
           <div>

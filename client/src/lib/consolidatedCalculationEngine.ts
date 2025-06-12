@@ -63,7 +63,7 @@ export async function calculateConsolidatedSignal(
 ): Promise<ConsolidatedSignal> {
   
   if (!chartData || chartData.length < 20) {
-    throw new Error(`Insufficient data for ${symbol} ${timeframe}: ${chartData?.length || 0} point`s`);
+    throw new Error(`Insufficient data for ${symbol} ${timeframe}: ${chartData?.length || 0} points`);
   }
 
   // 1. Technical Indicators Analysis (optimized from all engines)
@@ -172,7 +172,9 @@ function calculateSymbolSpecificSupportResistance(
 ): { supports: number[]; resistances: number[]; currentPrice: number } {
   
   // Validate price is reasonable for this symbol
-  if (!validatePriceForSymbol(symbol, currentPrice)) {return { supports: [], resistances: [], currentPrice };
+  if (!validatePriceForSymbol(symbol, currentPrice)) {
+    console.warn(`[ConsolidatedEngine] Invalid price ${currentPrice} for ${symbol}`);
+    return { supports: [], resistances: [], currentPrice };
   }
 
   const highs = chartData.map(d => d.high);
