@@ -21,6 +21,9 @@ interface CalculatedSignal {
   confidence: number;
   strength: number;
   price: number;
+  entryPrice: number;
+  stopLoss: number;
+  takeProfit: number;
   timestamp: number;
   indicators: any;
   technicalAnalysis?: TechnicalAnalysis;
@@ -430,6 +433,25 @@ export class AutomatedSignalCalculator {
       const multiplier = timeframeMultipliers[timeframe as keyof typeof timeframeMultipliers] || 1.0;
       confidence = Math.min(95, confidence * multiplier);
 
+      // Calculate stop loss and take profit levels
+      const stopLossPercent = this.getStopLossPercent(timeframe, direction);
+      const takeProfitPercent = this.getTakeProfitPercent(timeframe, direction);
+      
+      let stopLoss: number;
+      let takeProfit: number;
+      
+      if (direction === 'LONG') {
+        stopLoss = currentPrice * (1 - stopLossPercent / 100);
+        takeProfit = currentPrice * (1 + takeProfitPercent / 100);
+      } else if (direction === 'SHORT') {
+        stopLoss = currentPrice * (1 + stopLossPercent / 100);
+        takeProfit = currentPrice * (1 - takeProfitPercent / 100);
+      } else {
+        // NEUTRAL positions use smaller ranges
+        stopLoss = currentPrice * (1 - (stopLossPercent / 2) / 100);
+        takeProfit = currentPrice * (1 + (takeProfitPercent / 2) / 100);
+      }
+
       const signal: CalculatedSignal = {
         symbol: mapping.symbol,
         timeframe,
@@ -437,11 +459,17 @@ export class AutomatedSignalCalculator {
         confidence: Math.round(confidence),
         strength: confidence / 100,
         price: currentPrice,
+        entryPrice: currentPrice,
+        stopLoss: Math.round(stopLoss * 100) / 100,
+        takeProfit: Math.round(takeProfit * 100) / 100,
         timestamp: Date.now(),
         indicators: {
           change24h,
           volume24h,
-          volatility: Math.abs(change24h)
+          volatility: Math.abs(change24h),
+          rsi,
+          macdHistogram,
+          bbPosition
         }
       };
 
@@ -691,6 +719,44 @@ export class AutomatedSignalCalculator {
    */
   getTimingManager(): AdaptiveTimingManager {
     return this.timingManager;
+  }
+
+  /**
+   * Get stop loss percentage based on timeframe and direction
+   */
+  private getStopLossPercent(timeframe: string, direction: string): number {
+    const stopLossRanges: Record<string, number> = {
+      '1m': 1.5,   // Quick scalping
+      '5m': 2.0,   // Short-term
+      '15m': 2.5,  // Intraday
+      '30m': 3.0,  // Intraday
+      '1h': 3.5,   // Short-term swing
+      '4h': 4.0,   // Medium-term
+      '1d': 5.0,   // Daily swing
+      '3d': 6.0,   // Multi-day
+      '1w': 7.0,   // Weekly
+      '1M': 8.0    // Monthly
+    };
+    return stopLossRanges[timeframe] || 3.0;
+  }
+
+  /**
+   * Get take profit percentage based on timeframe and direction
+   */
+  private getTakeProfitPercent(timeframe: string, direction: string): number {
+    const takeProfitRanges: Record<string, number> = {
+      '1m': 2.0,   // Quick scalping
+      '5m': 3.0,   // Short-term
+      '15m': 4.0,  // Intraday
+      '30m': 5.0,  // Intraday
+      '1h': 6.0,   // Short-term swing
+      '4h': 8.0,   // Medium-term
+      '1d': 10.0,  // Daily swing
+      '3d': 12.0,  // Multi-day
+      '1w': 15.0,  // Weekly
+      '1M': 20.0   // Monthly
+    };
+    return takeProfitRanges[timeframe] || 6.0;
   }
 }
 
