@@ -73,11 +73,7 @@ const lastPrices: Record<string, number> = {};
 const lastChangePercentages: Record<string, number> = {};
 
 // Connect to simulated WebSocket
-export function connectWebSocket(symbols: string[] = []) {
-  console.log('Establishing data connection...');
-  setTimeout(() => {
-    console.log('Data connection established');
-    if (symbols.length > 0) {
+export function connectWebSocket(symbols: string[] = []) {setTimeout(() => {if (symbols.length > 0) {
       subscribeToSymbols(symbols);
     }
     if (messageHandlers['connectionStatus']) {
@@ -95,8 +91,7 @@ export function subscribeToSymbols(symbols: string[]) {
     if (!subscribedSymbols.includes(symbol)) {
       subscribedSymbols.push(symbol);
     }
-  });
-  console.log(`Subscribed to symbols: ${subscribedSymbols.join(', ')}`);
+  });}`);
   if (messageHandlers['subscriptionUpdate']) {
     messageHandlers['subscriptionUpdate'].forEach(handler => 
       handler({ symbols: subscribedSymbols })
@@ -133,10 +128,7 @@ export async function fetchAllAssets(): Promise<AssetPrice[]> {
 export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
   try {
     // Replace any forward slashes in the symbol with an encoded format for the API endpoint
-    const encodedSymbol = symbol.replace('/', '%2F');
-    console.log(`Fetching data for symbol: ${symbol}, encoded as: ${encodedSymbol}`);
-    
-    const response = await fetch(`${API_BASE_URL}/api/crypto/${encodedSymbol}`);
+    const encodedSymbol = symbol.replace('/', '%2F');const response = await fetch(`${API_BASE_URL}/api/crypto/${encodedSymbol}`);
     if (!response.ok) {
       throw new Error(`Failed to fetch ${symbol} data from server`);
     }
@@ -186,8 +178,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
                          lastFetchTime && 
                          (now - lastFetchTime < CACHE_EXPIRATION[timeframe]);
     
-    if (isCacheValid) {
-      console.log(`Loading chart with ${cachedData.length} data points for ${symbol} (${timeframe})`);
+    if (isCacheValid) {`);
       return [...cachedData];
     }
     
@@ -214,9 +205,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
       if (!currentSymbols.includes(symbol)) {
         currentSymbols.push(symbol);
         subscribeToSymbols(currentSymbols);
-      }
-      
-      console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
+      }`);
       return [...data];
     })();
     

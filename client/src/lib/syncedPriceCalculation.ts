@@ -12,14 +12,8 @@ type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' 
 const calculationResults: Record<string, any> = {};
 
 // Initialize the synchronized system
-export function initSyncedCalculation() {
-  console.log("⚡ Starting synchronized price & calculation system");
-  
-  // NOTE: Event listeners have been moved to the AdvancedSignalDashboard component
-  // to prevent duplicate calculations. This function is still called for compatibility.
-  
-  console.log("✅ Synchronized calculation system ready");
-}
+export function initSyncedCalculation() {// NOTE: Event listeners have been moved to the AdvancedSignalDashboard component
+  // to prevent duplicate calculations. This function is still called for compatibility.}
 
 // Handle price update events - DISABLED
 // This function has been moved to the AdvancedSignalDashboard component
@@ -30,20 +24,14 @@ function handlePriceUpdate(event: Event) {
     const customEvent = event as CustomEvent<{symbol: string, price: number}>;
     const { symbol, price } = customEvent.detail;
     
-    // DISABLED - No longer used
-    console.log(`[SYNC-CALC] Legacy price handler called - should not happen`);
-    
-    // Don't do anything - the dashboard component handles calculations now
+    // DISABLED - No longer used// Don't do anything - the dashboard component handles calculations now
   } catch (error) {
     console.error("[SYNC-CALC] Error handling price update:", error);
   }
 }
 
 // Perform calculation with the new price
-function performCalculation(symbol: string, price: number) {
-  console.log(`[SYNC-CALC] Running calculation for ${symbol} at price ${price}`);
-  
-  // Calculate for all timeframes
+function performCalculation(symbol: string, price: number) {// Calculate for all timeframes
   const timeframes: TimeFrame[] = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
   const results: Record<TimeFrame, any> = {} as any;
   
@@ -98,10 +86,7 @@ function performCalculation(symbol: string, price: number) {
     }
   });
   window.dispatchEvent(calcEvent);
-  */
-  
-  console.log(`[SYNC-CALC] Calculation complete for ${symbol}`);
-}
+  */}
 
 // Helper function to get numerical value for timeframe
 function getTimeframeValue(timeframe: TimeFrame): number {

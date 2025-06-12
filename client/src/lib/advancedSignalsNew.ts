@@ -22,16 +22,12 @@ export function generateSignalForTimeframe(
   marketData?: any
 ): AdvancedSignal | null {
   // ZERO TOLERANCE: No authentic data for any timeframe
-  if (['1w', '1M'].includes(timeframe)) {
-    console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic data available`);
-    return null;
+  if (['1w', '1M'].includes(timeframe)) {return null;
   }
 
   try {
     // Validate inputs
-    if (!timeframe || !price || isNaN(price) || price <= 0) {
-      console.warn(`Invalid inputs for timeframe ${timeframe} with price ${price}`);
-      return null;
+    if (!timeframe || !price || isNaN(price) || price <= 0) {return null;
     }
 
     // Get a deterministic but varied direction based on timeframe and price
@@ -161,9 +157,7 @@ export function generateSignalForTimeframe(
   } catch (error) {
     console.error(`Error generating signal for ${timeframe}:`, error);
     
-    // ZERO TOLERANCE: No authentic data allowed
-    console.log(`[AdvancedSignals] Failed to generate authentic signal for ${timeframe} - skipping`);
-    return null;
+    // ZERO TOLERANCE: No authentic data allowedreturn null;
   }
 }
 
@@ -623,21 +617,14 @@ export function calculateAllTimeframeSignals(
   const signals: Record<TimeFrame, AdvancedSignal | null> = {} as any;
   
   // Calculate signals for each timeframe with optimized error handling
-  for (const timeframe of timeframes) {
-    console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
-    
-    // ZERO TOLERANCE: Skip weekly and monthly without authentic data
-    if (['1w', '1M'].includes(timeframe)) {
-      console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic data for higher timeframes`);
-      signals[timeframe] = null;
+  for (const timeframe of timeframes) {// ZERO TOLERANCE: Skip weekly and monthly without authentic data
+    if (['1w', '1M'].includes(timeframe)) {signals[timeframe] = null;
     } else {
       // Standard generation for stable timeframes
       signals[timeframe] = generateSignalForTimeframe(timeframe, price, marketData);
       
       // ZERO TOLERANCE: Skip timeframes without authentic data
-      if (!signals[timeframe]) {
-        console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic signal generated`);
-      }
+      if (!signals[timeframe]) {}
     }
   }
   
@@ -646,9 +633,7 @@ export function calculateAllTimeframeSignals(
   
   // ZERO TOLERANCE: Skip timeframes without authentic signals
   for (const timeframe of timeframes) {
-    if (!harmonizedSignals[timeframe]) {
-      console.log(`[AdvancedSignals] Skipping ${timeframe} after harmonization - no authentic data`);
-    }
+    if (!harmonizedSignals[timeframe]) {}
   }
   
   return harmonizedSignals;

@@ -55,9 +55,7 @@ class AdaptiveLearningEngine {
   private readonly LEARNING_RATE = 0.1;
   private readonly MIN_PREDICTIONS_FOR_LEARNING = 10;
 
-  constructor() {
-    console.log('🧠 Adaptive Learning Engine initialized - starting feedback loop optimization');
-  }
+  constructor() {}
 
   /**
    * Learn from accuracy metrics and adjust calculation weights
@@ -67,16 +65,13 @@ class AdaptiveLearningEngine {
       // Fetch latest accuracy metrics
       const metrics = await apiRequest(`/api/accuracy/${symbol}?timeframe=${timeframe}`);
       
-      if (!metrics || metrics.length === 0) {
-        console.log(`📊 No accuracy data yet for ${symbol} ${timeframe}`);
-        return;
+      if (!metrics || metrics.length === 0) {return;
       }
 
       const metric = metrics[0] as AccuracyMetrics;
       
       // Only start learning if we have enough data
-      if (!metric.totalTrades || metric.totalTrades < this.MIN_PREDICTIONS_FOR_LEARNING) {
-        console.log(`📊 Need more predictions for learning (${metric.totalTrades || 0}/${this.MIN_PREDICTIONS_FOR_LEARNING})`);
+      if (!metric.totalTrades || metric.totalTrades < this.MIN_PREDICTIONS_FOR_LEARNING) {`);
         return;
       }
 
@@ -99,12 +94,7 @@ class AdaptiveLearningEngine {
       const newWeights = this.adaptWeights(currentWeights, indicatorScores, metric.winRate);
       
       // Store updated weights
-      this.adaptedWeights.set(key, newWeights);
-      
-      console.log(`🧠 Learning update for ${symbol} ${timeframe}:`);
-      console.log(`📈 Win Rate: ${metric.winRate?.toFixed(1)}% | Total Trades: ${metric.totalTrades}`);
-      console.log(`⚖️ Weight adjustments:`, {
-        rsi: `${currentWeights.rsi.toFixed(2)} → ${newWeights.rsi.toFixed(2)}`,
+      this.adaptedWeights.set(key, newWeights);}% | Total Trades: ${metric.totalTrades}`);} → ${newWeights.rsi.toFixed(2)}`,
         macd: `${currentWeights.macd.toFixed(2)} → ${newWeights.macd.toFixed(2)}`,
         ema: `${currentWeights.ema.toFixed(2)} → ${newWeights.ema.toFixed(2)}`
       });
@@ -308,11 +298,7 @@ class AdaptiveLearningEngine {
    * Initialize continuous learning for a symbol
    */
   async startContinuousLearning(symbol: string): Promise<void> {
-    const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
-    
-    console.log(`🧠 Starting continuous learning for ${symbol}`);
-    
-    // Initial learning pass
+    const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];// Initial learning pass
     for (const timeframe of timeframes) {
       await this.learnFromAccuracy(symbol, timeframe);
     }

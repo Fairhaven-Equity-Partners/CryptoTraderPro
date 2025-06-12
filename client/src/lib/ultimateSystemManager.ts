@@ -30,14 +30,8 @@ const systemState: GlobalSystemState = {
  */
 export async function initializeUltimateSystem(): Promise<void> {
   // Prevent any duplicate initialization
-  if (systemInitialized || systemState.initialized) {
-    console.log('[UltimateManager] System already initialized - preventing duplicate');
-    return;
-  }
-
-  console.log('[UltimateManager] Starting FINAL system initialization');
-
-  try {
+  if (systemInitialized || systemState.initialized) {return;
+  }try {
     // Mark system as initializing immediately
     systemInitialized = true;
     systemState.initialized = true;
@@ -45,9 +39,7 @@ export async function initializeUltimateSystem(): Promise<void> {
     // Initialize only essential components
     await initializeEssentialComponents();
 
-    // Trigger IMMEDIATE calculation on startup - eliminate 2-cycle delay
-    console.log('[UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay');
-    await performScheduledPriceFetch();
+    // Trigger IMMEDIATE calculation on startup - eliminate 2-cycle delayawait performScheduledPriceFetch();
     
     // Force immediate signal generation for all components with chart data pre-loading
     await preloadChartDataForImmediate(['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT']);
@@ -75,11 +67,7 @@ export async function initializeUltimateSystem(): Promise<void> {
     startUltimateTimer();
 
     // Setup minimal global functions
-    setupGlobalFunctions();
-
-    console.log('[UltimateManager] System initialization complete - ALL timers synchronized to 240s');
-
-  } catch (error) {
+    setupGlobalFunctions();} catch (error) {
     console.error('[UltimateManager] Initialization failed:', error);
     systemInitialized = false;
     systemState.initialized = false;
@@ -97,9 +85,7 @@ async function initializeEssentialComponents(): Promise<void> {
       const { initTechnicalIndicatorsModule } = await import('./technicalIndicators');
       initTechnicalIndicatorsModule();
       systemState.activeComponents.add('technical');
-    } catch (error) {
-      console.warn('[UltimateManager] Technical indicators init failed:', error);
-    }
+    } catch (error) {}
   }
 
   // WebSocket connection (required for real-time data)
@@ -108,9 +94,7 @@ async function initializeEssentialComponents(): Promise<void> {
       const { connectWebSocket } = await import('./api');
       connectWebSocket();
       systemState.activeComponents.add('websocket');
-    } catch (error) {
-      console.warn('[UltimateManager] WebSocket init failed:', error);
-    }
+    } catch (error) {}
   }
 
   systemState.activeComponents.add('core');
@@ -126,9 +110,7 @@ function startUltimateTimer(): void {
   }
 
   // Prevent multiple timer instances
-  if (masterTimerActive) {
-    console.log('[UltimateManager] Timer already active - preventing duplicate');
-    return;
+  if (masterTimerActive) {return;
   }
 
   countdownRemaining = 240; // Start at exactly 4 minutes
@@ -138,14 +120,10 @@ function startUltimateTimer(): void {
     countdownRemaining -= 1;
 
     // Optimized logging frequency for better performance
-    if (countdownRemaining % 20 === 0) {
-      console.log(`[UltimateManager] Next fetch in ${countdownRemaining}s`);
-    }
+    if (countdownRemaining % 20 === 0) {}
 
     // Enhanced synchronized calculation trigger
-    if (countdownRemaining <= 0) {
-      console.log('[UltimateManager] 4-minute synchronized calculation starting');
-      performScheduledPriceFetch();
+    if (countdownRemaining <= 0) {performScheduledPriceFetch();
       
       // Enhanced event broadcasting for all components
       const syncEvent = new CustomEvent('synchronized-calculation-complete', {
@@ -182,9 +160,7 @@ export function isCalculationAllowed(): boolean {
  */
 async function performScheduledPriceFetch(): Promise<void> {
   // Prevent overlapping calculations
-  if (calculationInProgress) {
-    console.log('[UltimateManager] Calculation already in progress - skipping');
-    return;
+  if (calculationInProgress) {return;
   }
   
   calculationInProgress = true;
@@ -196,24 +172,14 @@ async function performScheduledPriceFetch(): Promise<void> {
     const allSymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT', 'USDC/USD', 'ADA/USDT', 'AVAX/USDT', 'DOGE/USDT', 'TRX/USDT', 'TON/USDT', 'LINK/USDT', 'MATIC/USDT', 'SHIB/USDT', 'LTC/USDT', 'BCH/USDT', 'UNI/USDT', 'DOT/USDT', 'XLM/USDT', 'ATOM/USDT', 'XMR/USDT', 'ETC/USDT', 'HBAR/USDT', 'FIL/USDT', 'ICP/USDT', 'VET/USDT', 'APT/USDT', 'NEAR/USDT', 'AAVE/USDT', 'ARB/USDT', 'OP/USDT', 'MKR/USDT', 'GRT/USDT', 'STX/USDT', 'INJ/USDT', 'ALGO/USDT', 'LDO/USDT', 'THETA/USDT', 'SUI/USDT', 'RUNE/USDT', 'MANA/USDT', 'SAND/USDT', 'FET/USDT', 'RNDR/USDT', 'KAVA/USDT', 'MINA/USDT', 'FLOW/USDT', 'XTZ/USDT', 'BLUR/USDT', 'QNT/USDT'];
 
     // Backend automated signal calculator handles authentic data generation for all 50 symbols
-    // Trade simulations are created every 4 minutes with real market data
-    console.log(`[UltimateManager] Backend automated signal calculator managing all ${allSymbols.length} symbols`);
-    console.log('[UltimateManager] Authentic trade simulations active for heatmap data');
-
-    // Trigger multi-pair fetch for market-wide heatmap
+    // Trade simulations are created every 4 minutes with real market data// Trigger multi-pair fetch for market-wide heatmap
     try {
       const multiResponse = await fetch('/api/crypto/all-pairs');
       if (multiResponse.ok) {
-        const multiData = await multiResponse.json();
-        console.log(`[UltimateManager] Multi-pair fetch: ${multiData.length} symbols updated`);
-      }
-    } catch (error) {
-      console.warn('[UltimateManager] Multi-pair fetch unavailable');
-    }
+        const multiData = await multiResponse.json();}
+    } catch (error) {}
     
-  } catch (error) {
-    console.warn('[UltimateManager] Price fetch temporarily unavailable');
-  } finally {
+  } catch (error) {} finally {
     calculationInProgress = false;
   }
 }
@@ -221,10 +187,7 @@ async function performScheduledPriceFetch(): Promise<void> {
 /**
  * Preload essential chart data for automated calculations
  */
-async function preloadEssentialChartData(): Promise<void> {
-  console.log('[UltimateManager] Preloading essential chart data for automated calculations');
-  
-  try {
+async function preloadEssentialChartData(): Promise<void> {try {
     const { fetchChartData } = await import('./api');
     const essentialTimeframes = ['1h', '4h', '1d']; // Focus on key timeframes
     const prioritySymbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT']; // Start with major symbols
@@ -235,44 +198,30 @@ async function preloadEssentialChartData(): Promise<void> {
         try {
           await fetchChartData(symbol, timeframe as any);
           return { symbol, timeframe, success: true };
-        } catch (error) {
-          console.warn(`[UltimateManager] Failed to preload ${symbol} ${timeframe}:`, error);
-          return { symbol, timeframe, success: false };
+        } catch (error) {return { symbol, timeframe, success: false };
         }
       })
     );
     
     const results = await Promise.all(preloadPromises);
-    const successful = results.filter(r => r.success).length;
-    console.log(`[UltimateManager] Preloaded ${successful}/${results.length} essential data sets`);
-    
-  } catch (error) {
-    console.warn('[UltimateManager] Chart data preloading failed:', error);
-  }
+    const successful = results.filter(r => r.success).length;} catch (error) {}
 }
 
 /**
  * Preload chart data for immediate analysis - eliminates 2-cycle delay
  */
-async function preloadChartDataForImmediate(symbols: string[]): Promise<void> {
-  console.log('[UltimateManager] Preloading chart data for immediate analysis');
-  
-  const { fetchChartData } = await import('./api');
+async function preloadChartDataForImmediate(symbols: string[]): Promise<void> {const { fetchChartData } = await import('./api');
   const timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
   
   // Preload data for all symbols and timeframes in parallel
   const preloadPromises = symbols.flatMap(symbol =>
     timeframes.map(timeframe =>
-      fetchChartData(symbol, timeframe as any).catch(error => {
-        console.warn(`Failed to preload ${symbol} ${timeframe}:`, error);
-        return null;
+      fetchChartData(symbol, timeframe as any).catch(error => {return null;
       })
     )
   );
   
-  await Promise.all(preloadPromises);
-  console.log('[UltimateManager] Chart data preloading completed');
-}
+  await Promise.all(preloadPromises);}
 
 /**
  * Setup minimal global functions
@@ -327,9 +276,7 @@ export function emergencyCleanup(): void {
   masterTimerActive = false;
   systemInitialized = false;
   systemState.initialized = false;
-  systemState.activeComponents.clear();
-  console.log('[UltimateManager] Emergency cleanup completed');
-}
+  systemState.activeComponents.clear();}
 
 /**
  * Check if system is ready

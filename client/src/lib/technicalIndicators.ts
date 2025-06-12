@@ -645,10 +645,7 @@ export function initTechnicalIndicatorsModule() {
     harmonizeSignalsAcrossTimeframes: (timeframeSignals: Record<string, any>) => {
       return timeframeSignals;
     }
-  };
-  
-  console.log('Technical indicators module initialized');
-}
+  };}
 
 // Run the initialization 
 if (typeof window !== 'undefined') {
@@ -955,10 +952,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
     // Make sure we have enough data
     // Monthly timeframe requires fewer data points than other timeframes
     const minRequiredPoints = timeframe === '1M' ? 30 : 50;
-    if (!data || data.length < minRequiredPoints) {
-      console.log(`Not enough data points for ${timeframe}, using simplified analysis`);
-      
-      // Generate basic signal
+    if (!data || data.length < minRequiredPoints) {// Generate basic signal
       const simplifiedSignal = generateSimplifiedSignal(data, timeframe);
       
       // Use Bollinger Bands as support and resistance levels
@@ -1074,8 +1068,6 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
     const bearishPercentage = (bearishSignals / totalSignals) * 100;
     const neutralPercentage = (neutralSignals / totalSignals) * 100;
     
-    console.log(`Signal percentages: Bullish=${bullishPercentage.toFixed(1)}%, Bearish=${bearishPercentage.toFixed(1)}%, Neutral=${neutralPercentage.toFixed(1)}%`);
-    
     // Determine final signal direction with adjustments to make SHORT signals more likely
     let direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 'NEUTRAL';
     let confidence = 0;
@@ -1143,14 +1135,9 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         // Very high confidence for monthly signals, but slightly lower for shorts
         confidence = longTermTrend === 'LONG' ? 
           92 + (dayOfMonth % 4) : // 92-95% confidence for longs
-          88 + (dayOfMonth % 5);  // 88-92% confidence for shorts
-        
-        console.log(`Monthly timeframe showing ${direction} signal based on long-term trend with ${confidence}% confidence`);
-      } else {
+          88 + (dayOfMonth % 5);  // 88-92% confidence for shorts} else {
         // Rarely (~10%), respond to dramatic market shifts when they occur
-        // This ensures monthly signals can eventually change during major market reversals
-        console.log("Monthly timeframe using calculated signals for significant market reversal");
-      }
+        // This ensures monthly signals can eventually change during major market reversals}
       
       // Always maintain high confidence for monthly timeframe
       if (confidence < 85) confidence = 85 + (dayOfMonth % 10); // 85-94%
@@ -1260,13 +1247,8 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         const symbolSeed = assetSymbol.charCodeAt(0) % 5;
         confidence = mediumTermTrend === 'LONG' ? 
           86 + symbolSeed : // 86-90% confidence for longs 
-          83 + symbolSeed;  // 83-87% confidence for shorts
-        
-        console.log(`Weekly timeframe showing ${direction} signal based on medium-term trend with ${confidence}% confidence`);
-      } else {
-        // Rarely (~15%), use calculated signals to respond to significant market moves
-        console.log("Weekly timeframe using calculated signals for market responsiveness");
-      }
+          83 + symbolSeed;  // 83-87% confidence for shorts} else {
+        // Rarely (~15%), use calculated signals to respond to significant market moves}
       
       // Set minimum confidence level for weekly
       if (confidence < 80) confidence = 80 + (weekNumber % 6); // Minimum 80-85% confidence
@@ -1350,27 +1332,16 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
       
       // Calculate confidence based on the strength of bullish dominance
       const dominanceRatio = bearishPercentage > 0 ? bullishPercentage / bearishPercentage : 2;
-      confidence = Math.min(95, Math.max(65, 50 + (dominanceRatio * 15) + (bullishPercentage * 0.5)));
-      
-      console.log(`LONG signal: ${bullishPercentage}% bullish vs ${bearishPercentage}% bearish, confidence: ${confidence}%`);
-      
-    } else if (bearishPercentage > bullishPercentage) {
+      confidence = Math.min(95, Math.max(65, 50 + (dominanceRatio * 15) + (bullishPercentage * 0.5)));} else if (bearishPercentage > bullishPercentage) {
       // More bearish signals than bullish - this should be SHORT
       direction = 'SHORT';
       
       // Calculate confidence based on the strength of bearish dominance
       const dominanceRatio = bullishPercentage > 0 ? bearishPercentage / bullishPercentage : 2;
-      confidence = Math.min(90, Math.max(60, 50 + (dominanceRatio * 12) + (bearishPercentage * 0.4)));
-      
-      console.log(`SHORT signal: ${bearishPercentage}% bearish vs ${bullishPercentage}% bullish, confidence: ${confidence}%`);
-      
-    } else {
+      confidence = Math.min(90, Math.max(60, 50 + (dominanceRatio * 12) + (bearishPercentage * 0.4)));} else {
       // Equal bullish and bearish signals - only then use NEUTRAL
       direction = 'NEUTRAL';
-      confidence = Math.max(50, 55 + Math.abs(bullishPercentage - bearishPercentage) * 0.3);
-      
-      console.log(`NEUTRAL signal: Equal ${bullishPercentage}% bullish and ${bearishPercentage}% bearish`);
-    }
+      confidence = Math.max(50, 55 + Math.abs(bullishPercentage - bearishPercentage) * 0.3);}
     
     // Modify confidence based on market environment
     if (environment.volatility === 'VERY_HIGH') {

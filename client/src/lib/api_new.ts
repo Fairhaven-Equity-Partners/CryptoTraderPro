@@ -30,11 +30,7 @@ const lastPrices: Record<string, number> = {};
 const lastChangePercentages: Record<string, number> = {};
 
 // Connect to simulated WebSocket
-export function connectWebSocket(symbols: string[] = []) {
-  console.log('Establishing data connection...');
-  setTimeout(() => {
-    console.log('Data connection established');
-    if (symbols.length > 0) {
+export function connectWebSocket(symbols: string[] = []) {setTimeout(() => {if (symbols.length > 0) {
       subscribeToSymbols(symbols);
     }
     if (messageHandlers['connectionStatus']) {
@@ -52,8 +48,7 @@ export function subscribeToSymbols(symbols: string[]) {
     if (!subscribedSymbols.includes(symbol)) {
       subscribedSymbols.push(symbol);
     }
-  });
-  console.log(`Subscribed to symbols: ${subscribedSymbols.join(', ')}`);
+  });}`);
   if (messageHandlers['subscriptionUpdate']) {
     messageHandlers['subscriptionUpdate'].forEach(handler => 
       handler({ symbols: subscribedSymbols })
@@ -123,8 +118,7 @@ export async function fetchAssetBySymbol(symbol: string): Promise<AssetPrice> {
 // Fetch chart data
 export async function fetchChartData(symbol: string, timeframe: TimeFrame): Promise<ChartData[]> {
   // If we have cached data, return it immediately
-  if (chartDataCache[symbol] && chartDataCache[symbol][timeframe]) {
-    console.log(`Loading chart with ${chartDataCache[symbol][timeframe].length} data points for ${symbol} (${timeframe})`);
+  if (chartDataCache[symbol] && chartDataCache[symbol][timeframe]) {`);
     return [...chartDataCache[symbol][timeframe]];
   }
   
@@ -147,9 +141,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
     if (!currentSymbols.includes(symbol)) {
       currentSymbols.push(symbol);
       subscribeToSymbols(currentSymbols);
-    }
-    
-    console.log(`Loading chart with ${data.length} data points for ${symbol} (${timeframe})`);
+    }`);
     return [...data];
   } catch (error) {
     console.error('Error fetching chart data:', error);
@@ -210,10 +202,7 @@ export function startRealTimeUpdates() {
       fetch('/api/prices/batch?symbols=BTC/USDT,ETH/USDT,BNB/USDT,SOL/USDT,XRP/USDT')
         .then(response => response.json())
         .then(realPriceData => {
-          // Use the real data from CoinMarketCap
-          console.log('CoinMarketCap real-time price data:', realPriceData);
-          
-          // Update each subscribed symbol
+          // Use the real data from CoinMarketCap// Update each subscribed symbol
           currentSymbols.forEach(symbol => {
             const currentPrice = getCurrentPrice(symbol);
             let newPrice: number;
@@ -243,8 +232,7 @@ export function startRealTimeUpdates() {
             }
             
             // Only log if we have a price
-            if (newPrice && currentPrice) {
-              console.log(`Price update for ${symbol}: ${currentPrice.toFixed(2)} → ${newPrice.toFixed(2)}`);
+            if (newPrice && currentPrice) {} → ${newPrice.toFixed(2)}`);
             }
             
             // Notify all handlers about the price update

@@ -48,18 +48,13 @@ class RealForexDataFetcher {
           const rate = api.parser(data);
           
           if (rate && rate > 1.0 && rate < 1.5) {
-            this.eurUsdRate = rate;
-            console.log(`EUR/USD rate fetched: ${rate} from ${api.url}`);
-            
-            return {
+            this.eurUsdRate = rate;return {
               currentPrice: rate,
               change24h: (rate - 1.1400) / 1.1400 * 100, // Calculate change from base
               timestamp: Date.now()
             };
           }
-        } catch (error) {
-          console.warn(`API ${api.url} failed:`, error);
-          continue;
+        } catch (error) {continue;
         }
       }
       

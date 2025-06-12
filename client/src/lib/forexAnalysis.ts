@@ -70,20 +70,14 @@ class ForexAnalysisEngine {
           }
           
           if (rate && rate > 1.0 && rate < 1.5) { // Sanity check for EUR/USD
-            this.eurUsdPrice = rate;
-            console.log(`Real EUR/USD price fetched: ${this.eurUsdPrice} from ${source}`);
-            return this.eurUsdPrice;
+            this.eurUsdPrice = rate;return this.eurUsdPrice;
           }
-        } catch (e) {
-          console.warn(`Failed to fetch from ${source}:`, e);
-          continue;
+        } catch (e) {continue;
         }
       }
       
       // If all sources fail, use current market rate
-      this.eurUsdPrice = 1.1400;
-      console.log('Using current market EUR/USD rate: 1.1400');
-      return this.eurUsdPrice;
+      this.eurUsdPrice = 1.1400;return this.eurUsdPrice;
     } catch (error) {
       console.error('Error fetching EUR/USD price:', error);
       this.eurUsdPrice = 1.1400;

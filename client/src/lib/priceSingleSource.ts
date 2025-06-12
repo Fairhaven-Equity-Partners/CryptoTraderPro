@@ -14,10 +14,7 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
   
   // Broadcast to both window and document to maximize capture
   window.dispatchEvent(event);
-  document.dispatchEvent(event);
-  
-  console.log(`Broadcasting price update: ${symbol} = ${price}`);
-}
+  document.dispatchEvent(event);}
 
 // Get latest price from the API
 export async function fetchLatestPrice(symbol: string): Promise<number> {
@@ -61,8 +58,7 @@ export function subscribeToPrice(
 // Start price polling for a symbol - DEPRECATED in favor of stablePriceSync.ts
 // This function is kept for backward compatibility but now delegates to the stable price system
 export function startPricePolling(symbol: string, intervalMs: number = 15000): () => void {
-  // We now use the stable price system with 3-minute updates only
-  console.log("Using stable price system (3-minute updates) instead of legacy system");
+  // We now use the stable price system with 3-minute updates onlyinstead of legacy system");
   
   // Create a no-op interval that doesn't actually fetch prices
   const dummyIntervalId = setInterval(() => {

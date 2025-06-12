@@ -41,10 +41,7 @@ export function initPriceSystem(initialInterval = DEFAULT_REFRESH_INTERVAL) {
     updateCountdown();
   }, 1000);
   
-  // No need to add to the window object since we're exporting these functions directly
-  
-  console.log(`[FinalPriceSystem] Initialized with ${initialInterval}s refresh interval`);
-}
+  // No need to add to the window object since we're exporting these functions directly}
 
 /**
  * Update the countdown and trigger price fetch when needed
@@ -58,22 +55,15 @@ function updateCountdown() {
     // Reset the timer to exactly 4 minutes (240 seconds) to match CoinGecko rate limits
     countdownSeconds = DEFAULT_REFRESH_INTERVAL; // Use constant for consistency
     
-    // At zero, fetch price AND trigger a synchronized calculation
-    console.log(`[FinalPriceSystem] 4-minute interval reached - fetching fresh price and triggering calculation`);
-    
-    fetchLatestPrice('BTC/USDT', true) // Pass true to indicate this is timer-triggered
-      .then(price => {
-        console.log(`[FinalPriceSystem] Price updated to ${price} - calculation will follow automatically`);
-      })
+    // At zero, fetch price AND trigger a synchronized calculationfetchLatestPrice('BTC/USDT', true) // Pass true to indicate this is timer-triggered
+      .then(price => {})
       .catch(error => {
         console.error('[FinalPriceSystem] Error fetching price:', error);
       });
   }
   
   // Periodically report time remaining for debugging
-  if (countdownSeconds % CHECK_INTERVAL === 0) {
-    console.log(`[FinalPriceSystem] Next fetch in ${countdownSeconds}s`);
-  }
+  if (countdownSeconds % CHECK_INTERVAL === 0) {}
 }
 
 /**
@@ -112,10 +102,7 @@ function triggerPriceFetch() {
  * @returns The fetched price
  */
 export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean = false): Promise<number> {
-  try {
-    console.log(`[FinalPriceSystem] Fetching fresh price for ${symbol}`);
-    
-    // Broadcast that we're fetching
+  try {// Broadcast that we're fetching
     const fetchingEvent = new CustomEvent('price-fetching', {
       detail: { symbol }
     });
@@ -133,11 +120,7 @@ export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean
     
     if (isNaN(price) || price <= 0) {
       throw new Error('Invalid price received');
-    }
-    
-    console.log(`[FinalPriceSystem] Successfully fetched price for ${symbol}: ${price}`);
-    
-    // Store the price
+    }// Store the price
     const timestamp = Date.now();
     lastPriceBySymbol[symbol] = { price, timestamp };
     
@@ -161,9 +144,7 @@ export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean
     window.dispatchEvent(cryptoUpdateEvent);
     
     // CRITICAL FIX: Only trigger calculation events when explicitly called by 3-minute timer
-    if (isTimerTriggered) {
-      console.log(`💯 DISPATCHING SYNCHRONIZED CALCULATION EVENT at 3-minute mark`);
-      const synchronizedCalculationEvent = new CustomEvent('synchronized-calculation-trigger', {
+    if (isTimerTriggered) {const synchronizedCalculationEvent = new CustomEvent('synchronized-calculation-trigger', {
         detail: { 
           symbol, 
           price, 
@@ -179,22 +160,13 @@ export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean
         detail: { symbol, price, timestamp, forceCalculate: true, isThreeMinuteMark: true }
       });
       document.dispatchEvent(liveUpdateEvent);
-    } else {
-      console.log(`[FinalPriceSystem] Price fetch completed - no calculation trigger (not timer-triggered)`);
-    }
-    
-    console.log(`[FinalPriceSystem] Price update broadcast for ${symbol}: ${price}`);
-    
-    console.log(`[FinalPriceSystem] Price fetch completed for ${symbol}: ${price}`);
-    
-    return price;
+    } else {`);
+    }return price;
   } catch (error) {
     console.error('[FinalPriceSystem] Error fetching price:', error);
     
     // Use the last known price if available
-    if (lastPriceBySymbol[symbol]) {
-      console.log('[FinalPriceSystem] Using cached price due to fetch error');
-      return lastPriceBySymbol[symbol].price;
+    if (lastPriceBySymbol[symbol]) {return lastPriceBySymbol[symbol].price;
     }
     
     // If no cached price, return a reasonable default
@@ -260,15 +232,9 @@ export function subscribeToPriceUpdates(symbol: string, callback: (price: number
   window.removeEventListener('price-update', handlePriceUpdate as EventListener);
   
   // Add the new handler
-  window.addEventListener('price-update', handlePriceUpdate as EventListener);
-  
-  console.log(`[FinalPriceSystem] Subscribed to price updates for ${symbol}`);
-  
-  // Return unsubscribe function
+  window.addEventListener('price-update', handlePriceUpdate as EventListener);// Return unsubscribe function
   return () => {
-    window.removeEventListener('price-update', handlePriceUpdate as EventListener);
-    console.log(`[FinalPriceSystem] Unsubscribed from price updates for ${symbol}`);
-  };
+    window.removeEventListener('price-update', handlePriceUpdate as EventListener);};
 }
 
 /**
@@ -284,18 +250,13 @@ export function startTracking(symbol: string) {
   // Do an immediate fetch for the specified symbol
   fetchLatestPrice(symbol).catch(error => {
     console.error(`[FinalPriceSystem] Error in initial fetch for ${symbol}:`, error);
-  });
-  
-  console.log(`[FinalPriceSystem] Started tracking ${symbol}`);
-}
+  });}
 
 /**
  * Stop tracking price for a symbol
  * @param symbol Asset symbol to stop tracking
  */
-export function stopTracking(symbol: string) {
-  console.log(`[FinalPriceSystem] Stopped tracking ${symbol}`);
-  // Symbol-specific cleanup could go here if needed
+export function stopTracking(symbol: string) {// Symbol-specific cleanup could go here if needed
 }
 
 /**

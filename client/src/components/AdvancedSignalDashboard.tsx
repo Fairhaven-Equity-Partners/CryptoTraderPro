@@ -276,9 +276,7 @@ export default function AdvancedSignalDashboard({
   
   // Symbol change detection for immediate calculations
   useEffect(() => {
-    if (lastSymbolRef.current !== symbol) {
-      console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
-      lastSymbolRef.current = symbol;
+    if (lastSymbolRef.current !== symbol) {lastSymbolRef.current = symbol;
       setIsCalculating(false);
       calculationTriggeredRef.current = false;
       
@@ -290,9 +288,7 @@ export default function AdvancedSignalDashboard({
       
       // Trigger immediate calculation for new symbol after data loads
       const immediateCalcTimer = setTimeout(() => {
-        if (isAllDataLoaded && !isCalculating) {
-          console.log(`⚡ Triggering immediate calculation for new symbol: ${symbol}`);
-          setIsCalculating(true);
+        if (isAllDataLoaded && !isCalculating) {setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           // Trigger immediate calculation using the actual function
@@ -362,9 +358,7 @@ export default function AdvancedSignalDashboard({
   useEffect(() => {
     if (!window.triggerSignalCalculation) {
       window.triggerSignalCalculation = (symbolToCalc: string, priceValue: number) => {
-        if (symbolToCalc === symbol && priceValue > 0) {
-          console.log('[SignalDashboard] Immediate calculation triggered by UltimateManager');
-          calculateAllSignals(); // Force immediate calculation
+        if (symbolToCalc === symbol && priceValue > 0) {calculateAllSignals(); // Force immediate calculation
         }
       };
     }
@@ -381,33 +375,20 @@ export default function AdvancedSignalDashboard({
   useEffect(() => {
     const handleCentralizedPriceUpdate = (event: any) => {
       if (event.detail?.symbol === symbol && event.detail?.price) {
-        setLivePriceState(event.detail.price);
-        console.log(`[AdvancedSignalDashboard] Centralized price update for ${symbol}: $${event.detail.price}`);
-      }
+        setLivePriceState(event.detail.price);}
     };
 
     // Listen for immediate pair selection calculations
     const handleImmediatePairCalculation = (event: any) => {
-      if (event.detail?.symbol === symbol) {
-        console.log(`[AdvancedSignalDashboard] Immediate calculation triggered for ${symbol} via ${event.detail.trigger}`);
-        
-        // Always attempt immediate calculation - remove all blocking conditions
-        if (!isCalculating) {
-          console.log(`⚡ Starting immediate calculation for ${symbol}`);
-          setTimeout(() => {
-            if (calculateAllSignalsRef.current && !isCalculating) {
-              console.log(`⚡ Executing immediate calculation for ${symbol}`);
-              setIsCalculating(true);
+      if (event.detail?.symbol === symbol) {// Always attempt immediate calculation - remove all blocking conditions
+        if (!isCalculating) {setTimeout(() => {
+            if (calculateAllSignalsRef.current && !isCalculating) {setIsCalculating(true);
               lastCalculationRef.current = Date.now();
               lastCalculationTimeRef.current = Date.now() / 1000;
               calculateAllSignalsRef.current('pair-selection');
-            } else {
-              console.log(`⚠️ Calculation function not ready: calculateAllSignalsRef=${!!calculateAllSignalsRef.current}, isCalculating=${isCalculating}`);
-            }
+            } else {}
           }, 800);
-        } else {
-          console.log(`Skipping immediate calculation - already in progress for ${symbol}`);
-        }
+        } else {}
       }
     };
 
@@ -426,18 +407,14 @@ export default function AdvancedSignalDashboard({
   
   // Update when centralized price changes
   useEffect(() => {
-    if (centralizedPrice && centralizedPrice > 0) {
-      console.log(`[AdvancedSignalDashboard] Centralized price update for ${symbol}: $${centralizedPrice}`);
-    }
+    if (centralizedPrice && centralizedPrice > 0) {}
   }, [centralizedPrice, symbol]);
   
   // Get the current price from centralized manager with null safety
   const currentAssetPrice = centralizedPrice || 0;
   
   // Initialize continuous learning for this symbol
-  useEffect(() => {
-    console.log(`🧠 Initializing continuous learning feedback loop for ${symbol}`);
-    startContinuousLearning(symbol).catch(error => {
+  useEffect(() => {startContinuousLearning(symbol).catch(error => {
       // Silently handle learning initialization errors
     });
   }, [symbol]);
@@ -473,9 +450,7 @@ export default function AdvancedSignalDashboard({
           .filter(s => s !== null)
           .map(s => s!.timestamp || 0)) / 1000;
         
-        if (signalTimestamp > actualLastCalculationTime) {
-          console.log('🔄 Signals updated, syncing timer with actual calculation time');
-          setActualLastCalculationTime(signalTimestamp);
+        if (signalTimestamp > actualLastCalculationTime) {setActualLastCalculationTime(signalTimestamp);
         }
       }
     }, 1000);
@@ -499,9 +474,7 @@ export default function AdvancedSignalDashboard({
         
         if (shouldCalculate && !isCalculating) {
           const triggerType = event.detail.immediate ? 'immediate pair selection' : 
-                             event.detail.interval === '4-minute' ? '4-minute sync' : 'manual';
-          console.log(`⚡ Starting ${triggerType} calculation for ${symbol}`);
-          setIsCalculating(true);
+                             event.detail.interval === '4-minute' ? '4-minute sync' : 'manual';setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals(event.detail.immediate ? 'pair-selection' : '4-minute-sync');
@@ -512,9 +485,7 @@ export default function AdvancedSignalDashboard({
               detail: { symbol, timestamp: Date.now(), triggerType }
             }));
           }, 1000); // Delay to ensure calculation completion
-        } else {
-          console.log(`Calculation blocked: isCalculating=${isCalculating}, timeSinceLastCalc=${timeSinceLastCalc}s`);
-        }
+        } else {}
       }
     };
 
@@ -525,9 +496,7 @@ export default function AdvancedSignalDashboard({
         const hasMinimumData = Object.keys(chartData).length >= 5;
         
         // DISABLED: Real-time calculations - wait for 4-minute synchronized events only
-        if (timeSinceLastCalc >= 240 && hasMinimumData && !isCalculating && event.detail.interval === '4-minute') {
-          console.log(`⏰ 4-minute synchronized calculation for ${symbol}`);
-          calculateAllSignals('4-minute-sync');
+        if (timeSinceLastCalc >= 240 && hasMinimumData && !isCalculating && event.detail.interval === '4-minute') {calculateAllSignals('4-minute-sync');
         }
       }
     };
@@ -537,20 +506,16 @@ export default function AdvancedSignalDashboard({
       const timeSinceLastCalc = (Date.now() - lastCalculationRef.current) / 1000;
       
       // STRICT: Only 4-minute intervals with proper timing
-      if (event.detail.interval === '4-minute' && timeSinceLastCalc >= 240) {
-        console.log(`[${symbol}] 4-minute synchronized calculation (${timeSinceLastCalc}s since last)`);
+      if (event.detail.interval === '4-minute' && timeSinceLastCalc >= 240) {`);
         
         if (!isCalculating) {
           setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals('4-minute-sync').catch(error => {
-            console.error(`[${symbol}] 4-minute calculation failed:`, error);
             setIsCalculating(false);
           });
         }
-      } else {
-        console.log(`[${symbol}] Calculation blocked - ${Math.round(240 - timeSinceLastCalc)}s until next 4-minute sync`);
       }
     };
 
@@ -575,17 +540,8 @@ export default function AdvancedSignalDashboard({
     const now = Date.now() / 1000;
     const timeSinceLastCalc = now - lastCalculationTimeRef.current;
     
-    console.log(`Attempt to trigger calculation (${trigger}) for ${symbol}:
-      - Already triggered: ${calculationTriggeredRef.current}
-      - Currently calculating: ${isCalculating}
-      - Last calculation: ${timeSinceLastCalc.toFixed(2)}s ago
-      - All data loaded: ${isAllDataLoaded}
-      - Live data ready: ${isLiveDataReady}`);
-    
     // Always allow manual triggers to recalculate
-    if (trigger === 'manual' || trigger === 'timer') {
-      console.log(`${trigger} calculation requested for ${symbol}`);
-      calculationTriggeredRef.current = true;
+    if (trigger === 'manual' || trigger === 'timer') {calculationTriggeredRef.current = true;
       
       // For timer-triggered refreshes, use a delayed toast to avoid React warning
       if (trigger === 'timer') {
@@ -611,9 +567,7 @@ export default function AdvancedSignalDashboard({
     
     // For data-loaded triggers, we want to be less restrictive
     if (trigger === 'data-loaded') {
-      if (isCalculating) {
-        console.log(`Already calculating for ${symbol}, will retry when complete`);
-        return;
+      if (isCalculating) {return;
       }
       
       // Proceed with calculation regardless of other conditions
@@ -654,9 +608,7 @@ export default function AdvancedSignalDashboard({
   // Each time data is loaded or symbol changes, trigger calculation ONLY when timer allows
   useEffect(() => {
     // Reset calculation status when symbol changes
-    if (lastSymbolRef.current !== symbol) {
-      console.log(`Symbol changed from ${lastSymbolRef.current} to ${symbol} - resetting calculation status`);
-      calculationTriggeredRef.current = false;
+    if (lastSymbolRef.current !== symbol) {calculationTriggeredRef.current = false;
       // Initialize signals for all timeframes defined in the TimeFrame type
       setSignals({
         '1m': null,
@@ -691,8 +643,7 @@ export default function AdvancedSignalDashboard({
       
       if (shouldAllowCalculation) {
         const triggerReason = lastCalculationRef.current === 0 ? 'initial' : 
-                            isAutomatedTrigger ? 'automated-system' : '4-minute interval';
-        console.log(`[SignalDashboard] Data ready for ${symbol} - triggering calculation (${triggerReason})`);
+                            isAutomatedTrigger ? 'automated-system' : '4-minute interval';`);
         calculationTriggeredRef.current = true;
         
         if (calculationTimeoutRef.current) {
@@ -706,8 +657,7 @@ export default function AdvancedSignalDashboard({
             setIsCalculating(false);
           });
         }
-      } else {
-        console.log(`[SignalDashboard] Data ready for ${symbol} but calculation blocked by 4-minute timer (${Math.round((240000 - timeSinceLastCalc) / 1000)}s remaining)`);
+      } else {/ 1000)}s remaining)`);
       }
     }
   }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData, isCalculating]);
@@ -1257,10 +1207,7 @@ export default function AdvancedSignalDashboard({
     }
 
     // Sort patterns by reliability percentage (highest to lowest)
-    patterns.sort((a, b) => b.reliability - a.reliability);
-    
-    console.log(`Generated ${patterns.length} patterns for ${timeframe} timeframe`);
-    return patterns;
+    patterns.sort((a, b) => b.reliability - a.reliability);return patterns;
   };
 
   // Cache for consistent signals across timeframe switches
@@ -1276,43 +1223,23 @@ export default function AdvancedSignalDashboard({
       return; // Kill switch handles logging
     }
     
-    if (isCalculating) {
-      console.log(`Calculation already in progress for ${symbol}, skipping new request`);
-      return;
+    if (isCalculating) {return;
     }
     
     // Mark as calculating to prevent overlapping calculations
-    const now = Date.now();
-    console.log(`✅ Calculation allowed: ${trigger}`);
-    setIsCalculating(true);
+    const now = Date.now();setIsCalculating(true);
     lastCalculationRef.current = now;
-    lastCalculationTimeRef.current = now / 1000;
-    
-    console.log(`⚡ Starting calculation loop for 10 timeframes`);
-    
-    // Use promise to allow proper async calculation
+    lastCalculationTimeRef.current = now / 1000;// Use promise to allow proper async calculation
     try {
       // Helper to process one timeframe
       const calculateTimeframe = async (timeframe: TimeFrame, delay: number = 0) => {
         // Staggered start times for resource management
         if (delay > 0) {
           await new Promise(resolve => setTimeout(resolve, delay));
-        }
-        
-        console.log(`⚡ About to calculate ${timeframe} timeframe`);
-        console.log(`Calculating signal for ${symbol} on ${timeframe} timeframe`);
-        
-        try {
+        }try {
           // Check if we have data for this timeframe
-          if (!chartData[timeframe] || !Array.isArray(chartData[timeframe]) || chartData[timeframe].length < 20) {
-            console.log(`DATA CHECK: Not enough data for ${symbol} on ${timeframe} timeframe. Skipping.`);
-            return null;
-          }
-          
-          console.log(`DATA CHECK: ${symbol} on ${timeframe} timeframe has ${chartData[timeframe].length} data points.`);
-          
-          // Start calculation with realistic logging
-          console.log(`Starting signal calculation for ${symbol} (${timeframe})`);
+          if (!chartData[timeframe] || !Array.isArray(chartData[timeframe]) || chartData[timeframe].length < 20) {return null;
+          }// Start calculation with realistic logging`);
           
           // CRITICAL FIX: Always fetch fresh price for this specific symbol to avoid cached BTC price
           let livePrice = 0;
@@ -1321,46 +1248,27 @@ export default function AdvancedSignalDashboard({
             const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
             // Force immediate fetch to get the authentic price for this symbol
             const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
-            livePrice = fetchedPrice && fetchedPrice > 0 ? fetchedPrice : 0;
-            console.log(`[${timeframe}] Fresh price fetched for ${symbol}: ${livePrice}`);
-          } catch (error) {
-            console.warn(`Failed to fetch fresh price for ${symbol}:`, error);
-          }
+            livePrice = fetchedPrice && fetchedPrice > 0 ? fetchedPrice : 0;} catch (error) {}
           
           // If fresh fetch failed, use asset data as authentic
           if (!livePrice || livePrice <= 0) {
             livePrice = (asset as any)?.lastPrice || 
                        (asset as any)?.currentPrice || 
-                       (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);
-            console.log(`[${timeframe}] authentic price for ${symbol}: ${livePrice}`);
-          }
+                       (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);}
           
           // Verify price is reasonable for this symbol (prevent BTC price inheritance)
           if (symbol === 'DOT/USDT' && livePrice > 100) {
             console.error(`[${timeframe}] PRICE ERROR: DOT/USDT showing ${livePrice} - likely BTC price inheritance bug`);
             // Force correct price range for DOT
             livePrice = 3.95; // Use known current DOT price as emergency authentic
+          }// Ensure we have valid price data before proceeding
+          if (!livePrice || livePrice <= 0) {return null;
           }
           
-          console.log(`[${timeframe}] Using live price: ${livePrice} for calculation`);
-          
-          // Ensure we have valid price data before proceeding
-          if (!livePrice || livePrice <= 0) {
-            console.log(`[${timeframe}] No valid price data available, skipping calculation`);
-            return null;
-          }
-          
-          // Generate signal using unified calculation core with live price data
-          console.log(`[${timeframe}] Preparing chart data with ${chartData[timeframe].length} candles`);
-          const chartDataWithTimestamp = chartData[timeframe].map(d => ({
+          // Generate signal using unified calculation core with live price dataconst chartDataWithTimestamp = chartData[timeframe].map(d => ({
             ...d,
             timestamp: d.time || Date.now()
-          }));
-          
-          console.log(`[${timeframe}] Using consolidated calculation engine with live price ${livePrice}`);
-          let consolidatedSignal = await calculateConsolidatedSignal(symbol, timeframe, chartDataWithTimestamp, livePrice);
-          
-          console.log(`[${timeframe}] Consolidated signal result:`, consolidatedSignal ? `${consolidatedSignal.direction} (${consolidatedSignal.confidence}%)` : 'null');
+          }));let consolidatedSignal = await calculateConsolidatedSignal(symbol, timeframe, chartDataWithTimestamp, livePrice);` : 'null');
           
           // Convert consolidated signal to AdvancedSignal format for UI compatibility
           let signal: AdvancedSignal | null = null;
@@ -1455,10 +1363,7 @@ export default function AdvancedSignalDashboard({
           }
           
           // Enhanced signal with consolidated calculation engine
-          if (signal) {
-            console.log(`[ConsolidatedEngine] ${timeframe}: ${signal.macroInsights?.[0]}, Direction=${signal.direction}, Confidence=${signal.confidence}%`);
-            console.log(`[ConsolidatedEngine] ${timeframe}: Signal ready - Direction=${signal?.direction || 'NEUTRAL'}, Confidence=${signal?.confidence || 0}%`);
-          }
+          if (signal) {}
           
           // Generate pattern formations based on signal direction and timeframe
           if (signal) {
@@ -1572,9 +1477,7 @@ export default function AdvancedSignalDashboard({
       const calculationPromises = timeframes.map((timeframe, index) => {
         const delay = index * 100; // 100ms stagger between each timeframe
         return calculateTimeframe(timeframe, delay)
-          .then(result => {
-            console.log(`⚡ Successfully calculated ${timeframe}: ${result?.direction || 'null'}`);
-            return { timeframe, result };
+          .then(result => {return { timeframe, result };
           })
           .catch(error => {
             console.error(`⚡ Error calculating ${timeframe}:`, error);
@@ -1588,20 +1491,12 @@ export default function AdvancedSignalDashboard({
       // Apply results to signals object
       results.forEach(({ timeframe, result }) => {
         newSignals[timeframe] = result;
-      });
-      
-      console.log(`⚡ Calculation loop completed`);  
-      
-      console.log(`🔧 Raw signals before alignment:`, Object.keys(newSignals).map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'}`));
+      });.map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'}`));
       
       // Apply time frame hierarchy alignment to ensure signal consistency
-      const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);
+      const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
       
-      console.log(`🔧 Aligned signals after processing:`, Object.keys(alignedSignals).map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
-      
-      // Update the signals state
-      console.log(`📊 UPDATING UI STATE with ${Object.keys(alignedSignals).length} timeframe signals`);
-      console.log(`📊 Signal data being set:`, Object.keys(alignedSignals).map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
+      // Update the signals state.length} timeframe signals`);.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
       
       // Force a state update by creating a completely new object
       try {
@@ -1628,15 +1523,7 @@ export default function AdvancedSignalDashboard({
         });
         
         // Store the calculated signals for consistency
-        lastCalculationSignalsRef.current = { ...cleanSignals };
-        
-        console.log(`📊 About to call setSignals with:`, Object.keys(cleanSignals));
-        console.log(`📊 Sample signal structure:`, cleanSignals['1d'] ? Object.keys(cleanSignals['1d']!) : 'no 1d signal');
-        console.log(`📊 Sample 1d signal:`, cleanSignals['1d']);
-        setSignals(cleanSignals);
-        console.log(`📊 setSignals call completed successfully`);
-
-        // LIVE ACCURACY TRACKING: Record predictions for each timeframe
+        lastCalculationSignalsRef.current = { ...cleanSignals };);: 'no 1d signal');setSignals(cleanSignals);// LIVE ACCURACY TRACKING: Record predictions for each timeframe
         try {
           // CRITICAL FIX: Use the exact same fresh price that was used for signal calculations
           // This ensures trade levels match the actual calculated entry prices
@@ -1647,22 +1534,14 @@ export default function AdvancedSignalDashboard({
             // Force fresh fetch to get the exact price used in calculations
             const fetchedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
             if (fetchedPrice !== null && fetchedPrice > 0) {
-              authenticLivePrice = fetchedPrice;
-              console.log(`Recording predictions using fresh fetched price: ${authenticLivePrice}`);
-            }
-          } catch (error) {
-            console.warn('Failed to fetch fresh price for prediction recording:', error);
-          }
+              authenticLivePrice = fetchedPrice;}
+          } catch (error) {}
           
           // authentic only if fresh fetch fails
           if (!authenticLivePrice || authenticLivePrice <= 0) {
-            authenticLivePrice = (asset as any)?.lastPrice || currentAssetPrice || centralizedPrice;
-            console.log(`Recording predictions using authentic price: ${authenticLivePrice}`);
-          }
+            authenticLivePrice = (asset as any)?.lastPrice || currentAssetPrice || centralizedPrice;}
           
-          if (!authenticLivePrice || authenticLivePrice <= 0) {
-            console.warn('No valid live price available for accuracy tracking - skipping prediction recording');
-            return;
+          if (!authenticLivePrice || authenticLivePrice <= 0) {return;
           }
           
           for (const [timeframe, signal] of Object.entries(cleanSignals)) {
@@ -1709,9 +1588,7 @@ export default function AdvancedSignalDashboard({
                   const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
                   const correctedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
                   if (correctedPrice !== null && correctedPrice > 0) {
-                    authenticLivePrice = correctedPrice;
-                    console.log(`Price corrected for ${symbol}: ${authenticLivePrice}`);
-                  }
+                    authenticLivePrice = correctedPrice;}
                 } catch (error) {
                   console.error(`Failed to correct price for ${symbol}:`, error);
                 }
@@ -1731,10 +1608,7 @@ export default function AdvancedSignalDashboard({
               };
               
               // Record prediction for accuracy tracking
-              await recordPrediction(predictionSignal, authenticLivePrice);
-              console.log(`Recorded prediction: ${timeframe} ${signal.direction} @ ${authenticLivePrice}`);
-              
-              // Trigger learning from accumulated accuracy data
+              await recordPrediction(predictionSignal, authenticLivePrice);// Trigger learning from accumulated accuracy data
               await learnFromAccuracy(symbol, signal.timeframe);
             }
           }
@@ -1776,18 +1650,10 @@ export default function AdvancedSignalDashboard({
           variant: "default", 
           duration: 10000
         });
-      }
-      console.log(`Found ${validSignalCount} valid signals for recommendation for ${symbol}`);
-      
-      // Generate a recommendation from the signals if we have enough data
-      if (validSignalCount > 0) {
-        console.log(`Updating trade recommendation for 4h timeframe`);
-        const recommendation = generateTradeRecommendation('4h');
+      }// Generate a recommendation from the signals if we have enough data
+      if (validSignalCount > 0) {const recommendation = generateTradeRecommendation('4h');
         setRecommendation(recommendation);
-      }
-      
-      console.log(`Calculation process complete for ${symbol} - ${validSignalCount} signals generated`);
-    } catch (error) {
+      }} catch (error) {
       console.error('[SignalDashboard] Calculation process error:', error);
       setIsCalculating(false); // Reset calculation state on error
     } finally {
@@ -1801,9 +1667,7 @@ export default function AdvancedSignalDashboard({
     const currentTimeframe = timeframe || selectedTimeframe;
     const signal = signals[currentTimeframe];
     
-    if (!signal) {
-      console.log(`No signal available for ${symbol} on ${currentTimeframe}`);
-      return null;
+    if (!signal) {return null;
     }
     
     // Find the most influential indicators for explanation
@@ -1896,9 +1760,7 @@ export default function AdvancedSignalDashboard({
   }, [signals, symbol, selectedTimeframe]);
 
   // Update the recommendation when the timeframe changes
-  const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {
-    console.log(`Updating trade recommendation for ${timeframe} timeframe`);
-    const newRecommendation = generateTradeRecommendation(timeframe);
+  const updateRecommendationForTimeframe = useCallback((timeframe: TimeFrame) => {const newRecommendation = generateTradeRecommendation(timeframe);
     setRecommendation(newRecommendation);
   }, [generateTradeRecommendation]);
 
@@ -1908,10 +1770,7 @@ export default function AdvancedSignalDashboard({
   }, [calculateAllSignals]);
 
   // Handle timeframe selection - FIXED to preserve synchronized signals
-  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {
-    console.log(`Tab change to ${timeframe} - using synchronized auto-calculated signal`);
-    
-    // Use existing synchronized signal instead of forcing immediate calculation
+  const handleTimeframeSelect = useCallback((timeframe: TimeFrame) => {// Use existing synchronized signal instead of forcing immediate calculation
     // This preserves the auto-calculated signals from the 3-minute timer system
     setSelectedTimeframe(timeframe);
     updateRecommendationForTimeframe(timeframe);
@@ -2099,7 +1958,6 @@ export default function AdvancedSignalDashboard({
             </div>
           </div>
           
-
 
           {/* Enhanced Market Analysis - All 4 Improvements */}
           <div className="mt-4 p-3 bg-gradient-to-r from-emerald-900/20 to-cyan-900/20 rounded-lg border border-emerald-500/30">
@@ -2744,7 +2602,6 @@ export default function AdvancedSignalDashboard({
                           </div>
                         </div>
                         
-
 
                       </div>
                       

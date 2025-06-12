@@ -268,16 +268,11 @@ export function processAllTimeframes(
   price: number,
   timeframes: TimeFrame[]
 ): Record<TimeFrame, CalculationResult> {
-  try {
-    console.log(`Processing timeframes for ${symbol} with price ${price}`);
-    
-    // Calculate raw signals for all timeframes
+  try {// Calculate raw signals for all timeframes
     const rawResults: Partial<Record<TimeFrame, CalculationResult>> = {} as any;
     
     // 1. First pass: Calculate base signals for each timeframe independently
-    for (const tf of timeframes) {
-      console.log(`Calculating base signal for ${tf}`);
-      rawResults[tf] = calculateDeterministicSignal(symbol, price, tf);
+    for (const tf of timeframes) {rawResults[tf] = calculateDeterministicSignal(symbol, price, tf);
     }
     
     // Use a simpler approach for alignment to avoid potential issues
@@ -296,11 +291,7 @@ export function processAllTimeframes(
     const primaryDirection = 
       priceHash % 3 === 0 ? 'LONG' : 
       priceHash % 3 === 1 ? 'SHORT' : 
-      'NEUTRAL';
-      
-    console.log(`Primary market direction based on price ${price}: ${primaryDirection}`);
-    
-    // Align higher timeframes more strongly with the primary direction
+      'NEUTRAL';// Align higher timeframes more strongly with the primary direction
     for (const tf of higherTimeframes) {
       if (aligned[tf as TimeFrame]) {
         const signal = aligned[tf as TimeFrame];
@@ -326,10 +317,7 @@ export function processAllTimeframes(
           };
         }
       }
-    }
-    
-    console.log('Successfully processed all timeframes');
-    return aligned;
+    }return aligned;
   } catch (error) {
     console.error('Error processing timeframes:', error);
     // Create a authentic set of calculations to avoid fatal errors

@@ -600,8 +600,6 @@ class UnifiedCalculationCore {
     return ema;
   }
 
-
-
   /**
    * Optimized ADX calculation with memory efficiency and performance improvements
    */
@@ -903,16 +901,7 @@ class UnifiedCalculationCore {
     // Calculate support and resistance levels with symbol validation
     const supportResistance = this.calculateSupportResistance(data, 12, symbol);
     
-    // Debug logging
-    console.log(`Support/Resistance calculation for ${symbol} ${timeframe}:`, {
-      dataLength: data.length,
-      supports: supportResistance.supports.length,
-      resistances: supportResistance.resistances.length,
-      supportLevels: supportResistance.supports,
-      resistanceLevels: supportResistance.resistances
-    });
-    
-    // Ensure we always have support and resistance levels
+    // Debug logging// Ensure we always have support and resistance levels
     const finalSupports = supportResistance.supports.length > 0 ? supportResistance.supports : [
       currentPrice * 0.985,
       currentPrice * 0.970,
@@ -923,15 +912,7 @@ class UnifiedCalculationCore {
       currentPrice * 1.015,
       currentPrice * 1.030,
       currentPrice * 1.045
-    ];
-
-    console.log(`FINAL Support/Resistance for ${symbol} ${timeframe}:`, {
-      supports: finalSupports,
-      resistances: finalResistances,
-      currentPrice
-    });
-
-    const indicators: TechnicalIndicators = {
+    ];const indicators: TechnicalIndicators = {
       rsi: {
         value: rsi,
         signal: rsi > 70 ? 'SELL' : rsi < 30 ? 'BUY' : 'NEUTRAL',

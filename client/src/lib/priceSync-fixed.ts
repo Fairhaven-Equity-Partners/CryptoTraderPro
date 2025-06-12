@@ -113,10 +113,7 @@ export function setPrice(symbol: string, price: number): boolean {
       timestamp: now
     }
   });
-  window.dispatchEvent(updateEvent);
-  
-  console.log(`✅ Price updated for ${symbol}: ${price}`);
-  return true;
+  window.dispatchEvent(updateEvent);return true;
 }
 
 /**
@@ -186,13 +183,9 @@ export function setupPriceListener(): void {
     
     ws.addEventListener('message', priceUpdateHandler);
     
-    ws.addEventListener('open', () => {
-      console.log('WebSocket connection established for price updates');
-    });
+    ws.addEventListener('open', () => {});
     
-    ws.addEventListener('close', () => {
-      console.log('WebSocket connection closed');
-      // Reconnect after delay
+    ws.addEventListener('close', () => {// Reconnect after delay
       setTimeout(() => setupPriceListener(), 5000);
     });
     

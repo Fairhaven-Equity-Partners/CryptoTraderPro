@@ -28,11 +28,7 @@ export function generateManualCalculationToken(): string {
   manualCalculationToken = newToken;
   
   // Record the time
-  lastManualCalculationTime = Date.now();
-  
-  console.log('[ManualCalc] New calculation token generated');
-  
-  return newToken;
+  lastManualCalculationTime = Date.now();return newToken;
 }
 
 /**
@@ -42,26 +38,18 @@ export function generateManualCalculationToken(): string {
  */
 export function isCalculationAllowed(token?: string): boolean {
   // If no token is provided, it's an auto-calculation attempt - block it
-  if (!token) {
-    console.log('[ManualCalc] Auto-calculation attempt blocked - no token provided');
-    return false;
+  if (!token) {return false;
   }
   
   // If we're already calculating, block duplicate calculations
-  if (isManualCalculationInProgress) {
-    console.log('[ManualCalc] Calculation already in progress - blocked duplicate');
-    return false;
+  if (isManualCalculationInProgress) {return false;
   }
   
   // Check if the token matches
-  if (token !== manualCalculationToken) {
-    console.log('[ManualCalc] Invalid calculation token - blocked unauthorized calculation');
-    return false;
+  if (token !== manualCalculationToken) {return false;
   }
   
-  // Token is valid, allow calculation
-  console.log('[ManualCalc] Manual calculation approved with valid token');
-  return true;
+  // Token is valid, allow calculationreturn true;
 }
 
 /**
@@ -96,9 +84,7 @@ export function isAutoCalculationAttempt(): boolean {
   
   // If it's been less than 3 seconds since the last manual calculation
   // and we don't have a token, it's probably an auto-recalculation
-  if (timeFromLastManual < 3000 && manualCalculationToken === null) {
-    console.log('[ManualCalc] Detected auto-calculation attempt');
-    return true;
+  if (timeFromLastManual < 3000 && manualCalculationToken === null) {return true;
   }
   
   return false;

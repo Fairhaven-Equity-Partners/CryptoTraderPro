@@ -52,11 +52,7 @@ class OptimizedAccuracyTracker {
         signalData: JSON.stringify(signal)
       };
 
-      await apiRequest('/api/trade-simulations', tradeData);
-      console.log(`📈 Recorded prediction: ${signal.timeframe} ${signal.direction} @ ${signal.entryPrice}`);
-    } catch (error) {
-      console.log('Error recording prediction:', error);
-    }
+      await apiRequest('/api/trade-simulations', tradeData);} catch (error) {}
   }
 
   async updateAccuracy(symbol: string, timeframe: string): Promise<void> {
@@ -74,9 +70,7 @@ class OptimizedAccuracyTracker {
           profitLoss: metric.totalProfit || 0
         });
       }
-    } catch (error) {
-      console.log('Error in adaptive learning:', error);
-    }
+    } catch (error) {}
   }
 
   getMetrics(symbol: string, timeframe: string): AccuracyMetrics | null {

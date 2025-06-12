@@ -30,10 +30,7 @@ export class FinalOptimizedCore {
    * Initialize the core system
    */
   initialize(): void {
-    if (this.isInitialized) return;
-    
-    console.log('Initializing Final Optimized Core System');
-    this.isInitialized = true;
+    if (this.isInitialized) return;this.isInitialized = true;
     
     // Set up performance monitoring
     this.setupPerformanceMonitoring();
@@ -281,9 +278,7 @@ export class FinalOptimizedCore {
   private setupPerformanceMonitoring(): void {
     // Monitor calculation performance every 30 seconds
     setInterval(() => {
-      const stats = optimizedSignalEngine.getStats();
-      console.log(`Performance: ${stats.calculations} cached calculations, ${stats.signals} active signals`);
-    }, 30000);
+      const stats = optimizedSignalEngine.getStats();}, 30000);
   }
 
   /**

@@ -55,10 +55,7 @@ export async function initializeOptimizedSystem(): Promise<void> {
       };
     }
 
-    systemCore.isInitialized = true;
-    console.log('[OptimizedCore] System initialized with authentic data sources');
-
-  } catch (error) {
+    systemCore.isInitialized = true;} catch (error) {
     console.error('[OptimizedCore] Initialization failed:', error);
     throw error;
   } finally {

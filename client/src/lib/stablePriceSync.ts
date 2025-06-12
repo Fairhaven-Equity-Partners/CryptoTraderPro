@@ -33,34 +33,25 @@ export { lastFetchTime };
  * COMPLETELY REWRITTEN:
  * Get the current price for a symbol - has strong debouncing to prevent excessive fetches
  */
-export async function getCurrentPrice(symbol: string): Promise<number> {
-  console.log(`[Price] getCurrentPrice called for ${symbol}`);
-  const now = Date.now();
+export async function getCurrentPrice(symbol: string): Promise<number> {const now = Date.now();
   const cachedData = priceCache[symbol];
   
   // If we have a cache hit that's still valid, return it immediately
-  if (cachedData && (now - cachedData.timestamp) < REFRESH_INTERVAL) {
-    console.log(`[Price] Using cached price for ${symbol}: ${cachedData.price}`);
-    return cachedData.price;
+  if (cachedData && (now - cachedData.timestamp) < REFRESH_INTERVAL) {return cachedData.price;
   }
   
   // Track this symbol for regular updates
   if (!activeSymbols.has(symbol)) {
-    activeSymbols.add(symbol);
-    console.log(`[Price] Added ${symbol} to active tracking list`);
-  }
+    activeSymbols.add(symbol);}
   
   // Fetch a fresh price - but only if enough time has passed
   const timeSinceFetch = now - lastFetchTime;
-  if (timeSinceFetch < REFRESH_INTERVAL && cachedData) {
-    console.log(`[Price] Skipping fetch, only ${Math.floor(timeSinceFetch/1000)}s since last fetch`);
+  if (timeSinceFetch < REFRESH_INTERVAL && cachedData) {}s since last fetch`);
     return cachedData.price; // Return stale data if we have it
   }
   
   // If we reach here, we need to fetch fresh data
-  try {
-    console.log(`[Price] Fetching fresh price for ${symbol}...`);
-    const data = await fetchAssetBySymbol(symbol);
+  try {const data = await fetchAssetBySymbol(symbol);
     if (!data || !data.price) {
       // If fetch fails but we have a cached price, use it regardless of age
       if (cachedData) return cachedData.price;
@@ -99,8 +90,7 @@ function shouldAllowCalculation(symbol: string): boolean {
   
   // DRAMATICALLY REDUCE CALCULATION FREQUENCY - 10 MINUTE LOCKOUT PERIOD
   // This completely prevents the market analysis box from changing too frequently
-  if (now - lastTime < 600000) { // 10 minutes in milliseconds
-    console.log(`[StablePrice] Skipping recalculation - Last calc was ${Math.floor((now - lastTime)/1000)}s ago, 10-minute lockout in effect`);
+  if (now - lastTime < 600000) { // 10 minutes in milliseconds/1000)}s ago, 10-minute lockout in effect`);
     return false;
   }
   
@@ -129,9 +119,7 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
   // Update the timestamp only - no calculation events emitted
   if (!(window as any).lastCalcTimestamp[symbol]) {
     (window as any).lastCalcTimestamp[symbol] = Date.now();
-  }
-  
-  console.log(`[Price] Broadcasting price update: ${symbol} = ${price} (2-minute system)`);
+  }`);
   
   // Also trigger a timer reset event
   resetPriceTimer();
@@ -140,9 +128,7 @@ export function broadcastPriceUpdate(symbol: string, price: number) {
 /**
  * Reset the price timer - used when a new price update comes in
  */
-function resetPriceTimer() {
-  console.log(`[Price] TIMER RESET - Starting new 3-minute cycle`);
-  lastFetchTime = Date.now();
+function resetPriceTimer() {lastFetchTime = Date.now();
   
   // Notify all components about the reset
   const resetEvent = new CustomEvent('price-timer-reset', {
@@ -190,21 +176,11 @@ export function startPricePolling(symbol: string): () => void {
   getCurrentPrice(symbol);
   
   // Setup the global timer if it doesn't exist
-  if (!globalPriceTimer) {
-    console.log(`[Price] Setting up master 4-minute price polling timer`);
-    
-    // Check every minute if we need to fetch prices
+  if (!globalPriceTimer) {// Check every minute if we need to fetch prices
     globalPriceTimer = setInterval(() => {
       const now = Date.now();
-      const secondsSinceLastFetch = Math.floor((now - lastFetchTime) / 1000);
-      
-      console.log(`[Price] Timer check: ${secondsSinceLastFetch}s since last fetch`);
-      
-      // If 4 minutes have passed, fetch for all active symbols to match CoinGecko rate limits
-      if (secondsSinceLastFetch >= 240) {
-        console.log(`[Price] 4-MINUTE MARK REACHED - Fetching ALL prices`);
-        
-        // Fetch prices for all tracked symbols
+      const secondsSinceLastFetch = Math.floor((now - lastFetchTime) / 1000);// If 4 minutes have passed, fetch for all active symbols to match CoinGecko rate limits
+      if (secondsSinceLastFetch >= 240) {// Fetch prices for all tracked symbols
         Array.from(activeSymbols).forEach(trackedSymbol => {
           getCurrentPrice(trackedSymbol);
         });
@@ -219,8 +195,7 @@ export function startPricePolling(symbol: string): () => void {
     // If no more symbols to track, clear the timer
     if (activeSymbols.size === 0 && globalPriceTimer) {
       clearInterval(globalPriceTimer);
-      globalPriceTimer = null;
-      console.log(`[Price] Stopped price polling (no active symbols)`);
+      globalPriceTimer = null;`);
     }
   };
 }

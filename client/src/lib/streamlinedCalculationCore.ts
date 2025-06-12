@@ -32,17 +32,11 @@ class StreamlinedCalculationCore {
   };
 
   async calculateSignals(symbol: string, currentPrice: number): Promise<Map<string, StreamlinedSignal>> {
-    if (this.isCalculating) {
-      console.log('Calculation already in progress, skipping');
-      return this.signals;
+    if (this.isCalculating) {return this.signals;
     }
 
     this.isCalculating = true;
-    const startTime = Date.now();
-    
-    console.log(`🎯 Starting streamlined calculation for ${symbol} @ ${currentPrice}`);
-
-    try {
+    const startTime = Date.now();try {
       this.signals.clear();
       
       // Process all timeframes efficiently
@@ -61,10 +55,7 @@ class StreamlinedCalculationCore {
         }
       }
 
-      this.updateMetrics(startTime);
-      
-      console.log(`✅ Calculation complete: ${this.signals.size} signals generated`);
-      return this.signals;
+      this.updateMetrics(startTime);return this.signals;
       
     } catch (error) {
       console.error('Error in streamlined calculation:', error);

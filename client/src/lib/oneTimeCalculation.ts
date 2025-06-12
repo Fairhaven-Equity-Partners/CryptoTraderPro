@@ -28,10 +28,7 @@ const PRICE_FETCH_COMPLETED = 'price-fetch-completed';
 /**
  * Initialize the one-time calculation system with the new price-based calculation model
  */
-export function initOneTimeCalculationSystem() {
-  console.log('[ONE-TIME-CALC] Initializing redesigned one-time calculation system');
-  
-  // Clear any existing handlers to prevent duplicates during hot reload
+export function initOneTimeCalculationSystem() {// Clear any existing handlers to prevent duplicates during hot reload
   window.removeEventListener('price-update', handlePriceUpdate as EventListener);
   window.removeEventListener('price-fetching', handlePriceFetching as EventListener);
   window.removeEventListener('price-fetch-completed', handlePriceFetchCompleted as EventListener);
@@ -39,19 +36,13 @@ export function initOneTimeCalculationSystem() {
   // Add event listeners
   window.addEventListener('price-update', handlePriceUpdate as EventListener);
   window.addEventListener('price-fetching', handlePriceFetching as EventListener);
-  window.addEventListener('price-fetch-completed', handlePriceFetchCompleted as EventListener);
-  
-  console.log('[ONE-TIME-CALC] Event handlers registered for redesigned system');
-}
+  window.addEventListener('price-fetch-completed', handlePriceFetchCompleted as EventListener);}
 
 /**
  * Handle when a price fetch starts (used to show loading indicators)
  */
 function handlePriceFetching(event: CustomEvent) {
-  const { symbol } = event.detail;
-  console.log('[ONE-TIME-CALC] Price fetch started for', symbol);
-  
-  // Mark that we're starting a new fetch cycle
+  const { symbol } = event.detail;// Mark that we're starting a new fetch cycle
   priceUpdateTracker[symbol] = Date.now();
 }
 
@@ -60,10 +51,7 @@ function handlePriceFetching(event: CustomEvent) {
  * This is explicitly emitted by the price fetching system
  */
 function handlePriceFetchCompleted(event: CustomEvent) {
-  const { symbol, price } = event.detail;
-  console.log('[ONE-TIME-CALC] Price fetch completed for', symbol, 'with price', price);
-  
-  // Schedule a calculation since we just got a fresh price
+  const { symbol, price } = event.detail;// Schedule a calculation since we just got a fresh price
   scheduleCalculation(symbol, price, true);
 }
 
@@ -76,9 +64,7 @@ function handlePriceFetchCompleted(event: CustomEvent) {
 function handlePriceUpdate(event: CustomEvent) {
   const { symbol, price } = event.detail;
   
-  if (!symbol || !price) {
-    console.warn('[ONE-TIME-CALC] Invalid price update received', event.detail);
-    return;
+  if (!symbol || !price) {return;
   }
   
   // Store this as the latest price
@@ -88,9 +74,7 @@ function handlePriceUpdate(event: CustomEvent) {
   };
   
   // If we already calculated with this exact price, don't recalculate
-  if (lastCalculatedPrice[symbol] === price) {
-    console.log(`[ONE-TIME-CALC] Skipping calculation, already calculated with price ${price}`);
-    return;
+  if (lastCalculatedPrice[symbol] === price) {return;
   }
   
   // Check if we're within the "fresh price fetch" window
@@ -98,9 +82,7 @@ function handlePriceUpdate(event: CustomEvent) {
   const timeSinceFetch = Date.now() - lastPriceFetch;
   
   // COMPLETELY DISABLED - No auto-calculations at all, ever
-  // Keep the code path but never actually schedule calculations
-  console.log(`[ONE-TIME-CALC] Auto-calculations completely disabled`);
-  return;
+  // Keep the code path but never actually schedule calculationsreturn;
 }
 
 /**
@@ -108,9 +90,7 @@ function handlePriceUpdate(event: CustomEvent) {
  */
 function scheduleCalculation(symbol: string, price: number, isAfterPriceFetch: boolean) {
   // If a calculation is in progress, just update the pending queue
-  if (isCalculationInProgress) {
-    console.log('[ONE-TIME-CALC] Calculation in progress, queueing update');
-    pendingCalculations[symbol] = { 
+  if (isCalculationInProgress) {pendingCalculations[symbol] = { 
       price, 
       timestamp: Date.now() 
     };
@@ -126,8 +106,7 @@ function scheduleCalculation(symbol: string, price: number, isAfterPriceFetch: b
   const now = Date.now();
   const lockoutUntil = calculationLockUntil[symbol] || 0;
   
-  if (now < lockoutUntil) {
-    console.log(`[ONE-TIME-CALC] Calculation for ${symbol} is locked until ${new Date(lockoutUntil).toLocaleTimeString()}`);
+  if (now < lockoutUntil) {.toLocaleTimeString()}`);
     return;
   }
   
@@ -137,10 +116,7 @@ function scheduleCalculation(symbol: string, price: number, isAfterPriceFetch: b
     
     // Set a lockout period of 5 minutes (300,000 ms) to prevent frequent recalculations
     calculationLockUntil[symbol] = Date.now() + 300000;
-  }, 800);
-  
-  console.log('[ONE-TIME-CALC] Scheduling single calculation after price fetch');
-}
+  }, 800);}
 
 /**
  * Trigger the actual calculation and dispatch appropriate events
@@ -149,9 +125,7 @@ function scheduleCalculation(symbol: string, price: number, isAfterPriceFetch: b
  * @param price Current price
  */
 function triggerCalculation(symbol: string, price: number) {
-  if (isCalculationInProgress) {
-    console.log('[ONE-TIME-CALC] Already calculating, will process later');
-    pendingCalculations[symbol] = { price, timestamp: Date.now() };
+  if (isCalculationInProgress) {pendingCalculations[symbol] = { price, timestamp: Date.now() };
     return;
   }
   
@@ -162,12 +136,7 @@ function triggerCalculation(symbol: string, price: number) {
   const startEvent = new CustomEvent(CALCULATION_STARTED_EVENT, {
     detail: { symbol, price }
   });
-  window.dispatchEvent(startEvent);
-  
-  console.log('==================================================');
-  console.log(`🔄 CALCULATION HAPPENING NOW - PRICE: ${price}`);
-  
-  // Store when we last calculated for this symbol and the price we used
+  window.dispatchEvent(startEvent);// Store when we last calculated for this symbol and the price we used
   lastCalculatedTimestamp[symbol] = Date.now();
   lastCalculatedPrice[symbol] = price;
   
@@ -202,11 +171,7 @@ function finishCalculation(symbol: string) {
       price: lastCalculatedPrice[symbol]
     }
   });
-  window.dispatchEvent(completeEvent);
-  
-  console.log('[ONE-TIME-CALC] Calculation completed');
-  
-  // For now, don't automatically process pending calculations
+  window.dispatchEvent(completeEvent);// For now, don't automatically process pending calculations
   // Only calculate again when the next price fetch occurs
   // or when the user manually requests a calculation
 }
@@ -217,10 +182,7 @@ function finishCalculation(symbol: string) {
  * @param symbol Asset symbol
  * @param price Current price
  */
-export function triggerManualCalculation(symbol: string, price: number) {
-  console.log(`[ONE-TIME-CALC] Manual calculation requested for ${symbol} at $${price}`);
-  
-  // Clear any existing calculation info to force a new one
+export function triggerManualCalculation(symbol: string, price: number) {// Clear any existing calculation info to force a new one
   delete lastCalculatedPrice[symbol];
   
   // Dispatch a special event so the system knows this was manually requested

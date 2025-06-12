@@ -99,10 +99,7 @@ export function setUniformPrice(symbol: string, price: number): void {
     }));
     
     // 4. Also update server via API to ensure backend is in sync
-    syncWithServer(symbol, price);
-    
-    console.log(`✅ Uniform price updated for ${symbol}: ${price}`);
-  }
+    syncWithServer(symbol, price);}
 }
 
 /**

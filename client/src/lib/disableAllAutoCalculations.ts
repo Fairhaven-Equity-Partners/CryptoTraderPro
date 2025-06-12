@@ -3,9 +3,7 @@
  * We are migrating to automatic calculations that run anytime price data is updated.
  */
 
-export function disableAllAutoCalculations() {
-  console.log('ℹ️ Auto-calculation disabling function is now a no-op');
-  // Do nothing - keep auto-calculations enabled
+export function disableAllAutoCalculations() {// Do nothing - keep auto-calculations enabled
   return false;
 }
 

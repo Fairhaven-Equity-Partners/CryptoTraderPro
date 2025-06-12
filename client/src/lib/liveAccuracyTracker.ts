@@ -57,9 +57,7 @@ class LiveAccuracyTracker {
   };
 
   constructor() {
-    this.startMonitoring();
-    console.log('🎯 Live Accuracy Tracker initialized - tracking real market outcomes');
-  }
+    this.startMonitoring();}
 
   /**
    * Record a new prediction for accuracy tracking
@@ -97,10 +95,7 @@ class LiveAccuracyTracker {
         actualOutcome: 'PENDING',
       };
 
-      this.activePredictions.set(predictionId, prediction);
-      
-      console.log(`📈 Prediction recorded: ${signal.symbol} ${signal.timeframe} ${signal.direction} @ ${currentPrice}`);
-      console.log(`🎯 Stop Loss: ${tradeData.stopLoss.toFixed(2)}, Take Profit: ${tradeData.takeProfit.toFixed(2)}`);
+      this.activePredictions.set(predictionId, prediction);}, Take Profit: ${tradeData.takeProfit.toFixed(2)}`);
       
       // Set up automatic closure based on timeframe duration
       this.scheduleAutomaticClosure(predictionId, signal.timeframe);
@@ -186,10 +181,7 @@ class LiveAccuracyTracker {
           exitPrice, 
           exitReason 
         });
-      }
-
-      console.log(`📊 Prediction closed: ${prediction.symbol} ${prediction.timeframe} ${outcome}`);
-      console.log(`🎯 Entry: ${prediction.entryPrice}, Exit: ${exitPrice}, Accuracy: ${accuracyScore.toFixed(2)}%`);
+      }}%`);
       
       // Remove from active tracking
       this.activePredictions.delete(predictionId);
@@ -254,9 +246,7 @@ class LiveAccuracyTracker {
     try {
       await apiRequest(`/api/accuracy/${symbol}/${timeframe}/calculate`, {
         method: 'POST',
-      });
-      console.log(`📈 Accuracy metrics updated for ${symbol} ${timeframe}`);
-    } catch (error) {
+      });} catch (error) {
       console.error('Error updating accuracy metrics:', error);
     }
   }

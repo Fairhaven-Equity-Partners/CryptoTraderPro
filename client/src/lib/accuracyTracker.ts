@@ -71,10 +71,7 @@ export class AccuracyTracker {
       isResolved: false
     };
 
-    this.predictions.set(predictionId, prediction);
-    console.log(`📊 Recorded prediction: ${symbol} ${timeframe} ${direction} @ ${entryPrice}`);
-    
-    return predictionId;
+    this.predictions.set(predictionId, prediction);return predictionId;
   }
 
   /**
@@ -174,9 +171,7 @@ export class AccuracyTracker {
     prediction.wasCorrect = wasCorrect;
     prediction.exitPrice = exitPrice;
     prediction.exitTime = Date.now();
-    prediction.profitLoss = profitLoss;
-
-    console.log(`✅ Resolved prediction: ${prediction.symbol} ${prediction.timeframe} ${prediction.direction} - ${wasCorrect ? 'WIN' : 'LOSS'} (${profitLoss.toFixed(2)}%)`);
+    prediction.profitLoss = profitLoss;}%)`);
 
     // Update accuracy metrics
     this.updateAccuracyMetrics(prediction);
@@ -234,10 +229,7 @@ export class AccuracyTracker {
       prediction.symbol,
       prediction.timeframe,
       prediction.wasCorrect || false
-    );
-
-    console.log(`🧠 Feedback provided: ${prediction.symbol} ${prediction.timeframe} accuracy updated`);
-  }
+    );}
 
   /**
    * Get accuracy metrics for a symbol-timeframe combination
@@ -311,9 +303,7 @@ export class AccuracyTracker {
    * Enable or disable learning mode
    */
   setLearningMode(enabled: boolean): void {
-    this.learningEnabled = enabled;
-    console.log(`🧠 Learning mode ${enabled ? 'enabled' : 'disabled'}`);
-  }
+    this.learningEnabled = enabled;}
 
   /**
    * Clear old predictions to manage memory
@@ -328,9 +318,7 @@ export class AccuracyTracker {
       }
     }
 
-    toRemove.forEach(id => this.predictions.delete(id));
-    console.log(`🧹 Cleared ${toRemove.length} old predictions`);
-  }
+    toRemove.forEach(id => this.predictions.delete(id));}
 }
 
 export const accuracyTracker = AccuracyTracker.getInstance();
