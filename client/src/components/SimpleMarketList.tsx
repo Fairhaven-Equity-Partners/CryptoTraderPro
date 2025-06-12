@@ -94,13 +94,14 @@ export default function SimpleMarketList({ timeframe = '4h', onRefresh }: Simple
   return (
     <div className="space-y-4">
       {/* Timeframe Header */}
-      <div className="flex items-center justify-between mb-4 p-3 bg-gradient-to-r from-blue-600/20 to-green-600/20 rounded-lg border border-blue-500/30">
+      <div className="flex items-center justify-between mb-4 p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg border border-purple-500/40">
         <div className="flex items-center gap-3">
-          <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium text-slate-300">Live Market Analysis</span>
+          <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
+          <span className="text-base font-medium text-white">Market Analysis Dashboard</span>
         </div>
-        <div className="px-3 py-1 bg-blue-600/30 border border-blue-500/50 rounded-full">
-          <span className="text-sm font-bold text-blue-300">{timeframe.toUpperCase()} Timeframe</span>
+        <div className="px-4 py-2 bg-purple-600/40 border border-purple-400/60 rounded-lg shadow-lg">
+          <span className="text-lg font-black text-purple-200">{timeframe.toUpperCase()}</span>
+          <span className="text-sm text-purple-300 ml-1">SIGNALS</span>
         </div>
       </div>
 
