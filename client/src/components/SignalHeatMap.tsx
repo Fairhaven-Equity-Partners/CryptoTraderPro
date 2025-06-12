@@ -87,54 +87,7 @@ function getColorForConfidence(direction: string, confidence: number): string {
 
 function getSignalText(direction: string, confidence: number): string {
   if (direction === 'NEUTRAL') return 'NEUTRAL';
-  return `${direction} (${confidence}%`)`;
-}
-
-export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
-  const [selectedTimeframe, setSelectedTimeframe] = useState<TimeFrame>('4h');
-  const [sortBy, setSortBy] = useState<'confidence' | 'marketCap' | 'change24h'>('confidence');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
-  const [filterDirection, setFilterDirection] = useState<'ALL' | 'LONG' | 'SHORT' | 'NEUTRAL'>('ALL');
-
-  // Function to handle pair selection with immediate calculation trigger
-  const handlePairSelection = (entry: OptimizedMarketEntry) => {
-    const timeframeSignal = entry.signals[selectedTimeframe];
-    onSelectAsset && onSelectAsset(entry.symbol);
-    
-    // Trigger immediate calculation for selected pair
-    const event = new CustomEvent('immediate-pair-calculation', {
-      detail: { symbol: entry.symbol, trigger: 'heatmap-selection' }
-    });
-    document.dispatchEvent(event);
-  };
-  
-  // Perfect synchronization with ultimateSystemManager timer
-  useEffect(() => {
-    const syncWithUltimateSystem = () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/crypto/all-pairs'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/market-heatmap'] });
-    };
-
-    // Listen for synchronized calculation events from the ultimate system
-    const handleCalculationEvent = (event: CustomEvent) => {
-      syncWithUltimateSystem();
-    };
-
-    // Subscribe to synchronized calculation events
-    window.addEventListener('synchronized-calculation-complete', handleCalculationEvent as EventListener);
-    window.addEventListener('calculation-loop-complete', handleCalculationEvent as EventListener);
-    
-    return () => {
-      window.removeEventListener('synchronized-calculation-complete', handleCalculationEvent as EventListener);
-      window.removeEventListener('calculation-loop-complete', handleCalculationEvent as EventListener);
-    };
-  }, []);
-
-  // Fetch optimized market heatmap data from new backend structure
-  const { data: heatmapResponse, isLoading, refetch } = useQuery({
-    queryKey: ['/api/market-heatmap', selectedTimeframe],
-    queryFn: async () => {
-      const response = await fetch(`/api/market-heatmap?timeframe=${selectedTimeframe}`);
+  return `${direction/api/market-heatmap?timeframe=${selectedTimeframe}`);
       if (!response.ok) throw new Error('Failed to fetch heatmap data');
       const data = await response.json();
       return data;

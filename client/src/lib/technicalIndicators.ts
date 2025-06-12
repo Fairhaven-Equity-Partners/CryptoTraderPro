@@ -1180,7 +1180,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         optimalRiskReward: direction === 'NEUTRAL' ? 1.5 : 2.0,
         predictedMovement: {
           percentChange: direction === 'LONG' ? 5.0 : (direction === 'SHORT' ? -5.0 : 0.0),
-          timeEstimate: `${timeframe} horizo`n`
+          timeEstimate: `${timeframe} horizon`
         },
         macroScore: confidence,
         macroClassification: direction === 'LONG' ? 'BULLISH' : (direction === 'SHORT' ? 'BEARISH' : 'NEUTRAL')
@@ -1317,7 +1317,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
     
     // Calculate a signal bias that changes less frequently for longer timeframes
     // Include the month in the date hash to make it change monthly for 3d timeframes
-    const dateString = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${currentDay`}`;
+    const dateString = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${currentDay}`;
     const dateHash = dateString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const signalBias = Math.floor((timeframeHash + dateHash + timeComponent * stabilityFactor) % 5);
     

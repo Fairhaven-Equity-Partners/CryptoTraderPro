@@ -267,7 +267,7 @@ export function processAllTimeframes(
   symbol: string,
   price: number,
   timeframes: TimeFrame[]
-): Record<TimeFrame, CalculationResult> {
+): Partial<Record<TimeFrame, CalculationResult>> {
   try {// Calculate raw signals for all timeframes
     const rawResults: Partial<Record<TimeFrame, CalculationResult>> = {} as any;
     
@@ -277,7 +277,7 @@ export function processAllTimeframes(
     
     // Use a simpler approach for alignment to avoid potential issues
     // Still maintains deterministic output but with fewer potential error points
-    const aligned: Record<TimeFrame, CalculationResult> = { ...rawResults };
+    const aligned: Partial<Record<TimeFrame, CalculationResult>> = { ...rawResults };
     
     // Calculate the base hash that will ensure consistent patterns
     const priceHash = Math.floor(price * 100);
