@@ -67,9 +67,7 @@ export async function initializeUltimateSystem(): Promise<void> {
     startUltimateTimer();
 
     // Setup minimal global functions
-    setupGlobalFunctions();} catch (error) {
-    console.error('[UltimateManager] Initialization failed:', error);
-    systemInitialized = false;
+    setupGlobalFunctions();} catch (error) {systemInitialized = false;
     systemState.initialized = false;
     throw error;
   }

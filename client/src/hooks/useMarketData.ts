@@ -39,9 +39,7 @@ export function useMarketData(symbol: string) {
         setChartData(prev => ({ ...prev, [tf]: data }));
         loadedTimeframes.current.add(tf);
         checkAllLoaded();
-      } catch (err) {
-        console.error(`Error loading ${tf} data for ${symbol}:`, err);
-        // Even if there's an error, mark this timeframe as attempted
+      } catch (err) {// Even if there's an error, mark this timeframe as attempted
         loadedTimeframes.current.add(tf);
         checkAllLoaded();
       }
@@ -220,7 +218,7 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   const fetchData = useCallback(async () => {
     try {
       // Don't show loading state if we have previous data for this symbol
-      const cacheKey = `${symbol}_${timeframe}`;
+      const cacheKey = `${symbol}_${timeframe`}`;
       const hasPreviousData = previousDataRef.current[cacheKey]?.length > 0;
       
       if (!hasPreviousData) {
@@ -249,7 +247,7 @@ export function useChartData(symbol: string, timeframe: TimeFrame) {
   // Initial fetch
   useEffect(() => {
     // Check cache first to prevent flickering
-    const cacheKey = `${symbol}_${timeframe}`;
+    const cacheKey = `${symbol}_${timeframe`}`;
     if (previousDataRef.current[cacheKey]?.length > 0) {
       // Use cached data immediately to avoid loading state
       setChartData(previousDataRef.current[cacheKey]);

@@ -60,7 +60,7 @@ function detectMarketRegime(): { confidence: number; description: string } {
 export function analyzeMacroEnvironment(symbol: string): { score: number; classification: string; insights: string[] } {const macroSignal = calculateMacroSignal(calculateMacroIndicators(symbol, '1d'));
   
   // Enhanced insights with new analysis systems
-  const baseInsights = macroSignal.topIndicators.map(i => `${i.type}: ${i.description}`);// Add correlation analysis insight
+  const baseInsights = macroSignal.topIndicators.map(i => `${i.type}: ${i.description`}`);// Add correlation analysis insight
   const authenticIndicators = [
     { name: 'RSI', category: 'MOMENTUM', signal: 'BUY', strength: 'STRONG' },
     { name: 'MACD', category: 'MOMENTUM', signal: 'BUY', strength: 'MODERATE' },
@@ -68,13 +68,11 @@ export function analyzeMacroEnvironment(symbol: string): { score: number; classi
   ];
   
   const convergence = analyzeIndicatorConvergence(authenticIndicators);if (convergence.confidence > 70) {
-    baseInsights.push(`Correlation: ${convergence.description}`);
-  }
+    baseInsights.push(}
   
   // Add market regime insight
   const regime = detectMarketRegime();if (regime.confidence > 60) {
-    baseInsights.push(`Regime: ${regime.description}`);
-  }
+    baseInsights.push(}
   
   // Add validation insight based on current confidence
   if (macroSignal.confidence > 75) {
@@ -97,7 +95,7 @@ export function getMacroEnvironmentClassification(symbol: string): string {
 
 export function getMacroInsights(symbol: string): string[] {
   const macroSignal = calculateMacroSignal(calculateMacroIndicators(symbol, '1d'));
-  const baseInsights = macroSignal.topIndicators.map(i => `${i.type}: ${i.description}`);
+  const baseInsights = macroSignal.topIndicators.map(i => `${i.type}: ${i.description`}`);
   
   // Add enhanced analysis insights
   const authenticIndicators = [
@@ -108,14 +106,12 @@ export function getMacroInsights(symbol: string): string[] {
   
   const convergence = analyzeIndicatorConvergence(authenticIndicators);
   if (convergence.confidence > 70) {
-    baseInsights.push(`Correlation: ${convergence.description}`);
-  }
+    baseInsights.push(}
   
   // Market regime analysis
   const regime = detectMarketRegime();
   if (regime.confidence > 60) {
-    baseInsights.push(`Regime: ${regime.description}`);
-  }
+    baseInsights.push(}
   
   // Validation insight
   if (macroSignal.confidence > 75) {
@@ -307,18 +303,18 @@ export function calculateMacroSignal(indicators: MacroIndicator[]): {
   // Generate description including moon phase
   let description = '';
   if (signal === 'bullish') {
-    description = `Macro conditions favor bullish scenarios (${Math.round(bullishPercentage)}% bullish signals). `;
+    description = `Macro conditions favor bullish scenarios (${Math.round(bullishPercentage)}% bullish signals).` `;
   } else if (signal === 'bearish') {
-    description = `Macro conditions favor bearish scenarios (${Math.round(bearishPercentage)}% bearish signals). `;
+    description = `Macro conditions favor bearish scenarios (${Math.round(bearishPercentage)}% bearish signals).` `;
   } else {
-    description = `Macro conditions are mostly neutral (${Math.round(neutralPercentage)}% neutral signals). `;
+    description = `Macro conditions are mostly neutral (${Math.round(neutralPercentage)}% neutral signals).` `;
   }
   
   // Add moon phase information
-  description += `${moonPhaseResult.impactDetails}. `;
+  description += `${moonPhaseResult.impactDetails}.` `;
   
   if (topIndicators.length > 0) {
-    description += `Key factors: ${topIndicators.map(i => i.type).join(', ')}.`;
+    description += `Key factors: ${topIndicators.map(i => i.type).join(', ')}`.`;
   }
   
   return {

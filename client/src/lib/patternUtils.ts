@@ -108,7 +108,7 @@ export function generateDeterministicPatterns(
         direction === 'SHORT' ? 'bearish' : 
         'neutral',
       priceTarget: Math.round(priceTarget * 100) / 100,
-      description: `${patternName} detected on ${timeframe} timeframe`,
+      description: `${patternName} detected on ${timeframe} timefram`e`,
       duration: getExpectedDuration(timeframe),
       confidence: Math.min(confidence + 5, 95)
     });

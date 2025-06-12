@@ -114,28 +114,28 @@ export function detectMarketRegime(chartData: ChartData[], timeframe: TimeFrame)
     regime = 'BULL';
     confidence = Math.min(95, 70 + Math.abs(trendDirection) * 100 + Math.abs(momentum) * 50);
     strength = confidence > 80 ? 'STRONG' : confidence > 60 ? 'MODERATE' : 'WEAK';
-    description = `Strong bullish trend with ${(momentum * 100).toFixed(1)}% momentum`;
+    description = `Strong bullish trend with ${(momentum * 100).toFixed(1)}% momentu`m`;
   }
   // Strong bear market conditions
   else if (trendDirection < -0.05 && maTrend < -0.02 && momentum < -0.03) {
     regime = 'BEAR';
     confidence = Math.min(95, 70 + Math.abs(trendDirection) * 100 + Math.abs(momentum) * 50);
     strength = confidence > 80 ? 'STRONG' : confidence > 60 ? 'MODERATE' : 'WEAK';
-    description = `Strong bearish trend with ${(Math.abs(momentum) * 100).toFixed(1)}% downward momentum`;
+    description = `Strong bearish trend with ${(Math.abs(momentum) * 100).toFixed(1)}% downward momentu`m`;
   }
   // Sideways/consolidation conditions
   else if (Math.abs(trendDirection) < 0.03 && Math.abs(maTrend) < 0.015 && volatility < 25) {
     regime = 'SIDEWAYS';
     confidence = Math.min(90, 60 + (25 - volatility));
     strength = volatility < 15 ? 'STRONG' : volatility < 20 ? 'MODERATE' : 'WEAK';
-    description = `Sideways consolidation with ${volatility.toFixed(1)}% volatility`;
+    description = `Sideways consolidation with ${volatility.toFixed(1)}% volatilit`y`;
   }
   // Weak trends or transitional periods
   else if (Math.abs(trendDirection) < 0.02 || volatility > 40) {
     regime = 'TRANSITIONAL';
     confidence = Math.max(30, 50 - volatility);
     strength = 'WEAK';
-    description = `Transitional market with ${volatility.toFixed(1)}% volatility`;
+    description = `Transitional market with ${volatility.toFixed(1)}% volatilit`y`;
   }
   // Moderate bull trend
   else if (trendDirection > 0 && maTrend > 0) {

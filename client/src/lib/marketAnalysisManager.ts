@@ -137,9 +137,7 @@ function calculateSignals(symbol: string, price: number): Record<TimeFrame, any>
         patternFormations: generatePatterns(direction, price, confidence),
         macroInsights: generateMacroInsights(direction, timeframe)
       };
-    } catch (error) {
-      console.error(`Error calculating ${timeframe} for ${symbol}:`, error);
-      signals[timeframe] = null;
+    } catch (error) {signals[timeframe] = null;
     }
   });
   
@@ -281,13 +279,13 @@ function generateMacroInsights(direction: string, timeframe: TimeFrame): string[
   const insights = [];
   
   if (direction === 'LONG') {
-    insights.push(`${timeframe} trend shows bullish momentum`);
+    insights.push(`${timeframe} trend shows bullish momentu`m`);
     insights.push('Support levels are holding strong');
   } else if (direction === 'SHORT') {
-    insights.push(`${timeframe} trend shows bearish pressure`);
+    insights.push(`${timeframe} trend shows bearish pressur`e`);
     insights.push('Resistance levels are limiting upside');
   } else {
-    insights.push(`${timeframe} trend is currently neutral`);
+    insights.push(`${timeframe} trend is currently neutra`l`);
     insights.push('Price is consolidating between support and resistance');
   }
   

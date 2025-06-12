@@ -162,9 +162,7 @@ export function calculateOptimizedSignal(
       volumeProfile,
       macroInsights
     };
-  } catch (error) {
-    console.error('Calculation error:', error);
-    // Return neutral signal on error
+  } catch (error) {// Return neutral signal on error
     return createNeutralSignal(symbol, timeframe, currentPrice);
   }
 }
@@ -648,9 +646,7 @@ function detectPatterns(data: ChartData[], indicators: CalculatedIndicators): Pa
 
 function calculateSupportResistance(data: ChartData[], currentPrice: number, symbol?: string): SupportResistance {
   // CRITICAL FIX: Validate currentPrice to prevent cross-symbol contamination
-  if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {
-    console.error(`OptimizedEngine: Price contamination detected for ${symbol}: ${currentPrice} - using authentic`);
-    const authenticPrices: Record<string, number> = {
+  if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {const authenticPrices: Record<string, number> = {
       'DOT/USDT': 3.98, 'ADA/USDT': 0.66, 'TON/USDT': 3.17, 'DOGE/USDT': 0.18,
       'XRP/USDT': 2.5, 'ATOM/USDT': 4.27, 'NEAR/USDT': 2.38, 'APT/USDT': 4.73,
       'BCH/USDT': 396.33, 'LTC/USDT': 87.65, 'LINK/USDT': 13.8, 'UNI/USDT': 6.14
@@ -897,8 +893,6 @@ export function safeCalculateSignal(
 ): OptimizedSignal {
   try {
     return calculateOptimizedSignal(data, timeframe, currentPrice, symbol);
-  } catch (error) {
-    console.error(`Calculation error for ${symbol} ${timeframe}:`, error);
-    return createNeutralSignal(symbol, timeframe, currentPrice);
+  } catch (error) {return createNeutralSignal(symbol, timeframe, currentPrice);
   }
 }

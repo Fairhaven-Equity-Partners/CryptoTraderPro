@@ -170,15 +170,13 @@ export function setupPriceListener(): void {
       if (data.type === 'PRICE_UPDATE') {
         syncPrice(data.symbol, data.price);
       }
-    } catch (e) {
-      console.error('Error processing WebSocket message:', e);
-    }
+    } catch (e) {}
   };
   
   // Connect to WebSocket if available
   try {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}/ws`;
+    const wsUrl = `${protocol}//${window.location.host}/w`s`;
     const ws = new WebSocket(wsUrl);
     
     ws.addEventListener('message', priceUpdateHandler);
@@ -189,10 +187,6 @@ export function setupPriceListener(): void {
       setTimeout(() => setupPriceListener(), 5000);
     });
     
-    ws.addEventListener('error', (error) => {
-      console.error('WebSocket error:', error);
-    });
-  } catch (e) {
-    console.error('Failed to connect to WebSocket:', e);
-  }
+    ws.addEventListener('error', (error) => {});
+  } catch (e) {}
 }

@@ -18,9 +18,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ currentTab, onChangeTab }
   
   const handleTabClick = (tab: AppTab['id']) => {
     onChangeTab(tab);
-    setLocation(`/${tab === 'analysis' ? '' : tab}`);
+    setLocation(`/${tab}`);
   };
-  
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-secondary border-t border-gray-700 z-10 flex justify-around items-center py-1">
       {tabs.map((tab) => (

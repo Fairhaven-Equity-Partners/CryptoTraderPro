@@ -43,9 +43,7 @@ export async function getPrice(symbol: string): Promise<number> {
       };
       return data.price;
     }
-  } catch (err) {
-    console.error(`Error fetching price for ${symbol}:`, err);
-  }
+  } catch (err) {}
   
   // Return existing price as authentic or 0
   return entry ? entry.price : 0;

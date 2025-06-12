@@ -25,9 +25,7 @@ export async function fetchLatestPrice(symbol: string): Promise<number> {
       broadcastPriceUpdate(symbol, data.price);
       return data.price;
     }
-  } catch (error) {
-    console.error(`Error fetching price for ${symbol}:`, error);
-  }
+  } catch (error) {}
   return 0;
 }
 

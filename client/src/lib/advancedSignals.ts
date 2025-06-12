@@ -173,7 +173,7 @@ export function generatePatternFormations(
       reliability: Math.min(confidence + 5, 95),
       direction: patternDirection,
       priceTarget: priceTarget,
-      description: `${patternName} pattern detected on ${timeframe} timeframe`,
+      description: `${patternName} pattern detected on ${timeframe} timefram`e`,
       duration: getExpectedDuration(timeframe),
       confidence: Math.min(confidence + 5, 95)
     });

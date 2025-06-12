@@ -388,9 +388,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           }
         }
         */
-      } catch (error) {
-        console.error('Error saving chart state:', error);
-      }
+      } catch (error) {}
     }
   }, []);
 

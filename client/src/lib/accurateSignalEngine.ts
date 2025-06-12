@@ -188,7 +188,7 @@ export function generateAccurateSignal(
   currentPrice: number
 ): AccurateSignal {
   if (!data || data.length < 50) {
-    throw new Error(`Insufficient data for ${timeframe} timeframe analysis`);
+    throw new Error(`Insufficient data for ${timeframe} timeframe analysi`s`);
   }
   
   // Calculate all indicators with mathematical precision

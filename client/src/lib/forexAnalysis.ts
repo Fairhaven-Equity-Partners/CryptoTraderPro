@@ -78,9 +78,7 @@ class ForexAnalysisEngine {
       
       // If all sources fail, use current market rate
       this.eurUsdPrice = 1.1400;return this.eurUsdPrice;
-    } catch (error) {
-      console.error('Error fetching EUR/USD price:', error);
-      this.eurUsdPrice = 1.1400;
+    } catch (error) {this.eurUsdPrice = 1.1400;
       return this.eurUsdPrice;
     }
   }
@@ -267,18 +265,18 @@ class ForexAnalysisEngine {
     const nearFibLevel = fibLevels.find(fib => Math.abs(currentPrice - fib.price) < 0.002);
     if (nearFibLevel) {
       confidence += 15;
-      reasoning += `Near Fibonacci ${nearFibLevel.level} level (${nearFibLevel.type}). `;
+      reasoning += `Near Fibonacci ${nearFibLevel.level} level (${nearFibLevel.type}).` `;
     }
     
     // Price action confirmation
     if (priceAction.pattern.includes('Bullish') && direction !== 'SHORT') {
       direction = 'LONG';
       confidence += priceAction.strength * 0.3;
-      reasoning += `${priceAction.pattern} confirms bullish bias. `;
+      reasoning += `${priceAction.pattern} confirms bullish bias.` `;
     } else if (priceAction.pattern.includes('Bearish') && direction !== 'LONG') {
       direction = 'SHORT';
       confidence += priceAction.strength * 0.3;
-      reasoning += `${priceAction.pattern} confirms bearish bias. `;
+      reasoning += `${priceAction.pattern} confirms bearish bias.` `;
     }
     
     // Calculate entry, stop loss, and take profit

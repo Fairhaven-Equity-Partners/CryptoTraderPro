@@ -54,7 +54,7 @@ export class FinalOptimizedCore {
     currentPrice: number
   ): Promise<AdvancedSignal> {
     const startTime = performance.now();
-    const calculationKey = `${symbol}_${timeframe}`;
+    const calculationKey = `${symbol}_${timeframe`}`;
     
     // Prevent duplicate calculations
     if (this.activeCalculations.has(calculationKey)) {
@@ -248,7 +248,7 @@ export class FinalOptimizedCore {
     const confidence = signal.confidence;
     const confluencePercent = Math.round(confluence * 100);
     
-    return `${confidence}% confidence ${direction} signal with ${confluencePercent}% multi-timeframe alignment. Success probability: ${signal.successProbability}%.`;
+    return `${confidence}% confidence ${direction} signal with ${confluencePercent}% multi-timeframe alignment. Success probability: ${signal.successProbability}%`.`;
   }
 
   /**

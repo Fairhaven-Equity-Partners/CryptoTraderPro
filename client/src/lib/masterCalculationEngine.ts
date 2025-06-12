@@ -24,7 +24,7 @@ export class MasterCalculationEngine {
   calculateRSI(data: ChartData[], period: number = 14): number {
     if (data.length < period + 1) return 50;
 
-    const cacheKey = `rsi_${data.length}_${period}`;
+    const cacheKey = `rsi_${data.length}_${period`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -65,7 +65,7 @@ export class MasterCalculationEngine {
   calculateEMA(data: ChartData[], period: number): number {
     if (data.length < period) return data[data.length - 1].close;
 
-    const cacheKey = `ema_${data.length}_${period}`;
+    const cacheKey = `ema_${data.length}_${period`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -88,7 +88,7 @@ export class MasterCalculationEngine {
   calculateMACD(data: ChartData[], fast: number = 12, slow: number = 26, signal: number = 9) {
     if (data.length < slow) return { value: 0, signal: 0, histogram: 0 };
 
-    const cacheKey = `macd_${data.length}_${fast}_${slow}_${signal}`;
+    const cacheKey = `macd_${data.length}_${fast}_${slow}_${signal`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -134,7 +134,7 @@ export class MasterCalculationEngine {
   calculateStochastic(data: ChartData[], kPeriod: number = 14, dPeriod: number = 3) {
     if (data.length < kPeriod) return { k: 50, d: 50 };
 
-    const cacheKey = `stoch_${data.length}_${kPeriod}_${dPeriod}`;
+    const cacheKey = `stoch_${data.length}_${kPeriod}_${dPeriod`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -186,7 +186,7 @@ export class MasterCalculationEngine {
       return { upper: price * 1.02, middle: price, lower: price * 0.98, width: 0.04, percentB: 50 };
     }
 
-    const cacheKey = `bb_${data.length}_${period}_${stdDev}`;
+    const cacheKey = `bb_${data.length}_${period}_${stdDev`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -219,7 +219,7 @@ export class MasterCalculationEngine {
   calculateADX(data: ChartData[], period: number = 14) {
     if (data.length < period + 1) return { value: 25, pdi: 25, ndi: 25 };
 
-    const cacheKey = `adx_${data.length}_${period}`;
+    const cacheKey = `adx_${data.length}_${period`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -290,7 +290,7 @@ export class MasterCalculationEngine {
   calculateATR(data: ChartData[], period: number = 14): number {
     if (data.length < period + 1) return data[data.length - 1].close * 0.02;
 
-    const cacheKey = `atr_${data.length}_${period}`;
+    const cacheKey = `atr_${data.length}_${period`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -340,9 +340,7 @@ export class MasterCalculationEngine {
 
     // CRITICAL FIX: Validate currentPrice to prevent cross-symbol contamination
     const currentPrice = data[data.length - 1]?.close;
-    if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {
-      console.error(`MasterEngine: Price contamination detected for ${symbol}: ${currentPrice} - using authentic`);
-      const authenticPrices: Record<string, number> = {
+    if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {const authenticPrices: Record<string, number> = {
         'DOT/USDT': 3.98, 'ADA/USDT': 0.66, 'TON/USDT': 3.17, 'DOGE/USDT': 0.18,
         'XRP/USDT': 2.5, 'ATOM/USDT': 4.27, 'NEAR/USDT': 2.38, 'APT/USDT': 4.73,
         'BCH/USDT': 396.33, 'LTC/USDT': 87.65, 'LINK/USDT': 13.8, 'UNI/USDT': 6.14
@@ -353,7 +351,7 @@ export class MasterCalculationEngine {
       return this.calculateSupportResistance(correctedData, lookback);
     }
 
-    const cacheKey = `sr_${data.length}_${lookback}`;
+    const cacheKey = `sr_${data.length}_${lookback`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }
@@ -376,7 +374,7 @@ export class MasterCalculationEngine {
   calculateVolatility(data: ChartData[], period: number = 20): number {
     if (data.length < period) return 0.02;
 
-    const cacheKey = `vol_${data.length}_${period}`;
+    const cacheKey = `vol_${data.length}_${period`}`;
     if (this.indicatorCache.has(cacheKey)) {
       return this.indicatorCache.get(cacheKey);
     }

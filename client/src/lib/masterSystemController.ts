@@ -39,9 +39,7 @@ export async function initializeMasterSystem(): Promise<void> {
     // Setup global price sync function
     setupGlobalPriceSync();
 
-    isSystemActive = true;} catch (error) {
-    console.error('[MasterController] Initialization failed:', error);
-    throw error;
+    isSystemActive = true;} catch (error) {throw error;
   }
 }
 
@@ -104,9 +102,7 @@ async function triggerPriceFetch(): Promise<void> {
         window.syncGlobalPrice('BTC/USDT', data.currentPrice, Date.now());
       }
     }
-  } catch (error) {
-    console.error('[MasterController] Error fetching price:', error);
-  }
+  } catch (error) {}
 }
 
 /**

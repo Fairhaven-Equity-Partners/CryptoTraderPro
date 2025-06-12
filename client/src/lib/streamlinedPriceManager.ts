@@ -115,17 +115,13 @@ export class StreamlinedPriceManager {
           entry.subscribers.forEach(callback => {
             try {
               callback(priceData);
-            } catch (error) {
-              console.error(`[StreamlinedPriceManager] Subscriber error for ${symbol}:`, error);
-            }
+            } catch (error) {}
           });
 
           return priceData;
         }
       }
-    } catch (error) {
-      console.error(`[StreamlinedPriceManager] Fetch error for ${symbol}:`, error);
-    }
+    } catch (error) {}
 
     return null;
   }

@@ -33,9 +33,7 @@ export function useSignalAnalysis(symbol: string, timeframe: TimeFrame) {
         const { direction: newDirection, strength: newStrength } = generateSignalSummary(newIndicators);
         setDirection(newDirection);
         setStrength(newStrength);
-      } catch (err) {
-        console.error('Error analyzing indicators:', err);
-      } finally {
+      } catch (err) {} finally {
         setIsProcessing(false);
       }
     }
@@ -196,9 +194,7 @@ export function useMultiTimeframeAnalysis(symbol: string) {
         strength,
         trend
       };
-    } catch (err) {
-      console.error(`Error analyzing timeframe ${tf}:`, err);
-      return {
+    } catch (err) {return {
         timeframe: tf,
         signal: 'NEUTRAL',
         strength: 50,
@@ -260,9 +256,7 @@ export function useMultiTimeframeAnalysis(symbol: string) {
       
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Failed to analyze timeframes'));
-      console.error('Error analyzing timeframes:', err);
-    } finally {
+      setError(err instanceof Error ? err : new Error('Failed to analyze timeframes'));} finally {
       setIsLoading(false);
     }
   }, [analyzeTimeframe]);

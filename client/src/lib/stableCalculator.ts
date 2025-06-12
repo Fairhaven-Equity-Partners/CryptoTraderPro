@@ -30,7 +30,7 @@ class SignalHistory {
   
   // Get a unique key for a symbol+timeframe combination
   private getKey(symbol: string, timeframe: TimeFrame): string {
-    return `${symbol}-${timeframe}`;
+    return `${symbol}-${timeframe`}`;
   }
   
   // Record a signal calculation

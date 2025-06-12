@@ -140,15 +140,14 @@ export async function debouncedApiCall<T>(
   options?: RequestInit,
   cacheDuration?: number
 ): Promise<T> {
-  const key = `${endpoint}_${JSON.stringify(options || {})}`;
+  const key = `${endpoint}_${JSON.stringify(options || {})`}`;
   
   return requestDebouncer.debouncedFetch(
     key,
     async () => {
       const response = await fetch(endpoint, options);
       if (!response.ok) {
-        throw new Error(`API call failed: ${response.statusText}`);
-      }
+        throw new Error(}
       return response.json();
     },
     cacheDuration

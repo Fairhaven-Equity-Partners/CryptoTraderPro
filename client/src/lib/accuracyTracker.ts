@@ -57,7 +57,7 @@ export class AccuracyTracker {
     takeProfit: number,
     confidence: number
   ): string {
-    const predictionId = `${symbol}_${timeframe}_${Date.now()}`;
+    const predictionId = `${symbol}_${timeframe}_${Date.now()`}`;
     
     const prediction: PredictionRecord = {
       symbol,
@@ -186,7 +186,7 @@ export class AccuracyTracker {
    * Update accuracy metrics for the symbol-timeframe combination
    */
   private updateAccuracyMetrics(prediction: PredictionRecord): void {
-    const key = `${prediction.symbol}_${prediction.timeframe}`;
+    const key = `${prediction.symbol}_${prediction.timeframe`}`;
     const current = this.accuracyHistory.get(key) || {
       totalPredictions: 0,
       correctPredictions: 0,
@@ -235,7 +235,7 @@ export class AccuracyTracker {
    * Get accuracy metrics for a symbol-timeframe combination
    */
   getAccuracyMetrics(symbol: string, timeframe: TimeFrame): AccuracyMetrics {
-    const key = `${symbol}_${timeframe}`;
+    const key = `${symbol}_${timeframe`}`;
     return this.accuracyHistory.get(key) || {
       totalPredictions: 0,
       correctPredictions: 0,

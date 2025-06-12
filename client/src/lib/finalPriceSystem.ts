@@ -57,9 +57,7 @@ function updateCountdown() {
     
     // At zero, fetch price AND trigger a synchronized calculationfetchLatestPrice('BTC/USDT', true) // Pass true to indicate this is timer-triggered
       .then(price => {})
-      .catch(error => {
-        console.error('[FinalPriceSystem] Error fetching price:', error);
-      });
+      .catch(error => {});
   }
   
   // Periodically report time remaining for debugging
@@ -86,9 +84,7 @@ function triggerPriceFetch() {
     setTimeout(() => {
       batch.forEach((symbol, symbolIndex) => {
         setTimeout(() => {
-          fetchLatestPrice(symbol, true).catch(error => {
-            console.error(`[FinalPriceSystem] Error fetching price for ${symbol}:`, error);
-          });
+          fetchLatestPrice(symbol, true).catch(error => {});
         }, symbolIndex * 200); // 200ms delay between symbols in batch
       });
     }, index * 1000); // 1 second delay between batches
@@ -112,8 +108,7 @@ export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean
     const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
     
     if (!response.ok) {
-      throw new Error(`API returned ${response.status}`);
-    }
+      throw new Error(}
     
     const data = await response.json();
     const price = parseFloat(data.lastPrice);
@@ -162,10 +157,7 @@ export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean
       document.dispatchEvent(liveUpdateEvent);
     } else {`);
     }return price;
-  } catch (error) {
-    console.error('[FinalPriceSystem] Error fetching price:', error);
-    
-    // Use the last known price if available
+  } catch (error) {// Use the last known price if available
     if (lastPriceBySymbol[symbol]) {return lastPriceBySymbol[symbol].price;
     }
     
@@ -181,7 +173,7 @@ export async function fetchLatestPrice(symbol: string, isTimerTriggered: boolean
 export function getFormattedCountdown(): string {
   const minutes = Math.floor(countdownSeconds / 60);
   const seconds = countdownSeconds % 60;
-  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  return `${minutes}:${seconds.toString().padStart(2, '0')`}`;
 }
 
 /**
@@ -248,9 +240,7 @@ export function startTracking(symbol: string) {
   }
   
   // Do an immediate fetch for the specified symbol
-  fetchLatestPrice(symbol).catch(error => {
-    console.error(`[FinalPriceSystem] Error in initial fetch for ${symbol}:`, error);
-  });}
+  fetchLatestPrice(symbol).catch(error => {});}
 
 /**
  * Stop tracking price for a symbol

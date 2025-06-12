@@ -57,9 +57,7 @@ function triggerCalculation(symbol: string, price: number) {try {
     
     // Update last calculation time
     lastCalculationTimes[symbol] = Date.now();
-  } catch (error) {
-    console.error(`[AutoCalculation] Error triggering calculation:`, error);
-  }
+  } catch (error) {}
 }
 
 /**

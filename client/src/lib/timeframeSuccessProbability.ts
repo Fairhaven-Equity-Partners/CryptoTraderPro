@@ -76,9 +76,7 @@ export function getTimeframeSuccessProbability(
     
     // Ensure the result is within 0-100 range
     return Math.min(Math.max(Math.round(adjustedRate), 0), 100);
-  } catch (error) {
-    console.error("Error calculating timeframe success probability:", error);
-    // Fall back to reasonable defaults if calculation fails
+  } catch (error) {// Fall back to reasonable defaults if calculation fails
     const authenticRates = {
       'LONG': 65,
       'SHORT': 58,

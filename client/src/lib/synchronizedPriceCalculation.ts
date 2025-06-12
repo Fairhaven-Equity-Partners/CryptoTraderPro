@@ -104,10 +104,7 @@ export function processAllTimeframes(
     lastCalculation[symbol] = { time: Date.now(), price };
     
     return results;
-  } catch (error) {
-    console.error("Error in synchronized calculation:", error);
-    
-    // Create authentic results
+  } catch (error) {// Create authentic results
     const authentic: Record<TimeFrame, CalculationResult> = {} as any;
     for (const timeframe of timeframes) {
       authentic[timeframe] = {

@@ -43,8 +43,7 @@ class UnifiedPriceSystem {
     try {
       const response = await fetch(`/api/crypto/${encodeURIComponent(symbol)}`);
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+        throw new Error(}
       
       const data = await response.json();
       if (data && typeof data.lastPrice === 'number' && data.lastPrice > 0) {
@@ -62,15 +61,11 @@ class UnifiedPriceSystem {
       }
       
       throw new Error('Invalid price data received');
-    } catch (error) {
-      console.error(`[UnifiedPrice] Error fetching ${symbol}:`, error);
-      
-      // Return cached data if available, but mark as stale
+    } catch (error) {// Return cached data if available, but mark as stale
       if (cached) {return cached.price;
       }
       
-      throw new Error(`No price data available for ${symbol}`);
-    }
+      throw new Error(}
   }
 
   /**
@@ -82,9 +77,7 @@ class UnifiedPriceSystem {
 
     this.updateInProgress = true;try {
       const promises = Array.from(this.activeSymbols).map(symbol => 
-        this.getRealTimePrice(symbol).catch(error => {
-          console.error(`Failed to refresh ${symbol}:`, error);
-          return null;
+        this.getRealTimePrice(symbol).catch(error => {return null;
         })
       );
 

@@ -17,9 +17,7 @@ export function generateOptimizedAdvancedSignal(
   try {
     const optimizedSignal = calculateOptimizedSignal(data, timeframe, currentPrice, symbol);
     return convertToAdvancedSignal(optimizedSignal);
-  } catch (error) {
-    console.error(`Signal generation error for ${symbol} ${timeframe}:`, error);
-    return createSafeAdvancedSignal(symbol, timeframe, currentPrice);
+  } catch (error) {return createSafeAdvancedSignal(symbol, timeframe, currentPrice);
   }
 }
 
@@ -188,7 +186,7 @@ function calculateSignalStrength(confidence: number, riskReward: number): 'WEAK'
 function generateTechnicalSummary(signal: OptimizedSignal): string {
   const { direction, confidence, indicators } = signal;
   
-  let summary = `${direction} signal with ${confidence.toFixed(0)}% confidence. `;
+  let summary = `${direction} signal with ${confidence.toFixed(0)}% confidence.` `;
   
   // RSI analysis
   if (indicators.rsi > 70) {
@@ -219,7 +217,7 @@ function generateTechnicalSummary(signal: OptimizedSignal): string {
 function generateRiskAssessment(signal: OptimizedSignal): string {
   const { riskReward, recommendedLeverage, indicators } = signal;
   
-  let assessment = `Risk-Reward ratio: ${riskReward.toFixed(2)}:1. `;
+  let assessment = `Risk-Reward ratio: ${riskReward.toFixed(2)}:1.` `;
   
   if (riskReward > 2) {
     assessment += 'Excellent risk-reward profile. ';
@@ -229,7 +227,7 @@ function generateRiskAssessment(signal: OptimizedSignal): string {
     assessment += 'Moderate risk-reward profile. ';
   }
   
-  assessment += `Recommended leverage: ${recommendedLeverage}x. `;
+  assessment += `Recommended leverage: ${recommendedLeverage}x.` `;
   
   if (indicators.volatility > 2) {
     assessment += 'High volatility - exercise caution.';
@@ -245,16 +243,16 @@ function generateRiskAssessment(signal: OptimizedSignal): string {
 function generateTradeRecommendation(signal: OptimizedSignal): string {
   const { direction, confidence, entryPrice, stopLoss, takeProfit, timeframe } = signal;
   
-  let recommendation = `${direction} recommendation for ${timeframe} timeframe. `;
+  let recommendation = `${direction} recommendation for ${timeframe} timeframe.` `;
   
   if (direction === 'LONG') {
-    recommendation += `Entry: $${entryPrice.toFixed(2)}, `;
-    recommendation += `Stop Loss: $${stopLoss.toFixed(2)}, `;
-    recommendation += `Take Profit: $${takeProfit.toFixed(2)}. `;
+    recommendation += `Entry: $${entryPrice.toFixed(2)},` `;
+    recommendation += `Stop Loss: $${stopLoss.toFixed(2)},` `;
+    recommendation += `Take Profit: $${takeProfit.toFixed(2)}.` `;
   } else if (direction === 'SHORT') {
-    recommendation += `Entry: $${entryPrice.toFixed(2)}, `;
-    recommendation += `Stop Loss: $${stopLoss.toFixed(2)}, `;
-    recommendation += `Take Profit: $${takeProfit.toFixed(2)}. `;
+    recommendation += `Entry: $${entryPrice.toFixed(2)},` `;
+    recommendation += `Stop Loss: $${stopLoss.toFixed(2)},` `;
+    recommendation += `Take Profit: $${takeProfit.toFixed(2)}.` `;
   } else {
     recommendation += 'Hold current position or wait for clearer signals. ';
   }

@@ -85,7 +85,7 @@ function detectMarketRegimeFromData(signal: AdvancedSignal): { confidence: numbe
     return { confidence: 60, description: 'Mixed market conditions' };
   }
   
-  return { confidence: confidenceLevel, description: `${signal.direction.toLowerCase()} market bias confirmed` };
+  return { confidence: confidenceLevel, description: `${signal.direction.toLowerCase()} market bias confirme`d` };
 }
 
 // Market analysis functions using authentic data only
@@ -182,7 +182,7 @@ const PriceLevelDisplay = ({ label, value, timeframe, colorClass }: PriceLevelDi
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-white font-semibold">{label}</span>
-      <span className={`font-bold ${colorClass} px-3 py-1 rounded border`}>
+      <span className={`font-bold ${colorClass} px-3 py-1 rounded borde`r`}>
         {formatCurrency(value || 0)}
       </span>
     </div>
@@ -652,9 +652,7 @@ export default function AdvancedSignalDashboard({
         
         // Execute calculation
         if (!isCalculating) {
-          calculateAllSignals().catch(error => {
-            console.error('[SignalDashboard] Calculation error:', error);
-            setIsCalculating(false);
+          calculateAllSignals().catch(error => {setIsCalculating(false);
           });
         }
       } else {/ 1000)}s remaining)`);
@@ -795,7 +793,7 @@ export default function AdvancedSignalDashboard({
           }
           
           patterns.push({
-            name: `Elliott Wave (Impulse ${wavePosition})`,
+            name: `Elliott Wave (Impulse ${wavePosition}`)`,
             reliability: reliability,
             direction: direction === 'LONG' ? 'bullish' : 'bearish',
             priceTarget: pricePrediction,
@@ -827,7 +825,7 @@ export default function AdvancedSignalDashboard({
           }
           
           patterns.push({
-            name: `Elliott Wave (Corrective ${waveName})`,
+            name: `Elliott Wave (Corrective ${waveName}`)`,
             reliability: reliability,
             direction: direction === 'LONG' ? 'bearish' : 'bullish', // Corrective waves typically move against the main trend
             priceTarget: pricePrediction,
@@ -847,7 +845,7 @@ export default function AdvancedSignalDashboard({
         reliability: volumeStrength,
         direction: volumeProfileType === 'Support' ? 'bullish' : 'bearish',
         priceTarget: volumeProfileType === 'Support' ? currentPrice * 1.08 : currentPrice * 0.92,
-        description: `High volume ${volumeProfileType.toLowerCase()} zone indicating institutional interest. High-probability reversal area.`
+        description: `High volume ${volumeProfileType.toLowerCase()} zone indicating institutional interest. High-probability reversal area`.`
       });
     }
     
@@ -874,13 +872,13 @@ export default function AdvancedSignalDashboard({
         const breakDirection = (currentPrice + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
         structureDirection = breakDirection;
         priceTarget = breakDirection === 'bullish' ? currentPrice * 1.15 : currentPrice * 0.85;
-        description = `${breakDirection === 'bullish' ? 'Bullish' : 'Bearish'} market structure break indicating potential trend reversal. High-probability turning point.`;
+        description = `${breakDirection === 'bullish' ? 'Bullish' : 'Bearish'} market structure break indicating potential trend reversal. High-probability turning point`.`;
       } else {
         // Use deterministic direction based on timeframe and current price for consistency
         const chochDirection = (Math.floor(currentPrice / 1000) + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
         structureDirection = chochDirection;
         priceTarget = chochDirection === 'bullish' ? currentPrice * 1.10 : currentPrice * 0.90;
-        description = `Change of character detected in price action, suggesting ${chochDirection === 'bullish' ? 'bullish' : 'bearish'} momentum shift. Watch for confirmation.`;
+        description = `Change of character detected in price action, suggesting ${chochDirection === 'bullish' ? 'bullish' : 'bearish'} momentum shift. Watch for confirmation`.`;
       }
       
       patterns.push({
@@ -904,8 +902,8 @@ export default function AdvancedSignalDashboard({
         direction: isLong ? 'bullish' : 'bearish',
         priceTarget: isLong ? currentPrice * 1.12 : currentPrice * 0.88,
         description: liquidityType === 'Stop Hunt' ? 
-          `${isLong ? 'Bullish' : 'Bearish'} stop hunt detected. Price likely engineered to trigger stops before ${isLong ? 'moving up' : 'dropping'}.` : 
-          `Institutional liquidity pool identified. High probability of ${isLong ? 'upward' : 'downward'} movement after liquidity is absorbed.`
+          `${isLong ? 'Bullish' : 'Bearish'} stop hunt detected. Price likely engineered to trigger stops before ${isLong ? 'moving up' : 'dropping'}`.` : 
+          `Institutional liquidity pool identified. High probability of ${isLong ? 'upward' : 'downward'} movement after liquidity is absorbed`.`
       });
     }
     
@@ -943,7 +941,7 @@ export default function AdvancedSignalDashboard({
         case 'Secondary Test':
           wyckoffDirection = (Math.floor(currentPrice / 1000) + timeframe.length) % 2 === 0 ? 'bullish' : 'bearish';
           priceTarget = wyckoffDirection === 'bullish' ? currentPrice * 1.10 : currentPrice * 0.90;
-          description = `Wyckoff Secondary Test: ${wyckoffDirection === 'bullish' ? 'Bullish' : 'Bearish'} retest of critical level. Watch for ${wyckoffDirection === 'bullish' ? 'strength' : 'weakness'} on this test.`;
+          description = `Wyckoff Secondary Test: ${wyckoffDirection === 'bullish' ? 'Bullish' : 'Bearish'} retest of critical level. Watch for ${wyckoffDirection === 'bullish' ? 'strength' : 'weakness'} on this test`.`;
           break;
       }
       
@@ -975,7 +973,7 @@ export default function AdvancedSignalDashboard({
           component === 'Price-Kumo Relationship' ? 'Price ' + (isBullish ? 'above' : 'below') + ' the Cloud with ' + (isStrong ? 'strong' : 'moderate') + ' momentum.' :
           component === 'Kumo Twist' ? (isBullish ? 'Bullish' : 'Bearish') + ' Cloud twist forming in future, suggesting trend change.' :
           'Chikou Span ' + (isBullish ? 'above' : 'below') + ' price, confirming ' + (isBullish ? 'bullish' : 'bearish') + ' momentum.'
-        }`
+        `}`
       });
     }
     
@@ -998,7 +996,7 @@ export default function AdvancedSignalDashboard({
           relation === 'BTC Dominance' ? 'BTC dominance ' + (isBullish ? 'decreasing' : 'increasing') + ', suggesting ' + (isBullish ? 'altcoin season' : 'bitcoin preference') + '.' :
           relation === 'Sector Rotation' ? 'Crypto sector rotation favoring ' + (isBullish ? 'this asset class' : 'other segments') + '.' :
           'Market sentiment shifting to ' + (isBullish ? 'risk-on' : 'risk-off') + ' mode across global markets.'
-        }`
+        `}`
       });
     }
     
@@ -1020,7 +1018,7 @@ export default function AdvancedSignalDashboard({
           orderFlowType === 'Imbalance' ? 'Significant ' + (isBullish ? 'buying' : 'selling') + ' imbalance detected in recent price action.' :
           orderFlowType === 'Delta Divergence' ? 'Price and delta ' + (isBullish ? 'bullish' : 'bearish') + ' divergence indicating potential ' + (isBullish ? 'upside' : 'downside') + '.' :
           'Large ' + (isBullish ? 'buy' : 'sell') + ' block detected, suggesting institutional ' + (isBullish ? 'accumulation' : 'distribution') + '.'
-        }`
+        `}`
       });
     }
     
@@ -1046,7 +1044,7 @@ export default function AdvancedSignalDashboard({
           cyclePosition === 'Early Bear Phase' ? 'Beginning of bear trend. Initial sharp decline with lower prices ahead.' :
           cyclePosition === 'Mid Bear Phase' ? 'Strongest part of bear trend. Capitulation and strong selling pressure.' :
           'Final stage of bear market. Apathy and disinterest prevalent. Consider accumulating.'
-        }`
+        `}`
       });
     }
     
@@ -1065,19 +1063,19 @@ export default function AdvancedSignalDashboard({
         
         if (isBullish) {
           patterns.push({
-            name: `RSI Bullish Divergence (${severity})`,
+            name: `RSI Bullish Divergence (${severity}`)`,
             reliability: reliability,
             direction: 'bullish',
             priceTarget: currentPrice * (1 + (reliability / 100)),
-            description: `Price making lower lows while RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal.`
+            description: `Price making lower lows while RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal`.`
           });
         } else {
           patterns.push({
-            name: `RSI Bearish Divergence (${severity})`,
+            name: `RSI Bearish Divergence (${severity}`)`,
             reliability: reliability,
             direction: 'bearish',
             priceTarget: currentPrice * (1 - (reliability / 100)),
-            description: `Price making higher highs while RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal.`
+            description: `Price making higher highs while RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal`.`
           });
         }
       } else {
@@ -1089,19 +1087,19 @@ export default function AdvancedSignalDashboard({
         
         if (isBullish) {
           patterns.push({
-            name: `Stoch RSI Bullish Divergence (${severity})`,
+            name: `Stoch RSI Bullish Divergence (${severity}`)`,
             reliability: reliability,
             direction: 'bullish',
             priceTarget: currentPrice * (1 + (reliability / 100)),
-            description: `Price making lower lows while Stochastic RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal.`
+            description: `Price making lower lows while Stochastic RSI makes higher lows. ${severity} signal strength. Suggests potential upward reversal`.`
           });
         } else {
           patterns.push({
-            name: `Stoch RSI Bearish Divergence (${severity})`,
+            name: `Stoch RSI Bearish Divergence (${severity}`)`,
             reliability: reliability,
             direction: 'bearish',
             priceTarget: currentPrice * (1 - (reliability / 100)),
-            description: `Price making higher highs while Stochastic RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal.`
+            description: `Price making higher highs while Stochastic RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal`.`
           });
         }
       }
@@ -1115,11 +1113,11 @@ export default function AdvancedSignalDashboard({
       const reliability = 68 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 22);
       
       patterns.push({
-        name: `${strength} ${divType}`,
+        name: `${strength} ${divType`}`,
         reliability,
         direction: divType.includes('Bullish') ? 'bullish' : divType.includes('Bearish') ? 'bearish' : 'neutral',
         priceTarget: divType.includes('Bullish') ? currentPrice * 1.06 : currentPrice * 0.94,
-        description: `${strength} divergence detected between price and ${divType.split(' ')[0]} indicator. ${strength === 'Hidden' ? 'Trend continuation' : 'Reversal'} signal.`
+        description: `${strength} divergence detected between price and ${divType.split(' ')[0]} indicator. ${strength === 'Hidden' ? 'Trend continuation' : 'Reversal'} signal`.`
       });
     }
 
@@ -1132,7 +1130,7 @@ export default function AdvancedSignalDashboard({
       const reliability = 58 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 25);
       
       patterns.push({
-        name: `${isBullish && !['Doji'].includes(candlePattern) ? 'Bullish' : !isBullish && !['Doji'].includes(candlePattern) ? 'Bearish' : ''} ${candlePattern}`,
+        name: `${isBullish && !['Doji'].includes(candlePattern) ? 'Bullish' : !isBullish && !['Doji'].includes(candlePattern) ? 'Bearish' : ''} ${candlePattern`}`,
         reliability,
         direction: candlePattern === 'Doji' ? 'neutral' : isBullish ? 'bullish' : 'bearish',
         priceTarget: candlePattern === 'Doji' ? currentPrice : isBullish ? currentPrice * 1.04 : currentPrice * 0.96,
@@ -1141,7 +1139,7 @@ export default function AdvancedSignalDashboard({
           candlePattern === 'Hammer' ? 'Bullish reversal pattern at support levels.' :
           candlePattern === 'Shooting Star' ? 'Bearish reversal pattern at resistance levels.' :
           'Strong reversal or continuation signal depending on context.'
-        }`
+        `}`
       });
     }
 
@@ -1154,11 +1152,11 @@ export default function AdvancedSignalDashboard({
       const reliability = 72 + Math.floor(Math.sin(Date.now() / 4000) * 0.4 + 0.5 * 18);
       
       patterns.push({
-        name: `Fibonacci ${isRetracement ? 'Retracement' : 'Extension'} ${fibLevel}`,
+        name: `Fibonacci ${isRetracement ? 'Retracement' : 'Extension'} ${fibLevel`}`,
         reliability,
         direction: isSupport ? 'bullish' : 'bearish',
         priceTarget: isSupport ? currentPrice * 1.05 : currentPrice * 0.95,
-        description: `Price interacting with ${fibLevel} Fibonacci ${isRetracement ? 'retracement' : 'extension'} level. Key ${isSupport ? 'support' : 'resistance'} zone.`
+        description: `Price interacting with ${fibLevel} Fibonacci ${isRetracement ? 'retracement' : 'extension'} level. Key ${isSupport ? 'support' : 'resistance'} zone`.`
       });
     }
 
@@ -1181,7 +1179,7 @@ export default function AdvancedSignalDashboard({
           maPattern === 'EMA Bounce' ? 'Price bouncing off exponential moving average support.' :
           maPattern === 'MA Squeeze' ? 'Moving averages converging, breakout expected.' :
           'Significant moving average crossover signal.'
-        }`
+        `}`
       });
     }
 
@@ -1202,7 +1200,7 @@ export default function AdvancedSignalDashboard({
           srPattern.includes('Double') ? 'Strong reversal pattern with two touches.' :
           srPattern.includes('Triple') ? 'Very strong reversal pattern with three touches.' :
           'Key support/resistance level providing trading opportunities.'
-        }`
+        `}`
       });
     }
 
@@ -1257,9 +1255,7 @@ export default function AdvancedSignalDashboard({
                        (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);}
           
           // Verify price is reasonable for this symbol (prevent BTC price inheritance)
-          if (symbol === 'DOT/USDT' && livePrice > 100) {
-            console.error(`[${timeframe}] PRICE ERROR: DOT/USDT showing ${livePrice} - likely BTC price inheritance bug`);
-            // Force correct price range for DOT
+          if (symbol === 'DOT/USDT' && livePrice > 100) {// Force correct price range for DOT
             livePrice = 3.95; // Use known current DOT price as emergency authentic
           }// Ensure we have valid price data before proceeding
           if (!livePrice || livePrice <= 0) {return null;
@@ -1355,9 +1351,9 @@ export default function AdvancedSignalDashboard({
               macroInsights: [
                 `Market Regime: ${consolidatedSignal.marketStructure.regime}`,
                 `Direction: ${consolidatedSignal.direction}`,
-                `Success Probability: ${consolidatedSignal.successProbability.toFixed(1)}%`,
+                `Success Probability: ${consolidatedSignal.successProbability.toFixed(1)}`%`,
                 `Risk/Reward: ${consolidatedSignal.riskReward.toFixed(2)}`,
-                `Recommended Leverage: ${consolidatedSignal.recommendedLeverage}x`
+                `Recommended Leverage: ${consolidatedSignal.recommendedLeverage}`x`
               ]
             } as AdvancedSignal;
           }
@@ -1381,14 +1377,12 @@ export default function AdvancedSignalDashboard({
             
             const convergenceAnalysis = analyzeIndicatorConvergence(authenticIndicators);
             if (convergenceAnalysis.confidence > 70) {
-              enhancedMacroInsights.push(`Correlation: ${convergenceAnalysis.description}`);
-            }
+              enhancedMacroInsights.push(}
             
             // Add market regime insight
             const regimeAnalysis = detectMarketRegimeFromData(signal);
             if (regimeAnalysis.confidence > 60) {
-              enhancedMacroInsights.push(`Regime: ${regimeAnalysis.description}`);
-            }
+              enhancedMacroInsights.push(}
             
             // Add enhanced validation insight with optimized accuracy calculation
             const baseAccuracy = signal.confidence;
@@ -1398,19 +1392,17 @@ export default function AdvancedSignalDashboard({
                                        timeframe === '1d' ? 0.98 : timeframe === '3d' ? 0.95 :
                                        timeframe === '1w' ? 0.90 : 0.85;
             const historicalAccuracy = Math.max(65, Math.min(96, Math.round(baseAccuracy * timeframeMultiplier)));
-            enhancedMacroInsights.push(`Validation: ${historicalAccuracy}% historical accuracy`);
+            enhancedMacroInsights.push(`Validation: ${historicalAccuracy}% historical accurac`y`);
             
             // Add market structure analysis using authentic data
             const marketStructure = analyzeMarketStructureFromData(signal);
             if (marketStructure.strength > 65) {
-              enhancedMacroInsights.push(`Structure: ${marketStructure.description}`);
-            }
+              enhancedMacroInsights.push(}
             
             // Add volatility analysis using authentic data
             const volatilityAnalysis = analyzeVolatilityFromData(signal);
             if (volatilityAnalysis.confidence > 70) {
-              enhancedMacroInsights.push(`Volatility: ${volatilityAnalysis.description}`);
-            }
+              enhancedMacroInsights.push(}
             
             // Add indicator consensus analysis
             const totalIndicators = [
@@ -1421,9 +1413,9 @@ export default function AdvancedSignalDashboard({
             const bearishCount = totalIndicators.filter(ind => ind.signal === 'SELL').length;
             
             if (bullishCount > bearishCount) {
-              enhancedMacroInsights.push(`Consensus: ${bullishCount}/${totalIndicators.length} indicators bullish`);
+              enhancedMacroInsights.push(`Consensus: ${bullishCount}/${totalIndicators.length} indicators bullis`h`);
             } else if (bearishCount > bullishCount) {
-              enhancedMacroInsights.push(`Consensus: ${bearishCount}/${totalIndicators.length} indicators bearish`);
+              enhancedMacroInsights.push(`Consensus: ${bearishCount}/${totalIndicators.length} indicators bearis`h`);
             }
             
             signal.macroInsights = enhancedMacroInsights;
@@ -1479,9 +1471,7 @@ export default function AdvancedSignalDashboard({
         return calculateTimeframe(timeframe, delay)
           .then(result => {return { timeframe, result };
           })
-          .catch(error => {
-            console.error(`⚡ Error calculating ${timeframe}:`, error);
-            return { timeframe, result: null };
+          .catch(error => {return { timeframe, result: null };
           });
       });
       
@@ -1491,12 +1481,12 @@ export default function AdvancedSignalDashboard({
       // Apply results to signals object
       results.forEach(({ timeframe, result }) => {
         newSignals[timeframe] = result;
-      });.map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'}`));
+      });.map(tf => `${tf}: ${newSignals[tf as TimeFrame]?.direction || 'null'`}`));
       
       // Apply time frame hierarchy alignment to ensure signal consistency
-      const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
+      const alignedSignals = alignSignalsWithTimeframeHierarchy(newSignals, timeframeWeights);.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'`}`));
       
-      // Update the signals state.length} timeframe signals`);.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'}`));
+      // Update the signals state.length} timeframe signals`);.map(tf => `${tf}: ${alignedSignals[tf as TimeFrame]?.direction || 'null'`}`));
       
       // Force a state update by creating a completely new object
       try {
@@ -1581,17 +1571,13 @@ export default function AdvancedSignalDashboard({
               };
               
               const expectedRange = symbolPriceRanges[symbol];
-              if (expectedRange && (authenticLivePrice < expectedRange.min || authenticLivePrice > expectedRange.max)) {
-                console.error(`PRICE VALIDATION FAILED: ${symbol} showing ${authenticLivePrice} - outside expected range ${expectedRange.min}-${expectedRange.max}`);
-                // Force re-fetch instead of using authentic to ensure authenticity
+              if (expectedRange && (authenticLivePrice < expectedRange.min || authenticLivePrice > expectedRange.max)) {// Force re-fetch instead of using authentic to ensure authenticity
                 try {
                   const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
                   const correctedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
                   if (correctedPrice !== null && correctedPrice > 0) {
                     authenticLivePrice = correctedPrice;}
-                } catch (error) {
-                  console.error(`Failed to correct price for ${symbol}:`, error);
-                }
+                } catch (error) {}
               }
               
               const predictionSignal = {
@@ -1627,13 +1613,9 @@ export default function AdvancedSignalDashboard({
             isActive: true // Ensure feedback loop is marked as active
           }));
           
-        } catch (trackingError) {
-          console.error('[SignalDashboard] Accuracy tracking error:', trackingError);
-        }
+        } catch (trackingError) {}
 
-      } catch (error) {
-        console.error('[SignalDashboard] Signal state update error:', error);
-        setIsCalculating(false); // Reset calculation state on error
+      } catch (error) {setIsCalculating(false); // Reset calculation state on error
       }
       
       // Store the signals for this symbol in our persistent ref
@@ -1646,7 +1628,7 @@ export default function AdvancedSignalDashboard({
       if (validSignalCount > 0) {
         toast({
           title: "Auto-Calculation Complete",
-          description: `Updated ${validSignalCount} signals for ${symbol} at ${new Date().toLocaleTimeString()}`,
+          description: "Updated " + validSignalCount + " signals for " + symbol + " at " + new Date().toLocaleTimeString(),
           variant: "default", 
           duration: 10000
         });
@@ -1683,7 +1665,7 @@ export default function AdvancedSignalDashboard({
       if (trendIndicators && trendIndicators.length > 0) {
         const strongestTrend = trendIndicators.find(i => i.strength === 'STRONG');
         if (strongestTrend) {
-          indicators.push(`${strongestTrend.name} (${strongestTrend.signal})`);
+          indicators.push(`${strongestTrend.name}
         }
       }
       
@@ -1692,7 +1674,7 @@ export default function AdvancedSignalDashboard({
       if (momentumIndicators && momentumIndicators.length > 0) {
         const strongestMomentum = momentumIndicators.find(i => i.strength === 'STRONG');
         if (strongestMomentum) {
-          indicators.push(`${strongestMomentum.name} (${strongestMomentum.signal})`);
+          indicators.push(`${strongestMomentum.name}
         }
       }
       
@@ -1701,13 +1683,13 @@ export default function AdvancedSignalDashboard({
       if (patternIndicators && patternIndicators.length > 0) {
         const strongestPattern = patternIndicators.find(i => i.strength === 'STRONG');
         if (strongestPattern) {
-          indicators.push(`${strongestPattern.name} (${strongestPattern.signal})`);
+          indicators.push(`${strongestPattern.name}
         }
       }
       
       // Ensure we have at least something
       if (indicators.length === 0 && trendIndicators && trendIndicators.length > 0) {
-        indicators.push(`${trendIndicators[0].name} (${trendIndicators[0].signal})`);
+        indicators.push(`${trendIndicators[0].name}
       }
       
       return indicators;
@@ -1720,12 +1702,12 @@ export default function AdvancedSignalDashboard({
       
       if (signal.direction === 'LONG') {
         const riskReward = typeof signal.riskRewardRatio === 'number' ? signal.riskRewardRatio.toFixed(1) : '1.5';
-        return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
+        return `${confidenceText} bullish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}`.`;
       } else if (signal.direction === 'SHORT') {
         const riskReward = typeof signal.riskRewardRatio === 'number' ? signal.riskRewardRatio.toFixed(1) : '1.5';
-        return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}.`;
+        return `${confidenceText} bearish signal on ${signal.timeframe} timeframe with ${signal.confidence}% confidence. Optimal entry near ${formatCurrency(signal.entryPrice)} with risk-reward ratio of ${riskReward}`.`;
       } else {
-        return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals.`;
+        return `Neutral market on ${signal.timeframe} timeframe. No clear directional bias detected. Consider waiting for stronger signals`.`;
       }
     };
     
@@ -1856,11 +1838,11 @@ export default function AdvancedSignalDashboard({
             {/* Live Accuracy Metrics */}
             <div className="p-2 bg-emerald-600/20 rounded-lg text-center">
               <div className="text-xs font-bold text-green-400">
-                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total}` : 
-                 realAccuracy.activeTrades > 0 ? `${realAccuracy.activeTrades} Active` : 'No Data'}
+                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total`}` : 
+                 realAccuracy.activeTrades > 0 ? `${realAccuracy.activeTrades} Activ`e` : 'No Data'}
               </div>
               <div className="text-emerald-200 text-xs">
-                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accuracy` : 
+                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accurac`y` : 
                  realAccuracy.activeTrades > 0 ? 'Predictions' : 'Accuracy'}
               </div>
             </div>
@@ -2066,7 +2048,7 @@ export default function AdvancedSignalDashboard({
                     } else {
                       return confidence > 50 && direction === 'LONG' ? 'text-green-400' : 'text-red-400';
                     }
-                  })()}`}>
+                  })()`}`}>
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
                       if (!currentSignal) return 'Neutral';
@@ -2099,13 +2081,13 @@ export default function AdvancedSignalDashboard({
                       const patternFormations = currentSignal.patternFormations || [];
                       
                       if (['1m', '5m', '15m'].includes(selectedTimeframe)) {
-                        return `${Math.min(Math.floor(confidence * 0.8), 85)}%`;
+                        return `${Math.min(Math.floor(confidence * 0.8), 85)}`%`;
                       } else if (['30m', '1h', '4h'].includes(selectedTimeframe)) {
                         const fibBonus = patternFormations.length > 0 ? 15 : 0;
-                        return `${Math.min(Math.floor(confidence * 0.9) + fibBonus, 92)}%`;
+                        return `${Math.min(Math.floor(confidence * 0.9) + fibBonus, 92)}`%`;
                       } else {
                         const strongFib = confidence > 65 ? 20 : 10;
-                        return `${Math.min(Math.floor(confidence * 1.1) + strongFib, 95)}%`;
+                        return `${Math.min(Math.floor(confidence * 1.1) + strongFib, 95)}`%`;
                       }
                     })()}
                   </span>
@@ -2152,7 +2134,7 @@ export default function AdvancedSignalDashboard({
                     }
                     
                     return isConfirmed ? 'text-green-400' : 'text-red-400';
-                  })()}`}>
+                  })()`}`}>
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
                       if (!currentSignal) return 'No';
@@ -2195,7 +2177,7 @@ export default function AdvancedSignalDashboard({
                     } else {
                       return (confidence > 65 && direction !== 'NEUTRAL') ? 'text-green-400' : 'text-red-400';
                     }
-                  })()}`}>
+                  })()`}`}>
                     {(() => {
                       const currentSignal = signals[selectedTimeframe];
                       if (!currentSignal) return 'No';
@@ -2413,7 +2395,7 @@ export default function AdvancedSignalDashboard({
                                 <div className="w-full bg-gray-800 rounded-full h-3 mb-1">
                                   <div 
                                     className={`h-3 rounded-full ${barColorClass}`}
-                                    style={{ width: `${probability}%` }}
+                                    style={{ width: `${probability}`%` }}
                                   />
                                 </div>
                                 <div className="flex justify-between items-center">
@@ -2442,7 +2424,7 @@ export default function AdvancedSignalDashboard({
                                 Math.round(currentSignal.macroScore || 50) >= 70 ? 'bg-green-600' : 
                                 Math.round(currentSignal.macroScore || 50) >= 45 ? 'bg-yellow-600' : 'bg-red-600'
                               }`}
-                              style={{ width: `${Math.round(currentSignal.macroScore || 50)}%` }}
+                              style={{ width: `${Math.round(currentSignal.macroScore || 50)}`%` }}
                             />
                           </div>
                           <div className="flex justify-between items-center">
@@ -2468,7 +2450,7 @@ export default function AdvancedSignalDashboard({
                                     ${pattern.direction === 'bullish' ? 'text-green-400 border-green-500 bg-green-900/30' : 
                                       pattern.direction === 'bearish' ? 'text-red-400 border-red-500 bg-red-900/30' :
                                       'text-yellow-400 border-yellow-500 bg-yellow-900/30'} 
-                                    font-medium px-1 py-0.5 text-xs ml-2 flex-shrink-0`}>
+                                    font-medium px-1 py-0.5 text-xs ml-2 flex-shrink-`0`}>
                                     {pattern.direction.charAt(0).toUpperCase()}
                                   </Badge>
                                 </div>
@@ -2593,7 +2575,7 @@ export default function AdvancedSignalDashboard({
                                   ];
                                   
                                   return finalSupports.slice(0, 3).map((support: number, i: number) => (
-                                    <div key={`supp-${i}`} className="flex justify-between items-center">
+                                    <div key=`{`supp-${i}`} className="flex justify-between items-center">
                                       <span className="text-xs text-gray-400">{labels[i]}</span>
                                       <span className="text-green-400 font-medium text-xs">
                                         ${formatCurrency(support)}
@@ -2772,11 +2754,11 @@ export default function AdvancedSignalDashboard({
                           {/* Dynamic indicators that change based on timeframe */}
                           <div className="flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5">
                             <span className="text-gray-100 font-medium text-xs">Moving Average</span>
-                            <Badge variant="outline" className={`${
+                            <Badge variant="outline" className=`{`${
                               (selectedTimeframe === '15m' || selectedTimeframe === '1h')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-xs`}>
+                            } px-1 py-0.5 text-x`s`}>
                               {(selectedTimeframe === '15m' || selectedTimeframe === '1h') ? 'BUY (M)' : 'BUY (S)'}
                             </Badge>
                           </div>
@@ -2786,7 +2768,7 @@ export default function AdvancedSignalDashboard({
                               (selectedTimeframe === '15m')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-xs`}>
+                            } px-1 py-0.5 text-x`s`}>
                               {selectedTimeframe === '15m' ? 'NEUTRAL (M)' : 'BUY (S)'}
                             </Badge>
                           </div>
@@ -2796,7 +2778,7 @@ export default function AdvancedSignalDashboard({
                               (selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h')
                                 ? 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
                                 : 'text-green-400 border-green-500 bg-green-900/30 font-bold'
-                            } px-1 py-0.5 text-xs`}>
+                            } px-1 py-0.5 text-x`s`}>
                               {(selectedTimeframe === '15m' || selectedTimeframe === '1h' || selectedTimeframe === '4h') 
                                 ? 'BUY (M)' : 'BUY (S)'}
                             </Badge>
@@ -2807,7 +2789,7 @@ export default function AdvancedSignalDashboard({
                               (selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M')
                                 ? 'text-green-400 border-green-500 bg-green-900/30 font-bold'
                                 : 'text-yellow-400 border-yellow-500 bg-yellow-900/30 font-medium'
-                            } px-1 py-0.5 text-xs`}>
+                            } px-1 py-0.5 text-x`s`}>
                               {(selectedTimeframe === '1d' || selectedTimeframe === '3d' || selectedTimeframe === '1w' || selectedTimeframe === '1M') 
                                 ? 'BUY (S)' : 'BUY (M)'}
                             </Badge>
@@ -2869,7 +2851,7 @@ export default function AdvancedSignalDashboard({
                                       moonPhase.impactStrength > 1.05 ? 'bg-green-500' : 
                                       moonPhase.impactStrength < 0.95 ? 'bg-red-500' : 'bg-gray-500'
                                     }`}
-                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}%` }}
+                                    style={{ width: `${Math.abs((moonPhase.impactStrength - 1) * 100) * 6.67}`%` }}
                                   />
                                 </div>
                               </div>

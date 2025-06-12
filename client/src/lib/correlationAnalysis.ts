@@ -69,11 +69,11 @@ export function analyzeIndicatorConvergence(indicators: Indicator[]): Correlatio
   if (bullishPercent >= 70) {
     convergenceStrength = bullishPercent / 100;
     convergenceType = bullishPercent >= 85 ? 'STRONG' : 'MODERATE';
-    description = `Strong bullish convergence: ${bullishPercent.toFixed(1)}% of indicators agree`;
+    description = `Strong bullish convergence: ${bullishPercent.toFixed(1)}% of indicators agre`e`;
   } else if (bearishPercent >= 70) {
     convergenceStrength = -(bearishPercent / 100);
     convergenceType = bearishPercent >= 85 ? 'STRONG' : 'MODERATE';
-    description = `Strong bearish convergence: ${bearishPercent.toFixed(1)}% of indicators agree`;
+    description = `Strong bearish convergence: ${bearishPercent.toFixed(1)}% of indicators agre`e`;
   } else if (Math.max(bullishPercent, bearishPercent, neutralPercent) < 50) {
     convergenceStrength = 0;
     convergenceType = 'DIVERGENT';
@@ -82,7 +82,7 @@ export function analyzeIndicatorConvergence(indicators: Indicator[]): Correlatio
     const dominantPercent = Math.max(bullishPercent, bearishPercent, neutralPercent);
     convergenceStrength = (dominantPercent - 50) / 100; // Scale relative to 50%
     convergenceType = 'WEAK';
-    description = `Weak convergence: ${dominantPercent.toFixed(1)}% plurality agreement`;
+    description = `Weak convergence: ${dominantPercent.toFixed(1)}% plurality agreemen`t`;
   }
 
   // Calculate confidence based on indicator quality and convergence
@@ -188,12 +188,12 @@ export function generateCorrelationInsights(
   // Add correlation insights
   const strongCorrelations = correlations.filter(c => Math.abs(c.correlation) > 0.7);
   if (strongCorrelations.length > 0) {
-    insights.push(`Strong correlation detected between ${strongCorrelations.length} indicator pairs`);
+    insights.push(`Strong correlation detected between ${strongCorrelations.length} indicator pair`s`);
   }
 
   const divergentPairs = correlations.filter(c => c.correlation < -0.5);
   if (divergentPairs.length > 0) {
-    insights.push(`Warning: Conflicting signals detected in ${divergentPairs.length} indicator pairs`);
+    insights.push(`Warning: Conflicting signals detected in ${divergentPairs.length} indicator pair`s`);
   }
 
   // Add specific insights for key correlations
@@ -201,7 +201,7 @@ export function generateCorrelationInsights(
     c.indicators.includes('RSI') && c.indicators.includes('MACD')
   );
   if (momentumCorr && Math.abs(momentumCorr.correlation) > 0.7) {
-    insights.push(`Momentum indicators ${momentumCorr.correlation > 0 ? 'confirm' : 'contradict'} each other`);
+    insights.push(`Momentum indicators ${momentumCorr.correlation > 0 ? 'confirm' : 'contradict'} each othe`r`);
   }
 
   return insights;

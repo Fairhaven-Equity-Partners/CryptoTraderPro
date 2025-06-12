@@ -154,10 +154,7 @@ export function generateSignalForTimeframe(
     };
     
     return advancedSignal;
-  } catch (error) {
-    console.error(`Error generating signal for ${timeframe}:`, error);
-    
-    // ZERO TOLERANCE: No authentic data allowedreturn null;
+  } catch (error) {// ZERO TOLERANCE: No authentic data allowedreturn null;
   }
 }
 
@@ -438,7 +435,7 @@ function generateMacroInsights(
   const insights: string[] = [];
   
   if (direction === 'LONG') {
-    insights.push(`${timeframe} trend analysis indicates bullish pressure.`);
+    insights.push(`${timeframe} trend analysis indicates bullish pressure`);
     insights.push(`Support levels are holding strong with buying pressure increasing.`);
     
     // Add timeframe-specific insights
@@ -452,7 +449,7 @@ function generateMacroInsights(
     }
   } 
   else if (direction === 'SHORT') {
-    insights.push(`${timeframe} trend analysis indicates bearish pressure.`);
+    insights.push(`${timeframe} trend analysis indicates bearish pressure`.`);
     insights.push(`Resistance levels are capping price with selling pressure increasing.`);
     
     // Add timeframe-specific insights
@@ -466,7 +463,7 @@ function generateMacroInsights(
     }
   }
   else {
-    insights.push(`${timeframe} trend analysis indicates neutral conditions.`);
+    insights.push(`${timeframe} trend analysis indicates neutral conditions`.`);
     insights.push(`Price is consolidating between key support and resistance levels.`);
     
     // Add timeframe-specific insights
@@ -889,7 +886,7 @@ function createSimpleauthenticSignal(timeframe: TimeFrame, price: number): Advan
       aggressive: 5,
       recommendation: 'conservative'
     },
-    macroInsights: [`${timeframe} trend analysis shows consolidation.`, 'Market is currently at equilibrium.']
+    macroInsights: [`${timeframe} trend analysis shows consolidation`.`, 'Market is currently at equilibrium.']
   };
 }
 

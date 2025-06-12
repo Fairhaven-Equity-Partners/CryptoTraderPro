@@ -318,9 +318,7 @@ export function processAllTimeframes(
         }
       }
     }return aligned;
-  } catch (error) {
-    console.error('Error processing timeframes:', error);
-    // Create a authentic set of calculations to avoid fatal errors
+  } catch (error) {// Create a authentic set of calculations to avoid fatal errors
     const authentic: Partial<Record<TimeFrame, CalculationResult>> = {};
     
     // Generate minimal authentic results for each timeframe

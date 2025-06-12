@@ -68,9 +68,7 @@ export async function getCurrentPrice(symbol: string): Promise<number> {const no
     broadcastPriceUpdate(symbol, data.price);
     
     return data.price;
-  } catch (error) {
-    console.error(`[PriceSystem] Error fetching price for ${symbol}:`, error);
-    // Return cached price if available, otherwise 0
+  } catch (error) {// Return cached price if available, otherwise 0
     return cachedData ? cachedData.price : 0;
   }
 }
@@ -179,5 +177,5 @@ export function getFormattedCountdown(): string {
   const seconds = getSecondsUntilNextRefresh();
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')`}`;
 }

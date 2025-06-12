@@ -64,7 +64,7 @@ class LiveAccuracyTracker {
    */
   async recordPrediction(signal: AdvancedSignal, currentPrice: number): Promise<void> {
     try {
-      const predictionId = `${signal.symbol}_${signal.timeframe}_${Date.now()}`;
+      const predictionId = `${signal.symbol}_${signal.timeframe}_${Date.now()`}`;
       
       // Create trade simulation in backend
       const tradeData: InsertTradeSimulation = {
@@ -100,9 +100,7 @@ class LiveAccuracyTracker {
       // Set up automatic closure based on timeframe duration
       this.scheduleAutomaticClosure(predictionId, signal.timeframe);
       
-    } catch (error) {
-      console.error('Error recording prediction:', error);
-    }
+    } catch (error) {}
   }
 
   /**
@@ -177,7 +175,7 @@ class LiveAccuracyTracker {
       );
 
       if (activeTrade) {
-        await apiRequest(`/api/trade-simulations/${activeTrade.id}/close`, { 
+        await apiRequest(`/api/trade-simulations/${activeTrade.id}/clos`e`, { 
           exitPrice, 
           exitReason 
         });
@@ -244,11 +242,9 @@ class LiveAccuracyTracker {
    */
   private async updateAccuracyMetrics(symbol: string, timeframe: string): Promise<void> {
     try {
-      await apiRequest(`/api/accuracy/${symbol}/${timeframe}/calculate`, {
+      await apiRequest(`/api/accuracy/${symbol}/${timeframe}/calculat`e`, {
         method: 'POST',
-      });} catch (error) {
-      console.error('Error updating accuracy metrics:', error);
-    }
+      });} catch (error) {}
   }
 
   /**
@@ -257,10 +253,7 @@ class LiveAccuracyTracker {
   async getAccuracyStats(symbol: string, timeframe?: string): Promise<AccuracyMetrics[]> {
     try {
       const params = timeframe ? `?timeframe=${timeframe}` : '';
-      return await apiRequest(`/api/accuracy/${symbol}${params}`);
-    } catch (error) {
-      console.error('Error fetching accuracy stats:', error);
-      return [];
+      return await apiRequest(} catch (error) {return [];
     }
   }
 

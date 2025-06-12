@@ -57,9 +57,7 @@ class StreamlinedCalculationCore {
 
       this.updateMetrics(startTime);return this.signals;
       
-    } catch (error) {
-      console.error('Error in streamlined calculation:', error);
-      return this.signals;
+    } catch (error) {return this.signals;
     } finally {
       this.isCalculating = false;
     }

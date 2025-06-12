@@ -63,7 +63,7 @@ class AdaptiveLearningEngine {
   async learnFromAccuracy(symbol: string, timeframe: string): Promise<void> {
     try {
       // Fetch latest accuracy metrics
-      const metrics = await apiRequest(`/api/accuracy/${symbol}?timeframe=${timeframe}`);
+      const metrics = await apiRequest(`/api/accuracy/${symbol}?timeframe=${timeframe`}`);
       
       if (!metrics || metrics.length === 0) {return;
       }
@@ -75,28 +75,9 @@ class AdaptiveLearningEngine {
         return;
       }
 
-      const key = `${symbol}_${timeframe}`;
-      
-      // Calculate performance scores for each indicator
-      const indicatorScores = {
-        rsi: this.calculateIndicatorScore(metric.rsiAccuracy, metric.winRate),
-        macd: this.calculateIndicatorScore(metric.macdAccuracy, metric.winRate),
-        ema: this.calculateIndicatorScore(metric.emaAccuracy, metric.winRate),
-        stochastic: this.calculateIndicatorScore(metric.stochasticAccuracy, metric.winRate),
-        adx: this.calculateIndicatorScore(metric.adxAccuracy, metric.winRate),
-        bb: this.calculateIndicatorScore(metric.bbAccuracy, metric.winRate)
-      };
-
-      // Get current weights or use base weights
-      const currentWeights = this.adaptedWeights.get(key) || { ...this.baseWeights };
-      
-      // Apply adaptive learning to adjust weights
-      const newWeights = this.adaptWeights(currentWeights, indicatorScores, metric.winRate);
-      
-      // Store updated weights
-      this.adaptedWeights.set(key, newWeights);}% | Total Trades: ${metric.totalTrades}`);} → ${newWeights.rsi.toFixed(2)}`,
-        macd: `${currentWeights.macd.toFixed(2)} → ${newWeights.macd.toFixed(2)}`,
-        ema: `${currentWeights.ema.toFixed(2)} → ${newWeights.ema.toFixed(2)}`
+      const key = `${symbol}_${timeframe`}} → ${newWeights.rsi.toFixed(2)}`,
+        macd: `${currentWeights.macd.toFixed(2)} → ${newWeights.macd.toFixed(2)`}`,
+        ema: `${currentWeights.ema.toFixed(2)} → ${newWeights.ema.toFixed(2)`}`
       });
 
       // Update performance cache
@@ -173,7 +154,7 @@ class AdaptiveLearningEngine {
    * Get adapted weights for a symbol/timeframe combination
    */
   getAdaptedWeights(symbol: string, timeframe: string): AdaptiveWeights {
-    const key = `${symbol}_${timeframe}`;
+    const key = `${symbol}_${timeframe`}`;
     return this.adaptedWeights.get(key) || { ...this.baseWeights };
   }
 
@@ -236,7 +217,7 @@ class AdaptiveLearningEngine {
     metric: AccuracyMetrics, 
     indicatorScores: Record<string, number>
   ): void {
-    const key = `${symbol}_${timeframe}`;
+    const key = `${symbol}_${timeframe`}`;
     
     const performance: TimeframePerformance = {
       timeframe,
@@ -272,7 +253,7 @@ class AdaptiveLearningEngine {
    * Get performance summary for a symbol/timeframe
    */
   getPerformanceSummary(symbol: string, timeframe: string): TimeframePerformance | null {
-    const key = `${symbol}_${timeframe}`;
+    const key = `${symbol}_${timeframe`}`;
     return this.performanceCache.get(key) || null;
   }
 

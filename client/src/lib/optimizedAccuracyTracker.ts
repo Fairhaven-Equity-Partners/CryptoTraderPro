@@ -24,7 +24,7 @@ class OptimizedAccuracyTracker {
   private metrics: Map<string, AccuracyMetrics> = new Map();
 
   async recordPrediction(signal: any): Promise<void> {
-    const predictionId = `${signal.symbol}-${signal.timeframe}-${Date.now()}`;
+    const predictionId = `${signal.symbol}-${signal.timeframe}-${Date.now()`}`;
     
     const prediction: OptimizedPrediction = {
       id: predictionId,
@@ -57,11 +57,11 @@ class OptimizedAccuracyTracker {
 
   async updateAccuracy(symbol: string, timeframe: string): Promise<void> {
     try {
-      const accuracyData = await apiRequest(`/api/accuracy/${symbol}?timeframe=${timeframe}`);
+      const accuracyData = await apiRequest(`/api/accuracy/${symbol}?timeframe=${timeframe`}`);
       
       if (accuracyData && accuracyData.length > 0) {
         const metric = accuracyData[0];
-        const key = `${symbol}-${timeframe}`;
+        const key = `${symbol}-${timeframe`}`;
         
         this.metrics.set(key, {
           totalPredictions: metric.totalTrades || 0,
@@ -74,7 +74,7 @@ class OptimizedAccuracyTracker {
   }
 
   getMetrics(symbol: string, timeframe: string): AccuracyMetrics | null {
-    const key = `${symbol}-${timeframe}`;
+    const key = `${symbol}-${timeframe`}`;
     return this.metrics.get(key) || null;
   }
 

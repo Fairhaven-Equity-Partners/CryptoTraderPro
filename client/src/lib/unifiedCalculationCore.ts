@@ -725,9 +725,7 @@ class UnifiedCalculationCore {
     let currentPrice = data[data.length - 1].close;
     
     // CRITICAL: Prevent BTC price contamination for other symbols
-    if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {
-      console.error(`Price contamination detected in support/resistance calculation for ${symbol}: ${currentPrice} - using authentic`);
-      // Use symbol-specific authentic prices instead of contaminated BTC values
+    if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {// Use symbol-specific authentic prices instead of contaminated BTC values
       const authenticPrices: Record<string, number> = {
         'DOT/USDT': 3.98,
         'ADA/USDT': 0.66,
@@ -875,7 +873,7 @@ class UnifiedCalculationCore {
    * Generate unified signal with all indicators
    */
   public generateSignal(symbol: string, timeframe: TimeFrame, currentPrice: number): UnifiedSignal | null {
-    const cacheKey = `${symbol}_${timeframe}`;
+    const cacheKey = `${symbol}_${timeframe`}`;
     const data = this.dataCache.get(cacheKey);
     
     if (!data || data.length < 50) return null;
@@ -1104,14 +1102,14 @@ class UnifiedCalculationCore {
       macroInsights: [
         `Market Regime: ${indicators.marketRegime}`,
         `Fractal Structure: ${marketStructure.fractalStructure}`,
-        `VWAP Position: ${currentPrice > vwapAnalysis.daily ? 'Above' : 'Below'} Daily VWAP`,
+        `VWAP Position: ${currentPrice > vwapAnalysis.daily ? 'Above' : 'Below'} Daily VWA`P`,
         `Supply Zones: ${marketStructure.supplyZones.length}`,
         `Demand Zones: ${marketStructure.demandZones.length}`,
-        `Fib Confluence: ${fibonacciLevels.confluence.toFixed(0)}%`,
-        `RSI: ${indicators.rsi.value.toFixed(2)} (${indicators.rsi.signal})`,
-        `MACD: ${indicators.macd.value.toFixed(2)} (${indicators.macd.signal})`,
+        `Fib Confluence: ${fibonacciLevels.confluence.toFixed(0)}`%`,
+        `RSI: ${indicators.rsi.value.toFixed(2)} (${indicators.rsi.signal}`)`,
+        `MACD: ${indicators.macd.value.toFixed(2)} (${indicators.macd.signal}`)`,
         `ADX: ${indicators.adx.value.toFixed(2)}`,
-        `Volatility: ${(indicators.volatility * 100).toFixed(2)}%`,
+        `Volatility: ${(indicators.volatility * 100).toFixed(2)}`%`,
         `Structure Confirmed: ${structureConfirmation ? 'Yes' : 'No'}`,
         `VWAP Aligned: ${vwapAlignment ? 'Yes' : 'No'}`,
         `Candlestick Patterns: ${candlestickPatterns.length}`
@@ -1143,7 +1141,7 @@ class UnifiedCalculationCore {
   }
 
   public updateMarketData(symbol: string, timeframe: TimeFrame, data: OHLCData[]): void {
-    const cacheKey = `${symbol}_${timeframe}`;
+    const cacheKey = `${symbol}_${timeframe`}`;
     this.dataCache.set(cacheKey, data);
   }
 }

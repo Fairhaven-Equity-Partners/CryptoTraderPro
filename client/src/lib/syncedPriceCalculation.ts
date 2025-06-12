@@ -25,9 +25,7 @@ function handlePriceUpdate(event: Event) {
     const { symbol, price } = customEvent.detail;
     
     // DISABLED - No longer used// Don't do anything - the dashboard component handles calculations now
-  } catch (error) {
-    console.error("[SYNC-CALC] Error handling price update:", error);
-  }
+  } catch (error) {}
 }
 
 // Perform calculation with the new price

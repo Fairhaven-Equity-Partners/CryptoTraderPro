@@ -119,9 +119,7 @@ export function calculateRSI(data: ChartData[], period: number = 14): number[] {
       rsi = 100 - (100 / (1 + rs));
       result.push(rsi);
     }
-  } catch (error) {
-    console.error("Error calculating RSI:", error);
-    return [50]; // Return neutral value on error
+  } catch (error) {return [50]; // Return neutral value on error
   }
   
   return result;
@@ -1182,7 +1180,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         optimalRiskReward: direction === 'NEUTRAL' ? 1.5 : 2.0,
         predictedMovement: {
           percentChange: direction === 'LONG' ? 5.0 : (direction === 'SHORT' ? -5.0 : 0.0),
-          timeEstimate: `${timeframe} horizon`
+          timeEstimate: `${timeframe} horizo`n`
         },
         macroScore: confidence,
         macroClassification: direction === 'LONG' ? 'BULLISH' : (direction === 'SHORT' ? 'BEARISH' : 'NEUTRAL')
@@ -1319,7 +1317,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
     
     // Calculate a signal bias that changes less frequently for longer timeframes
     // Include the month in the date hash to make it change monthly for 3d timeframes
-    const dateString = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${currentDay}`;
+    const dateString = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${currentDay`}`;
     const dateHash = dateString.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const signalBias = Math.floor((timeframeHash + dateHash + timeComponent * stabilityFactor) % 5);
     
@@ -1413,9 +1411,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         timeEstimate: timeframe
       }
     };
-  } catch (error) {
-    console.error(`Error generating signal for ${timeframe}:`, error);
-    return generateSimplifiedSignal(data, timeframe, symbol);
+  } catch (error) {return generateSimplifiedSignal(data, timeframe, symbol);
   }
 }
 
@@ -1560,9 +1556,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
           }
           supportLevels.push(lowestLow);
         }
-      } catch (err) {
-        console.error("Error calculating support/resistance:", err);
-      }
+      } catch (err) {}
       
       // Ensure we have at least basic levels if calculation failed
       if (resistanceLevels.length === 0) {
@@ -1771,9 +1765,7 @@ function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbo
         timestamp: Date.now()
       };
     }
-  } catch (err) {
-    console.error("Error in simplified signal generation:", err);
-  }
+  } catch (err) {}
   
   // If all else fails, create a truly default signal
   const currentPrice = data && data.length > 0 ? data[data.length - 1].close : 1000;

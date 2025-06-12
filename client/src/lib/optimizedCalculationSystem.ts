@@ -109,9 +109,7 @@ function calculateForSymbol(symbol: string, price: number) {
       
       // Store result
       results[timeframe] = signal;
-    } catch (error) {
-      console.error(`Error calculating ${timeframe} for ${symbol}:`, error);
-      // Use previous signal if available, otherwise null
+    } catch (error) {// Use previous signal if available, otherwise null
       results[timeframe] = previousSignals[timeframe] || null;
     }
   });

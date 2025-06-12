@@ -84,9 +84,7 @@ async function performInitialization(): Promise<void> {
       };
     }
 
-    isInitialized = true;} catch (error) {
-    console.error('[UnifiedSystem] Initialization failed:', error);
-    throw error;
+    isInitialized = true;} catch (error) {throw error;
   }
 }
 

@@ -5,8 +5,6 @@ import "./lib/windowTypes";
 import { initializeUltimateSystem } from "./lib/ultimateSystemManager";
 
 // Initialize ultimate system manager (final solution - eliminates ALL redundancies)
-initializeUltimateSystem().then(() => {}).catch((error) => {
-  console.error('[System] Ultimate initialization failed:', error);
-});
+initializeUltimateSystem().then(() => {}).catch((error) => {});
 
 createRoot(document.getElementById("root")!).render(<App />);

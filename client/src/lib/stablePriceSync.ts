@@ -71,9 +71,7 @@ export async function getCurrentPrice(symbol: string): Promise<number> {const no
     broadcastPriceUpdate(symbol, data.price);
     
     return data.price;
-  } catch (error) {
-    console.error(`[Price] Error fetching price for ${symbol}:`, error);
-    // Return cached price if available, otherwise 0
+  } catch (error) {// Return cached price if available, otherwise 0
     return cachedData ? cachedData.price : 0;
   }
 }

@@ -40,9 +40,7 @@ export class MultiSymbolEngine {
       const response = await fetch('/api/crypto');
       const cryptoAssets = await response.json();
       
-      this.config.symbols = cryptoAssets.map((asset: any) => asset.symbol);} catch (error) {
-      console.error('Failed to initialize supported symbols:', error);
-      // authentic to major cryptocurrencies
+      this.config.symbols = cryptoAssets.map((asset: any) => asset.symbol);} catch (error) {// authentic to major cryptocurrencies
       this.config.symbols = [
         'BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT',
         'ADA/USDT', 'AVAX/USDT', 'DOT/USDT', 'MATIC/USDT', 'UNI/USDT'
@@ -112,9 +110,7 @@ export class MultiSymbolEngine {
           if (signal) {
             symbolResults.set(timeframe, signal);
           }
-        } catch (error) {
-          console.error(`Error processing ${symbol} ${timeframe}:`, error);
-        }
+        } catch (error) {}
       }
 
       return symbolResults;

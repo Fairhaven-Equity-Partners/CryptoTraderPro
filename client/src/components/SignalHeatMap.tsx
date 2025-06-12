@@ -87,7 +87,7 @@ function getColorForConfidence(direction: string, confidence: number): string {
 
 function getSignalText(direction: string, confidence: number): string {
   if (direction === 'NEUTRAL') return 'NEUTRAL';
-  return `${direction} (${confidence}%)`;
+  return `${direction} (${confidence}%`)`;
 }
 
 export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
@@ -309,8 +309,8 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                   {groupedByConfidence.high_long.map(entry => (
                     <Badge 
                       key={entry.symbol} 
-                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-20`0`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name`}`}
                       onClick={() => handlePairSelection(entry)}
                     >
                       {entry.name.split(' ')[0]} {entry.displayConfidence}%
@@ -329,8 +329,8 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                   {groupedByConfidence.medium_long.map(entry => (
                     <Badge 
                       key={entry.symbol} 
-                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-20`0`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name`}`}
                       onClick={() => handlePairSelection(entry)}
                     >
                       {entry.name.split(' ')[0]} {entry.displayConfidence}%
@@ -353,7 +353,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                     <Badge 
                       key={entry.symbol} 
                       className="bg-gray-600 text-white hover:bg-gray-500 cursor-pointer transition-all duration-200"
-                      title={`${entry.displayConfidence}% confidence (Neutral) - Click to analyze ${entry.name}`}
+                      title={`${entry.displayConfidence}% confidence (Neutral) - Click to analyze ${entry.name`}`}
                       onClick={() => handlePairSelection(entry)}
                     >
                       {entry.name.split(' ')[0]} {entry.displayConfidence}%
@@ -377,8 +377,8 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                   {groupedByConfidence.high_short.map(entry => (
                     <Badge 
                       key={entry.symbol} 
-                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-20`0`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name`}`}
                       onClick={() => handlePairSelection(entry)}
                     >
                       {entry.name.split(' ')[0]} {entry.displayConfidence}%
@@ -397,8 +397,8 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
                   {groupedByConfidence.medium_short.map(entry => (
                     <Badge 
                       key={entry.symbol} 
-                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-200`}
-                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name}`}
+                      className={`${getColorForConfidence(entry.displayDirection, entry.displayConfidence)} text-white hover:bg-opacity-90 cursor-pointer transition-all duration-20`0`}
+                      title={`${entry.displayConfidence}% confidence - Click to analyze ${entry.name`}`}
                       onClick={() => handlePairSelection(entry)}
                     >
                       {entry.name.split(' ')[0]} {entry.displayConfidence}%

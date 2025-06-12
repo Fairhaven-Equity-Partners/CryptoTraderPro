@@ -126,9 +126,7 @@ class CentralizedPriceManager {
     const range = priceRanges[baseAsset];
     if (range) {
       const isValid = price >= range.min && price <= range.max;
-      if (!isValid) {
-        console.error(`[CentralizedPriceManager] Price validation failed: ${symbol} price ${price} outside range ${range.min}-${range.max}`);
-      }
+      if (!isValid) {}
       return isValid;
     }
     
@@ -253,9 +251,7 @@ class CentralizedPriceManager {
           return price;
         }
       }
-    } catch (error) {
-      console.error(`[CentralizedPriceManager] Error fetching price for ${symbol}:`, error);
-    }
+    } catch (error) {}
     return null;
   }
 

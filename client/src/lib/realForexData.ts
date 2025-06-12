@@ -65,9 +65,7 @@ class RealForexDataFetcher {
         timestamp: Date.now()
       };
       
-    } catch (error) {
-      console.error('All EUR/USD APIs failed:', error);
-      return {
+    } catch (error) {return {
         currentPrice: 1.1400,
         change24h: 0,
         timestamp: Date.now()

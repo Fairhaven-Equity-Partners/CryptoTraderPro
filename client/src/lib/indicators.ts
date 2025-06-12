@@ -517,7 +517,7 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
   const firstTimestamp = chartData[0].time;
   const lastTimestamp = chartData[chartData.length - 1].time;
   const lastPrice = chartData[chartData.length - 1].close;
-  const cacheKey = `${firstTimestamp}-${lastTimestamp}-${lastPrice}`;
+  const cacheKey = `${firstTimestamp}-${lastTimestamp}-${lastPrice`}`;
   
   // Check if we have a valid cached result
   const now = Date.now();
@@ -648,7 +648,7 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     category: 'TREND',
     signal: bullishCount > bearishCount ? 'BUY' : bearishCount > bullishCount ? 'SELL' : 'NEUTRAL',
     strength: Math.abs(bullishCount - bearishCount) > 2 ? 'STRONG' : 'MODERATE',
-    value: `${bullishCount}/${priceVsMAs.length} bullish`
+    value: `${bullishCount}/${priceVsMAs.length} bullis`h`
   });
   
   // Bollinger Bands
@@ -720,7 +720,7 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     category: 'MOMENTUM',
     signal: stochSignal,
     strength: stochStrength,
-    value: `K:${Math.round(lastK)} D:${Math.round(lastD)}`
+    value: `K:${Math.round(lastK)} D:${Math.round(lastD)`}`
   });
   
   // ADX for trend strength
@@ -752,7 +752,7 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     category: 'VOLATILITY',
     signal: 'NEUTRAL', // ATR doesn't give direction, just volatility
     strength: atrPercentage > 5 ? 'HIGH' : atrPercentage > 3 ? 'STRONG' : atrPercentage > 1 ? 'MODERATE' : 'WEAK',
-    value: `${atrPercentage.toFixed(1)}%`
+    value: `${atrPercentage.toFixed(1)}`%`
   });
   
   // On-Balance Volume (OBV)
@@ -833,7 +833,7 @@ export function analyzeIndicators(chartData: ChartData[]): Indicator[] {
     category: 'MOMENTUM',
     signal: roc > 5 ? 'BUY' : roc < -5 ? 'SELL' : 'NEUTRAL',
     strength: Math.abs(roc) > 10 ? 'STRONG' : Math.abs(roc) > 5 ? 'MODERATE' : 'WEAK',
-    value: `${roc.toFixed(1)}%`
+    value: `${roc.toFixed(1)}`%`
   });
   
   // Candle Pattern Detection

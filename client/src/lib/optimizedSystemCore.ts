@@ -55,9 +55,7 @@ export async function initializeOptimizedSystem(): Promise<void> {
       };
     }
 
-    systemCore.isInitialized = true;} catch (error) {
-    console.error('[OptimizedCore] Initialization failed:', error);
-    throw error;
+    systemCore.isInitialized = true;} catch (error) {throw error;
   } finally {
     initializationInProgress = false;
   }
