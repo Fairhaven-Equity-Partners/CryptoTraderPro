@@ -539,7 +539,7 @@ class ExternalSystemRestoration {
     const methodCode = this.fixedFiles.missingMethods;
     
     requiredMethods.forEach(method => {
-      if (methodCode.includes(`private ${method}`) || methodCode.includes(`public ${method}`)) {
+      if (methodCode.includes('private ' + method) || methodCode.includes('public ' + method)) {
         results.implementedMethods.push(method);
       } else {
         results.missingMethods.push(method);
