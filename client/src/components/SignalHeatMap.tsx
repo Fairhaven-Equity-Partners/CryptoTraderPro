@@ -99,7 +99,6 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   // Function to handle pair selection with immediate calculation trigger
   const handlePairSelection = (entry: OptimizedMarketEntry) => {
     const timeframeSignal = entry.signals[selectedTimeframe];
-    console.log(`Heatmap selection: ${entry.symbol} (${timeframeSignal?.direction} ${timeframeSignal?.confidence}%)`);
     onSelectAsset && onSelectAsset(entry.symbol);
     
     // Trigger immediate calculation for selected pair
@@ -112,14 +111,12 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   // Perfect synchronization with ultimateSystemManager timer
   useEffect(() => {
     const syncWithUltimateSystem = () => {
-      console.log('[HeatMap] Syncing with ultimate system timer - refreshing heatmap data');
       queryClient.invalidateQueries({ queryKey: ['/api/crypto/all-pairs'] });
       queryClient.invalidateQueries({ queryKey: ['/api/market-heatmap'] });
     };
 
     // Listen for synchronized calculation events from the ultimate system
     const handleCalculationEvent = (event: CustomEvent) => {
-      console.log('[HeatMap] Received synchronized calculation event - updating heatmap');
       syncWithUltimateSystem();
     };
 
@@ -137,16 +134,9 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   const { data: heatmapResponse, isLoading, refetch } = useQuery({
     queryKey: ['/api/market-heatmap', selectedTimeframe],
     queryFn: async () => {
-      console.log(`[OptimizedHeatMap] Fetching market analysis data for ${selectedTimeframe}`);
       const response = await fetch(`/api/market-heatmap?timeframe=${selectedTimeframe}`);
       if (!response.ok) throw new Error('Failed to fetch heatmap data');
       const data = await response.json();
-      console.log(`[HeatMap Debug] API Response for ${selectedTimeframe}:`, {
-        hasData: !!data,
-        hasMarketEntries: !!data.marketEntries,
-        entriesCount: data.marketEntries?.length || 0,
-        sampleEntry: data.marketEntries?.[0]
-      });
       return data;
     },
     refetchInterval: 10000, // Refetch every 10 seconds to keep data fresh
@@ -161,14 +151,12 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
   
   // Force refetch when timeframe changes
   React.useEffect(() => {
-    console.log(`[HeatMap] Timeframe changed to ${selectedTimeframe}, refetching data`);
     refetch();
   }, [selectedTimeframe, refetch]);
 
   // Process optimized market entries from the new backend structure
   const processedMarketEntries = useMemo(() => {
     if (!marketEntries || !Array.isArray(marketEntries)) {
-      console.log('[HeatMap Debug] No market entries available');
       return [];
     }
     
@@ -193,13 +181,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
         return processedEntry;
       });
       
-    console.log('[HeatMap Debug] Processed entries:', {
-      total: processed.length,
-      longSignals: processed.filter(e => e.displayDirection === 'LONG').length,
-      shortSignals: processed.filter(e => e.displayDirection === 'SHORT').length,
-      neutralSignals: processed.filter(e => e.displayDirection === 'NEUTRAL').length,
-      highConfidenceSignals: processed.filter(e => e.displayConfidence >= 80).length
-    });
+
     
     return processed;
   }, [marketEntries, selectedTimeframe]);
@@ -235,13 +217,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
       high_short: sortedAndFilteredEntries.filter(s => s.displayDirection === 'SHORT' && s.displayConfidence >= 80),
     };
     
-    console.log('[HeatMap Debug] Grouped signals:', {
-      highShort: groups.high_short.length,
-      highShortSymbols: groups.high_short.map(s => `${s.symbol}(${s.displayConfidence}%)`),
-      totalEntries: sortedAndFilteredEntries.length,
-      filterDirection,
-      selectedTimeframe
-    });
+
     
     return groups;
   }, [sortedAndFilteredEntries, filterDirection, selectedTimeframe]);
