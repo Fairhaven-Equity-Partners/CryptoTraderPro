@@ -102,7 +102,7 @@ const PriceOverview: React.FC<PriceOverviewProps> = ({ symbol, timeframe }) => {
             ${parseFloat(priceState.price.toFixed(2)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
           </span>
           {priceState.flash && priceDirection}
-          <span className=`{`${priceChangeClass} text-sm font-mediu`m`}>
+          <span className={`${priceChangeClass} text-sm font-medium`}>
             {formatPercentage(price.change24h)}
           </span>
           <span className="text-neutral text-sm">24h</span>

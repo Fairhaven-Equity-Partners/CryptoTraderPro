@@ -943,7 +943,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
 } {
   // Prevent errors for weekly and monthly timeframes by using simplified signal
   if (['1w', '1M'].includes(timeframe)) {
-    return generateSimplifiedSignal(data, timeframe, symbol);
+    return generateSignal(data, timeframe, symbol);
   }
   
   try {
@@ -951,7 +951,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
     // Monthly timeframe requires fewer data points than other timeframes
     const minRequiredPoints = timeframe === '1M' ? 30 : 50;
     if (!data || data.length < minRequiredPoints) {// Generate basic signal
-      const simplifiedSignal = generateSimplifiedSignal(data, timeframe);
+      const simplifiedSignal = generateSignal(data, timeframe);
       
       // Use Bollinger Bands as support and resistance levels
       if (data && data.length > 20) {
@@ -1312,7 +1312,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         currentDay * 4 + currentHour;
         
     // Combine timeframe characteristics with time component
-    const timeframeHash = timeframe.charCodeAt(0) + (timeframe.length > 1 ? timeframe.charCodeAt(1) : 0);
+    const timeframeHash = (timeframe as string).charCodeAt(0) + ((timeframe as string).length > 1 ? (timeframe as string).charCodeAt(1) : 0);
     const stabilityFactor = timeframeWeights[timeframe as keyof typeof timeframeWeights] || 0.5;
     
     // Calculate a signal bias that changes less frequently for longer timeframes
@@ -1411,7 +1411,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         timeEstimate: timeframe
       }
     };
-  } catch (error) {return generateSimplifiedSignal(data, timeframe, symbol);
+  } catch (error) {return generateSignal(data, timeframe, symbol);
   }
 }
 
@@ -1419,7 +1419,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
  * Generate a simplified signal when full technical analysis isn't possible
  * This serves as a authentic when we don't have enough data
  */
-function generateSimplifiedSignal(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
+function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,

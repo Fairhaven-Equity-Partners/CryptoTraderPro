@@ -85,9 +85,7 @@ function getColorForConfidence(direction: string, confidence: number): string {
   }
 }
 
-function getSignalText(direction: string, confidence: number): string {
-  if (direction === 'NEUTRAL') return 'NEUTRAL';
-  return `${direction/api/market-heatmap?timeframe=${selectedTimeframe}`);
+function getSignalText(direction: string, confidence: number): string {selectedTimeframe}`);
       if (!response.ok) throw new Error('Failed to fetch heatmap data');
       const data = await response.json();
       return data;
@@ -95,8 +93,7 @@ function getSignalText(direction: string, confidence: number): string {
     refetchInterval: 10000, // Refetch every 10 seconds to keep data fresh
     staleTime: 5000,
     refetchOnMount: true,
-    refetchOnWindowFocus: true
-  });
+    refetchOnWindowFocu});
 
   // Extract data and summary from the new response structure
   const marketEntries: OptimizedMarketEntry[] = heatmapResponse?.marketEntries || [];
@@ -114,22 +111,8 @@ function getSignalText(direction: string, confidence: number): string {
     }
     
     const processed = marketEntries
-      .filter((entry: OptimizedMarketEntry) => {
-        const hasPrice = entry.currentPrice > 0;
-        const hasSignal = entry.signals && entry.signals[selectedTimeframe];
-        return hasPrice && hasSignal;
-      })
-      .map((entry: OptimizedMarketEntry) => {
-        const timeframeSignal = entry.signals[selectedTimeframe];
-        
-        const processedEntry = {
-          ...entry,
-          displayDirection: timeframeSignal.direction,
-          displayConfidence: timeframeSignal.confidence,
-          displayStrength: timeframeSignal.strength,
-          displayRiskReward: timeframeSignal.riskReward,
-          displaySuccessProbability: timeframeSignal.successProbability
-        };
+      .filter((entry: OptimizedMarketEntry) => {selectedTimeframe})
+      .map((entry: OptimizedMarketEntry) => {selectedTimeframe};
         
         return processedEntry;
       });
@@ -179,11 +162,7 @@ function getSignalText(direction: string, confidence: number): string {
     return <div className="flex justify-center items-center min-h-[300px]">Loading market data...</div>;
   }
 
-  if (!marketEntries || marketEntries.length === 0) {
-    return (
-      <Card className="w-full border-gray-800 bg-gray-900 text-white shadow-lg">
-        <CardContent className="p-6 text-center">
-          <div className="text-gray-400">No market data available for {selectedTimeframe} timeframe</div>
+  if (!marketEntries || marketEntries.length === 0) {selectedTimeframe} timeframe</div>
         </CardContent>
       </Card>
     );
@@ -238,7 +217,7 @@ function getSignalText(direction: string, confidence: number): string {
               <TabsTrigger
                 key={timeframe}
                 value={timeframe}
-                className={selectedTimeframe === timeframe ? 'bg-gray-700 text-white' : 'text-gray-400'}
+                className={selectedTimeframe}
               >
                 {timeframe}
               </TabsTrigger>

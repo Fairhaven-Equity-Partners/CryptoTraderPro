@@ -107,7 +107,7 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
                       <h4 className="font-semibold text-lg">{trade.timeframe} Trade</h4>
                       <div className="flex items-center gap-2 mt-1">
                         {getDirectionIcon(trade.direction)}
-                        <Badge className={`${getDirectionColor(trade.direction)} borde`r`}>
+                        <Badge className={`${getDirectionColor(trade.direction)} border`}>
                           {trade.direction}
                         </Badge>
                         <Badge variant="outline" className={getConfidenceColor(trade.confidence)}>
@@ -171,7 +171,7 @@ export default function ForexDashboard({ pair = 'EUR/USD' }: ForexDashboardProps
                 <CardTitle className="text-lg">{signal.timeframe}</CardTitle>
                 <div className="flex items-center gap-2">
                   {getDirectionIcon(signal.direction)}
-                  <Badge className={`${getDirectionColor(signal.direction)} borde`r`}>
+                  <Badge className={`${getDirectionColor(signal.direction)} border}>
                     {signal.direction}
                   </Badge>
                 </div>

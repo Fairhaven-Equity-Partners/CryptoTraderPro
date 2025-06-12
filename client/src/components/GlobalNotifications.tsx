@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, ArrowUp, ArrowDown } from 'lucide-react';
 import { useAlerts } from '../hooks/useAlerts';
-import { registerMessageHandler } from '../lib/api';
 import { Alert } from '../types';
 
 interface NotificationProps {
@@ -37,8 +36,8 @@ const GlobalNotifications: React.FC = () => {
   
   useEffect(() => {
     // Register handler for new signals (only when real signals are detected)
-    const unsubscribe = registerMessageHandler('new_signal', (data) => {
-      if (data && data.direction) {
+    // Message handler removed - functionality disabled
+    if (false) {
         // Create notification for the new signal
         const signalAlert: Alert = {
           id: Date.now(),
