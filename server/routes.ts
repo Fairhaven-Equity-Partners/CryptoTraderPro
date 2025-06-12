@@ -752,19 +752,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (!timeframeSignal) {
             console.log(`[OptimizedHeatMap] Generating balanced signal for ${symbol} ${timeframe}`);
             
-            // Use deterministic pricing when API is blocked
-            const basePrice = getDeterministicPrice(symbol);
-            const deterministicChange = getDeterministicChange24h(symbol, timeframe);
-            
-            // Generate balanced signal using the same logic as AutomatedSignalCalculator
-            timeframeSignal = generateBalancedHeatmapSignal(
-              symbol,
-              basePrice,
-              deterministicChange,
-              timeframe as string
-            );
-            
-            console.log(`[OptimizedHeatMap] GENERATED ${timeframe} ${timeframeSignal.direction}: ${symbol} @ $${timeframeSignal.price} (${timeframeSignal.confidence}%)`);
+            try {
+              // Use deterministic pricing when API is blocked
+              const basePrices: Record<string, number> = {
+                'BTC/USDT': 108000, 'ETH/USDT': 4200, 'BNB/USDT': 720, 'XRP/USDT': 2.85,
+                'SOL/USDT': 240, 'ADA/USDT': 1.05, 'AVAX/USDT': 52, 'DOGE/USDT': 0.42,
+                'TRX/USDT': 0.28, 'LINK/USDT': 22, 'MATIC/USDT': 0.48, 'LTC/USDT': 105,
+                'DOT/USDT': 8.5, 'UNI/USDT': 15, 'THETA/USDT': 0.79, 'QNT/USDT': 114
+              };
+              
+              const basePriceValue = basePrices[symbol] || 100;
+              const symbolHash = (symbol as string).split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
+              const timeVariation = (Date.now() / 3600000) % 24;
+              const variation = Math.sin(symbolHash + timeVariation) * 0.02;
+              const basePrice = basePriceValue * (1 + variation);
+              
+              const timeframeSeed = (timeframe as string).split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0);
+              const timeCycle = (Date.now() / 86400000) % 7;
+              const baseChange = Math.sin(symbolHash + timeframeSeed + timeCycle) * 8;
+              const deterministicChange = Math.round(baseChange * 100) / 100;
+              
+              // Generate balanced signal using the same logic as AutomatedSignalCalculator
+              timeframeSignal = generateBalancedHeatmapSignal(
+                symbol,
+                basePrice,
+                deterministicChange,
+                timeframe as string
+              );
+              
+              console.log(`[OptimizedHeatMap] GENERATED ${timeframe} ${timeframeSignal.direction}: ${symbol} @ $${timeframeSignal.price} (${timeframeSignal.confidence}%)`);
+            } catch (error) {
+              console.log(`[OptimizedHeatMap] Error generating signal for ${symbol}:`, error);
+            }
           }
           
           // Use signal price data when available, otherwise skip entries without authentic data
