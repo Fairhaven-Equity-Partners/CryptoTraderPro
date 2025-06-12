@@ -166,17 +166,19 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
 
   // Process optimized market entries from the new backend structure
   const processedMarketEntries = useMemo(() => {
-    if (!marketEntries || !Array.isArray(marketEntries)) return [];
+    if (!marketEntries || !Array.isArray(marketEntries)) {
+      console.log('[HeatMap Debug] No market entries available');
+      return [];
+    }
     
     const processed = marketEntries
-      .filter((entry: OptimizedMarketEntry) => entry.currentPrice > 0)
+      .filter((entry: OptimizedMarketEntry) => {
+        const hasPrice = entry.currentPrice > 0;
+        const hasSignal = entry.signals && entry.signals[selectedTimeframe];
+        return hasPrice && hasSignal;
+      })
       .map((entry: OptimizedMarketEntry) => {
         const timeframeSignal = entry.signals[selectedTimeframe];
-        
-        if (!timeframeSignal) {
-          // Skip entries without authentic signal data - no authentic authentic allowed
-          return null;
-        }
         
         const processedEntry = {
           ...entry,
@@ -187,25 +189,15 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
           displaySuccessProbability: timeframeSignal.successProbability
         };
         
-        // Debug BTC/USDT specifically
-        if (entry.symbol === 'BTC/USDT') {
-          console.log('[HeatMap Debug] BTC/USDT processed:', {
-            timeframe: selectedTimeframe,
-            hasSignal: !!timeframeSignal,
-            direction: processedEntry.displayDirection,
-            confidence: processedEntry.displayConfidence,
-            rawSignal: timeframeSignal
-          });
-        }
-        
         return processedEntry;
-      })
-      .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+      });
       
     console.log('[HeatMap Debug] Processed entries:', {
       total: processed.length,
+      longSignals: processed.filter(e => e.displayDirection === 'LONG').length,
       shortSignals: processed.filter(e => e.displayDirection === 'SHORT').length,
-      highConfShorts: processed.filter(e => e.displayDirection === 'SHORT' && e.displayConfidence >= 80).length
+      neutralSignals: processed.filter(e => e.displayDirection === 'NEUTRAL').length,
+      highConfidenceSignals: processed.filter(e => e.displayConfidence >= 80).length
     });
     
     return processed;
@@ -257,6 +249,16 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
     return <div className="flex justify-center items-center min-h-[300px]">Loading market data...</div>;
   }
 
+  if (!marketEntries || marketEntries.length === 0) {
+    return (
+      <Card className="w-full border-gray-800 bg-gray-900 text-white shadow-lg">
+        <CardContent className="p-6 text-center">
+          <div className="text-gray-400">No market data available for {selectedTimeframe} timeframe</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="w-full border-gray-800 bg-gray-900 text-white shadow-lg">
       <CardHeader className="pb-3">
@@ -270,7 +272,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               className="h-7 px-2 py-1"
               onClick={() => setFilterDirection('ALL')}
             >
-              ALL
+              ALL ({sortedAndFilteredEntries.length})
             </Button>
             <Button 
               size="sm" 
@@ -278,7 +280,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               className="h-7 px-2 py-1 text-green-400"
               onClick={() => setFilterDirection('LONG')}
             >
-              LONG
+              LONG ({processedMarketEntries.filter(e => e.displayDirection === 'LONG').length})
             </Button>
             <Button 
               size="sm" 
@@ -286,17 +288,18 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
               className="h-7 px-2 py-1 text-red-400"
               onClick={() => setFilterDirection('SHORT')}
             >
-              SHORT
+              SHORT ({processedMarketEntries.filter(e => e.displayDirection === 'SHORT').length})
             </Button>
           </div>
         </div>
         <CardDescription className="text-gray-400">
-          Optimized market analysis for {sortedAndFilteredEntries.length} cryptocurrencies ({selectedTimeframe} timeframe)
-          {marketSummary && (
-            <span className="ml-2 text-xs">
-              • {marketSummary.bullishSignals} LONG • {marketSummary.bearishSignals} SHORT • Avg confidence: {marketSummary.averageConfidence}%
-            </span>
-          )}
+          Market analysis for {processedMarketEntries.length} cryptocurrencies ({selectedTimeframe} timeframe)
+          <div className="mt-1 text-xs">
+            LONG: {processedMarketEntries.filter(e => e.displayDirection === 'LONG').length} • 
+            SHORT: {processedMarketEntries.filter(e => e.displayDirection === 'SHORT').length} • 
+            NEUTRAL: {processedMarketEntries.filter(e => e.displayDirection === 'NEUTRAL').length} • 
+            High Confidence (80%+): {processedMarketEntries.filter(e => e.displayConfidence >= 80).length}
+          </div>
         </CardDescription>
         
         <Tabs defaultValue="4h" className="mt-4" onValueChange={(value) => setSelectedTimeframe(value as TimeFrame)}>
