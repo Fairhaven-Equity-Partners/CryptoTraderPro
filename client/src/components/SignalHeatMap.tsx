@@ -436,6 +436,27 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
             </div>
           </div>
         </div>
+
+        {/* Debug Information - Show total count verification */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-4 p-3 bg-gray-800/50 rounded-md border border-gray-700">
+            <div className="text-xs text-gray-400 space-y-1">
+              <div>Debug Info - Total Pairs Verification:</div>
+              <div>• Backend entries: {marketEntries.length}</div>
+              <div>• Processed entries: {processedMarketEntries.length}</div>
+              <div>• High confidence LONG: {groupedByConfidence.high_long.length}</div>
+              <div>• Medium confidence LONG: {groupedByConfidence.medium_long.length}</div>
+              <div>• Low confidence LONG: {groupedByConfidence.low_long.length}</div>
+              <div>• NEUTRAL: {groupedByConfidence.neutral.length}</div>
+              <div>• Low confidence SHORT: {groupedByConfidence.low_short.length}</div>
+              <div>• Medium confidence SHORT: {groupedByConfidence.medium_short.length}</div>
+              <div>• High confidence SHORT: {groupedByConfidence.high_short.length}</div>
+              <div className="pt-1 border-t border-gray-600">
+                <strong>Total displayed: {Object.values(groupedByConfidence).reduce((sum, group) => sum + group.length, 0)} / 50</strong>
+              </div>
+            </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
