@@ -18,9 +18,7 @@ interface OptimizedMarketEntry {
   priceChange24h: number;
   marketCap?: number;
   signals: {
-    [timeframe: string]: {
-;
-  sentiment: {
+    [timeframe: string]: {sentiment: {
     direction: 'LONG' | 'SHORT' | 'NEUTRAL';
     intensity: number;
     strength: number;
@@ -140,11 +138,11 @@ function getSignalText(direction: string, confidence: number): string {selectedT
     )}
 
   return (
-    <Card className="w-full border-gray-800 bg-gray-900 text-white shadow-lg">
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-center">
+    <Card></Card>
+      <CardHeader></CardHeader>
+        <div></div>
           <CardTitle className="text-xl font-bold">Market Signals Heat Map</CardTitle>
-          <div className="flex space-x-2">
+          <div></div>
             <div className="text-xs opacity-70">Filter:</div>
             <Button 
               size="sm" 
@@ -172,9 +170,9 @@ function getSignalText(direction: string, confidence: number): string {selectedT
             </Button>
           </div>
         </div>
-        <CardDescription className="text-gray-400">
+        <CardDescription></CardDescription>
           Market analysis for {processedMarketEntries.length} cryptocurrencies ({selectedTimeframe} timeframe)
-          <div className="mt-1 text-xs">
+          <div></div>
             LONG: {processedMarketEntries.filter(e => e.displayDirection === 'LONG').length} • 
             SHORT: {processedMarketEntries.filter(e => e.displayDirection === 'SHORT').length} • 
             NEUTRAL: {processedMarketEntries.filter(e => e.displayDirection === 'NEUTRAL').length} • 
@@ -183,13 +181,9 @@ function getSignalText(direction: string, confidence: number): string {selectedT
         </CardDescription>
         
         <Tabs defaultValue="4h" className="mt-4" onValueChange={(value) => setSelectedTimeframe(value as TimeFrame)}>
-          <TabsList className="w-full bg-gray-800 grid grid-cols-5 md:grid-cols-10">
+          <TabsList></TabsList>
             {ALL_TIMEFRAMES.map(timeframe => (
-              <TabsTrigger
-                key={timeframe}
-                value={timeframe}
-                className={selectedTimeframe}
-              >
+              <TabsTrigger></TabsTrigger>
                 {timeframe}
               </TabsTrigger>
             ))}
@@ -197,18 +191,18 @@ function getSignalText(direction: string, confidence: number): string {selectedT
         </Tabs>
       </CardHeader>
       
-      <CardContent>
+      <CardContent></CardContent>
         {/* Heat Map Visualization */}
-        <div className="mb-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div></div>
+          <div></div>
             {/* LONG Signals */}
-            <div className="space-y-2">
+            <div></div>
               <h3 className="text-green-400 font-semibold border-b border-green-900 pb-1">LONG Signals</h3>
               
               {/* High confidence LONG */}
-              <div className="bg-green-900/20 p-2 rounded-md">
+              <div></div>
                 <div className="text-sm font-medium text-green-400 mb-2">High Confidence (80-100%)</div>
-                <div className="flex flex-wrap gap-2">
+                <div></div>
                   {groupedByConfidence.high_long.map(entry => (
                     <Badge 
                       key={entry.symbol} 
@@ -226,9 +220,9 @@ function getSignalText(direction: string, confidence: number): string {selectedT
               </div>
               
               {/* Medium confidence LONG */}
-              <div className="bg-green-900/10 p-2 rounded-md">
+              <div></div>
                 <div className="text-sm font-medium text-green-300 mb-2">Medium Confidence (65-79%)</div>
-                <div className="flex flex-wrap gap-2">
+                <div></div>
                   {groupedByConfidence.medium_long.map(entry => (
                     <Badge 
                       key={entry.symbol} 
@@ -247,11 +241,11 @@ function getSignalText(direction: string, confidence: number): string {selectedT
             </div>
             
             {/* NEUTRAL Signals */}
-            <div className="space-y-2">
+            <div></div>
               <h3 className="text-gray-400 font-semibold border-b border-gray-700 pb-1">NEUTRAL Signals</h3>
-              <div className="bg-gray-800/30 p-2 rounded-md h-[90%]">
+              <div></div>
                 <div className="text-sm font-medium text-gray-400 mb-2">Neutral Confidence</div>
-                <div className="flex flex-wrap gap-2">
+                <div></div>
                   {groupedByConfidence.neutral.map(entry => (
                     <Badge 
                       key={entry.symbol} 
@@ -270,13 +264,13 @@ function getSignalText(direction: string, confidence: number): string {selectedT
             </div>
             
             {/* SHORT Signals */}
-            <div className="space-y-2">
+            <div></div>
               <h3 className="text-red-400 font-semibold border-b border-red-900 pb-1">SHORT Signals</h3>
               
               {/* High confidence SHORT */}
-              <div className="bg-red-900/20 p-2 rounded-md">
+              <div></div>
                 <div className="text-sm font-medium text-red-400 mb-2">High Confidence (80-100%)</div>
-                <div className="flex flex-wrap gap-2">
+                <div></div>
                   {groupedByConfidence.high_short.map(entry => (
                     <Badge 
                       key={entry.symbol} 
@@ -294,9 +288,9 @@ function getSignalText(direction: string, confidence: number): string {selectedT
               </div>
               
               {/* Medium confidence SHORT */}
-              <div className="bg-red-900/10 p-2 rounded-md">
+              <div></div>
                 <div className="text-sm font-medium text-red-300 mb-2">Medium Confidence (65-79%)</div>
-                <div className="flex flex-wrap gap-2">
+                <div></div>
                   {groupedByConfidence.medium_short.map(entry => (
                     <Badge 
                       key={entry.symbol} 
@@ -318,8 +312,8 @@ function getSignalText(direction: string, confidence: number): string {selectedT
 
         {/* Debug Information - Show total count verification */}
         {process.env.NODE_ENV === 'development' && (
-          <div className="mt-4 p-3 bg-gray-800/50 rounded-md border border-gray-700">
-            <div className="text-xs text-gray-400 space-y-1">
+          <div></div>
+            <div></div>
               <div>Debug Info - Total Pairs Verification:</div>
               <div>• Backend entries: {marketEntries.length}</div>
               <div>• Processed entries: {processedMarketEntries.length}</div>
@@ -330,7 +324,7 @@ function getSignalText(direction: string, confidence: number): string {selectedT
               <div>• Low confidence SHORT: {groupedByConfidence.low_short.length}</div>
               <div>• Medium confidence SHORT: {groupedByConfidence.medium_short.length}</div>
               <div>• High confidence SHORT: {groupedByConfidence.high_short.length}</div>
-              <div className="pt-1 border-t border-gray-600">
+              <div></div>
                 <strong>Total displayed: {Object.values(groupedByConfidence).reduce((sum, group) => sum + group.length, 0)} / 50</strong>
               </div>
             </div>

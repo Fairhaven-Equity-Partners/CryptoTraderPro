@@ -221,7 +221,7 @@ interface AdvancedSignalDashboardProps {
 }
 
 // Main component
-export default function AdvancedSignalDashboard({ 
+function AdvancedSignalDashboard({ 
   symbol, 
   onTimeframeSelect 
 }: AdvancedSignalDashboardProps) {
@@ -286,13 +286,15 @@ export default function AdvancedSignalDashboard({
       
       // Trigger immediate calculation for new symbol after data loads
       const immediateCalcTimer = setTimeout(() => {
-        if (isAllDataLoaded && !isCalculating) {setIsCalculating(true);
+        if (isAllDataLoaded && !isCalculating) {
+          setIsCalculating(true);
           lastCalculationRef.current = Date.now();
           lastCalculationTimeRef.current = Date.now() / 1000;
           // Trigger immediate calculation using the actual function
           if (calculateAllSignalsRef.current) {
             calculateAllSignalsRef.current('pair-selection');
           }
+        }
       }, 2000); // Wait 2 seconds for data to load
       
       return () => clearTimeout(immediateCalcTimer);
@@ -380,8 +382,7 @@ export default function AdvancedSignalDashboard({
               lastCalculationTimeRef.current = Date.now() / 1000;
               calculateAllSignalsRef.current('pair-selection');
             } else {}, 800);
-        } else {}
-    };
+        } else {};
 
     // Only listen to centralized price updates to reduce API calls
     document.addEventListener('centralized-price-update', handleCentralizedPriceUpdate);
@@ -440,8 +441,7 @@ export default function AdvancedSignalDashboard({
           .map(s => s!.timestamp || 0)) / 1000;
         
         if (signalTimestamp > actualLastCalculationTime) {setActualLastCalculationTime(signalTimestamp);
-        }
-    }, 1000);
+        }, 1000);
 
     return () => clearInterval(timerInterval);
   }, [signals, actualLastCalculationTime]);
@@ -472,8 +472,7 @@ export default function AdvancedSignalDashboard({
             window.dispatchEvent(new CustomEvent('calculation-loop-complete', {
               detail: { symbol, timestamp: Date.now(), triggerType }));
           }, 1000); // Delay to ensure calculation completion
-        } else {}
-    };
+        } else {};
 
     // Handler for real-time price updates to enable continuous calculations
     const handlePriceUpdate = (event: CustomEvent) => {
@@ -483,8 +482,7 @@ export default function AdvancedSignalDashboard({
         
         // DISABLED: Real-time calculations - wait for 4-minute synchronized events only
         if (timeSinceLastCalc >= 240 && hasMinimumData && !isCalculating && event.detail.interval === '4-minute') {calculateAllSignals('4-minute-sync');
-        }
-    };
+        };
     
     // DISABLED ALL EXCESSIVE EVENT LISTENERS - Only allow 4-minute synchronized events
     const handleUltimateSystemTrigger = (event: CustomEvent) => {
@@ -500,8 +498,7 @@ export default function AdvancedSignalDashboard({
           calculateAllSignals('4-minute-sync').catch(error => {
             setIsCalculating(false);
           });
-        }
-    };
+        };
 
     // MINIMAL EVENT LISTENERS - Only 4-minute synchronized events and immediate pair selections
     document.addEventListener('synchronized-calculation-trigger', handleSynchronizedCalculationEvent as EventListener);
@@ -640,8 +637,7 @@ export default function AdvancedSignalDashboard({
           });
         } else {
         // Waiting for calculation interval
-      }
-    }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData, isCalculating]);
+      }, [symbol, isAllDataLoaded, isLiveDataReady, currentAssetPrice, hasValidPriceData, isCalculating]);
   
   // Update timer for next refresh - fetch and display timer from finalPriceSystem directly
   useEffect(() => {
@@ -814,7 +810,6 @@ export default function AdvancedSignalDashboard({
             description: description
           });
         }
-    }
     
     // Volume Profile Analysis
     if (timeframe !== '1m' && timeframe !== '5m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.5) {
@@ -1082,7 +1077,6 @@ export default function AdvancedSignalDashboard({
             description: `Price making higher highs while Stochastic RSI makes lower highs. ${severity} signal strength. Suggests potential downward reversal`.`
           });
         }
-    }
     
     // Technical Divergences (expand existing divergence detection)
     if (timeframe !== '1m' && Math.sin(Date.now() / 4000) * 0.4 + 0.5 < 0.6) {
@@ -1634,7 +1628,6 @@ export default function AdvancedSignalDashboard({
         const strongestTrend = trendIndicators.find(i => i.strength === 'STRONG');
         if (strongestTrend) {
           indicators.push(`${strongestTrend.name}
-      }
       
       // Add strongest momentum indicator
       const momentumIndicators = primarySignal.indicators.momentum;
@@ -1642,7 +1635,6 @@ export default function AdvancedSignalDashboard({
         const strongestMomentum = momentumIndicators.find(i => i.strength === 'STRONG');
         if (strongestMomentum) {
           indicators.push(`${strongestMomentum.name}
-      }
       
       // Add pattern indicator if available
       const patternIndicators = primarySignal.indicators.pattern;
@@ -1650,7 +1642,6 @@ export default function AdvancedSignalDashboard({
         const strongestPattern = patternIndicators.find(i => i.strength === 'STRONG');
         if (strongestPattern) {
           indicators.push(`${strongestPattern.name}
-      }
       
       // Ensure we have at least something
       if (indicators.length === 0 && trendIndicators && trendIndicators.length > 0) {
@@ -2823,3 +2814,5 @@ export default function AdvancedSignalDashboard({
     </div>
   );
 }
+
+export default AdvancedSignalDashboard;
