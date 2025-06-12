@@ -1,0 +1,1037 @@
+{
+  "testsPassed": 49,
+  "testsFailed": 1,
+  "marketStates": {
+    "BTC/USDT": {
+      "regime": "SIDEWAYS",
+      "trendStrength": -0.04671788645739845,
+      "volatility": 0.011804055795342475,
+      "volumeTrend": "STABLE",
+      "supportResistance": "MIDDLE_RANGE",
+      "timestamp": 1749741380153
+    },
+    "ETH/USDT": {
+      "regime": "SIDEWAYS",
+      "trendStrength": -0.17831458894008292,
+      "volatility": 0.013025799834781696,
+      "volumeTrend": "STABLE",
+      "supportResistance": "MIDDLE_RANGE",
+      "timestamp": 1749741380154
+    },
+    "BNB/USDT": {
+      "regime": "SIDEWAYS",
+      "trendStrength": -0.13319344999803676,
+      "volatility": 0.013416691317411045,
+      "volumeTrend": "STABLE",
+      "supportResistance": "MIDDLE_RANGE",
+      "timestamp": 1749741380155
+    },
+    "XRP/USDT": {
+      "regime": "SIDEWAYS",
+      "trendStrength": -0.032962867591260256,
+      "volatility": 0.01221064456168444,
+      "volumeTrend": "STABLE",
+      "supportResistance": "MIDDLE_RANGE",
+      "timestamp": 1749741380156
+    },
+    "SOL/USDT": {
+      "regime": "SIDEWAYS",
+      "trendStrength": -0.1401567571862924,
+      "volatility": 0.012660242900802372,
+      "volumeTrend": "STABLE",
+      "supportResistance": "MIDDLE_RANGE",
+      "timestamp": 1749741380156
+    }
+  },
+  "adaptiveSignals": {
+    "BTC/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 54,
+      "confluenceScore": 59.14349336120371,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1h",
+      "timestamp": 1749741380185
+    },
+    "BTC/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 58,
+      "confluenceScore": 58.14026059080685,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "4h",
+      "timestamp": 1749741380185
+    },
+    "BTC/USDT_1d": {
+      "direction": "LONG",
+      "confidence": 65,
+      "confluenceScore": 60.49592653605602,
+      "reasoning": [
+        "Moderate technical signal"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1d",
+      "timestamp": 1749741380186
+    },
+    "BTC/USDT_1w": {
+      "direction": "LONG",
+      "confidence": 69,
+      "confluenceScore": 58.71737310288542,
+      "reasoning": [
+        "Moderate technical signal"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1w",
+      "timestamp": 1749741380186
+    },
+    "ETH/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 55,
+      "confluenceScore": 59.6406210104586,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1h",
+      "timestamp": 1749741380189
+    },
+    "ETH/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 59,
+      "confluenceScore": 58.53786412471879,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "4h",
+      "timestamp": 1749741380189
+    },
+    "ETH/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 62,
+      "confluenceScore": 57.30298134285057,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1d",
+      "timestamp": 1749741380189
+    },
+    "ETH/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 66,
+      "confluenceScore": 56.310583861729995,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1w",
+      "timestamp": 1749741380189
+    },
+    "BNB/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 54,
+      "confluenceScore": 59.41795243775186,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1h",
+      "timestamp": 1749741380190
+    },
+    "BNB/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 58,
+      "confluenceScore": 58.402052589083794,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "4h",
+      "timestamp": 1749741380190
+    },
+    "BNB/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 62,
+      "confluenceScore": 57.10006842285124,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1d",
+      "timestamp": 1749741380190
+    },
+    "BNB/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 66,
+      "confluenceScore": 56.12003678448989,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1w",
+      "timestamp": 1749741380190
+    },
+    "XRP/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 54,
+      "confluenceScore": 59.100499410335374,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1h",
+      "timestamp": 1749741380190
+    },
+    "XRP/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 58,
+      "confluenceScore": 58.107075221506406,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "4h",
+      "timestamp": 1749741380191
+    },
+    "XRP/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 62,
+      "confluenceScore": 56.649936166149274,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1d",
+      "timestamp": 1749741380191
+    },
+    "XRP/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 66,
+      "confluenceScore": 55.655371319397986,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1w",
+      "timestamp": 1749741380191
+    },
+    "SOL/USDT_1h": {
+      "direction": "NEUTRAL",
+      "confidence": 54,
+      "confluenceScore": 59.44603386160142,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1h",
+      "timestamp": 1749741380192
+    },
+    "SOL/USDT_4h": {
+      "direction": "NEUTRAL",
+      "confidence": 58,
+      "confluenceScore": 58.426017271700665,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "4h",
+      "timestamp": 1749741380192
+    },
+    "SOL/USDT_1d": {
+      "direction": "NEUTRAL",
+      "confidence": 59,
+      "confluenceScore": 53.798294300889694,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1d",
+      "timestamp": 1749741380192
+    },
+    "SOL/USDT_1w": {
+      "direction": "NEUTRAL",
+      "confidence": 66,
+      "confluenceScore": 56.15512408317613,
+      "reasoning": [
+        "Low confluence score"
+      ],
+      "marketRegime": "SIDEWAYS",
+      "timeframe": "1w",
+      "timestamp": 1749741380192
+    }
+  },
+  "confluenceScores": {
+    "BTC/USDT_1h": {
+      "technicalScore": 60,
+      "volumeScore": 60.01669850915756,
+      "trendScore": 50,
+      "structureScore": 61.40153659372196,
+      "volatilityScore": 70,
+      "finalScore": 59.14349336120371,
+      "weights": {
+        "technical": 0.4,
+        "volume": 0.2,
+        "trend": 0.2,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "BTC/USDT_4h": {
+      "technicalScore": 60,
+      "volumeScore": 60.00053465717324,
+      "trendScore": 50,
+      "structureScore": 61.40153659372196,
+      "volatilityScore": 70,
+      "finalScore": 58.14026059080685,
+      "weights": {
+        "technical": 0.3,
+        "volume": 0.2,
+        "trend": 0.3,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "BTC/USDT_1d": {
+      "technicalScore": 75,
+      "volumeScore": 60.23797364665152,
+      "trendScore": 50,
+      "structureScore": 61.40153659372196,
+      "volatilityScore": 70,
+      "finalScore": 60.49592653605602,
+      "weights": {
+        "technical": 0.25,
+        "volume": 0.15,
+        "trend": 0.4,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "BTC/USDT_1w": {
+      "technicalScore": 75,
+      "volumeScore": 60.071426138271185,
+      "trendScore": 50,
+      "structureScore": 61.40153659372196,
+      "volatilityScore": 70,
+      "finalScore": 58.71737310288542,
+      "weights": {
+        "technical": 0.2,
+        "volume": 0.1,
+        "trend": 0.5,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "ETH/USDT_1h": {
+      "technicalScore": 60,
+      "volumeScore": 60.52838621819176,
+      "trendScore": 50,
+      "structureScore": 65.34943766820248,
+      "volatilityScore": 70,
+      "finalScore": 59.6406210104586,
+      "weights": {
+        "technical": 0.4,
+        "volume": 0.2,
+        "trend": 0.2,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "ETH/USDT_4h": {
+      "technicalScore": 60,
+      "volumeScore": 60.01460178949268,
+      "trendScore": 50,
+      "structureScore": 65.34943766820248,
+      "volatilityScore": 70,
+      "finalScore": 58.53786412471879,
+      "weights": {
+        "technical": 0.3,
+        "volume": 0.2,
+        "trend": 0.3,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "ETH/USDT_1d": {
+      "technicalScore": 60,
+      "volumeScore": 60.00377128413467,
+      "trendScore": 50,
+      "structureScore": 65.34943766820248,
+      "volatilityScore": 70,
+      "finalScore": 57.30298134285057,
+      "weights": {
+        "technical": 0.25,
+        "volume": 0.15,
+        "trend": 0.4,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "ETH/USDT_1w": {
+      "technicalScore": 60,
+      "volumeScore": 60.08168211499622,
+      "trendScore": 50,
+      "structureScore": 65.34943766820248,
+      "volatilityScore": 70,
+      "finalScore": 56.310583861729995,
+      "weights": {
+        "technical": 0.2,
+        "volume": 0.1,
+        "trend": 0.5,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "BNB/USDT_1h": {
+      "technicalScore": 60,
+      "volumeScore": 60.091860438788736,
+      "trendScore": 50,
+      "structureScore": 63.995803499941104,
+      "volatilityScore": 70,
+      "finalScore": 59.41795243775186,
+      "weights": {
+        "technical": 0.4,
+        "volume": 0.2,
+        "trend": 0.2,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "BNB/USDT_4h": {
+      "technicalScore": 60,
+      "volumeScore": 60.012361195448406,
+      "trendScore": 50,
+      "structureScore": 63.995803499941104,
+      "volatilityScore": 70,
+      "finalScore": 58.402052589083794,
+      "weights": {
+        "technical": 0.3,
+        "volume": 0.2,
+        "trend": 0.3,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "BNB/USDT_1d": {
+      "technicalScore": 60,
+      "volumeScore": 60.00465265240047,
+      "trendScore": 50,
+      "structureScore": 63.995803499941104,
+      "volatilityScore": 70,
+      "finalScore": 57.10006842285124,
+      "weights": {
+        "technical": 0.25,
+        "volume": 0.15,
+        "trend": 0.4,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "BNB/USDT_1w": {
+      "technicalScore": 60,
+      "volumeScore": 60.20666259498725,
+      "trendScore": 50,
+      "structureScore": 63.995803499941104,
+      "volatilityScore": 70,
+      "finalScore": 56.12003678448989,
+      "weights": {
+        "technical": 0.2,
+        "volume": 0.1,
+        "trend": 0.5,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "XRP/USDT_1h": {
+      "technicalScore": 60,
+      "volumeScore": 60.008054037807966,
+      "trendScore": 50,
+      "structureScore": 60.988886027737806,
+      "volatilityScore": 70,
+      "finalScore": 59.100499410335374,
+      "weights": {
+        "technical": 0.4,
+        "volume": 0.2,
+        "trend": 0.2,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "XRP/USDT_4h": {
+      "technicalScore": 60,
+      "volumeScore": 60.04093309366311,
+      "trendScore": 50,
+      "structureScore": 60.988886027737806,
+      "volatilityScore": 70,
+      "finalScore": 58.107075221506406,
+      "weights": {
+        "technical": 0.3,
+        "volume": 0.2,
+        "trend": 0.3,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "XRP/USDT_1d": {
+      "technicalScore": 60,
+      "volumeScore": 60.01068841325738,
+      "trendScore": 50,
+      "structureScore": 60.988886027737806,
+      "volatilityScore": 70,
+      "finalScore": 56.649936166149274,
+      "weights": {
+        "technical": 0.25,
+        "volume": 0.15,
+        "trend": 0.4,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "XRP/USDT_1w": {
+      "technicalScore": 60,
+      "volumeScore": 60.070384152373144,
+      "trendScore": 50,
+      "structureScore": 60.988886027737806,
+      "volatilityScore": 70,
+      "finalScore": 55.655371319397986,
+      "weights": {
+        "technical": 0.2,
+        "volume": 0.1,
+        "trend": 0.5,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "SOL/USDT_1h": {
+      "technicalScore": 60,
+      "volumeScore": 60.127817950212716,
+      "trendScore": 50,
+      "structureScore": 64.20470271558877,
+      "volatilityScore": 70,
+      "finalScore": 59.44603386160142,
+      "weights": {
+        "technical": 0.4,
+        "volume": 0.2,
+        "trend": 0.2,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "SOL/USDT_4h": {
+      "technicalScore": 60,
+      "volumeScore": 60.027735000708944,
+      "trendScore": 50,
+      "structureScore": 64.20470271558877,
+      "volatilityScore": 70,
+      "finalScore": 58.426017271700665,
+      "weights": {
+        "technical": 0.3,
+        "volume": 0.2,
+        "trend": 0.3,
+        "structure": 0.1,
+        "volatility": 0.1
+      }
+    },
+    "SOL/USDT_1d": {
+      "technicalScore": 46.666666666666664,
+      "volumeScore": 60.00614817923147,
+      "trendScore": 50,
+      "structureScore": 64.20470271558877,
+      "volatilityScore": 70,
+      "finalScore": 53.798294300889694,
+      "weights": {
+        "technical": 0.25,
+        "volume": 0.15,
+        "trend": 0.4,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    },
+    "SOL/USDT_1w": {
+      "technicalScore": 60,
+      "volumeScore": 60.244186758378184,
+      "trendScore": 50,
+      "structureScore": 64.20470271558877,
+      "volatilityScore": 70,
+      "finalScore": 56.15512408317613,
+      "weights": {
+        "technical": 0.2,
+        "volume": 0.1,
+        "trend": 0.5,
+        "structure": 0.15,
+        "volatility": 0.05
+      }
+    }
+  },
+  "distributionAnalysis": {
+    "distribution": {
+      "LONG": 2,
+      "SHORT": 0,
+      "NEUTRAL": 18,
+      "total": 20
+    },
+    "confidenceStats": {
+      "avg": "60.3",
+      "min": 54,
+      "max": 69
+    },
+    "marketRegimeBreakdown": {
+      "SIDEWAYS": {
+        "LONG": 2,
+        "SHORT": 0,
+        "NEUTRAL": 18
+      }
+    },
+    "isNatural": false
+  },
+  "validationResults": [
+    {
+      "component": "UI_Compatibility",
+      "status": "PASSED",
+      "mockData": {
+        "heatmap": {
+          "marketEntries": [
+            {
+              "id": "btcusdt",
+              "symbol": "BTC/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 54,
+                  "confluenceScore": 59.14349336120371,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 58,
+                  "confluenceScore": 58.14026059080685,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1d": {
+                  "direction": "LONG",
+                  "confidence": 65,
+                  "confluenceScore": 60.49592653605602,
+                  "reasoning": [
+                    "Moderate technical signal"
+                  ]
+                },
+                "1w": {
+                  "direction": "LONG",
+                  "confidence": 69,
+                  "confluenceScore": 58.71737310288542,
+                  "reasoning": [
+                    "Moderate technical signal"
+                  ]
+                }
+              },
+              "price": 50000
+            },
+            {
+              "id": "ethusdt",
+              "symbol": "ETH/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 55,
+                  "confluenceScore": 59.6406210104586,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 59,
+                  "confluenceScore": 58.53786412471879,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 62,
+                  "confluenceScore": 57.30298134285057,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 66,
+                  "confluenceScore": 56.310583861729995,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                }
+              },
+              "price": 3000
+            },
+            {
+              "id": "bnbusdt",
+              "symbol": "BNB/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 54,
+                  "confluenceScore": 59.41795243775186,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 58,
+                  "confluenceScore": 58.402052589083794,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 62,
+                  "confluenceScore": 57.10006842285124,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 66,
+                  "confluenceScore": 56.12003678448989,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                }
+              },
+              "price": 300
+            },
+            {
+              "id": "xrpusdt",
+              "symbol": "XRP/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 54,
+                  "confluenceScore": 59.100499410335374,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 58,
+                  "confluenceScore": 58.107075221506406,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 62,
+                  "confluenceScore": 56.649936166149274,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 66,
+                  "confluenceScore": 55.655371319397986,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                }
+              },
+              "price": 0.6
+            },
+            {
+              "id": "solusdt",
+              "symbol": "SOL/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 54,
+                  "confluenceScore": 59.44603386160142,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "4h": {
+                  "direction": "NEUTRAL",
+                  "confidence": 58,
+                  "confluenceScore": 58.426017271700665,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1d": {
+                  "direction": "NEUTRAL",
+                  "confidence": 59,
+                  "confluenceScore": 53.798294300889694,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                },
+                "1w": {
+                  "direction": "NEUTRAL",
+                  "confidence": 66,
+                  "confluenceScore": 56.15512408317613,
+                  "reasoning": [
+                    "Low confluence score"
+                  ]
+                }
+              },
+              "price": 150
+            }
+          ]
+        },
+        "signals": {
+          "BTC/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 54,
+              "confluenceScore": 59.14349336120371,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 58,
+              "confluenceScore": 58.14026059080685,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1d": {
+              "direction": "LONG",
+              "confidence": 65,
+              "confluenceScore": 60.49592653605602,
+              "reasoning": [
+                "Moderate technical signal"
+              ]
+            },
+            "1w": {
+              "direction": "LONG",
+              "confidence": 69,
+              "confluenceScore": 58.71737310288542,
+              "reasoning": [
+                "Moderate technical signal"
+              ]
+            }
+          },
+          "ETH/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 55,
+              "confluenceScore": 59.6406210104586,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 59,
+              "confluenceScore": 58.53786412471879,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 62,
+              "confluenceScore": 57.30298134285057,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 66,
+              "confluenceScore": 56.310583861729995,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            }
+          },
+          "BNB/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 54,
+              "confluenceScore": 59.41795243775186,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 58,
+              "confluenceScore": 58.402052589083794,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 62,
+              "confluenceScore": 57.10006842285124,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 66,
+              "confluenceScore": 56.12003678448989,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            }
+          },
+          "XRP/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 54,
+              "confluenceScore": 59.100499410335374,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 58,
+              "confluenceScore": 58.107075221506406,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 62,
+              "confluenceScore": 56.649936166149274,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 66,
+              "confluenceScore": 55.655371319397986,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            }
+          },
+          "SOL/USDT": {
+            "1h": {
+              "direction": "NEUTRAL",
+              "confidence": 54,
+              "confluenceScore": 59.44603386160142,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "4h": {
+              "direction": "NEUTRAL",
+              "confidence": 58,
+              "confluenceScore": 58.426017271700665,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1d": {
+              "direction": "NEUTRAL",
+              "confidence": 59,
+              "confluenceScore": 53.798294300889694,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            },
+            "1w": {
+              "direction": "NEUTRAL",
+              "confidence": 66,
+              "confluenceScore": 56.15512408317613,
+              "reasoning": [
+                "Low confluence score"
+              ]
+            }
+          }
+        },
+        "technicalAnalysis": {
+          "BTC/USDT": {
+            "rsi": 16.310367955170193,
+            "macd": {
+              "line": -3017.64451553821,
+              "signal": -2414.115612430568
+            },
+            "bb": {
+              "upper": 77603.86889415186,
+              "middle": 70809.71536747736,
+              "lower": 64015.56184080285,
+              "position": "inside"
+            }
+          },
+          "ETH/USDT": {
+            "rsi": 13.249637787758644,
+            "macd": {
+              "line": -181.62686060297892,
+              "signal": -145.30148848238315
+            },
+            "bb": {
+              "upper": 4211.434549463491,
+              "middle": 3859.1395253290966,
+              "lower": 3506.8445011947024,
+              "position": "inside"
+            }
+          },
+          "BNB/USDT": {
+            "rsi": 16.430115862260806,
+            "macd": {
+              "line": -15.938232882633486,
+              "signal": -12.75058630610679
+            },
+            "bb": {
+              "upper": 498.86207189929956,
+              "middle": 456.51763141264627,
+              "lower": 414.17319092599297,
+              "position": "below_lower"
+            }
+          },
+          "XRP/USDT": {
+            "rsi": 12.500935483178495,
+            "macd": {
+              "line": -0.033327782743585055,
+              "signal": -0.026662226194868046
+            },
+            "bb": {
+              "upper": 0.8329761916007186,
+              "middle": 0.7514308214290957,
+              "lower": 0.6698854512574728,
+              "position": "inside"
+            }
+          },
+          "SOL/USDT": {
+            "rsi": 11.448503048376466,
+            "macd": {
+              "line": -7.889533932957619,
+              "signal": -6.311627146366096
+            },
+            "bb": {
+              "upper": 185.03626854958114,
+              "middle": 170.57403493012703,
+              "lower": 156.11180131067292,
+              "position": "inside"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

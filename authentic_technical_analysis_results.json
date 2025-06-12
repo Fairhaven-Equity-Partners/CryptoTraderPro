@@ -1,0 +1,456 @@
+{
+  "testsPassed": 32,
+  "testsFailed": 0,
+  "indicators": {
+    "BTC/USDT_RSI": 48.25110305324267,
+    "ETH/USDT_RSI": 47.65336652789788,
+    "BNB/USDT_RSI": 37.8666358801406,
+    "BTC/USDT_MACD": {
+      "macdLine": 31.151693245745264,
+      "signalLine": -216.89429638751682,
+      "histogram": 248.04598963326208
+    },
+    "ETH/USDT_MACD": {
+      "macdLine": -20.04485833409899,
+      "signalLine": -34.76635121382618,
+      "histogram": 14.721492879727187
+    },
+    "BNB/USDT_MACD": {
+      "macdLine": -1.7552871070187166,
+      "signalLine": -1.5762375301229867,
+      "histogram": -0.17904957689572987
+    },
+    "BTC/USDT_BB": {
+      "upper": 56949.86516956994,
+      "middle": 55480.323982468515,
+      "lower": 54010.78279536709
+    },
+    "ETH/USDT_BB": {
+      "upper": 3393.089864108806,
+      "middle": 3288.0837959092446,
+      "lower": 3183.077727709683
+    },
+    "BNB/USDT_BB": {
+      "upper": 378.04574765970443,
+      "middle": 362.9559477091596,
+      "lower": 347.8661477586148
+    },
+    "BTC/USDT_ATR": 1049.1356576838164,
+    "ETH/USDT_ATR": 63.86171816323347,
+    "BNB/USDT_ATR": 7.120448942238467
+  },
+  "signals": {
+    "BTC/USDT_1h": {
+      "symbol": "BTC/USDT",
+      "timeframe": "1h",
+      "direction": "LONG",
+      "confidence": 60,
+      "reasoning": [
+        "MACD bullish",
+        "Price below BB lower"
+      ],
+      "indicators": {
+        "rsi": 48.25110305324267,
+        "macd": 31.151693245745264,
+        "bb_position": "below"
+      },
+      "entryPrice": 56087.592449838965,
+      "stopLoss": 53989.321134471335,
+      "takeProfit": 60284.13508057423,
+      "riskReward": 2.0000000000000036,
+      "atrUsed": 1049.1356576838164
+    },
+    "BTC/USDT_4h": {
+      "symbol": "BTC/USDT",
+      "timeframe": "4h",
+      "direction": "LONG",
+      "confidence": 30,
+      "reasoning": [
+        "MACD bullish",
+        "Price above BB upper",
+        "Conflicting signals detected"
+      ],
+      "indicators": {
+        "rsi": 48.25110305324267,
+        "macd": 31.151693245745264,
+        "bb_position": "above"
+      },
+      "entryPrice": 56087.592449838965,
+      "stopLoss": 53464.75330562943,
+      "takeProfit": 61333.27073825805,
+      "riskReward": 2.0000000000000027,
+      "atrUsed": 1049.1356576838164
+    },
+    "BTC/USDT_1d": {
+      "symbol": "BTC/USDT",
+      "timeframe": "1d",
+      "direction": "LONG",
+      "confidence": 60,
+      "reasoning": [
+        "MACD bullish",
+        "Price below BB lower"
+      ],
+      "indicators": {
+        "rsi": 48.25110305324267,
+        "macd": 31.151693245745264,
+        "bb_position": "below"
+      },
+      "entryPrice": 56087.592449838965,
+      "stopLoss": 52940.18547678752,
+      "takeProfit": 62382.40639594186,
+      "riskReward": 2.000000000000002,
+      "atrUsed": 1049.1356576838164
+    },
+    "ETH/USDT_1h": {
+      "symbol": "ETH/USDT",
+      "timeframe": "1h",
+      "direction": "SHORT",
+      "confidence": 20,
+      "reasoning": [
+        "Price above BB upper"
+      ],
+      "indicators": {
+        "rsi": 47.65336652789788,
+        "macd": -20.04485833409899,
+        "bb_position": "above"
+      },
+      "entryPrice": 54248.83366834374,
+      "stopLoss": 54376.5571046702,
+      "takeProfit": 53993.38679569081,
+      "riskReward": 2,
+      "atrUsed": 63.86171816323347
+    },
+    "ETH/USDT_4h": {
+      "symbol": "ETH/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "confidence": 20,
+      "reasoning": [
+        "Price above BB upper"
+      ],
+      "indicators": {
+        "rsi": 47.65336652789788,
+        "macd": -20.04485833409899,
+        "bb_position": "above"
+      },
+      "entryPrice": 54248.83366834374,
+      "stopLoss": 54408.487963751824,
+      "takeProfit": 53929.52507752757,
+      "riskReward": 1.9999999999999545,
+      "atrUsed": 63.86171816323347
+    },
+    "ETH/USDT_1d": {
+      "symbol": "ETH/USDT",
+      "timeframe": "1d",
+      "direction": "SHORT",
+      "confidence": 20,
+      "reasoning": [
+        "Price above BB upper"
+      ],
+      "indicators": {
+        "rsi": 47.65336652789788,
+        "macd": -20.04485833409899,
+        "bb_position": "above"
+      },
+      "entryPrice": 54248.83366834374,
+      "stopLoss": 54440.41882283344,
+      "takeProfit": 53865.663359364335,
+      "riskReward": 2,
+      "atrUsed": 63.86171816323347
+    },
+    "BNB/USDT_1h": {
+      "symbol": "BNB/USDT",
+      "timeframe": "1h",
+      "direction": "SHORT",
+      "confidence": 60,
+      "reasoning": [
+        "MACD bearish",
+        "Price above BB upper"
+      ],
+      "indicators": {
+        "rsi": 37.8666358801406,
+        "macd": -1.7552871070187166,
+        "bb_position": "above"
+      },
+      "entryPrice": 58999.074778742004,
+      "stopLoss": 59013.31567662648,
+      "takeProfit": 58970.59298297305,
+      "riskReward": 2,
+      "atrUsed": 7.120448942238467
+    },
+    "BNB/USDT_4h": {
+      "symbol": "BNB/USDT",
+      "timeframe": "4h",
+      "direction": "SHORT",
+      "confidence": 60,
+      "reasoning": [
+        "MACD bearish",
+        "Price above BB upper"
+      ],
+      "indicators": {
+        "rsi": 37.8666358801406,
+        "macd": -1.7552871070187166,
+        "bb_position": "above"
+      },
+      "entryPrice": 58999.074778742004,
+      "stopLoss": 59016.8759010976,
+      "takeProfit": 58963.472534030814,
+      "riskReward": 2,
+      "atrUsed": 7.120448942238467
+    },
+    "BNB/USDT_1d": {
+      "symbol": "BNB/USDT",
+      "timeframe": "1d",
+      "direction": "SHORT",
+      "confidence": 60,
+      "reasoning": [
+        "MACD bearish",
+        "Price above BB upper"
+      ],
+      "indicators": {
+        "rsi": 37.8666358801406,
+        "macd": -1.7552871070187166,
+        "bb_position": "above"
+      },
+      "entryPrice": 58999.074778742004,
+      "stopLoss": 59020.43612556872,
+      "takeProfit": 58956.352085088576,
+      "riskReward": 2,
+      "atrUsed": 7.120448942238467
+    }
+  },
+  "performance": {
+    "calculationTime": 23,
+    "averagePerCalculation": 0.23,
+    "acceptable": true
+  },
+  "validationResults": [
+    {
+      "component": "UI_Data_Structure",
+      "status": "PASSED",
+      "mockData": {
+        "/api/signals": {
+          "BTC/USDT": {
+            "1h": {
+              "direction": "LONG",
+              "confidence": 60,
+              "entryPrice": 56087.592449838965,
+              "stopLoss": 53989.321134471335,
+              "takeProfit": 60284.13508057423,
+              "riskReward": 2.0000000000000036
+            },
+            "4h": {
+              "direction": "LONG",
+              "confidence": 30,
+              "entryPrice": 56087.592449838965,
+              "stopLoss": 53464.75330562943,
+              "takeProfit": 61333.27073825805,
+              "riskReward": 2.0000000000000027
+            },
+            "1d": {
+              "direction": "LONG",
+              "confidence": 60,
+              "entryPrice": 56087.592449838965,
+              "stopLoss": 52940.18547678752,
+              "takeProfit": 62382.40639594186,
+              "riskReward": 2.000000000000002
+            }
+          },
+          "ETH/USDT": {
+            "1h": {
+              "direction": "SHORT",
+              "confidence": 20,
+              "entryPrice": 54248.83366834374,
+              "stopLoss": 54376.5571046702,
+              "takeProfit": 53993.38679569081,
+              "riskReward": 2
+            },
+            "4h": {
+              "direction": "SHORT",
+              "confidence": 20,
+              "entryPrice": 54248.83366834374,
+              "stopLoss": 54408.487963751824,
+              "takeProfit": 53929.52507752757,
+              "riskReward": 1.9999999999999545
+            },
+            "1d": {
+              "direction": "SHORT",
+              "confidence": 20,
+              "entryPrice": 54248.83366834374,
+              "stopLoss": 54440.41882283344,
+              "takeProfit": 53865.663359364335,
+              "riskReward": 2
+            }
+          },
+          "BNB/USDT": {
+            "1h": {
+              "direction": "SHORT",
+              "confidence": 60,
+              "entryPrice": 58999.074778742004,
+              "stopLoss": 59013.31567662648,
+              "takeProfit": 58970.59298297305,
+              "riskReward": 2
+            },
+            "4h": {
+              "direction": "SHORT",
+              "confidence": 60,
+              "entryPrice": 58999.074778742004,
+              "stopLoss": 59016.8759010976,
+              "takeProfit": 58963.472534030814,
+              "riskReward": 2
+            },
+            "1d": {
+              "direction": "SHORT",
+              "confidence": 60,
+              "entryPrice": 58999.074778742004,
+              "stopLoss": 59020.43612556872,
+              "takeProfit": 58956.352085088576,
+              "riskReward": 2
+            }
+          }
+        },
+        "/api/market-heatmap": {
+          "marketEntries": [
+            {
+              "id": "btcusdt",
+              "symbol": "BTC/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "LONG",
+                  "confidence": 60,
+                  "entryPrice": 56087.592449838965,
+                  "stopLoss": 53989.321134471335,
+                  "takeProfit": 60284.13508057423,
+                  "riskReward": 2.0000000000000036
+                },
+                "4h": {
+                  "direction": "LONG",
+                  "confidence": 30,
+                  "entryPrice": 56087.592449838965,
+                  "stopLoss": 53464.75330562943,
+                  "takeProfit": 61333.27073825805,
+                  "riskReward": 2.0000000000000027
+                },
+                "1d": {
+                  "direction": "LONG",
+                  "confidence": 60,
+                  "entryPrice": 56087.592449838965,
+                  "stopLoss": 52940.18547678752,
+                  "takeProfit": 62382.40639594186,
+                  "riskReward": 2.000000000000002
+                }
+              },
+              "price": 56087.592449838965
+            },
+            {
+              "id": "ethusdt",
+              "symbol": "ETH/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "SHORT",
+                  "confidence": 20,
+                  "entryPrice": 54248.83366834374,
+                  "stopLoss": 54376.5571046702,
+                  "takeProfit": 53993.38679569081,
+                  "riskReward": 2
+                },
+                "4h": {
+                  "direction": "SHORT",
+                  "confidence": 20,
+                  "entryPrice": 54248.83366834374,
+                  "stopLoss": 54408.487963751824,
+                  "takeProfit": 53929.52507752757,
+                  "riskReward": 1.9999999999999545
+                },
+                "1d": {
+                  "direction": "SHORT",
+                  "confidence": 20,
+                  "entryPrice": 54248.83366834374,
+                  "stopLoss": 54440.41882283344,
+                  "takeProfit": 53865.663359364335,
+                  "riskReward": 2
+                }
+              },
+              "price": 54248.83366834374
+            },
+            {
+              "id": "bnbusdt",
+              "symbol": "BNB/USDT",
+              "signals": {
+                "1h": {
+                  "direction": "SHORT",
+                  "confidence": 60,
+                  "entryPrice": 58999.074778742004,
+                  "stopLoss": 59013.31567662648,
+                  "takeProfit": 58970.59298297305,
+                  "riskReward": 2
+                },
+                "4h": {
+                  "direction": "SHORT",
+                  "confidence": 60,
+                  "entryPrice": 58999.074778742004,
+                  "stopLoss": 59016.8759010976,
+                  "takeProfit": 58963.472534030814,
+                  "riskReward": 2
+                },
+                "1d": {
+                  "direction": "SHORT",
+                  "confidence": 60,
+                  "entryPrice": 58999.074778742004,
+                  "stopLoss": 59020.43612556872,
+                  "takeProfit": 58956.352085088576,
+                  "riskReward": 2
+                }
+              },
+              "price": 58999.074778742004
+            }
+          ]
+        },
+        "/api/technical-analysis": {
+          "BTC/USDT": {
+            "rsi": 48.25110305324267,
+            "macd": {
+              "macdLine": 31.151693245745264,
+              "signalLine": -216.89429638751682,
+              "histogram": 248.04598963326208
+            },
+            "bb": {
+              "upper": 56949.86516956994,
+              "middle": 55480.323982468515,
+              "lower": 54010.78279536709
+            },
+            "atr": 1049.1356576838164
+          },
+          "ETH/USDT": {
+            "rsi": 47.65336652789788,
+            "macd": {
+              "macdLine": -20.04485833409899,
+              "signalLine": -34.76635121382618,
+              "histogram": 14.721492879727187
+            },
+            "bb": {
+              "upper": 3393.089864108806,
+              "middle": 3288.0837959092446,
+              "lower": 3183.077727709683
+            },
+            "atr": 63.86171816323347
+          },
+          "BNB/USDT": {
+            "rsi": 37.8666358801406,
+            "macd": {
+              "macdLine": -1.7552871070187166,
+              "signalLine": -1.5762375301229867,
+              "histogram": -0.17904957689572987
+            },
+            "bb": {
+              "upper": 378.04574765970443,
+              "middle": 362.9559477091596,
+              "lower": 347.8661477586148
+            },
+            "atr": 7.120448942238467
+          }
+        }
+      }
+    }
+  ]
+}
