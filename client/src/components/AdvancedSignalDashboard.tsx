@@ -85,7 +85,7 @@ function detectMarketRegimeFromData(signal: AdvancedSignal): { confidence: numbe
     return { confidence: 60, description: 'Mixed market conditions' };
   }
   
-  return { confidence: confidenceLevel, description: `${signal.direction.toLowerCase()} market bias confirme`d` };
+  return { confidence: confidenceLevel, description: `${signal.direction.toLowerCase()} market bias confirmed` };
 }
 
 // Market analysis functions using authentic data only
@@ -182,7 +182,7 @@ const PriceLevelDisplay = ({ label, value, timeframe, colorClass }: PriceLevelDi
   return (
     <div className="flex justify-between items-center text-sm">
       <span className="text-white font-semibold">{label}</span>
-      <span className={`font-bold ${colorClass} px-3 py-1 rounded borde`r`}>
+      <span className={`font-bold ${colorClass} px-3 py-1 rounded border`}>
         {formatCurrency(value || 0)}
       </span>
     </div>
@@ -643,7 +643,7 @@ export default function AdvancedSignalDashboard({
       
       if (shouldAllowCalculation) {
         const triggerReason = lastCalculationRef.current === 0 ? 'initial' : 
-                            isAutomatedTrigger ? 'automated-system' : '4-minute interval';`);
+                            isAutomatedTrigger ? 'automated-system' : '4-minute interval';
         calculationTriggeredRef.current = true;
         
         if (calculationTimeoutRef.current) {

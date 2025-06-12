@@ -35,30 +35,8 @@ const GlobalNotifications: React.FC = () => {
   const [newSignals, setNewSignals] = useState<any[]>([]);
   
   useEffect(() => {
-    // Register handler for new signals (only when real signals are detected)
-    // Message handler removed - functionality disabled
-    if (false) {
-        // Create notification for the new signal
-        const signalAlert: Alert = {
-          id: Date.now(),
-          symbol: data.symbol,
-          direction: data.direction,
-          description: 'Multiple indicators aligned',
-          targetPrice: data.price,
-          isActive: true,
-          isTriggered: true
-        };
-        
-        showAlertNotification(signalAlert);
-      }
-    });
-    
-    // No more automatic sample alerts
-    
-    return () => {
-      unsubscribe();
-    };
-  }, [showAlertNotification]);
+    // Message handler functionality disabled
+  }, []);
   
   return (
     <>
