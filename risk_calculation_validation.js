@@ -153,7 +153,7 @@ class RiskCalculationValidator {
           
           // Look for stop loss and take profit calculations
           const stopLossMatches = content.match(/stopLoss.*=.*[^\/\*]/g) || [];
-          const takeProfitMatches = content.match/takeProfit.*=.*[^\/\*]/g) || [];
+          const takeProfitMatches = content.match(/takeProfit.*=.*[^\/\*]/g) || [];
           
           if (stopLossMatches.length > 0 || takeProfitMatches.length > 0) {
             console.log(`  Found risk calculations in ${file}:`);
