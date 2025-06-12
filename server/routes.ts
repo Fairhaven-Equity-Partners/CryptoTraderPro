@@ -839,6 +839,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Simple market data endpoint - optimized for list view
+  app.get('/api/simple-market-data', async (req: Request, res: Response) => {
+    try {
+      const timeframe = (req.query.timeframe as string) || '4h';
+      
+      // Get current market heatmap data
+      const symbols = extendedCryptoList.map(crypto => crypto.symbol);
+      const marketData = [];
+      
+      for (const symbol of symbols) {
+        try {
+          const price = await optimizedCoinMarketCapService.getPrice(symbol);
+          const change24h = await optimizedCoinMarketCapService.get24hChange(symbol);
+          
+          if (price) {
+            // Generate authentic signal
+            const signal = await authenticTechnicalAnalysis.generateAdvancedSignal(symbol, timeframe, price);
+            
+            const entry = {
+              symbol: symbol,
+              name: extendedCryptoList.find(c => c.symbol === symbol)?.name || symbol,
+              price: price,
+              change24h: change24h || 0,
+              confidence: signal?.confidence || 0,
+              signal: signal?.direction || 'NEUTRAL',
+              volume: signal?.volume || 0
+            };
+            
+            marketData.push(entry);
+          }
+        } catch (error) {
+          // Skip failed symbols to maintain data integrity
+        }
+      }
+      
+      // Sort by confidence for better UX
+      marketData.sort((a, b) => b.confidence - a.confidence);
+      
+      const response = {
+        data: marketData,
+        metadata: {
+          totalPairs: marketData.length,
+          timeframe: timeframe,
+          timestamp: Date.now(),
+          dataVersion: '1.0'
+        }
+      };
+      
+      // Set cache headers for 30 seconds
+      res.set('Cache-Control', 'public, max-age=30');
+      res.json(response);
+      
+    } catch (error) {
+      console.error('[SimpleMarketData] Error:', error);
+      res.status(500).json({ 
+        error: 'Failed to fetch market data',
+        timestamp: Date.now()
+      });
+    }
+  });
+
   // Trade simulation routes
   app.post('/api/trade-simulations', async (req: Request, res: Response) => {
     try {
