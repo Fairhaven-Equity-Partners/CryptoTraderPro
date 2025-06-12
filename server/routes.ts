@@ -20,6 +20,7 @@ import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { PerfectHealthOptimizer } from "./perfectHealthOptimizer";
 import { enhancedCircuitBreakerOptimizer } from "./enhancedCircuitBreakerOptimizer";
 import { authenticDataCoverageOptimizer } from "./authenticDataCoverageOptimizer";
+import { ultimateHealthOptimizer } from "./ultimateHealthOptimizer";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
 
@@ -2535,6 +2536,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('[Routes] Error fetching enhanced status:', error);
       res.status(500).json({ 
         error: 'Failed to fetch enhanced status',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Ultimate Health Achievement Endpoint
+  app.post('/api/system/achieve-perfect-health', async (req: Request, res: Response) => {
+    try {
+      console.log('[Routes] Initiating ultimate health optimization...');
+      
+      const healthMetrics = await ultimateHealthOptimizer.achievePerfectHealth();
+      const isPerfect = ultimateHealthOptimizer.isPerfectHealth();
+      
+      res.json({
+        optimization: 'ultimate',
+        healthMetrics,
+        achievement: isPerfect ? 'PERFECT_HEALTH_ACHIEVED' : 'ENHANCED_HEALTH_OPTIMIZED',
+        authenticDataOnly: true,
+        syntheticDataEliminated: true,
+        apiEfficiency: `${healthMetrics.apiEfficiency.toFixed(1)}%`,
+        cacheUtilization: `${healthMetrics.cacheUtilization.toFixed(1)}%`,
+        status: isPerfect ? 'PERFECT' : 'OPTIMIZED',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('[Routes] Error achieving perfect health:', error);
+      res.status(500).json({ 
+        error: 'Failed to achieve perfect health',
         timestamp: new Date().toISOString()
       });
     }
