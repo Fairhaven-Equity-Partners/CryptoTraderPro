@@ -1,0 +1,89 @@
+{
+  "timestamp": "2025-06-12T13:11:44.044Z",
+  "implementation": "PERFECT_SIGNAL_BALANCE",
+  "status": "IN_PROGRESS",
+  "metrics": {
+    "totalSignals": 192,
+    "longCount": 48,
+    "shortCount": 124,
+    "neutralCount": 20,
+    "longPercent": 25,
+    "shortPercent": 64.6,
+    "neutralPercent": 10.4,
+    "biasPercentage": 39.58333333333334
+  },
+  "optimizedThresholds": {
+    "1m": {
+      "longMin": 0.7375,
+      "longMax": 1.7375,
+      "shortMin": -1.8958333333333335,
+      "shortMax": -0.8958333333333335
+    },
+    "5m": {
+      "longMin": 1.2375,
+      "longMax": 2.2375,
+      "shortMin": -2.3958333333333335,
+      "shortMax": -1.3958333333333335
+    },
+    "15m": {
+      "longMin": 1.7375,
+      "longMax": 2.7375,
+      "shortMin": -2.8958333333333335,
+      "shortMax": -1.8958333333333335
+    },
+    "30m": {
+      "longMin": 2.2375,
+      "longMax": 3.2375,
+      "shortMin": -3.3958333333333335,
+      "shortMax": -2.3958333333333335
+    },
+    "1h": {
+      "longMin": 2.7375,
+      "longMax": 3.7375,
+      "shortMin": -3.8958333333333335,
+      "shortMax": -2.8958333333333335
+    },
+    "4h": {
+      "longMin": 3.2375,
+      "longMax": 4.2375,
+      "shortMin": -4.395833333333333,
+      "shortMax": -3.3958333333333335
+    },
+    "1d": {
+      "longMin": 3.7375,
+      "longMax": 4.7375,
+      "shortMin": -4.895833333333333,
+      "shortMax": -3.8958333333333335
+    },
+    "3d": {
+      "longMin": 4.2375,
+      "longMax": 5.2375,
+      "shortMin": -5.395833333333333,
+      "shortMax": -4.395833333333333
+    },
+    "1w": {
+      "longMin": 4.7375,
+      "longMax": 5.7375,
+      "shortMin": -5.895833333333333,
+      "shortMax": -4.895833333333333
+    },
+    "1M": {
+      "longMin": 5.2375,
+      "longMax": 6.2375,
+      "shortMin": -6.395833333333333,
+      "shortMax": -5.395833333333333
+    }
+  },
+  "balancingHistory": [
+    {
+      "timestamp": "2025-06-12T13:11:44.043Z",
+      "beforeBias": 39.58333333333334,
+      "afterBias": 39.58333333333334,
+      "improvement": 0,
+      "balanceAchieved": false
+    }
+  ],
+  "recommendations": [
+    "Apply more aggressive threshold adjustments"
+  ]
+}
