@@ -885,21 +885,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Signals endpoint for performance analysis
+  // Signals endpoint for performance analysis - synchronized with heatmap data source
   app.get('/api/signals/:symbol', async (req: Request, res: Response) => {
     try {
       const symbol = decodeURIComponent(req.params.symbol);
       const { timeframe } = req.query;
       
-      // Get signals from automated signal calculator
-      const signals = automatedSignalCalculator.getSignals(symbol, timeframe as string);
+      // Use the same signal generation logic as heatmap for perfect consistency
+      const requestedTimeframe = (timeframe as string) || '1h';
+      
+      // Get signal from automated calculator (same source as heatmap)
+      const signals = automatedSignalCalculator.getSignals(symbol, requestedTimeframe);
       
       if (!signals || signals.length === 0) {
-        // Return empty array instead of 404 for consistency
+        // Fallback: Try to get latest trade simulation for this symbol/timeframe
+        const tradeSimulations = await storage.getActiveTradeSimulations(symbol);
+        const relevantTrade = tradeSimulations.find(trade => trade.timeframe === requestedTimeframe);
+        
+        if (relevantTrade) {
+          let signalData: any = {};
+          try {
+            signalData = relevantTrade.signalData ? JSON.parse(relevantTrade.signalData) : {};
+          } catch (e) {
+            // Fallback if signalData is not valid JSON
+            signalData = {};
+          }
+          
+          const fallbackSignal = {
+            symbol: relevantTrade.symbol,
+            timeframe: relevantTrade.timeframe,
+            direction: relevantTrade.direction,
+            confidence: signalData.confidence || 75,
+            strength: (signalData.confidence || 75) / 100,
+            price: relevantTrade.entryPrice,
+            timestamp: new Date(relevantTrade.entryTime).getTime(),
+            indicators: signalData.indicators || {},
+            technicalAnalysis: signalData.technicalAnalysis || null,
+            confluenceScore: signalData.confluenceScore || 0,
+            riskReward: signalData.riskReward || 1.5,
+            volatilityAdjustment: signalData.volatilityAdjustment || 1.0,
+            stopLoss: relevantTrade.stopLoss,
+            takeProfit: relevantTrade.takeProfit
+          };
+          
+          return res.json([fallbackSignal]);
+        }
+        
         return res.json([]);
       }
       
-      // Transform signals to expected format
+      // Transform signals from automated calculator to expected format
       const formattedSignals = signals.map(signal => ({
         symbol: signal.symbol,
         timeframe: signal.timeframe,
@@ -915,7 +950,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         volatilityAdjustment: signal.volatilityAdjustment || 1.0
       }));
       
-      res.json(formattedSignals);
+      // Filter by timeframe if different from what calculator returned
+      const filteredSignals = timeframe ? 
+        formattedSignals.filter(s => s.timeframe === timeframe) : 
+        formattedSignals;
+      
+      res.json(filteredSignals);
       
     } catch (error: any) {
       console.error(`Error fetching signals for ${req.params.symbol}:`, error);
