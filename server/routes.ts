@@ -409,7 +409,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           calculatedSignals.filter(s => s.timeframe === timeframe) : 
           calculatedSignals;
         
-        // Convert to expected format
+        // Convert to expected format with complete mathematical data
         const formattedSignals = filteredSignals.map(signal => ({
           symbol: signal.symbol,
           timeframe: signal.timeframe,
@@ -417,8 +417,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           confidence: signal.confidence,
           strength: signal.strength,
           price: signal.price,
+          entryPrice: signal.entryPrice,
+          stopLoss: signal.stopLoss,
+          takeProfit: signal.takeProfit,
           timestamp: signal.timestamp,
-          indicators: signal.indicators
+          indicators: signal.indicators,
+          technicalAnalysis: signal.technicalAnalysis,
+          confluenceScore: signal.confluenceScore,
+          riskReward: signal.riskReward,
+          volatilityAdjustment: signal.volatilityAdjustment
         }));
         
         res.json(formattedSignals);

@@ -1,0 +1,133 @@
+{
+  "timestamp": 1749733630035,
+  "finalScore": 42.708333333333336,
+  "systemStatus": "NEEDS_IMPROVEMENT",
+  "detailedResults": {
+    "signalDistribution": {
+      "1h": {
+        "total": 48,
+        "distribution": {
+          "LONG": 30,
+          "SHORT": 15,
+          "NEUTRAL": 3
+        },
+        "percentages": {
+          "longPercent": "62.5",
+          "shortPercent": "31.3",
+          "neutralPercent": "6.3"
+        },
+        "bias": 31.3,
+        "status": "FAILED"
+      },
+      "4h": {
+        "total": 48,
+        "distribution": {
+          "LONG": 27,
+          "SHORT": 17,
+          "NEUTRAL": 4
+        },
+        "percentages": {
+          "longPercent": "56.3",
+          "shortPercent": "35.4",
+          "neutralPercent": "8.3"
+        },
+        "bias": 20.8,
+        "status": "FAILED"
+      },
+      "1d": {
+        "total": 48,
+        "distribution": {
+          "LONG": 30,
+          "SHORT": 14,
+          "NEUTRAL": 4
+        },
+        "percentages": {
+          "longPercent": "62.5",
+          "shortPercent": "29.2",
+          "neutralPercent": "8.3"
+        },
+        "bias": 33.3,
+        "status": "FAILED"
+      },
+      "1w": {
+        "total": 48,
+        "distribution": {
+          "LONG": 27,
+          "SHORT": 17,
+          "NEUTRAL": 4
+        },
+        "percentages": {
+          "longPercent": "56.3",
+          "shortPercent": "35.4",
+          "neutralPercent": "8.3"
+        },
+        "bias": 20.8,
+        "status": "FAILED"
+      }
+    },
+    "mathematicalAccuracy": {
+      "BTC/USDT": {
+        "totalTests": 4,
+        "passedTests": 3,
+        "accuracy": 75,
+        "status": "NEEDS_IMPROVEMENT"
+      },
+      "ETH/USDT": {
+        "totalTests": 4,
+        "passedTests": 1,
+        "accuracy": 25,
+        "status": "NEEDS_IMPROVEMENT"
+      },
+      "XRP/USDT": {
+        "totalTests": 4,
+        "passedTests": 1,
+        "accuracy": 25,
+        "status": "NEEDS_IMPROVEMENT"
+      }
+    },
+    "biasAnalysis": {
+      "previousBias": 87.5,
+      "currentBias": 35.41666666666667,
+      "biasReduction": 52.08333333333333,
+      "distribution": {
+        "LONG": 27,
+        "SHORT": 17,
+        "NEUTRAL": 4
+      },
+      "eliminationStatus": "PARTIAL_SUCCESS",
+      "balanceScore": 79.16666666666667
+    },
+    "complianceCheck": {
+      "tests": {
+        "No synthetic data patterns": {
+          "passed": true,
+          "status": "No synthetic data patterns detected"
+        },
+        "Authentic price sources only": {
+          "passed": true,
+          "status": "All data sources are authentic"
+        },
+        "Mathematical accuracy > 95%": {
+          "passed": false,
+          "status": "41.7% accuracy",
+          "details": "Below 95% standard"
+        },
+        "Signal balance achieved": {
+          "passed": false,
+          "status": "PARTIAL_SUCCESS",
+          "details": "52.1% bias reduction achieved"
+        }
+      },
+      "score": 50,
+      "status": "NEEDS_IMPROVEMENT"
+    },
+    "finalScore": 42.708333333333336
+  },
+  "summary": {
+    "distributionScore": 0,
+    "mathematicalScore": 41.666666666666664,
+    "biasScore": 79.16666666666667,
+    "complianceScore": 50,
+    "readyForProduction": false
+  }
+}

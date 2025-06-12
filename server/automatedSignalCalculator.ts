@@ -675,6 +675,25 @@ export class AutomatedSignalCalculator {
     const direction: 'LONG' | 'SHORT' | 'NEUTRAL' = 
       change24h > 2 ? 'LONG' : change24h < -2 ? 'SHORT' : 'NEUTRAL';
     
+    // Calculate stop loss and take profit levels
+    const stopLossPercent = this.getStopLossPercent(timeframe, direction);
+    const takeProfitPercent = this.getTakeProfitPercent(timeframe, direction);
+    
+    let stopLoss: number;
+    let takeProfit: number;
+    
+    if (direction === 'LONG') {
+      stopLoss = price * (1 - stopLossPercent / 100);
+      takeProfit = price * (1 + takeProfitPercent / 100);
+    } else if (direction === 'SHORT') {
+      stopLoss = price * (1 + stopLossPercent / 100);
+      takeProfit = price * (1 - takeProfitPercent / 100);
+    } else {
+      // NEUTRAL positions use smaller ranges
+      stopLoss = price * (1 - (stopLossPercent / 2) / 100);
+      takeProfit = price * (1 + (takeProfitPercent / 2) / 100);
+    }
+    
     return {
       symbol,
       timeframe,
@@ -682,6 +701,9 @@ export class AutomatedSignalCalculator {
       confidence: Math.min(70, Math.max(30, absChange * 10)),
       strength: Math.min(80, absChange * 8),
       price,
+      entryPrice: price,
+      stopLoss: Math.round(stopLoss * 100) / 100,
+      takeProfit: Math.round(takeProfit * 100) / 100,
       timestamp: Date.now(),
       indicators: {
         rsi: 50,
