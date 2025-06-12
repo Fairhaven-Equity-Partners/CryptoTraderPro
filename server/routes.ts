@@ -855,15 +855,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const heatmapData = await response.json();
       
       // Transform to simplified format
-      const marketData = heatmapData.marketEntries?.map((entry: any) => ({
-        symbol: entry.symbol,
-        name: entry.name,
-        price: entry.currentPrice,
-        change24h: entry.priceChange24h || 0,
-        confidence: entry.confidence || 0,
-        signal: entry.signals?.[timeframe]?.direction || entry.sentiment?.direction || 'NEUTRAL',
-        volume: entry.signals?.[timeframe]?.volume || 0
-      })) || [];
+      const marketData = heatmapData.marketEntries?.map((entry: any) => {
+        const timeframeSignal = entry.signals?.[timeframe];
+        return {
+          symbol: entry.symbol,
+          name: entry.name,
+          price: entry.currentPrice,
+          change24h: entry.priceChange24h || 0,
+          confidence: entry.confidence || 0,
+          signal: timeframeSignal?.direction || entry.sentiment?.direction || 'NEUTRAL',
+          volume: timeframeSignal?.volume || entry.volume || 0
+        };
+      }) || [];
       
       // Sort by confidence for better UX
       marketData.sort((a: any, b: any) => b.confidence - a.confidence);
