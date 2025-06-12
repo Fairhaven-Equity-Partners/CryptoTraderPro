@@ -1,278 +1,335 @@
 /**
  * Mathematical Accuracy Final Validation
- * Comprehensive verification of all calculation fixes and optimizations
+ * Comprehensive test of all risk calculations after fixes
  */
 
 import fetch from 'node-fetch';
+import fs from 'fs/promises';
 
 class MathematicalAccuracyValidator {
   constructor() {
     this.baseUrl = 'http://localhost:5000';
-    this.timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
     this.validationResults = {
-      duplicateCalculationFix: false,
-      timeframeWeightConsistency: false,
-      confidenceCalculationAccuracy: false,
-      authenticDataIntegrity: false,
-      overallSystemHealth: false
+      totalTests: 0,
+      passedTests: 0,
+      failedTests: 0,
+      criticalErrors: [],
+      validatedSymbols: [],
+      mathematicalAccuracy: 0
     };
   }
 
-  async runComprehensiveValidation() {
-    console.log('🔍 Running comprehensive mathematical accuracy validation...\n');
+  async runFinalValidation() {
+    console.log('\n🧮 MATHEMATICAL ACCURACY FINAL VALIDATION');
+    console.log('=' .repeat(70));
     
-    await this.validateDuplicateCalculationFix();
-    await this.validateTimeframeWeightConsistency();
-    await this.validateConfidenceCalculationAccuracy();
-    await this.validateAuthenticDataIntegrity();
-    await this.validateOverallSystemHealth();
+    // Test all risk calculations across multiple endpoints
+    await this.validateHeatmapRiskCalculations();
+    await this.validateSignalDashboardCalculations();
+    await this.validateSimpleMarketDataCalculations();
     
-    this.generateFinalReport();
+    // Generate final mathematical report
+    this.generateFinalMathematicalReport();
+    
+    return this.validationResults;
   }
 
-  async validateDuplicateCalculationFix() {
-    console.log('1️⃣ Validating duplicate calculation fix...');
+  async validateHeatmapRiskCalculations() {
+    console.log('\n📊 Validating Heatmap Risk Calculations...');
     
     try {
-      let allPassed = true;
+      const heatmapData = await this.makeRequest('/api/market-heatmap');
+      const symbols = heatmapData.marketEntries?.slice(0, 15) || [];
       
-      for (const timeframe of this.timeframes) {
-        const response = await fetch(`${this.baseUrl}/api/market-heatmap?timeframe=${timeframe}`);
-        if (!response.ok) {
-          console.log(`   ❌ ${timeframe}: API error`);
-          allPassed = false;
-          continue;
-        }
-        
-        const data = await response.json();
-        const entries = data.marketEntries || [];
-        const confidenceValues = entries.map(e => e.confidence).filter(c => c !== undefined);
-        const uniqueSymbols = [...new Set(entries.map(e => e.symbol))];
-        
-        // Check for exact 1:1 mapping
-        if (entries.length !== uniqueSymbols.length || confidenceValues.length !== uniqueSymbols.length) {
-          console.log(`   ❌ ${timeframe}: ${entries.length} entries, ${uniqueSymbols.length} symbols, ${confidenceValues.length} confidence values`);
-          allPassed = false;
-        } else {
-          console.log(`   ✅ ${timeframe}: Perfect 1:1 mapping (${entries.length} entries)`);
+      for (const entry of symbols) {
+        if (entry.signals) {
+          Object.entries(entry.signals).forEach(([timeframe, signal]) => {
+            if (signal && signal.stopLoss && signal.takeProfit && signal.direction) {
+              this.validateRiskCalculation(
+                entry.symbol,
+                timeframe,
+                entry.currentPrice,
+                signal.stopLoss,
+                signal.takeProfit,
+                signal.direction,
+                'heatmap'
+              );
+            }
+          });
         }
       }
       
-      this.validationResults.duplicateCalculationFix = allPassed;
-      console.log(`   Result: ${allPassed ? '✅ FIXED' : '❌ FAILED'}\n`);
-      
     } catch (error) {
-      console.log(`   ❌ Validation error: ${error.message}\n`);
-      this.validationResults.duplicateCalculationFix = false;
+      console.log(`Error validating heatmap: ${error.message}`);
     }
   }
 
-  async validateTimeframeWeightConsistency() {
-    console.log('2️⃣ Validating timeframe weight consistency...');
+  async validateSignalDashboardCalculations() {
+    console.log('\n🎯 Validating Signal Dashboard Calculations...');
     
     try {
-      const expectedWeights = {
-        '1m': 0.70, '5m': 0.88, '15m': 0.92, '30m': 0.95, '1h': 0.98,
-        '4h': 1.00, '1d': 0.95, '3d': 0.92, '1w': 0.90, '1M': 0.85
-      };
+      // Test major symbols
+      const testSymbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT', 'SOL/USDT', 'BNB/USDT'];
       
-      let allConsistent = true;
-      
-      // Test multiple timeframes for weight consistency
-      for (const timeframe of ['1m', '4h', '1d']) {
-        const response = await fetch(`${this.baseUrl}/api/market-heatmap?timeframe=${timeframe}`);
-        if (!response.ok) continue;
+      for (const symbol of testSymbols) {
+        const signalData = await this.makeRequest(`/api/crypto/${symbol.replace('/', '/')}`);
         
-        const data = await response.json();
-        const entries = data.marketEntries || [];
-        
-        // Analyze confidence distribution patterns
-        const confidenceValues = entries.map(e => e.confidence).filter(c => c !== undefined);
-        const avgConfidence = confidenceValues.reduce((sum, conf) => sum + conf, 0) / confidenceValues.length;
-        const expectedRange = expectedWeights[timeframe] * 100;
-        
-        // Check if confidence values reflect timeframe weights (rough validation)
-        if (avgConfidence > 0 && Math.abs(avgConfidence - expectedRange) < 50) {
-          console.log(`   ✅ ${timeframe}: Confidence pattern consistent (avg: ${avgConfidence.toFixed(1)}%)`);
-        } else {
-          console.log(`   ⚠️  ${timeframe}: Confidence pattern variance (avg: ${avgConfidence.toFixed(1)}%)`);
+        if (signalData && signalData.signals) {
+          Object.entries(signalData.signals).forEach(([timeframe, signal]) => {
+            if (signal && signal.stopLoss && signal.takeProfit && signal.direction) {
+              this.validateRiskCalculation(
+                symbol,
+                timeframe,
+                signalData.currentPrice,
+                signal.stopLoss,
+                signal.takeProfit,
+                signal.direction,
+                'dashboard'
+              );
+            }
+          });
         }
       }
       
-      this.validationResults.timeframeWeightConsistency = allConsistent;
-      console.log(`   Result: ✅ VALIDATED\n`);
-      
     } catch (error) {
-      console.log(`   ❌ Validation error: ${error.message}\n`);
-      this.validationResults.timeframeWeightConsistency = false;
+      console.log(`Error validating dashboard: ${error.message}`);
     }
   }
 
-  async validateConfidenceCalculationAccuracy() {
-    console.log('3️⃣ Validating confidence calculation accuracy...');
+  async validateSimpleMarketDataCalculations() {
+    console.log('\n📈 Validating Simple Market Data Calculations...');
     
     try {
-      const response = await fetch(`${this.baseUrl}/api/market-heatmap?timeframe=1d`);
-      if (!response.ok) {
-        console.log('   ❌ API error');
-        this.validationResults.confidenceCalculationAccuracy = false;
-        return;
+      const simpleData = await this.makeRequest('/api/simple-market-data');
+      const symbols = simpleData.data?.slice(0, 10) || [];
+      
+      for (const entry of symbols) {
+        if (entry.signals) {
+          Object.entries(entry.signals).forEach(([timeframe, signal]) => {
+            if (signal && signal.stopLoss && signal.takeProfit && signal.direction) {
+              this.validateRiskCalculation(
+                entry.symbol,
+                timeframe,
+                entry.currentPrice,
+                signal.stopLoss,
+                signal.takeProfit,
+                signal.direction,
+                'simple-data'
+              );
+            }
+          });
+        }
       }
       
-      const data = await response.json();
-      const entries = data.marketEntries || [];
+    } catch (error) {
+      console.log(`Error validating simple data: ${error.message}`);
+    }
+  }
+
+  validateRiskCalculation(symbol, timeframe, entryPrice, stopLoss, takeProfit, direction, source) {
+    this.validationResults.totalTests++;
+    
+    let isValid = true;
+    const errors = [];
+    
+    // Mathematical validation for SHORT positions
+    if (direction === 'SHORT') {
+      // Stop loss should be ABOVE entry price for SHORT positions
+      if (stopLoss <= entryPrice) {
+        isValid = false;
+        errors.push('Stop loss should be above entry price for SHORT positions');
+        this.validationResults.criticalErrors.push({
+          symbol,
+          timeframe,
+          direction,
+          source,
+          issue: 'INVERTED_STOP_LOSS',
+          entryPrice,
+          stopLoss,
+          expected: 'stopLoss > entryPrice',
+          actual: `${stopLoss} <= ${entryPrice}`
+        });
+      }
       
-      let validConfidenceCount = 0;
-      let invalidConfidenceCount = 0;
+      // Take profit should be BELOW entry price for SHORT positions
+      if (takeProfit >= entryPrice) {
+        isValid = false;
+        errors.push('Take profit should be below entry price for SHORT positions');
+        this.validationResults.criticalErrors.push({
+          symbol,
+          timeframe,
+          direction,
+          source,
+          issue: 'INVERTED_TAKE_PROFIT',
+          entryPrice,
+          takeProfit,
+          expected: 'takeProfit < entryPrice',
+          actual: `${takeProfit} >= ${entryPrice}`
+        });
+      }
+    }
+    
+    // Mathematical validation for LONG positions
+    else if (direction === 'LONG') {
+      // Stop loss should be BELOW entry price for LONG positions
+      if (stopLoss >= entryPrice) {
+        isValid = false;
+        errors.push('Stop loss should be below entry price for LONG positions');
+        this.validationResults.criticalErrors.push({
+          symbol,
+          timeframe,
+          direction,
+          source,
+          issue: 'INVERTED_STOP_LOSS',
+          entryPrice,
+          stopLoss,
+          expected: 'stopLoss < entryPrice',
+          actual: `${stopLoss} >= ${entryPrice}`
+        });
+      }
       
-      entries.forEach(entry => {
-        if (entry.confidence !== undefined) {
-          if (entry.confidence >= 0 && entry.confidence <= 100) {
-            validConfidenceCount++;
-          } else {
-            invalidConfidenceCount++;
-            console.log(`   ⚠️  ${entry.symbol}: Invalid confidence ${entry.confidence}`);
-          }
+      // Take profit should be ABOVE entry price for LONG positions
+      if (takeProfit <= entryPrice) {
+        isValid = false;
+        errors.push('Take profit should be above entry price for LONG positions');
+        this.validationResults.criticalErrors.push({
+          symbol,
+          timeframe,
+          direction,
+          source,
+          issue: 'INVERTED_TAKE_PROFIT',
+          entryPrice,
+          takeProfit,
+          expected: 'takeProfit > entryPrice',
+          actual: `${takeProfit} <= ${entryPrice}`
+        });
+      }
+    }
+    
+    // Record results
+    if (isValid) {
+      this.validationResults.passedTests++;
+      console.log(`  ✓ ${symbol} ${timeframe} ${direction} (${source})`);
+    } else {
+      this.validationResults.failedTests++;
+      console.log(`  ✗ ${symbol} ${timeframe} ${direction} (${source}) - ${errors.join(', ')}`);
+    }
+    
+    // Track validated symbols
+    if (!this.validationResults.validatedSymbols.includes(symbol)) {
+      this.validationResults.validatedSymbols.push(symbol);
+    }
+  }
+
+  generateFinalMathematicalReport() {
+    console.log('\n📋 FINAL MATHEMATICAL VALIDATION REPORT');
+    console.log('=' .repeat(70));
+    
+    // Calculate accuracy percentage
+    this.validationResults.mathematicalAccuracy = this.validationResults.totalTests > 0 
+      ? Math.round((this.validationResults.passedTests / this.validationResults.totalTests) * 100)
+      : 0;
+    
+    console.log(`\n📊 VALIDATION RESULTS:`);
+    console.log(`  Total Tests: ${this.validationResults.totalTests}`);
+    console.log(`  Passed Tests: ${this.validationResults.passedTests}`);
+    console.log(`  Failed Tests: ${this.validationResults.failedTests}`);
+    console.log(`  Mathematical Accuracy: ${this.validationResults.mathematicalAccuracy}%`);
+    console.log(`  Validated Symbols: ${this.validationResults.validatedSymbols.length}`);
+    
+    if (this.validationResults.criticalErrors.length > 0) {
+      console.log(`\n🚨 CRITICAL MATHEMATICAL ERRORS FOUND:`);
+      
+      // Group errors by type
+      const errorsByType = this.validationResults.criticalErrors.reduce((acc, error) => {
+        if (!acc[error.issue]) acc[error.issue] = [];
+        acc[error.issue].push(error);
+        return acc;
+      }, {});
+      
+      Object.entries(errorsByType).forEach(([errorType, errors]) => {
+        console.log(`\n  ${errorType}: ${errors.length} occurrences`);
+        errors.slice(0, 3).forEach(error => {
+          console.log(`    ${error.symbol} ${error.timeframe} ${error.direction} (${error.source})`);
+          console.log(`      Expected: ${error.expected}`);
+          console.log(`      Actual: ${error.actual}`);
+        });
+        if (errors.length > 3) {
+          console.log(`    ... and ${errors.length - 3} more`);
         }
       });
-      
-      const accuracy = validConfidenceCount / (validConfidenceCount + invalidConfidenceCount) * 100;
-      
-      if (accuracy >= 95) {
-        console.log(`   ✅ Confidence accuracy: ${accuracy.toFixed(1)}% (${validConfidenceCount}/${validConfidenceCount + invalidConfidenceCount})`);
-        this.validationResults.confidenceCalculationAccuracy = true;
-      } else {
-        console.log(`   ❌ Confidence accuracy: ${accuracy.toFixed(1)}% (${validConfidenceCount}/${validConfidenceCount + invalidConfidenceCount})`);
-        this.validationResults.confidenceCalculationAccuracy = false;
-      }
-      
-      console.log(`   Result: ${this.validationResults.confidenceCalculationAccuracy ? '✅ ACCURATE' : '❌ INACCURATE'}\n`);
-      
-    } catch (error) {
-      console.log(`   ❌ Validation error: ${error.message}\n`);
-      this.validationResults.confidenceCalculationAccuracy = false;
-    }
-  }
-
-  async validateAuthenticDataIntegrity() {
-    console.log('4️⃣ Validating authentic data integrity...');
-    
-    try {
-      // Test authentic technical analysis
-      const btcResponse = await fetch(`${this.baseUrl}/api/authentic-technical-analysis/BTC%2FUSDT`);
-      const ethResponse = await fetch(`${this.baseUrl}/api/authentic-technical-analysis/ETH%2FUSDT`);
-      
-      let authenticDataScore = 0;
-      
-      if (btcResponse.ok) {
-        const btcData = await btcResponse.json();
-        if (btcData.success && btcData.indicators && Object.keys(btcData.indicators).length > 0) {
-          console.log('   ✅ BTC/USDT: Authentic technical analysis available');
-          authenticDataScore += 50;
-        }
-      }
-      
-      if (ethResponse.ok) {
-        const ethData = await ethResponse.json();
-        if (ethData.success && ethData.indicators && Object.keys(ethData.indicators).length > 0) {
-          console.log('   ✅ ETH/USDT: Authentic technical analysis available');
-          authenticDataScore += 50;
-        }
-      }
-      
-      this.validationResults.authenticDataIntegrity = authenticDataScore >= 50;
-      console.log(`   Result: ${this.validationResults.authenticDataIntegrity ? '✅ VERIFIED' : '❌ COMPROMISED'}\n`);
-      
-    } catch (error) {
-      console.log(`   ❌ Validation error: ${error.message}\n`);
-      this.validationResults.authenticDataIntegrity = false;
-    }
-  }
-
-  async validateOverallSystemHealth() {
-    console.log('5️⃣ Validating overall system health...');
-    
-    try {
-      // Test automation status
-      const automationResponse = await fetch(`${this.baseUrl}/api/automation/status`);
-      let systemHealthScore = 0;
-      
-      if (automationResponse.ok) {
-        const automationData = await automationResponse.json();
-        if (automationData.isRunning) {
-          console.log('   ✅ Automated signal calculator: Running');
-          systemHealthScore += 25;
-        }
-        if (automationData.lastCalculationTime && Date.now() - automationData.lastCalculationTime < 300000) {
-          console.log('   ✅ Recent calculations: Within 5 minutes');
-          systemHealthScore += 25;
-        }
-      }
-      
-      // Test rate limiter
-      const rateLimiterResponse = await fetch(`${this.baseUrl}/api/rate-limiter/stats`);
-      if (rateLimiterResponse.ok) {
-        const rateLimiterData = await rateLimiterResponse.json();
-        if (rateLimiterData.requestsRemaining > 0) {
-          console.log('   ✅ Rate limiter: Requests available');
-          systemHealthScore += 25;
-        }
-      }
-      
-      // Test performance metrics
-      const metricsResponse = await fetch(`${this.baseUrl}/api/performance-metrics`);
-      if (metricsResponse.ok) {
-        const metricsData = await metricsResponse.json();
-        if (metricsData.indicators !== undefined) {
-          console.log('   ✅ Performance metrics: Responding');
-          systemHealthScore += 25;
-        }
-      }
-      
-      this.validationResults.overallSystemHealth = systemHealthScore >= 75;
-      console.log(`   Health Score: ${systemHealthScore}/100`);
-      console.log(`   Result: ${this.validationResults.overallSystemHealth ? '✅ HEALTHY' : '❌ DEGRADED'}\n`);
-      
-    } catch (error) {
-      console.log(`   ❌ Validation error: ${error.message}\n`);
-      this.validationResults.overallSystemHealth = false;
-    }
-  }
-
-  generateFinalReport() {
-    console.log('📊 MATHEMATICAL ACCURACY VALIDATION REPORT');
-    console.log('================================================\n');
-    
-    const results = this.validationResults;
-    const passedTests = Object.values(results).filter(Boolean).length;
-    const totalTests = Object.keys(results).length;
-    const successRate = (passedTests / totalTests) * 100;
-    
-    console.log('Test Results:');
-    console.log(`  Duplicate Calculation Fix: ${results.duplicateCalculationFix ? '✅ PASSED' : '❌ FAILED'}`);
-    console.log(`  Timeframe Weight Consistency: ${results.timeframeWeightConsistency ? '✅ PASSED' : '❌ FAILED'}`);
-    console.log(`  Confidence Calculation Accuracy: ${results.confidenceCalculationAccuracy ? '✅ PASSED' : '❌ FAILED'}`);
-    console.log(`  Authentic Data Integrity: ${results.authenticDataIntegrity ? '✅ PASSED' : '❌ FAILED'}`);
-    console.log(`  Overall System Health: ${results.overallSystemHealth ? '✅ PASSED' : '❌ FAILED'}`);
-    
-    console.log(`\nOverall Success Rate: ${successRate.toFixed(1)}% (${passedTests}/${totalTests})`);
-    
-    if (successRate >= 80) {
-      console.log('\n🎉 MATHEMATICAL ACCURACY VALIDATION: SUCCESS');
-      console.log('All critical mathematical accuracy issues have been resolved.');
     } else {
-      console.log('\n⚠️  MATHEMATICAL ACCURACY VALIDATION: PARTIAL SUCCESS');
-      console.log('Some issues remain that require attention.');
+      console.log(`\n✅ NO CRITICAL MATHEMATICAL ERRORS FOUND`);
+      console.log(`All risk calculations are mathematically correct!`);
     }
     
-    console.log('\n✅ Validation Complete');
+    // System health assessment
+    console.log(`\n🏥 SYSTEM HEALTH ASSESSMENT:`);
+    if (this.validationResults.mathematicalAccuracy >= 100) {
+      console.log(`  Status: PERFECT - 100% mathematical accuracy achieved`);
+      console.log(`  Risk Level: ZERO - All calculations are mathematically sound`);
+      console.log(`  Recommendation: System ready for production deployment`);
+    } else if (this.validationResults.mathematicalAccuracy >= 95) {
+      console.log(`  Status: EXCELLENT - ${this.validationResults.mathematicalAccuracy}% mathematical accuracy`);
+      console.log(`  Risk Level: MINIMAL - Minor issues that should be addressed`);
+      console.log(`  Recommendation: Address remaining errors before production`);
+    } else if (this.validationResults.mathematicalAccuracy >= 80) {
+      console.log(`  Status: GOOD - ${this.validationResults.mathematicalAccuracy}% mathematical accuracy`);
+      console.log(`  Risk Level: MODERATE - Some mathematical errors need fixing`);
+      console.log(`  Recommendation: Fix critical errors before deployment`);
+    } else {
+      console.log(`  Status: CRITICAL - ${this.validationResults.mathematicalAccuracy}% mathematical accuracy`);
+      console.log(`  Risk Level: HIGH - Significant mathematical errors present`);
+      console.log(`  Recommendation: IMMEDIATE FIX REQUIRED - Do not deploy`);
+    }
+    
+    // Save detailed report
+    const reportData = {
+      timestamp: new Date().toISOString(),
+      mathematicalAccuracy: this.validationResults.mathematicalAccuracy,
+      totalTests: this.validationResults.totalTests,
+      passedTests: this.validationResults.passedTests,
+      failedTests: this.validationResults.failedTests,
+      criticalErrors: this.validationResults.criticalErrors,
+      validatedSymbols: this.validationResults.validatedSymbols,
+      systemHealth: this.validationResults.mathematicalAccuracy >= 100 ? 'PERFECT' : 
+                   this.validationResults.mathematicalAccuracy >= 95 ? 'EXCELLENT' :
+                   this.validationResults.mathematicalAccuracy >= 80 ? 'GOOD' : 'CRITICAL'
+    };
+    
+    fs.writeFile(
+      `mathematical_accuracy_final_report_${Date.now()}.json`,
+      JSON.stringify(reportData, null, 2)
+    ).catch(console.error);
+    
+    console.log(`\n📄 Detailed report saved to mathematical_accuracy_final_report_[timestamp].json`);
+  }
+
+  async makeRequest(endpoint) {
+    const response = await fetch(`${this.baseUrl}${endpoint}`);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    const text = await response.text();
+    if (text.trim().startsWith('<!DOCTYPE html>')) {
+      throw new Error('Received HTML instead of JSON');
+    }
+    return JSON.parse(text);
   }
 }
 
-// Run comprehensive validation
+// Execute final validation
 async function main() {
   const validator = new MathematicalAccuracyValidator();
-  await validator.runComprehensiveValidation();
+  const results = await validator.runFinalValidation();
+  
+  console.log('\n✅ MATHEMATICAL ACCURACY VALIDATION COMPLETE');
+  
+  return results;
 }
 
-main().catch(console.error);
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch(console.error);
+}
+
+export { MathematicalAccuracyValidator };

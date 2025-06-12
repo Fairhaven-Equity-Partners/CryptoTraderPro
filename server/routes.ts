@@ -774,8 +774,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
                   confidence: Math.round(adjustedConfidence),
                   strength: Math.round(Math.abs(marketStrength)),
                   entryPrice: signalPrice,
-                  stopLoss: signalPrice * 0.95,
-                  takeProfit: signalPrice * 1.05,
+                  stopLoss: direction === 'LONG' ? signalPrice * 0.95 : 
+                           direction === 'SHORT' ? signalPrice * 1.05 : signalPrice * 0.95,
+                  takeProfit: direction === 'LONG' ? signalPrice * 1.05 : 
+                             direction === 'SHORT' ? signalPrice * 0.95 : signalPrice * 1.05,
                   riskReward: 2.1,
                   successProbability: Math.round(adjustedConfidence * 0.9),
                   timestamp: Date.now()
