@@ -140,27 +140,28 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
       console.log(`[OptimizedHeatMap] Fetching market analysis data for ${selectedTimeframe}`);
       const response = await fetch(`/api/market-heatmap?timeframe=${selectedTimeframe}`);
       if (!response.ok) throw new Error('Failed to fetch heatmap data');
-      return response.json();
+      const data = await response.json();
+      console.log(`[HeatMap Debug] API Response for ${selectedTimeframe}:`, {
+        hasData: !!data,
+        hasMarketEntries: !!data.marketEntries,
+        entriesCount: data.marketEntries?.length || 0,
+        sampleEntry: data.marketEntries?.[0]
+      });
+      return data;
     },
-    refetchInterval: false, // Disable automatic refetch - use event-driven updates
-    staleTime: 0,
+    refetchInterval: 10000, // Refetch every 10 seconds to keep data fresh
+    staleTime: 5000,
     refetchOnMount: true,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: true
   });
 
   // Extract data and summary from the new response structure
   const marketEntries: OptimizedMarketEntry[] = heatmapResponse?.marketEntries || [];
   const marketSummary: MarketSummary | undefined = heatmapResponse?.summary;
   
-  // Debug logging to trace data flow
-  console.log('[HeatMap Debug] Raw response:', { 
-    hasData: !!heatmapResponse, 
-    entriesCount: marketEntries.length,
-    firstEntry: marketEntries[0]
-  });
-
   // Force refetch when timeframe changes
   React.useEffect(() => {
+    console.log(`[HeatMap] Timeframe changed to ${selectedTimeframe}, refetching data`);
     refetch();
   }, [selectedTimeframe, refetch]);
 
