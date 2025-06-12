@@ -14,7 +14,7 @@ import fs from 'fs';
 
 class AIPlatformValidationTest {
   constructor() {
-    this.baseUrl = 'http://localhost:3000';
+    this.baseUrl = 'http://localhost:5173';
     this.testResults = [];
     this.startTime = Date.now();
     
