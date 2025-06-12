@@ -365,7 +365,8 @@ function AdvancedSignalDashboard({
       // Cleanup on unmount
       if (window.triggerSignalCalculation) {
         delete window.triggerSignalCalculation;
-      };
+      }
+    };
   }, [symbol]);
   
   // Listen for centralized price updates only (eliminate redundant cache invalidation)
