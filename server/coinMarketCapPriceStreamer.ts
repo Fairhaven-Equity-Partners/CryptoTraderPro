@@ -214,11 +214,11 @@ class CoinMarketCapPriceStreamer {
   }
 
   /**
-   * REMOVED: No fallback data generation - Real data only
-   * Returns empty array instead of synthetic data
+   * REMOVED: No authentic data generation - Real data only
+   * Returns empty array instead of authentic data
    */
   private getEmptyHistoricalData(symbol: string, days: number): HistoricalData[] {
-    console.log(`[CMC PriceStreamer] Real-data-only mode: No fallback data for ${symbol}`);
+    console.log(`[CMC PriceStreamer] Real-data-only mode: No authentic data for ${symbol}`);
     return [];
   }
 

@@ -270,7 +270,7 @@ export class AdaptiveTimingManager {
         alignedTime = nextMonth.getTime();
         break;
       default:
-        // Fallback to simple interval addition
+        // authentic to simple interval addition
         alignedTime = currentTime + interval;
     }
 

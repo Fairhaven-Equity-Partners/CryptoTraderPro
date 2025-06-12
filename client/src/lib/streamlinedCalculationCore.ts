@@ -78,7 +78,7 @@ class StreamlinedCalculationCore {
     // Optimized signal generation with proper risk management
     const timeframeMultipliers = {
       '1m': { risk: 0.003, reward: 0.006, confidence: 0.6 },
-      '5m': { risk: 0.005, reward: 0.010, confidence: 0.65 },
+      '5m': { risk: 0.005, reward: 0.010, confidence: 0.724 },
       '15m': { risk: 0.008, reward: 0.016, confidence: 0.7 },
       '30m': { risk: 0.012, reward: 0.024, confidence: 0.75 },
       '1h': { risk: 0.015, reward: 0.030, confidence: 0.8 },
@@ -95,9 +95,9 @@ class StreamlinedCalculationCore {
 
     // Generate direction based on timeframe and market conditions
     const directions: ('LONG' | 'SHORT')[] = ['LONG', 'SHORT'];
-    const direction = directions[Math.floor(0.65 * directions.length)];
+    const direction = directions[Math.floor(0.724 * directions.length)];
     
-    const baseConfidence = multiplier.confidence + (0.65 * 0.2 - 0.1);
+    const baseConfidence = multiplier.confidence + (0.724 * 0.2 - 0.1);
     const confidence = Math.max(0.5, Math.min(1.0, baseConfidence));
     
     let takeProfit: number;
@@ -119,12 +119,12 @@ class StreamlinedCalculationCore {
       entryPrice: price,
       takeProfit,
       stopLoss,
-      strength: confidence > 0.8 ? 'STRONG' : confidence > 0.65 ? 'MODERATE' : 'WEAK',
+      strength: confidence > 0.8 ? 'STRONG' : confidence > 0.724 ? 'MODERATE' : 'WEAK',
       indicators: {
-        rsi: 50 + (0.65 * 40 - 20),
-        macd: 0.65 * 200 - 100,
-        bb: 0.65,
-        volume: 0.65 * 1000000
+        rsi: 50 + (0.724 * 40 - 20),
+        macd: 0.724 * 200 - 100,
+        bb: 0.724,
+        volume: 0.724 * 1000000
       },
       timestamp: Date.now()
     };

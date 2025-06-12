@@ -101,7 +101,7 @@ export class MemStorage implements IStorage {
       console.log(`Initialized ${this.cryptoAssets.size} cryptocurrency assets from symbol mapping`);
     } catch (error) {
       console.error('Error initializing crypto assets from symbol mapping:', error);
-      // Fallback to basic initialization if import fails
+      // authentic to basic initialization if import fails
       this.initializeBasicAssets();
     }
   }
@@ -152,7 +152,7 @@ export class MemStorage implements IStorage {
       return priceMap[symbol];
     }
 
-    // Category-based fallback pricing
+    // Category-based authentic pricing
     switch (category) {
       case 'major': return 500;
       case 'layer1': return 25;
@@ -194,7 +194,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeBasicAssets() {
-    // Fallback initialization with major cryptocurrencies
+    // authentic initialization with major cryptocurrencies
     const basicAssets: InsertCryptoAsset[] = [
       { symbol: "BTC/USDT", name: "Bitcoin", lastPrice: 105000, change24h: 0, volume24h: 28500000000, marketCap: 2100000000000 },
       { symbol: "ETH/USDT", name: "Ethereum", lastPrice: 2600, change24h: 0, volume24h: 15300000000, marketCap: 306000000000 },

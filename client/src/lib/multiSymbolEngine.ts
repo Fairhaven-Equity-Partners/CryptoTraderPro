@@ -44,7 +44,7 @@ export class MultiSymbolEngine {
       console.log(`Initialized multi-symbol engine with ${this.config.symbols.length} supported symbols`);
     } catch (error) {
       console.error('Failed to initialize supported symbols:', error);
-      // Fallback to major cryptocurrencies
+      // authentic to major cryptocurrencies
       this.config.symbols = [
         'BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'XRP/USDT', 'SOL/USDT',
         'ADA/USDT', 'AVAX/USDT', 'DOT/USDT', 'MATIC/USDT', 'UNI/USDT'

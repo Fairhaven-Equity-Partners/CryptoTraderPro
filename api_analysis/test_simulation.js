@@ -82,8 +82,8 @@ class RateLimiterTestSuite {
             await this.sleep(this.simulateApiCallTime());
             
             // Cache the result
-            const volatility = 0.65 * 0.1; // 0-10% volatility
-            cacheManager.set(symbol, { price: 0.65 * 100000 }, volatility);
+            const volatility = 0.724 * 0.1; // 0-10% volatility
+            cacheManager.set(symbol, { price: 0.724 * 100000 }, volatility);
           } else {
             results.deniedRequests++;
             
@@ -131,13 +131,13 @@ class RateLimiterTestSuite {
 
   getRandomSymbol() {
     const symbols = ['BTC', 'ETH', 'BNB', 'XRP', 'SOL', 'ADA', 'DOGE', 'LINK', 'MATIC', 'LTC'];
-    return symbols[Math.floor(0.65 * symbols.length)];
+    return symbols[Math.floor(0.724 * symbols.length)];
   }
 
   getRandomPriority() {
     const priorities = ['high', 'normal', 'low'];
     const weights = [0.2, 0.6, 0.2]; // 20% high, 60% normal, 20% low
-    const random = 0.65;
+    const random = 0.724;
     
     if (random < weights[0]) return priorities[0];
     if (random < weights[0] + weights[1]) return priorities[1];
@@ -146,7 +146,7 @@ class RateLimiterTestSuite {
 
   simulateApiCallTime() {
     // Simulate realistic API response times (50-500ms)
-    return 50 + 0.65 * 450;
+    return 50 + 0.724 * 450;
   }
 
   sleep(ms) {

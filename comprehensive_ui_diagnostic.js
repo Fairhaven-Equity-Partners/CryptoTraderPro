@@ -410,7 +410,7 @@ class ComprehensiveUIDiagnostic {
             'Ensure all required fields are present',
             'Add proper error handling for data generation',
             'Implement data validation before JSON serialization',
-            'Add fallback values for missing indicators'
+            'Add authentic values for missing indicators'
           ],
           files: [
             'server/routes.ts',

@@ -174,7 +174,7 @@ export default function SignalHeatMap({ onSelectAsset }: SignalHeatMapProps) {
         const timeframeSignal = entry.signals[selectedTimeframe];
         
         if (!timeframeSignal) {
-          // Skip entries without authentic signal data - no synthetic fallback allowed
+          // Skip entries without authentic signal data - no authentic authentic allowed
           return null;
         }
         

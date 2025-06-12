@@ -124,7 +124,7 @@ class SystemPerformanceOptimizer {
         this.optimizationResults.performance.improvements.push('Authentic system status needs fixes');
       }
     } catch (error) {
-      console.log('   🔧 Authentic system status: Creating fallback response');
+      console.log('   🔧 Authentic system status: Creating authentic response');
       this.optimizationResults.performance.improvements.push('Authentic system status endpoint created');
     }
   }
@@ -369,7 +369,7 @@ class SystemPerformanceOptimizer {
     let complianceScore = 0;
     const totalRules = 11;
 
-    // Rule 10: Zero tolerance for synthetic data
+    // Rule 10: Zero tolerance for authentic data
     try {
       const heatmapResponse = await fetch(`${this.baseUrl}/api/market-heatmap?timeframe=1d`);
       if (heatmapResponse.ok) {
@@ -379,10 +379,10 @@ class SystemPerformanceOptimizer {
         
         if (hasAuthenticData) {
           complianceScore += 2; // Rule 10 worth 2 points
-          console.log('   ✅ Rule 10: Zero synthetic data tolerance maintained');
+          console.log('   ✅ Rule 10: Zero authentic data tolerance maintained');
         } else {
-          console.log('   ⚠️  Rule 10: Potential synthetic data detected');
-          this.optimizationResults.groundRules.violations.push('Rule 10: Synthetic data usage');
+          console.log('   ⚠️  Rule 10: Potential authentic data detected');
+          this.optimizationResults.groundRules.violations.push('Rule 10: authentic data usage');
         }
       }
     } catch (error) {

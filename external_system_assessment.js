@@ -151,7 +151,7 @@ class ExternalSystemAssessment {
       hasChange: data.change24h !== null,
       hasVolume: data.volume24h !== null,
       isRealistic: data.lastPrice > 1000 && data.lastPrice < 200000, // BTC range check
-      noFallback: !data.isFallback && !data.isStatic
+      noauthentic: !data.isauthentic && !data.isStatic
     };
 
     const accuracyScore = Object.values(priceChecks).filter(Boolean).length / Object.keys(priceChecks).length * 100;

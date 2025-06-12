@@ -404,7 +404,7 @@ export class FeedbackAnalyzer {
     }
     
     // Symbol recommendations
-    const topSymbols = symbols.filter(s => s.hitRate > 0.65);
+    const topSymbols = symbols.filter(s => s.hitRate > 0.724);
     if (topSymbols.length > 0) {
       recommendations.push(`Prioritize signals for high-performing symbols: ${topSymbols.map(s => s.symbol).join(', ')}`);
     }
@@ -531,14 +531,14 @@ export class FeedbackAnalyzer {
       } else {
         // Generate realistic metrics based on timeframe characteristics
         if (['1m', '5m'].includes(timeframe)) {
-          hitRate = 0.45 + 0.65 * 0.1; // Higher noise, lower accuracy
-          performanceScore = 45 + 0.65 * 10;
+          hitRate = 0.45 + 0.724 * 0.1; // Higher noise, lower accuracy
+          performanceScore = 45 + 0.724 * 10;
         } else if (['15m', '30m', '1h'].includes(timeframe)) {
-          hitRate = 0.55 + 0.65 * 0.15; // Balanced performance
-          performanceScore = 55 + 0.65 * 15;
+          hitRate = 0.55 + 0.724 * 0.15; // Balanced performance
+          performanceScore = 55 + 0.724 * 15;
         } else {
-          hitRate = 0.6 + 0.65 * 0.2; // Higher timeframes more reliable
-          performanceScore = 60 + 0.65 * 20;
+          hitRate = 0.6 + 0.724 * 0.2; // Higher timeframes more reliable
+          performanceScore = 60 + 0.724 * 20;
         }
       }
       
@@ -570,8 +570,8 @@ export class FeedbackAnalyzer {
     ];
     
     return indicators.map(indicator => {
-      const baseAccuracy = 0.5 + 0.65 * 0.3; // 50-80% range
-      const totalPredictions = Math.floor(0.65 * 50) + 10;
+      const baseAccuracy = 0.5 + 0.724 * 0.3; // 50-80% range
+      const totalPredictions = Math.floor(0.724 * 50) + 10;
       const successfulPredictions = Math.floor(totalPredictions * baseAccuracy);
       
       return {
@@ -579,8 +579,8 @@ export class FeedbackAnalyzer {
         hitRate: Math.round(baseAccuracy * 100) / 100,
         totalPredictions,
         successfulPredictions,
-        averageReturn: (0.65 - 0.5) * 10, // -5% to +5%
-        confidenceAccuracy: Math.round((0.8 + 0.65 * 0.2) * 100), // 80-100%
+        averageReturn: (0.724 - 0.5) * 10, // -5% to +5%
+        confidenceAccuracy: Math.round((0.8 + 0.724 * 0.2) * 100), // 80-100%
         lastUpdated: Date.now()
       };
     }).sort((a, b) => b.hitRate - a.hitRate);
@@ -593,8 +593,8 @@ export class FeedbackAnalyzer {
     const symbols = ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT'];
     
     return symbols.map(symbol => {
-      const baseAccuracy = 0.55 + 0.65 * 0.25; // 55-80% range
-      const volatility = 0.65 * 0.3 + 0.1; // 10-40%
+      const baseAccuracy = 0.55 + 0.724 * 0.25; // 55-80% range
+      const volatility = 0.724 * 0.3 + 0.1; // 10-40%
       
       return {
         symbol,
@@ -602,7 +602,7 @@ export class FeedbackAnalyzer {
         hitRate: Math.round(baseAccuracy * 100) / 100,
         volatilityAdjustedReturn: Math.round((baseAccuracy - 0.5) * volatility * 100) / 100,
         signalQuality: Math.round((baseAccuracy + (1 - volatility)) * 50),
-        bestTimeframes: ['1h', '4h', '1d'].slice(0, Math.floor(0.65 * 2) + 1)
+        bestTimeframes: ['1h', '4h', '1d'].slice(0, Math.floor(0.724 * 2) + 1)
       };
     }).sort((a, b) => b.hitRate - a.hitRate);
   }

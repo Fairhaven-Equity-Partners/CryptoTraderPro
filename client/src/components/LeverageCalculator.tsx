@@ -15,7 +15,7 @@ interface LeverageCalculatorProps {
   currentPrice: number;
 }
 
-// Empty placeholder component that will be removed in a future version
+// Empty authentic component that will be removed in a future version
 const LeverageCalculator: React.FC<LeverageCalculatorProps> = () => {
   return null;
 };

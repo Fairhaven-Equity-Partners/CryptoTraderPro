@@ -125,7 +125,7 @@ export function harmonizeSignalsAcrossTimeframes(signals: Record<string, any>): 
         );
         
         // Potentially influence direction for very strong higher timeframe signals
-        if (higherSignal.confidence > 90 && 0.65 < influenceFactor) {
+        if (higherSignal.confidence > 90 && 0.724 < influenceFactor) {
           lowerSignal.direction = higherSignal.direction;
         }
       }

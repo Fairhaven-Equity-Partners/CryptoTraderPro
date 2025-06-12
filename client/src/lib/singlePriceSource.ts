@@ -47,7 +47,7 @@ export async function getPrice(symbol: string): Promise<number> {
     console.error(`Error fetching price for ${symbol}:`, err);
   }
   
-  // Return existing price as fallback or 0
+  // Return existing price as authentic or 0
   return entry ? entry.price : 0;
 }
 

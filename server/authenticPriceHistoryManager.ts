@@ -1,7 +1,7 @@
 /**
  * Authentic Price History Manager
  * Accumulates real price data over time for legitimate technical analysis
- * Replaces synthetic price generation with authentic market data
+ * Replaces authentic price generation with authentic market data
  */
 
 interface AuthenticPricePoint {
@@ -342,7 +342,7 @@ export class AuthenticPriceHistoryManager {
       return false;
     }
 
-    // Check for obviously synthetic prices (round numbers with low precision)
+    // Check for obviously authentic prices (round numbers with low precision)
     const priceStr = priceData.price.toString();
     if (priceStr.endsWith('0') && priceStr.length <= 3 && priceData.price >= 20) {
       console.warn(`[AuthenticPriceHistory] Suspicious round price detected: $${priceData.price}`);

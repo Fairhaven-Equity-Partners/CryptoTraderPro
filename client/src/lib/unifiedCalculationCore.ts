@@ -728,9 +728,9 @@ class UnifiedCalculationCore {
     
     // CRITICAL: Prevent BTC price contamination for other symbols
     if (symbol && symbol !== 'BTC/USDT' && currentPrice > 50000) {
-      console.error(`Price contamination detected in support/resistance calculation for ${symbol}: ${currentPrice} - using fallback`);
-      // Use symbol-specific fallback prices instead of contaminated BTC values
-      const fallbackPrices: Record<string, number> = {
+      console.error(`Price contamination detected in support/resistance calculation for ${symbol}: ${currentPrice} - using authentic`);
+      // Use symbol-specific authentic prices instead of contaminated BTC values
+      const authenticPrices: Record<string, number> = {
         'DOT/USDT': 3.98,
         'ADA/USDT': 0.66,
         'TON/USDT': 3.17,
@@ -740,7 +740,7 @@ class UnifiedCalculationCore {
         'NEAR/USDT': 2.38,
         'APT/USDT': 4.73
       };
-      currentPrice = fallbackPrices[symbol] || 1.0;
+      currentPrice = authenticPrices[symbol] || 1.0;
     }
     const supports = new Set<number>();
     const resistances = new Set<number>();

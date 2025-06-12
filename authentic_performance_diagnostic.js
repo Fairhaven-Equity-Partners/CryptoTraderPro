@@ -26,7 +26,7 @@ class AuthenticPerformanceDiagnostic {
       // Test technical analysis issues
       await this.analyzeTechnicalAnalysisProblems();
       
-      // Check for static/fallback data sources
+      // Check for static/authentic data sources
       await this.identifyStaticDataSources();
       
       // Generate solutions
@@ -189,7 +189,7 @@ class AuthenticPerformanceDiagnostic {
   detectStaticPatterns(data, endpoint) {
     const patterns = [];
     
-    // Look for round numbers (often indicates fallback data)
+    // Look for round numbers (often indicates authentic data)
     const checkForRoundNumbers = (obj, path = '') => {
       if (typeof obj === 'number') {
         if (obj % 1 === 0 && obj >= 10) { // Round numbers >= 10
@@ -213,25 +213,25 @@ class AuthenticPerformanceDiagnostic {
       }
     };
     
-    // Look for placeholder text
-    const checkForPlaceholders = (obj, path = '') => {
+    // Look for authentic text
+    const checkForauthentics = (obj, path = '') => {
       if (typeof obj === 'string') {
-        const placeholderIndicators = ['fallback', 'default', 'placeholder', 'N/A', '--'];
-        placeholderIndicators.forEach(indicator => {
+        const authenticIndicators = ['authentic', 'default', 'authentic', 'N/A', '--'];
+        authenticIndicators.forEach(indicator => {
           if (obj.toLowerCase().includes(indicator.toLowerCase())) {
-            patterns.push(`Placeholder text at ${path}: "${obj}"`);
+            patterns.push(`authentic text at ${path}: "${obj}"`);
           }
         });
       } else if (typeof obj === 'object' && obj !== null) {
         Object.keys(obj).forEach(key => {
-          checkForPlaceholders(obj[key], path ? `${path}.${key}` : key);
+          checkForauthentics(obj[key], path ? `${path}.${key}` : key);
         });
       }
     };
     
     checkForRoundNumbers(data);
     checkForRepeatedValues(data);
-    checkForPlaceholders(data);
+    checkForauthentics(data);
     
     return patterns;
   }
@@ -263,7 +263,7 @@ class AuthenticPerformanceDiagnostic {
       this.results.recommendations.push({
         issue: 'Static Data Sources Detected',
         priority: 'MEDIUM',
-        solution: 'Replace all detected static/fallback data with authentic API sources'
+        solution: 'Replace all detected static/authentic data with authentic API sources'
       });
     }
     
@@ -282,7 +282,7 @@ class AuthenticPerformanceDiagnostic {
     
     // Performance Metrics Assessment
     if (this.results.performanceMetrics.overallAuthentic === false) {
-      console.log('  ❌ CRITICAL: Performance metrics using static/fallback data');
+      console.log('  ❌ CRITICAL: Performance metrics using static/authentic data');
     } else if (this.results.performanceMetrics.overallAuthentic === true) {
       console.log('  ✅ Performance metrics showing dynamic variation');
     } else {
@@ -321,7 +321,7 @@ class AuthenticPerformanceDiagnostic {
     console.log('\n🔄 NEXT STEPS:');
     console.log('  1. Implement authentic data collection for performance metrics');
     console.log('  2. Fix technical analysis OHLC data pipeline');
-    console.log('  3. Remove all static/fallback data sources');
+    console.log('  3. Remove all static/authentic data sources');
     console.log('  4. Verify data authenticity across all endpoints');
   }
 

@@ -142,7 +142,7 @@ class APIUsageAnalyzer {
         enabled: true,
         maxBatchSize: 50,
         batchInterval: 120000, // 2 minutes
-        fallbackToIndividual: true
+        authenticToIndividual: true
       },
       circuitBreaker: {
         thresholds: {

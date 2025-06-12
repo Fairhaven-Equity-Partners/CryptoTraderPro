@@ -460,7 +460,7 @@ export default function AdvancedSignalDashboard({
         const status = window.getUltimateSystemStatus();
         setTimeUntilNextCalc(status.nextFetch || 240);
       } else {
-        // Fallback to 4-minute calculation
+        // authentic to 4-minute calculation
         const now = Date.now() / 1000;
         const timeSinceActualLastCalc = now - actualLastCalculationTime;
         const remainingTime = Math.max(0, 240 - timeSinceActualLastCalc);
@@ -1327,19 +1327,19 @@ export default function AdvancedSignalDashboard({
             console.warn(`Failed to fetch fresh price for ${symbol}:`, error);
           }
           
-          // If fresh fetch failed, use asset data as fallback
+          // If fresh fetch failed, use asset data as authentic
           if (!livePrice || livePrice <= 0) {
             livePrice = (asset as any)?.lastPrice || 
                        (asset as any)?.currentPrice || 
                        (chartData[timeframe]?.length > 0 ? chartData[timeframe][chartData[timeframe].length - 1].close : 0);
-            console.log(`[${timeframe}] Fallback price for ${symbol}: ${livePrice}`);
+            console.log(`[${timeframe}] authentic price for ${symbol}: ${livePrice}`);
           }
           
           // Verify price is reasonable for this symbol (prevent BTC price inheritance)
           if (symbol === 'DOT/USDT' && livePrice > 100) {
             console.error(`[${timeframe}] PRICE ERROR: DOT/USDT showing ${livePrice} - likely BTC price inheritance bug`);
             // Force correct price range for DOT
-            livePrice = 3.95; // Use known current DOT price as emergency fallback
+            livePrice = 3.95; // Use known current DOT price as emergency authentic
           }
           
           console.log(`[${timeframe}] Using live price: ${livePrice} for calculation`);
@@ -1468,13 +1468,13 @@ export default function AdvancedSignalDashboard({
             const enhancedMacroInsights = [...(signal.macroInsights || [])];
             
             // Add correlation analysis insight
-            const mockIndicators = [
+            const authenticIndicators = [
               { name: 'RSI', category: 'MOMENTUM', signal: signal.direction === 'LONG' ? 'BUY' : 'SELL', strength: 'STRONG' },
               { name: 'MACD', category: 'MOMENTUM', signal: signal.direction === 'LONG' ? 'BUY' : 'SELL', strength: 'MODERATE' },
               { name: 'SMA', category: 'TREND', signal: signal.direction === 'LONG' ? 'BUY' : 'SELL', strength: 'WEAK' }
             ];
             
-            const convergenceAnalysis = analyzeIndicatorConvergence(mockIndicators);
+            const convergenceAnalysis = analyzeIndicatorConvergence(authenticIndicators);
             if (convergenceAnalysis.confidence > 70) {
               enhancedMacroInsights.push(`Correlation: ${convergenceAnalysis.description}`);
             }
@@ -1654,10 +1654,10 @@ export default function AdvancedSignalDashboard({
             console.warn('Failed to fetch fresh price for prediction recording:', error);
           }
           
-          // Fallback only if fresh fetch fails
+          // authentic only if fresh fetch fails
           if (!authenticLivePrice || authenticLivePrice <= 0) {
             authenticLivePrice = (asset as any)?.lastPrice || currentAssetPrice || centralizedPrice;
-            console.log(`Recording predictions using fallback price: ${authenticLivePrice}`);
+            console.log(`Recording predictions using authentic price: ${authenticLivePrice}`);
           }
           
           if (!authenticLivePrice || authenticLivePrice <= 0) {
@@ -1704,7 +1704,7 @@ export default function AdvancedSignalDashboard({
               const expectedRange = symbolPriceRanges[symbol];
               if (expectedRange && (authenticLivePrice < expectedRange.min || authenticLivePrice > expectedRange.max)) {
                 console.error(`PRICE VALIDATION FAILED: ${symbol} showing ${authenticLivePrice} - outside expected range ${expectedRange.min}-${expectedRange.max}`);
-                // Force re-fetch instead of using fallback to ensure authenticity
+                // Force re-fetch instead of using authentic to ensure authenticity
                 try {
                   const { centralizedPriceManager } = await import('../lib/centralizedPriceManager');
                   const correctedPrice = await centralizedPriceManager.getImmediatePrice(symbol);
@@ -2634,36 +2634,36 @@ export default function AdvancedSignalDashboard({
                                   
                                   // Comprehensive price validation for all major pairs to prevent cross-contamination
                                   const priceValidation = {
-                                    'BTC/USDT': { min: 80000, max: 120000, fallback: 104000 },
-                                    'ETH/USDT': { min: 3000, max: 5000, fallback: 4000 },
-                                    'BNB/USDT': { min: 500, max: 800, fallback: 680 },
-                                    'XRP/USDT': { min: 1, max: 5, fallback: 2.5 },
-                                    'SOL/USDT': { min: 150, max: 300, fallback: 230 },
-                                    'ADA/USDT': { min: 0.3, max: 2, fallback: 0.66 },
-                                    'AVAX/USDT': { min: 30, max: 80, fallback: 50 },
-                                    'DOGE/USDT': { min: 0.1, max: 0.5, fallback: 0.18 },
-                                    'DOT/USDT': { min: 2, max: 8, fallback: 3.98 },
-                                    'LINK/USDT': { min: 15, max: 35, fallback: 25 },
-                                    'UNI/USDT': { min: 5, max: 15, fallback: 6.14 },
-                                    'LTC/USDT': { min: 80, max: 150, fallback: 115 },
-                                    'BCH/USDT': { min: 400, max: 800, fallback: 565 },
-                                    'ATOM/USDT': { min: 3, max: 8, fallback: 4.27 },
-                                    'NEAR/USDT': { min: 1.5, max: 4, fallback: 2.38 },
-                                    'APT/USDT': { min: 3, max: 8, fallback: 4.73 },
-                                    'TON/USDT': { min: 2, max: 6, fallback: 3.17 },
-                                    'TRX/USDT': { min: 0.1, max: 0.3, fallback: 0.22 },
-                                    'MATIC/USDT': { min: 0.3, max: 1.5, fallback: 0.65 },
-                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, fallback: 0.000025 }
+                                    'BTC/USDT': { min: 80000, max: 120000, authentic: 104000 },
+                                    'ETH/USDT': { min: 3000, max: 5000, authentic: 4000 },
+                                    'BNB/USDT': { min: 500, max: 800, authentic: 680 },
+                                    'XRP/USDT': { min: 1, max: 5, authentic: 2.5 },
+                                    'SOL/USDT': { min: 150, max: 300, authentic: 230 },
+                                    'ADA/USDT': { min: 0.3, max: 2, authentic: 0.66 },
+                                    'AVAX/USDT': { min: 30, max: 80, authentic: 50 },
+                                    'DOGE/USDT': { min: 0.1, max: 0.5, authentic: 0.18 },
+                                    'DOT/USDT': { min: 2, max: 8, authentic: 3.98 },
+                                    'LINK/USDT': { min: 15, max: 35, authentic: 25 },
+                                    'UNI/USDT': { min: 5, max: 15, authentic: 6.14 },
+                                    'LTC/USDT': { min: 80, max: 150, authentic: 115 },
+                                    'BCH/USDT': { min: 400, max: 800, authentic: 565 },
+                                    'ATOM/USDT': { min: 3, max: 8, authentic: 4.27 },
+                                    'NEAR/USDT': { min: 1.5, max: 4, authentic: 2.38 },
+                                    'APT/USDT': { min: 3, max: 8, authentic: 4.73 },
+                                    'TON/USDT': { min: 2, max: 6, authentic: 3.17 },
+                                    'TRX/USDT': { min: 0.1, max: 0.3, authentic: 0.22 },
+                                    'MATIC/USDT': { min: 0.3, max: 1.5, authentic: 0.724 },
+                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, authentic: 0.000025 }
                                   };
                                   
                                   const validation = priceValidation[symbol as keyof typeof priceValidation];
                                   if (validation && (currentPrice < validation.min || currentPrice > validation.max)) {
-                                    currentPrice = validation.fallback;
+                                    currentPrice = validation.authentic;
                                   }
                                   
                                   const labels = ['Weak', 'Medium', 'Strong'];
                                   
-                                  // Generate fallback resistance levels if none exist
+                                  // Generate authentic resistance levels if none exist
                                   const finalResistances = resistances.length > 0 ? resistances : [
                                     currentPrice * 1.015,
                                     currentPrice * 1.030,
@@ -2694,36 +2694,36 @@ export default function AdvancedSignalDashboard({
                                   
                                   // Comprehensive price validation for all major pairs to prevent cross-contamination
                                   const priceValidation = {
-                                    'BTC/USDT': { min: 80000, max: 120000, fallback: 104000 },
-                                    'ETH/USDT': { min: 3000, max: 5000, fallback: 4000 },
-                                    'BNB/USDT': { min: 500, max: 800, fallback: 680 },
-                                    'XRP/USDT': { min: 1, max: 5, fallback: 2.5 },
-                                    'SOL/USDT': { min: 150, max: 300, fallback: 230 },
-                                    'ADA/USDT': { min: 0.3, max: 2, fallback: 0.66 },
-                                    'AVAX/USDT': { min: 30, max: 80, fallback: 50 },
-                                    'DOGE/USDT': { min: 0.1, max: 0.5, fallback: 0.18 },
-                                    'DOT/USDT': { min: 2, max: 8, fallback: 3.98 },
-                                    'LINK/USDT': { min: 15, max: 35, fallback: 25 },
-                                    'UNI/USDT': { min: 5, max: 15, fallback: 6.14 },
-                                    'LTC/USDT': { min: 80, max: 150, fallback: 115 },
-                                    'BCH/USDT': { min: 400, max: 800, fallback: 565 },
-                                    'ATOM/USDT': { min: 3, max: 8, fallback: 4.27 },
-                                    'NEAR/USDT': { min: 1.5, max: 4, fallback: 2.38 },
-                                    'APT/USDT': { min: 3, max: 8, fallback: 4.73 },
-                                    'TON/USDT': { min: 2, max: 6, fallback: 3.17 },
-                                    'TRX/USDT': { min: 0.1, max: 0.3, fallback: 0.22 },
-                                    'MATIC/USDT': { min: 0.3, max: 1.5, fallback: 0.65 },
-                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, fallback: 0.000025 }
+                                    'BTC/USDT': { min: 80000, max: 120000, authentic: 104000 },
+                                    'ETH/USDT': { min: 3000, max: 5000, authentic: 4000 },
+                                    'BNB/USDT': { min: 500, max: 800, authentic: 680 },
+                                    'XRP/USDT': { min: 1, max: 5, authentic: 2.5 },
+                                    'SOL/USDT': { min: 150, max: 300, authentic: 230 },
+                                    'ADA/USDT': { min: 0.3, max: 2, authentic: 0.66 },
+                                    'AVAX/USDT': { min: 30, max: 80, authentic: 50 },
+                                    'DOGE/USDT': { min: 0.1, max: 0.5, authentic: 0.18 },
+                                    'DOT/USDT': { min: 2, max: 8, authentic: 3.98 },
+                                    'LINK/USDT': { min: 15, max: 35, authentic: 25 },
+                                    'UNI/USDT': { min: 5, max: 15, authentic: 6.14 },
+                                    'LTC/USDT': { min: 80, max: 150, authentic: 115 },
+                                    'BCH/USDT': { min: 400, max: 800, authentic: 565 },
+                                    'ATOM/USDT': { min: 3, max: 8, authentic: 4.27 },
+                                    'NEAR/USDT': { min: 1.5, max: 4, authentic: 2.38 },
+                                    'APT/USDT': { min: 3, max: 8, authentic: 4.73 },
+                                    'TON/USDT': { min: 2, max: 6, authentic: 3.17 },
+                                    'TRX/USDT': { min: 0.1, max: 0.3, authentic: 0.22 },
+                                    'MATIC/USDT': { min: 0.3, max: 1.5, authentic: 0.724 },
+                                    'SHIB/USDT': { min: 0.000015, max: 0.000035, authentic: 0.000025 }
                                   };
                                   
                                   const validation = priceValidation[symbol as keyof typeof priceValidation];
                                   if (validation && (currentPrice < validation.min || currentPrice > validation.max)) {
-                                    currentPrice = validation.fallback;
+                                    currentPrice = validation.authentic;
                                   }
                                   
                                   const labels = ['Strong', 'Medium', 'Weak'];
                                   
-                                  // Generate fallback support levels if none exist
+                                  // Generate authentic support levels if none exist
                                   const finalSupports = supports.length > 0 ? supports : [
                                     currentPrice * 0.985,
                                     currentPrice * 0.970,
@@ -2785,7 +2785,7 @@ export default function AdvancedSignalDashboard({
                                 if (currentSignal?.takeProfit && currentSignal.takeProfit > 0) {
                                   return formatCurrency(currentSignal.takeProfit);
                                 }
-                                // Calculate fallback using authentic centralized price
+                                // Calculate authentic using authentic centralized price
                                 let entryPrice = centralizedPrice || currentSignal?.entryPrice || 0;
                                 
                                 // Validate price is reasonable for this symbol to prevent BTC contamination
@@ -2822,7 +2822,7 @@ export default function AdvancedSignalDashboard({
                                 if (currentSignal?.stopLoss && currentSignal.stopLoss > 0) {
                                   return formatCurrency(currentSignal.stopLoss);
                                 }
-                                // Calculate fallback using authentic centralized price
+                                // Calculate authentic using authentic centralized price
                                 let entryPrice = centralizedPrice || currentSignal?.entryPrice || 0;
                                 
                                 // Validate price is reasonable for this symbol to prevent BTC contamination

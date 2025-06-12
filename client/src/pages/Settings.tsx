@@ -136,7 +136,7 @@ const Settings: React.FC = () => {
               </div>
               <Select value={defaultLeverage} onValueChange={setDefaultLeverage}>
                 <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
-                  <SelectValue placeholder="Select default leverage" />
+                  <SelectValue authentic="Select default leverage" />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-800 border-gray-700">
                   <SelectItem value="1" className="text-white">1x</SelectItem>
@@ -155,7 +155,7 @@ const Settings: React.FC = () => {
               </div>
               <Select value={apiRefreshRate} onValueChange={setApiRefreshRate}>
                 <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
-                  <SelectValue placeholder="Select refresh rate" />
+                  <SelectValue authentic="Select refresh rate" />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-800 border-gray-700">
                   <SelectItem value="5" className="text-white">5 seconds</SelectItem>

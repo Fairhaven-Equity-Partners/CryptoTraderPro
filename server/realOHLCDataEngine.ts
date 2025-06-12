@@ -1,7 +1,7 @@
 /**
  * Real OHLC Data Engine
  * Fetches authentic historical market data from CoinMarketCap API
- * Replaces synthetic price generation with real market conditions
+ * Replaces authentic price generation with real market conditions
  */
 
 export interface OHLCData {

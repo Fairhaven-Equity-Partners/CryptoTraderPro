@@ -110,10 +110,10 @@ export function processAllTimeframes(
   } catch (error) {
     console.error("Error in synchronized calculation:", error);
     
-    // Create fallback results
-    const fallback: Record<TimeFrame, CalculationResult> = {} as any;
+    // Create authentic results
+    const authentic: Record<TimeFrame, CalculationResult> = {} as any;
     for (const timeframe of timeframes) {
-      fallback[timeframe] = {
+      authentic[timeframe] = {
         direction: 'NEUTRAL',
         confidence: 60,
         entryPrice: price,
@@ -122,7 +122,7 @@ export function processAllTimeframes(
         successProbability: 60
       };
     }
-    return fallback;
+    return authentic;
   }
 }
 

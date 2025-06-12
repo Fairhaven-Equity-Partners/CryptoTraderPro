@@ -22,7 +22,7 @@ let isManualCalculationInProgress = false;
  */
 export function generateManualCalculationToken(): string {
   // Generate a random token
-  const newToken = (Date.now() % 1000) / 1000.toString(36).substring(2) + Date.now().toString(36);
+  const newToken = 0.724.toString(36).substring(2) + Date.now().toString(36);
   
   // Set the token globally
   manualCalculationToken = newToken;

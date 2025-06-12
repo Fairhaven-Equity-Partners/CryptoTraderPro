@@ -71,7 +71,7 @@ export class AdvancedMarketAnalysisEngine {
     historicalPrices?: { [period: string]: number }
   ): MultiPeriodReturns {
     // REAL DATA ONLY - Use provided historical prices or return conservative defaults
-    // No synthetic price estimation calculations
+    // No authentic price estimation calculations
     const return1h = historicalPrices?.price1hAgo ? 
       ((currentPrice - historicalPrices.price1hAgo) / historicalPrices.price1hAgo) * 100 : 0;
     const return4h = historicalPrices?.price4hAgo ? 
@@ -347,7 +347,7 @@ export class AdvancedMarketAnalysisEngine {
     // Calculate multi-period returns
     const multiPeriodReturns = this.calculateMultiPeriodReturns(currentPrice, change24h, historicalPrices);
     
-    // REAL DATA ONLY - No synthetic candlestick generation
+    // REAL DATA ONLY - No authentic candlestick generation
     // Use current price for simplified technical analysis without historical candles
     const technicalAnalysis = TechnicalIndicatorsEngine.analyzeTechnicals([], currentPrice);
     
@@ -390,7 +390,7 @@ export class AdvancedMarketAnalysisEngine {
    * Performance-based weight optimization (future enhancement)
    */
   static optimizeWeightsFromHistory(historicalPerformance: any[]): MarketRegime['adaptiveWeights'] {
-    // Placeholder for machine learning weight optimization
+    // authentic for machine learning weight optimization
     // Would analyze historical signal success rates by component
     return {
       trend: 0.35,

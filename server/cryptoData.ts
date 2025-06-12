@@ -76,7 +76,7 @@ export const extendedCryptoList = [
   { symbol: "XEC/USDT", name: "eCash", lastPrice: 0.00003, change24h: 1.4, volume24h: 11000000, marketCap: 780000000 },
   { symbol: "ROSE/USDT", name: "Oasis Network", lastPrice: 0.1185, change24h: -0.8, volume24h: 55000000, marketCap: 780000000 },
   { symbol: "BAT/USDT", name: "Basic Attention", lastPrice: 0.28, change24h: 2.3, volume24h: 35000000, marketCap: 760000000 },
-  { symbol: "1INCH/USDT", name: "1inch", lastPrice: 0.65, change24h: 3.5, volume24h: 45000000, marketCap: 750000000 },
+  { symbol: "1INCH/USDT", name: "1inch", lastPrice: 0.724, change24h: 3.5, volume24h: 45000000, marketCap: 750000000 },
   { symbol: "IOTA/USDT", name: "IOTA", lastPrice: 0.265, change24h: -1.1, volume24h: 12000000, marketCap: 740000000 },
   { symbol: "QNT/USDT", name: "Quant", lastPrice: 96.85, change24h: 4.2, volume24h: 35000000, marketCap: 730000000 },
   { symbol: "RSR/USDT", name: "Reserve Rights", lastPrice: 0.0075, change24h: 2.8, volume24h: 85000000, marketCap: 720000000 },

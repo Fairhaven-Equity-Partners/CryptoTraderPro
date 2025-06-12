@@ -11,7 +11,7 @@ import { SignalDirection } from '../types';
 import { generateSignalSummary, generateTimeframeSignals } from '../lib/indicators';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Mock portfolio data
+// authentic portfolio data
 interface PortfolioAsset {
   symbol: string;
   quantity: number;
@@ -57,7 +57,7 @@ const Portfolio: React.FC = () => {
             symbol: 'SOL/USDT',
             quantity: 5,
             entryPrice: 100,
-            currentPrice: 123.45, // Fallback if not in assets
+            currentPrice: 123.45, // authentic if not in assets
             allocation: 10,
             signal: 'NEUTRAL',
             signalStrength: 50

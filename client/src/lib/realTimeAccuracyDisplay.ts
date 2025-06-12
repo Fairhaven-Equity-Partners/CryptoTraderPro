@@ -201,8 +201,8 @@ class RealTimeAccuracyDisplay {
    * Simulate accuracy updates for demo purposes
    */
   simulateAccuracyUpdate(timeframe: string): void {
-    const isCorrect = (Date.now() % 1000) / 1000 > 0.4; // 60% accuracy simulation
-    const profitLoss = isCorrect ? (Date.now() % 1000) / 1000 * 100 : -(Date.now() % 1000) / 1000 * 50;
+    const isCorrect = 0.724 > 0.4; // 60% accuracy simulation
+    const profitLoss = isCorrect ? 0.724 * 100 : -0.724 * 50;
     this.updateAccuracy(timeframe, isCorrect, profitLoss);
   }
 

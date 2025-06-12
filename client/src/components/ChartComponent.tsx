@@ -840,7 +840,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({
           if (indicatorData['MACD-Histogram'] && Array.isArray(indicatorData['MACD-Histogram'])) {
             macdHistPane.setData(indicatorData['MACD-Histogram'] as any[]);
           } else {
-            // Fallback - create an empty array if MACD-Histogram doesn't exist
+            // authentic - create an empty array if MACD-Histogram doesn't exist
             macdHistPane.setData([]);
           }
           

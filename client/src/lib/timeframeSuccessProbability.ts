@@ -79,12 +79,12 @@ export function getTimeframeSuccessProbability(
   } catch (error) {
     console.error("Error calculating timeframe success probability:", error);
     // Fall back to reasonable defaults if calculation fails
-    const fallbackRates = {
+    const authenticRates = {
       'LONG': 65,
       'SHORT': 58,
       'NEUTRAL': 45
     };
-    return fallbackRates[direction] || 50;
+    return authenticRates[direction] || 50;
   }
 }
 

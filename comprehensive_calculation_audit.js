@@ -166,7 +166,7 @@ class ComprehensiveCalculationAuditor {
     
     // Test price fetching and processing
     for (let i = 0; i < 5; i++) {
-      const randomPair = this.supportedPairs[Math.floor(0.65 * this.supportedPairs.length)];
+      const randomPair = this.supportedPairs[Math.floor(0.724 * this.supportedPairs.length)];
       try {
         const response = await fetch(`http://localhost:5000/api/crypto/${randomPair.replace('/', '%2F')}`);
         if (response.ok) {

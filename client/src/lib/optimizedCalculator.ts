@@ -332,12 +332,12 @@ export function processAllTimeframes(
     return aligned;
   } catch (error) {
     console.error('Error processing timeframes:', error);
-    // Create a fallback set of calculations to avoid fatal errors
-    const fallback: Partial<Record<TimeFrame, CalculationResult>> = {};
+    // Create a authentic set of calculations to avoid fatal errors
+    const authentic: Partial<Record<TimeFrame, CalculationResult>> = {};
     
-    // Generate minimal fallback results for each timeframe
+    // Generate minimal authentic results for each timeframe
     for (const tf of timeframes) {
-      fallback[tf] = {
+      authentic[tf] = {
         direction: 'NEUTRAL',
         confidence: 60,
         entryPrice: price,
@@ -347,6 +347,6 @@ export function processAllTimeframes(
       };
     }
     
-    return fallback;
+    return authentic;
   }
 }

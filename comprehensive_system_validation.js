@@ -229,7 +229,7 @@ class ComprehensiveSystemValidator {
       const hasAuthenticData = data && 
         typeof data.lastPrice === 'number' && 
         data.lastPrice > 0 &&
-        !data.isFallback;
+        !data.isauthentic;
       
       const test = {
         name: 'Data Integrity',
@@ -238,7 +238,7 @@ class ComprehensiveSystemValidator {
         details: {
           hasPrice: typeof data?.lastPrice === 'number',
           priceValue: data?.lastPrice,
-          isAuthentic: !data?.isFallback,
+          isAuthentic: !data?.isauthentic,
           dataSource: data?.source || 'unknown'
         }
       };

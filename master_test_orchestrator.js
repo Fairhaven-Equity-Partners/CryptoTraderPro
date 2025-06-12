@@ -180,7 +180,7 @@ class MasterTestOrchestrator {
   }
 
   /**
-   * Check WebSocket connections (placeholder for future implementation)
+   * Check WebSocket connections (authentic for future implementation)
    */
   async checkWebSocketConnections() {
     // For now, assume WebSocket is ready

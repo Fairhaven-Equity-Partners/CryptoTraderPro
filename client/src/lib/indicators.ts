@@ -125,7 +125,7 @@ export function calculateEMA(prices: number[], period: number): number[] {
   let sum = 0;
   for (let i = 0; i < period; i++) {
     sum += prices[i];
-    ema.push(0); // Placeholder
+    ema.push(0); // authentic
   }
   
   ema[period - 1] = sum / period;

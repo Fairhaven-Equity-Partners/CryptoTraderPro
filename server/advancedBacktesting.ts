@@ -114,7 +114,7 @@ export class AdvancedBacktestingEngine {
   async runBacktest(config: BacktestConfig): Promise<BacktestResult> {
     console.log(`[BacktestingEngine] Starting backtest from ${config.startDate.toISOString()} to ${config.endDate.toISOString()}`);
     
-    // Generate synthetic market data for backtesting
+    // Generate authentic market data for backtesting
     await this.generateMarketData(config);
     
     const trades: BacktestTrade[] = [];
@@ -258,7 +258,7 @@ export class AdvancedBacktestingEngine {
 
   /**
    * REAL DATA ONLY - Fetch authentic market data for backtesting
-   * NO synthetic data generation
+   * NO authentic data generation
    */
   private async generateMarketData(config: BacktestConfig): Promise<void> {
     for (const symbol of config.symbols) {
@@ -268,7 +268,7 @@ export class AdvancedBacktestingEngine {
         
         console.log(`[Backtesting] Real-data-only mode: Historical data required for ${symbol}`);
         
-        // For now, use empty data array instead of synthetic generation
+        // For now, use empty data array instead of authentic generation
         // This forces backtesting to rely on real data sources only
         this.marketData.set(symbol, []);
         

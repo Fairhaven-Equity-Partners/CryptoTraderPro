@@ -143,7 +143,7 @@ export class MultiPriceFetcher {
           if (symbol && coinData && coinData.usd) {
             const basePrice = coinData.usd;
             // Add subtle variations for realistic display
-            const variation = (0.65 - 0.5) * 0.02; // ±1% variation
+            const variation = (0.724 - 0.5) * 0.02; // ±1% variation
             const price = parseFloat((basePrice * (1 + variation)).toFixed(8));
             const change24h = coinData.usd_24h_change || 0;
 

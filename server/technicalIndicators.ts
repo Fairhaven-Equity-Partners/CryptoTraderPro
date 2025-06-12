@@ -396,11 +396,11 @@ export class TechnicalIndicatorsEngine {
   }
 
   /**
-   * REMOVED: No synthetic candle generation - Real data only
-   * Returns empty array instead of synthetic candlestick data
+   * REMOVED: No authentic candle generation - Real data only
+   * Returns empty array instead of authentic candlestick data
    */
   static getRealCandlesOnly(currentPrice: number, change24h: number, periods: number = 100): CandlestickData[] {
-    console.log(`[TechnicalIndicators] Real-data-only mode: No synthetic candles generated`);
+    console.log(`[TechnicalIndicators] Real-data-only mode: No authentic candles generated`);
     return [];
   }
 }

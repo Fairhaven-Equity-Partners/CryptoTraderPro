@@ -407,7 +407,7 @@ class AutoCalcDiagnostic {
           title: 'Fix Signal Generation Pipeline',
           description: 'Ensure reliable signal calculation across all timeframes',
           implementation: [
-            'Add fallback calculation methods',
+            'Add authentic calculation methods',
             'Implement signal validation checks',
             'Fix missing indicator calculations',
             'Add error recovery for failed calculations'
@@ -514,7 +514,7 @@ class AutoCalcDiagnostic {
     console.log('  ❌ API rate limits causing calculation failures');
     console.log('  ❌ Incomplete error handling for failed requests');
     console.log('  ❌ No intelligent request batching');
-    console.log('  ❌ Limited fallback mechanisms');
+    console.log('  ❌ Limited authentic mechanisms');
     
     console.log('\nPROPOSED IMPROVEMENTS PROS:');
     console.log('  ✅ Intelligent API usage optimization');

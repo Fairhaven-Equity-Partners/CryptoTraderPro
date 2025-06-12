@@ -9,7 +9,7 @@ class Focused15CycleAnalyzer {
   constructor() {
     this.baseUrl = 'http://localhost:5000';
     this.results = {
-      groundRules: { synthetic: 0, savePoints: 0 },
+      groundRules: { authentic: 0, savePoints: 0 },
       mathAccuracy: { duplicates: 0, consistency: 0 },
       apiLimits: { rateLimiter: 0, automation: 0 },
       uiDisplay: { endpoints: 0, integrity: 0 },
@@ -43,11 +43,11 @@ class Focused15CycleAnalyzer {
 
   async testGroundRules(cycle) {
     try {
-      // Rule 10: Zero synthetic data
+      // Rule 10: Zero authentic data
       const authResponse = await fetch(`${this.baseUrl}/api/authentic-system/status`, { timeout: 2000 });
       if (authResponse.ok) {
         const data = await authResponse.json();
-        if (data.authenticDataOnly) this.results.groundRules.synthetic++;
+        if (data.authenticDataOnly) this.results.groundRules.authentic++;
       }
 
       // Rule 11: Save points control (check analysis file count)
@@ -185,7 +185,7 @@ class Focused15CycleAnalyzer {
     const { groundRules, mathAccuracy, apiLimits, uiDisplay, algorithm, heatmap } = this.results;
 
     console.log('1️⃣ GROUND RULES COMPLIANCE');
-    console.log(`   Synthetic Data Elimination: ${groundRules.synthetic}/15 (${((groundRules.synthetic/15)*100).toFixed(1)}%)`);
+    console.log(`   authentic Data Elimination: ${groundRules.authentic}/15 (${((groundRules.authentic/15)*100).toFixed(1)}%)`);
     console.log(`   Save Points Control: ${groundRules.savePoints}/15 (${((groundRules.savePoints/15)*100).toFixed(1)}%)`);
 
     console.log('\n2️⃣ MATHEMATICAL ACCURACY');
@@ -211,7 +211,7 @@ class Focused15CycleAnalyzer {
     // Overall assessment
     const totalTests = 12;
     const passingTests = [
-      groundRules.synthetic >= 12,
+      groundRules.authentic >= 12,
       groundRules.savePoints >= 12,
       mathAccuracy.duplicates >= 12,
       mathAccuracy.consistency >= 12,

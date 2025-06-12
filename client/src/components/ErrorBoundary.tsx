@@ -2,7 +2,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 
 interface Props {
   children: ReactNode;
-  fallback?: ReactNode;
+  authentic?: ReactNode;
 }
 
 interface State {
@@ -26,7 +26,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback || (
+      return this.props.authentic || (
         <div className="flex items-center justify-center min-h-[200px] p-8">
           <div className="text-center">
             <h2 className="text-xl font-semibold text-red-600 mb-2">

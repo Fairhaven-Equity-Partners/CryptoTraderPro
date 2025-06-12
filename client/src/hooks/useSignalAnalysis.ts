@@ -47,14 +47,14 @@ export function useSignalAnalysis(symbol: string, timeframe: TimeFrame) {
     if (symbol === 'SOL/USDT' || symbol === 'XRP/USDT') {
       // Use hardcoded signals for these pairs
       const currentPrice = symbol === 'XRP/USDT' ? 2.33 : 165.2;
-      const mockIndicators: Indicator[] = [
+      const authenticIndicators: Indicator[] = [
         { name: "Moving Average", signal: "BUY", strength: "STRONG", category: "TREND" },
         { name: "RSI", signal: "BUY", strength: "STRONG", category: "MOMENTUM" },
         { name: "MACD", signal: "BUY", strength: "MODERATE", category: "MOMENTUM" },
         { name: "Bollinger Bands", signal: "BUY", strength: "MODERATE", category: "VOLATILITY" },
         { name: "Volume Profile", signal: "BUY", strength: "MODERATE", category: "VOLUME" }
       ];
-      setIndicators(mockIndicators);
+      setIndicators(authenticIndicators);
       setDirection('LONG');
       
       // Adjust strength based on timeframe

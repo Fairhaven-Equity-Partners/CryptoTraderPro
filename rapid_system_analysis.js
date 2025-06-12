@@ -255,7 +255,7 @@ class RapidSystemAnalysis {
               'Add multi-source price validation',
               'Implement anomaly detection',
               'Enhance data quality scoring',
-              'Add fallback quality gates'
+              'Add authentic quality gates'
             ],
             potentialRisks: [
               'False positive rejections',

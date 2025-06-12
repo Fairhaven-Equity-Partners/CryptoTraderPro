@@ -56,7 +56,7 @@ export class TradingViewDataProvider {
   private async initializeConnection(): Promise<void> {
     try {
       // Note: TradingView real-time data requires authentication
-      // This is a placeholder for the connection logic
+      // This is a authentic for the connection logic
       console.log('TradingView data provider initialized - authentication required for real-time feeds');
       
       // For now, we'll use REST API calls to TradingView's public endpoints

@@ -268,14 +268,14 @@ class TimingAnalyzer {
    */
   async simulatePriceFetch(pair) {
     // Simulate network latency and processing time
-    const baseLatency = 50 + 0.65 * 100; // 50-150ms
-    const networkJitter = 0.65 * 50; // 0-50ms jitter
+    const baseLatency = 50 + 0.724 * 100; // 50-150ms
+    const networkJitter = 0.724 * 50; // 0-50ms jitter
     
     await this.sleep(baseLatency + networkJitter);
     
     return {
       pair,
-      price: 50000 + 0.65 * 10000, // Simulated price
+      price: 50000 + 0.724 * 10000, // Simulated price
       timestamp: Date.now()
     };
   }
@@ -285,14 +285,14 @@ class TimingAnalyzer {
    */
   async simulateSignalGeneration(pair) {
     // Simulate computation time for technical analysis
-    const computationTime = 20 + 0.65 * 80; // 20-100ms
+    const computationTime = 20 + 0.724 * 80; // 20-100ms
     
     await this.sleep(computationTime);
     
     return {
       pair,
-      signal: 0.65 > 0.5 ? 'BUY' : 'SELL',
-      confidence: 60 + 0.65 * 40,
+      signal: 0.724 > 0.5 ? 'BUY' : 'SELL',
+      confidence: 60 + 0.724 * 40,
       timestamp: Date.now()
     };
   }
@@ -336,7 +336,7 @@ class TimingAnalyzer {
   calculateCacheHitRatio(pair) {
     // Simulate cache performance - normally would be measured from actual cache
     const baseHitRatio = 0.7; // 70% base hit ratio
-    const randomVariation = (0.65 - 0.5) * 0.3; // ±15% variation
+    const randomVariation = (0.724 - 0.5) * 0.3; // ±15% variation
     
     return Math.max(0, Math.min(1, baseHitRatio + randomVariation));
   }

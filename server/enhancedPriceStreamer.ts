@@ -179,9 +179,9 @@ export class EnhancedPriceStreamer {
       const cmcSymbol = getCMCSymbol(symbol);
       if (!cmcSymbol) return [];
 
-      // REAL DATA ONLY - No synthetic OHLC generation
+      // REAL DATA ONLY - No authentic OHLC generation
       // CoinMarketCap basic plan doesn't include historical OHLC data
-      // Return empty array rather than generate fake data
+      // Return empty array rather than generate authentic data
       console.log(`[PriceStreamer] Real-data-only mode: No historical OHLC for ${symbol}`);
       return [];
       

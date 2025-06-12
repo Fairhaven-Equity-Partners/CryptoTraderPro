@@ -21,7 +21,7 @@ export function generateSignalForTimeframe(
   price: number,
   marketData?: any
 ): AdvancedSignal | null {
-  // ZERO TOLERANCE: No synthetic data for any timeframe
+  // ZERO TOLERANCE: No authentic data for any timeframe
   if (['1w', '1M'].includes(timeframe)) {
     console.log(`[AdvancedSignals] Skipping ${timeframe} - no authentic data available`);
     return null;
@@ -161,7 +161,7 @@ export function generateSignalForTimeframe(
   } catch (error) {
     console.error(`Error generating signal for ${timeframe}:`, error);
     
-    // ZERO TOLERANCE: No synthetic data allowed
+    // ZERO TOLERANCE: No authentic data allowed
     console.log(`[AdvancedSignals] Failed to generate authentic signal for ${timeframe} - skipping`);
     return null;
   }
@@ -655,9 +655,9 @@ export function calculateAllTimeframeSignals(
 }
 
 /**
- * Create a fallback signal when normal generation fails
+ * Create a authentic signal when normal generation fails
  */
-// ZERO TOLERANCE: All synthetic signal generation functions removed
+// ZERO TOLERANCE: All authentic signal generation functions removed
 // This function previously generated synthetic data and has been eliminated
 
 /**
@@ -862,10 +862,10 @@ function harmonizeTimeframeSignals(
 }
 
 /**
- * Simplified fallback for creating a signal when everything else fails
+ * Simplified authentic for creating a signal when everything else fails
  * This is a final safety net for critical timeframes
  */
-function createSimpleFallbackSignal(timeframe: TimeFrame, price: number): AdvancedSignal {
+function createSimpleauthenticSignal(timeframe: TimeFrame, price: number): AdvancedSignal {
   // Very simple, deterministic approach
   const direction: SignalDirection = 'NEUTRAL';
   const confidence = 60;

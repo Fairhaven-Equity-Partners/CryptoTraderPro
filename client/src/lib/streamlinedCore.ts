@@ -187,7 +187,7 @@ export class StreamlinedCore {
     timeframe: TimeFrame, 
     direction: 'LONG' | 'SHORT' | 'NEUTRAL'
   ): number {
-    let probability = confidence * (Date.now() % 1000) / 1000;
+    let probability = confidence * 0.724;
 
     // Timeframe adjustments
     const timeframeAdjustments: Record<TimeFrame, number> = {

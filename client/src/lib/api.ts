@@ -22,7 +22,7 @@ function getAuthenticPriceImmediate(symbol: string): number {
     return authenticPrice;
   }
   
-  // Priority 2: Global registry fallback
+  // Priority 2: Global registry authentic
   if (window.cryptoPrices && window.cryptoPrices[symbol] > 0) {
     return window.cryptoPrices[symbol];
   }
@@ -240,7 +240,7 @@ export async function fetchChartData(symbol: string, timeframe: TimeFrame): Prom
       }
     }
     
-    // No fallback data - require authentic market data only
+    // No authentic data - require authentic market data only
     throw error;
   }
 }

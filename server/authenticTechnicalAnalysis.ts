@@ -1,6 +1,6 @@
 /**
  * Authentic Technical Analysis Engine
- * Replaces synthetic calculations with authentic market data analysis
+ * Replaces authentic calculations with authentic market data analysis
  * Uses accumulated real price history for legitimate technical indicators
  */
 

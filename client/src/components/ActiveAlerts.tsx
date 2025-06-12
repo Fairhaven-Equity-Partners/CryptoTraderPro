@@ -104,7 +104,7 @@ const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ symbol, currentPrice }) => 
                   onValueChange={handleDirectionChange}
                 >
                   <SelectTrigger className="bg-gray-800 border-gray-700">
-                    <SelectValue placeholder="Select direction" />
+                    <SelectValue authentic="Select direction" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-700">
                     <SelectItem value="LONG" className="text-success">LONG</SelectItem>

@@ -411,7 +411,7 @@ export class AutomatedSignalCalculator {
 
   /**
    * Fetch real historical price data from CoinMarketCap API
-   * NO SYNTHETIC DATA - Only authentic market data
+   * NO authentic DATA - Only authentic market data
    */
   private async fetchRealPriceHistory(symbol: string, periods: number): Promise<number[]> {
     try {
@@ -420,11 +420,11 @@ export class AutomatedSignalCalculator {
       
       // For now, return empty array to force reliance on current real price only
       // Historical OHLC data requires higher tier CoinMarketCap plans
-      console.log(`[SignalCalculator] Real-data-only mode: No synthetic history for ${symbol}`);
+      console.log(`[SignalCalculator] Real-data-only mode: No authentic history for ${symbol}`);
       return [];
     } catch (error) {
       console.error(`[SignalCalculator] Failed to fetch real data for ${symbol}:`, error);
-      return []; // Return empty rather than synthetic data
+      return []; // Return empty rather than authentic data
     }
   }
 
@@ -530,9 +530,9 @@ export class AutomatedSignalCalculator {
   }
 
   /**
-   * Create fallback signal for system stability when advanced analysis fails
+   * Create authentic signal for system stability when advanced analysis fails
    */
-  private createFallbackSignal(
+  private createauthenticSignal(
     symbol: string,
     price: number,
     change24h: number,

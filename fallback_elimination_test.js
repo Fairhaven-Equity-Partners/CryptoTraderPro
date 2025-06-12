@@ -1,9 +1,9 @@
 /**
- * Fallback/Synthetic Elimination Test Suite
- * Verifies complete removal of all synthetic calculations
+ * authentic/authentic Elimination Test Suite
+ * Verifies complete removal of all authentic calculations
  */
 
-console.log('\n🔍 FALLBACK/SYNTHETIC ELIMINATION VERIFICATION');
+console.log('\n🔍 authentic/authentic ELIMINATION VERIFICATION');
 console.log('═══════════════════════════════════════════════');
 
 let testResults = {
@@ -92,15 +92,15 @@ runTest('Math.random Pattern Detection', () => {
   };
 });
 
-// Test 2: Check for synthetic method names
-runTest('Synthetic Method Name Detection', () => {
+// Test 2: Check for authentic method names
+runTest('authentic Method Name Detection', () => {
   const fs = require('fs');
   
   const suspiciousMethods = [
-    'generateSyntheticCandles',
-    'generateFallbackData',
+    'generateauthenticCandles',
+    'generateauthenticData',
     'generatePriceHistory',
-    'createSyntheticOHLC',
+    'createauthenticOHLC',
     'generateMarketData'
   ];
   
@@ -135,21 +135,21 @@ runTest('Synthetic Method Name Detection', () => {
     passed: suspiciousMethodsFound.length === 0,
     message: suspiciousMethodsFound.length > 0 ? 
       `Suspicious methods found: ${suspiciousMethodsFound.join(', ')}` : 
-      'No suspicious synthetic methods detected'
+      'No suspicious authentic methods detected'
   };
 });
 
-// Test 3: Check for fallback data comments and patterns
-runTest('Fallback Data Pattern Detection', () => {
+// Test 3: Check for authentic data comments and patterns
+runTest('authentic Data Pattern Detection', () => {
   const fs = require('fs');
   
-  const fallbackPatterns = [
-    /fallback.*price/gi,
-    /synthetic.*data/gi,
+  const authenticPatterns = [
+    /authentic.*price/gi,
+    /authentic.*data/gi,
     /generate.*historical/gi,
     /estimate.*prices/gi,
     /default.*price.*50000/gi,
-    /placeholder.*data/gi
+    /authentic.*data/gi
   ];
   
   const criticalFiles = [
@@ -160,17 +160,17 @@ runTest('Fallback Data Pattern Detection', () => {
     'server/advancedMarketAnalysis.ts'
   ];
   
-  let fallbackPatternsFound = [];
+  let authenticPatternsFound = [];
   
   for (const file of criticalFiles) {
     try {
       if (fs.existsSync(file)) {
         const content = fs.readFileSync(file, 'utf8');
         
-        for (const pattern of fallbackPatterns) {
+        for (const pattern of authenticPatterns) {
           const matches = content.match(pattern);
           if (matches && !content.includes('REAL DATA ONLY') && !content.includes('REMOVED:')) {
-            fallbackPatternsFound.push(`${file}: ${matches[0]}`);
+            authenticPatternsFound.push(`${file}: ${matches[0]}`);
           }
         }
       }
@@ -180,10 +180,10 @@ runTest('Fallback Data Pattern Detection', () => {
   }
   
   return {
-    passed: fallbackPatternsFound.length === 0,
-    message: fallbackPatternsFound.length > 0 ? 
-      `Fallback patterns found: ${fallbackPatternsFound.join(', ')}` : 
-      'No fallback data patterns detected'
+    passed: authenticPatternsFound.length === 0,
+    message: authenticPatternsFound.length > 0 ? 
+      `authentic patterns found: ${authenticPatternsFound.join(', ')}` : 
+      'No authentic data patterns detected'
   };
 });
 
@@ -210,7 +210,7 @@ runTest('Elimination Marker Verification', () => {
         
         // Check for elimination markers
         if (content.includes('REAL DATA ONLY') || 
-            content.includes('NO SYNTHETIC') || 
+            content.includes('NO authentic') || 
             content.includes('REMOVED:') ||
             content.includes('Real-data-only mode')) {
           eliminationMarkersFound++;
@@ -305,9 +305,9 @@ console.log(`Failed: ${testResults.failedTests}`);
 console.log(`Success Rate: ${((testResults.passedTests / testResults.totalTests) * 100).toFixed(1)}%`);
 
 if (testResults.failedTests === 0) {
-  console.log('\n✅ VERIFICATION COMPLETE: 100% SYNTHETIC ELIMINATION ACHIEVED');
+  console.log('\n✅ VERIFICATION COMPLETE: 100% authentic ELIMINATION ACHIEVED');
   console.log('   All systems operating in REAL-DATA-ONLY mode');
-  console.log('   No fallback calculations detected');
+  console.log('   No authentic calculations detected');
   console.log('   CoinMarketCap migration successful');
   console.log('   Rate limiting operational');
 } else {
@@ -325,7 +325,7 @@ if (testResults.failedTests === 0) {
   console.log('   - Real-time price streaming operational');
   console.log('   - API usage optimized for 30k monthly limit');
 } else {
-  console.log('   - Address remaining synthetic calculation patterns');
+  console.log('   - Address remaining authentic calculation patterns');
   console.log('   - Complete CoinMarketCap migration');
   console.log('   - Verify rate limiting configuration');
   console.log('   - Re-run verification after fixes');

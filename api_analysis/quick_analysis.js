@@ -192,12 +192,12 @@ class QuickAPIAnalysis {
         batchSettings: {
           interval: '2 minutes',
           maxBatchSize: 50,
-          fallbackToIndividual: true
+          authenticToIndividual: true
         }
       },
       riskMitigation: {
         circuitBreaker: 'Automatic throttling at 70%/85%/95% usage',
-        fallbackStrategy: 'Individual calls if batch fails',
+        authenticStrategy: 'Individual calls if batch fails',
         cacheValidation: 'Maximum 10 minute cache age',
         emergencyMode: 'Pause non-essential requests at 95% limit'
       }
