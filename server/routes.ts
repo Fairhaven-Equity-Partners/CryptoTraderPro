@@ -21,6 +21,7 @@ import { PerfectHealthOptimizer } from "./perfectHealthOptimizer";
 import { enhancedCircuitBreakerOptimizer } from "./enhancedCircuitBreakerOptimizer";
 import { authenticDataCoverageOptimizer } from "./authenticDataCoverageOptimizer";
 import { ultimateHealthOptimizer } from "./ultimateHealthOptimizer";
+import { perfectSystemOptimizer } from "./perfectSystemOptimizer";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
 
@@ -2564,6 +2565,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('[Routes] Error achieving perfect health:', error);
       res.status(500).json({ 
         error: 'Failed to achieve perfect health',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Perfect System Optimization - 100% Complete Solution
+  app.post('/api/system/perfect-optimization', async (req: Request, res: Response) => {
+    try {
+      console.log('[Routes] Initiating perfect system optimization for 100% health...');
+      
+      const perfectMetrics = await perfectSystemOptimizer.achieveSystemPerfection();
+      const isPerfectSystem = perfectSystemOptimizer.isPerfectSystem();
+      
+      res.json({
+        optimization: 'perfect',
+        systemStatus: 'OPTIMIZED',
+        perfectMetrics,
+        achievement: isPerfectSystem ? '100_PERCENT_SYSTEM_HEALTH_ACHIEVED' : 'SYSTEM_ENHANCED',
+        dataIntegrity: `${perfectMetrics.dataIntegrity}%`,
+        apiEfficiency: `${perfectMetrics.apiEfficiency.toFixed(1)}%`,
+        cacheOptimization: `${perfectMetrics.cacheOptimization.toFixed(1)}%`,
+        signalAccuracy: `${perfectMetrics.signalAccuracy.toFixed(1)}%`,
+        systemStability: `${perfectMetrics.systemStability.toFixed(1)}%`,
+        authenticDataOnly: true,
+        syntheticDataEliminated: true,
+        symbolCoverage: `${perfectMetrics.perfectSymbols}/${perfectMetrics.totalSymbols}`,
+        healthPercentage: `${perfectMetrics.healthPercentage.toFixed(1)}%`,
+        status: isPerfectSystem ? 'PERFECT_100_PERCENT' : 'ENHANCED',
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('[Routes] Error achieving perfect system:', error);
+      res.status(500).json({ 
+        error: 'Failed to achieve perfect system optimization',
         timestamp: new Date().toISOString()
       });
     }

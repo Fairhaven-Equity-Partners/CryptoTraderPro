@@ -60,8 +60,8 @@ export const ENHANCED_SYMBOL_MAPPINGS: Record<string, SymbolMapping> = {
   'SAND/USDT': { display: 'SAND/USDT', cmc: 'SAND', tier: 3 },
   'FET/USDT': { display: 'FET/USDT', cmc: 'FET', tier: 3 },
   
-  // Enhanced mapping for problematic RNDR symbol with comprehensive fallbacks
-  'RNDR/USDT': { display: 'RNDR/USDT', cmc: 'RNDR', fallback: ['RENDER', 'RNDR'], tier: 2 },
+  // Enhanced mapping for RNDR symbol - uses RENDER as primary CMC identifier
+  'RNDR/USDT': { display: 'RNDR/USDT', cmc: 'RENDER', fallback: ['RNDR'], tier: 2 },
   
   'KAVA/USDT': { display: 'KAVA/USDT', cmc: 'KAVA', tier: 3 },
   'MINA/USDT': { display: 'MINA/USDT', cmc: 'MINA', tier: 3 },
