@@ -3,7 +3,7 @@ import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
-import SignalHeatMap from '../components/SignalHeatMap';
+import SimpleSignalGrid from '../components/SimpleSignalGrid';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -92,7 +92,7 @@ const Analysis: React.FC = () => {
             </div>
             
             <CollapsibleContent>
-              <SignalHeatMap onSelectAsset={handleChangeAsset} />
+              <SimpleSignalGrid />
             </CollapsibleContent>
           </Collapsible>
         </div>

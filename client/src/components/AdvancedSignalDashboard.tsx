@@ -298,7 +298,8 @@ function AdvancedSignalDashboard({
       }, 2000); // Wait 2 seconds for data to load
       
       return () => clearTimeout(immediateCalcTimer);
-    }, [symbol, isAllDataLoaded, isCalculating]);
+    }
+  }, [symbol, isAllDataLoaded, isCalculating]);
   
   // Use centralized price manager instead of frequent API calls
   const { data: asset } = useQuery({
