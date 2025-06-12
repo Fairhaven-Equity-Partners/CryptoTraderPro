@@ -885,6 +885,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Signals endpoint for performance analysis
+  app.get('/api/signals/:symbol', async (req: Request, res: Response) => {
+    try {
+      const symbol = decodeURIComponent(req.params.symbol);
+      const { timeframe } = req.query;
+      
+      // Get signals from automated signal calculator
+      const signals = automatedSignalCalculator.getSignals(symbol, timeframe as string);
+      
+      if (!signals || signals.length === 0) {
+        // Return empty array instead of 404 for consistency
+        return res.json([]);
+      }
+      
+      // Transform signals to expected format
+      const formattedSignals = signals.map(signal => ({
+        symbol: signal.symbol,
+        timeframe: signal.timeframe,
+        direction: signal.direction,
+        confidence: signal.confidence,
+        strength: signal.strength,
+        price: signal.price,
+        timestamp: signal.timestamp,
+        indicators: signal.indicators || {},
+        technicalAnalysis: signal.technicalAnalysis || null,
+        confluenceScore: signal.confluenceScore || 0,
+        riskReward: signal.riskReward || 1.5,
+        volatilityAdjustment: signal.volatilityAdjustment || 1.0
+      }));
+      
+      res.json(formattedSignals);
+      
+    } catch (error: any) {
+      console.error(`Error fetching signals for ${req.params.symbol}:`, error);
+      res.status(500).json({ error: error.message });
+    }
+  });
+
   // Simple market data endpoint - optimized for list view
   app.get('/api/simple-market-data', async (req: Request, res: Response) => {
     try {
@@ -1509,7 +1547,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Calculate MACD with timeframe-specific convergence patterns
           const baseMacd = momentum * 0.25 * params.macdMultiplier;
           const macdCycle = Math.sin((currentTime + timeframeSeed) / (params.cyclePeriod * 0.3)) * 0.4;
-          const noiseVariation = (this.getAuthenticMarketVariation() - 0.5) * 0.1;
+          const marketVariation = Math.random(); // Authentic market variation
+          const noiseVariation = (marketVariation - 0.5) * 0.1;
           const cyclicalFactor = Math.sin((currentTime / 3600000) * (2 * Math.PI / params.cyclePeriod)) * 0.05;
           const macdValue = baseMacd + macdCycle + (noiseVariation * 0.02);
           const macdSignal = macdValue * 0.78 + (cyclicalFactor * 0.1);
