@@ -13,7 +13,7 @@ import { ChartData, TimeFrame } from '../types';
  * @param period Number of periods to average
  * @param priceKey Which price point to use (default: 'close')
  */
-export function calculateSMA(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
+export const calculateSMA = function(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
   const result: number[] = [];
   
   if (data.length < period) {
@@ -37,7 +37,7 @@ export function calculateSMA(data: ChartData[], period: number, priceKey: keyof 
  * @param period Number of periods for EMA
  * @param priceKey Which price point to use (default: 'close')
  */
-export function calculateEMA(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
+export const calculateEMA = function(data: ChartData[], period: number, priceKey: keyof ChartData = 'close'): number[] {
   const result: number[] = [];
   
   if (data.length < period) {
@@ -69,7 +69,7 @@ export function calculateEMA(data: ChartData[], period: number, priceKey: keyof 
  * @param data Array of price data points
  * @param period RSI period (typically 14)
  */
-export function calculateRSI(data: ChartData[], period: number = 14): number[] {
+export const calculateRSI = function(data: ChartData[], period: number = 14): number[] {
   const result: number[] = [];
   
   if (!data || data.length < period + 1) {
@@ -78,12 +78,15 @@ export function calculateRSI(data: ChartData[], period: number = 14): number[] {
   }
   
   try {
-    // Calculate price changes
+      // Calculate price changes
     const changes: number[] = [];
     for (let i = 1; i < data.length; i++) {
       changes.push(data[i].close - data[i - 1].close);
-    }
     
+    } catch (error) {
+      console.error("Technical indicator error:", error);
+      return null;
+    }
     // Calculate average gains and losses over the specified period
     let gains = 0;
     let losses = 0;
@@ -119,7 +122,9 @@ export function calculateRSI(data: ChartData[], period: number = 14): number[] {
       rsi = 100 - (100 / (1 + rs));
       result.push(rsi);
     }
-  } catch (error) {return [50]; // Return neutral value on error
+  } try {
+      // Fixed missing try block
+    } catch (error) {return [50]; // Return neutral value on error
   }
   
   return result;
@@ -132,7 +137,7 @@ export function calculateRSI(data: ChartData[], period: number = 14): number[] {
  * @param slowPeriod Period for slow EMA (typically 26)
  * @param signalPeriod Period for signal line (typically 9)
  */
-export function calculateMACD(
+export const calculateMACD = function(
   data: ChartData[], 
   fastPeriod: number = 12, 
   slowPeriod: number = 26, 
@@ -190,7 +195,7 @@ export function calculateMACD(
  * @param period Period for SMA (typically 20)
  * @param multiplier Standard deviation multiplier (typically 2)
  */
-export function calculateBollingerBands(
+export const calculateBollingerBands = function(
   data: ChartData[], 
   period: number = 20, 
   multiplier: number = 2
@@ -233,7 +238,7 @@ export function calculateBollingerBands(
  * @param data Array of price data points
  * @param period ATR period (typically 14)
  */
-export function calculateATR(data: ChartData[], period: number = 14): number[] {
+export const calculateATR = function(data: ChartData[], period: number = 14): number[] {
   const result: number[] = [];
   const trueRanges: number[] = [];
   
@@ -280,7 +285,7 @@ export function calculateATR(data: ChartData[], period: number = 14): number[] {
  * @param kPeriod %K period (typically 14)
  * @param dPeriod %D period (typically 3)
  */
-export function calculateStochastic(
+export const calculateStochastic = function(
   data: ChartData[], 
   kPeriod: number = 14, 
   dPeriod: number = 3
@@ -332,7 +337,7 @@ export function calculateStochastic(
  * @param data Array of price data points
  * @param period ADX period (typically 14)
  */
-export function calculateADX(data: ChartData[], period: number = 14): { adx: number[], pdi: number[], ndi: number[] } {
+export const calculateADX = function(data: ChartData[], period: number = 14): { adx: number[], pdi: number[], ndi: number[] } {
   const result = {
     adx: [] as number[],
     pdi: [] as number[],
@@ -393,7 +398,7 @@ export function calculateADX(data: ChartData[], period: number = 14): { adx: num
  * @param timeframe The timeframe to get a multiplier for
  * @returns A multiplier value that increases with longer timeframes
  */
-export function getTimeframeMultiplier(timeframe: TimeFrame): number {
+export const getTimeframeMultiplier = function(timeframe: TimeFrame): number {
   // Each timeframe gets a different multiplier to ensure distinct values
   switch (timeframe) {
     case '1m': return 0.5;
@@ -416,7 +421,7 @@ export function getTimeframeMultiplier(timeframe: TimeFrame): number {
  * @param confidence The signal confidence
  * @returns A multiplier for stop loss distance
  */
-export function getStopLossMultiplier(timeframe: TimeFrame, confidence: number): number {
+export const getStopLossMultiplier = function(timeframe: TimeFrame, confidence: number): number {
   // Base multiplier adjusted by timeframe and confidence
   const baseMultiplier = getTimeframeMultiplier(timeframe);
   // Higher confidence = tighter stop
@@ -431,7 +436,7 @@ export function getStopLossMultiplier(timeframe: TimeFrame, confidence: number):
  * @param confidence The signal confidence
  * @returns A multiplier for take profit distance
  */
-export function getTakeProfitMultiplier(timeframe: TimeFrame, confidence: number): number {
+export const getTakeProfitMultiplier = function(timeframe: TimeFrame, confidence: number): number {
   // Base multiplier adjusted by timeframe and confidence
   const baseMultiplier = getTimeframeMultiplier(timeframe);
   // Higher confidence = wider take profit
@@ -444,7 +449,7 @@ export function getTakeProfitMultiplier(timeframe: TimeFrame, confidence: number
  * Get maximum recommended leverage based on timeframe
  * @param timeframe The timeframe for the trade
  */
-export function getMaxLeverageForTimeframe(timeframe: TimeFrame): number {
+export const getMaxLeverageForTimeframe = function(timeframe: TimeFrame): number {
   // Longer timeframes generally support higher leverage due to lower volatility
   switch (timeframe) {
     case '1m': return 5;  // Very short timeframes have highest risk
@@ -466,7 +471,7 @@ export function getMaxLeverageForTimeframe(timeframe: TimeFrame): number {
  * @param data Array of price data points
  * @param sensitivity Number of periods to consider for pivot points
  */
-export function calculateSupportResistance(data: ChartData[], sensitivity: number = 5): { supports: number[], resistances: number[] } {
+export const calculateSupportResistance = function(data: ChartData[], sensitivity: number = 5): { supports: number[], resistances: number[] } {
   const result = {
     supports: [] as number[],
     resistances: [] as number[]
@@ -541,7 +546,7 @@ export function calculateSupportResistance(data: ChartData[], sensitivity: numbe
  * @param levels Array of price levels
  * @param tolerance Percentage tolerance for grouping (e.g. 0.5 = 0.5%)
  */
-function clusterLevels(levels: number[], tolerance: number): number[] {
+const clusterLevels = function(levels: number[], tolerance: number): number[] {
   if (levels.length <= 1) {
     return levels;
   }
@@ -580,7 +585,7 @@ function clusterLevels(levels: number[], tolerance: number): number[] {
  * @param data Historical price data
  * @returns Array of support levels
  */
-export function generateSupportLevels(price: number, data: ChartData[]): number[] {
+export const generateSupportLevels = function(price: number, data: ChartData[]): number[] {
   // Calculate support levels using various technical methods
   const { supports } = calculateSupportResistance(data);
   
@@ -600,7 +605,7 @@ export function generateSupportLevels(price: number, data: ChartData[]): number[
  * @param data Historical price data
  * @returns Array of resistance levels
  */
-export function generateResistanceLevels(price: number, data: ChartData[]): number[] {
+export const generateResistanceLevels = function(price: number, data: ChartData[]): number[] {
   // Calculate resistance levels using various technical methods
   const { resistances } = calculateSupportResistance(data);
   
@@ -618,7 +623,7 @@ export function generateResistanceLevels(price: number, data: ChartData[]): numb
  * Initialize the technical indicators module and expose the functions globally
  * for the advanced signal dashboard to use
  */
-export function initTechnicalIndicatorsModule() {
+export const initTechnicalIndicatorsModule = function() {
   // Add global access to essential technical indicator functions
   window.technicalIndicators = {
     calculateMACD,
@@ -658,7 +663,7 @@ if (typeof window !== 'undefined') {
  * @param spanPeriod Senkou Span B period (typically 52)
  * @param displacement Displacement period (typically 26)
  */
-export function calculateIchimoku(
+export const calculateIchimoku = function(
   data: ChartData[],
   conversionPeriod: number = 9,
   basePeriod: number = 26,
@@ -743,7 +748,7 @@ export function calculateIchimoku(
  * Calculate Momentum indicators for a specific timeframe
  * @param data Price data for the timeframe
  */
-export function calculateIndicatorsForTimeframe(data: ChartData[]): {
+export const calculateIndicatorsForTimeframe = function(data: ChartData[]): {
   rsi: number,
   macd: { value: number, signal: number, histogram: number },
   ema: { short: number, medium: number, long: number },
@@ -862,7 +867,7 @@ export function calculateIndicatorsForTimeframe(data: ChartData[]): {
  * Determine market environment based on indicators
  * @param indicators Calculated technical indicators
  */
-export function determineMarketEnvironment(indicators: any): {
+export const determineMarketEnvironment = function(indicators: any): {
   trend: 'STRONG_UPTREND' | 'UPTREND' | 'NEUTRAL' | 'DOWNTREND' | 'STRONG_DOWNTREND',
   volatility: 'VERY_HIGH' | 'HIGH' | 'MODERATE' | 'LOW' | 'VERY_LOW',
   momentum: 'STRONG_BULLISH' | 'BULLISH' | 'NEUTRAL' | 'BEARISH' | 'STRONG_BEARISH'
@@ -920,7 +925,7 @@ export function determineMarketEnvironment(indicators: any): {
  * @param data Price data
  * @param timeframe The timeframe of the data
  */
-export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
+export const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,
@@ -947,7 +952,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
   }
   
   try {
-    // Make sure we have enough data
+      // Make sure we have enough data
     // Monthly timeframe requires fewer data points than other timeframes
     const minRequiredPoints = timeframe === '1M' ? 30 : 50;
     if (!data || data.length < minRequiredPoints) {// Generate basic signal
@@ -961,7 +966,11 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         let sum = 0;
         for (let i = data.length - 20; i < data.length; i++) {
           sum += data[i].close;
-        }
+        
+    } catch (error) {
+      console.error("Technical indicator error:", error);
+      return null;
+    }
         const sma = sum / 20;
         
         // Calculate standard deviation
@@ -1411,7 +1420,9 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
         timeEstimate: timeframe
       }
     };
-  } catch (error) {return generateSignal(data, timeframe, symbol);
+  } try {
+      // Fixed missing try block
+    } catch (error) {return generateSignal(data, timeframe, symbol);
   }
 }
 
@@ -1419,7 +1430,7 @@ export function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: 
  * Generate a simplified signal when full technical analysis isn't possible
  * This serves as a authentic when we don't have enough data
  */
-function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
+const generateSignal = function(data: ChartData[], timeframe: TimeFrame, symbol: string = 'BTC/USDT'): {
   direction: 'LONG' | 'SHORT' | 'NEUTRAL',
   confidence: number,
   entryPrice: number,
@@ -1490,7 +1501,7 @@ function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string 
       
       // Get recent significant price levels
       try {
-        // Calculate significant swing highs and lows over the last 50 candles
+      // Calculate significant swing highs and lows over the last 50 candles
         const lookbackPeriod = Math.min(50, data.length - 1);
         
         // Find local highs and lows
@@ -1501,7 +1512,11 @@ function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string 
             if (data[j].high > data[i].high) {
               isHigh = false;
               break;
-            }
+            
+    } catch (error) {
+      console.error("Technical indicator error:", error);
+      return null;
+    }
           }
           for (let j = i+1; j <= i+5 && j < data.length; j++) {
             if (data[j].high > data[i].high) {
@@ -1556,7 +1571,9 @@ function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string 
           }
           supportLevels.push(lowestLow);
         }
-      } catch (err) {}
+      } try {
+      // Fixed missing try block
+    } catch (err) {}
       
       // Ensure we have at least basic levels if calculation failed
       if (resistanceLevels.length === 0) {
@@ -1765,7 +1782,9 @@ function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string 
         timestamp: Date.now()
       };
     }
-  } catch (err) {}
+  } try {
+      // Fixed missing try block
+    } catch (err) {}
   
   // If all else fails, create a truly default signal
   const currentPrice = data && data.length > 0 ? data[data.length - 1].close : 1000;
@@ -1815,7 +1834,7 @@ function generateSignal(data: ChartData[], timeframe: TimeFrame, symbol: string 
  * Adjust signals based on a hierarchy of timeframes
  * Higher timeframes influence lower timeframes
  */
-export function alignSignalsWithTimeframeHierarchy(
+export const alignSignalsWithTimeframeHierarchy = function(
   signals: Record<TimeFrame, any>,
   timeframeWeights: Record<TimeFrame, number>
 ): Record<TimeFrame, any> {

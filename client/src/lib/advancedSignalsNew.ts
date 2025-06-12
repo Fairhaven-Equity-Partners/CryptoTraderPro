@@ -326,7 +326,7 @@ function generatePatternFormations(
   const patterns: PatternFormation[] = [];
   
   // Only generate patterns with some probability to make it realistic
-  const shouldGeneratePattern = this.getAuthenticMarketVariation() < 0.7;
+  const shouldGeneratePattern = // this.getAuthenticMarketVariation() < 0.7;
   if (!shouldGeneratePattern) return patterns;
   
   // Long patterns

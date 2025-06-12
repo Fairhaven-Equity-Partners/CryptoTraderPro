@@ -19,35 +19,22 @@ interface OptimizedMarketEntry {
   marketCap?: number;
   signals: {
     [timeframe: string]: {
-      direction: 'LONG' | 'SHORT' | 'NEUTRAL';
-      confidence: number;
-      strength: number;
-      entryPrice: number;
-      stopLoss: number;
-      takeProfit: number;
-      riskReward: number;
-      successProbability: number;
-      timestamp: number;
-    };
-  };
+;
   sentiment: {
     direction: 'LONG' | 'SHORT' | 'NEUTRAL';
     intensity: number;
     strength: number;
     reliability: number;
-    timeframe: string;
-  };
+    timeframe: string};
   technicalSummary: {
     trendStrength: number;
     momentum: number;
     volatility: number;
-    confidence: number;
-  };
+    confidence: number};
   heatValue: number; // -100 to +100 scale
   color: string;
   opacity: number;
-  size: number;
-}
+  size: number}
 
 interface MarketSummary {
   totalPairs: number;
@@ -57,12 +44,10 @@ interface MarketSummary {
   averageConfidence: number;
   highConfidenceSignals: number;
   timeframe: string;
-  timestamp: number;
-}
+  timestamp: number}
 
 interface SignalHeatMapProps {
-  onSelectAsset?: (symbol: string) => void;
-}
+  onSelectAsset?: (symbol: string) => void}
 
 // Get all timeframes from longest to shortest
 const ALL_TIMEFRAMES: TimeFrame[] = ['1M', '1w', '3d', '1d', '4h', '1h', '30m', '15m', '5m', '1m'];
@@ -73,23 +58,19 @@ function getColorForConfidence(direction: string, confidence: number): string {
     if (confidence >= 80) return 'bg-green-500';
     if (confidence >= 70) return 'bg-green-400';
     if (confidence >= 60) return 'bg-green-300';
-    return 'bg-green-200';
-  } else if (direction === 'SHORT') {
+    return 'bg-green-200'} else if (direction === 'SHORT') {
     if (confidence >= 90) return 'bg-red-600';
     if (confidence >= 80) return 'bg-red-500';
     if (confidence >= 70) return 'bg-red-400';
     if (confidence >= 60) return 'bg-red-300';
-    return 'bg-red-200';
-  } else {
-    return 'bg-gray-300';
-  }
+    return 'bg-red-200'} else {
+    return 'bg-gray-300'}
 }
 
 function getSignalText(direction: string, confidence: number): string {selectedTimeframe}`);
       if (!response.ok) throw new Error('Failed to fetch heatmap data');
       const data = await response.json();
-      return data;
-    },
+      return data},
     refetchInterval: 10000, // Refetch every 10 seconds to keep data fresh
     staleTime: 5000,
     refetchOnMount: true,
@@ -101,26 +82,22 @@ function getSignalText(direction: string, confidence: number): string {selectedT
   
   // Force refetch when timeframe changes
   React.useEffect(() => {
-    refetch();
-  }, [selectedTimeframe, refetch]);
+    refetch()}, [selectedTimeframe, refetch]);
 
   // Process optimized market entries from the new backend structure
   const processedMarketEntries = useMemo(() => {
     if (!marketEntries || !Array.isArray(marketEntries)) {
-      return [];
-    }
+      return []}
     
     const processed = marketEntries
       .filter((entry: OptimizedMarketEntry) => {selectedTimeframe})
       .map((entry: OptimizedMarketEntry) => {selectedTimeframe};
         
-        return processedEntry;
-      });
+        return processedEntry});
       
 
     
-    return processed;
-  }, [marketEntries, selectedTimeframe]);
+    return processed}, [marketEntries, selectedTimeframe]);
 
   // Apply direction filtering and sort by confidence (highest to lowest)
   const sortedAndFilteredEntries = useMemo(() => {
@@ -130,16 +107,13 @@ function getSignalText(direction: string, confidence: number): string {selectedT
     
     // Apply direction filtering
     if (filterDirection !== 'ALL') {
-      filtered = processedMarketEntries.filter((entry) => entry.displayDirection === filterDirection);
-    }
+      filtered = processedMarketEntries.filter((entry) => entry.displayDirection === filterDirection)}
     
     // Sort by confidence percentage (highest to lowest)
     return filtered.sort((a, b) => {
       if (a.displayDirection === 'NEUTRAL' && b.displayDirection !== 'NEUTRAL') return 1;
       if (b.displayDirection === 'NEUTRAL' && a.displayDirection !== 'NEUTRAL') return -1;
-      return b.displayConfidence - a.displayConfidence;
-    });
-  }, [processedMarketEntries, filterDirection]);
+      return b.displayConfidence - a.displayConfidence})}, [processedMarketEntries, filterDirection]);
 
   // Group signals by confidence ranges for the heat map
   const groupedByConfidence = useMemo(() => {
@@ -155,18 +129,15 @@ function getSignalText(direction: string, confidence: number): string {selectedT
     
 
     
-    return groups;
-  }, [sortedAndFilteredEntries, filterDirection, selectedTimeframe]);
+    return groups}, [sortedAndFilteredEntries, filterDirection, selectedTimeframe]);
 
   if (isLoading) {
-    return <div className="flex justify-center items-center min-h-[300px]">Loading market data...</div>;
-  }
+    return <div className="flex justify-center items-center min-h-[300px]">Loading market data...</div>}
 
   if (!marketEntries || marketEntries.length === 0) {selectedTimeframe} timeframe</div>
         </CardContent>
       </Card>
-    );
-  }
+    )}
 
   return (
     <Card className="w-full border-gray-800 bg-gray-900 text-white shadow-lg">
@@ -367,5 +338,4 @@ function getSignalText(direction: string, confidence: number): string {selectedT
         )}
       </CardContent>
     </Card>
-  );
-}
+  )}

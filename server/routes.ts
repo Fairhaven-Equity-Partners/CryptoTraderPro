@@ -270,12 +270,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Use full technical analysis data for heatmap signal decisions
         const signalData = timeframeSignal ? {
-          direction: timeframeSignal.direction,
-          confidence: timeframeSignal.confidence,
-          technicalAnalysis: timeframeSignal.technicalAnalysis,
-          confluenceScore: timeframeSignal.confluenceScore,
-          riskReward: timeframeSignal.riskReward,
-          volatilityAdjustment: timeframeSignal.volatilityAdjustment
+          direction: timeframeSignal?.direction,
+          confidence: timeframeSignal?.confidence,
+          technicalAnalysis: timeframeSignal?.technicalAnalysis,
+          confluenceScore: timeframeSignal?.confluenceScore,
+          riskReward: timeframeSignal?.riskReward,
+          volatilityAdjustment: timeframeSignal?.volatilityAdjustment
         } : { 
           direction: 'NEUTRAL', 
           confidence: 50,
@@ -789,7 +789,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 timeframe as string
               );
               
-              console.log(`[OptimizedHeatMap] GENERATED ${timeframe} ${timeframeSignal.direction}: ${symbol} @ $${timeframeSignal.price} (${timeframeSignal.confidence}%)`);
+              console.log(`[OptimizedHeatMap] GENERATED ${timeframe} ${timeframeSignal?.direction}: ${symbol} @ $${timeframeSignal?.price} (${timeframeSignal?.confidence}%)`);
             } catch (error) {
               console.log(`[OptimizedHeatMap] Error generating signal for ${symbol}:`, error);
             }
@@ -800,8 +800,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           let priceChange24h = 0;
           let marketCap = 1000000000;
           
-          if (timeframeSignal && timeframeSignal.price) {
-            currentPrice = timeframeSignal.price;
+          if (timeframeSignal && timeframeSignal?.price) {
+            currentPrice = timeframeSignal?.price;
           } else {
             // Force generate signal for missing pairs to ensure all 50 pairs display
             const basePrices: Record<string, number> = {
@@ -834,18 +834,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
               timeframe as string
             );
             
-            console.log(`[OptimizedHeatMap] FALLBACK ${timeframe} ${timeframeSignal.direction}: ${symbol} @ $${currentPrice.toFixed(2)} (${timeframeSignal.confidence}%)`);
+            console.log(`[OptimizedHeatMap] FALLBACK ${timeframe} ${timeframeSignal?.direction}: ${symbol} @ $${currentPrice.toFixed(2)} (${timeframeSignal?.confidence}%)`);
           }
           
           // If we have an authentic signal, use it; otherwise create a basic entry with market data only
           if (timeframeSignal) {
             // Use authentic signal data from live generation system
-            const baseConfidence = timeframeSignal.confidence || 50;
-            const direction = timeframeSignal.direction || 'NEUTRAL';
+            const baseConfidence = timeframeSignal?.confidence || 50;
+            const direction = timeframeSignal?.direction || 'NEUTRAL';
             
             // Update price to match signal price
-            if (timeframeSignal.price && timeframeSignal.price > 0) {
-              currentPrice = timeframeSignal.price;
+            if (timeframeSignal?.price && timeframeSignal?.price > 0) {
+              currentPrice = timeframeSignal?.price;
             }
             
             // Apply unified timeframe reliability multipliers (matches AutomatedSignalCalculator)
@@ -868,7 +868,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
             
             // Calculate price change based on authentic market data
-            const signalPrice = timeframeSignal.price || currentPrice;
+            const signalPrice = timeframeSignal?.price || currentPrice;
             const priceChange24h = 0; // Will be calculated from historical data later
             
             // Determine heat intensity based on signal strength and confidence

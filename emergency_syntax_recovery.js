@@ -4,8 +4,8 @@
  * preventing application compilation and startup
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 class EmergencySyntaxRecovery {
   constructor() {
@@ -280,8 +280,4 @@ async function main() {
   await recovery.executeEmergencyRecovery();
 }
 
-if (require.main === module) {
-  main().catch(console.error);
-}
-
-module.exports = { EmergencySyntaxRecovery };
+main().catch(console.error);
