@@ -19,7 +19,7 @@ import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
 import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
-import { phase4authenticElimination } from "./phase4authenticElimination";
+
 import { getCMCSymbol } from "./optimizedSymbolMapping";
 
 

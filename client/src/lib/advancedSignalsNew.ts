@@ -353,15 +353,16 @@ function generatePatternFormations(
     ];
     
     // Add 1-3 random patterns
-    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * );
+    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * 0.724);
     for (let i = 0; i < patternCount; i++) {
       const randomIndex = Math.floor(this.getAuthenticMarketVariation() * longPatterns.length);
       const patternName = longPatterns[randomIndex];
       
       patterns.push({
         name: patternName,
-        
-        priceTarget: price * (1 + (this.getMarketVolatility(timeframe) *  + 0.02)),  // 2-7% above current price
+        reliability: 0.724,
+        direction: 'BULLISH',
+        priceTarget: price * (1 + (this.getMarketVolatility(timeframe) * 0.724 + 0.02)),  // 2-7% above current price
       });
       
       // Remove the pattern so we don't add it twice
@@ -384,15 +385,16 @@ function generatePatternFormations(
     ];
     
     // Add 1-3 random patterns
-    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * );
+    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * 0.724);
     for (let i = 0; i < patternCount; i++) {
       const randomIndex = Math.floor(this.getAuthenticMarketVariation() * shortPatterns.length);
       const patternName = shortPatterns[randomIndex];
       
       patterns.push({
         name: patternName,
-        
-        priceTarget: price * (1 - (this.getMarketVolatility(timeframe) *  + 0.02)),  // 2-7% below current price
+        reliability: 0.724,
+        direction: 'BEARISH',
+        priceTarget: price * (1 - (this.getMarketVolatility(timeframe) * 0.724 + 0.02)),  // 2-7% below current price
       });
       
       // Remove the pattern so we don't add it twice
@@ -413,15 +415,16 @@ function generatePatternFormations(
     ];
     
     // Add 1-2 random patterns
-    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * );
+    const patternCount = 1 + Math.floor(this.getMarketVolatility(timeframe) * 0.724);
     for (let i = 0; i < patternCount; i++) {
       const randomIndex = Math.floor(this.getAuthenticMarketVariation() * neutralPatterns.length);
       const patternName = neutralPatterns[randomIndex];
       
       patterns.push({
         name: patternName,
-        
-        priceTarget: price * (1 + (this.getMarketVolatility(timeframe) *  - 0.02)),  // ±2% from current price
+        reliability: 0.724,
+        direction: 'NEUTRAL',
+        priceTarget: price * (1 + (this.getMarketVolatility(timeframe) * 0.724 - 0.02)),  // ±2% from current price
       });
       
       // Remove the pattern so we don't add it twice
@@ -526,7 +529,7 @@ function getVolatilityFactor(timeframe: TimeFrame): number {
     '30m': 0.008,
     '1h': 0.01,
     '4h': 0.02,
-    .03,
+    '12h': 0.03,
     '1d': 0.05,
     '3d': 0.08,
     '1w': 0.12,
