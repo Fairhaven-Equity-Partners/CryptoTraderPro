@@ -433,9 +433,12 @@ export class AutomatedSignalCalculator {
         if (signal.direction === 'LONG') {
           stopLoss = signal.price * (1 - stopLossPercent);
           takeProfit = signal.price * (1 + takeProfitPercent);
+        } else if (signal.direction === 'SHORT') {
+          stopLoss = signal.price * (1 + stopLossPercent);  // Stop loss ABOVE entry for SHORT
+          takeProfit = signal.price * (1 - takeProfitPercent);  // Take profit BELOW entry for SHORT
         } else {
-          stopLoss = signal.price * (1 + stopLossPercent);
-          takeProfit = signal.price * (1 - takeProfitPercent);
+          stopLoss = signal.price * (1 - stopLossPercent);
+          takeProfit = signal.price * (1 + takeProfitPercent);
         }
 
         const tradeSimulationData = {
