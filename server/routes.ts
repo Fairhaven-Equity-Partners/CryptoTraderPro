@@ -19,7 +19,7 @@ import { AdvancedTechnicalAnalysis } from "./advancedTechnicalAnalysis";
 import { optimizedCoinMarketCapService } from "./optimizedCoinMarketCapService";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
-import { phase4authenticElimination } from "./phase4authenticElimination";
+// import { phase4authenticElimination } from "./phase4authenticElimination";
 import { getCMCSymbol } from "./optimizedSymbolMapping";
 
 
@@ -600,55 +600,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const signalsList = allSignals.get(symbol);
           let timeframeSignal = signalsList?.find((s: any) => s.timeframe === timeframe);
           
-          // Connect to authentic signals from trade simulation cache for ALL timeframes and symbols
+          // Generate fresh balanced signal if none cached - use new balanced calculation logic
           if (!timeframeSignal) {
-            console.log(`[OptimizedHeatMap] Connecting ${timeframe} signal for ${symbol}`);
+            console.log(`[OptimizedHeatMap] Generating fresh balanced signal for ${symbol} ${timeframe}`);
             
-            // Access authentic signals from the trade simulation database
-            try {
-              const allTradeSimulations = await storage.getActiveTradeSimulations(symbol);
-              // Filter by timeframe
-              const timeframeSimulations = allTradeSimulations.filter(trade => trade.timeframe === (timeframe as string));
-              
-              if (timeframeSimulations && timeframeSimulations.length > 0) {
-                // Use the most recent authentic signal from trade simulations
-                const latestSimulation = timeframeSimulations[0];
+            // Get current price for signal generation
+            const cmcSymbol = getCMCSymbol(symbol);
+            if (cmcSymbol) {
+              try {
+                // Get price data from optimized service
+                const priceData = await optimizedCoinMarketCapService.fetchBatchPrices([cmcSymbol]);
+                const symbolPrice = priceData[cmcSymbol];
                 
-                if (latestSimulation.signalData) {
-                  const signalData = JSON.parse(latestSimulation.signalData);
+                if (symbolPrice && symbolPrice.price > 0) {
+                  // Generate balanced signal using the same logic as AutomatedSignalCalculator
+                  timeframeSignal = generateBalancedHeatmapSignal(
+                    symbol,
+                    symbolPrice.price,
+                    symbolPrice.change24h || 0,
+                    timeframe as string
+                  );
                   
-                  timeframeSignal = {
-                    symbol: symbol,
-                    timeframe: timeframe,
-                    direction: signalData.direction || latestSimulation.direction,
-                    confidence: signalData.confidence || 75,
-                    strength: (signalData.confidence || 75) / 100,
-                    price: signalData.entryPrice || latestSimulation.entryPrice,
-                    timestamp: new Date(latestSimulation.entryTime).getTime(),
-                    indicators: signalData.indicators || {},
-                    riskReward: 1.5
-                  } as any;
-                  
-                  console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${signalData.direction || latestSimulation.direction}: ${symbol} @ $${signalData.entryPrice || latestSimulation.entryPrice} (${signalData.confidence || 75}%)`);
-                } else {
-                  // Use trade simulation data directly
-                  timeframeSignal = {
-                    symbol: symbol,
-                    timeframe: timeframe,
-                    direction: latestSimulation.direction,
-                    confidence: 75,
-                    strength: 0.75,
-                    price: latestSimulation.entryPrice,
-                    timestamp: new Date(latestSimulation.entryTime).getTime(),
-                    indicators: {},
-                    riskReward: 1.5
-                  } as any;
-                  
-                  console.log(`[OptimizedHeatMap] CONNECTED ${timeframe} ${latestSimulation.direction}: ${symbol} @ $${latestSimulation.entryPrice} (75%)`);
+                  console.log(`[OptimizedHeatMap] GENERATED ${timeframe} ${timeframeSignal.direction}: ${symbol} @ $${timeframeSignal.price} (${timeframeSignal.confidence}%)`);
                 }
+              } catch (priceError) {
+                console.log(`[OptimizedHeatMap] Price fetch error for ${symbol}:`, priceError);
               }
-            } catch (dbError) {
-              console.log(`[OptimizedHeatMap] No trade simulation data for ${symbol} ${timeframe}:`, dbError);
             }
           }
           
