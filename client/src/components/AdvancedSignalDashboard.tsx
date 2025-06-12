@@ -549,7 +549,7 @@ export default function AdvancedSignalDashboard({
         setTimeout(() => {
           toast({
             title: "Auto-Refresh",
-            description: `Automatically refreshing signals for ${symbol}`,
+            description: "Automatically refreshing signals for " + symbol,
             variant: "default"
           });
         }, 100);
@@ -1650,11 +1650,14 @@ export default function AdvancedSignalDashboard({
           variant: "default", 
           duration: 10000
         });
-      }// Generate a recommendation from the signals if we have enough data
-      if (validSignalCount > 0) {const recommendation = generateTradeRecommendation('4h');
+      }
+      
+      // Generate a recommendation from the signals if we have enough data
+      if (validSignalCount > 0) {
+        const recommendation = generateTradeRecommendation('4h');
         setRecommendation(recommendation);
-      }} catch (error) {
-      console.error('[SignalDashboard] Calculation process error:', error);
+      }
+    } catch (error) {
       setIsCalculating(false); // Reset calculation state on error
     } finally {
       setIsCalculating(false);
@@ -1667,7 +1670,8 @@ export default function AdvancedSignalDashboard({
     const currentTimeframe = timeframe || selectedTimeframe;
     const signal = signals[currentTimeframe];
     
-    if (!signal) {return null;
+    if (!signal) {
+      return null;
     }
     
     // Find the most influential indicators for explanation

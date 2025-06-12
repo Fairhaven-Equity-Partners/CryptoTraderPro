@@ -119,7 +119,6 @@ export async function fetchAllAssets(): Promise<AssetPrice[]> {
     }
     return await response.json();
   } catch (error) {
-    console.error('Error fetching assets:', error);
     throw new Error('Failed to fetch authentic market data - requires valid API connection');
   }
 }

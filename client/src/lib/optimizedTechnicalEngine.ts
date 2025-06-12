@@ -474,16 +474,16 @@ export function calculateOptimizedSignal(
   if (direction === 'LONG') {
     // LONG: Stop loss below entry, take profit above entry
     stopLoss = currentPrice * (1 - risks.stopLoss / 100);
-    takeProfit = currentPrice * (1 + risks.takeProfit / 100);} (${risks.stopLoss}% below), TP=${takeProfit.toFixed(2)} (${risks.takeProfit}% above)`);
+    takeProfit = currentPrice * (1 + risks.takeProfit / 100);
   } else if (direction === 'SHORT') {
     // SHORT: Stop loss above entry, take profit below entry
     stopLoss = currentPrice * (1 + risks.stopLoss / 100);
-    takeProfit = currentPrice * (1 - risks.takeProfit / 100);} (${risks.stopLoss*100}% above), TP=${takeProfit.toFixed(2)} (${risks.takeProfit*100}% below)`);
+    takeProfit = currentPrice * (1 - risks.takeProfit / 100);
   } else {
     // NEUTRAL - conservative levels
     const neutralRisk = risks.stopLoss * 0.6;
     stopLoss = currentPrice * (1 - neutralRisk);
-    takeProfit = currentPrice * (1 + neutralRisk);}, TP=${takeProfit.toFixed(2)}`);
+    takeProfit = currentPrice * (1 + neutralRisk);
   }
   
   const riskReward = Math.abs(takeProfit - entryPrice) / Math.abs(entryPrice - stopLoss);
