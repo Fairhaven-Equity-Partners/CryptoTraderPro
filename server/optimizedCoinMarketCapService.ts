@@ -355,6 +355,17 @@ export class OptimizedCoinMarketCapService {
   }
 
   /**
+   * Clear cache for specific symbol
+   */
+  clearSymbolCache(symbol: string): void {
+    const cmcSymbols = getCMCSymbol(symbol);
+    for (const cmcSymbol of cmcSymbols) {
+      this.cache.delete(cmcSymbol);
+    }
+    console.log(`[OptimizedCMC] Cache cleared for ${symbol} (${cmcSymbols.join(', ')})`);
+  }
+
+  /**
    * Get health status
    */
   getHealthStatus(): any {
