@@ -1,0 +1,349 @@
+{
+  "timestamp": "2025-06-12T03:39:09.728Z",
+  "securityHealth": 30,
+  "status": "VULNERABLE",
+  "trends": {
+    "avgSecurityScore": 30,
+    "avgResponseTime": 22.433333333333334,
+    "complianceRate": 100
+  },
+  "enhancements": [
+    {
+      "type": "rate_limiter_test",
+      "successfulRequests": 5,
+      "averageResponseTime": 12.8,
+      "rateLimiterActive": false
+    },
+    {
+      "type": "circuit_breaker",
+      "implemented": false,
+      "status": "CLOSED"
+    },
+    {
+      "type": "input_validation",
+      "testsPassed": 1,
+      "totalTests": 4,
+      "effectivenessScore": 25
+    },
+    {
+      "type": "endpoint_security",
+      "secureEndpoints": 5,
+      "totalEndpoints": 5,
+      "securityScore": 100
+    }
+  ],
+  "cycles": [
+    {
+      "cycleNumber": 1,
+      "timestamp": "2025-06-12T03:39:04.109Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 23.333333333333332,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 61,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 2,
+      "timestamp": "2025-06-12T03:39:04.672Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 17.333333333333332,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 53,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 3,
+      "timestamp": "2025-06-12T03:39:05.226Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 16.333333333333332,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 53,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 4,
+      "timestamp": "2025-06-12T03:39:05.779Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 24.666666666666668,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 65,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 5,
+      "timestamp": "2025-06-12T03:39:06.344Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 21.666666666666668,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 65,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 6,
+      "timestamp": "2025-06-12T03:39:06.910Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 46.666666666666664,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 104,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 7,
+      "timestamp": "2025-06-12T03:39:07.515Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 24.333333333333332,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 58,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 8,
+      "timestamp": "2025-06-12T03:39:08.073Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 16,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 47,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 9,
+      "timestamp": "2025-06-12T03:39:08.621Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 16,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 49,
+      "securityScore": 30
+    },
+    {
+      "cycleNumber": 10,
+      "timestamp": "2025-06-12T03:39:09.170Z",
+      "security": {
+        "rateLimiter": {
+          "active": false,
+          "utilization": null,
+          "healthy": false
+        },
+        "effectiveness": {
+          "errorHandling": false,
+          "dataProtection": true,
+          "overallSecure": false
+        }
+      },
+      "performance": {
+        "averageResponseTime": 18,
+        "successRate": 100,
+        "performanceScore": 100
+      },
+      "compliance": {
+        "violations": 0,
+        "complianceScore": 100
+      },
+      "issues": [],
+      "duration": 52,
+      "securityScore": 30
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "CRITICAL",
+      "issue": "Security score below acceptable threshold",
+      "action": "Implement comprehensive rate limiting with stricter controls",
+      "impact": "Prevent system abuse and improve security posture"
+    },
+    {
+      "priority": "CRITICAL",
+      "issue": "Rate limiter not properly configured",
+      "action": "Configure and activate rate limiting middleware",
+      "impact": "Prevent API abuse and DoS attacks"
+    },
+    {
+      "priority": "HIGH",
+      "issue": "Input validation gaps detected",
+      "action": "Strengthen input sanitization and validation",
+      "impact": "Prevent injection attacks and malicious inputs"
+    },
+    {
+      "priority": "MEDIUM",
+      "issue": "Security monitoring needs enhancement",
+      "action": "Implement real-time security monitoring and alerts",
+      "impact": "Proactive threat detection and response"
+    },
+    {
+      "priority": "MEDIUM",
+      "issue": "Authentication layer missing",
+      "action": "Add API key authentication for sensitive endpoints",
+      "impact": "Control access to critical system functions"
+    }
+  ]
+}
