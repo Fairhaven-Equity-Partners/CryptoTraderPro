@@ -2192,19 +2192,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Symbol required' });
       }
 
-      // Get current signal for the symbol
-      const signals = await storage.getSignalHistory(symbol);
-      const currentSignal = signals.find(s => s.timeframe === (timeframe || '1d'));
+      // Get current signals from automated calculator
+      const response = await fetch(`http://localhost:5000/api/signals/${encodeURIComponent(symbol)}`);
+      if (!response.ok) {
+        return res.status(404).json({ error: 'No signals available for symbol' });
+      }
+      
+      const signals = await response.json();
+      const currentSignal = signals.find((s: any) => s.timeframe === (timeframe || '1d')) || signals[0];
       
       if (!currentSignal) {
         return res.status(404).json({ error: 'No signal found for symbol' });
       }
 
-      // Create signal input for Monte Carlo simulation
+      // Create signal input for Monte Carlo simulation with risk calculation
+      const entryPrice = currentSignal.entryPrice || currentSignal.price;
+      const riskPercent = 0.02; // 2% risk per trade
+      const rewardPercent = 0.05; // 5% reward target
+      
       const signalInput: SignalInput = {
-        entryPrice: currentSignal.entryPrice,
-        stopLoss: currentSignal.stopLoss,
-        takeProfit: currentSignal.takeProfit,
+        entryPrice,
+        stopLoss: currentSignal.stopLoss || (currentSignal.direction === 'LONG' ? 
+          entryPrice * (1 - riskPercent) : entryPrice * (1 + riskPercent)),
+        takeProfit: currentSignal.takeProfit || (currentSignal.direction === 'LONG' ? 
+          entryPrice * (1 + rewardPercent) : entryPrice * (1 - rewardPercent)),
         confidence: currentSignal.confidence,
         direction: currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL'
       };
