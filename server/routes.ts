@@ -2192,8 +2192,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Symbol required' });
       }
 
-      // Get current signals from automated calculator
-      const signalData = await automatedSignalCalculator.getSignalsForSymbol(symbol);
+      // Get current signals from storage
+      const signalData = await storage.getSignalHistory(symbol, 10);
       if (!signalData || signalData.length === 0) {
         return res.status(404).json({ error: 'No signals available for symbol' });
       }
@@ -2205,16 +2205,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Create signal input for Monte Carlo simulation using authentic signal data
-      const entryPrice = currentSignal.entryPrice || currentSignal.price;
-      const stopLoss = currentSignal.stopLoss || entryPrice * (currentSignal.direction === 'LONG' ? 0.98 : 1.02);
-      const takeProfit = currentSignal.takeProfit || entryPrice * (currentSignal.direction === 'LONG' ? 1.05 : 0.95);
+      const entryPrice = currentSignal.price;
+      const direction = currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL';
+      const riskPercent = 0.02; // 2% risk
+      const rewardPercent = 0.05; // 5% reward
+      
+      let stopLoss: number;
+      let takeProfit: number;
+      
+      if (direction === 'LONG') {
+        stopLoss = entryPrice * (1 - riskPercent);
+        takeProfit = entryPrice * (1 + rewardPercent);
+      } else if (direction === 'SHORT') {
+        stopLoss = entryPrice * (1 + riskPercent);
+        takeProfit = entryPrice * (1 - rewardPercent);
+      } else {
+        // NEUTRAL - minimal risk/reward
+        stopLoss = entryPrice * 0.99;
+        takeProfit = entryPrice * 1.01;
+      }
       
       const signalInput: SignalInput = {
         entryPrice,
         stopLoss,
         takeProfit,
         confidence: currentSignal.confidence,
-        direction: currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL'
+        direction
       };
 
       // Initialize Monte Carlo risk engine
