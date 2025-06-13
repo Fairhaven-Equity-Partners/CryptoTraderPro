@@ -5,7 +5,7 @@ BigNumber.config({
   DECIMAL_PLACES: 50,
   ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
   EXPONENTIAL_AT: [-50, 50],
-  RANGE: [-1e+50, 1e+50],
+  RANGE: [-1e+9, 1e+9],
   CRYPTO: true,
   MODULO_MODE: BigNumber.ROUND_FLOOR,
   POW_PRECISION: 50
