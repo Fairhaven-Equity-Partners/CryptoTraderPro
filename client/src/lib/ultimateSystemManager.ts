@@ -198,9 +198,9 @@ async function performScheduledPriceFetch(): Promise<void> {
     // Backend automated signal calculator handles authentic data generation for all 50 symbols
     // Trade simulations are created every 4 minutes with real market data
     console.log(`[UltimateManager] Backend automated signal calculator managing all ${allSymbols.length} symbols`);
-    console.log('[UltimateManager] Authentic trade simulations active for heatmap data');
+    console.log('[UltimateManager] Authentic trade simulations active for market data');
 
-    // Trigger multi-pair fetch for market-wide heatmap
+    // Trigger multi-pair fetch for market analysis
     try {
       const multiResponse = await fetch('/api/crypto/all-pairs');
       if (multiResponse.ok) {

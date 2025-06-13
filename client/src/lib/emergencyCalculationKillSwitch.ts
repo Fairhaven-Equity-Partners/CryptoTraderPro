@@ -16,7 +16,7 @@ export function isCalculationAllowed(trigger: string): boolean {
   const timeSinceLastCalc = now - lastAllowedCalculation;
   
   // Always allow manual calculations and pair selections
-  if (trigger === 'manual' || trigger === 'pair-selection' || trigger === 'heatmap-selection' || trigger === 'dropdown-selection') {
+  if (trigger === 'manual' || trigger === 'pair-selection' || trigger === 'dropdown-selection') {
     lastAllowedCalculation = now;
     console.log(`✅ ${trigger} calculation allowed - bypassing 4-minute restriction`);
     return true;
