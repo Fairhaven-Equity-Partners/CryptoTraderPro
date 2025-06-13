@@ -506,7 +506,7 @@ export default function AdvancedSignalDashboard({
           lastCalculationTimeRef.current = Date.now() / 1000;
           calculateAllSignals(event.detail.immediate ? 'pair-selection' : '4-minute-sync');
           
-          // Broadcast completion to heatmap and other components for perfect synchronization
+          // Broadcast completion to other components for perfect synchronization
           setTimeout(() => {
             window.dispatchEvent(new CustomEvent('calculation-loop-complete', {
               detail: { symbol, timestamp: Date.now(), triggerType }

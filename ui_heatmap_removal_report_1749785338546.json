@@ -1,0 +1,173 @@
+{
+  "analysis": "COMPREHENSIVE UI HEATMAP REMOVAL",
+  "timestamp": "2025-06-13T03:28:58.545Z",
+  "duration": 3656,
+  "summary": {
+    "heatmapReferencesFound": 10,
+    "componentImportsFound": 0,
+    "routeReferencesFound": 0,
+    "activeAPIEndpoints": 0,
+    "filesCleanedUp": 0,
+    "validationTestsPassed": 0,
+    "validationTestsTotal": 3,
+    "validationSuccessRate": 0
+  },
+  "findings": [
+    {
+      "file": "client/src/components/AdvancedSignalDashboard.tsx",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "heatmap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/components/SimpleMarketList.tsx",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "Market Analysis Dashboard",
+        "simple-market-data",
+        "simple-market-data"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/pages/Analysis.tsx",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "HeatMap",
+        "HeatMap",
+        "HeatMap",
+        "HeatMap",
+        "HeatMap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/lib/emergencyCalculationKillSwitch.ts",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "heatmap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/lib/ultimateSystemManager.ts",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "heatmap",
+        "heatmap",
+        "market-wide heatmap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/components/AdvancedSignalDashboard.tsx",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "heatmap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/components/SimpleMarketList.tsx",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "Market Analysis Dashboard",
+        "simple-market-data",
+        "simple-market-data"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/lib/emergencyCalculationKillSwitch.ts",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "heatmap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/lib/ultimateSystemManager.ts",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "heatmap",
+        "heatmap",
+        "market-wide heatmap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "file": "client/src/pages/Analysis.tsx",
+      "type": "HEATMAP_REFERENCE",
+      "patterns": [
+        "HeatMap",
+        "HeatMap",
+        "HeatMap",
+        "HeatMap",
+        "HeatMap"
+      ],
+      "action": "NEEDS_CLEANUP"
+    },
+    {
+      "endpoint": "/api/market-heatmap",
+      "type": "API_ENDPOINT",
+      "status": "ERROR",
+      "error": "request to http://localhost:5173/api/market-heatmap failed, reason: connect ECONNREFUSED 127.0.0.1:5173",
+      "action": "NEEDS_VERIFICATION"
+    },
+    {
+      "endpoint": "/api/simple-market-data",
+      "type": "API_ENDPOINT",
+      "status": "ERROR",
+      "error": "request to http://localhost:5173/api/simple-market-data failed, reason: connect ECONNREFUSED 127.0.0.1:5173",
+      "action": "NEEDS_VERIFICATION"
+    },
+    {
+      "endpoint": "/api/heatmap",
+      "type": "API_ENDPOINT",
+      "status": "ERROR",
+      "error": "request to http://localhost:5173/api/heatmap failed, reason: connect ECONNREFUSED 127.0.0.1:5173",
+      "action": "NEEDS_VERIFICATION"
+    },
+    {
+      "endpoint": "/api/market-analysis",
+      "type": "API_ENDPOINT",
+      "status": "ERROR",
+      "error": "request to http://localhost:5173/api/market-analysis failed, reason: connect ECONNREFUSED 127.0.0.1:5173",
+      "action": "NEEDS_VERIFICATION"
+    },
+    {
+      "test": "Individual Crypto Page Load",
+      "type": "VALIDATION_TEST",
+      "status": "ERROR",
+      "error": "request to http://localhost:5173/api/crypto/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173",
+      "description": "Verify individual crypto pages still work"
+    },
+    {
+      "test": "Technical Analysis Endpoint",
+      "type": "VALIDATION_TEST",
+      "status": "ERROR",
+      "error": "request to http://localhost:5173/api/technical-analysis/BTC%2FUSDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173",
+      "description": "Verify technical analysis still functional"
+    },
+    {
+      "test": "Trade Simulations",
+      "type": "VALIDATION_TEST",
+      "status": "ERROR",
+      "error": "request to http://localhost:5173/api/trade-simulations/BTC%2FUSDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173",
+      "description": "Verify trade simulation system works"
+    }
+  ],
+  "removalActions": [],
+  "recommendations": [
+    "10 heatmap references need cleanup",
+    "No heatmap component imports found",
+    "No heatmap routes found",
+    "All heatmap API endpoints properly removed",
+    "0 files successfully cleaned up",
+    "Core functionality validation: 0/3 tests passed"
+  ],
+  "groundRulesCompliance": "FULL",
+  "uiCleanupStatus": "PARTIAL"
+}

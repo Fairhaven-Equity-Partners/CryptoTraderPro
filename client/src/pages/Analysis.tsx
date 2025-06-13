@@ -19,7 +19,7 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 const Analysis: React.FC = () => {
   const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
-  const [isHeatMapOpen, setIsHeatMapOpen] = useState(true);
+  const [isAnalysisOpen, setIsAnalysisOpen] = useState(true);
   const { price } = useAssetPrice(currentAsset);
   // Keep track if this is first load or a user-initiated change
   const [assetChangeCounter, setAssetChangeCounter] = useState(0);
@@ -84,12 +84,12 @@ const Analysis: React.FC = () => {
         
         {/* Market Analysis Section */}
         <div className="px-4 py-4">
-          <Collapsible open={isHeatMapOpen} onOpenChange={setIsHeatMapOpen}>
+          <Collapsible open={isAnalysisOpen} onOpenChange={setIsAnalysisOpen}>
             <div className="flex items-center justify-between mb-2">
               <h2 className="text-xl font-bold text-white">Market Analysis</h2>
               <CollapsibleTrigger asChild>
                 <Button variant="ghost" size="sm" className="w-9 p-0">
-                  {isHeatMapOpen ? (
+                  {isAnalysisOpen ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
                     <ChevronDown className="h-4 w-4" />

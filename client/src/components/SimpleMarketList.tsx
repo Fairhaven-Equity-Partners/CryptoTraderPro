@@ -20,9 +20,9 @@ export default function SimpleMarketList({ timeframe = '4h', onRefresh }: Simple
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['/api/simple-market-data', timeframe],
+    queryKey: ['/api/crypto-data', timeframe],
     queryFn: async () => {
-      const response = await fetch(`/api/simple-market-data?timeframe=${timeframe}`);
+      const response = await fetch(`/api/crypto-data?timeframe=${timeframe}`);
       if (!response.ok) throw new Error('Failed to fetch market data');
       return response.json();
     },
@@ -97,7 +97,7 @@ export default function SimpleMarketList({ timeframe = '4h', onRefresh }: Simple
       <div className="flex items-center justify-between mb-4 p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg border border-purple-500/40">
         <div className="flex items-center gap-3">
           <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse"></div>
-          <span className="text-base font-medium text-white">Market Analysis Dashboard</span>
+          <span className="text-base font-medium text-white">Crypto Analysis</span>
         </div>
         <div className="px-4 py-2 bg-purple-600/40 border border-purple-400/60 rounded-lg shadow-lg">
           <span className="text-lg font-black text-purple-200">{timeframe.toUpperCase()}</span>
