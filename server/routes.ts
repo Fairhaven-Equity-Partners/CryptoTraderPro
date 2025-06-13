@@ -28,6 +28,7 @@ import { unifiedDataSynchronizer } from "./unifiedDataSynchronizer";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
 import { UltraPrecisionTechnicalAnalysis } from "./ultraPrecisionTechnicalAnalysis";
+import { MonteCarloRiskEngine, type SignalInput, type MonteCarloResult } from "./monteCarloRiskEngine";
 
 import { getCMCSymbol } from "./optimizedSymbolMapping";
 
@@ -2176,6 +2177,131 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.error('[Routes] Error recovering circuit breaker:', error);
       res.status(500).json({ 
         error: 'Failed to recover circuit breaker',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Monte Carlo Risk Assessment Endpoint
+  app.post('/api/monte-carlo-risk', async (req: Request, res: Response) => {
+    try {
+      console.log('[Routes] Performing Monte Carlo risk assessment...');
+      
+      const { symbol, timeframe } = req.body;
+      if (!symbol) {
+        return res.status(400).json({ error: 'Symbol required' });
+      }
+
+      // Get current signal for the symbol
+      const signals = await storage.getSignalHistory(symbol);
+      const currentSignal = signals.find(s => s.timeframe === (timeframe || '1d'));
+      
+      if (!currentSignal) {
+        return res.status(404).json({ error: 'No signal found for symbol' });
+      }
+
+      // Create signal input for Monte Carlo simulation
+      const signalInput: SignalInput = {
+        entryPrice: currentSignal.entryPrice,
+        stopLoss: currentSignal.stopLoss,
+        takeProfit: currentSignal.takeProfit,
+        confidence: currentSignal.confidence,
+        direction: currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL'
+      };
+
+      // Initialize Monte Carlo risk engine
+      const monteCarloEngine = new MonteCarloRiskEngine(1000, 24);
+      const riskAssessment = monteCarloEngine.runSimulation(signalInput);
+
+      res.json({
+        success: true,
+        symbol,
+        timeframe: timeframe || '1d',
+        riskAssessment,
+        signalInput: {
+          entryPrice: signalInput.entryPrice,
+          stopLoss: signalInput.stopLoss,
+          takeProfit: signalInput.takeProfit,
+          confidence: signalInput.confidence,
+          direction: signalInput.direction
+        },
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('[Routes] Monte Carlo risk assessment error:', error);
+      res.status(500).json({ 
+        error: 'Failed to perform Monte Carlo risk assessment',
+        timestamp: new Date().toISOString()
+      });
+    }
+  });
+
+  // Portfolio Monte Carlo Risk Assessment Endpoint
+  app.post('/api/portfolio-monte-carlo', async (req: Request, res: Response) => {
+    try {
+      console.log('[Routes] Performing portfolio Monte Carlo analysis...');
+      
+      const { symbols, weights, timeframe } = req.body;
+      if (!symbols || !Array.isArray(symbols) || symbols.length === 0) {
+        return res.status(400).json({ error: 'Symbols array required' });
+      }
+
+      const normalizedWeights = weights || Array(symbols.length).fill(1 / symbols.length);
+      const signalInputs: SignalInput[] = [];
+
+      // Get signals for all symbols
+      for (const symbol of symbols) {
+        const signals = await storage.getSignalHistory(symbol);
+        const currentSignal = signals.find(s => s.timeframe === (timeframe || '1d'));
+        
+        if (currentSignal) {
+          signalInputs.push({
+            entryPrice: currentSignal.entryPrice,
+            stopLoss: currentSignal.stopLoss,
+            takeProfit: currentSignal.takeProfit,
+            confidence: currentSignal.confidence,
+            direction: currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL'
+          });
+        }
+      }
+
+      if (signalInputs.length === 0) {
+        return res.status(404).json({ error: 'No signals found for any symbols' });
+      }
+
+      // Initialize Monte Carlo risk engine for portfolio analysis
+      const monteCarloEngine = new MonteCarloRiskEngine(1000, 24);
+      const portfolioRisk = monteCarloEngine.runPortfolioSimulation(signalInputs, normalizedWeights);
+
+      // Calculate individual assessments for comparison
+      const individualAssessments = signalInputs.map(signal => 
+        monteCarloEngine.runSimulation(signal)
+      );
+
+      res.json({
+        success: true,
+        symbols,
+        timeframe: timeframe || '1d',
+        portfolioRisk,
+        individualAssessments: symbols.map((symbol, index) => ({
+          symbol,
+          assessment: individualAssessments[index] || null,
+          weight: normalizedWeights[index]
+        })),
+        diversificationBenefit: {
+          portfolioRisk: portfolioRisk.riskScore,
+          weightedIndividualRisk: individualAssessments.reduce((sum, assessment, index) => 
+            sum + (assessment?.riskScore || 0) * normalizedWeights[index], 0
+          )
+        },
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('[Routes] Portfolio Monte Carlo analysis error:', error);
+      res.status(500).json({ 
+        error: 'Failed to perform portfolio Monte Carlo analysis',
         timestamp: new Date().toISOString()
       });
     }

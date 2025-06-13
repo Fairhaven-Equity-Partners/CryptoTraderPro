@@ -26,6 +26,7 @@ export interface IStorage {
   // Signal history operations
   recordSignal(signal: InsertSignalHistory): Promise<SignalHistory>;
   getSignalHistoryBySymbol(symbol: string, limit?: number): Promise<SignalHistory[]>;
+  getSignalHistory(symbol: string, limit?: number): Promise<SignalHistory[]>;
   
   // Trade simulation operations
   createTradeSimulation(trade: InsertTradeSimulation): Promise<TradeSimulation>;
@@ -328,6 +329,10 @@ export class MemStorage implements IStorage {
       .sort((a, b) => (b.timestamp?.getTime() || 0) - (a.timestamp?.getTime() || 0));
     
     return signals.slice(0, limit);
+  }
+
+  async getSignalHistory(symbol: string, limit = 50): Promise<SignalHistory[]> {
+    return this.getSignalHistoryBySymbol(symbol, limit);
   }
 
   // Trade simulation methods
