@@ -1,0 +1,261 @@
+{
+  "title": "DOMINANCE-SENTIMENT INTEGRATION READINESS REPORT",
+  "testDate": "2025-06-13T15:48:30.492Z",
+  "overallScore": 80,
+  "readyForIntegration": false,
+  "testResults": {
+    "dominanceDataAccuracy": {
+      "btcDominance": {
+        "dominanceValue": 52.3,
+        "validRange": true,
+        "trend": "increasing",
+        "volatility": 0.17204650534085267,
+        "score": 88
+      },
+      "usdtDominance": {
+        "dominanceValue": 5,
+        "validRange": true,
+        "marketCap": 140000000000,
+        "score": 85
+      },
+      "crossValidation": {
+        "variance": 0.19999999999999574,
+        "withinTolerance": true,
+        "score": 92
+      },
+      "overallScore": 88
+    },
+    "marketRegimeDetection": {
+      "altSeason": {
+        "scenario": {
+          "btcDominance": {
+            "value": 42.5,
+            "trend": "decreasing"
+          },
+          "usdtDominance": {
+            "value": 4.2,
+            "trend": "stable"
+          }
+        },
+        "detected": "alt_season",
+        "correct": true,
+        "score": 90
+      },
+      "btcSeason": {
+        "scenario": {
+          "btcDominance": {
+            "value": 58.2,
+            "trend": "increasing"
+          },
+          "usdtDominance": {
+            "value": 4.8,
+            "trend": "stable"
+          }
+        },
+        "detected": "btc_season",
+        "correct": true,
+        "score": 88
+      },
+      "riskOff": {
+        "scenario": {
+          "btcDominance": {
+            "value": 54.1,
+            "trend": "stable"
+          },
+          "usdtDominance": {
+            "value": 7.2,
+            "trend": "increasing"
+          }
+        },
+        "detected": "risk_off",
+        "correct": true,
+        "score": 85
+      },
+      "stableSeason": {
+        "scenario": {
+          "btcDominance": {
+            "value": 50.5,
+            "trend": "stable"
+          },
+          "usdtDominance": {
+            "value": 5.1,
+            "trend": "stable"
+          }
+        },
+        "detected": "stable_season",
+        "correct": true,
+        "score": 82
+      },
+      "overallAccuracy": 86
+    },
+    "sentimentDominanceCorrelation": {
+      "correlationAccuracy": {
+        "totalScenarios": 3,
+        "correctCorrelations": 0,
+        "accuracy": 0,
+        "score": 65
+      },
+      "sentimentAdjustment": {
+        "adjustments": {
+          "altSeason": {
+            "original": 0.5,
+            "adjusted": 0.6,
+            "correct": true
+          },
+          "btcSeason": {
+            "original": 0.5,
+            "adjusted": 0.4,
+            "correct": true
+          },
+          "riskOff": {
+            "original": 0.5,
+            "adjusted": 0.3,
+            "correct": true
+          }
+        },
+        "accuracy": 100,
+        "score": 84
+      },
+      "confidenceEnhancement": {
+        "baseConfidence": 0.7,
+        "dominanceConfidence": 0.8,
+        "enhancedConfidence": 0.74,
+        "reasonable": true,
+        "score": 86
+      },
+      "overallScore": 78
+    },
+    "signalEnhancementAccuracy": {
+      "baselineAccuracy": 72,
+      "enhancedAccuracy": 94,
+      "improvementPercentage": 30.555555555555557,
+      "meetsTarget": true,
+      "score": 90
+    },
+    "altcoinSpecificImprovements": {
+      "categoryResults": {
+        "large_cap": {
+          "category": "large_cap",
+          "sensitivity": 1,
+          "improvement": 24,
+          "score": 60
+        },
+        "mid_cap": {
+          "category": "mid_cap",
+          "sensitivity": 1.2,
+          "improvement": 28.799999999999997,
+          "score": 85
+        },
+        "small_cap": {
+          "category": "small_cap",
+          "sensitivity": 1.5,
+          "improvement": 36.00000000000001,
+          "score": 85
+        },
+        "defi": {
+          "category": "defi",
+          "sensitivity": 1.3,
+          "improvement": 31.200000000000003,
+          "score": 85
+        },
+        "layer1": {
+          "category": "layer1",
+          "sensitivity": 1.1,
+          "improvement": 26.400000000000002,
+          "score": 85
+        }
+      },
+      "averageImprovement": 29.28,
+      "meetsTarget": false,
+      "score": 65
+    },
+    "realTimeIntegrationPerformance": {
+      "performanceTests": [
+        {
+          "testName": "dominanceUpdateLatency",
+          "latency": 121,
+          "target": 200,
+          "meetsTarget": true,
+          "score": 92
+        },
+        {
+          "testName": "sentimentProcessingSpeed",
+          "processingTime": 301,
+          "target": 500,
+          "meetsTarget": true,
+          "score": 88
+        },
+        {
+          "testName": "signalAdjustmentLatency",
+          "adjustmentTime": 51,
+          "target": 100,
+          "meetsTarget": true,
+          "score": 90
+        },
+        {
+          "testName": "memoryUsageEfficiency",
+          "memoryIncreaseMB": 0.9438629150390625,
+          "target": 50,
+          "efficient": true,
+          "score": 85
+        },
+        {
+          "testName": "apiReliability",
+          "apiTests": [
+            {
+              "source": "CoinGecko",
+              "success": true,
+              "latency": 150
+            },
+            {
+              "source": "CoinMarketCap",
+              "success": true,
+              "latency": 200
+            },
+            {
+              "source": "CryptoCompare",
+              "success": false,
+              "latency": null
+            },
+            {
+              "source": "Fallback",
+              "success": true,
+              "latency": 300
+            }
+          ],
+          "reliability": 75,
+          "target": 75,
+          "meetsTarget": true,
+          "score": 87
+        }
+      ],
+      "averagePerformance": 88.4,
+      "meetsRequirements": true,
+      "score": 88.4
+    },
+    "platformValidation": {
+      "currentAccuracy": 67.4,
+      "enhancedAccuracy": 83.646,
+      "improvementValidated": false,
+      "integrationReady": false,
+      "score": 65
+    }
+  },
+  "summary": {
+    "dominanceDataAccuracy": 88,
+    "marketRegimeDetection": 86,
+    "sentimentCorrelation": 78,
+    "signalEnhancement": 90,
+    "altcoinImprovements": 65,
+    "realTimePerformance": 88.4,
+    "platformValidation": 65
+  },
+  "recommendations": [
+    "Moderate readiness - address performance issues before integration"
+  ],
+  "nextSteps": [
+    "Address failing test components",
+    "Optimize performance issues",
+    "Retest before integration"
+  ]
+}
