@@ -320,20 +320,21 @@ class MLTransparencySystem {
   async implementExplainableConfidence() {
     console.log('\n=== STEP 3: IMPLEMENTING EXPLAINABLE CONFIDENCE SCORING ===');
     
+    const self = this;
     const explainableConfidence = {
       description: 'Transparent ML confidence calculation with full explainability',
       
       // Core confidence calculation engine
       confidenceEngine: {
-        calculateMLConfidence: (marketData, timeframe, symbol) => {
-          const features = explainableConfidence.confidenceEngine.extractTransparentFeatures(marketData, timeframe);
-          const categoryScores = explainableConfidence.confidenceEngine.calculateCategoryScores(features);
-          const confluenceMultiplier = explainableConfidence.confidenceEngine.calculateConfluenceMultiplier(categoryScores);
-          const timeframeAdjustment = explainableConfidence.confidenceEngine.getTimeframeAdjustment(timeframe);
-          const marketRegimeAdjustment = explainableConfidence.confidenceEngine.getMarketRegimeAdjustment(marketData);
+        calculateMLConfidence: function(marketData, timeframe, symbol) {
+          const features = this.extractTransparentFeatures(marketData, timeframe);
+          const categoryScores = this.calculateCategoryScores(features);
+          const confluenceMultiplier = this.calculateConfluenceMultiplier(categoryScores);
+          const timeframeAdjustment = this.getTimeframeAdjustment(timeframe);
+          const marketRegimeAdjustment = this.getMarketRegimeAdjustment(marketData);
           
           // Base confidence calculation
-          const baseConfidence = explainableConfidence.confidenceEngine.calculateWeightedSum(categoryScores);
+          const baseConfidence = this.calculateWeightedSum(categoryScores);
           
           // Apply adjustments
           const adjustedConfidence = baseConfidence * confluenceMultiplier * timeframeAdjustment * marketRegimeAdjustment;
@@ -342,7 +343,7 @@ class MLTransparencySystem {
           const finalConfidence = Math.max(0, Math.min(100, adjustedConfidence * 100));
           
           // Generate explanation
-          const explanation = explainableConfidence.confidenceEngine.generateConfidenceExplanation(
+          const explanation = this.generateConfidenceExplanation(
             features, categoryScores, confluenceMultiplier, timeframeAdjustment, 
             marketRegimeAdjustment, finalConfidence
           );
