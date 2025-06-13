@@ -2193,29 +2193,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Get current signals from automated calculator
-      const response = await fetch(`http://localhost:5000/api/signals/${encodeURIComponent(symbol)}`);
-      if (!response.ok) {
+      const signalData = await automatedSignalCalculator.getSignalsForSymbol(symbol);
+      if (!signalData || signalData.length === 0) {
         return res.status(404).json({ error: 'No signals available for symbol' });
       }
       
-      const signals = await response.json();
-      const currentSignal = signals.find((s: any) => s.timeframe === (timeframe || '1d')) || signals[0];
+      const currentSignal = signalData.find((s: any) => s.timeframe === (timeframe || '1d')) || signalData[0];
       
       if (!currentSignal) {
         return res.status(404).json({ error: 'No signal found for symbol' });
       }
 
-      // Create signal input for Monte Carlo simulation with risk calculation
+      // Create signal input for Monte Carlo simulation using authentic signal data
       const entryPrice = currentSignal.entryPrice || currentSignal.price;
-      const riskPercent = 0.02; // 2% risk per trade
-      const rewardPercent = 0.05; // 5% reward target
+      const stopLoss = currentSignal.stopLoss || entryPrice * (currentSignal.direction === 'LONG' ? 0.98 : 1.02);
+      const takeProfit = currentSignal.takeProfit || entryPrice * (currentSignal.direction === 'LONG' ? 1.05 : 0.95);
       
       const signalInput: SignalInput = {
         entryPrice,
-        stopLoss: currentSignal.stopLoss || (currentSignal.direction === 'LONG' ? 
-          entryPrice * (1 - riskPercent) : entryPrice * (1 + riskPercent)),
-        takeProfit: currentSignal.takeProfit || (currentSignal.direction === 'LONG' ? 
-          entryPrice * (1 + rewardPercent) : entryPrice * (1 - rewardPercent)),
+        stopLoss,
+        takeProfit,
         confidence: currentSignal.confidence,
         direction: currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL'
       };
