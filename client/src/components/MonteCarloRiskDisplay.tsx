@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -55,6 +55,13 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       queryClient.invalidateQueries({ queryKey: ['monte-carlo-risk', symbol, timeframe] });
     }
   });
+
+  // Automatically run analysis when symbol or timeframe changes
+  useEffect(() => {
+    if (symbol && timeframe) {
+      handleRunAnalysis();
+    }
+  }, [symbol, timeframe]);
 
   const handleRunAnalysis = async () => {
     setIsAnalyzing(true);
