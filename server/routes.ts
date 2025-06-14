@@ -2210,24 +2210,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Create signal input for Monte Carlo simulation using authentic signal data
-      const entryPrice = currentSignal.price;
+      const entryPrice = currentSignal.entryPrice || currentSignal.price;
       const direction = currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL';
-      const riskPercent = 0.02; // 2% risk
-      const rewardPercent = 0.05; // 5% reward
       
-      let stopLoss: number;
-      let takeProfit: number;
+      // Use actual stop loss and take profit from signal if available
+      let stopLoss = currentSignal.stopLoss;
+      let takeProfit = currentSignal.takeProfit;
       
-      if (direction === 'LONG') {
-        stopLoss = entryPrice * (1 - riskPercent);
-        takeProfit = entryPrice * (1 + rewardPercent);
-      } else if (direction === 'SHORT') {
-        stopLoss = entryPrice * (1 + riskPercent);
-        takeProfit = entryPrice * (1 - rewardPercent);
-      } else {
-        // NEUTRAL - minimal risk/reward
-        stopLoss = entryPrice * 0.99;
-        takeProfit = entryPrice * 1.01;
+      // Fallback calculation if not provided
+      if (!stopLoss || !takeProfit) {
+        const riskPercent = 0.02; // 2% risk
+        const rewardPercent = 0.05; // 5% reward
+        
+        if (direction === 'LONG') {
+          stopLoss = stopLoss || entryPrice * (1 - riskPercent);
+          takeProfit = takeProfit || entryPrice * (1 + rewardPercent);
+        } else if (direction === 'SHORT') {
+          stopLoss = stopLoss || entryPrice * (1 + riskPercent);
+          takeProfit = takeProfit || entryPrice * (1 - rewardPercent);
+        } else {
+          stopLoss = stopLoss || entryPrice * 0.99;
+          takeProfit = takeProfit || entryPrice * 1.01;
+        }
       }
       
       const signalInput: SignalInput = {
