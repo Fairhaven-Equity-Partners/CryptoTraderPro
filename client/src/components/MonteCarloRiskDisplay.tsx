@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -58,19 +58,22 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
 
   // Automatically run analysis when symbol or timeframe changes
   useEffect(() => {
-    if (symbol && timeframe) {
-      handleRunAnalysis();
-    }
-  }, [symbol, timeframe]);
+    handleRunAnalysis();
+  }, [handleRunAnalysis]);
 
-  const handleRunAnalysis = async () => {
+  const handleRunAnalysis = useCallback(async () => {
+    if (!symbol || !timeframe) {
+      console.warn('Symbol or timeframe missing:', { symbol, timeframe });
+      return;
+    }
+    
     setIsAnalyzing(true);
     try {
       await riskAssessmentMutation.mutateAsync({ symbol, timeframe });
     } finally {
       setIsAnalyzing(false);
     }
-  };
+  }, [symbol, timeframe, riskAssessmentMutation]);
 
   const getRiskLevelColor = (level: string) => {
     switch (level) {
