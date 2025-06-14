@@ -1,5 +1,5 @@
 export interface AppTab {
-  id: 'analysis' | 'forex' | 'settings';
+  id: 'analysis' | 'forex' | 'risk' | 'settings';
   label: string;
   icon: string;
 }

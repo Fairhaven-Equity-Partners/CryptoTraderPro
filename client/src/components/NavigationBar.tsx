@@ -10,6 +10,7 @@ interface NavigationBarProps {
 const tabs: AppTab[] = [
   { id: 'analysis', label: 'Analysis', icon: 'analytics' },
   { id: 'forex', label: 'Forex', icon: 'currency_exchange' },
+  { id: 'risk', label: 'Risk', icon: 'shield' },
   { id: 'settings', label: 'Settings', icon: 'settings' }
 ];
 
