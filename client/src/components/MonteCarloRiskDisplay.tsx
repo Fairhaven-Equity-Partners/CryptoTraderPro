@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,6 +40,8 @@ interface MonteCarloRiskDisplayProps {
 
 export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }: MonteCarloRiskDisplayProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisSymbol, setAnalysisSymbol] = useState('');
+  const [analysisTimeframe, setAnalysisTimeframe] = useState('');
   const queryClient = useQueryClient();
 
   const riskAssessmentMutation = useMutation({
@@ -51,25 +53,27 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       });
       return response as RiskAssessmentResponse;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['monte-carlo-risk', symbol, timeframe] });
+    onSuccess: (data) => {
+      setAnalysisSymbol(data.symbol);
+      setAnalysisTimeframe(data.timeframe);
+      queryClient.invalidateQueries({ queryKey: ['monte-carlo-risk'] });
     },
     onError: () => {
+      setIsAnalyzing(false);
+    },
+    onSettled: () => {
       setIsAnalyzing(false);
     }
   });
 
-  const handleRunAnalysis = () => {
-    if (!symbol || !timeframe || isAnalyzing) return;
+  const handleRunAnalysis = useCallback(() => {
+    if (!symbol || !timeframe || isAnalyzing || riskAssessmentMutation.isPending) {
+      return;
+    }
     
     setIsAnalyzing(true);
-    riskAssessmentMutation.mutate(
-      { symbol, timeframe },
-      { 
-        onSettled: () => setIsAnalyzing(false)
-      }
-    );
-  };
+    riskAssessmentMutation.mutate({ symbol, timeframe });
+  }, [symbol, timeframe, isAnalyzing, riskAssessmentMutation]);
 
   const getRiskLevelColor = (level: string) => {
     switch (level) {
@@ -209,6 +213,9 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
             <p className="text-sm text-muted-foreground mb-4">
               Unable to perform Monte Carlo risk assessment. Please ensure signal data is available for {symbol}.
             </p>
+            <Button onClick={handleRunAnalysis} variant="outline" size="sm">
+              Try Again
+            </Button>
           </div>
         </CardContent>
       )}
@@ -221,7 +228,7 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               Monte Carlo Risk Assessment
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Run advanced risk simulation with 1000+ iterations to assess potential outcomes
+              Run advanced risk simulation with 1000+ iterations to assess potential outcomes for {symbol} on {timeframe} timeframe
             </p>
             <Button onClick={handleRunAnalysis} disabled={isAnalyzing}>
               {isAnalyzing ? 'Analyzing...' : 'Start Analysis'}
