@@ -105,12 +105,18 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
           <div className="flex items-center gap-4">
             <Badge variant="outline">{symbol}</Badge>
             <Badge variant="secondary">{timeframe}</Badge>
+            {isAnalyzing && (
+              <Badge variant="secondary" className="animate-pulse">
+                Running Monte Carlo Analysis...
+              </Badge>
+            )}
             <Button 
               onClick={handleRunAnalysis} 
               disabled={isAnalyzing || riskAssessmentMutation.isPending}
               size="sm"
+              variant="outline"
             >
-              {isAnalyzing ? 'Analyzing...' : 'Run Analysis'}
+              {isAnalyzing ? 'Analyzing...' : 'Refresh Analysis'}
             </Button>
           </div>
         </CardHeader>

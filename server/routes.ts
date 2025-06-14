@@ -2192,8 +2192,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Symbol required' });
       }
 
-      // Get current signals from storage
-      const signalData = await storage.getSignalHistory(symbol, 10);
+      // Get current signals from the signals endpoint
+      const signalsResponse = await fetch(`http://localhost:5000/api/signals/${encodeURIComponent(symbol)}`);
+      if (!signalsResponse.ok) {
+        return res.status(404).json({ error: 'No signals available for symbol' });
+      }
+      
+      const signalData = await signalsResponse.json();
       if (!signalData || signalData.length === 0) {
         return res.status(404).json({ error: 'No signals available for symbol' });
       }
