@@ -1,0 +1,190 @@
+7850-9526b9c88f1a10a5.js:1 Replit version 73c850b8, pid2 version 0.0.1414
+_app-6a32f8279fd7ee54.js:38 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-6a32f8279fd7ee54.js:38 [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro-1:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-d6b7459e7da453d8.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-d6b7459e7da453d8.js:1
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A010190064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0B0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+cs-main-world.bundle.js:1 Uncaught (in promise) Error: Key not found
+    at cs-main-world.bundle.js:1:16518
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0E0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A010190064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0E0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0B0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A060250064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A090250064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A030250064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0E0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A010190064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'battery'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'layout-animations'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'legacy-image-formats'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'navigation-override'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'oversized-images'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'publickey-credentials'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'speaker-selection'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'unoptimized-images'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Unrecognized feature: 'unsized-media'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arnk%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+Network.js:227 WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=8Ibqth7By7bh' failed: 
+t @ Network.js:227
+Network.js:227 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=8Ibqth7By7bh' is invalid.
+    at new t (Network.js:227:18)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+Console.js:61 [CentralizedPriceManager] Initializing with 4-minute intervals
+Console.js:61 Technical indicators module initialized
+Console.js:61 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+Console.js:61 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+Console.js:61 [UltimateManager] Starting FINAL system initialization
+Console.js:61 Technical indicators module initialized
+Console.js:61 Establishing data connection...
+Console.js:61 [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+Console.js:61 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+Console.js:61 [UltimateManager] Authentic trade simulations active for market data
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/api/monte-carlo-risk:1 
+            
+            
+           Failed to load resource: the server responded with a status of 400 (Bad Request)
+queryClient.ts:6 Uncaught (in promise) Error: 400: {"error":"Symbol required"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async Object.mutationFn (MonteCarloRiskDisplay.tsx:47:24)
+Console.js:61 [UltimateManager] Multi-pair fetch: 50 symbols updated
+Console.js:61 [UltimateManager] Preloading chart data for immediate analysis
+Console.js:61 Data connection established
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT
+Console.js:61 Loading chart with 1000 data points for BTC/USDT (1m)
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Loading chart with 1000 data points for BTC/USDT (5m)
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 Loading chart with 800 data points for BTC/USDT (30m)
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 Loading chart with 200 data points for BTC/USDT (1w)
+Console.js:61 Loading chart with 60 data points for BTC/USDT (1M)
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT
+Console.js:61 Loading chart with 1000 data points for ETH/USDT (1m)
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT
+Console.js:61 Loading chart with 720 data points for ETH/USDT (1h)
+Console.js:61 Loading chart with 1000 data points for ETH/USDT (5m)
+Console.js:61 Loading chart with 800 data points for ETH/USDT (15m)
+Console.js:61 Loading chart with 800 data points for ETH/USDT (30m)
+Console.js:61 Loading chart with 150 data points for ETH/USDT (3d)
+Console.js:61 Loading chart with 365 data points for ETH/USDT (1d)
+Console.js:61 Loading chart with 500 data points for ETH/USDT (4h)
+Console.js:61 Loading chart with 200 data points for ETH/USDT (1w)
+Console.js:61 Loading chart with 60 data points for ETH/USDT (1M)
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT
+Console.js:61 Loading chart with 800 data points for BNB/USDT (30m)
+Console.js:61 Loading chart with 800 data points for BNB/USDT (15m)
+Console.js:61 Loading chart with 720 data points for BNB/USDT (1h)
+Console.js:61 Loading chart with 500 data points for BNB/USDT (4h)
+Console.js:61 Loading chart with 60 data points for BNB/USDT (1M)
+Console.js:61 Loading chart with 1000 data points for BNB/USDT (5m)
+Console.js:61 Loading chart with 150 data points for BNB/USDT (3d)
+Console.js:61 Loading chart with 200 data points for BNB/USDT (1w)
+Console.js:61 Loading chart with 365 data points for BNB/USDT (1d)
+Console.js:61 Loading chart with 1000 data points for BNB/USDT (1m)
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, SOL/USDT
+Console.js:61 Loading chart with 1000 data points for SOL/USDT (5m)
+Console.js:61 Loading chart with 800 data points for SOL/USDT (15m)
+Console.js:61 Loading chart with 720 data points for SOL/USDT (1h)
+Console.js:61 Loading chart with 500 data points for SOL/USDT (4h)
+Console.js:61 Loading chart with 150 data points for SOL/USDT (3d)
+Console.js:61 Loading chart with 1000 data points for SOL/USDT (1m)
+Console.js:61 Loading chart with 800 data points for SOL/USDT (30m)
+Console.js:61 Loading chart with 60 data points for SOL/USDT (1M)
+Console.js:61 Loading chart with 365 data points for SOL/USDT (1d)
+Console.js:61 Loading chart with 200 data points for SOL/USDT (1w)
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, SOL/USDT, XRP/USDT
+Console.js:61 Loading chart with 500 data points for XRP/USDT (4h)
+Console.js:61 Loading chart with 720 data points for XRP/USDT (1h)
+Console.js:61 Loading chart with 150 data points for XRP/USDT (3d)
+Console.js:61 Loading chart with 1000 data points for XRP/USDT (5m)
+Console.js:61 Loading chart with 800 data points for XRP/USDT (15m)
+Console.js:61 Loading chart with 800 data points for XRP/USDT (30m)
+Console.js:61 Loading chart with 365 data points for XRP/USDT (1d)
+Console.js:61 Loading chart with 60 data points for XRP/USDT (1M)
+Console.js:61 Loading chart with 200 data points for XRP/USDT (1w)
+Console.js:61 Loading chart with 1000 data points for XRP/USDT (1m)
+Console.js:61 [UltimateManager] Chart data preloading completed
+Console.js:61 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+Console.js:61 [System] Ultimate manager active - synchronized 4-minute intervals
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [UltimateManager] Next fetch in 160s
+Console.js:61 [UltimateManager] Next fetch in 140s
+Console.js:61 [UltimateManager] Next fetch in 120s
+7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/api/monte-carlo-risk:1 
+            
+            
+           Failed to load resource: the server responded with a status of 400 (Bad Request)
+queryClient.ts:6 Uncaught (in promise) Error: 400: {"error":"Symbol required"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async Object.mutationFn (MonteCarloRiskDisplay.tsx:47:24)
+Console.js:61 [UltimateManager] Next fetch in 100s
+Console.js:61 [UltimateManager] Next fetch in 80s
