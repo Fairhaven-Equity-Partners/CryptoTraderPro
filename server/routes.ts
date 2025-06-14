@@ -2193,72 +2193,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Get current signals from the signals endpoint with enhanced error handling
-      try {
-        const signalsResponse = await fetch(`http://localhost:5000/api/signals/${encodeURIComponent(symbol)}`);
-        if (!signalsResponse.ok) {
-          console.log(`[MonteCarlo] Signals API error: ${signalsResponse.status}`);
-          return res.status(404).json({ error: 'No signals available for symbol' });
-        }
-        
-        const signalData = await signalsResponse.json();
-        if (!signalData || signalData.length === 0) {
-          console.log(`[MonteCarlo] No signal data for ${symbol}`);
-          return res.status(404).json({ error: 'No signals available for symbol' });
-        }
-        
-        const currentSignal = signalData.find((s: any) => s.timeframe === (timeframe || '1d')) || signalData[0];
-        
-        if (!currentSignal) {
-          console.log(`[MonteCarlo] No matching signal found for ${symbol} ${timeframe}`);
-          return res.status(404).json({ error: 'No signal found for symbol' });
-        }
+      const signalsResponse = await fetch(`http://localhost:5000/api/signals/${encodeURIComponent(symbol)}`);
+      if (!signalsResponse.ok) {
+        console.log(`[MonteCarlo] Signals API error: ${signalsResponse.status}`);
+        return res.status(404).json({ error: 'No signals available for symbol' });
+      }
+      
+      const signalData = await signalsResponse.json();
+      if (!signalData || signalData.length === 0) {
+        console.log(`[MonteCarlo] No signal data for ${symbol}`);
+        return res.status(404).json({ error: 'No signals available for symbol' });
+      }
+      
+      const currentSignal = signalData.find((s: any) => s.timeframe === (timeframe || '1d')) || signalData[0];
+      
+      if (!currentSignal) {
+        console.log(`[MonteCarlo] No matching signal found for ${symbol} ${timeframe}`);
+        return res.status(404).json({ error: 'No signal found for symbol' });
+      }
 
-        // Enhanced signal data validation and mapping
-        const entryPrice = currentSignal.entryPrice || currentSignal.price;
-        const direction = currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL';
+      // Enhanced signal data validation and mapping
+      const entryPrice = currentSignal.entryPrice || currentSignal.price;
+      const direction = currentSignal.direction as 'LONG' | 'SHORT' | 'NEUTRAL';
+      
+      if (!entryPrice || entryPrice <= 0) {
+        console.log(`[MonteCarlo] Invalid entry price for ${symbol}: ${entryPrice}`);
+        return res.status(400).json({ error: 'Invalid signal data: entry price' });
+      }
+      
+      if (!['LONG', 'SHORT', 'NEUTRAL'].includes(direction)) {
+        console.log(`[MonteCarlo] Invalid direction for ${symbol}: ${direction}`);
+        return res.status(400).json({ error: 'Invalid signal data: direction' });
+      }
+      
+      // Enhanced stop loss and take profit calculation with ATR-based fallbacks
+      let stopLoss = currentSignal.stopLoss;
+      let takeProfit = currentSignal.takeProfit;
+      
+      if (!stopLoss || !takeProfit) {
+        console.log(`[MonteCarlo] Calculating missing stop loss/take profit for ${symbol}`);
         
-        if (!entryPrice || entryPrice <= 0) {
-          console.log(`[MonteCarlo] Invalid entry price for ${symbol}: ${entryPrice}`);
-          return res.status(400).json({ error: 'Invalid signal data: entry price' });
+        // Use ATR-based calculation if available, otherwise use percentage-based
+        const atr = currentSignal.indicators?.atr || entryPrice * 0.02;
+        const atrMultiplier = direction === 'NEUTRAL' ? 0.5 : 1.0;
+        
+        if (direction === 'LONG') {
+          stopLoss = stopLoss || (entryPrice - (atr * atrMultiplier));
+          takeProfit = takeProfit || (entryPrice + (atr * atrMultiplier * 2));
+        } else if (direction === 'SHORT') {
+          stopLoss = stopLoss || (entryPrice + (atr * atrMultiplier));
+          takeProfit = takeProfit || (entryPrice - (atr * atrMultiplier * 2));
+        } else {
+          stopLoss = stopLoss || (entryPrice * 0.995);
+          takeProfit = takeProfit || (entryPrice * 1.005);
         }
-        
-        if (!['LONG', 'SHORT', 'NEUTRAL'].includes(direction)) {
-          console.log(`[MonteCarlo] Invalid direction for ${symbol}: ${direction}`);
-          return res.status(400).json({ error: 'Invalid signal data: direction' });
-        }
-        
-        // Enhanced stop loss and take profit calculation with ATR-based fallbacks
-        let stopLoss = currentSignal.stopLoss;
-        let takeProfit = currentSignal.takeProfit;
-        
-        if (!stopLoss || !takeProfit) {
-          console.log(`[MonteCarlo] Calculating missing stop loss/take profit for ${symbol}`);
-          
-          // Use ATR-based calculation if available, otherwise use percentage-based
-          const atr = currentSignal.indicators?.atr || entryPrice * 0.02;
-          const atrMultiplier = direction === 'NEUTRAL' ? 0.5 : 1.0;
-          
-          if (direction === 'LONG') {
-            stopLoss = stopLoss || (entryPrice - (atr * atrMultiplier));
-            takeProfit = takeProfit || (entryPrice + (atr * atrMultiplier * 2));
-          } else if (direction === 'SHORT') {
-            stopLoss = stopLoss || (entryPrice + (atr * atrMultiplier));
-            takeProfit = takeProfit || (entryPrice - (atr * atrMultiplier * 2));
-          } else {
-            stopLoss = stopLoss || (entryPrice * 0.995);
-            takeProfit = takeProfit || (entryPrice * 1.005);
-          }
-        }
-        
-        const signalInput: SignalInput = {
-          entryPrice,
-          stopLoss,
-          takeProfit,
-          confidence: currentSignal.confidence,
-          direction
-        };
+      }
+      
+      const signalInput: SignalInput = {
+        entryPrice,
+        stopLoss,
+        takeProfit,
+        confidence: currentSignal.confidence,
+        direction
+      };
 
-        // Initialize Monte Carlo risk engine
+      // Initialize Monte Carlo risk engine
       const monteCarloEngine = new MonteCarloRiskEngine(1000, 24);
       const riskAssessment = monteCarloEngine.runSimulation(signalInput);
 
