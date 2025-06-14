@@ -58,20 +58,14 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
 
   // Automatically run analysis when symbol or timeframe changes
   useEffect(() => {
-    handleRunAnalysis();
-  }, [handleRunAnalysis]);
-
-  const handleRunAnalysis = useCallback(async () => {
-    if (!symbol || !timeframe) {
-      console.warn('Symbol or timeframe missing:', { symbol, timeframe });
-      return;
-    }
-    
-    setIsAnalyzing(true);
-    try {
-      await riskAssessmentMutation.mutateAsync({ symbol, timeframe });
-    } finally {
-      setIsAnalyzing(false);
+    if (symbol && timeframe) {
+      setIsAnalyzing(true);
+      riskAssessmentMutation.mutate(
+        { symbol, timeframe },
+        {
+          onSettled: () => setIsAnalyzing(false)
+        }
+      );
     }
   }, [symbol, timeframe, riskAssessmentMutation]);
 
@@ -114,7 +108,15 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               </Badge>
             )}
             <Button 
-              onClick={handleRunAnalysis} 
+              onClick={() => {
+                if (symbol && timeframe) {
+                  setIsAnalyzing(true);
+                  riskAssessmentMutation.mutate(
+                    { symbol, timeframe },
+                    { onSettled: () => setIsAnalyzing(false) }
+                  );
+                }
+              }} 
               disabled={isAnalyzing || riskAssessmentMutation.isPending}
               size="sm"
               variant="outline"
@@ -301,7 +303,18 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               <p className="text-sm text-muted-foreground mb-4">
                 Run advanced risk simulation with 1000+ iterations to assess potential outcomes
               </p>
-              <Button onClick={handleRunAnalysis} disabled={isAnalyzing}>
+              <Button 
+                onClick={() => {
+                  if (symbol && timeframe) {
+                    setIsAnalyzing(true);
+                    riskAssessmentMutation.mutate(
+                      { symbol, timeframe },
+                      { onSettled: () => setIsAnalyzing(false) }
+                    );
+                  }
+                }} 
+                disabled={isAnalyzing}
+              >
                 {isAnalyzing ? 'Analyzing...' : 'Start Analysis'}
               </Button>
             </div>

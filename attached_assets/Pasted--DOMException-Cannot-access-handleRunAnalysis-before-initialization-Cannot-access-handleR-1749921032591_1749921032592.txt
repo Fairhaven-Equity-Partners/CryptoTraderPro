@@ -1,0 +1,27 @@
+
+DOMException {}
+
+Cannot access 'handleRunAnalysis' before initialization
+Cannot access 'handleRunAnalysis' before initialization
+The above error occurred in the <MonteCarloRiskDisplay> component:
+
+    at MonteCarloRiskDisplay (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/src/components/MonteCarloRiskDisplay.tsx:26:41)
+    at div
+    at RiskAnalysis (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/src/pages/RiskAnalysis.tsx:25:47)
+    at component
+    at Route (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=544c2f3f:323:16)
+    at Switch (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=544c2f3f:379:17)
+    at div
+    at Router (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/src/App.tsx?v=Hlf0gzo3eFrbr3f64j_Oz:34:39)
+    at ErrorBoundary (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/src/components/ErrorBoundary.tsx:7:5)
+    at Provider (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-XIZKKOCE.js?v=544c2f3f:22:15)
+    at TooltipProvider (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=544c2f3f:61:5)
+    at QueryClientProvider (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=544c2f3f:2805:3)
+    at ErrorBoundary (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/src/components/ErrorBoundary.tsx:7:5)
+    at App (https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/src/App.tsx?v=Hlf0gzo3eFrbr3f64j_Oz:106:3)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, ErrorBoundary.
+Error boundary caught an error: 
+ReferenceError {}
+ 
+Object {componentStack: "↵    at MonteCarloRiskDisplay…"}
