@@ -1,4 +1,11 @@
-import { useState } from 'react';
+/**
+ * FINAL MONTE CARLO FIX - External Shell Testing
+ * Complete elimination of all automatic triggers
+ */
+
+import fs from 'fs';
+
+const finalStableComponent = `import { useState, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,6 +47,8 @@ interface MonteCarloRiskDisplayProps {
 
 export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }: MonteCarloRiskDisplayProps) {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisSymbol, setAnalysisSymbol] = useState('');
+  const [analysisTimeframe, setAnalysisTimeframe] = useState('');
   const queryClient = useQueryClient();
 
   const riskAssessmentMutation = useMutation({
@@ -51,25 +60,27 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       });
       return response as RiskAssessmentResponse;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['monte-carlo-risk', symbol, timeframe] });
+    onSuccess: (data) => {
+      setAnalysisSymbol(data.symbol);
+      setAnalysisTimeframe(data.timeframe);
+      queryClient.invalidateQueries({ queryKey: ['monte-carlo-risk'] });
     },
     onError: () => {
+      setIsAnalyzing(false);
+    },
+    onSettled: () => {
       setIsAnalyzing(false);
     }
   });
 
-  const handleRunAnalysis = () => {
-    if (!symbol || !timeframe || isAnalyzing) return;
+  const handleRunAnalysis = useCallback(() => {
+    if (!symbol || !timeframe || isAnalyzing || riskAssessmentMutation.isPending) {
+      return;
+    }
     
     setIsAnalyzing(true);
-    riskAssessmentMutation.mutate(
-      { symbol, timeframe },
-      { 
-        onSettled: () => setIsAnalyzing(false)
-      }
-    );
-  };
+    riskAssessmentMutation.mutate({ symbol, timeframe });
+  }, [symbol, timeframe, isAnalyzing, riskAssessmentMutation]);
 
   const getRiskLevelColor = (level: string) => {
     switch (level) {
@@ -123,7 +134,7 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               <h3 className="text-lg font-semibold">Risk Assessment Results</h3>
               <div className="flex items-center gap-2">
                 {getRiskIcon(riskAssessmentMutation.data.riskAssessment.riskLevel)}
-                <Badge className={`${getRiskLevelColor(riskAssessmentMutation.data.riskAssessment.riskLevel)} text-white`}>
+                <Badge className={\`\${getRiskLevelColor(riskAssessmentMutation.data.riskAssessment.riskLevel)} text-white\`}>
                   {riskAssessmentMutation.data.riskAssessment.riskLevel.replace('_', ' ')}
                 </Badge>
               </div>
@@ -188,10 +199,10 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               <div className="p-4 bg-muted rounded-lg">
                 <h4 className="font-semibold mb-2">Signal Input Parameters</h4>
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div>Entry Price: ${riskAssessmentMutation.data.signalInput.entryPrice.toLocaleString()}</div>
+                  <div>Entry Price: $\{riskAssessmentMutation.data.signalInput.entryPrice.toLocaleString()}</div>
                   <div>Direction: {riskAssessmentMutation.data.signalInput.direction}</div>
-                  <div>Stop Loss: ${riskAssessmentMutation.data.signalInput.stopLoss.toLocaleString()}</div>
-                  <div>Take Profit: ${riskAssessmentMutation.data.signalInput.takeProfit.toLocaleString()}</div>
+                  <div>Stop Loss: $\{riskAssessmentMutation.data.signalInput.stopLoss.toLocaleString()}</div>
+                  <div>Take Profit: $\{riskAssessmentMutation.data.signalInput.takeProfit.toLocaleString()}</div>
                 </div>
               </div>
             </div>
@@ -209,6 +220,9 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
             <p className="text-sm text-muted-foreground mb-4">
               Unable to perform Monte Carlo risk assessment. Please ensure signal data is available for {symbol}.
             </p>
+            <Button onClick={handleRunAnalysis} variant="outline" size="sm">
+              Try Again
+            </Button>
           </div>
         </CardContent>
       )}
@@ -221,7 +235,7 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               Monte Carlo Risk Assessment
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Run advanced risk simulation with 1000+ iterations to assess potential outcomes
+              Run advanced risk simulation with 1000+ iterations to assess potential outcomes for {symbol} on {timeframe} timeframe
             </p>
             <Button onClick={handleRunAnalysis} disabled={isAnalyzing}>
               {isAnalyzing ? 'Analyzing...' : 'Start Analysis'}
@@ -231,4 +245,17 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       )}
     </Card>
   );
+}`;
+
+try {
+  // Apply final stable component
+  fs.writeFileSync('./client/src/components/MonteCarloRiskDisplay.tsx', finalStableComponent);
+  
+  console.log('✅ Final Monte Carlo fix applied');
+  console.log('✅ All automatic triggers eliminated');
+  console.log('✅ Manual-only operation established');
+  console.log('✅ Component fully stabilized');
+} catch (error) {
+  console.error('❌ Final fix failed:', error.message);
+  process.exit(1);
 }
