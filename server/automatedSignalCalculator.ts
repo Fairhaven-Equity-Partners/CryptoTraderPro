@@ -30,6 +30,21 @@ interface CalculatedSignal {
   confluenceScore?: number;
   riskReward?: number;
   volatilityAdjustment?: number;
+  // CRITICAL: Add confluence fields for Critical Signal Analysis component
+  confluence?: number;
+  confluenceAnalysis?: {
+    score: number;
+    factors: Array<{
+      name: string;
+      weight: number;
+      signal: string;
+    }>;
+    strength: string;
+    timeframe: string;
+    timestamp: number;
+    dataSource: string;
+  };
+  enhancedAnalysis?: any;
 }
 
 export class AutomatedSignalCalculator {
@@ -494,16 +509,16 @@ export class AutomatedSignalCalculator {
         },
         confluenceScore: calculatedConfluenceScore,
         // CRITICAL: Add confluence fields for Critical Signal Analysis component
-        confluence: finalConfluence,
+        confluence: calculatedConfluenceScore,
         confluenceAnalysis: {
-          score: finalConfluence,
+          score: calculatedConfluenceScore,
           factors: [
             { name: "RSI Momentum", weight: Math.round(Math.abs(realRSI - 50) / 5), signal: realRSI > 50 ? "BUY" : "SELL" },
             { name: "MACD Signal", weight: Math.round(Math.abs(realMACD.macdLine) / 100), signal: realMACD.macdLine > 0 ? "BUY" : "SELL" },
             { name: "Bollinger Position", weight: Math.round(Math.abs(bbPosition) / 10), signal: bbPosition > 0 ? "BUY" : "SELL" },
             { name: "Price Momentum", weight: Math.round(Math.abs(change24h) * 100), signal: change24h > 0 ? "BUY" : "SELL" }
           ],
-          strength: finalConfluence > 75 ? "STRONG" : finalConfluence > 50 ? "MODERATE" : "WEAK",
+          strength: calculatedConfluenceScore > 75 ? "STRONG" : calculatedConfluenceScore > 50 ? "MODERATE" : "WEAK",
           timeframe: timeframe,
           timestamp: Date.now(),
           dataSource: "AutomatedSignalCalculator"
@@ -757,7 +772,23 @@ export class AutomatedSignalCalculator {
         bb: 0,
         volume: 'neutral',
         trend: direction.toLowerCase()
-      }
+      },
+      confluenceScore: Math.min(70, Math.max(30, absChange * 10)),
+      confluence: Math.min(70, Math.max(30, absChange * 10)),
+      confluenceAnalysis: {
+        score: Math.min(70, Math.max(30, absChange * 10)),
+        factors: [
+          { name: "Price Momentum", weight: Math.round(absChange * 100), signal: change24h > 0 ? "BUY" : "SELL" },
+          { name: "Market Direction", weight: 5, signal: direction },
+          { name: "Volatility", weight: Math.round(absChange * 50), signal: absChange > 0.02 ? "HIGH" : "LOW" }
+        ],
+        strength: absChange > 0.05 ? "STRONG" : absChange > 0.02 ? "MODERATE" : "WEAK",
+        timeframe: timeframe,
+        timestamp: Date.now(),
+        dataSource: "authentic_fallback"
+      },
+      riskReward: 2,
+      volatilityAdjustment: absChange
     };
   }
 
