@@ -33,8 +33,45 @@ const TechnicalAnalysisSummary: React.FC = () => {
     refetchInterval: 45000,
   });
 
-  const indicators = (techData && techData.indicators) ? techData.indicators as TechnicalIndicators : {} as TechnicalIndicators;
-  const patterns = (patternData && patternData.patterns && Array.isArray(patternData.patterns)) ? patternData.patterns : [];
+  // Enhanced data structure handling based on external testing findings
+  const indicators = (() => {
+    if (!techData) return {} as TechnicalIndicators;
+    
+    // Handle nested indicators structure from API response
+    if (techData.indicators && typeof techData.indicators === 'object') {
+      return techData.indicators as TechnicalIndicators;
+    }
+    
+    // Fallback for direct data structure
+    if (techData.rsi !== undefined || techData.macd !== undefined) {
+      return techData as TechnicalIndicators;
+    }
+    
+    return {} as TechnicalIndicators;
+  })();
+  
+  const patterns = (() => {
+    if (!patternData) return [];
+    
+    // Handle nested patterns structure
+    if (Array.isArray(patternData.patterns)) {
+      return patternData.patterns;
+    }
+    
+    // Handle patternAnalysis structure from API response
+    if (patternData.patternAnalysis?.patterns) {
+      return Array.isArray(patternData.patternAnalysis.patterns) ? 
+        patternData.patternAnalysis.patterns : [];
+    }
+    
+    // Handle direct patterns array
+    if (patternData.summary?.patterns) {
+      return Array.isArray(patternData.summary.patterns) ? 
+        patternData.summary.patterns : [];
+    }
+    
+    return [];
+  })();
 
   const getRSISignal = (rsi: number) => {
     if (rsi >= 70) return { signal: 'Overbought', color: 'text-red-600', icon: TrendingDown };
