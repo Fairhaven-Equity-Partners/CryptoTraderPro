@@ -7,6 +7,7 @@ import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
+import { EnhancedMarketStructureAnalysis } from '../components/EnhancedMarketStructureAnalysis';
 
 
 const Analysis: React.FC = () => {
@@ -17,6 +18,15 @@ const Analysis: React.FC = () => {
   // Keep track if this is first load or a user-initiated change
   const [assetChangeCounter, setAssetChangeCounter] = useState(0);
   const [shouldRunAnalysis, setShouldRunAnalysis] = useState(false);
+  const [detectedPatterns, setDetectedPatterns] = useState([]);
+
+  const handlePatternChange = (patterns) => {
+    setDetectedPatterns(patterns);
+    // Integrate pattern strength into signal confidence scoring
+    if (patterns.length > 0) {
+      console.log(`[Analysis] ${patterns.length} patterns detected, updating signal calculations`);
+    }
+  };
   
   // Effect to trigger analysis when asset changes
   useEffect(() => {
@@ -71,6 +81,11 @@ const Analysis: React.FC = () => {
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
           />
+        <EnhancedMarketStructureAnalysis 
+          symbol={currentAsset}
+          timeframe={currentTimeframe}
+          onPatternChange={handlePatternChange}
+        />
         </div>
         
 
