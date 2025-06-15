@@ -160,23 +160,27 @@ const TechnicalAnalysisSummary: React.FC = () => {
     );
   }
 
-  // Safe numeric extraction with fallbacks
+  // Safe numeric extraction with fallbacks - handles both nested and direct values
   const safeNumber = (value: any, fallback: number = 0): number => {
     if (typeof value === 'number' && !isNaN(value)) return value;
     if (typeof value === 'string') {
       const parsed = parseFloat(value);
       return !isNaN(parsed) ? parsed : fallback;
     }
+    if (value && typeof value === 'object' && value.value !== undefined) {
+      return safeNumber(value.value, fallback);
+    }
     return fallback;
   };
 
-  const rsiValue = safeNumber(indicators.rsi, 50);
-  const macdValue = safeNumber(indicators.macd, 0);
-  const bbUpper = safeNumber(indicators.bb_upper, 0);
-  const bbLower = safeNumber(indicators.bb_lower, 0);
-  const bbMiddle = safeNumber(indicators.bb_middle, 0);
-  const stochK = safeNumber(indicators.stochastic_k, 50);
-  const stochD = safeNumber(indicators.stochastic_d, 50);
+  // Extract indicator values from nested or direct structure
+  const rsiValue = safeNumber(indicators.rsi || indicators.detailed?.rsi, 50);
+  const macdValue = safeNumber(indicators.macd || indicators.detailed?.macd, 0);
+  const bbUpper = safeNumber(indicators.bb_upper || indicators.bollingerBands?.upper, 0);
+  const bbLower = safeNumber(indicators.bb_lower || indicators.bollingerBands?.lower, 0);
+  const bbMiddle = safeNumber(indicators.bb_middle || indicators.bollingerBands?.middle, 0);
+  const stochK = safeNumber(indicators.stochastic_k || indicators.stochastic?.k, 50);
+  const stochD = safeNumber(indicators.stochastic_d || indicators.stochastic?.d, 50);
 
   const rsiSignal = getRSISignal(rsiValue);
   const macdSignal = getMACDSignal(macdValue);

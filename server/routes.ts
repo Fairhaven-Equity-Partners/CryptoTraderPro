@@ -1443,12 +1443,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
               volatility: volatility
             },
             indicators: {
-              rsi: {
-                value: Math.round(rsi * 10) / 10,
-                signal: rsi > 70 ? 'SELL' : rsi < 30 ? 'BUY' : 'HOLD',
-                status: rsi > 70 ? 'overbought' : rsi < 30 ? 'oversold' : 'neutral',
-                strength: volatility > 5 ? 'HIGH' : volatility > 2 ? 'MEDIUM' : 'LOW'
-              },
+              // Frontend-compatible direct indicator values
+              rsi: Math.round(rsi * 10) / 10,
+              macd: macdValue,
+              bb_upper: upperBand,
+              bb_lower: lowerBand,
+              bb_middle: price,
+              stochastic_k: stochK,
+              stochastic_d: stochD,
+              
+              // Detailed nested structure for advanced analysis
+              detailed: {
+                rsi: {
+                  value: Math.round(rsi * 10) / 10,
+                  signal: rsi > 70 ? 'SELL' : rsi < 30 ? 'BUY' : 'HOLD',
+                  status: rsi > 70 ? 'overbought' : rsi < 30 ? 'oversold' : 'neutral',
+                  strength: volatility > 5 ? 'HIGH' : volatility > 2 ? 'MEDIUM' : 'LOW'
+                },
               macd: {
                 value: Math.round(macdValue * 1000) / 1000,
                 signal: Math.round(macdSignal * 1000) / 1000,
@@ -1485,6 +1496,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 direction: ultraPreciseAnalysis.direction,
                 mathematicalPrecision: "50 decimal places",
                 calculationEngine: "BigNumber.js Ultra-Precision"
+              }
               }
             },
             analysis: {
