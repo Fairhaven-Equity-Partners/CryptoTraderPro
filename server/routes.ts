@@ -411,11 +411,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get all signals from automated calculator
       const allSignals = automatedSignalCalculator.getAllSignals();
       
-      if (allSignals && allSignals.length > 0) {
+      if (allSignals && typeof allSignals === 'object') {
+        // Convert Map to array format for JSON response
+        const signalsArray: any[] = [];
+        if (allSignals instanceof Map) {
+          for (const [symbol, signals] of allSignals.entries()) {
+            if (Array.isArray(signals)) {
+              signalsArray.push(...signals);
+            }
+          }
+        } else {
+          // Handle if it's already an array or object
+          if (Array.isArray(allSignals)) {
+            signalsArray.push(...allSignals);
+          }
+        }
+        
         // Filter by timeframe if specified
         const filteredSignals = timeframe ? 
-          allSignals.filter(s => s.timeframe === requestedTimeframe) : 
-          allSignals;
+          signalsArray.filter(s => s.timeframe === requestedTimeframe) : 
+          signalsArray;
         
         // Format signals for frontend compatibility
         const formattedSignals = filteredSignals.map(signal => ({
