@@ -1,388 +1,310 @@
-import React from 'react';
-import { Badge } from "@/components/ui/badge";
-import { useQuery } from "@tanstack/react-query";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Separator } from './ui/separator';
+import { TrendingUp, TrendingDown, Target, Activity, BarChart3, Eye, Brain, Gauge, Zap } from 'lucide-react';
 
-// Types for technical analysis data - Updated to match actual API response
-interface TechnicalAnalysisData {
-  success: boolean;
-  symbol: string;
-  currentPrice: number;
+interface UnifiedPerformancePanelProps {
+  symbol?: string;
+  timeframe?: string;
+  onPatternChange?: (patterns: any[]) => void;
+}
+
+interface PerformanceIndicator {
+  id: string;
+  name: string;
+  value: number | string;
+  status: 'good' | 'warning' | 'critical';
+  change: number;
+  description?: string;
+}
+
+interface PatternResult {
+  type: string;
+  category: string;
+  signal: string;
+  confidence: number;
+  description: string;
+  strength: 'WEAK' | 'MODERATE' | 'STRONG';
   timeframe: string;
-  timestamp: string;
-  dataSource: string;
-  marketData: {
-    volume24h: number;
-    change24h: number;
-    volatility: number;
-  };
-  indicators: {
-    rsi: {
-      value: number;
-      signal: string;
-      status: string;
-      strength: string;
-    };
-    macd: {
-      value: number;
-      signal: number;
-      histogram: number;
-      crossover: string;
-      strength: string;
-    };
-    ema: {
-      value: number;
-      signal: string;
-      deviation: number;
-    };
-    sma: {
-      value: number;
-      signal: string;
-      deviation: number;
-    };
-    stochastic: {
-      k: number;
-      d: number;
-      signal: string;
-      status: string;
-    };
-    bollingerBands: {
-      upper: number;
-      middle: number;
-      lower: number;
-      position: string;
-      squeeze: boolean;
-    };
-  };
-  analysis: {
-    trend: string;
-    strength: string;
-    recommendation: string;
-    confidence: number;
-  };
 }
 
-// Types for performance metrics - Updated to match actual API response
-interface PerformanceMetrics {
-  indicators: Array<{
-    indicator: string;
-    value: string | number;
-    status: string;
-    change: string;
-  }>;
-  timeframes?: Array<{
-    timeframe: string;
-    actualAccuracy: number;
-  }>;
-  symbols?: Array<{
-    symbol: string;
-    avgAccuracy: number;
-  }>;
-}
+export default function UnifiedPerformancePanel({ 
+  symbol = 'BTC/USDT', 
+  timeframe = '4h',
+  onPatternChange 
+}: UnifiedPerformancePanelProps) {
+  const [activeTab, setActiveTab] = useState('performance');
 
-interface Props {
-  symbol: string;
-  selectedTimeframe: string;
-  signals: Record<string, any>;
-}
+  // Performance metrics query
+  const performanceQuery = useQuery({
+    queryKey: ['performance-metrics'],
+    queryFn: async () => {
+      const response = await fetch('/api/performance-metrics');
+      if (!response.ok) throw new Error('Failed to fetch performance metrics');
+      return response.json();
+    },
+    refetchInterval: 30000
+  });
 
-export default function UnifiedPerformancePanel({ symbol, selectedTimeframe, signals }: Props) {
-  const { data: technicalData, isLoading: techLoading } = useQuery<TechnicalAnalysisData>({
-    queryKey: ['/api/technical-analysis', symbol, selectedTimeframe],
-    queryFn: () => fetch(`/api/technical-analysis/${encodeURIComponent(symbol)}?timeframe=${selectedTimeframe}`).then(res => res.json()),
+  // Pattern analysis query
+  const patternQuery = useQuery({
+    queryKey: ['pattern-analysis', symbol, timeframe],
+    queryFn: async () => {
+      const response = await fetch(`/api/enhanced-pattern-recognition/${encodeURIComponent(symbol)}?timeframe=${timeframe}`);
+      if (!response.ok) throw new Error('Failed to fetch pattern analysis');
+      return response.json();
+    },
     refetchInterval: 30000,
+    enabled: !!symbol
   });
 
-  const { data: performanceData, isLoading: perfLoading } = useQuery<PerformanceMetrics>({
-    queryKey: ['/api/performance-metrics', selectedTimeframe],
-    queryFn: () => fetch(`/api/performance-metrics?timeframe=${selectedTimeframe}`).then(res => res.json()),
+  // Multi-timeframe confluence query
+  const confluenceQuery = useQuery({
+    queryKey: ['confluence-analysis', symbol],
+    queryFn: async () => {
+      const response = await fetch(`/api/confluence-analysis/${encodeURIComponent(symbol)}`);
+      if (!response.ok) throw new Error('Failed to fetch confluence analysis');
+      return response.json();
+    },
     refetchInterval: 60000,
+    enabled: !!symbol
   });
 
-  const isLoading = techLoading || perfLoading;
-
-  if (isLoading) {
-    return (
-      <div className="mt-4 p-3 bg-gradient-to-r from-gray-900/80 to-gray-950/90 rounded-lg border border-gray-700">
-        <div className="text-xs text-slate-400">Loading performance analysis...</div>
-      </div>
-    );
-  }
-
-  const getSignalColor = (direction: string) => {
-    switch (direction) {
-      case 'LONG': return 'text-green-400';
-      case 'SHORT': return 'text-red-400';
-      default: return 'text-yellow-400';
+  // Notify parent component of pattern changes for integration with auto-calculations
+  useEffect(() => {
+    if (patternQuery.data?.patterns && onPatternChange) {
+      onPatternChange(patternQuery.data.patterns);
     }
-  };
+  }, [patternQuery.data, onPatternChange]);
 
-  const formatPrice = (price: number | undefined) => {
-    if (price === undefined || price === null) return '$0.00';
-    return `$${price.toLocaleString('en-US', { 
-      minimumFractionDigits: 2, 
-      maximumFractionDigits: 2 
-    })}`;
-  };
+  const renderPerformanceMetrics = () => {
+    if (performanceQuery.isLoading) {
+      return (
+        <div className="space-y-4">
+          <div className="animate-pulse">
+            <div className="h-4 bg-gray-700 rounded w-3/4 mb-2"></div>
+            <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+          </div>
+        </div>
+      );
+    }
 
-  const formatPercent = (percent: number | undefined) => {
-    if (percent === undefined || percent === null) return '+0.00%';
-    const sign = percent >= 0 ? '+' : '';
-    return `${sign}${percent.toFixed(2)}%`;
-  };
+    if (performanceQuery.error) {
+      return (
+        <div className="text-center py-4 text-red-400">
+          Performance metrics unavailable
+        </div>
+      );
+    }
 
-  // Get timeframe-specific signal data
-  const currentSignal = signals[selectedTimeframe];
-  
-  const getBestTimeframe = () => {
-    if (!performanceData?.timeframes || performanceData.timeframes.length === 0) return selectedTimeframe;
-    return performanceData.timeframes[0].timeframe;
-  };
-
-  const getTopIndicator = () => {
-    if (!performanceData?.indicators || performanceData.indicators.length === 0) return 'RSI';
-    return performanceData.indicators[0].indicator;
-  };
-
-  const getAIRecommendation = () => {
-    if (!currentSignal) return `Analyzing ${selectedTimeframe} timeframe`;
-    const confidence = currentSignal.confidence || 0;
-    const direction = currentSignal.direction || 'NEUTRAL';
+    const metrics = performanceQuery.data?.indicators || [];
     
-    if (confidence > 75) return `Strong ${direction} signal on ${selectedTimeframe}`;
-    if (confidence > 50) return `Moderate ${direction} signal on ${selectedTimeframe}`;
-    return `Low confidence on ${selectedTimeframe}`;
-  };
+    if (metrics.length === 0) {
+      return (
+        <div className="text-center py-4 text-gray-400">
+          No performance data available
+        </div>
+      );
+    }
 
-  const getTimeframeSpecificData = () => {
-    if (!currentSignal) return null;
-    
-    return {
-      confidence: currentSignal.confidence || 0,
-      direction: currentSignal.direction || 'NEUTRAL',
-      entryPrice: currentSignal.entryPrice || 0,
-      stopLoss: currentSignal.stopLoss || 0,
-      takeProfit: currentSignal.takeProfit || 0,
-      successProbability: currentSignal.successProbability || 0
-    };
-  };
-
-  return (
-    <div className="mt-4 p-3 bg-gradient-to-r from-gray-900/80 to-gray-950/90 rounded-lg border border-gray-700">
-      <h4 className="text-white font-semibold text-sm mb-2 flex items-center gap-2">
-        📊 Performance Analysis - {selectedTimeframe.toUpperCase()}
-        <Badge className="bg-blue-900/20 text-blue-400 border-blue-800 text-xs px-2 py-0.5">
-          {currentSignal ? 'Active' : 'Pending'}
-        </Badge>
-      </h4>
-      
-      {/* Technical Analysis Summary - Always show for consistency */}
-      <div className="mb-3 p-2 bg-gray-900/50 rounded border border-gray-800">
-        {technicalData?.success ? (
-          <>
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-slate-300">Analysis</span>
-              <span className={`text-xs font-semibold ${
-                technicalData.analysis?.recommendation === 'BUY' ? 'text-green-400' : 
-                technicalData.analysis?.recommendation === 'SELL' ? 'text-red-400' : 'text-yellow-400'
-              }`}>
-                {technicalData.analysis?.recommendation || 'HOLD'} {Math.round(technicalData.analysis?.confidence || 0)}%
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-sm font-semibold text-white">{formatPrice(technicalData.currentPrice || 0)}</p>
-                <p className={`text-xs ${(technicalData.marketData?.change24h || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {formatPercent(technicalData.marketData?.change24h || 0)}
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="flex items-center gap-1">
-                  {technicalData.analysis?.trend === 'BULLISH' ? 
-                    <TrendingUp className="h-3 w-3 text-green-400" /> : 
-                    technicalData.analysis?.trend === 'BEARISH' ?
-                    <TrendingDown className="h-3 w-3 text-red-400" /> :
-                    <TrendingUp className="h-3 w-3 text-yellow-400" />
-                  }
-                  <span className="text-xs text-slate-300">{technicalData.analysis?.trend || 'SIDEWAYS'}</span>
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          {metrics.slice(0, 4).map((metric: PerformanceIndicator, index: number) => (
+            <Card key={index} className="bg-secondary border-gray-700">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">{metric.name}</p>
+                    <p className="text-lg font-bold text-white">{metric.value}</p>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant={metric.status === 'good' ? 'default' : metric.status === 'warning' ? 'secondary' : 'destructive'}>
+                      {metric.status.toUpperCase()}
+                    </Badge>
+                    {metric.change !== undefined && (
+                      <p className={`text-xs mt-1 ${metric.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {metric.change >= 0 ? '+' : ''}{metric.change}%
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="text-center py-3">
-            <p className="text-xs text-slate-400">Loading {selectedTimeframe.toUpperCase()} technical analysis...</p>
-          </div>
-        )}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-      {/* Key Indicators Grid - Always show for consistency */}
-      <div className="grid grid-cols-2 gap-3 text-xs">
-        {technicalData?.success ? (
-          <>
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span className="text-slate-300">RSI:</span>
-                <span className={`font-semibold ${
-                  (technicalData.indicators.rsi?.value || 0) > 70 ? 'text-red-400' : 
-                  (technicalData.indicators.rsi?.value || 0) < 30 ? 'text-green-400' : 'text-white'
-                }`}>{technicalData.indicators.rsi?.value?.toFixed(1) || 'N/A'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-300">MACD:</span>
-                <span className={`font-semibold ${
-                  (technicalData.indicators.macd?.value || 0) > (technicalData.indicators.macd?.signal || 0) ? 'text-green-400' : 'text-red-400'
-                }`}>{technicalData.indicators.macd?.value?.toFixed(3) || 'N/A'}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-300">EMA:</span>
-                <span className={`font-semibold ${
-                  (technicalData.indicators.ema?.value || 0) > (technicalData.indicators.sma?.value || 0) ? 'text-green-400' : 'text-red-400'
-                }`}>${Math.round(technicalData.indicators.ema?.value || 0).toLocaleString()}</span>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span className="text-slate-300">Stochastic:</span>
-                <span className={`font-semibold ${
-                  (technicalData.indicators.stochastic?.k || 0) > 80 ? 'text-red-400' : 
-                  (technicalData.indicators.stochastic?.k || 0) < 20 ? 'text-green-400' : 'text-white'
-                }`}>{technicalData.indicators.stochastic?.k?.toFixed(1) || 'N/A'}%</span>
-              </div>
-              {currentSignal && (
-                <>
-                  <div className="flex justify-between">
-                    <span className="text-slate-300">Signal Confidence:</span>
-                    <span className={`font-semibold ${
-                      currentSignal.confidence > 75 ? 'text-green-400' : 
-                      currentSignal.confidence > 50 ? 'text-yellow-400' : 'text-red-400'
-                    }`}>{currentSignal.confidence}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-300">Direction:</span>
-                    <span className={`font-semibold ${
-                      currentSignal.direction === 'LONG' ? 'text-green-400' : 
-                      currentSignal.direction === 'SHORT' ? 'text-red-400' : 'text-slate-400'
-                    }`}>{currentSignal.direction}</span>
-                  </div>
-                </>
-              )}
-              <div className="flex justify-between">
-                <span className="text-slate-300">Top Indicator:</span>
-                <span className="text-blue-400 font-semibold">{getTopIndicator()}</span>
-              </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span className="text-slate-300">RSI:</span>
-                <span className="text-slate-400">--</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-300">MACD:</span>
-                <span className="text-slate-400">--</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-300">EMA vs SMA:</span>
-                <span className="text-slate-400">--</span>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="flex justify-between">
-                <span className="text-slate-300">Stochastic:</span>
-                <span className="text-slate-400">--</span>
-              </div>
-              {currentSignal && (
-                <>
-                  <div className="flex justify-between">
-                    <span className="text-slate-300">Signal Confidence:</span>
-                    <span className={`font-semibold ${
-                      currentSignal.confidence > 75 ? 'text-green-400' : 
-                      currentSignal.confidence > 50 ? 'text-yellow-400' : 'text-red-400'
-                    }`}>{currentSignal.confidence}%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-300">Direction:</span>
-                    <span className={`font-semibold ${
-                      currentSignal.direction === 'LONG' ? 'text-green-400' : 
-                      currentSignal.direction === 'SHORT' ? 'text-red-400' : 'text-slate-400'
-                    }`}>{currentSignal.direction}</span>
-                  </div>
-                </>
-              )}
-              <div className="flex justify-between">
-                <span className="text-slate-300">Top Indicator:</span>
-                <span className="text-blue-400 font-semibold">{getTopIndicator()}</span>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-      
-      {/* Timeframe-Specific Signal Data - Always show for consistency */}
-      <div className="mt-3 p-2 bg-gray-900/50 rounded border border-gray-800">
-        <h5 className="text-green-300 font-medium text-xs mb-2">📈 {selectedTimeframe.toUpperCase()} Signal Levels</h5>
-        {currentSignal ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
-            <div className="flex justify-between">
-              <span className="text-slate-400">Entry:</span>
-              <span className="text-white font-medium">${currentSignal.entryPrice?.toFixed(2) || 'N/A'}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">Success Rate:</span>
-              <span className="text-green-400 font-medium">{currentSignal.successProbability || 0}%</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">Stop Loss:</span>
-              <span className="text-red-400 font-medium">${currentSignal.stopLoss?.toFixed(2) || 'N/A'}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-400">Take Profit:</span>
-              <span className="text-green-400 font-medium">${currentSignal.takeProfit?.toFixed(2) || 'N/A'}</span>
-            </div>
-          </div>
-        ) : (
-          <div className="text-xs text-slate-400 text-center py-2">
-            Signal calculating for {selectedTimeframe.toUpperCase()} timeframe...
-          </div>
-        )}
-      </div>
-
-      {/* Performance Metrics Section */}
-      {performanceData?.indicators && performanceData.indicators.length > 0 && (
-        <div className="mt-3 p-2 bg-gray-900/50 rounded border border-gray-800">
-          <h5 className="text-blue-300 font-medium text-xs mb-2">📊 Performance Analysis</h5>
-          <div className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
-            {performanceData.indicators.map((indicator, index) => (
-              <div key={index} className="flex justify-between">
-                <span className="text-slate-300">{indicator.indicator}:</span>
-                <div className="flex items-center gap-1">
-                  <span className={`font-medium ${
-                    indicator.status === 'GOOD' ? 'text-green-400' : 
-                    indicator.status === 'WARNING' ? 'text-yellow-400' : 
-                    indicator.status === 'CRITICAL' ? 'text-red-400' : 'text-white'
-                  }`}>
-                    {typeof indicator.value === 'number' ? indicator.value.toFixed(1) : indicator.value}
-                  </span>
-                  <span className={`text-xs ${
-                    indicator.change.includes('+') ? 'text-green-400' : 
-                    indicator.change.includes('-') ? 'text-red-400' : 'text-slate-400'
-                  }`}>
-                    {indicator.change}
-                  </span>
+        {metrics.length > 4 && (
+          <div className="space-y-2">
+            {metrics.slice(4).map((metric: PerformanceIndicator, index: number) => (
+              <div key={index} className="flex items-center justify-between p-3 bg-secondary rounded border border-gray-700">
+                <span className="text-sm text-gray-300">{metric.name}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-white">{metric.value}</span>
+                  <Badge variant={metric.status === 'good' ? 'default' : metric.status === 'warning' ? 'secondary' : 'destructive'} className="text-xs">
+                    {metric.status}
+                  </Badge>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      )}
-
-      {/* AI Insights */}
-      <div className="mt-2 text-xs text-slate-400">
-        {getAIRecommendation()} • System continuously learns from prediction accuracy
+        )}
       </div>
-    </div>
+    );
+  };
+
+  const renderPatternAnalysis = () => {
+    if (patternQuery.isLoading) {
+      return <div className="text-center py-4">Analyzing patterns...</div>;
+    }
+
+    if (patternQuery.error || !patternQuery.data?.patterns) {
+      return <div className="text-center py-4 text-red-400">Pattern analysis unavailable</div>;
+    }
+
+    const patterns = patternQuery.data.patterns;
+    const totalPatterns = patterns.length;
+    const strongPatterns = patterns.filter((p: PatternResult) => p.strength === 'STRONG').length;
+
+    return (
+      <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
+          <Card className="bg-secondary border-gray-700">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-400">Patterns Detected</p>
+                  <p className="text-lg font-bold text-white">{totalPatterns}</p>
+                </div>
+                <Eye className="h-5 w-5 text-blue-400" />
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card className="bg-secondary border-gray-700">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-400">Strong Signals</p>
+                  <p className="text-lg font-bold text-white">{strongPatterns}</p>
+                </div>
+                <Target className="h-5 w-5 text-green-400" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-2">
+          {patterns.slice(0, 3).map((pattern: PatternResult, index: number) => (
+            <Card key={index} className="bg-secondary border-gray-700">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <Badge variant={pattern.signal === 'BUY' ? 'default' : pattern.signal === 'SELL' ? 'destructive' : 'secondary'}>
+                        {pattern.signal}
+                      </Badge>
+                      <span className="text-sm font-medium text-white">{pattern.type}</span>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">{pattern.description}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-bold text-white">{pattern.confidence}%</p>
+                    <Badge variant="outline" className="text-xs">
+                      {pattern.strength}
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderConfluenceAnalysis = () => {
+    if (confluenceQuery.isLoading) {
+      return <div className="text-center py-4">Analyzing confluence...</div>;
+    }
+
+    if (confluenceQuery.error || !confluenceQuery.data?.confluenceAnalysis) {
+      return <div className="text-center py-4 text-red-400">Confluence analysis unavailable</div>;
+    }
+
+    const confluence = confluenceQuery.data.confluenceAnalysis;
+
+    return (
+      <div className="space-y-4">
+        <Card className="bg-secondary border-gray-700">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm text-gray-400">Multi-Timeframe Confluence</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-400">Overall Direction</span>
+              <Badge variant={confluence.overallDirection === 'BULLISH' ? 'default' : 'destructive'}>
+                {confluence.overallDirection}
+              </Badge>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-400">Confluence Strength</span>
+                <span className="text-white font-bold">{confluence.confluenceStrength}%</span>
+              </div>
+              <Progress value={confluence.confluenceStrength} className="h-2" />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 mt-4">
+              <div className="text-center">
+                <p className="text-lg font-bold text-green-400">{confluence.summary?.totalBullishSignals || 0}</p>
+                <p className="text-xs text-gray-400">Bullish Signals</p>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-bold text-red-400">{confluence.summary?.totalBearishSignals || 0}</p>
+                <p className="text-xs text-gray-400">Bearish Signals</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  };
+
+  return (
+    <Card className="bg-secondary border-gray-700">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Gauge className="h-5 w-5 text-blue-400" />
+          Performance Analysis
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-3 bg-gray-700">
+            <TabsTrigger value="performance" className="text-gray-300">Performance</TabsTrigger>
+            <TabsTrigger value="patterns" className="text-gray-300">Pattern Analysis</TabsTrigger>
+            <TabsTrigger value="confluence" className="text-gray-300">Multi-Timeframe</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="performance" className="mt-4">
+            {renderPerformanceMetrics()}
+          </TabsContent>
+          
+          <TabsContent value="patterns" className="mt-4">
+            {renderPatternAnalysis()}
+          </TabsContent>
+          
+          <TabsContent value="confluence" className="mt-4">
+            {renderConfluenceAnalysis()}
+          </TabsContent>
+        </Tabs>
+      </CardContent>
+    </Card>
   );
 }

@@ -7,7 +7,6 @@ import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
-import { EnhancedMarketStructureAnalysis } from '../components/EnhancedMarketStructureAnalysis';
 
 
 const Analysis: React.FC = () => {
@@ -81,11 +80,6 @@ const Analysis: React.FC = () => {
             symbol={currentAsset} 
             onTimeframeSelect={handleChangeTimeframe}
           />
-        <EnhancedMarketStructureAnalysis 
-          symbol={currentAsset}
-          timeframe={currentTimeframe}
-          onPatternChange={handlePatternChange}
-        />
         </div>
         
 
