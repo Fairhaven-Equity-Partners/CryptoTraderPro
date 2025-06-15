@@ -14,6 +14,7 @@ interface MonteCarloResult {
   winProbability: number;
   riskScore: number;
   sharpeRatio: number;
+  volatility: number;
   confidenceInterval: [number, number];
   riskLevel: 'VERY_LOW' | 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
 }
@@ -29,6 +30,7 @@ interface RiskAssessmentResponse {
     takeProfit: number;
     confidence: number;
     direction: string;
+    timeframe: string;
   };
   timestamp: string;
 }
@@ -94,6 +96,22 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
           // Check for HTTP status codes at start of message (format: "429: Rate limit...")
           if (errorMessage.startsWith('429') || errorMessage.includes('rate limit')) {
             throw new Error('Rate limit exceeded. Please wait before making another request.');
+          }
+          
+          if (errorMessage.startsWith('404') || errorMessage.includes('no signals available') || errorMessage.includes('no market data')) {
+            throw new Error('No market data available for this symbol/timeframe combination.');
+          }
+          
+          if (errorMessage.startsWith('400') || errorMessage.includes('symbol required') || errorMessage.includes('invalid parameters')) {
+            throw new Error('Invalid parameters. Please check your symbol and timeframe selection.');
+          }
+          
+          if (errorMessage.startsWith('500') || errorMessage.includes('server error')) {
+            throw new Error('Server error occurred. Please try again.');
+          }
+          
+          if (errorMessage.includes('network') || errorMessage.includes('connection') || errorMessage.includes('fetch')) {
+            throw new Error('Check your internet connection.');
           }
           
           if (errorMessage.startsWith('400') || errorMessage.includes('symbol required') || errorMessage.includes('timeframe required')) {
@@ -275,6 +293,12 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
                     </span>
                   </div>
                   <div className="flex justify-between">
+                    <span className="text-sm">Volatility</span>
+                    <span className="text-sm font-medium">
+                      {analysis.riskMetrics.volatility.toFixed(2)}%
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-sm">Sharpe Ratio</span>
                     <span className="text-sm font-medium">
                       {analysis.riskMetrics.sharpeRatio.toFixed(3)}
@@ -331,6 +355,10 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
                   <div>
                     <span className="text-muted-foreground">Confidence</span>
                     <p className="font-medium">{analysis.signalInput.confidence.toFixed(1)}%</p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Timeframe</span>
+                    <p className="font-medium">{analysis.signalInput.timeframe}</p>
                   </div>
                 </div>
               </div>
