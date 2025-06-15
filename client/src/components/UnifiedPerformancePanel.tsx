@@ -85,18 +85,29 @@ export default function UnifiedPerformancePanel({
     if (performanceQuery.isLoading) {
       return (
         <div className="space-y-4">
-          <div className="animate-pulse">
-            <div className="h-4 bg-gray-700 rounded w-3/4 mb-2"></div>
-            <div className="h-4 bg-gray-700 rounded w-1/2"></div>
-          </div>
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="animate-pulse">
+              <div className="h-4 bg-gray-700 rounded w-3/4 mb-2"></div>
+              <div className="h-4 bg-gray-700 rounded w-1/2"></div>
+            </div>
+          ))}
         </div>
       );
     }
 
     if (performanceQuery.error) {
       return (
-        <div className="text-center py-4 text-red-400">
-          Performance metrics unavailable
+        <div className="text-center py-8">
+          <div className="text-red-400 mb-2">⚠️ Performance Data Unavailable</div>
+          <div className="text-gray-400 text-sm">
+            {performanceQuery.error?.message || 'Unable to load performance metrics'}
+          </div>
+          <button 
+            onClick={() => performanceQuery.refetch()}
+            className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Retry
+          </button>
         </div>
       );
     }
@@ -105,8 +116,17 @@ export default function UnifiedPerformancePanel({
     
     if (metrics.length === 0) {
       return (
-        <div className="text-center py-4 text-gray-400">
-          No performance data available
+        <div className="text-center py-8">
+          <div className="text-gray-400 mb-2">📊 No Performance Data</div>
+          <div className="text-gray-500 text-sm">
+            Performance metrics are being calculated...
+          </div>
+          <button 
+            onClick={() => performanceQuery.refetch()}
+            className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Refresh
+          </button>
         </div>
       );
     }
@@ -121,12 +141,18 @@ export default function UnifiedPerformancePanel({
                   <div>
                     <p className="text-sm text-gray-400">{metric.name}</p>
                     <p className="text-lg font-bold text-white">{metric.value}</p>
+                    {metric.description && (
+                      <p className="text-xs text-gray-500 mt-1">{metric.description}</p>
+                    )}
                   </div>
                   <div className="text-right">
-                    <Badge variant={metric.status === 'good' ? 'default' : metric.status === 'warning' ? 'secondary' : 'destructive'}>
+                    <Badge variant={
+                      metric.status === 'good' ? 'default' : 
+                      metric.status === 'warning' ? 'secondary' : 'destructive'
+                    }>
                       {metric.status.toUpperCase()}
                     </Badge>
-                    {metric.change !== undefined && (
+                    {metric.change !== undefined && metric.change !== 0 && (
                       <p className={`text-xs mt-1 ${metric.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {metric.change >= 0 ? '+' : ''}{metric.change}%
                       </p>
@@ -142,10 +168,18 @@ export default function UnifiedPerformancePanel({
           <div className="space-y-2">
             {metrics.slice(4).map((metric: PerformanceIndicator, index: number) => (
               <div key={index} className="flex items-center justify-between p-3 bg-secondary rounded border border-gray-700">
-                <span className="text-sm text-gray-300">{metric.name}</span>
+                <div className="flex-1">
+                  <span className="text-sm font-medium text-gray-300">{metric.name}</span>
+                  {metric.description && (
+                    <p className="text-xs text-gray-500">{metric.description}</p>
+                  )}
+                </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-white">{metric.value}</span>
-                  <Badge variant={metric.status === 'good' ? 'default' : metric.status === 'warning' ? 'secondary' : 'destructive'} className="text-xs">
+                  <Badge variant={
+                    metric.status === 'good' ? 'default' : 
+                    metric.status === 'warning' ? 'secondary' : 'destructive'
+                  } className="text-xs">
                     {metric.status}
                   </Badge>
                 </div>
@@ -153,6 +187,18 @@ export default function UnifiedPerformancePanel({
             ))}
           </div>
         )}
+
+        <div className="mt-4 p-3 bg-gray-800 rounded border border-gray-700">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-400">Last Updated:</span>
+            <span className="text-gray-300">
+              {performanceQuery.data?.lastUpdated ? 
+                new Date(performanceQuery.data.lastUpdated).toLocaleTimeString() : 
+                'Unknown'
+              }
+            </span>
+          </div>
+        </div>
       </div>
     );
   };
