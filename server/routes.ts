@@ -1188,6 +1188,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Enhanced technical analysis endpoint
   app.get('/api/technical-analysis/:symbol', async (req: Request, res: Response) => {
     try {
+      // Ensure JSON response
+      res.setHeader('Content-Type', 'application/json');
+      
       const { symbol } = req.params;
       const { period = 30, timeframe } = req.query;
       
@@ -2811,6 +2814,9 @@ app.get('/api/performance-metrics', async (req, res) => {
   // Enhanced Pattern Recognition API - Advanced Market Analysis
   app.get('/api/pattern-analysis/:symbol', async (req: Request, res: Response) => {
     try {
+      // Ensure JSON response
+      res.setHeader('Content-Type', 'application/json');
+      
       const { symbol } = req.params;
       const { timeframe = '1d' } = req.query;
       
@@ -2871,6 +2877,9 @@ app.get('/api/performance-metrics', async (req, res) => {
   // Multi-timeframe Confluence Analysis - Maximum Accuracy
   app.get('/api/confluence-analysis/:symbol', async (req: Request, res: Response) => {
     try {
+      // Ensure JSON response
+      res.setHeader('Content-Type', 'application/json');
+      
       const { symbol } = req.params;
       const timeframes = ['1h', '4h', '1d', '1w'];
       
