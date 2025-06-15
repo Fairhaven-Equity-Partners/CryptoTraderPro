@@ -58,6 +58,7 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
     },
     onError: (error) => {
       console.error('Monte Carlo analysis failed:', error);
+      console.error('Parameters used:', { symbol, timeframe });
       setIsAnalyzing(false);
     },
     onSettled: () => {
@@ -67,7 +68,13 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
 
   // Auto-execution when symbol or timeframe changes
   useEffect(() => {
-    if (symbol && timeframe && symbol !== 'undefined' && timeframe !== 'undefined') {
+    // Enhanced validation to prevent empty requests
+    if (symbol && timeframe && 
+        symbol !== 'undefined' && timeframe !== 'undefined' &&
+        symbol.trim() !== '' && timeframe.trim() !== '' &&
+        symbol !== 'null' && timeframe !== 'null' &&
+        typeof symbol === 'string' && typeof timeframe === 'string') {
+      
       const currentPair = `${symbol} (${timeframe})`;
       
       // Only run if it's a different pair/timeframe combination
