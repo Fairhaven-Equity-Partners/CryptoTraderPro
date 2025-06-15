@@ -96,13 +96,13 @@ const Analysis: React.FC = () => {
           
           {/* Performance and Detailed Analytics */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <UnifiedPerformancePanel currentAsset={currentAsset} />
+            <UnifiedPerformancePanel />
             <div className="space-y-4">
               <PriceOverview 
                 symbol={currentAsset} 
                 timeframe={currentTimeframe}
               />
-              <MacroIndicatorsPanel currentAsset={currentAsset} />
+              <MacroIndicatorsPanel />
             </div>
           </div>
         </div>

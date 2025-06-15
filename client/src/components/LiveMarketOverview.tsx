@@ -34,22 +34,24 @@ const LiveMarketOverview: React.FC = () => {
   });
 
   const topPairs = React.useMemo(() => {
-    if (!marketPairs) return [];
+    if (!marketPairs || !Array.isArray(marketPairs)) return [];
     return marketPairs
       .filter((pair: MarketPair) => 
-        ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT'].includes(pair.symbol)
+        pair && pair.symbol && ['BTC/USDT', 'ETH/USDT', 'BNB/USDT', 'SOL/USDT', 'XRP/USDT'].includes(pair.symbol)
       )
       .slice(0, 5);
   }, [marketPairs]);
 
   const formatPrice = (price: number, symbol: string) => {
-    if (symbol.includes('BTC')) return `$${price.toLocaleString()}`;
+    if (!price || typeof price !== 'number' || isNaN(price)) return 'N/A';
+    if (symbol && symbol.includes('BTC')) return `$${price.toLocaleString()}`;
     if (price > 1000) return `$${price.toLocaleString()}`;
     if (price > 1) return `$${price.toFixed(2)}`;
     return `$${price.toFixed(4)}`;
   };
 
   const formatChange = (change: number) => {
+    if (!change || typeof change !== 'number' || isNaN(change)) return '0.00%';
     const formatted = Math.abs(change).toFixed(2);
     return change >= 0 ? `+${formatted}%` : `-${formatted}%`;
   };
@@ -57,7 +59,9 @@ const LiveMarketOverview: React.FC = () => {
   const getMarketSentiment = () => {
     if (!topPairs.length) return { label: 'Loading...', color: 'secondary' };
     
-    const positiveCount = topPairs.filter((pair: MarketPair) => pair.change24h > 0).length;
+    const positiveCount = topPairs.filter((pair: MarketPair) => 
+      pair && typeof pair.change24h === 'number' && pair.change24h > 0
+    ).length;
     const ratio = positiveCount / topPairs.length;
     
     if (ratio >= 0.8) return { label: 'Very Bullish', color: 'green' };
@@ -68,10 +72,12 @@ const LiveMarketOverview: React.FC = () => {
   };
 
   const getPerformanceSummary = () => {
-    if (!performanceMetrics?.indicators) return 'Loading...';
+    if (!performanceMetrics || !performanceMetrics.indicators || !Array.isArray(performanceMetrics.indicators)) {
+      return 'Loading...';
+    }
     
     const winRateMetric = performanceMetrics.indicators.find((m: any) => 
-      m.name.toLowerCase().includes('accuracy') || m.name.toLowerCase().includes('win')
+      m && m.name && (m.name.toLowerCase().includes('accuracy') || m.name.toLowerCase().includes('win'))
     );
     
     return winRateMetric ? `${winRateMetric.value}${winRateMetric.unit || ''}` : 'N/A';

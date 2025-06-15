@@ -8,9 +8,7 @@ interface Signal {
   symbol: string;
   direction: 'LONG' | 'SHORT' | 'NEUTRAL';
   confidence: number;
-  entryPrice: number;
-  stopLoss: number;
-  takeProfit: number;
+  price: number;
   strength: number;
   timeframe: string;
 }
@@ -70,8 +68,8 @@ const CriticalSignalAnalysis: React.FC = () => {
     return `$${price.toFixed(4)}`;
   };
 
-  const highConfidenceSignals = signals.filter(signal => signal.confidence >= 70);
-  const confluenceScore = confluenceData?.confluence?.overallScore || 0;
+  const highConfidenceSignals = signals.filter(signal => signal && signal.confidence >= 70);
+  const confluenceScore = (confluenceData && confluenceData.confluence && confluenceData.confluence.overallScore) || 0;
 
   if (isLoading) {
     return (

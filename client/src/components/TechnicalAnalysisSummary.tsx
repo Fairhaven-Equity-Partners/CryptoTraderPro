@@ -33,8 +33,8 @@ const TechnicalAnalysisSummary: React.FC = () => {
     refetchInterval: 45000,
   });
 
-  const indicators = techData?.indicators as TechnicalIndicators;
-  const patterns = (patternData as PatternData)?.patterns || [];
+  const indicators = (techData && techData.indicators) ? techData.indicators as TechnicalIndicators : null;
+  const patterns = (patternData && patternData.patterns && Array.isArray(patternData.patterns)) ? patternData.patterns : [];
 
   const getRSISignal = (rsi: number) => {
     if (rsi >= 70) return { signal: 'Overbought', color: 'text-red-600', icon: TrendingDown };
