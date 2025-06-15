@@ -44,6 +44,10 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
   const [analysis, setAnalysis] = useState<RiskAssessmentResponse | null>(null);
   const queryClient = useQueryClient();
 
+  // Defensive parameter validation with fallbacks
+  const validSymbol = symbol?.trim() || 'BTC/USDT';
+  const validTimeframe = timeframe?.trim() || '1d';
+
   const riskAssessmentMutation = useMutation({
     mutationFn: async ({ symbol, timeframe }: { symbol: string; timeframe: string }) => {
       // Enhanced validation
@@ -164,30 +168,18 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
   });
 
   const handleRunAnalysis = useCallback(() => {
-    // Enhanced validation before making request
-    if (!symbol || !timeframe) {
-      console.error('[MonteCarloRiskDisplay] Missing required parameters');
-      return;
-    }
-    
-    if (typeof symbol !== 'string' || typeof timeframe !== 'string') {
-      console.error('[MonteCarloRiskDisplay] Invalid parameter types');
-      return;
-    }
-    
-    if (symbol.trim() === '' || timeframe.trim() === '') {
-      console.error('[MonteCarloRiskDisplay] Empty parameters detected');
-      return;
-    }
+    // Use validated parameters with fallbacks
+    const finalSymbol = validSymbol;
+    const finalTimeframe = validTimeframe;
     
     if (riskAssessmentMutation.isPending) {
       console.log('[MonteCarloRiskDisplay] Analysis already in progress');
       return;
     }
     
-    console.log(`[MonteCarloRiskDisplay] Starting analysis for ${symbol} (${timeframe})`);
-    riskAssessmentMutation.mutate({ symbol, timeframe });
-  }, [symbol, timeframe, riskAssessmentMutation]);
+    console.log(`[MonteCarloRiskDisplay] Starting analysis for ${finalSymbol} (${finalTimeframe})`);
+    riskAssessmentMutation.mutate({ symbol: finalSymbol, timeframe: finalTimeframe });
+  }, [validSymbol, validTimeframe, riskAssessmentMutation]);
 
   const getRiskLevelColor = (level: string) => {
     switch (level) {
