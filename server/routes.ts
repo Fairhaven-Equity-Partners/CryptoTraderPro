@@ -1454,34 +1454,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
               
               // Detailed nested structure for advanced analysis
               detailed: {
-                rsi: {
+                rsiAnalysis: {
                   value: Math.round(rsi * 10) / 10,
                   signal: rsi > 70 ? 'SELL' : rsi < 30 ? 'BUY' : 'HOLD',
                   status: rsi > 70 ? 'overbought' : rsi < 30 ? 'oversold' : 'neutral',
                   strength: volatility > 5 ? 'HIGH' : volatility > 2 ? 'MEDIUM' : 'LOW'
                 },
-              macd: {
-                value: Math.round(macdValue * 1000) / 1000,
-                signal: Math.round(macdSignal * 1000) / 1000,
-                histogram: Math.round(macdHistogram * 1000) / 1000,
-                crossover: macdValue > macdSignal ? 'BULLISH' : 'BEARISH',
-                strength: Math.abs(macdHistogram) > 0.5 ? 'STRONG' : 'WEAK'
-              },
-              ema: {
-                value: Math.round(ema * 100) / 100,
-                signal: price > ema ? 'BUY' : 'SELL',
-                deviation: Math.round(((price - ema) / ema) * 10000) / 100
-              },
-              sma: {
-                value: Math.round(sma * 100) / 100,
-                signal: price > sma ? 'BUY' : 'SELL',
-                deviation: Math.round(((price - sma) / sma) * 10000) / 100
-              },
-              stochastic: {
-                k: Math.round(stochK * 10) / 10,
-                d: Math.round(stochD * 10) / 10,
-                signal: stochK > 80 ? 'SELL' : stochK < 20 ? 'BUY' : 'HOLD',
-                status: stochK > 80 ? 'overbought' : stochK < 20 ? 'oversold' : 'neutral'
+                macdAnalysis: {
+                  value: Math.round(macdValue * 1000) / 1000,
+                  signal: Math.round(macdSignal * 1000) / 1000,
+                  histogram: Math.round(macdHistogram * 1000) / 1000,
+                  crossover: macdValue > macdSignal ? 'BULLISH' : 'BEARISH',
+                  strength: Math.abs(macdHistogram) > 0.5 ? 'STRONG' : 'WEAK'
+                },
+                stochasticAnalysis: {
+                  k: Math.round(stochK * 10) / 10,
+                  d: Math.round(stochD * 10) / 10,
+                  signal: stochK > 80 ? 'SELL' : stochK < 20 ? 'BUY' : 'HOLD',
+                  status: stochK > 80 ? 'overbought' : stochK < 20 ? 'oversold' : 'neutral'
+                }
               },
               bollingerBands: {
                 upper: parseFloat(bollingerBands.upper.toFixed(8)),
@@ -1496,7 +1487,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 direction: ultraPreciseAnalysis.direction,
                 mathematicalPrecision: "50 decimal places",
                 calculationEngine: "BigNumber.js Ultra-Precision"
-              }
               }
             },
             analysis: {
