@@ -120,13 +120,19 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
           <div className="flex items-center gap-4">
             <Badge variant="outline">{symbol}</Badge>
             <Badge variant="secondary">{timeframe}</Badge>
+            {(isAnalyzing || riskAssessmentMutation.isPending) && (
+              <Badge variant="secondary" className="animate-pulse">
+                <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                Analyzing...
+              </Badge>
+            )}
             <Button 
-              onClick={handleRunAnalysis} 
+              onClick={handleManualRunAnalysis} 
               disabled={isAnalyzing || riskAssessmentMutation.isPending}
               size="sm"
               variant="outline"
             >
-              {isAnalyzing ? 'Analyzing...' : 'Run Analysis'}
+              {(isAnalyzing || riskAssessmentMutation.isPending) ? 'Analyzing...' : 'Run Analysis'}
             </Button>
           </div>
         </CardTitle>
@@ -225,8 +231,8 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
             <p className="text-sm text-muted-foreground mb-4">
               Unable to perform Monte Carlo risk assessment. Please ensure signal data is available for {symbol}.
             </p>
-            <Button onClick={handleRunAnalysis} variant="outline" size="sm">
-              Try Again
+            <Button onClick={handleManualRunAnalysis} variant="outline" size="sm">
+              Retry Analysis
             </Button>
           </div>
         </CardContent>
@@ -242,7 +248,7 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
             <p className="text-sm text-muted-foreground mb-4">
               Run advanced risk simulation with 1000+ iterations to assess potential outcomes for {symbol} on {timeframe} timeframe
             </p>
-            <Button onClick={handleRunAnalysis} disabled={isAnalyzing}>
+            <Button onClick={handleManualRunAnalysis} disabled={isAnalyzing}>
               {isAnalyzing ? 'Analyzing...' : 'Start Analysis'}
             </Button>
           </div>
