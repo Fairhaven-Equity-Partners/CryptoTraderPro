@@ -666,6 +666,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
             confidence = Math.min(95, confidence + 8);
           }
           
+          // Calculate confluence score for Critical Signal Analysis display
+          const confluenceScore = Math.min(100, Math.max(0, 
+            (bullishSignals + bearishSignals) * 10 + volatility * 5 + (confidence - 50)
+          ));
+          
           const signal = {
             symbol,
             direction,
@@ -677,6 +682,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
             takeProfit: direction === 'LONG' ? currentPrice * 1.05 : currentPrice * 0.95,
             stopLoss: direction === 'LONG' ? currentPrice * 0.95 : currentPrice * 1.05,
             timestamp: Date.now(),
+            // Add confluence fields for Critical Signal Analysis component
+            confluence: Math.round(confluenceScore),
+            confluenceAnalysis: {
+              score: Math.round(confluenceScore),
+              factors: [
+                { name: "Technical Indicators", weight: bullishSignals + bearishSignals, signal: direction },
+                { name: "Market Momentum", weight: Math.round(volatility), signal: change24h > 0 ? "BULLISH" : "BEARISH" },
+                { name: "Price Action", weight: Math.round(confidence / 10), signal: direction }
+              ],
+              strength: confluenceScore > 75 ? "STRONG" : confluenceScore > 50 ? "MODERATE" : "WEAK",
+              timeframe: tf,
+              timestamp: Date.now()
+            },
             indicators: JSON.stringify({
               trend: [
                 { name: "Price Momentum", signal: change24h > 0 ? "BUY" : "SELL", strength: volatility > 3 ? "STRONG" : "MODERATE", value: change24h },
@@ -782,21 +800,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json([]);
       }
       
-      // Transform signals from automated calculator to expected format
-      const formattedSignals = signals.map(signal => ({
-        symbol: signal.symbol,
-        timeframe: signal.timeframe,
-        direction: signal.direction,
-        confidence: signal.confidence,
-        strength: signal.strength,
-        price: signal.price,
-        timestamp: signal.timestamp,
-        indicators: signal.indicators || {},
-        technicalAnalysis: signal.technicalAnalysis || null,
-        confluenceScore: signal.confluenceScore || 0,
-        riskReward: signal.riskReward || 1.5,
-        volatilityAdjustment: signal.volatilityAdjustment || 1.0
-      }));
+      // Transform signals from automated calculator to expected format with confluence data
+      const formattedSignals = signals.map(signal => {
+        // Calculate confluence score for Critical Signal Analysis display
+        const baseConfluence = signal.confluenceScore || 0;
+        const confidenceBonus = Math.max(0, signal.confidence - 50);
+        const strengthBonus = Math.max(0, (signal.strength || 0) * 20);
+        const confluenceScore = Math.min(100, Math.max(0, baseConfluence + confidenceBonus + strengthBonus));
+        
+        return {
+          symbol: signal.symbol,
+          timeframe: signal.timeframe,
+          direction: signal.direction,
+          confidence: signal.confidence,
+          strength: signal.strength,
+          price: signal.price,
+          timestamp: signal.timestamp,
+          indicators: signal.indicators || {},
+          technicalAnalysis: signal.technicalAnalysis || null,
+          confluenceScore: signal.confluenceScore || 0,
+          riskReward: signal.riskReward || 1.5,
+          volatilityAdjustment: signal.volatilityAdjustment || 1.0,
+          // Add confluence fields for Critical Signal Analysis component
+          confluence: Math.round(confluenceScore),
+          confluenceAnalysis: {
+            score: Math.round(confluenceScore),
+            factors: [
+              { name: "Signal Confidence", weight: Math.round(signal.confidence / 10), signal: signal.direction },
+              { name: "Market Strength", weight: Math.round((signal.strength || 0) * 10), signal: signal.direction },
+              { name: "Technical Setup", weight: Math.round(confidenceBonus / 5), signal: signal.direction }
+            ],
+            strength: confluenceScore > 75 ? "STRONG" : confluenceScore > 50 ? "MODERATE" : "WEAK",
+            timeframe: signal.timeframe,
+            timestamp: signal.timestamp || Date.now()
+          }
+        };
+      });
       
       // Filter by timeframe if different from what calculator returned
       const filteredSignals = timeframe ? 
