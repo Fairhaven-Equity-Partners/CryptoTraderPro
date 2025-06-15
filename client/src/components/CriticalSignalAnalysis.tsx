@@ -68,9 +68,30 @@ const CriticalSignalAnalysis: React.FC = () => {
     return `$${price.toFixed(4)}`;
   };
 
-  const highConfidenceSignals = signals.filter(signal => signal && signal.confidence >= 70);
-  const confluenceScore = (confluenceData && confluenceData.confluence && confluenceData.confluence.overallScore) || 
-                         (confluenceData && typeof confluenceData.confluence === 'number' ? confluenceData.confluence : 0);
+  const highConfidenceSignals = Array.isArray(signals) ? signals.filter(signal => signal && signal.confidence >= 70) : [];
+  
+  // Enhanced confluence score calculation based on external testing findings
+  const confluenceScore = (() => {
+    if (!confluenceData) return 0;
+    
+    // Primary: Direct confluence field (added in backend fix)
+    if (typeof confluenceData.confluence === 'number') {
+      return confluenceData.confluence;
+    }
+    
+    // Fallback: ConfluenceAnalysis object
+    if (confluenceData.confluenceAnalysis) {
+      const analysis = confluenceData.confluenceAnalysis;
+      if (typeof analysis.confluenceStrength === 'number') {
+        return analysis.confluenceStrength;
+      }
+      if (typeof analysis.averageConfidence === 'number') {
+        return analysis.averageConfidence;
+      }
+    }
+    
+    return 0;
+  })();
 
   if (isLoading) {
     return (

@@ -415,11 +415,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Convert Map to array format for JSON response
         const signalsArray: any[] = [];
         if (allSignals instanceof Map) {
-          for (const [symbol, signals] of allSignals.entries()) {
+          // Use Array.from to handle Map iteration properly
+          Array.from(allSignals.entries()).forEach(([symbol, signals]) => {
             if (Array.isArray(signals)) {
               signalsArray.push(...signals);
             }
-          }
+          });
         } else {
           // Handle if it's already an array or object
           if (Array.isArray(allSignals)) {
@@ -429,7 +430,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Filter by timeframe if specified
         const filteredSignals = timeframe ? 
-          signalsArray.filter(s => s.timeframe === requestedTimeframe) : 
+          signalsArray.filter(s => s && s.timeframe === requestedTimeframe) : 
           signalsArray;
         
         // Format signals for frontend compatibility
@@ -3035,6 +3036,7 @@ app.get('/api/performance-metrics', async (req, res) => {
         success: true,
         symbol,
         timestamp: new Date().toISOString(),
+        confluence: confluenceStrength, // Critical field for frontend component
         confluenceAnalysis: {
           overallDirection,
           confluenceStrength,

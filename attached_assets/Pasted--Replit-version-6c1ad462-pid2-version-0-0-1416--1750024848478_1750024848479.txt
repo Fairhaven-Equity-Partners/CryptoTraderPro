@@ -1,0 +1,555 @@
+ Replit version 6c1ad462, pid2 version 0.0.1416
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro-1:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0B0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A010190064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A030650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A030650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A030650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A030650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A030650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A060650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A090650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A090650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A090650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A090650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+[GroupMarkerNotSet(crbug.com/242999)!:A090650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A060650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A060650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A060650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0B0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0E0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A010190064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+workspace_iframe.html:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html:32 Unrecognized feature: 'battery'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=52I8zyfYJr8W' failed: 
+t @ eruda.js:2
+eruda.js:2 Uncaught (in promise) 
+ [CentralizedPriceManager] Initializing with 4-minute intervals
+ Technical indicators module initialized
+ 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+ 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+ [UltimateManager] Starting FINAL system initialization
+ Technical indicators module initialized
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Using existing fetch for BTC/USDT
+ Loading chart data for BTC/USDT (1m)
+ Loading chart data for BTC/USDT (5m)
+ Loading chart data for BTC/USDT (15m)
+ Loading chart data for BTC/USDT (30m)
+ Loading chart data for BTC/USDT (1h)
+ Loading chart data for BTC/USDT (4h)
+ Loading chart data for BTC/USDT (1d)
+ Loading chart data for BTC/USDT (3d)
+ Loading chart data for BTC/USDT (1w)
+ Loading chart data for BTC/USDT (1M)
+ [CentralizedPriceManager] New subscriber for BTC/USDT
+ [CentralizedPriceManager] Using existing fetch for BTC/USDT
+ [CentralizedPriceManager] Starting 4-minute fetch interval
+ 🧠 Initializing continuous learning feedback loop for BTC/USDT
+ 🧠 Starting continuous learning for BTC/USDT
+ [CentralizedPriceManager] New subscriber for BTC/USDT
+ [CentralizedPriceManager] Using existing fetch for BTC/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ Enhanced macro analysis starting for: BTC/USDT
+ Base macro insights: Array(6)
+ Correlation analysis result: Object
+ Market regime result: Object
+ Final enhanced insights: Array(6)
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT
+ [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+ [CentralizedPriceManager] Using existing fetch for BTC/USDT
+ [CentralizedPriceManager] Updated price for BTC/USDT: $104820.697954115
+ Establishing data connection...
+ [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+ [UltimateManager] Backend automated signal calculator managing all 50 symbols
+ [UltimateManager] Authentic trade simulations active for market data
+ [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104820.697954115
+ [PriceOverview] Centralized price update for BTC/USDT: $104820.697954115
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart with 200 data points for BTC/USDT (1w)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+ Establishing data connection...
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ [UltimateManager] Multi-pair fetch: 50 symbols updated
+ [UltimateManager] Preloading chart data for immediate analysis
+ Loading chart with 1000 data points for BTC/USDT (1m)
+ Loading chart with 1000 data points for BTC/USDT (5m)
+ Loading chart with 800 data points for BTC/USDT (15m)
+ Loading chart with 800 data points for BTC/USDT (30m)
+ Loading chart with 720 data points for BTC/USDT (1h)
+ Loading chart with 365 data points for BTC/USDT (1d)
+ Loading chart with 150 data points for BTC/USDT (3d)
+ Loading chart with 200 data points for BTC/USDT (1w)
+ Loading chart with 60 data points for BTC/USDT (1M)
+ Loading chart with 500 data points for BTC/USDT (4h)
+ All timeframe data loaded for BTC/USDT
+ [SignalDashboard] Data ready for BTC/USDT - triggering calculation (initial)
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Data connection established
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 800 data points for ETH/USDT (15m)
+ Loading chart with 1000 data points for ETH/USDT (1m)
+ Loading chart with 800 data points for ETH/USDT (30m)
+ Loading chart with 150 data points for ETH/USDT (3d)
+ Loading chart with 200 data points for ETH/USDT (1w)
+ Loading chart with 365 data points for ETH/USDT (1d)
+ Loading chart with 720 data points for ETH/USDT (1h)
+ Loading chart with 60 data points for ETH/USDT (1M)
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 1000 data points for BNB/USDT (1m)
+ Loading chart with 1000 data points for ETH/USDT (5m)
+ Loading chart with 500 data points for ETH/USDT (4h)
+ Loading chart with 800 data points for BNB/USDT (30m)
+ Loading chart with 365 data points for BNB/USDT (1d)
+ Loading chart with 800 data points for BNB/USDT (15m)
+ Loading chart with 150 data points for BNB/USDT (3d)
+ Loading chart with 1000 data points for BNB/USDT (5m)
+ Loading chart with 200 data points for BNB/USDT (1w)
+ Loading chart with 60 data points for BNB/USDT (1M)
+ Loading chart with 500 data points for BNB/USDT (4h)
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 800 data points for SOL/USDT (15m)
+ Loading chart with 1000 data points for SOL/USDT (1m)
+ Loading chart with 1000 data points for SOL/USDT (5m)
+ Loading chart with 365 data points for SOL/USDT (1d)
+ Loading chart with 720 data points for BNB/USDT (1h)
+ Loading chart with 720 data points for SOL/USDT (1h)
+ Loading chart with 800 data points for SOL/USDT (30m)
+ Loading chart with 150 data points for SOL/USDT (3d)
+ Loading chart with 200 data points for SOL/USDT (1w)
+ Loading chart with 60 data points for SOL/USDT (1M)
+ Loading chart with 500 data points for SOL/USDT (4h)
+ Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+ Loading chart with 800 data points for XRP/USDT (30m)
+ Loading chart with 1000 data points for XRP/USDT (1m)
+ Loading chart with 1000 data points for XRP/USDT (5m)
+ Loading chart with 800 data points for XRP/USDT (15m)
+ Loading chart with 720 data points for XRP/USDT (1h)
+ Loading chart with 500 data points for XRP/USDT (4h)
+ Loading chart with 150 data points for XRP/USDT (3d)
+ Loading chart with 365 data points for XRP/USDT (1d)
+ Loading chart with 200 data points for XRP/USDT (1w)
+ Loading chart with 60 data points for XRP/USDT (1M)
+ [UltimateManager] Chart data preloading completed
+ [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+ [System] Ultimate manager active - synchronized 4-minute intervals
+ ✅ 4-minute calculation allowed (trigger: unknown)
+ ✅ Calculation allowed: unknown
+ ⚡ Starting calculation loop for 10 timeframes
+ ⚡ About to calculate 1m timeframe
+ Calculating signal for BTC/USDT on 1m timeframe
+ DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (1m)
+ [1m] Fresh price fetched for BTC/USDT: 104820.697954115
+ [1m] Using live price: 104820.697954115 for calculation
+ [1m] Preparing chart data with 1000 candles
+ [1m] Using consolidated calculation engine with live price 104820.697954115
+ [1m] Consolidated signal result: SHORT (90%)
+ [ConsolidatedEngine] 1m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+ [ConsolidatedEngine] 1m: Signal ready - Direction=SHORT, Confidence=90%
+ Generated 1 patterns for 1m timeframe
+ ⚡ Successfully calculated 1m: SHORT
+ ⚡ About to calculate 5m timeframe
+ Calculating signal for BTC/USDT on 5m timeframe
+ DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+ Starting signal calculation for BTC/USDT (5m)
+ Calculation blocked: isCalculating=true, timeSinceLastCalc=0.109s
+ [5m] Fresh price fetched for BTC/USDT: 104820.697954115
+ [5m] Using live price: 104820.697954115 for calculation
+ [5m] Preparing chart data with 1000 candles
+ [5m] Using consolidated calculation engine with live price 104820.697954115
+ [5m] Consolidated signal result: SHORT (90%)
+ [ConsolidatedEngine] 5m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+ [ConsolidatedEngine] 5m: Signal ready - Direction=SHORT, Confidence=90%
+ Generated 2 patterns for 5m timeframe
+ ⚡ Successfully calculated 5m: SHORT
+ ⚡ About to calculate 15m timeframe
+ Calculating signal for BTC/USDT on 15m timeframe
+ DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (15m)
+ [15m] Fresh price fetched for BTC/USDT: 104820.697954115
+ [15m] Using live price: 104820.697954115 for calculation
+ [15m] Preparing chart data with 800 candles
+ [15m] Using consolidated calculation engine with live price 104820.697954115
+ [15m] Consolidated signal result: SHORT (90%)
+ [ConsolidatedEngine] 15m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+ [ConsolidatedEngine] 15m: Signal ready - Direction=SHORT, Confidence=90%
+ Generated 2 patterns for 15m timeframe
+ ⚡ Successfully calculated 15m: SHORT
+ ⚡ About to calculate 30m timeframe
+ Calculating signal for BTC/USDT on 30m timeframe
+ DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+ Starting signal calculation for BTC/USDT (30m)
+ [30m] Fresh price fetched for BTC/USDT: 104820.697954115
+ [30m] Using live price: 104820.697954115 for calculation
+ [30m] Preparing chart data with 800 candles
+ [30m] Using consolidated calculation engine with live price 104820.697954115
+ [30m] Consolidated signal result: SHORT (90%)
+ [ConsolidatedEngine] 30m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+ [ConsolidatedEngine] 30m: Signal ready - Direction=SHORT, Confidence=90%
+ Generated 2 patterns for 30m timeframe
+ ⚡ Successfully calculated 30m: SHORT
+ ⚡ About to calculate 1h timeframe
+ Calculating signal for BTC/USDT on 1h timeframe
+ DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+ Starting signal calculation for BTC/USDT (1h)
+ [1h] Fresh price fetched for BTC/USDT: 104820.697954115
+ [1h] Using live price: 104820.697954115 for calculation
+ [1h] Preparing chart data with 720 candles
+ [1h] Using consolidated calculation engine with live price 104820.697954115
+ [1h] Consolidated signal result: SHORT (90%)
+ [ConsolidatedEngine] 1h: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+ [ConsolidatedEngine] 1h: Signal ready - Direction=SHORT, Confidence=90%
+ Generated 4 patterns for 1h timeframe
+ ⚡ Successfully calculated 1h: SHORT
+ ⚡ About to calculate 4h timeframe
+ Calculating signal for BTC/USDT on 4h timeframe
+ DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+ Starting signal calculation for BTC/USDT (4h)
+ [4h] Fresh price fetched for BTC/USDT: 104820.697954115
+ [4h] Using live price: 104820.697954115 for calculation
+ [4h] Preparing chart data with 500 candles
+ [4h] Using consolidated calculation engine with live price 104820.697954115
+ [4h] Consolidated signal result: SHORT (90%)
+ [ConsolidatedEngine] 4h: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+ [ConsolidatedEngine] 4h: Signal ready - Direction=SHORT, Confidence=90%
+ Generated 7 patterns for 4h timeframe
+ ⚡ Successfully calculated 4h: SHORT
+ ⚡ About to calculate 1d timeframe
+ Calculating signal for BTC/USDT on 1d timeframe
+ DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+ Starting signal calculation for BTC/USDT (1d)
+ [1d] Fresh price fetched for BTC/USDT: 104820.697954115
+ [1d] Using live price: 104820.697954115 for calculation
+ [1d] Preparing chart data with 365 candles
+ [1d] Using consolidated calculation engine with live price 104820.697954115
+ [1d] Consolidated signal result: SHORT (95%)
+ [ConsolidatedEngine] 1d: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+ [ConsolidatedEngine] 1d: Signal ready - Direction=SHORT, Confidence=95%
+ Generated 9 patterns for 1d timeframe
+ ⚡ Successfully calculated 1d: SHORT
+ ⚡ About to calculate 3d timeframe
+ Calculating signal for BTC/USDT on 3d timeframe
+ DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+ Starting signal calculation for BTC/USDT (3d)
+ [3d] Fresh price fetched for BTC/USDT: 104820.697954115
+ [3d] Using live price: 104820.697954115 for calculation
+ [3d] Preparing chart data with 150 candles
+ [3d] Using consolidated calculation engine with live price 104820.697954115
+ [3d] Consolidated signal result: SHORT (95%)
+ [ConsolidatedEngine] 3d: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+Console.js:61 [ConsolidatedEngine] 3d: Signal ready - Direction=SHORT, Confidence=95%
+Console.js:61 Generated 9 patterns for 3d timeframe
+Console.js:61 ⚡ Successfully calculated 3d: SHORT
+Console.js:61 ⚡ About to calculate 1w timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1w timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1w)
+Console.js:61 [1w] Fresh price fetched for BTC/USDT: 104820.697954115
+Console.js:61 [1w] Using live price: 104820.697954115 for calculation
+Console.js:61 [1w] Preparing chart data with 200 candles
+Console.js:61 [1w] Using consolidated calculation engine with live price 104820.697954115
+Console.js:61 [1w] Consolidated signal result: SHORT (95%)
+Console.js:61 [ConsolidatedEngine] 1w: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+Console.js:61 [ConsolidatedEngine] 1w: Signal ready - Direction=SHORT, Confidence=95%
+Console.js:61 Generated 9 patterns for 1w timeframe
+Console.js:61 ⚡ Successfully calculated 1w: SHORT
+Console.js:61 ⚡ About to calculate 1M timeframe
+Console.js:61 Calculating signal for BTC/USDT on 1M timeframe
+Console.js:61 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+Console.js:61 Starting signal calculation for BTC/USDT (1M)
+Console.js:61 [1M] Fresh price fetched for BTC/USDT: 104820.697954115
+Console.js:61 [1M] Using live price: 104820.697954115 for calculation
+Console.js:61 [1M] Preparing chart data with 60 candles
+Console.js:61 [1M] Using consolidated calculation engine with live price 104820.697954115
+Console.js:61 [1M] Consolidated signal result: SHORT (95%)
+Console.js:61 [ConsolidatedEngine] 1M: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+Console.js:61 [ConsolidatedEngine] 1M: Signal ready - Direction=SHORT, Confidence=95%
+Console.js:61 Generated 9 patterns for 1M timeframe
+Console.js:61 ⚡ Successfully calculated 1M: SHORT
+Console.js:61 ⚡ Calculation loop completed
+Console.js:61 🔧 Raw signals before alignment: Array(10)
+Console.js:61 🔧 Aligned signals after processing: Array(10)
+Console.js:61 📊 UPDATING UI STATE with 10 timeframe signals
+Console.js:61 📊 Signal data being set: Array(10)
+Console.js:61 📊 About to call setSignals with: Array(10)
+Console.js:61 📊 Sample signal structure: Array(18)
+Console.js:61 📊 Sample 1d signal: Object
+Console.js:61 📊 setSignals call completed successfully
+Console.js:61 Recording predictions using fresh fetched price: 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 1m SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 107965.32, Take Profit: 98531.46
+Console.js:61 Recorded prediction: 1m SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 5m SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 107965.32, Take Profit: 98531.46
+Console.js:61 Recorded prediction: 5m SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 15m SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 107965.32, Take Profit: 98531.46
+Console.js:61 Recorded prediction: 15m SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 30m SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 107965.32, Take Profit: 98531.46
+Console.js:61 Recorded prediction: 30m SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 107965.32, Take Profit: 98531.46
+Console.js:61 Recorded prediction: 1h SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 4h SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 110061.73, Take Profit: 94338.63
+Console.js:61 Recorded prediction: 4h SHORT @ 104820.697954115
+Console.js:61 🔄 Signals updated, syncing timer with actual calculation time
+Console.js:61 📈 Prediction recorded: BTC/USDT 1d SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 111109.94, Take Profit: 92242.21
+Console.js:61 Recorded prediction: 1d SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 3d SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 113206.35, Take Profit: 88049.39
+Console.js:61 Recorded prediction: 3d SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 1w SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 115302.77, Take Profit: 83856.56
+Console.js:61 Recorded prediction: 1w SHORT @ 104820.697954115
+Console.js:61 📈 Prediction recorded: BTC/USDT 1M SHORT @ 104820.697954115
+Console.js:61 🎯 Stop Loss: 120543.80, Take Profit: 73374.49
+Console.js:61 Recorded prediction: 1M SHORT @ 104820.697954115
+Console.js:61 Found 10 valid signals for recommendation for BTC/USDT
+Console.js:61 Updating trade recommendation for 4h timeframe
+Console.js:61 No signal available for BTC/USDT on 4h
+Console.js:61 Calculation process complete for BTC/USDT - 10 signals generated
+Console.js:61 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (automated-system)
+Console.js:61 🛑 Calculation blocked: 237s until next 4-minute interval
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $104820.697954115
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [UltimateManager] Next fetch in 160s
+Console.js:61 [UltimateManager] Next fetch in 140s
+Console.js:61 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+Console.js:61 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+Console.js:61 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $104792.554540466
+Console.js:61 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104792.554540466
+Console.js:61 [PriceOverview] Centralized price update for BTC/USDT: $104792.554540466
+Console.js:61 [UltimateManager] Next fetch in 120s
+Console.js:61 [UltimateManager] Next fetch in 100s
+Console.js:61 [UltimateManager] Next fetch in 80s
+Console.js:61 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+Console.js:61 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+Console.js:61 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+Console.js:61 [CentralizedPriceManager] Updated price for BTC/USDT: $104792.554540466
+Console.js:61 [UltimateManager] Next fetch in 60s
