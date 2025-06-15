@@ -1185,19 +1185,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Specific route for direct symbol access (non-encoded)
-  app.get('/api/technical-analysis/:base/:quote', async (req: Request, res: Response) => {
-    const symbol = `${req.params.base}/${req.params.quote}`;
-    req.params.symbol = symbol;
-    // Call the main handler
-    return handleTechnicalAnalysis(req, res);
-  });
-
-  // Enhanced technical analysis endpoint (wildcard for encoded)
-  app.get('/api/technical-analysis/:symbol(*)', handleTechnicalAnalysis);
-
-  // Enhanced technical analysis endpoint (main handler)
-  async function handleTechnicalAnalysis(req: Request, res: Response) {
+  // Enhanced technical analysis endpoint
+  app.get('/api/technical-analysis/:symbol(*)', async (req: Request, res: Response) => {
     try {
       // Ensure JSON response
       res.setHeader('Content-Type', 'application/json');
