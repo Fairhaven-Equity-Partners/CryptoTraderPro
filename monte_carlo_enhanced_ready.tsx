@@ -120,13 +120,19 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
           <div className="flex items-center gap-4">
             <Badge variant="outline">{symbol}</Badge>
             <Badge variant="secondary">{timeframe}</Badge>
+            {(isAnalyzing || riskAssessmentMutation.isPending) && (
+              <Badge variant="secondary" className="animate-pulse">
+                <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                Analyzing...
+              </Badge>
+            )}
             <Button 
-              onClick={handleRunAnalysis} 
+              onClick={handleManualRunAnalysis} 
               disabled={isAnalyzing || riskAssessmentMutation.isPending}
               size="sm"
               variant="outline"
             >
-              {isAnalyzing ? 'Analyzing...' : 'Run Analysis'}
+              {(isAnalyzing || riskAssessmentMutation.isPending) ? 'Analyzing...' : 'Run Analysis'}
             </Button>
           </div>
         </CardTitle>
@@ -223,16 +229,17 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               Analysis Failed
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Unable to perform Monte Carlo risk assessment. Please ensure signal data is available for {symbol}.
+              Unable to perform Monte Carlo risk assessment for {symbol}. 
+              Please ensure signal data is available and try again.
             </p>
-            <Button onClick={handleRunAnalysis} variant="outline" size="sm">
-              Try Again
+            <Button onClick={handleManualRunAnalysis} variant="outline" size="sm">
+              Retry Analysis
             </Button>
           </div>
         </CardContent>
       )}
 
-      {!riskAssessmentMutation.data && !riskAssessmentMutation.isError && (
+      {!riskAssessmentMutation.data && !riskAssessmentMutation.isError && !isAnalyzing && !riskAssessmentMutation.isPending && (
         <CardContent>
           <div className="text-center py-8">
             <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
@@ -240,11 +247,29 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
               Monte Carlo Risk Assessment
             </h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Run advanced risk simulation with 1000+ iterations to assess potential outcomes for {symbol} on {timeframe} timeframe
+              Analysis will run automatically when you select a symbol and timeframe.
+              You can also manually trigger analysis for {symbol} on {timeframe} timeframe.
             </p>
-            <Button onClick={handleRunAnalysis} disabled={isAnalyzing}>
-              {isAnalyzing ? 'Analyzing...' : 'Start Analysis'}
+            <Button onClick={handleManualRunAnalysis} disabled={!symbol || !timeframe}>
+              Start Manual Analysis
             </Button>
+          </div>
+        </CardContent>
+      )}
+
+      {(isAnalyzing || riskAssessmentMutation.isPending) && !riskAssessmentMutation.data && (
+        <CardContent>
+          <div className="text-center py-8">
+            <Loader2 className="h-12 w-12 text-blue-500 mx-auto mb-4 animate-spin" />
+            <h3 className="text-lg font-medium text-blue-600 mb-2">
+              Running Monte Carlo Analysis
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Performing 1000+ iteration risk simulation for {symbol} on {timeframe} timeframe...
+            </p>
+            <div className="w-full bg-gray-200 rounded-full h-2">
+              <div className="bg-blue-600 h-2 rounded-full animate-pulse" style={{ width: '75%' }}></div>
+            </div>
           </div>
         </CardContent>
       )}
