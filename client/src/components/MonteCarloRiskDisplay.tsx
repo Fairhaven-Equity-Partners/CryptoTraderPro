@@ -77,11 +77,23 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       
       const currentPair = `${symbol} (${timeframe})`;
       
+      console.log(`[MonteCarloRiskDisplay] Validating parameters: symbol="${symbol}", timeframe="${timeframe}"`);
+      
       // Only run if it's a different pair/timeframe combination
       if (currentPair !== lastAnalyzedPair && !isAnalyzing && !riskAssessmentMutation.isPending) {
+        console.log(`[MonteCarloRiskDisplay] Starting Monte Carlo analysis for ${currentPair}`);
         setIsAnalyzing(true);
         riskAssessmentMutation.mutate({ symbol, timeframe });
+      } else {
+        console.log(`[MonteCarloRiskDisplay] Skipping analysis - already processed ${currentPair} or analysis in progress`);
       }
+    } else {
+      console.log(`[MonteCarloRiskDisplay] Invalid parameters detected:`, {
+        symbol: typeof symbol === 'string' ? symbol : `${typeof symbol}: ${symbol}`,
+        timeframe: typeof timeframe === 'string' ? timeframe : `${typeof timeframe}: ${timeframe}`,
+        symbolValid: symbol && symbol !== 'undefined' && symbol.trim() !== '' && symbol !== 'null',
+        timeframeValid: timeframe && timeframe !== 'undefined' && timeframe.trim() !== '' && timeframe !== 'null'
+      });
     }
   }, [symbol, timeframe, lastAnalyzedPair, isAnalyzing, riskAssessmentMutation.isPending]);
 
