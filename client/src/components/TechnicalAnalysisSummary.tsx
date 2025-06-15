@@ -73,6 +73,18 @@ const TechnicalAnalysisSummary: React.FC = () => {
     return [];
   })();
 
+  const isLoading = techLoading || patternLoading;
+
+  // Debug logging for troubleshooting display issues
+  React.useEffect(() => {
+    console.log('TechnicalAnalysisSummary DEBUG:');
+    console.log('- techData:', techData);
+    console.log('- patternData:', patternData);
+    console.log('- indicators:', indicators);
+    console.log('- patterns:', patterns);
+    console.log('- isLoading:', isLoading);
+  }, [techData, patternData, indicators, patterns, isLoading]);
+
   const getRSISignal = (rsi: number) => {
     if (rsi >= 70) return { signal: 'Overbought', color: 'text-red-600', icon: TrendingDown };
     if (rsi <= 30) return { signal: 'Oversold', color: 'text-green-600', icon: TrendingUp };
