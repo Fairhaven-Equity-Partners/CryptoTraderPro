@@ -2349,9 +2349,27 @@ app.get('/api/performance-metrics', async (req, res) => {
     }
   });
 
+  // Rate limiter for Monte Carlo endpoint
+  const monteCarloRequests = new Map<string, number>();
+  const MONTE_CARLO_RATE_LIMIT = 2000; // 2 seconds between requests per IP
+
   // Monte Carlo Risk Assessment Endpoint
   app.post('/api/monte-carlo-risk', async (req: Request, res: Response) => {
     try {
+      // Rate limiting to prevent API flooding
+      const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
+      const now = Date.now();
+      const lastRequest = monteCarloRequests.get(clientIP) || 0;
+      
+      if (now - lastRequest < MONTE_CARLO_RATE_LIMIT) {
+        return res.status(429).json({ 
+          error: 'Rate limit exceeded. Please wait before making another request.',
+          retryAfter: Math.ceil((MONTE_CARLO_RATE_LIMIT - (now - lastRequest)) / 1000)
+        });
+      }
+      
+      monteCarloRequests.set(clientIP, now);
+      
       console.log('[Routes] Performing Monte Carlo risk assessment...');
       
       const { symbol, timeframe } = req.body;
