@@ -5,6 +5,10 @@ import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
+import LiveMarketOverview from '../components/LiveMarketOverview';
+import CriticalSignalAnalysis from '../components/CriticalSignalAnalysis';
+import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
+import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
 
