@@ -1,0 +1,174 @@
+{
+  "timestamp": "2025-06-15T14:28:58.282Z",
+  "validationType": "Final 100% Validation",
+  "overallScore": 30,
+  "systemStatus": "POOR - MAJOR ISSUES REMAIN",
+  "targetAchieved": false,
+  "componentScores": {
+    "performanceMetrics": 16.666666666666664,
+    "monteCarlo": 100,
+    "systemComponents": 0,
+    "overall": 30
+  },
+  "detailedResults": {
+    "performanceMetrics": {
+      "authenticityPercentage": 16.666666666666664,
+      "authenticCount": 1,
+      "totalIndicators": 6,
+      "indicators": [
+        {
+          "id": "signal_accuracy",
+          "name": "Signal Accuracy",
+          "value": "0.0%",
+          "authentic": false,
+          "description": "Percentage of profitable trades"
+        },
+        {
+          "id": "avg_confidence",
+          "name": "Average Confidence",
+          "value": "75.0%",
+          "authentic": false,
+          "description": "Average signal confidence level"
+        },
+        {
+          "id": "active_trades",
+          "name": "Active Trades",
+          "value": "0",
+          "authentic": false,
+          "description": "Currently active trade simulations"
+        },
+        {
+          "id": "processing_speed",
+          "name": "Processing Speed",
+          "value": "8ms",
+          "authentic": true,
+          "description": "Actual API response time from system metrics"
+        },
+        {
+          "id": "system_uptime",
+          "name": "System Uptime",
+          "value": "0h",
+          "authentic": false,
+          "description": "Continuous operation time"
+        },
+        {
+          "id": "data_quality",
+          "name": "Data Quality",
+          "value": "0.0%",
+          "authentic": false,
+          "description": "Authentic market data coverage (49/50 symbols active)"
+        }
+      ]
+    },
+    "monteCarlo": {
+      "successRate": 100,
+      "successfulTests": 2,
+      "totalTests": 2,
+      "testResults": [
+        {
+          "testCase": "BTC LONG Standard",
+          "success": true,
+          "qualityScore": 100,
+          "metrics": {
+            "var95": -0.8967,
+            "sharpeRatio": 0.0838,
+            "maxDrawdown": 0.8961
+          }
+        },
+        {
+          "testCase": "ETH SHORT Aggressive",
+          "success": true,
+          "qualityScore": 100,
+          "metrics": {
+            "var95": -0.8859,
+            "sharpeRatio": 0.0267,
+            "maxDrawdown": 0.8858
+          }
+        }
+      ]
+    },
+    "systemComponents": {
+      "successRate": 0,
+      "workingComponents": 0,
+      "totalComponents": 7,
+      "componentResults": [
+        {
+          "endpoint": "enhanced-pattern-recognition/BTC/USDT",
+          "success": false,
+          "responseTime": 6,
+          "status": 200,
+          "issue": "HTML response instead of JSON"
+        },
+        {
+          "endpoint": "confluence-analysis/BTC/USDT",
+          "success": false,
+          "responseTime": 4,
+          "status": 200,
+          "issue": "HTML response instead of JSON"
+        },
+        {
+          "endpoint": "technical-analysis/BTC/USDT",
+          "success": false,
+          "responseTime": 4,
+          "status": 200,
+          "issue": "HTML response instead of JSON"
+        },
+        {
+          "endpoint": "signals/BTC/USDT",
+          "success": false,
+          "responseTime": 5,
+          "status": 200,
+          "issue": "HTML response instead of JSON"
+        },
+        {
+          "endpoint": "accuracy/BTC/USDT",
+          "success": false,
+          "responseTime": 4,
+          "status": 200,
+          "issue": "HTML response instead of JSON"
+        },
+        {
+          "endpoint": "crypto/BTC/USDT",
+          "success": false,
+          "responseTime": 4,
+          "status": 200,
+          "issue": "HTML response instead of JSON"
+        },
+        {
+          "endpoint": "trade-simulations/BTC/USDT",
+          "success": false,
+          "responseTime": 6,
+          "status": 200,
+          "issue": "HTML response instead of JSON"
+        }
+      ]
+    },
+    "finalAssessment": {
+      "overallScore": 30,
+      "systemStatus": "POOR - MAJOR ISSUES REMAIN",
+      "componentScores": {
+        "performanceMetrics": 16.666666666666664,
+        "monteCarlo": 100,
+        "systemComponents": 0,
+        "overall": 30
+      },
+      "weights": {
+        "performanceMetrics": 0.3,
+        "monteCarlo": 0.25,
+        "systemComponents": 0.45
+      }
+    }
+  },
+  "achievements": [
+    "Monte Carlo: Full functionality with realistic metrics"
+  ],
+  "remainingIssues": [
+    "Performance Metrics: Authenticity improvements needed",
+    "System Components: Component response improvements needed"
+  ],
+  "recommendations": [
+    "Focus on lowest-scoring components",
+    "Implement remaining optimizations systematically",
+    "Re-run validation after improvements"
+  ]
+}

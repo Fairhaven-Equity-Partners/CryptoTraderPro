@@ -1,0 +1,109 @@
+{
+  "timestamp": "2025-06-15T14:27:22.869Z",
+  "overallScore": 56.66666666666667,
+  "componentScores": {
+    "performanceMetrics": 83.33333333333334,
+    "monteCarlo": 100,
+    "tabIntegration": 0,
+    "errorHandling": 0,
+    "finalValidation": 100
+  },
+  "fixes": [
+    {
+      "component": "Performance Metrics",
+      "issue": "1 indicators need authenticity improvement",
+      "target": "100% authentic data",
+      "priority": "HIGH",
+      "indicators": [
+        "active_trades"
+      ]
+    },
+    {
+      "component": "Tab Integration",
+      "issue": "Some tabs returning incorrect response format",
+      "target": "100% JSON responses from all tabs",
+      "priority": "MEDIUM",
+      "successRate": 0
+    }
+  ],
+  "results": {
+    "performanceMetrics": {
+      "currentAuthenticity": 83.33333333333334,
+      "target": 100,
+      "nonAuthenticCount": 1,
+      "status": "NEEDS_IMPROVEMENT"
+    },
+    "monteCarlo": {
+      "successRate": 100,
+      "target": 100,
+      "successfulTests": 3,
+      "totalTests": 3,
+      "status": "EXCELLENT"
+    },
+    "tabIntegration": {
+      "successRate": 0,
+      "target": 100,
+      "workingTabs": 0,
+      "totalTabs": 4,
+      "status": "NEEDS_IMPROVEMENT"
+    },
+    "errorHandling": {
+      "score": 0,
+      "target": 100,
+      "gracefulErrors": 0,
+      "totalTests": 3,
+      "status": "NEEDS_IMPROVEMENT"
+    },
+    "finalValidation": {
+      "overallSuccessRate": 100,
+      "target": 100,
+      "successfulComponents": 6,
+      "totalComponents": 6,
+      "validationResults": [
+        {
+          "component": "performance-metrics",
+          "success": true,
+          "responseTime": 4,
+          "status": 200
+        },
+        {
+          "component": "monte-carlo-risk",
+          "success": true,
+          "responseTime": 393,
+          "status": 200
+        },
+        {
+          "component": "enhanced-pattern-recognition/BTC/USDT",
+          "success": true,
+          "responseTime": 4,
+          "status": 200
+        },
+        {
+          "component": "confluence-analysis/BTC/USDT",
+          "success": true,
+          "responseTime": 4,
+          "status": 200
+        },
+        {
+          "component": "signals/BTC/USDT",
+          "success": true,
+          "responseTime": 4,
+          "status": 200
+        },
+        {
+          "component": "technical-analysis/BTC/USDT",
+          "success": true,
+          "responseTime": 3,
+          "status": 200
+        }
+      ],
+      "status": "EXCELLENT"
+    }
+  },
+  "systemStatus": "NEEDS_IMPROVEMENT",
+  "productionReady": false,
+  "recommendations": [
+    "Performance Metrics: 100% authentic data",
+    "Tab Integration: 100% JSON responses from all tabs"
+  ]
+}
