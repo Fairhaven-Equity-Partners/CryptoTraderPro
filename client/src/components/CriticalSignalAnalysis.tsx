@@ -149,11 +149,10 @@ const CriticalSignalAnalysis: React.FC = () => {
                 <div className="flex items-center gap-4">
                   <div className="text-right">
                     <div className="text-sm font-medium">
-                      Entry: {formatPrice(signal.entryPrice, signal.symbol)}
+                      Price: {formatPrice(signal.price, signal.symbol)}
                     </div>
                     <div className="text-xs text-muted-foreground">
-                      SL: {formatPrice(signal.stopLoss, signal.symbol)} | 
-                      TP: {formatPrice(signal.takeProfit, signal.symbol)}
+                      Timeframe: {signal.timeframe}
                     </div>
                   </div>
 
