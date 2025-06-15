@@ -1188,10 +1188,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Enhanced technical analysis endpoint
   app.get('/api/technical-analysis/:symbol', async (req: Request, res: Response) => {
     try {
+      // Handle URL encoding for symbols with forward slashes
+      const rawSymbol = req.params.symbol;
+      if (rawSymbol && rawSymbol.includes('/') && !rawSymbol.includes('%')) {
+        const encodedSymbol = encodeURIComponent(rawSymbol);
+        const newUrl = req.originalUrl.replace(rawSymbol, encodedSymbol);
+        return res.redirect(302, newUrl);
+      }
+      
       // Ensure JSON response
       res.setHeader('Content-Type', 'application/json');
       
-      const { symbol } = req.params;
+      const symbol = req.params.symbol;
       const { period = 30, timeframe } = req.query;
       
       console.log(`[Routes] Calculating real technical indicators for ${symbol}${timeframe ? ` (${timeframe})` : ''}`);
@@ -2814,10 +2822,18 @@ app.get('/api/performance-metrics', async (req, res) => {
   // Enhanced Pattern Recognition API - Advanced Market Analysis
   app.get('/api/pattern-analysis/:symbol', async (req: Request, res: Response) => {
     try {
+      // Handle URL encoding for symbols with forward slashes
+      const rawSymbol = req.params.symbol;
+      if (rawSymbol && rawSymbol.includes('/') && !rawSymbol.includes('%')) {
+        const encodedSymbol = encodeURIComponent(rawSymbol);
+        const newUrl = req.originalUrl.replace(rawSymbol, encodedSymbol);
+        return res.redirect(302, newUrl);
+      }
+      
       // Ensure JSON response
       res.setHeader('Content-Type', 'application/json');
       
-      const { symbol } = req.params;
+      const symbol = req.params.symbol;
       const { timeframe = '1d' } = req.query;
       
       console.log(`[Routes] Running enhanced pattern analysis for ${symbol} (${timeframe})...`);
@@ -2877,10 +2893,18 @@ app.get('/api/performance-metrics', async (req, res) => {
   // Multi-timeframe Confluence Analysis - Maximum Accuracy
   app.get('/api/confluence-analysis/:symbol', async (req: Request, res: Response) => {
     try {
+      // Handle URL encoding for symbols with forward slashes
+      const rawSymbol = req.params.symbol;
+      if (rawSymbol && rawSymbol.includes('/') && !rawSymbol.includes('%')) {
+        const encodedSymbol = encodeURIComponent(rawSymbol);
+        const newUrl = req.originalUrl.replace(rawSymbol, encodedSymbol);
+        return res.redirect(302, newUrl);
+      }
+      
       // Ensure JSON response
       res.setHeader('Content-Type', 'application/json');
       
-      const { symbol } = req.params;
+      const symbol = req.params.symbol;
       const timeframes = ['1h', '4h', '1d', '1w'];
       
       console.log(`[Routes] Running multi-timeframe confluence analysis for ${symbol}...`);
