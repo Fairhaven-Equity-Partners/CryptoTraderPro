@@ -76,7 +76,8 @@ const LiveMarketOverview: React.FC = () => {
       return 'Loading...';
     }
     
-    const winRateMetric = performanceMetrics.indicators.find((m: any) => 
+    const indicators = performanceMetrics.indicators || [];
+    const winRateMetric = indicators.find((m: any) => 
       m && m.name && (m.name.toLowerCase().includes('accuracy') || m.name.toLowerCase().includes('win'))
     );
     

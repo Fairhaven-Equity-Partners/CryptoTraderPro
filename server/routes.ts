@@ -402,6 +402,47 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Get all signals across all cryptocurrencies
+  app.get('/api/signals', async (req: Request, res: Response) => {
+    try {
+      const { timeframe } = req.query;
+      const requestedTimeframe = (timeframe as string) || '4h';
+      
+      // Get all signals from automated calculator
+      const allSignals = automatedSignalCalculator.getAllSignals();
+      
+      if (allSignals && allSignals.length > 0) {
+        // Filter by timeframe if specified
+        const filteredSignals = timeframe ? 
+          allSignals.filter(s => s.timeframe === requestedTimeframe) : 
+          allSignals;
+        
+        // Format signals for frontend compatibility
+        const formattedSignals = filteredSignals.map(signal => ({
+          symbol: signal.symbol,
+          timeframe: signal.timeframe,
+          direction: signal.direction,
+          confidence: signal.confidence,
+          strength: signal.strength || signal.confidence,
+          price: signal.price,
+          timestamp: signal.timestamp,
+          indicators: signal.indicators || {},
+          technicalAnalysis: signal.technicalAnalysis || null
+        }));
+        
+        res.json(formattedSignals);
+        return;
+      }
+      
+      // Fallback: return empty array for proper JSON response
+      res.json([]);
+      
+    } catch (error: any) {
+      console.error('Error fetching all signals:', error);
+      res.status(500).json({ error: 'Failed to fetch signals', message: error.message });
+    }
+  });
+
   // Get signal history for a symbol with authentic market calculations - Fixed URL encoding
   app.get('/api/signals/:symbol(*)', async (req: Request, res: Response) => {
     try {
