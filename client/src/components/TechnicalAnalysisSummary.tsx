@@ -33,6 +33,17 @@ const TechnicalAnalysisSummary: React.FC = () => {
     refetchInterval: 45000,
   });
 
+  // Integrated performance metrics - replacing eliminated Performance Analysis component
+  const { data: performanceData, isLoading: performanceLoading } = useQuery({
+    queryKey: ['/api/performance-metrics'],
+    refetchInterval: 30000,
+  });
+
+  const { data: accuracyData, isLoading: accuracyLoading } = useQuery({
+    queryKey: ['/api/accuracy/BTC/USDT'],
+    refetchInterval: 45000,
+  });
+
   // Enhanced data structure handling based on external testing findings
   const indicators = (() => {
     if (!techData) return {} as TechnicalIndicators;
@@ -285,6 +296,37 @@ const TechnicalAnalysisSummary: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Integrated Performance Metrics Section - Replaces eliminated Performance Analysis component */}
+        {performanceData && (
+          <div className="mt-4 pt-3 border-t">
+            <div className="flex items-center gap-2 mb-3">
+              <BarChart3 className="h-4 w-4" />
+              <span className="text-sm font-medium">Performance Metrics</span>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              {performanceData.indicators?.slice(0, 4).map((indicator: any, index: number) => (
+                <div key={index} className="p-2 rounded-lg bg-background border">
+                  <div className="text-xs text-muted-foreground">{indicator.name}</div>
+                  <div className="text-sm font-medium">
+                    {typeof indicator.value === 'number' 
+                      ? `${indicator.value.toFixed(1)}${indicator.id.includes('accuracy') || indicator.id.includes('uptime') ? '%' : ''}`
+                      : indicator.value || 'N/A'
+                    }
+                  </div>
+                </div>
+              ))}
+            </div>
+            {accuracyData && (
+              <div className="mt-2 p-2 rounded-lg bg-background border">
+                <div className="text-xs text-muted-foreground">Signal Accuracy (BTC/USDT)</div>
+                <div className="text-sm font-medium">
+                  {typeof accuracyData.accuracy === 'number' ? `${accuracyData.accuracy.toFixed(1)}%` : 'Calculating...'}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Overall Signal Summary */}
         <div className="mt-4 pt-3 border-t">

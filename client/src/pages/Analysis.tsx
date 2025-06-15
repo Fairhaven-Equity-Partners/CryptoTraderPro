@@ -92,16 +92,13 @@ const Analysis: React.FC = () => {
             onTimeframeSelect={handleChangeTimeframe}
           />
           
-          {/* Performance and Detailed Analytics */}
+          {/* Detailed Analytics */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <UnifiedPerformancePanel />
-            <div className="space-y-4">
-              <PriceOverview 
-                symbol={currentAsset} 
-                timeframe={currentTimeframe}
-              />
-              <MacroIndicatorsPanel />
-            </div>
+            <PriceOverview 
+              symbol={currentAsset} 
+              timeframe={currentTimeframe}
+            />
+            <MacroIndicatorsPanel />
           </div>
         </div>
       </main>
