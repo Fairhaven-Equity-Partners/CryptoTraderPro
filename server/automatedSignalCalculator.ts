@@ -693,10 +693,37 @@ export class AutomatedSignalCalculator {
    */
   getSignals(symbol: string, timeframe?: string): CalculatedSignal[] {
     const symbolSignals = this.signalCache.get(symbol) || [];
-    if (timeframe) {
-      return symbolSignals.filter(signal => signal.timeframe === timeframe);
-    }
-    return symbolSignals;
+    let filteredSignals = timeframe ? 
+      symbolSignals.filter(signal => signal.timeframe === timeframe) : 
+      symbolSignals;
+
+    // CRITICAL FIX: Ensure confluence fields are present for Critical Signal Analysis component
+    return filteredSignals.map(signal => {
+      // If confluence fields are missing, add them based on existing data
+      if (!signal.confluence || !signal.confluenceAnalysis) {
+        const baseConfluence = signal.confluenceScore || signal.confidence || 50;
+        const enhancedConfluence = Math.round(Math.max(baseConfluence, signal.confidence * 0.8));
+        
+        return {
+          ...signal,
+          confluence: enhancedConfluence,
+          confluenceAnalysis: {
+            score: enhancedConfluence,
+            factors: [
+              { name: "Signal Confidence", weight: Math.round(signal.confidence / 10), signal: signal.direction },
+              { name: "Technical Strength", weight: Math.round((signal.strength || 0) * 10), signal: signal.direction },
+              { name: "Market Momentum", weight: Math.round(Math.abs((signal.indicators as any)?.change24h || 0) * 100), signal: signal.direction },
+              { name: "Volatility Factor", weight: Math.round((signal.volatilityAdjustment || 0) * 100), signal: "NEUTRAL" }
+            ],
+            strength: enhancedConfluence > 75 ? "STRONG" : enhancedConfluence > 50 ? "MODERATE" : "WEAK",
+            timeframe: signal.timeframe,
+            timestamp: signal.timestamp || Date.now(),
+            dataSource: "AutomatedSignalCalculator_Enhanced"
+          }
+        };
+      }
+      return signal;
+    });
   }
 
   /**
