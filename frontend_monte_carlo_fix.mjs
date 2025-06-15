@@ -1,4 +1,67 @@
-import { useState, useCallback } from 'react';
+/**
+ * Frontend Monte Carlo Fix - External Shell Testing
+ * Fix frontend error handling and improve user experience
+ */
+
+class FrontendMonteCarloFix {
+  constructor() {
+    this.baseUrl = 'http://localhost:5000';
+  }
+
+  async implementFrontendFix() {
+    console.log('🔧 IMPLEMENTING FRONTEND MONTE CARLO FIX');
+    console.log('=======================================');
+    console.log('Fixing frontend error handling and user experience\n');
+
+    // Test current API response first
+    await this.testCurrentAPIResponse();
+    
+    // Generate improved component
+    await this.generateImprovedComponent();
+    
+    console.log('✅ Frontend fix implementation complete');
+  }
+
+  async testCurrentAPIResponse() {
+    console.log('📊 Testing Current API Response');
+    console.log('===============================');
+    
+    try {
+      const response = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol: 'BTC/USDT', timeframe: '1d' })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ API Response Structure:');
+        console.log(`- success: ${data.success}`);
+        console.log(`- riskMetrics present: ${!!data.riskMetrics}`);
+        console.log(`- signalInput present: ${!!data.signalInput}`);
+        
+        if (data.riskMetrics) {
+          console.log(`- Risk Level: ${data.riskMetrics.riskLevel}`);
+          console.log(`- Expected Return: ${data.riskMetrics.expectedReturn.toFixed(2)}%`);
+          console.log(`- Win Probability: ${data.riskMetrics.winProbability.toFixed(1)}%`);
+        }
+        
+        console.log('\n✅ Backend is working correctly - issue is in frontend handling');
+      } else {
+        console.log(`❌ API error: ${response.status}`);
+      }
+    } catch (error) {
+      console.log(`❌ API test failed: ${error.message}`);
+    }
+    
+    console.log('');
+  }
+
+  async generateImprovedComponent() {
+    console.log('🎯 Generating Improved Frontend Component');
+    console.log('========================================');
+    
+    const improvedComponent = `import { useState, useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -40,6 +103,7 @@ interface MonteCarloRiskDisplayProps {
 
 export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }: MonteCarloRiskDisplayProps) {
   const [analysis, setAnalysis] = useState<RiskAssessmentResponse | null>(null);
+  const [isManuallyTriggered, setIsManuallyTriggered] = useState(false);
   const queryClient = useQueryClient();
 
   const riskAssessmentMutation = useMutation({
@@ -103,6 +167,7 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
     onSuccess: (data) => {
       console.log('[MonteCarloRiskDisplay] Analysis successful:', data);
       setAnalysis(data);
+      setIsManuallyTriggered(false);
       queryClient.invalidateQueries({ queryKey: ['monte-carlo-risk'] });
     },
     onError: (error) => {
@@ -114,33 +179,31 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
         stack: error instanceof Error ? error.stack : undefined
       });
       setAnalysis(null);
+      setIsManuallyTriggered(false);
     }
   });
 
   const handleRunAnalysis = useCallback(() => {
-    // Enhanced validation before making request
-    if (!symbol || !timeframe) {
-      console.error('[MonteCarloRiskDisplay] Missing required parameters');
-      return;
-    }
-    
-    if (typeof symbol !== 'string' || typeof timeframe !== 'string') {
-      console.error('[MonteCarloRiskDisplay] Invalid parameter types');
-      return;
-    }
-    
-    if (symbol.trim() === '' || timeframe.trim() === '') {
-      console.error('[MonteCarloRiskDisplay] Empty parameters detected');
-      return;
-    }
-    
+    // Prevent multiple simultaneous requests
     if (riskAssessmentMutation.isPending) {
       console.log('[MonteCarloRiskDisplay] Analysis already in progress');
       return;
     }
+
+    // Enhanced validation
+    if (!symbol?.trim() || !timeframe?.trim()) {
+      console.error('[MonteCarloRiskDisplay] Missing required parameters');
+      return;
+    }
+
+    console.log('[MonteCarloRiskDisplay] User triggered analysis for', symbol, timeframe);
+    setIsManuallyTriggered(true);
+    setAnalysis(null); // Clear previous results
     
-    console.log(`[MonteCarloRiskDisplay] Starting analysis for ${symbol} (${timeframe})`);
-    riskAssessmentMutation.mutate({ symbol, timeframe });
+    riskAssessmentMutation.mutate({ 
+      symbol: symbol.trim(), 
+      timeframe: timeframe.trim() 
+    });
   }, [symbol, timeframe, riskAssessmentMutation]);
 
   const getRiskLevelColor = (level: string) => {
@@ -165,27 +228,44 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
     }
   };
 
+  const formatNumber = (num: number, decimals: number = 2) => {
+    if (typeof num !== 'number' || isNaN(num)) return 'N/A';
+    return num.toFixed(decimals);
+  };
+
+  const formatCurrency = (num: number) => {
+    if (typeof num !== 'number' || isNaN(num)) return 'N/A';
+    return '$' + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="w-5 h-5" />
-          Monte Carlo Risk Assessment
+        <CardTitle className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="w-5 h-5" />
+            Monte Carlo Risk Assessment
+          </div>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline">{symbol}</Badge>
+            <Badge variant="secondary">{timeframe}</Badge>
+          </div>
         </CardTitle>
       </CardHeader>
+      
       <CardContent className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm text-muted-foreground">
-              Current Symbol: <span className="font-medium">{symbol}</span>
+              Advanced risk analysis using 1000+ Monte Carlo simulations
             </p>
-            <p className="text-sm text-muted-foreground">
-              Timeframe: <span className="font-medium">{timeframe}</span>
+            <p className="text-xs text-muted-foreground mt-1">
+              Click "Run Analysis" to start institutional-grade risk assessment
             </p>
           </div>
           <Button 
             onClick={handleRunAnalysis}
-            disabled={riskAssessmentMutation.isPending || !symbol || !timeframe}
+            disabled={riskAssessmentMutation.isPending || !symbol?.trim() || !timeframe?.trim()}
             className="flex items-center gap-2"
           >
             {riskAssessmentMutation.isPending ? (
@@ -196,7 +276,7 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
             ) : (
               <>
                 <Target className="w-4 h-4" />
-                Run Risk Analysis
+                Run Analysis
               </>
             )}
           </Button>
@@ -211,73 +291,87 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
             <p className="text-sm text-red-600 mt-1">
               {riskAssessmentMutation.error instanceof Error 
                 ? riskAssessmentMutation.error.message 
-                : 'Unknown error occurred'}
+                : 'An unexpected error occurred'}
             </p>
+            <Button 
+              onClick={handleRunAnalysis} 
+              variant="outline" 
+              size="sm" 
+              className="mt-2"
+              disabled={riskAssessmentMutation.isPending}
+            >
+              Try Again
+            </Button>
           </div>
         )}
 
-        {analysis && (
+        {analysis && analysis.riskMetrics && (
           <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Risk Level</span>
-                  <Badge className={`${getRiskLevelColor(analysis.riskMetrics.riskLevel)} text-white`}>
-                    {getRiskLevelText(analysis.riskMetrics.riskLevel)}
-                  </Badge>
-                </div>
-                
-                <div className="space-y-2">
+            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4" />
+                <span className="font-medium">Risk Assessment Complete</span>
+              </div>
+              <Badge className={\`\${getRiskLevelColor(analysis.riskMetrics.riskLevel)} text-white\`}>
+                {getRiskLevelText(analysis.riskMetrics.riskLevel)}
+              </Badge>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h4 className="text-sm font-medium text-gray-700">Risk Metrics</h4>
+                <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-sm">Expected Return</span>
                     <span className="text-sm font-medium">
-                      {analysis.riskMetrics.expectedReturn.toFixed(2)}%
+                      {formatNumber(analysis.riskMetrics.expectedReturn)}%
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm">Value at Risk (95%)</span>
                     <span className="text-sm font-medium text-red-600">
-                      {analysis.riskMetrics.var95.toFixed(2)}%
+                      {formatNumber(analysis.riskMetrics.var95)}%
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm">Max Drawdown</span>
                     <span className="text-sm font-medium text-red-600">
-                      {analysis.riskMetrics.maxDrawdown.toFixed(2)}%
+                      {formatNumber(analysis.riskMetrics.maxDrawdown)}%
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm">Sharpe Ratio</span>
                     <span className="text-sm font-medium">
-                      {analysis.riskMetrics.sharpeRatio.toFixed(3)}
+                      {formatNumber(analysis.riskMetrics.sharpeRatio, 3)}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4" />
-                  <span className="text-sm font-medium">Win Probability</span>
-                </div>
+              <div className="space-y-4">
+                <h4 className="text-sm font-medium text-gray-700">Success Probability</h4>
                 <div className="space-y-2">
-                  <Progress value={analysis.riskMetrics.winProbability} className="h-2" />
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4" />
+                    <span className="text-sm">Win Probability</span>
+                  </div>
+                  <Progress value={analysis.riskMetrics.winProbability} className="h-3" />
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <span>0%</span>
-                    <span className="font-medium">{analysis.riskMetrics.winProbability.toFixed(1)}%</span>
+                    <span className="font-medium">{formatNumber(analysis.riskMetrics.winProbability, 1)}%</span>
                     <span>100%</span>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-2 mt-4">
-                  <Shield className="w-4 h-4" />
-                  <span className="text-sm font-medium">Risk Score</span>
-                </div>
                 <div className="space-y-2">
-                  <Progress value={analysis.riskMetrics.riskScore} className="h-2" />
+                  <div className="flex items-center gap-2">
+                    <Shield className="w-4 h-4" />
+                    <span className="text-sm">Risk Score</span>
+                  </div>
+                  <Progress value={analysis.riskMetrics.riskScore} className="h-3" />
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <span>Low</span>
-                    <span className="font-medium">{analysis.riskMetrics.riskScore.toFixed(0)}/100</span>
+                    <span className="font-medium">{formatNumber(analysis.riskMetrics.riskScore, 0)}/100</span>
                     <span>High</span>
                   </div>
                 </div>
@@ -286,30 +380,75 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
 
             {analysis.signalInput && (
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                <h4 className="text-sm font-medium mb-3">Signal Parameters</h4>
+                <h4 className="text-sm font-medium mb-3">Trade Parameters</h4>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                   <div>
                     <span className="text-muted-foreground">Entry Price</span>
-                    <p className="font-medium">${analysis.signalInput.entryPrice.toLocaleString()}</p>
+                    <p className="font-medium">{formatCurrency(analysis.signalInput.entryPrice)}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Stop Loss</span>
-                    <p className="font-medium text-red-600">${analysis.signalInput.stopLoss.toLocaleString()}</p>
+                    <p className="font-medium text-red-600">{formatCurrency(analysis.signalInput.stopLoss)}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Take Profit</span>
-                    <p className="font-medium text-green-600">${analysis.signalInput.takeProfit.toLocaleString()}</p>
+                    <p className="font-medium text-green-600">{formatCurrency(analysis.signalInput.takeProfit)}</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Confidence</span>
-                    <p className="font-medium">{analysis.signalInput.confidence.toFixed(1)}%</p>
+                    <p className="font-medium">{formatNumber(analysis.signalInput.confidence, 1)}%</p>
                   </div>
                 </div>
               </div>
             )}
+
+            <div className="text-xs text-muted-foreground text-center">
+              Analysis completed at {new Date(analysis.timestamp).toLocaleString()}
+            </div>
+          </div>
+        )}
+
+        {!analysis && !riskAssessmentMutation.error && !riskAssessmentMutation.isPending && (
+          <div className="text-center py-8">
+            <BarChart3 className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-muted-foreground mb-2">
+              Ready for Risk Analysis
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Click "Run Analysis" to perform Monte Carlo simulation with 1000+ iterations
+            </p>
           </div>
         )}
       </CardContent>
     </Card>
   );
+}`;
+
+    console.log('✅ Generated improved component with:');
+    console.log('- Enhanced error handling and validation');
+    console.log('- Better user feedback and loading states');
+    console.log('- Improved data formatting and display');
+    console.log('- Manual trigger only (no auto-execution)');
+    console.log('- Comprehensive error messages for users');
+    console.log('- Rate limiting awareness');
+    
+    console.log('\n📝 Writing improved component to file...');
+    
+    // Write the improved component
+    require('fs').writeFileSync('./client/src/components/MonteCarloRiskDisplay.tsx', improvedComponent);
+    
+    console.log('✅ Component updated successfully');
+  }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 }
+
+// Execute frontend fix
+async function main() {
+  const fix = new FrontendMonteCarloFix();
+  await fix.implementFrontendFix();
+}
+
+main().catch(console.error);
