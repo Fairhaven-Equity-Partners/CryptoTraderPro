@@ -517,23 +517,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
         
         // Convert to expected format with complete mathematical data
-        const formattedSignals = filteredSignals.map(signal => ({
-          symbol: signal.symbol,
-          timeframe: signal.timeframe,
-          direction: signal.direction,
-          confidence: signal.confidence,
-          strength: signal.strength,
-          price: signal.price,
-          entryPrice: signal.entryPrice,
-          stopLoss: signal.stopLoss,
-          takeProfit: signal.takeProfit,
-          timestamp: signal.timestamp,
-          indicators: signal.indicators,
-          technicalAnalysis: signal.technicalAnalysis,
-          confluenceScore: signal.confluenceScore,
-          riskReward: signal.riskReward,
-          volatilityAdjustment: signal.volatilityAdjustment
-        }));
+        const formattedSignals = filteredSignals.map(signal => {
+          const baseConfluence = signal.confluenceScore || Math.max(30, signal.confidence * 0.6);
+          const finalConfluence = Math.round(Math.min(100, Math.max(30, baseConfluence)));
+          
+          return {
+            symbol: signal.symbol,
+            timeframe: signal.timeframe,
+            direction: signal.direction,
+            confidence: signal.confidence,
+            strength: signal.strength,
+            price: signal.price,
+            entryPrice: signal.entryPrice,
+            stopLoss: signal.stopLoss,
+            takeProfit: signal.takeProfit,
+            timestamp: signal.timestamp,
+            indicators: signal.indicators,
+            technicalAnalysis: signal.technicalAnalysis,
+            confluenceScore: signal.confluenceScore,
+            riskReward: signal.riskReward,
+            volatilityAdjustment: signal.volatilityAdjustment,
+            // CRITICAL: Add confluence fields for Critical Signal Analysis component
+            confluence: finalConfluence,
+            confluenceAnalysis: {
+              score: finalConfluence,
+              factors: [
+                { name: "Signal Confidence", weight: Math.round(signal.confidence / 10), signal: signal.direction },
+                { name: "Technical Strength", weight: Math.round((signal.strength || 0) * 10), signal: signal.direction },
+                { name: "Market Setup", weight: Math.round(Math.abs(signal.confidence - 50) / 5), signal: signal.direction },
+                { name: "Base Analysis", weight: Math.round(baseConfluence / 10), signal: "TECHNICAL" }
+              ],
+              strength: finalConfluence > 75 ? "STRONG" : finalConfluence > 50 ? "MODERATE" : "WEAK",
+              timeframe: signal.timeframe,
+              timestamp: Date.now(),
+              dataSource: "MainSignalsRoute_Critical_Fix"
+            }
+          };
+        });
         
         res.json(formattedSignals);
         return;
@@ -865,7 +885,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
         formattedSignals.filter(s => s.timeframe === timeframe) : 
         formattedSignals;
       
-      res.json(filteredSignals);
+      // CRITICAL FIX: Ensure ALL signals have confluence fields before sending response
+      const confluenceEnhancedSignals = filteredSignals.map(signal => {
+        if (!signal.confluence || !signal.confluenceAnalysis) {
+          const baseConfluence = signal.confluenceScore || Math.max(30, signal.confidence * 0.6);
+          const finalConfluence = Math.round(Math.min(100, Math.max(30, baseConfluence)));
+          
+          return {
+            ...signal,
+            confluence: finalConfluence,
+            confluenceAnalysis: {
+              score: finalConfluence,
+              factors: [
+                { name: "Signal Confidence", weight: Math.round(signal.confidence / 10), signal: signal.direction },
+                { name: "Technical Strength", weight: Math.round((signal.strength || 0) * 10), signal: signal.direction },
+                { name: "Market Setup", weight: Math.round(Math.abs(signal.confidence - 50) / 5), signal: signal.direction },
+                { name: "Base Analysis", weight: Math.round(baseConfluence / 10), signal: "TECHNICAL" }
+              ],
+              strength: finalConfluence > 75 ? "STRONG" : finalConfluence > 50 ? "MODERATE" : "WEAK",
+              timeframe: signal.timeframe,
+              timestamp: Date.now(),
+              dataSource: "RouteTransformation_Critical_Fix"
+            }
+          };
+        }
+        return signal;
+      });
+      
+      res.json(confluenceEnhancedSignals);
       
     } catch (error: any) {
       console.error(`Error fetching signals for ${req.params.symbol}:`, error);
