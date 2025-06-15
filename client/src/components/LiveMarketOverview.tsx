@@ -131,7 +131,7 @@ const LiveMarketOverview: React.FC = () => {
                 {pair.symbol.split('/')[0]}
               </div>
               <div className="font-mono text-xs text-muted-foreground">
-                {formatPrice(pair.price, pair.symbol)}
+                {formatPrice(pair.currentPrice || pair.price, pair.symbol)}
               </div>
               <div className={`flex items-center gap-1 text-xs ${
                 pair.change24h >= 0 ? 'text-green-600' : 'text-red-600'
