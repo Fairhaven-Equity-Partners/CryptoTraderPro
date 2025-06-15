@@ -83,21 +83,45 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       } catch (error) {
         console.error('[MonteCarloRiskDisplay] Request error:', error);
         
-        // Enhanced error handling
+        // Enhanced error categorization
         if (error instanceof Error) {
-          if (error.message.includes('429') || error.message.includes('rate limit')) {
-            throw new Error('Rate limit exceeded. Please wait a moment before trying again.');
+          const errorMessage = error.message.toLowerCase();
+          
+          // Check for specific HTTP status codes and API responses
+          if (errorMessage.includes('429') || errorMessage.includes('rate limit')) {
+            throw new Error('Rate limit exceeded. Please wait before making another request.');
           }
-          if (error.message.includes('400')) {
-            throw new Error('Invalid request parameters. Please check symbol and timeframe.');
+          
+          if (errorMessage.includes('symbol required') || errorMessage.includes('timeframe required')) {
+            throw new Error('Invalid parameters. Please check your symbol and timeframe selection.');
           }
-          if (error.message.includes('500')) {
-            throw new Error('Server error occurred. Please try again later.');
+          
+          if (errorMessage.includes('no signals available')) {
+            throw new Error('No market data available for this symbol/timeframe combination.');
           }
-          throw error;
+          
+          if (errorMessage.includes('500') || errorMessage.includes('server error')) {
+            throw new Error('Server error occurred. Please try again in a moment.');
+          }
+          
+          // Network/connection errors
+          if (errorMessage.includes('fetch') || errorMessage.includes('network') || errorMessage.includes('connection')) {
+            throw new Error('Network connection error. Please check your internet connection.');
+          }
+          
+          // Response parsing errors
+          if (errorMessage.includes('json') || errorMessage.includes('parse')) {
+            throw new Error('Response parsing error. Please try again.');
+          }
+          
+          // Use the original error message if it's descriptive
+          if (error.message && error.message.length > 10) {
+            throw error;
+          }
         }
         
-        throw new Error('Network error occurred. Please check your connection.');
+        // Fallback for unknown errors
+        throw new Error('An unexpected error occurred. Please try again.');
       }
     },
     onSuccess: (data) => {
