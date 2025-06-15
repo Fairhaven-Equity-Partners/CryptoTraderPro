@@ -808,7 +808,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const strengthBonus = Math.max(0, (signal.strength || 0) * 20);
         const confluenceScore = Math.min(100, Math.max(0, baseConfluence + confidenceBonus + strengthBonus));
         
-        return {
+        // Enhanced confluence calculation based on actual signal data
+        const finalConfluence = Math.round(Math.max(baseConfluence, confluenceScore));
+        
+        const enhancedSignal = {
           symbol: signal.symbol,
           timeframe: signal.timeframe,
           direction: signal.direction,
@@ -821,20 +824,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
           confluenceScore: signal.confluenceScore || 0,
           riskReward: signal.riskReward || 1.5,
           volatilityAdjustment: signal.volatilityAdjustment || 1.0,
-          // Add confluence fields for Critical Signal Analysis component
-          confluence: Math.round(confluenceScore),
+          // CRITICAL: Add confluence fields for Critical Signal Analysis component
+          confluence: finalConfluence,
           confluenceAnalysis: {
-            score: Math.round(confluenceScore),
+            score: finalConfluence,
             factors: [
               { name: "Signal Confidence", weight: Math.round(signal.confidence / 10), signal: signal.direction },
               { name: "Market Strength", weight: Math.round((signal.strength || 0) * 10), signal: signal.direction },
-              { name: "Technical Setup", weight: Math.round(confidenceBonus / 5), signal: signal.direction }
+              { name: "Technical Setup", weight: Math.round(confidenceBonus / 5), signal: signal.direction },
+              { name: "Base Score", weight: Math.round(baseConfluence / 10), signal: "TECHNICAL" }
             ],
-            strength: confluenceScore > 75 ? "STRONG" : confluenceScore > 50 ? "MODERATE" : "WEAK",
+            strength: finalConfluence > 75 ? "STRONG" : finalConfluence > 50 ? "MODERATE" : "WEAK",
             timeframe: signal.timeframe,
-            timestamp: signal.timestamp || Date.now()
-          }
+            timestamp: signal.timestamp || Date.now(),
+            dataSource: "AutomatedSignalCalculator"
+          },
+          // Additional fields for compatibility
+          entryPrice: signal.entryPrice || signal.price,
+          stopLoss: signal.stopLoss,
+          takeProfit: signal.takeProfit
         };
+        
+        return enhancedSignal;
       });
       
       // Filter by timeframe if different from what calculator returned
