@@ -20,7 +20,19 @@ const CriticalSignalAnalysis: React.FC = () => {
     useQuery({
       queryKey: ['/api/signals', symbol],
       refetchInterval: 15000, // Update every 15 seconds for critical signals
-      select: (data) => Array.isArray(data) ? data[0] : null // Get the latest signal
+      select: (data) => {
+        if (!Array.isArray(data)) return [];
+        
+        // Get diverse timeframes to prevent duplication display
+        const uniqueTimeframes = new Set<string>();
+        return data.filter(signal => {
+          if (!uniqueTimeframes.has(signal.timeframe)) {
+            uniqueTimeframes.add(signal.timeframe);
+            return true;
+          }
+          return false;
+        }).slice(0, 3); // Limit to 3 diverse timeframes per symbol
+      }
     })
   );
 
@@ -30,7 +42,7 @@ const CriticalSignalAnalysis: React.FC = () => {
   });
 
   const isLoading = signalQueries.some(query => query.isLoading);
-  const signals = signalQueries.map(query => query.data).filter(Boolean) as Signal[];
+  const signals = signalQueries.flatMap(query => query.data || []).filter(Boolean) as Signal[];
 
   const getSignalIcon = (direction: string) => {
     switch (direction) {

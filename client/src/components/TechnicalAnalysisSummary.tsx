@@ -24,12 +24,12 @@ interface PatternData {
 
 const TechnicalAnalysisSummary: React.FC = () => {
   const { data: techData, isLoading: techLoading } = useQuery({
-    queryKey: ['/api/technical-analysis/BTC/USDT'],
+    queryKey: ['/api/technical-analysis/BTC%2FUSDT'],
     refetchInterval: 30000, // Update every 30 seconds for secondary priority
   });
 
   const { data: patternData, isLoading: patternLoading } = useQuery({
-    queryKey: ['/api/pattern-analysis/BTC/USDT'],
+    queryKey: ['/api/pattern-analysis/BTC%2FUSDT'],
     refetchInterval: 45000,
   });
 
