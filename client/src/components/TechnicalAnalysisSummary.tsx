@@ -160,10 +160,28 @@ const TechnicalAnalysisSummary: React.FC = () => {
     );
   }
 
-  const rsiSignal = getRSISignal(indicators.rsi);
-  const macdSignal = getMACDSignal(indicators.macd);
-  const bbSignal = getBollingerPosition(0, indicators.bb_upper, indicators.bb_lower, indicators.bb_middle);
-  const stochSignal = getStochasticSignal(indicators.stochastic_k, indicators.stochastic_d);
+  // Safe numeric extraction with fallbacks
+  const safeNumber = (value: any, fallback: number = 0): number => {
+    if (typeof value === 'number' && !isNaN(value)) return value;
+    if (typeof value === 'string') {
+      const parsed = parseFloat(value);
+      return !isNaN(parsed) ? parsed : fallback;
+    }
+    return fallback;
+  };
+
+  const rsiValue = safeNumber(indicators.rsi, 50);
+  const macdValue = safeNumber(indicators.macd, 0);
+  const bbUpper = safeNumber(indicators.bb_upper, 0);
+  const bbLower = safeNumber(indicators.bb_lower, 0);
+  const bbMiddle = safeNumber(indicators.bb_middle, 0);
+  const stochK = safeNumber(indicators.stochastic_k, 50);
+  const stochD = safeNumber(indicators.stochastic_d, 50);
+
+  const rsiSignal = getRSISignal(rsiValue);
+  const macdSignal = getMACDSignal(macdValue);
+  const bbSignal = getBollingerPosition(0, bbUpper, bbLower, bbMiddle);
+  const stochSignal = getStochasticSignal(stochK, stochD);
 
   return (
     <Card className="w-full border-blue-200">
@@ -190,7 +208,7 @@ const TechnicalAnalysisSummary: React.FC = () => {
                 <span className="text-sm font-medium">RSI</span>
               </div>
               <div className="text-right">
-                <div className="text-sm font-semibold">{indicators.rsi.toFixed(1)}</div>
+                <div className="text-sm font-semibold">{rsiValue.toFixed(1)}</div>
                 <div className={`text-xs ${rsiSignal.color}`}>{rsiSignal.signal}</div>
               </div>
             </div>
@@ -201,7 +219,7 @@ const TechnicalAnalysisSummary: React.FC = () => {
                 <span className="text-sm font-medium">MACD</span>
               </div>
               <div className="text-right">
-                <div className="text-sm font-semibold">{indicators.macd.toFixed(4)}</div>
+                <div className="text-sm font-semibold">{macdValue.toFixed(4)}</div>
                 <div className={`text-xs ${macdSignal.color}`}>{macdSignal.signal}</div>
               </div>
             </div>
@@ -213,7 +231,7 @@ const TechnicalAnalysisSummary: React.FC = () => {
               </div>
               <div className="text-right">
                 <div className="text-sm font-semibold">
-                  {indicators.stochastic_k?.toFixed(1) || 'N/A'}
+                  {stochK.toFixed(1)}
                 </div>
                 <div className={`text-xs ${stochSignal.color}`}>{stochSignal.signal}</div>
               </div>
