@@ -2343,8 +2343,20 @@ app.get('/api/performance-metrics', async (req, res) => {
       console.log('[Routes] Performing Monte Carlo risk assessment...');
       
       const { symbol, timeframe } = req.body;
-      if (!symbol) {
+      
+      // Enhanced validation
+      if (!symbol || typeof symbol !== 'string' || symbol.trim() === '') {
         return res.status(400).json({ error: 'Symbol required' });
+      }
+      
+      if (!timeframe || typeof timeframe !== 'string' || timeframe.trim() === '') {
+        return res.status(400).json({ error: 'Timeframe required' });
+      }
+      
+      // Validate timeframe format
+      const validTimeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M'];
+      if (!validTimeframes.includes(timeframe)) {
+        return res.status(400).json({ error: 'Invalid timeframe' });
       }
 
       // Get current signals from the signals endpoint with enhanced error handling
