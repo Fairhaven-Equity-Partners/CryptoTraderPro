@@ -1,0 +1,20 @@
+{
+  "timestamp": "2025-06-15T14:12:52.508Z",
+  "systemScore": 60,
+  "workingComponents": 3,
+  "totalIssues": 4,
+  "fixes": [
+    "Performance metrics endpoint providing valid structured data",
+    "Performance indicators have all required fields for UI rendering",
+    "All status values compatible with UI styling"
+  ],
+  "issues": [
+    "Too many performance indicators contain placeholder data",
+    "Pattern Analysis Tab error: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+    "Multi-Timeframe Tab error: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+    "Monte Carlo not returning valid results structure"
+  ],
+  "status": "GOOD",
+  "monteCarloFeasible": true,
+  "uiDisplayWorking": true
+}

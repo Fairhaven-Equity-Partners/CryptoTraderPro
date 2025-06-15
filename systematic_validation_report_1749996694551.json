@@ -1,0 +1,120 @@
+{
+  "timestamp": "2025-06-15T14:11:34.549Z",
+  "systemScore": 79,
+  "totalIssues": 7,
+  "criticalIssues": [
+    {
+      "endpoint": "/api/technical-analysis/BTC/USDT",
+      "purpose": "Technical Analysis Engine",
+      "issue": "Connection error: Endpoint returning HTML instead of JSON",
+      "severity": "CRITICAL"
+    },
+    {
+      "endpoint": "/api/signals/BTC/USDT",
+      "purpose": "Signal Generation System",
+      "issue": "Connection error: Endpoint returning HTML instead of JSON",
+      "severity": "CRITICAL"
+    },
+    {
+      "endpoint": "/api/trade-simulations/BTC/USDT",
+      "purpose": "Trade Simulation Engine",
+      "issue": "Connection error: Endpoint returning HTML instead of JSON",
+      "severity": "CRITICAL"
+    },
+    {
+      "endpoint": "/api/monte-carlo-risk",
+      "purpose": "Monte Carlo Risk Assessment",
+      "issue": "Connection error: Endpoint returning HTML instead of JSON",
+      "severity": "CRITICAL"
+    },
+    {
+      "endpoint": "/api/enhanced-pattern-recognition/BTC/USDT",
+      "purpose": "Pattern Recognition",
+      "issue": "Connection error: Endpoint returning HTML instead of JSON",
+      "severity": "CRITICAL"
+    },
+    {
+      "endpoint": "/api/confluence-analysis/BTC/USDT",
+      "purpose": "Multi-Timeframe Analysis",
+      "issue": "Connection error: Endpoint returning HTML instead of JSON",
+      "severity": "CRITICAL"
+    }
+  ],
+  "uiIssues": [
+    "Performance UI validation error: Endpoint returning HTML instead of JSON"
+  ],
+  "monteCarloFeasibility": {
+    "feasible": false,
+    "quality": "POOR",
+    "reason": "Monte Carlo returning invalid or no results"
+  },
+  "resolutionPlan": {
+    "immediate": [],
+    "urgent": [
+      {
+        "action": "Repair Monte Carlo risk assessment",
+        "target": "/api/monte-carlo-risk",
+        "reason": "Advanced feature not working"
+      },
+      {
+        "action": "Fix UI display issue",
+        "target": "Performance Analysis Component",
+        "reason": "Performance UI validation error: Endpoint returning HTML instead of JSON"
+      }
+    ],
+    "important": [
+      {
+        "action": "Fix Technical Analysis Engine",
+        "target": "/api/technical-analysis/BTC/USDT",
+        "reason": "Connection error: Endpoint returning HTML instead of JSON"
+      },
+      {
+        "action": "Fix Signal Generation System",
+        "target": "/api/signals/BTC/USDT",
+        "reason": "Connection error: Endpoint returning HTML instead of JSON"
+      },
+      {
+        "action": "Fix Trade Simulation Engine",
+        "target": "/api/trade-simulations/BTC/USDT",
+        "reason": "Connection error: Endpoint returning HTML instead of JSON"
+      },
+      {
+        "action": "Fix Pattern Recognition",
+        "target": "/api/enhanced-pattern-recognition/BTC/USDT",
+        "reason": "Connection error: Endpoint returning HTML instead of JSON"
+      },
+      {
+        "action": "Fix Multi-Timeframe Analysis",
+        "target": "/api/confluence-analysis/BTC/USDT",
+        "reason": "Connection error: Endpoint returning HTML instead of JSON"
+      }
+    ],
+    "optimization": []
+  },
+  "reconstructionStrategy": {
+    "coreSystemFixes": [
+      "Implement robust error handling for all API endpoints",
+      "Add authentic data validation at endpoint level",
+      "Create fallback mechanisms that maintain data authenticity",
+      "Establish comprehensive logging for debugging",
+      "Rebuild Monte Carlo risk assessment engine",
+      "Implement proper BigNumber.js precision handling",
+      "Add comprehensive risk metrics validation"
+    ],
+    "uiEnhancements": [
+      "Fix Performance Analysis UI tab integration",
+      "Ensure proper data flow to Pattern Analysis tab",
+      "Validate Multi-Timeframe tab data display",
+      "Add loading states and error boundaries"
+    ],
+    "dataFlowImprovements": [],
+    "validationFramework": [
+      "External shell testing for all changes",
+      "Authentic data verification before deployment",
+      "Performance metrics validation suite",
+      "UI component integration testing"
+    ]
+  },
+  "groundRulesCompliance": true,
+  "recommendedAction": "TARGETED_FIXES"
+}
