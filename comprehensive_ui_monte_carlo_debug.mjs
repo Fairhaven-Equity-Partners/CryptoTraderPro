@@ -1,47 +1,44 @@
 /**
- * Comprehensive Monte Carlo UI Debug - External Shell Testing
- * Complete analysis of frontend-backend interaction and UI display issues
+ * Comprehensive UI Monte Carlo Debug - External Shell Testing
+ * Deep investigation of the persistent "Invalid parameters" error
  */
 
 class ComprehensiveUIMonteCarloDebug {
   constructor() {
     this.baseUrl = 'http://localhost:5000';
-    this.issues = [];
-    this.successes = [];
+    this.findings = [];
   }
 
-  async runCompleteDebug() {
-    console.log('🔍 COMPREHENSIVE MONTE CARLO UI DEBUG');
+  async runFullDiagnosis() {
+    console.log('🔍 COMPREHENSIVE UI MONTE CARLO DEBUG');
     console.log('====================================');
-    console.log('Complete frontend-backend interaction analysis\n');
+    console.log('Issue: Frontend still shows "Invalid parameters" after fix\n');
 
-    // Step 1: Test backend response structure
-    await this.testBackendResponseStructure();
+    // Step 1: Test current backend API status
+    await this.testBackendAPIStatus();
     
-    // Step 2: Test rate limiting behavior
-    await this.testRateLimitingBehavior();
+    // Step 2: Analyze the frontend error handling code
+    await this.analyzeFrontendErrorHandling();
     
-    // Step 3: Test error response handling
-    await this.testErrorResponseHandling();
+    // Step 3: Test different request scenarios
+    await this.testRequestScenarios();
     
-    // Step 4: Test data validation
-    await this.testDataValidation();
+    // Step 4: Investigate the apiRequest function
+    await this.investigateAPIRequestFunction();
     
-    // Step 5: Test complete UI flow simulation
-    await this.simulateCompleteUIFlow();
+    // Step 5: Test exact user scenario
+    await this.testUserScenario();
     
-    // Step 6: Generate comprehensive fix
-    await this.generateComprehensiveFix();
-    
-    this.generateFinalReport();
+    // Step 6: Generate comprehensive solution
+    this.generateComprehensiveSolution();
   }
 
-  async testBackendResponseStructure() {
-    console.log('🔧 Testing Backend Response Structure');
-    console.log('====================================');
+  async testBackendAPIStatus() {
+    console.log('📊 Testing Backend API Status');
+    console.log('=============================');
     
     try {
-      // Test with valid parameters
+      // Test successful request
       const response = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,237 +46,101 @@ class ComprehensiveUIMonteCarloDebug {
       });
       
       console.log(`Response status: ${response.status}`);
-      console.log(`Response headers: ${JSON.stringify(Object.fromEntries(response.headers))}`);
+      console.log(`Response headers:`, Object.fromEntries(response.headers));
       
       if (response.ok) {
         const data = await response.json();
-        
-        console.log('✅ Response structure analysis:');
-        console.log(`- success: ${data.success} (${typeof data.success})`);
-        console.log(`- symbol: ${data.symbol} (${typeof data.symbol})`);
-        console.log(`- timeframe: ${data.timeframe} (${typeof data.timeframe})`);
-        console.log(`- riskMetrics: ${data.riskMetrics ? 'present' : 'missing'} (${typeof data.riskMetrics})`);
-        console.log(`- signalInput: ${data.signalInput ? 'present' : 'missing'} (${typeof data.signalInput})`);
-        console.log(`- timestamp: ${data.timestamp} (${typeof data.timestamp})`);
-        
-        if (data.riskMetrics) {
-          const rm = data.riskMetrics;
-          console.log('\n📊 Risk Metrics Structure:');
-          console.log(`- expectedReturn: ${rm.expectedReturn} (${typeof rm.expectedReturn})`);
-          console.log(`- var95: ${rm.var95} (${typeof rm.var95})`);
-          console.log(`- maxDrawdown: ${rm.maxDrawdown} (${typeof rm.maxDrawdown})`);
-          console.log(`- winProbability: ${rm.winProbability} (${typeof rm.winProbability})`);
-          console.log(`- riskScore: ${rm.riskScore} (${typeof rm.riskScore})`);
-          console.log(`- sharpeRatio: ${rm.sharpeRatio} (${typeof rm.sharpeRatio})`);
-          console.log(`- confidenceInterval: ${JSON.stringify(rm.confidenceInterval)} (${typeof rm.confidenceInterval})`);
-          console.log(`- riskLevel: ${rm.riskLevel} (${typeof rm.riskLevel})`);
-          
-          // Validate all required fields are present and correct type
-          const requiredFields = [
-            { name: 'expectedReturn', type: 'number' },
-            { name: 'var95', type: 'number' },
-            { name: 'maxDrawdown', type: 'number' },
-            { name: 'winProbability', type: 'number' },
-            { name: 'riskScore', type: 'number' },
-            { name: 'sharpeRatio', type: 'number' },
-            { name: 'confidenceInterval', type: 'object' },
-            { name: 'riskLevel', type: 'string' }
-          ];
-          
-          let allFieldsValid = true;
-          for (const field of requiredFields) {
-            const value = rm[field.name];
-            const actualType = Array.isArray(value) ? 'object' : typeof value;
-            
-            if (value === undefined || value === null) {
-              console.log(`❌ Missing field: ${field.name}`);
-              this.issues.push(`Missing riskMetrics.${field.name}`);
-              allFieldsValid = false;
-            } else if (actualType !== field.type) {
-              console.log(`❌ Wrong type for ${field.name}: expected ${field.type}, got ${actualType}`);
-              this.issues.push(`Wrong type for riskMetrics.${field.name}`);
-              allFieldsValid = false;
-            } else {
-              console.log(`✅ ${field.name}: valid ${field.type}`);
-            }
-          }
-          
-          if (allFieldsValid) {
-            this.successes.push('All riskMetrics fields valid');
-          }
-        } else {
-          console.log('❌ riskMetrics field missing entirely');
-          this.issues.push('riskMetrics field missing');
-        }
-        
-        if (data.signalInput) {
-          const si = data.signalInput;
-          console.log('\n📈 Signal Input Structure:');
-          console.log(`- entryPrice: ${si.entryPrice} (${typeof si.entryPrice})`);
-          console.log(`- stopLoss: ${si.stopLoss} (${typeof si.stopLoss})`);
-          console.log(`- takeProfit: ${si.takeProfit} (${typeof si.takeProfit})`);
-          console.log(`- confidence: ${si.confidence} (${typeof si.confidence})`);
-          console.log(`- direction: ${si.direction} (${typeof si.direction})`);
-          
-          const signalFields = [
-            { name: 'entryPrice', type: 'number' },
-            { name: 'stopLoss', type: 'number' },
-            { name: 'takeProfit', type: 'number' },
-            { name: 'confidence', type: 'number' },
-            { name: 'direction', type: 'string' }
-          ];
-          
-          let allSignalFieldsValid = true;
-          for (const field of signalFields) {
-            const value = si[field.name];
-            const actualType = typeof value;
-            
-            if (value === undefined || value === null) {
-              console.log(`❌ Missing signalInput field: ${field.name}`);
-              this.issues.push(`Missing signalInput.${field.name}`);
-              allSignalFieldsValid = false;
-            } else if (actualType !== field.type) {
-              console.log(`❌ Wrong type for signalInput.${field.name}: expected ${field.type}, got ${actualType}`);
-              this.issues.push(`Wrong type for signalInput.${field.name}`);
-              allSignalFieldsValid = false;
-            } else {
-              console.log(`✅ signalInput.${field.name}: valid ${field.type}`);
-            }
-          }
-          
-          if (allSignalFieldsValid) {
-            this.successes.push('All signalInput fields valid');
-          }
-        } else {
-          console.log('❌ signalInput field missing');
-          this.issues.push('signalInput field missing');
-        }
-        
+        console.log('✅ Backend API working correctly');
+        console.log(`- Success: ${data.success}`);
+        console.log(`- Symbol: ${data.symbol}`);
+        console.log(`- Timeframe: ${data.timeframe}`);
+        console.log(`- Risk Level: ${data.riskMetrics.riskLevel}`);
+        console.log(`- Expected Return: ${data.riskMetrics.expectedReturn.toFixed(2)}%`);
+        this.findings.push('Backend API is fully functional');
       } else {
-        console.log(`❌ Backend returned error: ${response.status}`);
         const errorText = await response.text();
-        console.log(`Error response: ${errorText}`);
-        this.issues.push(`Backend error: ${response.status}`);
+        console.log(`❌ Backend error: ${response.status} - ${errorText}`);
+        this.findings.push(`Backend error: ${response.status}`);
       }
       
     } catch (error) {
-      console.log(`❌ Request failed: ${error.message}`);
-      this.issues.push(`Network error: ${error.message}`);
+      console.log(`❌ Network error: ${error.message}`);
+      this.findings.push(`Network error: ${error.message}`);
     }
     
     console.log('');
   }
 
-  async testRateLimitingBehavior() {
-    console.log('🛡️ Testing Rate Limiting Behavior');
-    console.log('==================================');
+  async analyzeFrontendErrorHandling() {
+    console.log('🔧 Analyzing Frontend Error Handling');
+    console.log('====================================');
     
-    try {
-      console.log('Making rapid sequential requests...');
-      
-      const requests = [];
-      for (let i = 0; i < 3; i++) {
-        requests.push(
-          fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ symbol: 'ETH/USDT', timeframe: '4h' })
-          })
-        );
-      }
-      
-      const responses = await Promise.all(requests);
-      
-      let successCount = 0;
-      let rateLimitedCount = 0;
-      
-      for (let i = 0; i < responses.length; i++) {
-        const response = responses[i];
-        console.log(`Request ${i + 1}: ${response.status}`);
-        
-        if (response.status === 200) {
-          successCount++;
-        } else if (response.status === 429) {
-          rateLimitedCount++;
-          const errorText = await response.text();
-          console.log(`  Rate limit message: ${errorText}`);
-        } else {
-          console.log(`  Unexpected status: ${response.status}`);
-        }
-      }
-      
-      console.log(`\nResults: ${successCount} successful, ${rateLimitedCount} rate limited`);
-      
-      if (rateLimitedCount > 0) {
-        console.log('✅ Rate limiting is working correctly');
-        this.successes.push('Rate limiting operational');
-      } else {
-        console.log('⚠️ Rate limiting may not be working');
-        this.issues.push('Rate limiting not detected');
-      }
-      
-    } catch (error) {
-      console.log(`❌ Rate limiting test failed: ${error.message}`);
-      this.issues.push(`Rate limiting test error: ${error.message}`);
-    }
+    console.log('Based on console logs, the frontend shows:');
+    console.log('- "[MonteCarloRiskDisplay] Request error:",{}');
+    console.log('- "[MonteCarloRiskDisplay] Analysis failed:",{}');
+    console.log('- Error message: "Invalid parameters. Please check your symbol and timeframe selection."');
+    console.log('- Error originates from line 65 in MonteCarloRiskDisplay.tsx');
     
+    console.log('\nThis suggests:');
+    console.log('1. The error object is empty: {}');
+    console.log('2. The error handling logic is catching something but not getting useful error info');
+    console.log('3. The error is being triggered at line 65, which should be our enhanced error handling');
+    
+    this.findings.push('Frontend error handling needs investigation - empty error object');
     console.log('');
   }
 
-  async testErrorResponseHandling() {
-    console.log('❌ Testing Error Response Handling');
-    console.log('==================================');
+  async testRequestScenarios() {
+    console.log('🧪 Testing Request Scenarios');
+    console.log('============================');
     
-    const errorTests = [
-      { name: 'Empty body', body: '{}' },
-      { name: 'Missing symbol', body: '{"timeframe": "1d"}' },
-      { name: 'Missing timeframe', body: '{"symbol": "BTC/USDT"}' },
-      { name: 'Invalid symbol', body: '{"symbol": "", "timeframe": "1d"}' },
-      { name: 'Invalid timeframe', body: '{"symbol": "BTC/USDT", "timeframe": ""}' },
-      { name: 'Invalid JSON', body: '{"symbol": "BTC/USDT", "timeframe":' }
+    const scenarios = [
+      { name: 'Valid BTC/USDT 1d', params: { symbol: 'BTC/USDT', timeframe: '1d' } },
+      { name: 'Valid ETH/USDT 4h', params: { symbol: 'ETH/USDT', timeframe: '4h' } },
+      { name: 'Empty symbol', params: { symbol: '', timeframe: '1d' } },
+      { name: 'Invalid symbol', params: { symbol: 'INVALID/USDT', timeframe: '1d' } },
+      { name: 'Empty timeframe', params: { symbol: 'BTC/USDT', timeframe: '' } }
     ];
     
-    for (const test of errorTests) {
+    for (const scenario of scenarios) {
+      console.log(`Testing: ${scenario.name}`);
+      console.log(`Parameters:`, scenario.params);
+      
       try {
-        console.log(`Testing ${test.name}...`);
-        
         const response = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: test.body
+          body: JSON.stringify(scenario.params)
         });
         
         console.log(`  Status: ${response.status}`);
         
-        if (response.status >= 400) {
-          const errorText = await response.text();
-          console.log(`  Error response: ${errorText.substring(0, 100)}...`);
-          
-          try {
-            const errorJson = JSON.parse(errorText);
-            if (errorJson.error) {
-              console.log(`  ✅ Proper error format with message`);
-              this.successes.push(`Error handling for ${test.name}`);
-            } else {
-              console.log(`  ⚠️ Error response missing error field`);
-            }
-          } catch (parseError) {
-            console.log(`  ⚠️ Error response not valid JSON`);
-          }
-        } else {
-          console.log(`  ⚠️ Should have returned error for ${test.name}`);
-          this.issues.push(`No error for ${test.name}`);
+        if (response.status === 429) {
+          console.log(`  Rate limited - waiting...`);
+          await this.sleep(3000);
+          continue;
         }
         
-        await this.sleep(100); // Small delay between tests
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`  ✅ Success: Risk level ${data.riskMetrics.riskLevel}`);
+        } else {
+          const errorData = await response.json();
+          console.log(`  ❌ Error: ${errorData.error}`);
+          
+          // Check what specific errors the backend returns
+          if (scenario.name === 'Valid BTC/USDT 1d' && response.status >= 400) {
+            this.findings.push(`Valid request rejected: ${response.status} - ${errorData.error}`);
+          }
+        }
+        
+        await this.sleep(1000);
         
       } catch (error) {
-        if (test.name === 'Invalid JSON' && error.message.includes('JSON')) {
-          console.log(`  ✅ Properly rejected invalid JSON`);
-          this.successes.push('Invalid JSON rejection');
-        } else {
-          console.log(`  ❌ Test failed: ${error.message}`);
-          this.issues.push(`Error test ${test.name} failed`);
+        console.log(`  ❌ Request failed: ${error.message}`);
+        
+        if (scenario.name.includes('Valid')) {
+          this.findings.push(`Valid request failed with network error: ${error.message}`);
         }
       }
     }
@@ -287,265 +148,156 @@ class ComprehensiveUIMonteCarloDebug {
     console.log('');
   }
 
-  async testDataValidation() {
-    console.log('🔍 Testing Data Validation');
-    console.log('==========================');
+  async investigateAPIRequestFunction() {
+    console.log('🔍 Investigating API Request Function');
+    console.log('=====================================');
+    
+    console.log('The frontend error suggests the issue might be in the apiRequest function');
+    console.log('or in how errors are being caught and handled.');
+    
+    console.log('\nPossible issues:');
+    console.log('1. apiRequest function is throwing an error before the response is parsed');
+    console.log('2. Response interceptor is modifying the error');
+    console.log('3. Error handling logic is not correctly identifying error types');
+    console.log('4. Request headers or body formatting issue');
+    
+    // Test if the issue is with headers or body formatting
+    console.log('\nTesting different request formats:');
+    
+    try {
+      // Test with different Content-Type
+      const response1 = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({ symbol: 'BTC/USDT', timeframe: '1d' })
+      });
+      console.log(`Different Content-Type: ${response1.status}`);
+      
+      await this.sleep(2000);
+      
+      // Test with additional headers
+      const response2 = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ symbol: 'ETH/USDT', timeframe: '4h' })
+      });
+      console.log(`With Accept header: ${response2.status}`);
+      
+    } catch (error) {
+      console.log(`Header test failed: ${error.message}`);
+    }
+    
+    this.findings.push('apiRequest function or error handling needs investigation');
+    console.log('');
+  }
+
+  async testUserScenario() {
+    console.log('👤 Testing User Scenario');
+    console.log('========================');
+    
+    console.log('Based on the console logs, user is trying:');
+    console.log('- Symbol: BTC/USDT');
+    console.log('- Timeframe: 1d');
+    console.log('- Getting "Invalid parameters" error');
     
     // Wait for rate limit to reset
     await this.sleep(3000);
     
     try {
-      console.log('Testing with valid data...');
-      const response = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbol: 'BTC/USDT', timeframe: '1d' })
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
+      // Test exact user scenario multiple times
+      for (let i = 1; i <= 3; i++) {
+        console.log(`\nAttempt ${i}:`);
         
-        // Validate numerical ranges
-        if (data.riskMetrics) {
-          const rm = data.riskMetrics;
-          
-          console.log('Validating data ranges...');
-          
-          // Win probability should be 0-100
-          if (rm.winProbability >= 0 && rm.winProbability <= 100) {
-            console.log(`✅ Win probability in valid range: ${rm.winProbability}%`);
-            this.successes.push('Win probability range valid');
-          } else {
-            console.log(`❌ Win probability out of range: ${rm.winProbability}%`);
-            this.issues.push('Win probability out of range');
-          }
-          
-          // Risk score should be 0-100
-          if (rm.riskScore >= 0 && rm.riskScore <= 100) {
-            console.log(`✅ Risk score in valid range: ${rm.riskScore}`);
-            this.successes.push('Risk score range valid');
-          } else {
-            console.log(`❌ Risk score out of range: ${rm.riskScore}`);
-            this.issues.push('Risk score out of range');
-          }
-          
-          // Risk level should be valid enum
-          const validRiskLevels = ['VERY_LOW', 'LOW', 'MODERATE', 'HIGH', 'VERY_HIGH'];
-          if (validRiskLevels.includes(rm.riskLevel)) {
-            console.log(`✅ Risk level valid: ${rm.riskLevel}`);
-            this.successes.push('Risk level valid');
-          } else {
-            console.log(`❌ Invalid risk level: ${rm.riskLevel}`);
-            this.issues.push('Invalid risk level');
-          }
-          
-          // Confidence interval should be array of 2 numbers
-          if (Array.isArray(rm.confidenceInterval) && rm.confidenceInterval.length === 2) {
-            console.log(`✅ Confidence interval valid: [${rm.confidenceInterval.join(', ')}]`);
-            this.successes.push('Confidence interval valid');
-          } else {
-            console.log(`❌ Invalid confidence interval: ${JSON.stringify(rm.confidenceInterval)}`);
-            this.issues.push('Invalid confidence interval');
-          }
+        const response = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symbol: 'BTC/USDT', timeframe: '1d' })
+        });
+        
+        console.log(`  Status: ${response.status}`);
+        
+        if (response.status === 429) {
+          console.log(`  Rate limited - this might be the issue!`);
+          this.findings.push('User experiencing rate limiting which triggers "Invalid parameters" error');
+          break;
         }
         
-        // Validate signal input
-        if (data.signalInput) {
-          const si = data.signalInput;
-          
-          // Prices should be positive
-          const prices = [si.entryPrice, si.stopLoss, si.takeProfit];
-          let allPricesValid = true;
-          
-          for (const price of prices) {
-            if (price <= 0) {
-              console.log(`❌ Invalid price: ${price}`);
-              this.issues.push('Invalid price value');
-              allPricesValid = false;
-            }
-          }
-          
-          if (allPricesValid) {
-            console.log(`✅ All prices positive: Entry $${si.entryPrice.toFixed(2)}`);
-            this.successes.push('Price values valid');
-          }
-          
-          // Confidence should be 0-100
-          if (si.confidence >= 0 && si.confidence <= 100) {
-            console.log(`✅ Signal confidence valid: ${si.confidence}%`);
-            this.successes.push('Signal confidence valid');
-          } else {
-            console.log(`❌ Invalid signal confidence: ${si.confidence}%`);
-            this.issues.push('Invalid signal confidence');
-          }
-        }
-        
-      } else {
-        console.log(`❌ Data validation test failed: ${response.status}`);
-        this.issues.push('Data validation test failed');
-      }
-      
-    } catch (error) {
-      console.log(`❌ Data validation error: ${error.message}`);
-      this.issues.push(`Data validation error: ${error.message}`);
-    }
-    
-    console.log('');
-  }
-
-  async simulateCompleteUIFlow() {
-    console.log('🎯 Simulating Complete UI Flow');
-    console.log('==============================');
-    
-    // Wait for rate limit
-    await this.sleep(3000);
-    
-    console.log('Step 1: User selects symbol and timeframe');
-    const userSymbol = 'BTC/USDT';
-    const userTimeframe = '4h';
-    console.log(`User selection: ${userSymbol} on ${userTimeframe}`);
-    
-    console.log('\nStep 2: User clicks "Run Risk Analysis" button');
-    console.log('Frontend validation...');
-    
-    // Simulate frontend validation
-    if (!userSymbol || !userTimeframe) {
-      console.log('❌ Frontend validation failed: missing parameters');
-      this.issues.push('Frontend validation insufficient');
-      return;
-    }
-    
-    if (userSymbol.trim() === '' || userTimeframe.trim() === '') {
-      console.log('❌ Frontend validation failed: empty parameters');
-      this.issues.push('Frontend validation insufficient');
-      return;
-    }
-    
-    console.log('✅ Frontend validation passed');
-    
-    console.log('\nStep 3: Making API request...');
-    try {
-      const startTime = Date.now();
-      const response = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbol: userSymbol, timeframe: userTimeframe })
-      });
-      const responseTime = Date.now() - startTime;
-      
-      console.log(`Response received in ${responseTime}ms`);
-      console.log(`Status: ${response.status}`);
-      
-      if (response.ok) {
-        const data = await response.json();
-        
-        console.log('\nStep 4: Processing response data...');
-        
-        // Simulate frontend processing
-        if (data.success && data.riskMetrics && data.signalInput) {
-          console.log('✅ Frontend successfully parsed response');
-          
-          console.log('\nStep 5: Displaying results to user...');
-          console.log('UI Elements that would be displayed:');
-          console.log(`- Symbol: ${data.symbol}`);
-          console.log(`- Timeframe: ${data.timeframe}`);
-          console.log(`- Risk Level: ${data.riskMetrics.riskLevel}`);
-          console.log(`- Expected Return: ${data.riskMetrics.expectedReturn.toFixed(2)}%`);
-          console.log(`- Value at Risk: ${data.riskMetrics.var95.toFixed(2)}%`);
-          console.log(`- Win Probability: ${data.riskMetrics.winProbability.toFixed(1)}%`);
-          console.log(`- Entry Price: $${data.signalInput.entryPrice.toLocaleString()}`);
-          console.log(`- Stop Loss: $${data.signalInput.stopLoss.toLocaleString()}`);
-          console.log(`- Take Profit: $${data.signalInput.takeProfit.toLocaleString()}`);
-          
-          console.log('\n✅ Complete UI flow successful');
-          this.successes.push('Complete UI flow working');
-          
+        if (response.ok) {
+          const data = await response.json();
+          console.log(`  ✅ Should work: Risk level ${data.riskMetrics.riskLevel}`);
         } else {
-          console.log('❌ Frontend cannot process response data');
-          console.log(`Missing fields: ${!data.success ? 'success ' : ''}${!data.riskMetrics ? 'riskMetrics ' : ''}${!data.signalInput ? 'signalInput' : ''}`);
-          this.issues.push('Frontend data processing failed');
+          const errorData = await response.json();
+          console.log(`  ❌ Backend error: ${errorData.error}`);
         }
         
-      } else if (response.status === 429) {
-        console.log('⚠️ Rate limited - this is expected behavior');
-        console.log('UI should show: "Please wait before making another request"');
-        this.successes.push('Rate limiting UI behavior correct');
-        
-      } else {
-        console.log(`❌ API error: ${response.status}`);
-        const errorText = await response.text();
-        console.log(`Error: ${errorText}`);
-        console.log('UI should show: Error message to user');
-        this.issues.push('API error handling needed');
+        await this.sleep(2500);
       }
       
     } catch (error) {
-      console.log(`❌ Network error: ${error.message}`);
-      console.log('UI should show: Network connection error');
-      this.issues.push('Network error handling needed');
+      console.log(`User scenario test failed: ${error.message}`);
+      this.findings.push(`User scenario fails: ${error.message}`);
     }
     
     console.log('');
   }
 
-  async generateComprehensiveFix() {
-    console.log('🔧 Generating Comprehensive Fix');
-    console.log('===============================');
+  generateComprehensiveSolution() {
+    console.log('🎯 COMPREHENSIVE SOLUTION');
+    console.log('=========================');
     
-    console.log('Issues identified:');
-    this.issues.forEach((issue, index) => {
-      console.log(`${index + 1}. ${issue}`);
+    console.log('Findings:');
+    this.findings.forEach((finding, index) => {
+      console.log(`${index + 1}. ${finding}`);
     });
     
-    console.log('\nWorking components:');
-    this.successes.forEach((success, index) => {
-      console.log(`${index + 1}. ${success}`);
-    });
+    console.log('\n🔍 ROOT CAUSE ANALYSIS');
+    console.log('======================');
     
-    console.log('\nRecommended fixes:');
+    console.log('The issue appears to be one of these:');
+    console.log('');
+    console.log('1. RATE LIMITING ISSUE:');
+    console.log('   - Frontend is hitting rate limits (429 status)');
+    console.log('   - Error handling incorrectly categorizes 429 as "Invalid parameters"');
+    console.log('   - User repeatedly tries, hitting more rate limits');
+    console.log('');
+    console.log('2. ERROR OBJECT ISSUE:');
+    console.log('   - Console shows empty error object: {}');
+    console.log('   - apiRequest function might not be preserving error details');
+    console.log('   - Error message defaults to "Invalid parameters"');
+    console.log('');
+    console.log('3. REQUEST TIMING ISSUE:');
+    console.log('   - User triggering requests too quickly');
+    console.log('   - Frontend not properly handling rapid requests');
+    console.log('');
     
-    if (this.issues.length === 0) {
-      console.log('✅ No issues found - system appears to be working correctly');
-    } else {
-      console.log('1. Frontend error handling improvement needed');
-      console.log('2. Better error message display in UI');
-      console.log('3. Loading state management enhancement');
-      console.log('4. Rate limiting user feedback improvement');
-    }
-  }
-
-  generateFinalReport() {
-    console.log('\n📋 FINAL DEBUG REPORT');
-    console.log('=====================');
+    console.log('🛠️ SOLUTION APPROACH');
+    console.log('====================');
     
-    const totalIssues = this.issues.length;
-    const totalSuccesses = this.successes.length;
-    const healthScore = (totalSuccesses / (totalSuccesses + totalIssues)) * 100;
+    console.log('1. FIX ERROR DETECTION:');
+    console.log('   - Check if error message contains actual HTTP status');
+    console.log('   - Look for rate limit responses specifically');
+    console.log('   - Add better error object inspection');
+    console.log('');
+    console.log('2. IMPROVE LOGGING:');
+    console.log('   - Add more detailed error logging in frontend');
+    console.log('   - Log the actual response status and body');
+    console.log('   - Track request timing and rate limiting');
+    console.log('');
+    console.log('3. ENHANCE RATE LIMIT HANDLING:');
+    console.log('   - Detect 429 responses specifically');
+    console.log('   - Show proper rate limit message');
+    console.log('   - Implement automatic retry with delay');
+    console.log('');
     
-    console.log(`Health Score: ${healthScore.toFixed(1)}%`);
-    console.log(`Working Components: ${totalSuccesses}`);
-    console.log(`Issues Found: ${totalIssues}`);
-    
-    if (healthScore >= 90) {
-      console.log('🟢 STATUS: System is working correctly');
-      console.log('Minor enhancements may be beneficial but not critical');
-    } else if (healthScore >= 70) {
-      console.log('🟡 STATUS: System mostly working with some issues');
-      console.log('Fixes recommended for optimal user experience');
-    } else {
-      console.log('🔴 STATUS: Significant issues require attention');
-      console.log('Multiple fixes needed for proper functionality');
-    }
-    
-    console.log('\nNext Steps:');
-    if (totalIssues === 0) {
-      console.log('- System appears to be working correctly');
-      console.log('- Monitor user feedback for any missed edge cases');
-    } else {
-      console.log('- Implement error handling improvements');
-      console.log('- Enhance user feedback for edge cases');
-      console.log('- Test with real user interactions');
-    }
+    console.log('📋 IMMEDIATE ACTIONS');
+    console.log('===================');
+    console.log('1. Update frontend error handling to check for 429 status specifically');
+    console.log('2. Add detailed logging to see what error object actually contains');
+    console.log('3. Test the apiRequest function behavior with rate limiting');
+    console.log('4. Implement proper rate limit user feedback');
   }
 
   sleep(ms) {
@@ -555,8 +307,8 @@ class ComprehensiveUIMonteCarloDebug {
 
 // Execute comprehensive debug
 async function main() {
-  const debug = new ComprehensiveUIMonteCarloDebug();
-  await debug.runCompleteDebug();
+  const analyzer = new ComprehensiveUIMonteCarloDebug();
+  await analyzer.runFullDiagnosis();
 }
 
 main().catch(console.error);

@@ -83,24 +83,28 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       } catch (error) {
         console.error('[MonteCarloRiskDisplay] Request error:', error);
         
-        // Enhanced error categorization
+        // Enhanced error categorization with detailed logging
+        console.log('[MonteCarloRiskDisplay] Error details:', error);
+        console.log('[MonteCarloRiskDisplay] Error type:', typeof error);
+        
         if (error instanceof Error) {
           const errorMessage = error.message.toLowerCase();
+          console.log('[MonteCarloRiskDisplay] Error message:', errorMessage);
           
-          // Check for specific HTTP status codes and API responses
-          if (errorMessage.includes('429') || errorMessage.includes('rate limit')) {
+          // Check for HTTP status codes at start of message (format: "429: Rate limit...")
+          if (errorMessage.startsWith('429') || errorMessage.includes('rate limit')) {
             throw new Error('Rate limit exceeded. Please wait before making another request.');
           }
           
-          if (errorMessage.includes('symbol required') || errorMessage.includes('timeframe required')) {
+          if (errorMessage.startsWith('400') || errorMessage.includes('symbol required') || errorMessage.includes('timeframe required')) {
             throw new Error('Invalid parameters. Please check your symbol and timeframe selection.');
           }
           
-          if (errorMessage.includes('no signals available')) {
+          if (errorMessage.startsWith('404') || errorMessage.includes('no signals available')) {
             throw new Error('No market data available for this symbol/timeframe combination.');
           }
           
-          if (errorMessage.includes('500') || errorMessage.includes('server error')) {
+          if (errorMessage.startsWith('500') || errorMessage.includes('server error')) {
             throw new Error('Server error occurred. Please try again in a moment.');
           }
           
