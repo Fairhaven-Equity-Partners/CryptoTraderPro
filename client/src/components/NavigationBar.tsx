@@ -11,6 +11,7 @@ const tabs: AppTab[] = [
   { id: 'analysis', label: 'Analysis', icon: 'analytics' },
   { id: 'forex', label: 'Forex', icon: 'currency_exchange' },
   { id: 'risk', label: 'Risk', icon: 'shield' },
+  { id: 'patterns', label: 'Patterns', icon: 'visibility' },
   { id: 'settings', label: 'Settings', icon: 'settings' }
 ];
 
