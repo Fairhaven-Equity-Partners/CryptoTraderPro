@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-06-15T05:58:05.919Z",
+  "overallScore": 50,
+  "enhancements": [
+    "Performance metrics authenticity: 50.0%"
+  ],
+  "metrics": {
+    "performanceAuthenticity": 50,
+    "overallScore": 50
+  },
+  "status": "FAIR"
+}

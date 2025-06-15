@@ -1,0 +1,30 @@
+{
+  "timestamp": "2025-06-15T05:56:55.045Z",
+  "autonomyScore": 0,
+  "totalIssues": 13,
+  "totalFixes": 0,
+  "issues": [
+    "API endpoint /api/crypto/BTC/USDT connection error",
+    "API endpoint /api/signals/BTC/USDT connection error",
+    "API endpoint /api/technical-analysis/BTC/USDT connection error",
+    "API endpoint /api/enhanced-pattern-recognition/BTC/USDT connection error",
+    "API endpoint /api/confluence-analysis/BTC/USDT connection error",
+    "API endpoint /api/trade-simulations/BTC/USDT connection error",
+    "API endpoint /api/accuracy/BTC/USDT connection error",
+    "Signal automation system connection error",
+    "Technical analysis automation connection error",
+    "Price automation system connection error",
+    "Performance metrics need more authentic calculations",
+    "Trade simulation automation connection error",
+    "Pattern recognition automation connection error"
+  ],
+  "fixes": [],
+  "recommendations": [
+    "Fix API endpoint routing to ensure JSON responses",
+    "Implement more robust error handling in automation systems",
+    "Enhance data quality validation for authentic calculations",
+    "Add autonomous recovery mechanisms for failed calculations",
+    "Implement comprehensive logging for autonomous operations"
+  ],
+  "status": "NOT_AUTONOMOUS"
+}
