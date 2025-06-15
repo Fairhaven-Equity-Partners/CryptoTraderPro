@@ -4,7 +4,7 @@ import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
-import UnifiedPerformancePanel from '../components/UnifiedPerformancePanel';
+
 import LiveMarketOverview from '../components/LiveMarketOverview';
 import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';

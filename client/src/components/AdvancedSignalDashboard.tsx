@@ -16,7 +16,7 @@ import { getSecondsUntilNextRefresh, getFormattedCountdown } from '../lib/finalP
 import { getTimeframeSuccessProbability } from '../lib/timeframeSuccessProbability';
 import { getCurrentMoonPhase, getMoonPhaseEmoji } from '../lib/moonPhase';
 import { useCentralizedPrice } from '../lib/centralizedPriceManager';
-import UnifiedPerformancePanel from './UnifiedPerformancePanel';
+
 import { 
   AlertTriangle, 
   TrendingUp, 
@@ -2415,8 +2415,7 @@ export default function AdvancedSignalDashboard({
             </div>
           </div>
 
-          {/* Unified Performance Analysis */}
-          <UnifiedPerformancePanel symbol={symbol} selectedTimeframe={selectedTimeframe} signals={signals} />
+          {/* Performance metrics integrated into Technical Analysis Summary */}
         </CardContent>
       </Card>
 
