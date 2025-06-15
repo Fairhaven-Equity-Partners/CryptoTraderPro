@@ -174,11 +174,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Performance metrics endpoint removed - now handled by comprehensive endpoint below with UI transformation
   
-  // Get specific crypto asset with real-time price data from CoinGecko
-  app.get('/api/crypto/:symbol', async (req: Request, res: Response) => {
+  // Get specific crypto asset with real-time price data - Fixed URL encoding
+  app.get('/api/crypto/:symbol(*)', async (req: Request, res: Response) => {
     try {
-      // URL decode the symbol and replace encoded forward slash
-      const symbol = decodeURIComponent(req.params.symbol).replace('%2F', '/');
+      // Handle both encoded and unencoded symbols properly
+      let symbol = req.params.symbol;
+      if (symbol.includes('%2F')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      if (!symbol.includes('/') && req.params[0]) {
+        symbol = symbol + '/' + req.params[0];
+      }
       console.log(`Fetching crypto asset with symbol: ${symbol}`);
       
       // Import optimized data providers for top 50 cryptocurrencies
@@ -396,10 +402,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Get signal history for a symbol with authentic market calculations
-  app.get('/api/signals/:symbol', async (req: Request, res: Response) => {
+  // Get signal history for a symbol with authentic market calculations - Fixed URL encoding
+  app.get('/api/signals/:symbol(*)', async (req: Request, res: Response) => {
     try {
-      const symbol = req.params.symbol;
+      // Handle URL encoded symbols properly
+      let symbol = req.params.symbol;
+      if (symbol.includes('%2F')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      if (!symbol.includes('/') && req.params[0]) {
+        symbol = symbol + '/' + req.params[0];
+      }
+      
       const timeframe = req.query.timeframe as string;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 50;
       

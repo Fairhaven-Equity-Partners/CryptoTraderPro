@@ -1,0 +1,249 @@
+{
+  "timestamp": "2025-06-15T17:36:41.835Z",
+  "analysisType": "Comprehensive 10-Cycle Analysis",
+  "finalScores": {
+    "systemHealth": 33.333333333333336,
+    "signalGeneration": 62,
+    "performanceMetrics": 96.66666666666667,
+    "riskManagement": 100,
+    "uiDataFlow": 50,
+    "authentication": 0,
+    "endpointResponse": 100,
+    "dataQuality": 100,
+    "systemIntegration": 100
+  },
+  "analysisResults": {
+    "systemHealth": {
+      "name": "System Health Diagnostic",
+      "endpoints": {
+        "/api/performance-metrics": {
+          "health": 100,
+          "responseTime": 37,
+          "issues": []
+        },
+        "/api/crypto/BTC/USDT": {
+          "health": 0,
+          "responseTime": 6,
+          "issues": [
+            "Non-JSON response"
+          ]
+        },
+        "/api/signals/BTC/USDT": {
+          "health": 0,
+          "responseTime": 6,
+          "issues": [
+            "Non-JSON response"
+          ]
+        }
+      },
+      "overallHealth": 33.333333333333336
+    },
+    "signalGeneration": {
+      "name": "Signal Generation Analysis",
+      "symbols": {
+        "BTC/USDT": {
+          "signalCount": 1,
+          "avgConfidence": "51.0",
+          "quality": "excellent",
+          "enhancement": 53
+        },
+        "ETH/USDT": {
+          "signalCount": 1,
+          "avgConfidence": "64.0",
+          "quality": "excellent",
+          "enhancement": 71
+        }
+      },
+      "overallConfidence": 62
+    },
+    "performanceMetrics": {
+      "name": "Performance Metrics Validation",
+      "cycles": [
+        {
+          "cycle": 1,
+          "indicators": 6,
+          "authenticity": "96.7"
+        },
+        {
+          "cycle": 2,
+          "indicators": 6,
+          "authenticity": "96.7"
+        },
+        {
+          "cycle": 3,
+          "indicators": 6,
+          "authenticity": "96.7"
+        },
+        {
+          "cycle": 4,
+          "indicators": 6,
+          "authenticity": "96.7"
+        },
+        {
+          "cycle": 5,
+          "indicators": 6,
+          "authenticity": "96.7"
+        }
+      ],
+      "avgAuthenticity": 96.66666666666667
+    },
+    "riskManagement": {
+      "name": "Risk Management Testing",
+      "tests": [
+        {
+          "scenario": "BTC/USDT LONG",
+          "quality": "excellent",
+          "var95": "-0.97",
+          "sharpe": "0.062",
+          "status": "success"
+        },
+        {
+          "scenario": "ETH/USDT SHORT",
+          "quality": "excellent",
+          "var95": "-0.96",
+          "sharpe": "0.074",
+          "status": "success"
+        }
+      ],
+      "successRate": 100
+    },
+    "uiDataFlow": {
+      "name": "UI Data Flow Analysis",
+      "endpoints": {
+        "/api/enhanced-pattern-recognition/BTC%2FUSDT": {
+          "score": 0,
+          "status": "error",
+          "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+        },
+        "/api/confluence-analysis/BTC%2FUSDT": {
+          "score": 50,
+          "responseTime": 35,
+          "status": "operational"
+        },
+        "/api/accuracy/BTC/USDT": {
+          "score": 0,
+          "status": "error",
+          "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+        }
+      },
+      "overallScore": 50
+    },
+    "authentication": {
+      "name": "Authentication Validation",
+      "dataEndpoints": {
+        "/api/crypto/BTC/USDT": {
+          "authenticity": 0,
+          "status": "error",
+          "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+        },
+        "/api/trade-simulations/BTC/USDT": {
+          "authenticity": 0,
+          "status": "error",
+          "error": "Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+        }
+      },
+      "overallAuthenticity": 0
+    },
+    "endpointResponse": {
+      "name": "Endpoint Response Analysis",
+      "performance": {
+        "/api/performance-metrics": {
+          "avgResponseTime": "3.3",
+          "tests": 3,
+          "quality": "excellent"
+        },
+        "/api/signals/BTC/USDT": {
+          "avgResponseTime": "4.0",
+          "tests": 3,
+          "quality": "excellent"
+        }
+      },
+      "avgResponseTime": 3.6666666666666665
+    },
+    "dataQuality": {
+      "name": "Data Quality Assessment",
+      "qualityChecks": {
+        "/api/performance-metrics": {
+          "quality": 100,
+          "dataType": "object",
+          "size": 4
+        }
+      },
+      "overallQuality": 100
+    },
+    "systemIntegration": {
+      "name": "System Integration Testing",
+      "integrationTests": {
+        "signals_to_performance": {
+          "score": 100,
+          "results": [
+            {
+              "endpoint": "/api/signals/BTC/USDT",
+              "success": true,
+              "status": 200
+            },
+            {
+              "endpoint": "/api/performance-metrics",
+              "success": true,
+              "status": 200
+            }
+          ]
+        },
+        "crypto_to_analysis": {
+          "score": 100,
+          "results": [
+            {
+              "endpoint": "/api/crypto/BTC/USDT",
+              "success": true,
+              "status": 200
+            },
+            {
+              "endpoint": "/api/technical-analysis/BTC/USDT",
+              "success": true,
+              "status": 200
+            }
+          ]
+        }
+      },
+      "overallIntegration": 100
+    },
+    "readinessValidation": {
+      "name": "Readiness Validation",
+      "finalScores": {
+        "systemHealth": 33.333333333333336,
+        "signalGeneration": 62,
+        "performanceMetrics": 96.66666666666667,
+        "riskManagement": 100,
+        "uiDataFlow": 50,
+        "authentication": 0,
+        "endpointResponse": 100,
+        "dataQuality": 100,
+        "systemIntegration": 100
+      },
+      "weightedScore": 65.23333333333333,
+      "readyForImplementation": false
+    }
+  },
+  "systemIssues": [
+    "/api/crypto/BTC/USDT: Expected JSON, got text/html; charset=utf-8",
+    "/api/signals/BTC/USDT: Expected JSON, got text/html; charset=utf-8",
+    "UI endpoint /api/enhanced-pattern-recognition/BTC%2FUSDT: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+    "UI endpoint /api/accuracy/BTC/USDT: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+    "Authentication /api/crypto/BTC/USDT: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+    "Authentication /api/trade-simulations/BTC/USDT: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+    "Data quality /api/signals/BTC/USDT: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+  ],
+  "readyForImplementation": false,
+  "recommendations": [
+    "Critical: Fix system health issues affecting multiple endpoints",
+    "Enhance signal generation confidence through multi-timeframe validation",
+    "Performance metrics excellent - maintain current implementation",
+    "Risk management performing well - minor optimizations only"
+  ],
+  "nextSteps": [
+    "Address identified system issues",
+    "Re-run validation cycles for improved areas",
+    "Achieve 80%+ overall score before implementation",
+    "Reduce system issues to 5 or fewer"
+  ]
+}
