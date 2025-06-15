@@ -109,6 +109,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Force cache regeneration with confluence fields
+  app.post('/api/automation/force-regenerate', async (req: Request, res: Response) => {
+    try {
+      console.log('[Routes] Forcing signal cache regeneration with confluence fields');
+      automatedSignalCalculator.clearCacheAndRegenerate();
+      res.json({ success: true, message: 'Signal cache cleared and regeneration started' });
+    } catch (error) {
+      console.error('Error forcing cache regeneration:', error);
+      res.status(500).json({ error: 'Failed to force cache regeneration' });
+    }
+  });
+
   // Get all 50 cryptocurrency pairs with pre-calculated signals
   app.get('/api/crypto/all-pairs', async (req: Request, res: Response) => {
     try {

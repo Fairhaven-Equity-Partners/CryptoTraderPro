@@ -466,6 +466,10 @@ export class AutomatedSignalCalculator {
         takeProfit = currentPrice + (realATR * atrMultiplier.takeProfit * 0.5);
       }
 
+      // Calculate confluence score for Critical Signal Analysis component
+      const calculatedConfluenceScore = this.calculateEnhancedConfluenceScore(realRSI, realMACD, realBB, change24h);
+      const finalConfluence = Math.round(Math.max(calculatedConfluenceScore, confidence * 0.8));
+
       const signal: CalculatedSignal = {
         symbol: mapping.symbol,
         timeframe,
@@ -488,7 +492,22 @@ export class AutomatedSignalCalculator {
           bbPosition,
           reasoning
         },
-        confluenceScore: this.calculateEnhancedConfluenceScore(realRSI, realMACD, realBB, change24h),
+        confluenceScore: calculatedConfluenceScore,
+        // CRITICAL: Add confluence fields for Critical Signal Analysis component
+        confluence: finalConfluence,
+        confluenceAnalysis: {
+          score: finalConfluence,
+          factors: [
+            { name: "RSI Momentum", weight: Math.round(Math.abs(realRSI - 50) / 5), signal: realRSI > 50 ? "BUY" : "SELL" },
+            { name: "MACD Signal", weight: Math.round(Math.abs(realMACD.macdLine) / 100), signal: realMACD.macdLine > 0 ? "BUY" : "SELL" },
+            { name: "Bollinger Position", weight: Math.round(Math.abs(bbPosition) / 10), signal: bbPosition > 0 ? "BUY" : "SELL" },
+            { name: "Price Momentum", weight: Math.round(Math.abs(change24h) * 100), signal: change24h > 0 ? "BUY" : "SELL" }
+          ],
+          strength: finalConfluence > 75 ? "STRONG" : finalConfluence > 50 ? "MODERATE" : "WEAK",
+          timeframe: timeframe,
+          timestamp: Date.now(),
+          dataSource: "AutomatedSignalCalculator"
+        },
         enhancedAnalysis: {
           patternRecognition: this.detectCandlestickPatterns(ohlcvData),
           supportResistance: this.identifySupportResistanceLevels(ohlcvData.close),
