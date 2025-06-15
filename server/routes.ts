@@ -2480,7 +2480,8 @@ app.get('/api/performance-metrics', async (req, res) => {
           stopLoss: signalInput.stopLoss,
           takeProfit: signalInput.takeProfit,
           confidence: signalInput.confidence,
-          direction: signalInput.direction
+          direction: signalInput.direction,
+          timeframe: signalInput.timeframe
         },
         timestamp: new Date().toISOString()
       });
