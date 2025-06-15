@@ -2451,7 +2451,8 @@ app.get('/api/performance-metrics', async (req, res) => {
         stopLoss,
         takeProfit,
         confidence: currentSignal.confidence,
-        direction
+        direction,
+        timeframe: timeframe || '1d'
       };
 
       // Initialize Monte Carlo risk engine
@@ -2468,6 +2469,7 @@ app.get('/api/performance-metrics', async (req, res) => {
           sharpeRatio: riskAssessment.sharpeRatio,
           maxDrawdown: riskAssessment.maxDrawdown,
           expectedReturn: riskAssessment.expectedReturn,
+          volatility: riskAssessment.volatility,
           winProbability: riskAssessment.winProbability || 85,
           riskScore: riskAssessment.riskScore || 45,
           confidenceInterval: riskAssessment.confidenceInterval || [-10, 15],

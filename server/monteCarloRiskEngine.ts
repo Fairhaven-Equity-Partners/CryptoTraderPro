@@ -13,6 +13,7 @@ export interface MonteCarloResult {
   winProbability: number;
   riskScore: number;
   sharpeRatio: number;
+  volatility: number;
   confidenceInterval: [number, number];
   riskLevel: 'VERY_LOW' | 'LOW' | 'MODERATE' | 'HIGH' | 'VERY_HIGH';
 }
@@ -23,6 +24,7 @@ export interface SignalInput {
   takeProfit: number;
   confidence: number;
   direction: 'LONG' | 'SHORT' | 'NEUTRAL';
+  timeframe?: string;
   volatility?: number;
 }
 
@@ -181,6 +183,7 @@ export class MonteCarloRiskEngine {
       winProbability: parseFloat(winProbability.toFixed(2)),
       riskScore: parseFloat(riskScore.toFixed(2)),
       sharpeRatio: parseFloat(sharpeRatio.toFixed(4)),
+      volatility: parseFloat((standardDeviation * Math.sqrt(252)).toFixed(4)), // Annualized volatility
       confidenceInterval: [
         parseFloat(confidenceInterval[0].toFixed(4)),
         parseFloat(confidenceInterval[1].toFixed(4))
