@@ -1185,21 +1185,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Enhanced technical analysis endpoint
-  app.get('/api/technical-analysis/:symbol', async (req: Request, res: Response) => {
+  // Specific route for direct symbol access (non-encoded)
+  app.get('/api/technical-analysis/:base/:quote', async (req: Request, res: Response) => {
+    const symbol = `${req.params.base}/${req.params.quote}`;
+    req.params.symbol = symbol;
+    // Call the main handler
+    return handleTechnicalAnalysis(req, res);
+  });
+
+  // Enhanced technical analysis endpoint (wildcard for encoded)
+  app.get('/api/technical-analysis/:symbol(*)', handleTechnicalAnalysis);
+
+  // Enhanced technical analysis endpoint (main handler)
+  async function handleTechnicalAnalysis(req: Request, res: Response) {
     try {
-      // Handle URL encoding for symbols with forward slashes
-      const rawSymbol = req.params.symbol;
-      if (rawSymbol && rawSymbol.includes('/') && !rawSymbol.includes('%')) {
-        const encodedSymbol = encodeURIComponent(rawSymbol);
-        const newUrl = req.originalUrl.replace(rawSymbol, encodedSymbol);
-        return res.redirect(302, newUrl);
-      }
-      
       // Ensure JSON response
       res.setHeader('Content-Type', 'application/json');
       
-      const symbol = req.params.symbol;
+      // Handle both encoded and non-encoded symbols
+      let symbol = req.params.symbol;
+      if (symbol && symbol.includes('%')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      
+      // Validate symbol format
+      if (!symbol || !symbol.includes('/')) {
+        return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
+      }
       const { period = 30, timeframe } = req.query;
       
       console.log(`[Routes] Calculating real technical indicators for ${symbol}${timeframe ? ` (${timeframe})` : ''}`);
@@ -2820,20 +2832,21 @@ app.get('/api/performance-metrics', async (req, res) => {
   });
 
   // Enhanced Pattern Recognition API - Advanced Market Analysis
-  app.get('/api/pattern-analysis/:symbol', async (req: Request, res: Response) => {
+  app.get('/api/pattern-analysis/:symbol(*)', async (req: Request, res: Response) => {
     try {
-      // Handle URL encoding for symbols with forward slashes
-      const rawSymbol = req.params.symbol;
-      if (rawSymbol && rawSymbol.includes('/') && !rawSymbol.includes('%')) {
-        const encodedSymbol = encodeURIComponent(rawSymbol);
-        const newUrl = req.originalUrl.replace(rawSymbol, encodedSymbol);
-        return res.redirect(302, newUrl);
-      }
-      
       // Ensure JSON response
       res.setHeader('Content-Type', 'application/json');
       
-      const symbol = req.params.symbol;
+      // Handle both encoded and non-encoded symbols
+      let symbol = req.params.symbol;
+      if (symbol && symbol.includes('%')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      
+      // Validate symbol format
+      if (!symbol || !symbol.includes('/')) {
+        return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
+      }
       const { timeframe = '1d' } = req.query;
       
       console.log(`[Routes] Running enhanced pattern analysis for ${symbol} (${timeframe})...`);
@@ -2891,20 +2904,21 @@ app.get('/api/performance-metrics', async (req, res) => {
   });
 
   // Multi-timeframe Confluence Analysis - Maximum Accuracy
-  app.get('/api/confluence-analysis/:symbol', async (req: Request, res: Response) => {
+  app.get('/api/confluence-analysis/:symbol(*)', async (req: Request, res: Response) => {
     try {
-      // Handle URL encoding for symbols with forward slashes
-      const rawSymbol = req.params.symbol;
-      if (rawSymbol && rawSymbol.includes('/') && !rawSymbol.includes('%')) {
-        const encodedSymbol = encodeURIComponent(rawSymbol);
-        const newUrl = req.originalUrl.replace(rawSymbol, encodedSymbol);
-        return res.redirect(302, newUrl);
-      }
-      
       // Ensure JSON response
       res.setHeader('Content-Type', 'application/json');
       
-      const symbol = req.params.symbol;
+      // Handle both encoded and non-encoded symbols
+      let symbol = req.params.symbol;
+      if (symbol && symbol.includes('%')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      
+      // Validate symbol format
+      if (!symbol || !symbol.includes('/')) {
+        return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
+      }
       const timeframes = ['1h', '4h', '1d', '1w'];
       
       console.log(`[Routes] Running multi-timeframe confluence analysis for ${symbol}...`);
