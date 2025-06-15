@@ -69,7 +69,8 @@ const CriticalSignalAnalysis: React.FC = () => {
   };
 
   const highConfidenceSignals = signals.filter(signal => signal && signal.confidence >= 70);
-  const confluenceScore = (confluenceData && confluenceData.confluence && confluenceData.confluence.overallScore) || 0;
+  const confluenceScore = (confluenceData && confluenceData.confluence && confluenceData.confluence.overallScore) || 
+                         (confluenceData && typeof confluenceData.confluence === 'number' ? confluenceData.confluence : 0);
 
   if (isLoading) {
     return (

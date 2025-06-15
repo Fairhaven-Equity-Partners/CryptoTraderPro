@@ -33,7 +33,7 @@ const TechnicalAnalysisSummary: React.FC = () => {
     refetchInterval: 45000,
   });
 
-  const indicators = (techData && techData.indicators) ? techData.indicators as TechnicalIndicators : null;
+  const indicators = (techData && techData.indicators) ? techData.indicators as TechnicalIndicators : {} as TechnicalIndicators;
   const patterns = (patternData && patternData.patterns && Array.isArray(patternData.patterns)) ? patternData.patterns : [];
 
   const getRSISignal = (rsi: number) => {
