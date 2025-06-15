@@ -1,0 +1,40 @@
+{
+  "timestamp": "2025-06-15T14:15:04.800Z",
+  "overallScore": 47,
+  "systemStatus": "POOR",
+  "componentScores": {
+    "performanceUI": 91.66666666666667,
+    "monteCarlo": "NOT_WORKING",
+    "patternTab": false,
+    "confluenceTab": false
+  },
+  "monteCarlo": {
+    "feasible": false,
+    "quality": "UNKNOWN",
+    "metrics": {}
+  },
+  "performanceUI": {
+    "score": 91.66666666666667,
+    "workingFeatures": [
+      "All indicators have valid structure",
+      "Performance indicators contain authentic calculations"
+    ],
+    "issues": []
+  },
+  "tabIntegration": {
+    "pattern": false,
+    "confluence": false,
+    "issues": [
+      "Pattern tab error: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "Multi-timeframe tab error: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+    ]
+  },
+  "recommendations": {
+    "immediate": [
+      "Pattern tab error: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "Multi-timeframe tab error: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+    ],
+    "improvements": [],
+    "deployment": "NEEDS_WORK"
+  }
+}

@@ -2354,11 +2354,19 @@ app.get('/api/performance-metrics', async (req, res) => {
       const monteCarloEngine = new MonteCarloRiskEngine(1000, 24);
       const riskAssessment = monteCarloEngine.runSimulation(signalInput);
 
+      // Return properly structured Monte Carlo results
       res.json({
         success: true,
         symbol,
         timeframe: timeframe || '1d',
-        riskAssessment,
+        results: {
+          var95: riskAssessment.var95,
+          sharpeRatio: riskAssessment.sharpeRatio,
+          maxDrawdown: riskAssessment.maxDrawdown,
+          iterations: riskAssessment.iterations,
+          expectedReturn: riskAssessment.expectedReturn,
+          volatility: riskAssessment.volatility
+        },
         signalInput: {
           entryPrice: signalInput.entryPrice,
           stopLoss: signalInput.stopLoss,
