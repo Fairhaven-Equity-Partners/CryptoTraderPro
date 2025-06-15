@@ -1279,7 +1279,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!symbol || !symbol.includes('/')) {
         return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
       }
-      const { period = 30, timeframe } = req.query;
+      const { period = 30, timeframe = '1d' } = req.query;
       
       console.log(`[Routes] Calculating real technical indicators for ${symbol}${timeframe ? ` (${timeframe})` : ''}`);
       
@@ -1365,7 +1365,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const params = (timeframeParams as any)[timeframe as string] || timeframeParams['1d'];
           
           // Generate timeframe-specific variation using multiple factors
-          const timeframeSeed = (timeframe as string).split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) * 1000;
+          const timeframeStr = timeframe ? timeframe.toString() : '1d';
+          const timeframeSeed = timeframeStr.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) * 1000;
           const currentTime = Date.now();
           
           // Create distinct cyclical patterns for each timeframe

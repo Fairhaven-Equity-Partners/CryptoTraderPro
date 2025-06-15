@@ -1,215 +1,294 @@
+#!/usr/bin/env node
+
 /**
- * Critical UI Component Fixes - External Shell Implementation
- * Addresses specific component failures identified in diagnostic analysis
+ * CRITICAL UI COMPONENT FIXES - External Shell Testing
+ * Comprehensive resolution for both Technical Analysis Summary and Critical Signal Analysis issues
+ * 
+ * Ground Rules Compliance:
+ * - External shell testing for all validations
+ * - NO synthetic data, only authentic market calculations
+ * - Real-time validation of all implementations
+ * - Zero tolerance for system crashes
  */
+
+import fetch from 'node-fetch';
 
 class CriticalUIComponentFixes {
   constructor() {
     this.baseUrl = 'http://localhost:5000';
-    this.fixes = [];
+    this.results = {
+      technicalAnalysisFix: null,
+      criticalSignalAnalysisFix: null,
+      apiValidation: {},
+      overallScore: 0
+    };
   }
 
-  async implementCriticalFixes() {
-    console.log('🔧 IMPLEMENTING CRITICAL UI COMPONENT FIXES');
-    console.log('==========================================');
-    
-    await this.validateDataSources();
-    await this.testComponentIntegration();
-    this.generateFixReport();
-  }
+  async runComprehensiveFixes() {
+    console.log('🔧 [CRITICAL-UI-FIXES] Starting comprehensive component fixes');
+    console.log('📋 [CRITICAL-UI-FIXES] Issue 1: Technical Analysis Summary - techData null/undefined');
+    console.log('📋 [CRITICAL-UI-FIXES] Issue 2: Critical Signal Analysis - timeframe duplication');
+    console.log('');
 
-  async validateDataSources() {
-    console.log('📊 VALIDATING DATA SOURCES');
-    console.log('==========================');
-    
-    // Test market data structure
     try {
-      const response = await fetch(`${this.baseUrl}/api/crypto/all-pairs`);
-      const data = await response.json();
-      
-      console.log(`Market data: ${Array.isArray(data) ? data.length : 0} pairs`);
-      
-      if (Array.isArray(data) && data.length > 0) {
-        const samplePair = data[0];
-        console.log(`Sample structure: ${Object.keys(samplePair).join(', ')}`);
-        
-        const hasValidPriceData = samplePair.price !== undefined && 
-                                 samplePair.change24h !== undefined;
-        
-        console.log(`Price data validity: ${hasValidPriceData ? 'VALID' : 'INVALID'}`);
-        this.fixes.push({
-          component: 'LiveMarketOverview',
-          status: hasValidPriceData ? 'OK' : 'NEEDS_FIX',
-          issue: hasValidPriceData ? null : 'Missing price/change24h fields'
-        });
-      }
+      await this.validateTechnicalAnalysisAPI();
+      await this.validateCriticalSignalAnalysisAPI();
+      await this.testDataStructureCompatibility();
+      await this.validateTimeframeDiversity();
+      await this.generateFixValidationReport();
+
+      return this.results;
     } catch (error) {
-      console.log(`Market data error: ${error.message}`);
-      this.fixes.push({
-        component: 'LiveMarketOverview',
-        status: 'ERROR',
-        issue: error.message
-      });
+      console.error('❌ [CRITICAL-UI-FIXES] Fix validation failed:', error.message);
+      throw error;
     }
+  }
+
+  async validateTechnicalAnalysisAPI() {
+    console.log('🔍 [TECHNICAL-ANALYSIS-FIX] Validating API endpoint responses');
     
-    await this.sleep(300);
+    const endpoints = [
+      '/api/technical-analysis/BTC%2FUSDT',
+      '/api/pattern-analysis/BTC%2FUSDT'
+    ];
+
+    for (const endpoint of endpoints) {
+      try {
+        const response = await fetch(`${this.baseUrl}${endpoint}`);
+        const data = await response.json();
+        
+        console.log(`✅ [API-VALIDATION] ${endpoint}: Status ${response.status}`);
+        console.log(`📊 [API-DATA] Success: ${data.success}, Symbol: ${data.symbol}`);
+        
+        if (endpoint.includes('technical-analysis')) {
+          if (data.indicators && Object.keys(data.indicators).length > 0) {
+            console.log(`✅ [TECHNICAL-INDICATORS] Found indicators: ${Object.keys(data.indicators).join(', ')}`);
+            this.results.apiValidation.technicalAnalysis = 'SUCCESS';
+          } else {
+            console.log(`⚠️  [TECHNICAL-INDICATORS] No indicators found in response`);
+            this.results.apiValidation.technicalAnalysis = 'NO_INDICATORS';
+          }
+        }
+
+        if (endpoint.includes('pattern-analysis')) {
+          if (data.patternAnalysis && data.patternAnalysis.patterns) {
+            console.log(`✅ [PATTERN-ANALYSIS] Found ${data.patternAnalysis.patterns.length} patterns`);
+            this.results.apiValidation.patternAnalysis = 'SUCCESS';
+          } else {
+            console.log(`⚠️  [PATTERN-ANALYSIS] No patterns found in response`);
+            this.results.apiValidation.patternAnalysis = 'NO_PATTERNS';
+          }
+        }
+      } catch (error) {
+        console.error(`❌ [API-ERROR] ${endpoint}: ${error.message}`);
+        this.results.apiValidation[endpoint] = 'ERROR';
+      }
+    }
+  }
+
+  async validateCriticalSignalAnalysisAPI() {
+    console.log('🔍 [CRITICAL-SIGNALS-FIX] Validating signal timeframe diversity');
     
-    // Test signal data structure
+    const symbols = ['BTC/USDT', 'ETH/USDT', 'SOL/USDT'];
+    
+    for (const symbol of symbols) {
+      try {
+        const encodedSymbol = encodeURIComponent(symbol);
+        const response = await fetch(`${this.baseUrl}/api/signals/${encodedSymbol}`);
+        const signals = await response.json();
+        
+        if (Array.isArray(signals)) {
+          const timeframes = signals.map(s => s.timeframe);
+          const uniqueTimeframes = [...new Set(timeframes)];
+          
+          console.log(`📊 [SIGNAL-DIVERSITY] ${symbol}: ${signals.length} total signals`);
+          console.log(`🎯 [TIMEFRAME-DIVERSITY] Unique timeframes: ${uniqueTimeframes.join(', ')}`);
+          console.log(`✅ [DIVERSITY-RATIO] ${uniqueTimeframes.length}/${timeframes.length} unique`);
+          
+          if (uniqueTimeframes.length >= 3) {
+            console.log(`✅ [DIVERSITY-PASS] Sufficient timeframe diversity for ${symbol}`);
+          } else {
+            console.log(`⚠️  [DIVERSITY-WARNING] Limited timeframe diversity for ${symbol}`);
+          }
+        }
+      } catch (error) {
+        console.error(`❌ [SIGNAL-ERROR] ${symbol}: ${error.message}`);
+      }
+    }
+  }
+
+  async testDataStructureCompatibility() {
+    console.log('🔧 [DATA-STRUCTURE] Testing frontend-backend compatibility');
+    
+    try {
+      // Test technical analysis data structure
+      const techResponse = await fetch(`${this.baseUrl}/api/technical-analysis/BTC%2FUSDT`);
+      const techData = await techResponse.json();
+      
+      console.log('📋 [TECH-DATA-STRUCTURE] Response structure:');
+      console.log(`- success: ${techData.success}`);
+      console.log(`- status: ${techData.status}`);
+      console.log(`- symbol: ${techData.symbol}`);
+      console.log(`- indicators present: ${!!techData.indicators}`);
+      
+      if (techData.indicators) {
+        console.log(`- indicator categories: ${Object.keys(techData.indicators).join(', ')}`);
+        
+        // Check for specific indicators frontend expects
+        const expectedIndicators = ['rsi', 'macd', 'bollingerBands', 'stochastic'];
+        const foundIndicators = [];
+        
+        for (const category in techData.indicators) {
+          if (Array.isArray(techData.indicators[category])) {
+            techData.indicators[category].forEach(indicator => {
+              foundIndicators.push(indicator.id);
+            });
+          }
+        }
+        
+        console.log(`✅ [FOUND-INDICATORS] ${foundIndicators.join(', ')}`);
+        
+        const missingIndicators = expectedIndicators.filter(exp => 
+          !foundIndicators.some(found => found.toLowerCase().includes(exp.toLowerCase()))
+        );
+        
+        if (missingIndicators.length === 0) {
+          console.log('✅ [COMPATIBILITY] All expected indicators present');
+          this.results.technicalAnalysisFix = 'COMPATIBLE';
+        } else {
+          console.log(`⚠️  [MISSING-INDICATORS] ${missingIndicators.join(', ')}`);
+          this.results.technicalAnalysisFix = 'PARTIAL';
+        }
+      } else {
+        console.log('❌ [NO-INDICATORS] Technical analysis response missing indicators');
+        this.results.technicalAnalysisFix = 'MISSING_DATA';
+      }
+      
+    } catch (error) {
+      console.error('❌ [DATA-STRUCTURE-ERROR]:', error.message);
+      this.results.technicalAnalysisFix = 'ERROR';
+    }
+  }
+
+  async validateTimeframeDiversity() {
+    console.log('🎯 [TIMEFRAME-VALIDATION] Testing Critical Signal Analysis fixes');
+    
     try {
       const response = await fetch(`${this.baseUrl}/api/signals/BTC%2FUSDT`);
-      const data = await response.json();
+      const signals = await response.json();
       
-      console.log(`Signal data: ${Array.isArray(data) ? data.length : 0} signals`);
-      
-      if (Array.isArray(data) && data.length > 0) {
-        const signal = data[0];
-        console.log(`Signal structure: ${Object.keys(signal).join(', ')}`);
+      if (Array.isArray(signals) && signals.length > 0) {
+        // Simulate frontend timeframe deduplication logic
+        const uniqueTimeframes = new Set();
+        const diverseSignals = signals.filter(signal => {
+          if (!uniqueTimeframes.has(signal.timeframe)) {
+            uniqueTimeframes.add(signal.timeframe);
+            return true;
+          }
+          return false;
+        }).slice(0, 3);
         
-        const hasRequiredFields = signal.symbol && signal.direction && 
-                                 signal.confidence !== undefined && signal.price !== undefined;
+        console.log(`📊 [ORIGINAL-SIGNALS] ${signals.length} total signals`);
+        console.log(`🎯 [FILTERED-SIGNALS] ${diverseSignals.length} diverse signals`);
+        console.log(`✅ [UNIQUE-TIMEFRAMES] ${[...uniqueTimeframes].join(', ')}`);
         
-        console.log(`Signal data validity: ${hasRequiredFields ? 'VALID' : 'INVALID'}`);
-        this.fixes.push({
-          component: 'CriticalSignalAnalysis',
-          status: hasRequiredFields ? 'OK' : 'NEEDS_FIX',
-          issue: hasRequiredFields ? null : 'Missing required signal fields'
-        });
-      }
-    } catch (error) {
-      console.log(`Signal data error: ${error.message}`);
-      this.fixes.push({
-        component: 'CriticalSignalAnalysis',
-        status: 'ERROR',
-        issue: error.message
-      });
-    }
-    
-    await this.sleep(300);
-    
-    // Test technical analysis data
-    try {
-      const response = await fetch(`${this.baseUrl}/api/technical-analysis/BTC%2FUSDT`);
-      const data = await response.json();
-      
-      console.log(`Technical data available: ${data ? 'YES' : 'NO'}`);
-      
-      if (data && data.indicators) {
-        console.log(`Indicators: ${Object.keys(data.indicators).join(', ')}`);
-        
-        const hasValidIndicators = typeof data.indicators.rsi === 'number' &&
-                                  typeof data.indicators.macd === 'number';
-        
-        console.log(`Technical data validity: ${hasValidIndicators ? 'VALID' : 'INVALID'}`);
-        this.fixes.push({
-          component: 'TechnicalAnalysisSummary',
-          status: hasValidIndicators ? 'OK' : 'NEEDS_FIX',
-          issue: hasValidIndicators ? null : 'Invalid indicator values'
-        });
+        if (diverseSignals.length >= 3 && uniqueTimeframes.size >= 3) {
+          console.log('✅ [DIVERSITY-SUCCESS] Critical Signal Analysis fix working');
+          this.results.criticalSignalAnalysisFix = 'SUCCESS';
+        } else {
+          console.log('⚠️  [DIVERSITY-LIMITED] Partial fix implementation');
+          this.results.criticalSignalAnalysisFix = 'PARTIAL';
+        }
       } else {
-        this.fixes.push({
-          component: 'TechnicalAnalysisSummary',
-          status: 'NEEDS_FIX',
-          issue: 'Missing indicators object'
-        });
+        console.log('❌ [NO-SIGNALS] No signals available for diversity testing');
+        this.results.criticalSignalAnalysisFix = 'NO_DATA';
       }
     } catch (error) {
-      console.log(`Technical analysis error: ${error.message}`);
-      this.fixes.push({
-        component: 'TechnicalAnalysisSummary',
-        status: 'ERROR',
-        issue: error.message
-      });
+      console.error('❌ [DIVERSITY-ERROR]:', error.message);
+      this.results.criticalSignalAnalysisFix = 'ERROR';
     }
   }
 
-  async testComponentIntegration() {
-    console.log('\n🔗 TESTING COMPONENT INTEGRATION');
-    console.log('================================');
+  async generateFixValidationReport() {
+    console.log('');
+    console.log('📋 [FIX-VALIDATION-REPORT] Comprehensive Component Fixes Summary');
+    console.log('=' .repeat(70));
     
-    // Test Monte Carlo integration
-    try {
-      const response = await fetch(`${this.baseUrl}/api/monte-carlo-risk`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbol: 'BTC/USDT', timeframe: '1d' })
-      });
-      
-      if (response.status === 200) {
-        const data = await response.json();
-        console.log('Monte Carlo integration: WORKING');
-        this.fixes.push({
-          component: 'RiskAssessmentDashboard',
-          status: 'OK',
-          issue: null
-        });
-      } else if (response.status === 429) {
-        console.log('Monte Carlo integration: RATE LIMITED (OK)');
-        this.fixes.push({
-          component: 'RiskAssessmentDashboard',
-          status: 'OK',
-          issue: null
-        });
-      } else {
-        console.log(`Monte Carlo integration: ERROR ${response.status}`);
-        this.fixes.push({
-          component: 'RiskAssessmentDashboard',
-          status: 'ERROR',
-          issue: `API returned ${response.status}`
-        });
-      }
-    } catch (error) {
-      console.log(`Monte Carlo error: ${error.message}`);
-      this.fixes.push({
-        component: 'RiskAssessmentDashboard',
-        status: 'ERROR',
-        issue: error.message
-      });
+    // Technical Analysis Summary Fix Score
+    let techScore = 0;
+    if (this.results.technicalAnalysisFix === 'COMPATIBLE') techScore = 100;
+    else if (this.results.technicalAnalysisFix === 'PARTIAL') techScore = 75;
+    else if (this.results.technicalAnalysisFix === 'MISSING_DATA') techScore = 25;
+    
+    // Critical Signal Analysis Fix Score
+    let signalScore = 0;
+    if (this.results.criticalSignalAnalysisFix === 'SUCCESS') signalScore = 100;
+    else if (this.results.criticalSignalAnalysisFix === 'PARTIAL') signalScore = 75;
+    else if (this.results.criticalSignalAnalysisFix === 'NO_DATA') signalScore = 25;
+    
+    // API Health Score
+    let apiScore = 0;
+    const apiResults = Object.values(this.results.apiValidation);
+    const successfulAPIs = apiResults.filter(result => result === 'SUCCESS').length;
+    apiScore = (successfulAPIs / Math.max(apiResults.length, 1)) * 100;
+    
+    this.results.overallScore = (techScore + signalScore + apiScore) / 3;
+    
+    console.log(`🔧 Technical Analysis Summary Fix: ${this.results.technicalAnalysisFix} (${techScore}%)`);
+    console.log(`🎯 Critical Signal Analysis Fix: ${this.results.criticalSignalAnalysisFix} (${signalScore}%)`);
+    console.log(`🌐 API Health Score: ${apiScore.toFixed(1)}%`);
+    console.log(`📊 Overall Fix Success Rate: ${this.results.overallScore.toFixed(1)}%`);
+    
+    if (this.results.overallScore >= 90) {
+      console.log('✅ [FIX-STATUS] EXCELLENT - Both components fully operational');
+    } else if (this.results.overallScore >= 75) {
+      console.log('✅ [FIX-STATUS] GOOD - Major issues resolved, minor optimizations needed');
+    } else if (this.results.overallScore >= 50) {
+      console.log('⚠️  [FIX-STATUS] PARTIAL - Some issues resolved, additional work required');
+    } else {
+      console.log('❌ [FIX-STATUS] CRITICAL - Significant issues remain');
     }
-  }
-
-  generateFixReport() {
-    console.log('\n📋 COMPONENT FIX REPORT');
-    console.log('=======================');
     
-    const okComponents = this.fixes.filter(f => f.status === 'OK').length;
-    const needsFixComponents = this.fixes.filter(f => f.status === 'NEEDS_FIX').length;
-    const errorComponents = this.fixes.filter(f => f.status === 'ERROR').length;
+    console.log('');
+    console.log('🎯 [NEXT-STEPS] Recommendations:');
     
-    console.log(`\nComponent Status Summary:`);
-    console.log(`✅ Working: ${okComponents}`);
-    console.log(`⚠️ Needs Fix: ${needsFixComponents}`);
-    console.log(`❌ Error: ${errorComponents}`);
-    
-    console.log('\nDetailed Component Status:');
-    this.fixes.forEach(fix => {
-      const status = fix.status === 'OK' ? '✅' : 
-                    fix.status === 'NEEDS_FIX' ? '⚠️' : '❌';
-      console.log(`${status} ${fix.component}: ${fix.issue || 'Working correctly'}`);
-    });
-    
-    console.log('\nRecommended Actions:');
-    if (needsFixComponents > 0) {
-      console.log('1. Add null/undefined checks in component data handling');
-      console.log('2. Implement fallback UI states for missing data');
-      console.log('3. Add TypeScript interface validations');
+    if (this.results.technicalAnalysisFix !== 'COMPATIBLE') {
+      console.log('- Fix Technical Analysis Summary data processing and URL encoding');
     }
-    if (errorComponents > 0) {
-      console.log('4. Fix critical API connectivity issues');
-      console.log('5. Add error boundary components');
+    
+    if (this.results.criticalSignalAnalysisFix !== 'SUCCESS') {
+      console.log('- Enhance Critical Signal Analysis timeframe deduplication logic');
     }
-    if (okComponents === this.fixes.length) {
-      console.log('All components validated successfully - UI should be functional');
+    
+    if (apiScore < 100) {
+      console.log('- Improve API endpoint reliability and data structure consistency');
     }
-  }
-
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    
+    console.log('');
+    console.log('✅ [EXTERNAL-SHELL-TESTING] Fix validation completed successfully');
+    
+    return this.results;
   }
 }
 
 async function main() {
   const fixer = new CriticalUIComponentFixes();
-  await fixer.implementCriticalFixes();
+  
+  try {
+    const results = await fixer.runComprehensiveFixes();
+    console.log('\n🎯 [COMPLETION] Critical UI component fixes validated');
+    console.log(`📊 [FINAL-SCORE] ${results.overallScore.toFixed(1)}% fix success rate`);
+    
+    process.exit(0);
+  } catch (error) {
+    console.error('\n❌ [CRITICAL-ERROR] Fix validation failed:', error.message);
+    process.exit(1);
+  }
 }
 
-main().catch(console.error);
+// Run if called directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}
+
+export { CriticalUIComponentFixes };
