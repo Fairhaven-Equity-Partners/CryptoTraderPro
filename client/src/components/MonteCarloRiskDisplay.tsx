@@ -59,9 +59,8 @@ export function MonteCarloRiskDisplay({ symbol = 'BTC/USDT', timeframe = '1d' }:
       
       try {
         const response = await apiRequest('/api/monte-carlo-risk', {
-          method: 'POST',
-          body: JSON.stringify({ symbol: symbol.trim(), timeframe: timeframe.trim() }),
-          headers: { 'Content-Type': 'application/json' }
+          symbol: symbol.trim(),
+          timeframe: timeframe.trim()
         });
 
         console.log('[MonteCarloRiskDisplay] Raw response:', response);

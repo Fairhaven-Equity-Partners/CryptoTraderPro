@@ -1,0 +1,2488 @@
+7609-ab5777ede8328948.js:1 Replit version 6c1ad462, pid2 version 0.0.1416
+_app-fe08e1f5e39a5f12.js:38 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-fe08e1f5e39a5f12.js:38 [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro-1:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+framework-52c43293370ee802.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'battery'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+framework-52c43293370ee802.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-52c43293370ee802.js:1
+(anonymous) @ framework-52c43293370ee802.js:1
+uD @ framework-52c43293370ee802.js:1
+uI @ framework-52c43293370ee802.js:1
+uM @ framework-52c43293370ee802.js:1
+uS @ framework-52c43293370ee802.js:1
+C @ framework-52c43293370ee802.js:1
+z @ framework-52c43293370ee802.js:1
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A0B0180064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A010190064670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+eruda.js:2 WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=v8bEceCl1Atk' failed: 
+t @ VM10 eruda.js:2
+setupWebSocket @ VM12 client:536
+(anonymous) @ VM12 client:531
+eruda.js:2 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=v8bEceCl1Atk' is invalid.
+    at new t (eruda.js:2:218737)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ VM10 eruda.js:2
+setupWebSocket @ VM12 client:536
+fallback @ VM12 client:509
+(anonymous) @ VM12 client:555
+eruda.js:2 [CentralizedPriceManager] Initializing with 4-minute intervals
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+eruda.js:2 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+eruda.js:2 [UltimateManager] Starting FINAL system initialization
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Starting 4-minute fetch interval
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart data for BTC/USDT (1m)
+eruda.js:2 Loading chart data for BTC/USDT (5m)
+eruda.js:2 Loading chart data for BTC/USDT (15m)
+eruda.js:2 Loading chart data for BTC/USDT (30m)
+eruda.js:2 Loading chart data for BTC/USDT (1h)
+eruda.js:2 Loading chart data for BTC/USDT (4h)
+eruda.js:2 Loading chart data for BTC/USDT (1d)
+eruda.js:2 Loading chart data for BTC/USDT (3d)
+eruda.js:2 Loading chart data for BTC/USDT (1w)
+eruda.js:2 Loading chart data for BTC/USDT (1M)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 🧠 Initializing continuous learning feedback loop for BTC/USDT
+eruda.js:2 🧠 Starting continuous learning for BTC/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $105013.60345936216
+eruda.js:2 Establishing data connection...
+eruda.js:2 [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+eruda.js:2 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+eruda.js:2 [UltimateManager] Authentic trade simulations active for market data
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $105013.60345936216
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105013.60345936216
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Data connection established
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 [UltimateManager] Multi-pair fetch: 50 symbols updated
+eruda.js:2 [UltimateManager] Preloading chart data for immediate analysis
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 All timeframe data loaded for BTC/USDT
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (initial)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (30m)
+eruda.js:2 Loading chart with 720 data points for ETH/USDT (1h)
+eruda.js:2 Loading chart with 150 data points for ETH/USDT (3d)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (5m)
+eruda.js:2 Loading chart with 200 data points for ETH/USDT (1w)
+eruda.js:2 Loading chart with 365 data points for ETH/USDT (1d)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (1m)
+eruda.js:2 Loading chart with 60 data points for ETH/USDT (1M)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (15m)
+eruda.js:2 Loading chart with 500 data points for ETH/USDT (4h)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (5m)
+eruda.js:2 Loading chart with 720 data points for BNB/USDT (1h)
+eruda.js:2 Loading chart with 150 data points for BNB/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BNB/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BNB/USDT (1M)
+eruda.js:2 Loading chart with 500 data points for BNB/USDT (4h)
+eruda.js:2 Loading chart with 365 data points for BNB/USDT (1d)
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (30m)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 720 data points for SOL/USDT (1h)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (1m)
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (30m)
+eruda.js:2 Loading chart with 150 data points for SOL/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for SOL/USDT (1w)
+eruda.js:2 Loading chart with 500 data points for SOL/USDT (4h)
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (15m)
+eruda.js:2 Loading chart with 60 data points for SOL/USDT (1M)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (5m)
+eruda.js:2 Loading chart with 365 data points for SOL/USDT (1d)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 500 data points for XRP/USDT (4h)
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (15m)
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (5m)
+eruda.js:2 Loading chart with 365 data points for XRP/USDT (1d)
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (1m)
+eruda.js:2 Loading chart with 150 data points for XRP/USDT (3d)
+eruda.js:2 Loading chart with 720 data points for XRP/USDT (1h)
+eruda.js:2 Loading chart with 60 data points for XRP/USDT (1M)
+eruda.js:2 ✅ 4-minute calculation allowed (trigger: unknown)
+eruda.js:2 ✅ Calculation allowed: unknown
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 [1m] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [1m] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [1m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 1m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 1m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 0 patterns for 1m timeframe
+eruda.js:2 ⚡ Successfully calculated 1m: LONG
+eruda.js:2 Loading chart with 200 data points for XRP/USDT (1w)
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [5m] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [5m] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [5m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 5m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 5m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 0 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: LONG
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (30m)
+eruda.js:2 [UltimateManager] Chart data preloading completed
+eruda.js:2 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+eruda.js:2 [System] Ultimate manager active - synchronized 4-minute intervals
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [15m] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [15m] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [15m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 15m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 15m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 1 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: LONG
+eruda.js:2 Calculation blocked: isCalculating=true, timeSinceLastCalc=0.228s
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 [30m] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [30m] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [30m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 30m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 30m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 1 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: LONG
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [1h] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [1h] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 1h: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 1h: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 2 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: LONG
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [4h] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [4h] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 4h: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 4h: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 4 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: LONG
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [1d] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [1d] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1d: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1d: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 5 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: LONG
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 [3d] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [3d] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [3d] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 3d: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 3d: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 2 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: LONG
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 [1w] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [1w] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [1w] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1w: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1w: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 4 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: LONG
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 [1M] Fresh price fetched for BTC/USDT: 105013.60345936216
+eruda.js:2 [1M] Using live price: 105013.60345936216 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Using consolidated calculation engine with live price 105013.60345936216
+eruda.js:2 [1M] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1M: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1M: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 2 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: LONG
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 🔧 Aligned signals after processing: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+eruda.js:2 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'successProbability', 'indicators', 'patternFormations', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile', 'macroInsights']
+eruda.js:2 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'LONG', confidence: 99, entryPrice: 105013.60345936216, …}
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Recording predictions using fresh fetched price: 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1m LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 101863.20, Take Profit: 111314.42
+eruda.js:2 Recorded prediction: 1m LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 5m LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 101863.20, Take Profit: 111314.42
+eruda.js:2 Recorded prediction: 5m LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 15m LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 101863.20, Take Profit: 111314.42
+eruda.js:2 Recorded prediction: 15m LONG @ 105013.60345936216
+eruda.js:2 [CentralizedPriceManager] Stopped fetch interval - no subscribers
+eruda.js:2 📈 Prediction recorded: BTC/USDT 30m LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 101863.20, Take Profit: 111314.42
+eruda.js:2 Recorded prediction: 30m LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1h LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 101863.20, Take Profit: 111314.42
+eruda.js:2 Recorded prediction: 1h LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 4h LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 99762.92, Take Profit: 115514.96
+eruda.js:2 Recorded prediction: 4h LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1d LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 98712.79, Take Profit: 117615.24
+eruda.js:2 Recorded prediction: 1d LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 3d LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 96612.52, Take Profit: 121815.78
+eruda.js:2 Recorded prediction: 3d LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1w LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 94512.24, Take Profit: 126016.32
+eruda.js:2 Recorded prediction: 1w LONG @ 105013.60345936216
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1M LONG @ 105013.60345936216
+eruda.js:2 🎯 Stop Loss: 89261.56, Take Profit: 136517.68
+eruda.js:2 Recorded prediction: 1M LONG @ 105013.60345936216
+eruda.js:2 Found 10 valid signals for recommendation for BTC/USDT
+eruda.js:2 Updating trade recommendation for 4h timeframe
+eruda.js:2 No signal available for BTC/USDT on 4h
+eruda.js:2 Calculation process complete for BTC/USDT - 10 signals generated
+eruda.js:2 [MonteCarloRiskDisplay] Starting analysis for BTC/USDT (1d)
+eruda.js:2 [MonteCarloRiskDisplay] Starting analysis for BTC/USDT 1d
+eruda.js:2 
+            
+            
+           POST https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/api/monte-carlo-risk 400 (Bad Request)
+window.fetch @ VM10 eruda.js:2
+apiRequest @ VM49 queryClient.ts:10
+mutationFn @ VM98 MonteCarloRiskDisplay.tsx:37
+fn @ VM46 @tanstack_react-query.js:1189
+run @ VM46 @tanstack_react-query.js:494
+start @ VM46 @tanstack_react-query.js:536
+execute @ VM46 @tanstack_react-query.js:1225
+await in execute
+mutate @ VM46 @tanstack_react-query.js:2630
+(anonymous) @ VM46 @tanstack_react-query.js:3295
+(anonymous) @ VM98 MonteCarloRiskDisplay.tsx:120
+callCallback2 @ VM36 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM36 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM36 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM36 chunk-WERSD76P.js:3736
+executeDispatch @ VM36 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM36 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM36 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM36 chunk-WERSD76P.js:7051
+(anonymous) @ VM36 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM36 chunk-WERSD76P.js:18913
+batchedUpdates @ VM36 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM36 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM36 chunk-WERSD76P.js:5478
+dispatchEvent @ VM36 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM36 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Request error: Error: 400: {"error":"Symbol required"}
+    at throwIfResNotOk (queryClient.ts:5:11)
+    at async apiRequest (queryClient.ts:16:3)
+    at async Object.mutationFn (MonteCarloRiskDisplay.tsx:37:26)
+Mt.forEach.n.<computed> @ VM10 eruda.js:2
+mutationFn @ VM98 MonteCarloRiskDisplay.tsx:58
+await in mutationFn
+fn @ VM46 @tanstack_react-query.js:1189
+run @ VM46 @tanstack_react-query.js:494
+start @ VM46 @tanstack_react-query.js:536
+execute @ VM46 @tanstack_react-query.js:1225
+await in execute
+mutate @ VM46 @tanstack_react-query.js:2630
+(anonymous) @ VM46 @tanstack_react-query.js:3295
+(anonymous) @ VM98 MonteCarloRiskDisplay.tsx:120
+callCallback2 @ VM36 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM36 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM36 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM36 chunk-WERSD76P.js:3736
+executeDispatch @ VM36 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM36 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM36 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM36 chunk-WERSD76P.js:7051
+(anonymous) @ VM36 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM36 chunk-WERSD76P.js:18913
+batchedUpdates @ VM36 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM36 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM36 chunk-WERSD76P.js:5478
+dispatchEvent @ VM36 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM36 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Analysis failed: Error: Invalid parameters. Please check your symbol and timeframe selection.
+    at Object.mutationFn (MonteCarloRiskDisplay.tsx:65:19)
+Mt.forEach.n.<computed> @ VM10 eruda.js:2
+onError @ VM98 MonteCarloRiskDisplay.tsx:92
+execute @ VM46 @tanstack_react-query.js:1254
+await in execute
+mutate @ VM46 @tanstack_react-query.js:2630
+(anonymous) @ VM46 @tanstack_react-query.js:3295
+(anonymous) @ VM98 MonteCarloRiskDisplay.tsx:120
+callCallback2 @ VM36 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM36 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM36 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM36 chunk-WERSD76P.js:3736
+executeDispatch @ VM36 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM36 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM36 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM36 chunk-WERSD76P.js:7051
+(anonymous) @ VM36 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM36 chunk-WERSD76P.js:18913
+batchedUpdates @ VM36 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM36 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM36 chunk-WERSD76P.js:5478
+dispatchEvent @ VM36 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM36 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Error type: object
+Mt.forEach.n.<computed> @ VM10 eruda.js:2
+onError @ VM98 MonteCarloRiskDisplay.tsx:93
+execute @ VM46 @tanstack_react-query.js:1254
+await in execute
+mutate @ VM46 @tanstack_react-query.js:2630
+(anonymous) @ VM46 @tanstack_react-query.js:3295
+(anonymous) @ VM98 MonteCarloRiskDisplay.tsx:120
+callCallback2 @ VM36 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM36 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM36 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM36 chunk-WERSD76P.js:3736
+executeDispatch @ VM36 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM36 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM36 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM36 chunk-WERSD76P.js:7051
+(anonymous) @ VM36 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM36 chunk-WERSD76P.js:18913
+batchedUpdates @ VM36 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM36 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM36 chunk-WERSD76P.js:5478
+dispatchEvent @ VM36 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM36 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Error details: {message: 'Invalid parameters. Please check your symbol and timeframe selection.', name: 'Error', stack: 'Error: Invalid parameters. Please check your symbo…v/src/components/MonteCarloRiskDisplay.tsx:65:19)'}
+Mt.forEach.n.<computed> @ VM10 eruda.js:2
+onError @ VM98 MonteCarloRiskDisplay.tsx:94
+execute @ VM46 @tanstack_react-query.js:1254
+await in execute
+mutate @ VM46 @tanstack_react-query.js:2630
+(anonymous) @ VM46 @tanstack_react-query.js:3295
+(anonymous) @ VM98 MonteCarloRiskDisplay.tsx:120
+callCallback2 @ VM36 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM36 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM36 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM36 chunk-WERSD76P.js:3736
+executeDispatch @ VM36 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM36 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM36 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM36 chunk-WERSD76P.js:7051
+(anonymous) @ VM36 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM36 chunk-WERSD76P.js:18913
+batchedUpdates @ VM36 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM36 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM36 chunk-WERSD76P.js:5478
+dispatchEvent @ VM36 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM36 chunk-WERSD76P.js:5449
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+eruda.js:2 [UltimateManager] Next fetch in 140s
+eruda.js:2 [UltimateManager] Next fetch in 120s
+eruda.js:2 [UltimateManager] Next fetch in 100s
+eruda.js:2 [UltimateManager] Next fetch in 80s
+eruda.js:2 [UltimateManager] Next fetch in 60s
+eruda.js:2 [UltimateManager] Next fetch in 40s
+eruda.js:2 [UltimateManager] Next fetch in 20s
+eruda.js:2 [UltimateManager] Next fetch in 0s
+eruda.js:2 [UltimateManager] 4-minute synchronized calculation starting
+eruda.js:2 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+eruda.js:2 [UltimateManager] Authentic trade simulations active for market data
+eruda.js:2 [UltimateManager] Multi-pair fetch: 50 symbols updated
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [UltimateManager] Next fetch in 180s
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A030650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+eruda.js:2 WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=LoI0AC6N5JZy' failed: 
+t @ VM170 eruda.js:2
+setupWebSocket @ VM172 client:536
+(anonymous) @ VM172 client:531
+eruda.js:2 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=LoI0AC6N5JZy' is invalid.
+    at new t (eruda.js:2:218737)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ VM170 eruda.js:2
+setupWebSocket @ VM172 client:536
+fallback @ VM172 client:509
+(anonymous) @ VM172 client:555
+eruda.js:2 [CentralizedPriceManager] Initializing with 4-minute intervals
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+eruda.js:2 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+eruda.js:2 [UltimateManager] Starting FINAL system initialization
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Starting 4-minute fetch interval
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart data for BTC/USDT (1m)
+eruda.js:2 Loading chart data for BTC/USDT (5m)
+eruda.js:2 Loading chart data for BTC/USDT (15m)
+eruda.js:2 Loading chart data for BTC/USDT (30m)
+eruda.js:2 Loading chart data for BTC/USDT (1h)
+eruda.js:2 Loading chart data for BTC/USDT (4h)
+eruda.js:2 Loading chart data for BTC/USDT (1d)
+eruda.js:2 Loading chart data for BTC/USDT (3d)
+eruda.js:2 Loading chart data for BTC/USDT (1w)
+eruda.js:2 Loading chart data for BTC/USDT (1M)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 🧠 Initializing continuous learning feedback loop for BTC/USDT
+eruda.js:2 🧠 Starting continuous learning for BTC/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+eruda.js:2 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+eruda.js:2 [UltimateManager] Authentic trade simulations active for market data
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $105003.67410386773
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $105003.67410386773
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105003.67410386773
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Data connection established
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 [UltimateManager] Multi-pair fetch: 50 symbols updated
+eruda.js:2 [UltimateManager] Preloading chart data for immediate analysis
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 All timeframe data loaded for BTC/USDT
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (initial)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (1m)
+eruda.js:2 Loading chart with 500 data points for ETH/USDT (4h)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (30m)
+eruda.js:2 Loading chart with 365 data points for ETH/USDT (1d)
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (15m)
+eruda.js:2 Loading chart with 60 data points for ETH/USDT (1M)
+eruda.js:2 Loading chart with 150 data points for ETH/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for ETH/USDT (1w)
+eruda.js:2 Loading chart with 720 data points for ETH/USDT (1h)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (30m)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (1m)
+eruda.js:2 Loading chart with 720 data points for BNB/USDT (1h)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (15m)
+eruda.js:2 Loading chart with 150 data points for BNB/USDT (3d)
+eruda.js:2 Loading chart with 500 data points for BNB/USDT (4h)
+eruda.js:2 Loading chart with 365 data points for BNB/USDT (1d)
+eruda.js:2 Loading chart with 60 data points for BNB/USDT (1M)
+eruda.js:2 Loading chart with 200 data points for BNB/USDT (1w)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (5m)
+eruda.js:2 Loading chart with 365 data points for SOL/USDT (1d)
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (30m)
+eruda.js:2 Loading chart with 500 data points for SOL/USDT (4h)
+eruda.js:2 Loading chart with 150 data points for SOL/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for SOL/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for SOL/USDT (1M)
+eruda.js:2 Loading chart with 720 data points for SOL/USDT (1h)
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (15m)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (1m)
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (15m)
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (30m)
+eruda.js:2 Loading chart with 500 data points for XRP/USDT (4h)
+eruda.js:2 Loading chart with 720 data points for XRP/USDT (1h)
+eruda.js:2 Loading chart with 150 data points for XRP/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for XRP/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for XRP/USDT (1M)
+eruda.js:2 ✅ 4-minute calculation allowed (trigger: unknown)
+eruda.js:2 ✅ Calculation allowed: unknown
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 [1m] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [1m] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [1m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 1m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 3 patterns for 1m timeframe
+eruda.js:2 ⚡ Successfully calculated 1m: SHORT
+eruda.js:2 Loading chart with 365 data points for XRP/USDT (1d)
+eruda.js:2 [UltimateManager] Chart data preloading completed
+eruda.js:2 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+eruda.js:2 [System] Ultimate manager active - synchronized 4-minute intervals
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [5m] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [5m] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [5m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 5m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 5m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 4 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: SHORT
+eruda.js:2 Calculation blocked: isCalculating=true, timeSinceLastCalc=0.158s
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [15m] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [15m] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [15m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 15m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 15m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 7 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: SHORT
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 [30m] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [30m] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [30m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 30m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 30m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 7 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: SHORT
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [1h] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [1h] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 1h: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1h: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 8 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: SHORT
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [4h] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [4h] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 4h: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 4h: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 10 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: SHORT
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [1d] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [1d] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 1d: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1d: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 12 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: SHORT
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 [3d] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [3d] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [3d] Consolidated signal result: SHORT (95%)
+eruda.js:2 [ConsolidatedEngine] 3d: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+eruda.js:2 [ConsolidatedEngine] 3d: Signal ready - Direction=SHORT, Confidence=95%
+eruda.js:2 Generated 10 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: SHORT
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 [1w] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [1w] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [1w] Consolidated signal result: SHORT (95%)
+eruda.js:2 [ConsolidatedEngine] 1w: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+eruda.js:2 [ConsolidatedEngine] 1w: Signal ready - Direction=SHORT, Confidence=95%
+eruda.js:2 Generated 12 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: SHORT
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 [1M] Fresh price fetched for BTC/USDT: 105003.67410386773
+eruda.js:2 [1M] Using live price: 105003.67410386773 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Using consolidated calculation engine with live price 105003.67410386773
+eruda.js:2 [1M] Consolidated signal result: SHORT (95%)
+eruda.js:2 [ConsolidatedEngine] 1M: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+eruda.js:2 [ConsolidatedEngine] 1M: Signal ready - Direction=SHORT, Confidence=95%
+eruda.js:2 Generated 5 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: SHORT
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: (10) ['1m: SHORT', '5m: SHORT', '15m: SHORT', '30m: SHORT', '1h: SHORT', '4h: SHORT', '1d: SHORT', '3d: SHORT', '1w: SHORT', '1M: SHORT']
+eruda.js:2 🔧 Aligned signals after processing: (10) ['1m: SHORT', '5m: SHORT', '15m: SHORT', '30m: SHORT', '1h: SHORT', '4h: SHORT', '1d: SHORT', '3d: SHORT', '1w: SHORT', '1M: SHORT']
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: (10) ['1m: SHORT', '5m: SHORT', '15m: SHORT', '30m: SHORT', '1h: SHORT', '4h: SHORT', '1d: SHORT', '3d: SHORT', '1w: SHORT', '1M: SHORT']
+eruda.js:2 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+eruda.js:2 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'successProbability', 'indicators', 'patternFormations', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile', 'macroInsights']
+eruda.js:2 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'SHORT', confidence: 99, entryPrice: 105003.67410386773, …}
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Recording predictions using fresh fetched price: 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1m SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 108153.78, Take Profit: 98703.45
+eruda.js:2 Recorded prediction: 1m SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 5m SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 108153.78, Take Profit: 98703.45
+eruda.js:2 Recorded prediction: 5m SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 15m SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 108153.78, Take Profit: 98703.45
+eruda.js:2 Recorded prediction: 15m SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 30m SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 108153.78, Take Profit: 98703.45
+eruda.js:2 Recorded prediction: 30m SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1h SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 108153.78, Take Profit: 98703.45
+eruda.js:2 Recorded prediction: 1h SHORT @ 105003.67410386773
+eruda.js:2 🔄 Signals updated, syncing timer with actual calculation time
+eruda.js:2 📈 Prediction recorded: BTC/USDT 4h SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 110253.86, Take Profit: 94503.31
+eruda.js:2 Recorded prediction: 4h SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1d SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 111303.89, Take Profit: 92403.23
+eruda.js:2 Recorded prediction: 1d SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 3d SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 113403.97, Take Profit: 88203.09
+eruda.js:2 Recorded prediction: 3d SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1w SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 115504.04, Take Profit: 84002.94
+eruda.js:2 Recorded prediction: 1w SHORT @ 105003.67410386773
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1M SHORT @ 105003.67410386773
+eruda.js:2 🎯 Stop Loss: 120754.23, Take Profit: 73502.57
+eruda.js:2 Recorded prediction: 1M SHORT @ 105003.67410386773
+eruda.js:2 Found 10 valid signals for recommendation for BTC/USDT
+eruda.js:2 Updating trade recommendation for 4h timeframe
+eruda.js:2 No signal available for BTC/USDT on 4h
+eruda.js:2 Calculation process complete for BTC/USDT - 10 signals generated
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (automated-system)
+eruda.js:2 🛑 Calculation blocked: 237s until next 4-minute interval
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $105003.67410386773
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+eruda.js:2 [UltimateManager] Next fetch in 140s
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $105009.46677156282
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $105009.46677156282
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105009.46677156282
+eruda.js:2 [UltimateManager] Next fetch in 120s
+eruda.js:2 [UltimateManager] Next fetch in 100s
+eruda.js:2 [UltimateManager] Next fetch in 80s
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $105009.46677156282
+eruda.js:2 [UltimateManager] Next fetch in 60s
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A060650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+eruda.js:2 WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=eDhrlckIWAly' failed: 
+t @ VM10 eruda.js:2
+setupWebSocket @ VM12 client:536
+(anonymous) @ VM12 client:531
+eruda.js:2 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=eDhrlckIWAly' is invalid.
+    at new t (eruda.js:2:218737)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ VM10 eruda.js:2
+setupWebSocket @ VM12 client:536
+fallback @ VM12 client:509
+(anonymous) @ VM12 client:555
+eruda.js:2 [CentralizedPriceManager] Initializing with 4-minute intervals
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+eruda.js:2 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+eruda.js:2 [UltimateManager] Starting FINAL system initialization
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Starting 4-minute fetch interval
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart data for BTC/USDT (1m)
+eruda.js:2 Loading chart data for BTC/USDT (5m)
+eruda.js:2 Loading chart data for BTC/USDT (15m)
+eruda.js:2 Loading chart data for BTC/USDT (30m)
+eruda.js:2 Loading chart data for BTC/USDT (1h)
+eruda.js:2 Loading chart data for BTC/USDT (4h)
+eruda.js:2 Loading chart data for BTC/USDT (1d)
+eruda.js:2 Loading chart data for BTC/USDT (3d)
+eruda.js:2 Loading chart data for BTC/USDT (1w)
+eruda.js:2 Loading chart data for BTC/USDT (1M)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 🧠 Initializing continuous learning feedback loop for BTC/USDT
+eruda.js:2 🧠 Starting continuous learning for BTC/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $104982.93461823728
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Establishing data connection...
+eruda.js:2 [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+eruda.js:2 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+eruda.js:2 [UltimateManager] Authentic trade simulations active for market data
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $104982.93461823728
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104982.93461823728
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 All timeframe data loaded for BTC/USDT
+eruda.js:2 [UltimateManager] Multi-pair fetch: 50 symbols updated
+eruda.js:2 [UltimateManager] Preloading chart data for immediate analysis
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (initial)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 ✅ 4-minute calculation allowed (trigger: unknown)
+eruda.js:2 ✅ Calculation allowed: unknown
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 [1m] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [1m] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [1m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 1m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 3 patterns for 1m timeframe
+eruda.js:2 ⚡ Successfully calculated 1m: SHORT
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [5m] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [5m] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [5m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 5m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 5m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 4 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: SHORT
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [15m] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [15m] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [15m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 15m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 15m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 8 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: SHORT
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 500 data points for ETH/USDT (4h)
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 [30m] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [30m] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [30m] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 30m: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 30m: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 8 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: SHORT
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [1h] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [1h] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 1h: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1h: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 9 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: SHORT
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (30m)
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [4h] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [4h] Consolidated signal result: SHORT (90%)
+eruda.js:2 [ConsolidatedEngine] 4h: Market Regime: NORMAL, Direction=SHORT, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 4h: Signal ready - Direction=SHORT, Confidence=90%
+eruda.js:2 Generated 9 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: SHORT
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [1d] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [1d] Consolidated signal result: SHORT (95%)
+eruda.js:2 [ConsolidatedEngine] 1d: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+eruda.js:2 [ConsolidatedEngine] 1d: Signal ready - Direction=SHORT, Confidence=95%
+eruda.js:2 Generated 11 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: SHORT
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 [3d] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [3d] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [3d] Consolidated signal result: SHORT (95%)
+eruda.js:2 [ConsolidatedEngine] 3d: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+eruda.js:2 [ConsolidatedEngine] 3d: Signal ready - Direction=SHORT, Confidence=95%
+eruda.js:2 Generated 11 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: SHORT
+eruda.js:2 Loading chart with 150 data points for ETH/USDT (3d)
+eruda.js:2 Loading chart with 720 data points for ETH/USDT (1h)
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for ETH/USDT (1M)
+eruda.js:2 [1w] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [1w] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [1w] Consolidated signal result: SHORT (95%)
+eruda.js:2 [ConsolidatedEngine] 1w: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+eruda.js:2 [ConsolidatedEngine] 1w: Signal ready - Direction=SHORT, Confidence=95%
+eruda.js:2 Generated 9 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: SHORT
+eruda.js:2 Loading chart with 365 data points for ETH/USDT (1d)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (1m)
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 Loading chart with 200 data points for ETH/USDT (1w)
+eruda.js:2 [1M] Fresh price fetched for BTC/USDT: 104982.93461823728
+eruda.js:2 [1M] Using live price: 104982.93461823728 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Using consolidated calculation engine with live price 104982.93461823728
+eruda.js:2 [1M] Consolidated signal result: SHORT (95%)
+eruda.js:2 [ConsolidatedEngine] 1M: Market Regime: NORMAL, Direction=SHORT, Confidence=95%
+eruda.js:2 [ConsolidatedEngine] 1M: Signal ready - Direction=SHORT, Confidence=95%
+eruda.js:2 Generated 9 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: SHORT
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: (10) ['1m: SHORT', '5m: SHORT', '15m: SHORT', '30m: SHORT', '1h: SHORT', '4h: SHORT', '1d: SHORT', '3d: SHORT', '1w: SHORT', '1M: SHORT']
+eruda.js:2 🔧 Aligned signals after processing: (10) ['1m: SHORT', '5m: SHORT', '15m: SHORT', '30m: SHORT', '1h: SHORT', '4h: SHORT', '1d: SHORT', '3d: SHORT', '1w: SHORT', '1M: SHORT']
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: (10) ['1m: SHORT', '5m: SHORT', '15m: SHORT', '30m: SHORT', '1h: SHORT', '4h: SHORT', '1d: SHORT', '3d: SHORT', '1w: SHORT', '1M: SHORT']
+eruda.js:2 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+eruda.js:2 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'successProbability', 'indicators', 'patternFormations', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile', 'macroInsights']
+eruda.js:2 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'SHORT', confidence: 100, entryPrice: 104982.93461823728, …}
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Recording predictions using fresh fetched price: 104982.93461823728
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (30m)
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (15m)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (15m)
+eruda.js:2 Loading chart with 150 data points for BNB/USDT (3d)
+eruda.js:2 Loading chart with 60 data points for BNB/USDT (1M)
+eruda.js:2 Loading chart with 500 data points for BNB/USDT (4h)
+eruda.js:2 Loading chart with 200 data points for BNB/USDT (1w)
+eruda.js:2 Loading chart with 365 data points for BNB/USDT (1d)
+eruda.js:2 Loading chart with 720 data points for BNB/USDT (1h)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (15m)
+eruda.js:2 Loading chart with 720 data points for SOL/USDT (1h)
+eruda.js:2 Loading chart with 365 data points for SOL/USDT (1d)
+eruda.js:2 🔄 Signals updated, syncing timer with actual calculation time
+eruda.js:2 Loading chart with 500 data points for SOL/USDT (4h)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (5m)
+eruda.js:2 Loading chart with 150 data points for SOL/USDT (3d)
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (30m)
+eruda.js:2 Loading chart with 200 data points for SOL/USDT (1w)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (1m)
+eruda.js:2 Loading chart with 60 data points for SOL/USDT (1M)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (15m)
+eruda.js:2 Loading chart with 500 data points for XRP/USDT (4h)
+eruda.js:2 Loading chart with 150 data points for XRP/USDT (3d)
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (30m)
+eruda.js:2 Loading chart with 365 data points for XRP/USDT (1d)
+eruda.js:2 Loading chart with 60 data points for XRP/USDT (1M)
+eruda.js:2 Loading chart with 200 data points for XRP/USDT (1w)
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1m SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 108132.42, Take Profit: 98683.96
+eruda.js:2 Recorded prediction: 1m SHORT @ 104982.93461823728
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (5m)
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (1m)
+eruda.js:2 📈 Prediction recorded: BTC/USDT 5m SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 108132.42, Take Profit: 98683.96
+eruda.js:2 Recorded prediction: 5m SHORT @ 104982.93461823728
+eruda.js:2 Loading chart with 720 data points for XRP/USDT (1h)
+eruda.js:2 [UltimateManager] Chart data preloading completed
+eruda.js:2 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+eruda.js:2 [System] Ultimate manager active - synchronized 4-minute intervals
+eruda.js:2 Calculation blocked: isCalculating=true, timeSinceLastCalc=3.028s
+eruda.js:2 📈 Prediction recorded: BTC/USDT 15m SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 108132.42, Take Profit: 98683.96
+eruda.js:2 Recorded prediction: 15m SHORT @ 104982.93461823728
+eruda.js:2 📈 Prediction recorded: BTC/USDT 30m SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 108132.42, Take Profit: 98683.96
+eruda.js:2 Recorded prediction: 30m SHORT @ 104982.93461823728
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1h SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 108132.42, Take Profit: 98683.96
+eruda.js:2 Recorded prediction: 1h SHORT @ 104982.93461823728
+eruda.js:2 📈 Prediction recorded: BTC/USDT 4h SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 110232.08, Take Profit: 94484.64
+eruda.js:2 Recorded prediction: 4h SHORT @ 104982.93461823728
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1d SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 111281.91, Take Profit: 92384.98
+eruda.js:2 Recorded prediction: 1d SHORT @ 104982.93461823728
+eruda.js:2 📈 Prediction recorded: BTC/USDT 3d SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 113381.57, Take Profit: 88185.67
+eruda.js:2 Recorded prediction: 3d SHORT @ 104982.93461823728
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1w SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 115481.23, Take Profit: 83986.35
+eruda.js:2 Recorded prediction: 1w SHORT @ 104982.93461823728
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1M SHORT @ 104982.93461823728
+eruda.js:2 🎯 Stop Loss: 120730.37, Take Profit: 73488.05
+eruda.js:2 Recorded prediction: 1M SHORT @ 104982.93461823728
+eruda.js:2 Found 10 valid signals for recommendation for BTC/USDT
+eruda.js:2 Updating trade recommendation for 4h timeframe
+eruda.js:2 No signal available for BTC/USDT on 4h
+eruda.js:2 Calculation process complete for BTC/USDT - 10 signals generated
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (automated-system)
+eruda.js:2 🛑 Calculation blocked: 235s until next 4-minute interval
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $104982.93461823728
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+eruda.js:2 [UltimateManager] Next fetch in 140s
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $104970.35538857908
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $104970.35538857908
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104970.35538857908
+eruda.js:2 [UltimateManager] Next fetch in 120s
+eruda.js:2 [UltimateManager] Next fetch in 100s
+eruda.js:2 [UltimateManager] Next fetch in 80s
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A090650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+eruda.js:2 WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=EJ7Chk8Vs3qK' failed: 
+t @ VM169 eruda.js:2
+setupWebSocket @ VM171 client:536
+(anonymous) @ VM171 client:531
+eruda.js:2 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=EJ7Chk8Vs3qK' is invalid.
+    at new t (eruda.js:2:218737)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ VM169 eruda.js:2
+setupWebSocket @ VM171 client:536
+fallback @ VM171 client:509
+(anonymous) @ VM171 client:555
+eruda.js:2 [CentralizedPriceManager] Initializing with 4-minute intervals
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+eruda.js:2 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+eruda.js:2 [UltimateManager] Starting FINAL system initialization
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Starting 4-minute fetch interval
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart data for BTC/USDT (1m)
+eruda.js:2 Loading chart data for BTC/USDT (5m)
+eruda.js:2 Loading chart data for BTC/USDT (15m)
+eruda.js:2 Loading chart data for BTC/USDT (30m)
+eruda.js:2 Loading chart data for BTC/USDT (1h)
+eruda.js:2 Loading chart data for BTC/USDT (4h)
+eruda.js:2 Loading chart data for BTC/USDT (1d)
+eruda.js:2 Loading chart data for BTC/USDT (3d)
+eruda.js:2 Loading chart data for BTC/USDT (1w)
+eruda.js:2 Loading chart data for BTC/USDT (1M)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 🧠 Initializing continuous learning feedback loop for BTC/USDT
+eruda.js:2 🧠 Starting continuous learning for BTC/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+eruda.js:2 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+eruda.js:2 [UltimateManager] Authentic trade simulations active for market data
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $104995.00464830898
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $104995.00464830898
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $104995.00464830898
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Data connection established
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 All timeframe data loaded for BTC/USDT
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (initial)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 [UltimateManager] Multi-pair fetch: 50 symbols updated
+eruda.js:2 [UltimateManager] Preloading chart data for immediate analysis
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 ✅ 4-minute calculation allowed (trigger: unknown)
+eruda.js:2 ✅ Calculation allowed: unknown
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 [1m] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [1m] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [1m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 1m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 1m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 0 patterns for 1m timeframe
+eruda.js:2 ⚡ Successfully calculated 1m: LONG
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [5m] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [5m] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [5m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 5m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 5m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 0 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: LONG
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [15m] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [15m] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [15m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 15m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 15m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 0 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: LONG
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 500 data points for ETH/USDT (4h)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (1m)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 [30m] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [30m] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [30m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 30m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 30m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 0 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: LONG
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [1h] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [1h] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 1h: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 1h: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 1 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: LONG
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (30m)
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [4h] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [4h] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 4h: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 4h: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 1 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: LONG
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [1d] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [1d] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1d: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1d: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 2 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: LONG
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (5m)
+eruda.js:2 [3d] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [3d] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [3d] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 3d: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 3d: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 1 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: LONG
+eruda.js:2 Loading chart with 60 data points for ETH/USDT (1M)
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 [1w] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [1w] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [1w] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1w: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1w: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 1 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: LONG
+eruda.js:2 Loading chart with 720 data points for ETH/USDT (1h)
+eruda.js:2 Loading chart with 365 data points for ETH/USDT (1d)
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 [1M] Fresh price fetched for BTC/USDT: 104995.00464830898
+eruda.js:2 [1M] Using live price: 104995.00464830898 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Using consolidated calculation engine with live price 104995.00464830898
+eruda.js:2 [1M] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1M: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1M: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 1 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: LONG
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 🔧 Aligned signals after processing: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+eruda.js:2 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'successProbability', 'indicators', 'patternFormations', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile', 'macroInsights']
+eruda.js:2 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'LONG', confidence: 99, entryPrice: 104995.00464830898, …}
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Recording predictions using fresh fetched price: 104995.00464830898
+eruda.js:2 Loading chart with 200 data points for ETH/USDT (1w)
+eruda.js:2 Loading chart with 150 data points for ETH/USDT (3d)
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (15m)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (15m)
+eruda.js:2 Loading chart with 365 data points for BNB/USDT (1d)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (1m)
+eruda.js:2 Loading chart with 150 data points for BNB/USDT (3d)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (5m)
+eruda.js:2 Loading chart with 500 data points for BNB/USDT (4h)
+eruda.js:2 Loading chart with 200 data points for BNB/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BNB/USDT (1M)
+eruda.js:2 Loading chart with 720 data points for BNB/USDT (1h)
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (30m)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (30m)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (1m)
+eruda.js:2 Loading chart with 365 data points for SOL/USDT (1d)
+eruda.js:2 Loading chart with 720 data points for SOL/USDT (1h)
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (15m)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (5m)
+eruda.js:2 Loading chart with 150 data points for SOL/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for SOL/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for SOL/USDT (1M)
+eruda.js:2 🔄 Signals updated, syncing timer with actual calculation time
+eruda.js:2 Loading chart with 500 data points for SOL/USDT (4h)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (30m)
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (15m)
+eruda.js:2 Loading chart with 150 data points for XRP/USDT (3d)
+eruda.js:2 Loading chart with 365 data points for XRP/USDT (1d)
+eruda.js:2 Loading chart with 200 data points for XRP/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for XRP/USDT (1M)
+eruda.js:2 Loading chart with 500 data points for XRP/USDT (4h)
+eruda.js:2 Loading chart with 720 data points for XRP/USDT (1h)
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1m LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 101845.15, Take Profit: 111294.70
+eruda.js:2 Recorded prediction: 1m LONG @ 104995.00464830898
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (5m)
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (1m)
+eruda.js:2 [UltimateManager] Chart data preloading completed
+eruda.js:2 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+eruda.js:2 [System] Ultimate manager active - synchronized 4-minute intervals
+eruda.js:2 Calculation blocked: isCalculating=true, timeSinceLastCalc=2.627s
+eruda.js:2 📈 Prediction recorded: BTC/USDT 5m LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 101845.15, Take Profit: 111294.70
+eruda.js:2 Recorded prediction: 5m LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 15m LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 101845.15, Take Profit: 111294.70
+eruda.js:2 Recorded prediction: 15m LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 30m LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 101845.15, Take Profit: 111294.70
+eruda.js:2 Recorded prediction: 30m LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1h LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 101845.15, Take Profit: 111294.70
+eruda.js:2 Recorded prediction: 1h LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 4h LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 99745.25, Take Profit: 115494.51
+eruda.js:2 Recorded prediction: 4h LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1d LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 98695.30, Take Profit: 117594.41
+eruda.js:2 Recorded prediction: 1d LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 3d LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 96595.40, Take Profit: 121794.21
+eruda.js:2 Recorded prediction: 3d LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1w LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 94495.50, Take Profit: 125994.01
+eruda.js:2 Recorded prediction: 1w LONG @ 104995.00464830898
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1M LONG @ 104995.00464830898
+eruda.js:2 🎯 Stop Loss: 89245.75, Take Profit: 136493.51
+eruda.js:2 Recorded prediction: 1M LONG @ 104995.00464830898
+eruda.js:2 Found 10 valid signals for recommendation for BTC/USDT
+eruda.js:2 Updating trade recommendation for 4h timeframe
+eruda.js:2 No signal available for BTC/USDT on 4h
+eruda.js:2 Calculation process complete for BTC/USDT - 10 signals generated
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (automated-system)
+eruda.js:2 🛑 Calculation blocked: 236s until next 4-minute interval
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [CentralizedPriceManager] Stopped fetch interval - no subscribers
+eruda.js:2 [MonteCarloRiskDisplay] Starting analysis for BTC/USDT (1d)
+eruda.js:2 [MonteCarloRiskDisplay] Starting analysis for BTC/USDT 1d
+eruda.js:2 
+            
+            
+           POST https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/api/monte-carlo-risk 400 (Bad Request)
+window.fetch @ VM169 eruda.js:2
+apiRequest @ VM211 queryClient.ts:10
+mutationFn @ VM264 MonteCarloRiskDisplay.tsx:37
+fn @ VM206 @tanstack_react-query.js:1189
+run @ VM206 @tanstack_react-query.js:494
+start @ VM206 @tanstack_react-query.js:536
+execute @ VM206 @tanstack_react-query.js:1225
+await in execute
+mutate @ VM206 @tanstack_react-query.js:2630
+(anonymous) @ VM206 @tanstack_react-query.js:3295
+(anonymous) @ VM264 MonteCarloRiskDisplay.tsx:135
+callCallback2 @ VM198 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM198 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM198 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM198 chunk-WERSD76P.js:3736
+executeDispatch @ VM198 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM198 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM198 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM198 chunk-WERSD76P.js:7051
+(anonymous) @ VM198 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM198 chunk-WERSD76P.js:18913
+batchedUpdates @ VM198 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM198 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM198 chunk-WERSD76P.js:5478
+dispatchEvent @ VM198 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM198 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Request error: Error: 400: {"error":"Symbol required"}
+    at throwIfResNotOk (queryClient.ts:5:11)
+    at async apiRequest (queryClient.ts:16:3)
+    at async Object.mutationFn (MonteCarloRiskDisplay.tsx:37:26)
+Mt.forEach.n.<computed> @ VM169 eruda.js:2
+mutationFn @ VM264 MonteCarloRiskDisplay.tsx:58
+await in mutationFn
+fn @ VM206 @tanstack_react-query.js:1189
+run @ VM206 @tanstack_react-query.js:494
+start @ VM206 @tanstack_react-query.js:536
+execute @ VM206 @tanstack_react-query.js:1225
+await in execute
+mutate @ VM206 @tanstack_react-query.js:2630
+(anonymous) @ VM206 @tanstack_react-query.js:3295
+(anonymous) @ VM264 MonteCarloRiskDisplay.tsx:135
+callCallback2 @ VM198 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM198 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM198 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM198 chunk-WERSD76P.js:3736
+executeDispatch @ VM198 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM198 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM198 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM198 chunk-WERSD76P.js:7051
+(anonymous) @ VM198 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM198 chunk-WERSD76P.js:18913
+batchedUpdates @ VM198 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM198 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM198 chunk-WERSD76P.js:5478
+dispatchEvent @ VM198 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM198 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Error details: Error: 400: {"error":"Symbol required"}
+    at throwIfResNotOk (queryClient.ts:5:11)
+    at async apiRequest (queryClient.ts:16:3)
+    at async Object.mutationFn (MonteCarloRiskDisplay.tsx:37:26)
+eruda.js:2 [MonteCarloRiskDisplay] Error type: object
+eruda.js:2 [MonteCarloRiskDisplay] Error message: 400: {"error":"symbol required"}
+eruda.js:2 [MonteCarloRiskDisplay] Analysis failed: Error: Invalid parameters. Please check your symbol and timeframe selection.
+    at Object.mutationFn (MonteCarloRiskDisplay.tsx:71:19)
+Mt.forEach.n.<computed> @ VM169 eruda.js:2
+onError @ VM264 MonteCarloRiskDisplay.tsx:107
+execute @ VM206 @tanstack_react-query.js:1254
+await in execute
+mutate @ VM206 @tanstack_react-query.js:2630
+(anonymous) @ VM206 @tanstack_react-query.js:3295
+(anonymous) @ VM264 MonteCarloRiskDisplay.tsx:135
+callCallback2 @ VM198 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM198 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM198 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM198 chunk-WERSD76P.js:3736
+executeDispatch @ VM198 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM198 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM198 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM198 chunk-WERSD76P.js:7051
+(anonymous) @ VM198 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM198 chunk-WERSD76P.js:18913
+batchedUpdates @ VM198 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM198 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM198 chunk-WERSD76P.js:5478
+dispatchEvent @ VM198 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM198 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Error type: object
+Mt.forEach.n.<computed> @ VM169 eruda.js:2
+onError @ VM264 MonteCarloRiskDisplay.tsx:108
+execute @ VM206 @tanstack_react-query.js:1254
+await in execute
+mutate @ VM206 @tanstack_react-query.js:2630
+(anonymous) @ VM206 @tanstack_react-query.js:3295
+(anonymous) @ VM264 MonteCarloRiskDisplay.tsx:135
+callCallback2 @ VM198 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM198 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM198 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM198 chunk-WERSD76P.js:3736
+executeDispatch @ VM198 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM198 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM198 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM198 chunk-WERSD76P.js:7051
+(anonymous) @ VM198 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM198 chunk-WERSD76P.js:18913
+batchedUpdates @ VM198 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM198 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM198 chunk-WERSD76P.js:5478
+dispatchEvent @ VM198 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM198 chunk-WERSD76P.js:5449
+eruda.js:2 [MonteCarloRiskDisplay] Error details: {message: 'Invalid parameters. Please check your symbol and timeframe selection.', name: 'Error', stack: 'Error: Invalid parameters. Please check your symbo…v/src/components/MonteCarloRiskDisplay.tsx:71:19)'}
+Mt.forEach.n.<computed> @ VM169 eruda.js:2
+onError @ VM264 MonteCarloRiskDisplay.tsx:109
+execute @ VM206 @tanstack_react-query.js:1254
+await in execute
+mutate @ VM206 @tanstack_react-query.js:2630
+(anonymous) @ VM206 @tanstack_react-query.js:3295
+(anonymous) @ VM264 MonteCarloRiskDisplay.tsx:135
+callCallback2 @ VM198 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM198 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM198 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM198 chunk-WERSD76P.js:3736
+executeDispatch @ VM198 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM198 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM198 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM198 chunk-WERSD76P.js:7051
+(anonymous) @ VM198 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM198 chunk-WERSD76P.js:18913
+batchedUpdates @ VM198 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM198 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM198 chunk-WERSD76P.js:5478
+dispatchEvent @ VM198 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM198 chunk-WERSD76P.js:5449
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+eruda.js:2 [UltimateManager] Next fetch in 140s
+eruda.js:2 [UltimateManager] Next fetch in 120s
+eruda.js:2 [UltimateManager] Next fetch in 100s
+eruda.js:2 [UltimateManager] Next fetch in 80s
+eruda.js:2 [UltimateManager] Next fetch in 60s
+eruda.js:2 [UltimateManager] Next fetch in 40s
+eruda.js:2 [UltimateManager] Next fetch in 20s
+eruda.js:2 [UltimateManager] Next fetch in 0s
+eruda.js:2 [UltimateManager] 4-minute synchronized calculation starting
+eruda.js:2 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+eruda.js:2 [UltimateManager] Authentic trade simulations active for market data
+eruda.js:2 [UltimateManager] Multi-pair fetch: 50 symbols updated
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A090650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A030650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+eruda.js:2 [CentralizedPriceManager] Initializing with 4-minute intervals
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+eruda.js:2 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+eruda.js:2 [UltimateManager] Starting FINAL system initialization
+eruda.js:2 Technical indicators module initialized
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Starting 4-minute fetch interval
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart data for BTC/USDT (1m)
+eruda.js:2 Loading chart data for BTC/USDT (5m)
+eruda.js:2 Loading chart data for BTC/USDT (15m)
+eruda.js:2 Loading chart data for BTC/USDT (30m)
+eruda.js:2 Loading chart data for BTC/USDT (1h)
+eruda.js:2 Loading chart data for BTC/USDT (4h)
+eruda.js:2 Loading chart data for BTC/USDT (1d)
+eruda.js:2 Loading chart data for BTC/USDT (3d)
+eruda.js:2 Loading chart data for BTC/USDT (1w)
+eruda.js:2 Loading chart data for BTC/USDT (1M)
+eruda.js:2 [CentralizedPriceManager] New subscriber for BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 🧠 Initializing continuous learning feedback loop for BTC/USDT
+eruda.js:2 🧠 Starting continuous learning for BTC/USDT
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Using existing fetch for BTC/USDT
+eruda.js:2 WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=YcpppO531bvU' failed: 
+t @ VM10 eruda.js:2
+setupWebSocket @ VM32 client:536
+(anonymous) @ VM32 client:531
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $105001.99907622633
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=YcpppO531bvU' is invalid.
+    at new t (eruda.js:2:218737)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ VM10 eruda.js:2
+setupWebSocket @ VM32 client:536
+fallback @ VM32 client:509
+(anonymous) @ VM32 client:555
+eruda.js:2 Establishing data connection...
+eruda.js:2 [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+eruda.js:2 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+eruda.js:2 [UltimateManager] Authentic trade simulations active for market data
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT
+eruda.js:2 [PriceOverview] Centralized price update for BTC/USDT: $105001.99907622633
+eruda.js:2 [AdvancedSignalDashboard] Centralized price update for BTC/USDT: $105001.99907622633
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Fetching data for symbol: BTC/USDT, encoded as: BTC%2FUSDT
+eruda.js:2 Establishing data connection...
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 All timeframe data loaded for BTC/USDT
+eruda.js:2 [UltimateManager] Multi-pair fetch: 50 symbols updated
+eruda.js:2 [UltimateManager] Preloading chart data for immediate analysis
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (initial)
+eruda.js:2 Data connection established
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (1m)
+eruda.js:2 Loading chart with 1000 data points for BTC/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BTC/USDT (30m)
+eruda.js:2 Loading chart with 720 data points for BTC/USDT (1h)
+eruda.js:2 Loading chart with 500 data points for BTC/USDT (4h)
+eruda.js:2 Loading chart with 365 data points for BTC/USDT (1d)
+eruda.js:2 Loading chart with 150 data points for BTC/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for BTC/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BTC/USDT (1M)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 ✅ 4-minute calculation allowed (trigger: unknown)
+eruda.js:2 ✅ Calculation allowed: unknown
+eruda.js:2 ⚡ Starting calculation loop for 10 timeframes
+eruda.js:2 ⚡ About to calculate 1m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1m)
+eruda.js:2 Data connection established
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 ⚡ About to calculate 5m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 5m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 5m timeframe has 1000 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (5m)
+eruda.js:2 [1m] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [1m] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [1m] Preparing chart data with 1000 candles
+eruda.js:2 [1m] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [1m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 1m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 1m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 4 patterns for 1m timeframe
+eruda.js:2 ⚡ Successfully calculated 1m: LONG
+eruda.js:2 ⚡ About to calculate 15m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 15m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 15m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (15m)
+eruda.js:2 [5m] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [5m] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [5m] Preparing chart data with 1000 candles
+eruda.js:2 [5m] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [5m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 5m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 5m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 5 patterns for 5m timeframe
+eruda.js:2 ⚡ Successfully calculated 5m: LONG
+eruda.js:2 [15m] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [15m] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [15m] Preparing chart data with 800 candles
+eruda.js:2 [15m] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [15m] Consolidated signal result: LONG (80%)
+eruda.js:2 [ConsolidatedEngine] 15m: Market Regime: NORMAL, Direction=LONG, Confidence=80%
+eruda.js:2 [ConsolidatedEngine] 15m: Signal ready - Direction=LONG, Confidence=80%
+eruda.js:2 Generated 9 patterns for 15m timeframe
+eruda.js:2 ⚡ Successfully calculated 15m: LONG
+eruda.js:2 ⚡ About to calculate 30m timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 30m timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 30m timeframe has 800 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (30m)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (30m)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for ETH/USDT (15m)
+eruda.js:2 [30m] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [30m] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [30m] Preparing chart data with 800 candles
+eruda.js:2 [30m] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [30m] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 30m: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 30m: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 9 patterns for 30m timeframe
+eruda.js:2 ⚡ Successfully calculated 30m: LONG
+eruda.js:2 Loading chart with 720 data points for ETH/USDT (1h)
+eruda.js:2 Loading chart with 1000 data points for ETH/USDT (1m)
+eruda.js:2 ⚡ About to calculate 1h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1h timeframe has 720 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1h)
+eruda.js:2 [1h] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [1h] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [1h] Preparing chart data with 720 candles
+eruda.js:2 [1h] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [1h] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1h: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1h: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 10 patterns for 1h timeframe
+eruda.js:2 ⚡ Successfully calculated 1h: LONG
+eruda.js:2 Loading chart with 500 data points for ETH/USDT (4h)
+eruda.js:2 Loading chart with 150 data points for ETH/USDT (3d)
+eruda.js:2 Loading chart with 200 data points for ETH/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for ETH/USDT (1M)
+eruda.js:2 ⚡ About to calculate 4h timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 4h timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 4h timeframe has 500 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (4h)
+eruda.js:2 [4h] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [4h] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [4h] Preparing chart data with 500 candles
+eruda.js:2 [4h] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [4h] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 4h: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 4h: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 12 patterns for 4h timeframe
+eruda.js:2 ⚡ Successfully calculated 4h: LONG
+eruda.js:2 Loading chart with 365 data points for ETH/USDT (1d)
+eruda.js:2 ⚡ About to calculate 1d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1d timeframe has 365 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1d)
+eruda.js:2 [1d] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [1d] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [1d] Preparing chart data with 365 candles
+eruda.js:2 [1d] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [1d] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1d: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1d: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 14 patterns for 1d timeframe
+eruda.js:2 ⚡ Successfully calculated 1d: LONG
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (15m)
+eruda.js:2 Loading chart with 800 data points for BNB/USDT (30m)
+eruda.js:2 ⚡ About to calculate 3d timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 3d timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 3d timeframe has 150 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (3d)
+eruda.js:2 Loading chart with 500 data points for BNB/USDT (4h)
+eruda.js:2 [3d] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [3d] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [3d] Preparing chart data with 150 candles
+eruda.js:2 [3d] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [3d] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 3d: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 3d: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 12 patterns for 3d timeframe
+eruda.js:2 ⚡ Successfully calculated 3d: LONG
+eruda.js:2 Loading chart with 365 data points for BNB/USDT (1d)
+eruda.js:2 Loading chart with 720 data points for BNB/USDT (1h)
+eruda.js:2 ⚡ About to calculate 1w timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1w timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1w timeframe has 200 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1w)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (1m)
+eruda.js:2 [1w] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [1w] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [1w] Preparing chart data with 200 candles
+eruda.js:2 [1w] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [1w] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1w: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1w: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 14 patterns for 1w timeframe
+eruda.js:2 ⚡ Successfully calculated 1w: LONG
+eruda.js:2 Loading chart with 150 data points for BNB/USDT (3d)
+eruda.js:2 ⚡ About to calculate 1M timeframe
+eruda.js:2 Calculating signal for BTC/USDT on 1M timeframe
+eruda.js:2 DATA CHECK: BTC/USDT on 1M timeframe has 60 data points.
+eruda.js:2 Starting signal calculation for BTC/USDT (1M)
+eruda.js:2 [1M] Fresh price fetched for BTC/USDT: 105001.99907622633
+eruda.js:2 [1M] Using live price: 105001.99907622633 for calculation
+eruda.js:2 [1M] Preparing chart data with 60 candles
+eruda.js:2 [1M] Using consolidated calculation engine with live price 105001.99907622633
+eruda.js:2 [1M] Consolidated signal result: LONG (90%)
+eruda.js:2 [ConsolidatedEngine] 1M: Market Regime: NORMAL, Direction=LONG, Confidence=90%
+eruda.js:2 [ConsolidatedEngine] 1M: Signal ready - Direction=LONG, Confidence=90%
+eruda.js:2 Generated 12 patterns for 1M timeframe
+eruda.js:2 ⚡ Successfully calculated 1M: LONG
+eruda.js:2 ⚡ Calculation loop completed
+eruda.js:2 🔧 Raw signals before alignment: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 🔧 Aligned signals after processing: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 📊 UPDATING UI STATE with 10 timeframe signals
+eruda.js:2 📊 Signal data being set: (10) ['1m: LONG', '5m: LONG', '15m: LONG', '30m: LONG', '1h: LONG', '4h: LONG', '1d: LONG', '3d: LONG', '1w: LONG', '1M: LONG']
+eruda.js:2 📊 About to call setSignals with: (10) ['1m', '5m', '15m', '30m', '1h', '4h', '1d', '3d', '1w', '1M']
+eruda.js:2 📊 Sample signal structure: (18) ['symbol', 'timeframe', 'direction', 'confidence', 'entryPrice', 'stopLoss', 'takeProfit', 'timestamp', 'successProbability', 'indicators', 'patternFormations', 'supportResistance', 'environment', 'recommendedLeverage', 'riskReward', 'marketStructure', 'volumeProfile', 'macroInsights']
+eruda.js:2 📊 Sample 1d signal: {symbol: 'BTC/USDT', timeframe: '1d', direction: 'LONG', confidence: 99, entryPrice: 105001.99907622633, …}
+eruda.js:2 📊 setSignals call completed successfully
+eruda.js:2 Loading chart with 200 data points for BNB/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for BNB/USDT (1M)
+eruda.js:2 Loading chart with 1000 data points for BNB/USDT (5m)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (1m)
+eruda.js:2 Recording predictions using fresh fetched price: 105001.99907622633
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (15m)
+eruda.js:2 Loading chart with 500 data points for SOL/USDT (4h)
+eruda.js:2 Loading chart with 150 data points for SOL/USDT (3d)
+eruda.js:2 Loading chart with 720 data points for SOL/USDT (1h)
+eruda.js:2 Loading chart with 365 data points for SOL/USDT (1d)
+eruda.js:2 Loading chart with 60 data points for SOL/USDT (1M)
+eruda.js:2 Loading chart with 1000 data points for SOL/USDT (5m)
+eruda.js:2 Loading chart with 200 data points for SOL/USDT (1w)
+eruda.js:2 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, XRP/USDT, SOL/USDT, USDC/USD, ADA/USDT, AVAX/USDT, DOGE/USDT, TRX/USDT, TON/USDT, LINK/USDT, MATIC/USDT, SHIB/USDT, LTC/USDT, BCH/USDT, UNI/USDT, DOT/USDT, XLM/USDT, ATOM/USDT, XMR/USDT, ETC/USDT, HBAR/USDT, FIL/USDT, ICP/USDT, VET/USDT, APT/USDT, NEAR/USDT, AAVE/USDT, ARB/USDT, OP/USDT, MKR/USDT, GRT/USDT, STX/USDT, INJ/USDT, ALGO/USDT, LDO/USDT, THETA/USDT, SUI/USDT, RUNE/USDT, MANA/USDT, SAND/USDT, FET/USDT, RNDR/USDT, KAVA/USDT, MINA/USDT, FLOW/USDT, XTZ/USDT, BLUR/USDT, QNT/USDT
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (1m)
+eruda.js:2 Loading chart with 720 data points for XRP/USDT (1h)
+eruda.js:2 Loading chart with 1000 data points for XRP/USDT (5m)
+eruda.js:2 Loading chart with 800 data points for SOL/USDT (30m)
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (30m)
+eruda.js:2 Loading chart with 800 data points for XRP/USDT (15m)
+eruda.js:2 Loading chart with 365 data points for XRP/USDT (1d)
+eruda.js:2 Loading chart with 150 data points for XRP/USDT (3d)
+eruda.js:2 Loading chart with 500 data points for XRP/USDT (4h)
+eruda.js:2 Loading chart with 200 data points for XRP/USDT (1w)
+eruda.js:2 Loading chart with 60 data points for XRP/USDT (1M)
+eruda.js:2 [UltimateManager] Chart data preloading completed
+eruda.js:2 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+eruda.js:2 [System] Ultimate manager active - synchronized 4-minute intervals
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1m LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 101851.94, Take Profit: 111302.12
+eruda.js:2 Recorded prediction: 1m LONG @ 105001.99907622633
+eruda.js:2 Calculation blocked: isCalculating=true, timeSinceLastCalc=1.905s
+eruda.js:2 📈 Prediction recorded: BTC/USDT 5m LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 101851.94, Take Profit: 111302.12
+eruda.js:2 Recorded prediction: 5m LONG @ 105001.99907622633
+eruda.js:2 🔄 Signals updated, syncing timer with actual calculation time
+eruda.js:2 📈 Prediction recorded: BTC/USDT 15m LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 101851.94, Take Profit: 111302.12
+eruda.js:2 Recorded prediction: 15m LONG @ 105001.99907622633
+eruda.js:2 📈 Prediction recorded: BTC/USDT 30m LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 101851.94, Take Profit: 111302.12
+eruda.js:2 Recorded prediction: 30m LONG @ 105001.99907622633
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1h LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 101851.94, Take Profit: 111302.12
+eruda.js:2 Recorded prediction: 1h LONG @ 105001.99907622633
+eruda.js:2 📈 Prediction recorded: BTC/USDT 4h LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 99751.90, Take Profit: 115502.20
+eruda.js:2 Recorded prediction: 4h LONG @ 105001.99907622633
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1d LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 98701.88, Take Profit: 117602.24
+eruda.js:2 Recorded prediction: 1d LONG @ 105001.99907622633
+eruda.js:2 📈 Prediction recorded: BTC/USDT 3d LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 96601.84, Take Profit: 121802.32
+eruda.js:2 Recorded prediction: 3d LONG @ 105001.99907622633
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1w LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 94501.80, Take Profit: 126002.40
+eruda.js:2 Recorded prediction: 1w LONG @ 105001.99907622633
+eruda.js:2 📈 Prediction recorded: BTC/USDT 1M LONG @ 105001.99907622633
+eruda.js:2 🎯 Stop Loss: 89251.70, Take Profit: 136502.60
+eruda.js:2 Recorded prediction: 1M LONG @ 105001.99907622633
+eruda.js:2 Found 10 valid signals for recommendation for BTC/USDT
+eruda.js:2 Updating trade recommendation for 4h timeframe
+eruda.js:2 No signal available for BTC/USDT on 4h
+eruda.js:2 Calculation process complete for BTC/USDT - 10 signals generated
+eruda.js:2 [SignalDashboard] Data ready for BTC/USDT - triggering calculation (automated-system)
+eruda.js:2 🛑 Calculation blocked: 235s until next 4-minute interval
+eruda.js:2 [UltimateManager] Next fetch in 220s
+eruda.js:2 [UltimateManager] Next fetch in 200s
+eruda.js:2 [CentralizedPriceManager] No cached price for BTC/USDT, fetching immediately
+eruda.js:2 [CentralizedPriceManager] Updated price for BTC/USDT: $105001.99907622633
+eruda.js:2 [UltimateManager] Next fetch in 180s
+eruda.js:2 [UltimateManager] Next fetch in 160s
+eruda.js:2 [UltimateManager] Next fetch in 140s
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A000650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+CryptoTraderPro-1:1 [GroupMarkerNotSet(crbug.com/242999)!:A060650364670000]Automatic fallback to software WebGL has been deprecated. Please use the --enable-unsafe-swiftshader flag to opt in to lower security guarantees for trusted content.
+client:536 WebSocket connection to 'wss://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/?token=3xzpgnQbnQ_q' failed: 
+t @ Network.js:227
+setupWebSocket @ client:536
+(anonymous) @ client:531
+Network.js:227 Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=3xzpgnQbnQ_q' is invalid.
+    at new t (Network.js:227:18)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ Network.js:227
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+Console.js:61 [CentralizedPriceManager] Initializing with 4-minute intervals
+Console.js:61 Technical indicators module initialized
+Console.js:61 🎯 Live Accuracy Tracker initialized - tracking real market outcomes
+Console.js:61 🧠 Adaptive Learning Engine initialized - starting feedback loop optimization
+Console.js:61 [UltimateManager] Starting FINAL system initialization
+Console.js:61 Technical indicators module initialized
+Console.js:61 Establishing data connection...
+Console.js:61 [UltimateManager] Triggering IMMEDIATE calculation to eliminate 2-cycle delay
+Console.js:61 [UltimateManager] Backend automated signal calculator managing all 50 symbols
+Console.js:61 [UltimateManager] Authentic trade simulations active for market data
+Console.js:61 [UltimateManager] Multi-pair fetch: 50 symbols updated
+Console.js:61 [UltimateManager] Preloading chart data for immediate analysis
+Console.js:61 Data connection established
+Console.js:61 Establishing data connection...
+Console.js:61 Subscribed to symbols: BTC/USDT
+Console.js:61 Loading chart with 800 data points for BTC/USDT (15m)
+Console.js:61 Loading chart with 720 data points for BTC/USDT (1h)
+Console.js:61 Loading chart with 1000 data points for BTC/USDT (1m)
+Console.js:61 Loading chart with 1000 data points for BTC/USDT (5m)
+Console.js:61 Loading chart with 150 data points for BTC/USDT (3d)
+Console.js:61 Loading chart with 800 data points for BTC/USDT (30m)
+Console.js:61 Loading chart with 200 data points for BTC/USDT (1w)
+Console.js:61 Loading chart with 60 data points for BTC/USDT (1M)
+Console.js:61 Loading chart with 500 data points for BTC/USDT (4h)
+Console.js:61 Data connection established
+Console.js:61 Subscribed to symbols: BTC/USDT
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT
+Console.js:61 Loading chart with 720 data points for ETH/USDT (1h)
+Console.js:61 Loading chart with 800 data points for ETH/USDT (15m)
+Console.js:61 Loading chart with 1000 data points for ETH/USDT (5m)
+Console.js:61 Loading chart with 365 data points for BTC/USDT (1d)
+Console.js:61 Loading chart with 800 data points for ETH/USDT (30m)
+Console.js:61 Loading chart with 1000 data points for ETH/USDT (1m)
+Console.js:61 Loading chart with 150 data points for ETH/USDT (3d)
+Console.js:61 Loading chart with 60 data points for ETH/USDT (1M)
+Console.js:61 Loading chart with 365 data points for ETH/USDT (1d)
+Console.js:61 Loading chart with 500 data points for ETH/USDT (4h)
+Console.js:61 Loading chart with 200 data points for ETH/USDT (1w)
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT
+Console.js:61 Loading chart with 800 data points for BNB/USDT (15m)
+Console.js:61 Loading chart with 1000 data points for BNB/USDT (5m)
+Console.js:61 Loading chart with 365 data points for BNB/USDT (1d)
+Console.js:61 Loading chart with 150 data points for BNB/USDT (3d)
+Console.js:61 Loading chart with 60 data points for BNB/USDT (1M)
+Console.js:61 Loading chart with 720 data points for BNB/USDT (1h)
+Console.js:61 Loading chart with 1000 data points for BNB/USDT (1m)
+Console.js:61 Loading chart with 500 data points for BNB/USDT (4h)
+Console.js:61 Loading chart with 800 data points for BNB/USDT (30m)
+Console.js:61 Loading chart with 200 data points for BNB/USDT (1w)
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, SOL/USDT
+Console.js:61 Loading chart with 800 data points for SOL/USDT (15m)
+Console.js:61 Loading chart with 1000 data points for SOL/USDT (1m)
+Console.js:61 Loading chart with 150 data points for SOL/USDT (3d)
+Console.js:61 Loading chart with 200 data points for SOL/USDT (1w)
+Console.js:61 Loading chart with 365 data points for SOL/USDT (1d)
+Console.js:61 Loading chart with 500 data points for SOL/USDT (4h)
+Console.js:61 Loading chart with 60 data points for SOL/USDT (1M)
+Console.js:61 Loading chart with 720 data points for SOL/USDT (1h)
+Console.js:61 Loading chart with 1000 data points for SOL/USDT (5m)
+Console.js:61 Loading chart with 800 data points for SOL/USDT (30m)
+Console.js:61 Subscribed to symbols: BTC/USDT, ETH/USDT, BNB/USDT, SOL/USDT, XRP/USDT
+Console.js:61 Loading chart with 720 data points for XRP/USDT (1h)
+Console.js:61 Loading chart with 500 data points for XRP/USDT (4h)
+Console.js:61 Loading chart with 800 data points for XRP/USDT (30m)
+Console.js:61 Loading chart with 365 data points for XRP/USDT (1d)
+Console.js:61 Loading chart with 800 data points for XRP/USDT (15m)
+Console.js:61 Loading chart with 60 data points for XRP/USDT (1M)
+Console.js:61 Loading chart with 1000 data points for XRP/USDT (1m)
+Console.js:61 Loading chart with 200 data points for XRP/USDT (1w)
+Console.js:61 Loading chart with 150 data points for XRP/USDT (3d)
+Console.js:61 Loading chart with 1000 data points for XRP/USDT (5m)
+Console.js:61 [UltimateManager] Chart data preloading completed
+Console.js:61 [UltimateManager] System initialization complete - ALL timers synchronized to 240s
+Console.js:61 [System] Ultimate manager active - synchronized 4-minute intervals
+Console.js:61 [UltimateManager] Next fetch in 220s
+Console.js:61 [UltimateManager] Next fetch in 200s
+Console.js:61 [UltimateManager] Next fetch in 180s
+Console.js:61 [UltimateManager] Next fetch in 160s
+Console.js:61 [UltimateManager] Next fetch in 140s
+Console.js:61 [UltimateManager] Next fetch in 120s
+Console.js:61 [UltimateManager] Next fetch in 100s
+Console.js:61 [UltimateManager] Next fetch in 80s
+Console.js:61 [UltimateManager] Next fetch in 60s
+Console.js:61 [UltimateManager] Next fetch in 40s
+Console.js:61 [MonteCarloRiskDisplay] Starting analysis for BTC/USDT (1d)
+Console.js:61 [MonteCarloRiskDisplay] Starting analysis for BTC/USDT 1d
+queryClient.ts:15 
+            
+            
+           POST https://7293a9ec-d129-4675-bcfe-725541b83881-00-37eald1mfcffn.worf.replit.dev/api/monte-carlo-risk 400 (Bad Request)
+window.fetch @ Network.js:219
+apiRequest @ queryClient.ts:15
+mutationFn @ MonteCarloRiskDisplay.tsx:61
+fn @ @tanstack_react-query.js?v=544c2f3f:1189
+run @ @tanstack_react-query.js?v=544c2f3f:494
+start @ @tanstack_react-query.js?v=544c2f3f:536
+execute @ @tanstack_react-query.js?v=544c2f3f:1225
+await in execute
+mutate @ @tanstack_react-query.js?v=544c2f3f:2630
+(anonymous) @ @tanstack_react-query.js?v=544c2f3f:3295
+(anonymous) @ MonteCarloRiskDisplay.tsx:181
+callCallback2 @ chunk-WERSD76P.js?v=544c2f3f:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=544c2f3f:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=544c2f3f:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=544c2f3f:3736
+executeDispatch @ chunk-WERSD76P.js?v=544c2f3f:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=544c2f3f:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=544c2f3f:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=544c2f3f:7051
+(anonymous) @ chunk-WERSD76P.js?v=544c2f3f:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=544c2f3f:18913
+batchedUpdates @ chunk-WERSD76P.js?v=544c2f3f:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=544c2f3f:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=544c2f3f:5478
+dispatchEvent @ chunk-WERSD76P.js?v=544c2f3f:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=544c2f3f:5449
+Console.js:61 [MonteCarloRiskDisplay] Request error: Error: 400: {"error":"Symbol required"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async Object.mutationFn (MonteCarloRiskDisplay.tsx:61:26)
+Mt.forEach.n.<computed> @ Console.js:61
+mutationFn @ MonteCarloRiskDisplay.tsx:90
+await in mutationFn
+fn @ @tanstack_react-query.js?v=544c2f3f:1189
+run @ @tanstack_react-query.js?v=544c2f3f:494
+start @ @tanstack_react-query.js?v=544c2f3f:536
+execute @ @tanstack_react-query.js?v=544c2f3f:1225
+await in execute
+mutate @ @tanstack_react-query.js?v=544c2f3f:2630
+(anonymous) @ @tanstack_react-query.js?v=544c2f3f:3295
+(anonymous) @ MonteCarloRiskDisplay.tsx:181
+callCallback2 @ chunk-WERSD76P.js?v=544c2f3f:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=544c2f3f:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=544c2f3f:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=544c2f3f:3736
+executeDispatch @ chunk-WERSD76P.js?v=544c2f3f:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=544c2f3f:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=544c2f3f:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=544c2f3f:7051
+(anonymous) @ chunk-WERSD76P.js?v=544c2f3f:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=544c2f3f:18913
+batchedUpdates @ chunk-WERSD76P.js?v=544c2f3f:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=544c2f3f:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=544c2f3f:5478
+dispatchEvent @ chunk-WERSD76P.js?v=544c2f3f:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=544c2f3f:5449
+Console.js:61 [MonteCarloRiskDisplay] Error details: Error: 400: {"error":"Symbol required"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async Object.mutationFn (MonteCarloRiskDisplay.tsx:61:26)
+Console.js:61 [MonteCarloRiskDisplay] Error type: object
+Console.js:61 [MonteCarloRiskDisplay] Error message: 400: {"error":"symbol required"}
+Console.js:61 [MonteCarloRiskDisplay] Analysis failed: Error: Invalid parameters. Please check your symbol and timeframe selection.
+    at Object.mutationFn (MonteCarloRiskDisplay.tsx:110:19)
+Mt.forEach.n.<computed> @ Console.js:61
+onError @ MonteCarloRiskDisplay.tsx:159
+execute @ @tanstack_react-query.js?v=544c2f3f:1254
+await in execute
+mutate @ @tanstack_react-query.js?v=544c2f3f:2630
+(anonymous) @ @tanstack_react-query.js?v=544c2f3f:3295
+(anonymous) @ MonteCarloRiskDisplay.tsx:181
+callCallback2 @ chunk-WERSD76P.js?v=544c2f3f:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=544c2f3f:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=544c2f3f:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=544c2f3f:3736
+executeDispatch @ chunk-WERSD76P.js?v=544c2f3f:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=544c2f3f:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=544c2f3f:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=544c2f3f:7051
+(anonymous) @ chunk-WERSD76P.js?v=544c2f3f:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=544c2f3f:18913
+batchedUpdates @ chunk-WERSD76P.js?v=544c2f3f:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=544c2f3f:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=544c2f3f:5478
+dispatchEvent @ chunk-WERSD76P.js?v=544c2f3f:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=544c2f3f:5449
+Console.js:61 [MonteCarloRiskDisplay] Error type: object
+Mt.forEach.n.<computed> @ Console.js:61
+onError @ MonteCarloRiskDisplay.tsx:160
+execute @ @tanstack_react-query.js?v=544c2f3f:1254
+await in execute
+mutate @ @tanstack_react-query.js?v=544c2f3f:2630
+(anonymous) @ @tanstack_react-query.js?v=544c2f3f:3295
+(anonymous) @ MonteCarloRiskDisplay.tsx:181
+callCallback2 @ chunk-WERSD76P.js?v=544c2f3f:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=544c2f3f:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=544c2f3f:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=544c2f3f:3736
+executeDispatch @ chunk-WERSD76P.js?v=544c2f3f:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=544c2f3f:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=544c2f3f:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=544c2f3f:7051
+(anonymous) @ chunk-WERSD76P.js?v=544c2f3f:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=544c2f3f:18913
+batchedUpdates @ chunk-WERSD76P.js?v=544c2f3f:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=544c2f3f:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=544c2f3f:5478
+dispatchEvent @ chunk-WERSD76P.js?v=544c2f3f:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=544c2f3f:5449
+Console.js:61 [MonteCarloRiskDisplay] Error details: {message: 'Invalid parameters. Please check your symbol and timeframe selection.', name: 'Error', stack: 'Error: Invalid parameters. Please check your symbo…v/src/components/MonteCarloRiskDisplay.tsx:73:19)'}
+Mt.forEach.n.<computed> @ Console.js:61
+onError @ MonteCarloRiskDisplay.tsx:161
+execute @ @tanstack_react-query.js?v=544c2f3f:1254
+await in execute
+mutate @ @tanstack_react-query.js?v=544c2f3f:2630
+(anonymous) @ @tanstack_react-query.js?v=544c2f3f:3295
+(anonymous) @ MonteCarloRiskDisplay.tsx:181
+callCallback2 @ chunk-WERSD76P.js?v=544c2f3f:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=544c2f3f:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=544c2f3f:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=544c2f3f:3736
+executeDispatch @ chunk-WERSD76P.js?v=544c2f3f:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=544c2f3f:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=544c2f3f:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=544c2f3f:7051
+(anonymous) @ chunk-WERSD76P.js?v=544c2f3f:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=544c2f3f:18913
+batchedUpdates @ chunk-WERSD76P.js?v=544c2f3f:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=544c2f3f:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=544c2f3f:5478
+dispatchEvent @ chunk-WERSD76P.js?v=544c2f3f:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=544c2f3f:5449
