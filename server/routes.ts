@@ -1058,7 +1058,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Use UltraPrecisionTechnicalAnalysis for authentic calculations
       const technicalAnalysis = new UltraPrecisionTechnicalAnalysis();
-      const indicators = await technicalAnalysis.calculateIndicators(
+      const indicators = await technicalAnalysis.calculateTechnicalIndicators(
         symbol, 
         requestedTimeframe,
         asset.lastPrice
@@ -1115,7 +1115,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Use pattern recognition engine
-      const patterns = await patternRecognition.analyzePatterns(
+      const patterns = await patternRecognition.analyzeAllPatterns(
         targetSymbol, 
         targetTimeframe,
         asset.lastPrice
@@ -1149,7 +1149,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`[Routes] Calculating risk assessment for ${targetSymbol} (${targetTimeframe})`);
       
       // Get current signals for risk calculation
-      const signals = await automatedSignalCalculator.getSignalsForSymbol(targetSymbol, targetTimeframe);
+      const signals = await automatedSignalCalculator.getSignals(targetSymbol, targetTimeframe);
       
       if (!signals || signals.length === 0) {
         return res.json({
@@ -1178,7 +1178,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         volatility: signal.volatilityAdjustment || 0.15
       };
       
-      const riskAnalysis = await monteCarloEngine.calculateRisk(signalInput);
+      const riskAnalysis = await monteCarloEngine.calculateRiskMetrics(signalInput);
       
       res.json({
         success: true,
