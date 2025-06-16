@@ -223,52 +223,52 @@ const TechnicalAnalysisSummary: React.FC = () => {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Key Indicators */}
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm text-muted-foreground">Key Indicators</h4>
+          <div className="space-y-2">
+            <h4 className="font-medium text-xs text-muted-foreground">Key Indicators</h4>
             
-            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-              <div className="flex items-center gap-2">
-                <rsiSignal.icon className={`h-4 w-4 ${rsiSignal.color}`} />
-                <span className="text-sm font-medium">RSI</span>
+            <div className="flex items-center justify-between p-1.5 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-1.5">
+                <rsiSignal.icon className={`h-3 w-3 ${rsiSignal.color}`} />
+                <span className="text-xs font-medium">RSI</span>
               </div>
               <div className="text-right">
-                <div className="text-sm font-semibold">{rsiValue.toFixed(1)}</div>
-                <div className={`text-xs ${rsiSignal.color}`}>{rsiSignal.signal}</div>
+                <div className="text-xs font-semibold">{rsiValue.toFixed(1)}</div>
+                <div className={`text-2xs ${rsiSignal.color}`}>{rsiSignal.signal}</div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-              <div className="flex items-center gap-2">
-                <macdSignal.icon className={`h-4 w-4 ${macdSignal.color}`} />
-                <span className="text-sm font-medium">MACD</span>
+            <div className="flex items-center justify-between p-1.5 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-1.5">
+                <macdSignal.icon className={`h-3 w-3 ${macdSignal.color}`} />
+                <span className="text-xs font-medium">MACD</span>
               </div>
               <div className="text-right">
-                <div className="text-sm font-semibold">{macdValue.toFixed(4)}</div>
-                <div className={`text-xs ${macdSignal.color}`}>{macdSignal.signal}</div>
+                <div className="text-xs font-semibold">{macdValue.toFixed(2)}</div>
+                <div className={`text-2xs ${macdSignal.color}`}>{macdSignal.signal}</div>
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-              <div className="flex items-center gap-2">
-                <BarChart3 className="h-4 w-4 text-orange-600" />
-                <span className="text-sm font-medium">Bollinger Bands</span>
+            <div className="flex items-center justify-between p-1.5 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-1.5">
+                <BarChart3 className="h-3 w-3 text-orange-600" />
+                <span className="text-xs font-medium">Bollinger</span>
               </div>
               <div className="text-right">
-                <div className="text-xs space-y-0.5">
-                  <div>Upper: {bbUpper > 0 ? bbUpper.toFixed(0) : 'N/A'}</div>
-                  <div>Middle: {bbMiddle > 0 ? bbMiddle.toFixed(0) : 'N/A'}</div>
-                  <div>Lower: {bbLower > 0 ? bbLower.toFixed(0) : 'N/A'}</div>
+                <div className="text-2xs space-y-0">
+                  <div>U: {bbUpper > 0 ? bbUpper.toFixed(0) : 'N/A'}</div>
+                  <div>M: {bbMiddle > 0 ? bbMiddle.toFixed(0) : 'N/A'}</div>
+                  <div>L: {bbLower > 0 ? bbLower.toFixed(0) : 'N/A'}</div>
                 </div>
-                <div className={`text-xs ${bbSignal.color}`}>{bbSignal.signal}</div>
+                <div className={`text-2xs ${bbSignal.color}`}>{bbSignal.signal}</div>
               </div>
             </div>
           </div>
 
           {/* Key Patterns - Fibonacci 50% highlighted */}
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm text-muted-foreground">Key Patterns</h4>
+          <div className="space-y-2">
+            <h4 className="font-medium text-xs text-muted-foreground">Key Patterns</h4>
             
             {(() => {
               const fibPattern = patterns.find(p => p.type === 'fibonacci_50');
@@ -276,35 +276,35 @@ const TechnicalAnalysisSummary: React.FC = () => {
                 return (
                   <>
                     {/* Fibonacci 50% Mini Box */}
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-                      <div className="flex items-center gap-2">
-                        <BarChart3 className="h-4 w-4 text-amber-600" />
-                        <span className="text-sm font-medium">Fibonacci 50%</span>
+                    <div className="flex items-center justify-between p-1.5 rounded-lg bg-muted/50">
+                      <div className="flex items-center gap-1.5">
+                        <BarChart3 className="h-3 w-3 text-amber-600" />
+                        <span className="text-xs font-medium">Fib 50%</span>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm font-semibold">{Math.round(fibPattern.confidence * 100)}%</div>
-                        <div className="text-xs text-amber-600">Resistance Zone</div>
+                        <div className="text-xs font-semibold">{Math.round(fibPattern.confidence * 100)}%</div>
+                        <div className="text-2xs text-amber-600">Resistance</div>
                       </div>
                     </div>
 
                     {/* Stochastic directly under Fibonacci 50% */}
-                    <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-                      <div className="flex items-center gap-2">
-                        <Activity className="h-4 w-4 text-purple-600" />
-                        <span className="text-sm font-medium">Stochastic</span>
+                    <div className="flex items-center justify-between p-1.5 rounded-lg bg-muted/50">
+                      <div className="flex items-center gap-1.5">
+                        <Activity className="h-3 w-3 text-purple-600" />
+                        <span className="text-xs font-medium">Stochastic</span>
                       </div>
                       <div className="text-right">
-                        <div className="text-sm font-semibold">
+                        <div className="text-xs font-semibold">
                           {stochK.toFixed(1)}
                         </div>
-                        <div className={`text-xs ${stochSignal.color}`}>{stochSignal.signal}</div>
+                        <div className={`text-2xs ${stochSignal.color}`}>{stochSignal.signal}</div>
                       </div>
                     </div>
                   </>
                 );
               } else {
                 return (
-                  <div className="text-center py-4 text-muted-foreground text-sm">
+                  <div className="text-center py-2 text-muted-foreground text-xs">
                     No key patterns detected
                   </div>
                 );
