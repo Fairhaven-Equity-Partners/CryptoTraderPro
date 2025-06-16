@@ -8,6 +8,7 @@ import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import LiveMarketOverview from '../components/LiveMarketOverview';
 import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
+import MarketAnalysisDisplay from '../components/MarketAnalysisDisplay';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
 const Analysis: React.FC = () => {
@@ -73,7 +74,11 @@ const Analysis: React.FC = () => {
         </div>
         {
         }
-        {/* TERTIARY PRIORITY SECTION - Detailed Analysis */}
+        {/* MARKET ANALYSIS SECTION */}
+        <div className="mb-6">
+          <MarketAnalysisDisplay />
+        </div>
+                {/* TERTIARY PRIORITY SECTION - Detailed Analysis */}
         <div className="space-y-6">
           {/* Advanced Signal Dashboard - Enhanced Version */}
           <AdvancedSignalDashboard
