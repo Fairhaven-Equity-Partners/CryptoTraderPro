@@ -29,23 +29,23 @@ interface PatternData {
 const TechnicalAnalysisSummary: React.FC = () => {
   const { data: techData, isLoading: techLoading } = useQuery({
     queryKey: ['/api/technical-analysis/BTC%2FUSDT'],
-    refetchInterval: 30000, // Update every 30 seconds for secondary priority
+    refetchInterval: 300000, // Update every 5 minutes - aggressive API optimization
   });
 
   const { data: patternData, isLoading: patternLoading } = useQuery({
     queryKey: ['/api/pattern-analysis/BTC%2FUSDT'],
-    refetchInterval: 45000,
+    refetchInterval: 480000, // Update every 8 minutes - aggressive API optimization
   });
 
   // Integrated performance metrics - replacing eliminated Performance Analysis component
   const { data: performanceData, isLoading: performanceLoading } = useQuery({
     queryKey: ['/api/performance-metrics'],
-    refetchInterval: 30000,
+    refetchInterval: 600000, // Update every 10 minutes - aggressive API optimization
   });
 
   const { data: accuracyData, isLoading: accuracyLoading } = useQuery({
     queryKey: ['/api/accuracy/BTC/USDT'],
-    refetchInterval: 45000,
+    refetchInterval: 420000, // Update every 7 minutes - aggressive API optimization
   });
 
   // Enhanced data structure handling based on external testing findings
