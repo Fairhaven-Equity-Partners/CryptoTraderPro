@@ -2178,17 +2178,16 @@ export default function AdvancedSignalDashboard({
             ))}
           </Tabs>
         </CardContent>
+        
+        <CardFooter className="text-xs text-gray-500 pt-2">
+          Data updated {lastCalculationRef.current > 0 ? new Date(lastCalculationRef.current).toLocaleTimeString() : 'never'} 
+          • Timeframe data from market sources
+        </CardFooter>
       </Card>
+    </div>
+  );
+}
 
-      {/* Combined Market Analysis & Live Accuracy Panel - MOVED TO BOTTOM */}
-      <Card className="border-2 border-blue-500/50 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4">
-        <CardHeader className="pb-2 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-t-lg">
-          <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
-            📊 Market Analysis & Live Accuracy
-            <Badge className="bg-blue-500 text-white font-semibold px-1 py-0.5 text-xs">
-              ENHANCED
-            </Badge>
-          </CardTitle>
           <CardDescription className="text-slate-200 text-xs">
             Combined real-time analysis and accuracy tracking for {selectedTimeframe}
           </CardDescription>
