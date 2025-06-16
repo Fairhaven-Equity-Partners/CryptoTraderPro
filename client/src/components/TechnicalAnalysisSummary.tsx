@@ -188,9 +188,13 @@ const TechnicalAnalysisSummary: React.FC = () => {
     return fallback;
   };
 
-  // Extract indicator values from nested or direct structure - prioritize API structure
-  const rsiValue = safeNumber(indicators.rsi, 50);
-  const macdValue = safeNumber(indicators.macd, 0);
+  // Extract indicator values from nested structure - handle object.value pattern
+  const rsiValue = safeNumber(
+    typeof indicators.rsi === 'object' ? indicators.rsi.value : indicators.rsi, 50
+  );
+  const macdValue = safeNumber(
+    typeof indicators.macd === 'object' ? indicators.macd.value : indicators.macd, 0
+  );
   const bbUpper = safeNumber(indicators.bollingerBands?.upper || indicators.bb_upper, 0);
   const bbLower = safeNumber(indicators.bollingerBands?.lower || indicators.bb_lower, 0);
   const bbMiddle = safeNumber(indicators.bollingerBands?.middle || indicators.bb_middle, 0);
@@ -243,6 +247,21 @@ const TechnicalAnalysisSummary: React.FC = () => {
               <div className="text-right">
                 <div className="text-sm font-semibold">{macdValue.toFixed(4)}</div>
                 <div className={`text-xs ${macdSignal.color}`}>{macdSignal.signal}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-orange-600" />
+                <span className="text-sm font-medium">Bollinger Bands</span>
+              </div>
+              <div className="text-right">
+                <div className="text-xs space-y-0.5">
+                  <div>Upper: {bbUpper > 0 ? bbUpper.toFixed(0) : 'N/A'}</div>
+                  <div>Middle: {bbMiddle > 0 ? bbMiddle.toFixed(0) : 'N/A'}</div>
+                  <div>Lower: {bbLower > 0 ? bbLower.toFixed(0) : 'N/A'}</div>
+                </div>
+                <div className={`text-xs ${bbSignal.color}`}>{bbSignal.signal}</div>
               </div>
             </div>
 
