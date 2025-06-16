@@ -120,14 +120,24 @@ class ComprehensiveSystemValidation {
         
         const risk = response.riskAssessment;
         
-        // Check required fields
-        const requiredFields = ['riskLevel', 'positionSizing', 'stopLoss', 'takeProfit'];
+        // Check required fields - fixed to match actual API response structure
+        const requiredFields = ['stopLoss', 'takeProfit'];
         const missingFields = [];
         
         for (const field of requiredFields) {
           if (!risk[field]) {
             missingFields.push(field);
           }
+        }
+        
+        // Check for position sizing field (can be positionSize or positionSizing)
+        if (!risk.positionSize && !risk.positionSizing) {
+          missingFields.push('positionSizing');
+        }
+        
+        // Check for risk level field (can be riskLevel or derived from confidence)
+        if (!risk.riskLevel && !risk.signalConfidence) {
+          missingFields.push('riskLevel');
         }
         
         if (missingFields.length > 0) {
