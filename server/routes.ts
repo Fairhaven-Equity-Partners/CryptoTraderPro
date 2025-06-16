@@ -3395,7 +3395,7 @@ app.get('/api/performance-metrics', async (req, res) => {
       }
 
       // Get current price and signal data
-      const priceData = await optimizedCoinMarketCapService.getCurrentPrice(symbol);
+      const priceData = await optimizedCoinMarketCapService.fetchPrice(symbol);
       if (!priceData || !priceData.price) {
         return res.status(404).json({ error: 'Price data not available' });
       }
