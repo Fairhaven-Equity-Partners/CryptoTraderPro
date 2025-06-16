@@ -5,7 +5,6 @@ import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
-import LiveMarketOverview from '../components/LiveMarketOverview';
 import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -62,10 +61,9 @@ const Analysis: React.FC = () => {
         onChangeAsset={handleChangeAsset}
       />
       <main className="flex-1 overflow-y-auto pb-16 px-4">
-        {/* TOP PRIORITY SECTION - Above the fold */}
-        <div className="space-y-4 mb-6">
-          <LiveMarketOverview />
-        </div>
+        {
+        }
+        
         {/* SECONDARY PRIORITY SECTION */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <TechnicalAnalysisSummary />
