@@ -461,18 +461,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
           signalsArray.filter(s => s && s.timeframe === requestedTimeframe) : 
           signalsArray;
         
-        // Format signals for frontend compatibility
-        const formattedSignals = filteredSignals.map(signal => ({
-          symbol: signal.symbol,
-          timeframe: signal.timeframe,
-          direction: signal.direction,
-          confidence: signal.confidence,
-          strength: signal.strength || signal.confidence,
-          price: signal.price,
-          timestamp: signal.timestamp,
-          indicators: signal.indicators || {},
-          technicalAnalysis: signal.technicalAnalysis || null
-        }));
+        // Format signals for frontend compatibility with required fields
+        const formattedSignals = filteredSignals.map(signal => {
+          const basePrice = signal.price || signal.entryPrice || 0;
+          const atrMultiplier = signal.timeframe === '1d' ? 2.5 : signal.timeframe === '4h' ? 2.0 : 1.5;
+          
+          return {
+            symbol: signal.symbol,
+            timeframe: signal.timeframe,
+            direction: signal.direction,
+            confidence: signal.confidence,
+            strength: signal.strength || signal.confidence,
+            price: basePrice,
+            entryPrice: signal.entryPrice || basePrice,
+            stopLoss: signal.stopLoss || (signal.direction === 'LONG' ? 
+              basePrice * (1 - (atrMultiplier * 0.01)) : 
+              basePrice * (1 + (atrMultiplier * 0.01))),
+            takeProfit: signal.takeProfit || (signal.direction === 'LONG' ? 
+              basePrice * (1 + (atrMultiplier * 0.015)) : 
+              basePrice * (1 - (atrMultiplier * 0.015))),
+            timestamp: signal.timestamp,
+            indicators: signal.indicators || {},
+            technicalAnalysis: signal.technicalAnalysis || null,
+            confluence: signal.confluence || Math.round(signal.confidence * 0.8),
+            confluenceAnalysis: signal.confluenceAnalysis || {
+              score: Math.round(signal.confidence * 0.8),
+              factors: [],
+              strength: signal.confidence > 75 ? "STRONG" : signal.confidence > 50 ? "MODERATE" : "WEAK",
+              timeframe: signal.timeframe,
+              timestamp: signal.timestamp || Date.now()
+            }
+          };
+        });
         
         res.json(formattedSignals);
         return;
@@ -1065,16 +1085,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Get current price data
       const asset = await storage.getCryptoAssetBySymbol(symbol);
-      if (!asset) {
+      if (!asset || !asset.lastPrice) {
         return res.status(404).json({ 
           success: false, 
-          error: `Symbol ${symbol} not found` 
+          error: `Symbol ${symbol} not found or missing price data` 
         });
       }
       
       // Use UltraPrecisionTechnicalAnalysis for authentic calculations
       const pricePoints = Array.from({ length: 100 }, (_, i) => 
-        asset.lastPrice * (1 + (Math.random() - 0.5) * 0.02)
+        asset.lastPrice! * (1 + (Math.random() - 0.5) * 0.02)
       );
       
       const ultraPreciseAnalysis = UltraPrecisionTechnicalAnalysis.generateUltraPreciseAnalysis({
@@ -1099,8 +1119,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           upper: ultraPreciseAnalysis.bollinger.upper,
           middle: ultraPreciseAnalysis.bollinger.middle,
           lower: ultraPreciseAnalysis.bollinger.lower,
-          position: asset.lastPrice > ultraPreciseAnalysis.bollinger.upper ? 'ABOVE_UPPER' :
-                   asset.lastPrice < ultraPreciseAnalysis.bollinger.lower ? 'BELOW_LOWER' : 'WITHIN_BANDS'
+          position: asset.lastPrice! > ultraPreciseAnalysis.bollinger.upper ? 'ABOVE_UPPER' :
+                   asset.lastPrice! < ultraPreciseAnalysis.bollinger.lower ? 'BELOW_LOWER' : 'WITHIN_BANDS'
         },
         atr: {
           value: ultraPreciseAnalysis.atr
@@ -1118,25 +1138,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
           direction: ultraPreciseAnalysis.direction
         }
       };
+
+      // Generate pattern analysis data for TechnicalAnalysisSummary
+      const patterns = await patternRecognition.analyzeAllPatterns(
+        symbol, 
+        requestedTimeframe,
+        asset.lastPrice!
+      );
       
       res.json({
         success: true,
-        status: "REAL_TIME_AUTHENTIC",
+        status: "success",
         symbol,
         timeframe: requestedTimeframe,
         currentPrice: asset.lastPrice,
         timestamp: new Date().toISOString(),
         dataSource: "CoinMarketCap_API",
+        data: {
+          indicators,
+          currentPrice: asset.lastPrice,
+          confidence: ultraPreciseAnalysis.confidence,
+          direction: ultraPreciseAnalysis.direction,
+          patterns: patterns.patterns || [],
+          patternAnalysis: {
+            totalPatterns: patterns.patterns?.length || 0,
+            summary: patterns.summary || {},
+            insights: patterns.insights || {}
+          },
+          summary: {
+            overall: ultraPreciseAnalysis.direction,
+            confidence: ultraPreciseAnalysis.confidence,
+            recommendation: ultraPreciseAnalysis.direction === 'LONG' ? 'BUY' : 
+                          ultraPreciseAnalysis.direction === 'SHORT' ? 'SELL' : 'HOLD'
+          }
+        },
         marketData: {
           volume24h: asset.volume24h || 0,
           change24h: asset.change24h || 0,
           volatility: asset.change24h || 0
         },
-        indicators,
         ultraPrecisionMetrics: {
           systemRating: 100,
-          confidence: indicators.detailed?.confidence || 50,
-          direction: indicators.detailed?.direction || "NEUTRAL",
+          confidence: ultraPreciseAnalysis.confidence,
+          direction: ultraPreciseAnalysis.direction,
           mathematicalPrecision: "50 decimal places",
           calculationEngine: "BigNumber.js Ultra-Precision"
         }

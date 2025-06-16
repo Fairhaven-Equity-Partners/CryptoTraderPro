@@ -1,0 +1,281 @@
+{
+  "timestamp": "2025-06-16T21:15:12.080Z",
+  "summary": {
+    "totalIssues": 5,
+    "criticalIssues": 0,
+    "highIssues": 4,
+    "mediumIssues": 1
+  },
+  "rootCauseAnalysis": {
+    "primaryIssue": "API endpoints returning HTML instead of JSON responses",
+    "secondaryIssue": "Incomplete signal data structure missing required fields",
+    "impactedFunctionality": [
+      "Technical Analysis Summary component data loading",
+      "Risk Assessment Dashboard component data loading",
+      "Cross-pair switching reliability"
+    ]
+  },
+  "validationResults": {
+    "apiEndpoints": {
+      "total": 6,
+      "working": 6,
+      "failed": 0,
+      "reliability": 100,
+      "failedEndpoints": []
+    },
+    "signalStructure": {
+      "btc": {
+        "valid": false,
+        "missingFields": [
+          "entryPrice",
+          "stopLoss",
+          "takeProfit"
+        ],
+        "sampleSignal": {
+          "symbol": "BTC/USDT",
+          "timeframe": "1w",
+          "direction": "SHORT",
+          "confidence": 95,
+          "strength": 0.95,
+          "price": 108626.08030118921,
+          "timestamp": 1750108511412,
+          "indicators": {
+            "change24h": 3.90915874,
+            "volume24h": 48711055597.796646,
+            "volatility": 3.90915874,
+            "rsi": 42.82961934915582,
+            "macd": {
+              "macdLine": 615.9176985828526,
+              "signalLine": 1245.1930184846346,
+              "histogram": -629.275319901782
+            },
+            "bollingerBands": {
+              "upper": 111195.86664362719,
+              "middle": 108741.11730456243,
+              "lower": 106286.36796549767
+            },
+            "atr": 1313.9139652636,
+            "bbPosition": 47.65684826669418,
+            "reasoning": [
+              "Strong bearish confluence"
+            ]
+          },
+          "technicalAnalysis": null
+        },
+        "signalCount": 48
+      },
+      "xrp": {
+        "valid": false,
+        "missingFields": [
+          "entryPrice",
+          "stopLoss",
+          "takeProfit"
+        ],
+        "sampleSignal": {
+          "symbol": "BTC/USDT",
+          "timeframe": "1w",
+          "direction": "SHORT",
+          "confidence": 95,
+          "strength": 0.95,
+          "price": 108626.08030118921,
+          "timestamp": 1750108511412,
+          "indicators": {
+            "change24h": 3.90915874,
+            "volume24h": 48711055597.796646,
+            "volatility": 3.90915874,
+            "rsi": 42.82961934915582,
+            "macd": {
+              "macdLine": 615.9176985828526,
+              "signalLine": 1245.1930184846346,
+              "histogram": -629.275319901782
+            },
+            "bollingerBands": {
+              "upper": 111195.86664362719,
+              "middle": 108741.11730456243,
+              "lower": 106286.36796549767
+            },
+            "atr": 1313.9139652636,
+            "bbPosition": 47.65684826669418,
+            "reasoning": [
+              "Strong bearish confluence"
+            ]
+          },
+          "technicalAnalysis": null
+        },
+        "signalCount": 48
+      }
+    },
+    "technicalAnalysis": {
+      "btc": {
+        "valid": false,
+        "issues": [
+          "Missing field: confidence"
+        ],
+        "hasIndicators": true,
+        "indicatorCount": 6
+      },
+      "xrp": {
+        "valid": false,
+        "issues": [
+          "Missing field: confidence"
+        ],
+        "hasIndicators": true,
+        "indicatorCount": 6
+      }
+    },
+    "riskAssessment": {
+      "btc": {
+        "valid": false,
+        "missingFields": [
+          "expectedReturn",
+          "volatility",
+          "winProbability"
+        ],
+        "hasValidRiskMetrics": false
+      },
+      "xrp": {
+        "valid": false,
+        "missingFields": [
+          "expectedReturn",
+          "volatility",
+          "winProbability"
+        ],
+        "hasValidRiskMetrics": false
+      }
+    },
+    "mathematicalAccuracy": {
+      "confidenceValid": true,
+      "priceValid": false,
+      "stopLossValid": false,
+      "takeProfitValid": false,
+      "riskRewardValid": false,
+      "sampleCalculation": {
+        "direction": "SHORT",
+        "confidence": 95
+      }
+    }
+  },
+  "identifiedIssues": [
+    {
+      "category": "Cross-Pair Switching",
+      "severity": "HIGH",
+      "description": "Technical Analysis Summary and Risk Assessment Dashboard not loading data when switching from BTC to XRP",
+      "rootCause": "API endpoints returning HTML instead of JSON, causing component data loading failures",
+      "evidence": "External shell testing shows \"Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON\""
+    },
+    {
+      "category": "Signal Data Structure",
+      "severity": "HIGH",
+      "description": "Signal data missing required fields for component display",
+      "rootCause": "Backend signal generation not including entryPrice, stopLoss, takeProfit",
+      "btcMissingFields": [
+        "entryPrice",
+        "stopLoss",
+        "takeProfit"
+      ],
+      "xrpMissingFields": [
+        "entryPrice",
+        "stopLoss",
+        "takeProfit"
+      ]
+    },
+    {
+      "category": "Technical Analysis Data Flow",
+      "severity": "HIGH",
+      "description": "Technical Analysis component not receiving properly formatted data",
+      "btcIssues": [
+        "Missing field: confidence"
+      ],
+      "xrpIssues": [
+        "Missing field: confidence"
+      ]
+    },
+    {
+      "category": "Risk Assessment Data Flow",
+      "severity": "HIGH",
+      "description": "Risk Assessment component not receiving properly formatted data",
+      "btcMissingFields": [
+        "expectedReturn",
+        "volatility",
+        "winProbability"
+      ],
+      "xrpMissingFields": [
+        "expectedReturn",
+        "volatility",
+        "winProbability"
+      ]
+    },
+    {
+      "category": "Mathematical Calculations",
+      "severity": "MEDIUM",
+      "description": "Some mathematical relationships are invalid",
+      "details": {
+        "confidenceValid": true,
+        "priceValid": false,
+        "stopLossValid": false,
+        "takeProfitValid": false,
+        "riskRewardValid": false
+      }
+    }
+  ],
+  "comprehensiveFixPlan": [
+    {
+      "priority": 1,
+      "category": "API Routing Fix",
+      "title": "Fix HTML responses from API endpoints",
+      "description": "Update server routes to ensure proper JSON responses for technical-analysis and risk-assessment endpoints",
+      "implementation": [
+        "Add proper route parameters for technical-analysis endpoint",
+        "Fix route handler to return JSON instead of HTML",
+        "Add proper error handling and JSON responses",
+        "Test all endpoint responses with external validation"
+      ],
+      "affectedComponents": [
+        "TechnicalAnalysisSummary",
+        "RiskAssessmentDashboard"
+      ],
+      "urgency": "CRITICAL"
+    },
+    {
+      "priority": 2,
+      "category": "Signal Data Structure",
+      "title": "Complete signal data structure for UI components",
+      "description": "Ensure all signals include required fields for proper component display",
+      "implementation": [
+        "Add entryPrice, stopLoss, takeProfit to all signal responses",
+        "Validate signal data structure in backend before sending",
+        "Update signal generation to include all required fields",
+        "Add proper TypeScript types for signal validation"
+      ],
+      "affectedComponents": [
+        "AdvancedSignalDashboard",
+        "TechnicalAnalysisSummary"
+      ],
+      "urgency": "HIGH"
+    },
+    {
+      "priority": 3,
+      "category": "Cross-Pair State Management",
+      "title": "Improve cross-pair switching reliability",
+      "description": "Enhance component state management when switching between cryptocurrency pairs",
+      "implementation": [
+        "Add proper state reset when symbol changes",
+        "Implement loading states during symbol transitions",
+        "Add error boundaries for component state failures",
+        "Ensure proper cleanup of previous symbol data"
+      ],
+      "affectedComponents": [
+        "All analysis components"
+      ],
+      "urgency": "MEDIUM"
+    }
+  ],
+  "recommendedActions": [
+    "Implement API routing fixes immediately (Critical Priority)",
+    "Complete signal data structure (High Priority)",
+    "Test cross-pair switching after fixes (Medium Priority)",
+    "Validate all mathematical calculations (Ongoing)",
+    "Implement comprehensive external shell testing (Ongoing)"
+  ],
+  "systemHealthScore": 34
+}
