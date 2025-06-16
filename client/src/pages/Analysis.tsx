@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
-import LiveMarketOverview from '../components/LiveMarketOverview';
+
 import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
 import { useAssetPrice } from '../hooks/useMarketData';
@@ -68,12 +68,7 @@ const Analysis: React.FC = () => {
           />
         </div>
         
-        {/* LIVE MARKET OVERVIEW - SECOND PRIORITY */}
-        <div className="space-y-4 mb-6">
-          <LiveMarketOverview />
-        </div>
-        
-        {/* TECHNICAL ANALYSIS SECTION - THIRD PRIORITY */}
+        {/* TECHNICAL ANALYSIS SECTION - SECOND PRIORITY */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <TechnicalAnalysisSummary />
           <RiskAssessmentDashboard />
