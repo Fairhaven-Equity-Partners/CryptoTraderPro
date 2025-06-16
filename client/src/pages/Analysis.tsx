@@ -9,7 +9,8 @@ import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { useAssetPrice } from '../hooks/useMarketData';
-import { TimeFrame } from '../types';
+// TimeFrame type definition
+type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' | '1M';
 const Analysis: React.FC = () => {
   const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
@@ -18,7 +19,7 @@ const Analysis: React.FC = () => {
   const [assetChangeCounter, setAssetChangeCounter] = useState(0);
   const [shouldRunAnalysis, setShouldRunAnalysis] = useState(false);
   const [detectedPatterns, setDetectedPatterns] = useState([]);
-  const handlePatternChange = (patterns) => {
+  const handlePatternChange = (patterns: any[]) => {
     setDetectedPatterns(patterns);
     // Integrate pattern strength into signal confidence scoring
     if (patterns.length > 0) {
