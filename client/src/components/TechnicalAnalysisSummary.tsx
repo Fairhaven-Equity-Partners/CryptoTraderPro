@@ -362,16 +362,16 @@ const TechnicalAnalysisSummary: React.FC = () => {
         )}
 
         {/* Overall Signal Summary */}
-        <div className="mt-4 pt-3 border-t">
+        <div className="mt-3 pt-2 border-t">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">Overall Sentiment</span>
-            <div className="flex items-center gap-2">
+            <span className="text-xs font-medium">Overall Sentiment</span>
+            <div className="flex items-center gap-1">
               {[rsiSignal, macdSignal, stochSignal].filter(s => s.signal.includes('Bullish') || s.signal.includes('Oversold')).length > 1 ? (
-                <Badge variant="default" className="text-xs bg-green-600">Bullish Bias</Badge>
+                <Badge variant="default" className="text-2xs bg-green-600 px-1.5 py-0.5">Bullish</Badge>
               ) : [rsiSignal, macdSignal, stochSignal].filter(s => s.signal.includes('Bearish') || s.signal.includes('Overbought')).length > 1 ? (
-                <Badge variant="destructive" className="text-xs">Bearish Bias</Badge>
+                <Badge variant="destructive" className="text-2xs px-1.5 py-0.5">Bearish</Badge>
               ) : (
-                <Badge variant="secondary" className="text-xs">Mixed Signals</Badge>
+                <Badge variant="secondary" className="text-2xs px-1.5 py-0.5">Mixed</Badge>
               )}
             </div>
           </div>
