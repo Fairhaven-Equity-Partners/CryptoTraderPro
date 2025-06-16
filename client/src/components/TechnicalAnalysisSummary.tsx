@@ -195,9 +195,21 @@ const TechnicalAnalysisSummary: React.FC = () => {
   const macdValue = safeNumber(
     typeof indicators.macd === 'object' ? indicators.macd.value : indicators.macd, 0
   );
+  // Debug the full data structure
+  console.log('Full techData:', techData);
+  console.log('Extracted indicators:', indicators);
+  console.log('BB check:', {
+    bollingerBands: indicators.bollingerBands,
+    bb_upper: indicators.bb_upper,
+    bb_lower: indicators.bb_lower,
+    bb_middle: indicators.bb_middle
+  });
+  
   const bbUpper = safeNumber(indicators.bollingerBands?.upper || indicators.bb_upper, 0);
   const bbLower = safeNumber(indicators.bollingerBands?.lower || indicators.bb_lower, 0);
   const bbMiddle = safeNumber(indicators.bollingerBands?.middle || indicators.bb_middle, 0);
+  
+  console.log('Final BB values:', { bbUpper, bbLower, bbMiddle });
   const stochK = safeNumber(indicators.stochastic?.k || indicators.stochastic_k, 50);
   const stochD = safeNumber(indicators.stochastic?.d || indicators.stochastic_d, 50);
 
