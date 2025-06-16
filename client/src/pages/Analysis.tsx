@@ -1,5 +1,5 @@
 
-import CriticalSignalAnalysis from '../components/CriticalSignalAnalysis';import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
 import PriceOverview from '../components/PriceOverview';
@@ -71,10 +71,8 @@ const Analysis: React.FC = () => {
           <TechnicalAnalysisSummary />
           <RiskAssessmentDashboard />
         </div>
-        {/* MARKET ANALYSIS SECTION - Above Advanced Signals */}
-        <div className="mb-6">
-          <CriticalSignalAnalysis />
-        </div>
+        {
+        }
         {/* TERTIARY PRIORITY SECTION - Detailed Analysis */}
         <div className="space-y-6">
           {/* Advanced Signal Dashboard - Enhanced Version */}
