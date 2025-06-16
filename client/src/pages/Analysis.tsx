@@ -8,9 +8,8 @@ import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import LiveMarketOverview from '../components/LiveMarketOverview';
 import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
-import MarketAnalysisDisplay from '../components/MarketAnalysisDisplay';
 import { useAssetPrice } from '../hooks/useMarketData';
-import { TimeFrame } from '../types';
+type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' | '1M';
 const Analysis: React.FC = () => {
   const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
@@ -72,15 +71,9 @@ const Analysis: React.FC = () => {
           <TechnicalAnalysisSummary />
           <RiskAssessmentDashboard />
         </div>
-        {
-        }
-        {/* MARKET ANALYSIS SECTION */}
+        
+        {/* ADVANCED SIGNAL DASHBOARD - REPOSITIONED */}
         <div className="mb-6">
-          <MarketAnalysisDisplay />
-        </div>
-                {/* TERTIARY PRIORITY SECTION - Detailed Analysis */}
-        <div className="space-y-6">
-          {/* Advanced Signal Dashboard - Enhanced Version */}
           <AdvancedSignalDashboard
             symbol={currentAsset}
             onTimeframeSelect={handleChangeTimeframe}
