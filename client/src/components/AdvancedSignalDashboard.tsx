@@ -76,6 +76,19 @@ function analyzeIndicatorConvergence(indicators: any[]): { confidence: number; d
   return { confidence: 45, description: 'Mixed indicator signals' };
 }
 
+// Card styling function - CRITICAL for component display
+const getCardStyle = (signal: AdvancedSignal) => {
+  const baseClasses = "bg-slate-900/95 border border-slate-800 rounded-lg transition-all duration-200";
+  
+  if (signal.direction === 'LONG') {
+    return `${baseClasses} border-l-4 border-l-green-500 hover:border-green-400`;
+  } else if (signal.direction === 'SHORT') {
+    return `${baseClasses} border-l-4 border-l-red-500 hover:border-red-400`;
+  } else {
+    return `${baseClasses} border-l-4 border-l-yellow-500 hover:border-yellow-400`;
+  }
+};
+
 function detectMarketRegimeFromData(signal: AdvancedSignal): { confidence: number; description: string } {
   // Use signal direction and confidence for market regime analysis
   const confidenceLevel = Math.min(85, signal.confidence || 50);
@@ -2032,7 +2045,7 @@ export default function AdvancedSignalDashboard({
             {timeframes.map(timeframe => (
               <TabsContent key={timeframe} value={timeframe} className="mt-4">
                 {signals[timeframe] ? (
-                  <div className={`p-4 rounded-lg border-2 ${getCardStyle(signals[timeframe]!)}`}>
+                  <div className={getCardStyle(signals[timeframe]!)}>
                     <div className="flex justify-between items-start mb-3">
                       <div>
                         <h3 className="text-white font-bold text-lg">
@@ -2120,7 +2133,7 @@ export default function AdvancedSignalDashboard({
                   <div className="p-8 text-center bg-slate-800/30 rounded-lg border border-slate-700">
                     <div className="text-slate-400 mb-2">No signal data available</div>
                     <Button 
-                      onClick={() => handleCalculateSignal(timeframe)}
+                      onClick={() => triggerCalculation('manual')}
                       disabled={isCalculating}
                       size="sm"
                       variant="outline"
