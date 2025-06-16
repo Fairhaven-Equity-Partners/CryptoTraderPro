@@ -1979,6 +1979,145 @@ export default function AdvancedSignalDashboard({
           )}
         </div>
       </div>
+
+      {/* TIMEFRAME-SPECIFIC SIGNALS & TRADING OPPORTUNITIES - TOP PRIORITY */}
+      <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-bold text-white flex items-center">
+            Market Analysis
+            {isCalculating && (
+              <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
+                Calculating...
+              </Badge>
+            )}
+          </CardTitle>
+          <CardDescription className="text-gray-100">
+            Timeframe-specific signals and trading opportunities
+          </CardDescription>
+        </CardHeader>
+        
+        <CardContent className="pb-2">
+          <Tabs 
+            defaultValue={selectedTimeframe} 
+            onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}
+            className="w-full"
+          >
+            <TabsList className="w-full grid grid-cols-7">
+              {timeframes.map(tf => (
+                <TabsTrigger 
+                  key={tf} 
+                  value={tf}
+                  disabled={!signals[tf]}
+                  className={!signals[tf] ? 'opacity-50 cursor-not-allowed' : ''}
+                >
+                  {tf}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {timeframes.map(timeframe => (
+              <TabsContent key={timeframe} value={timeframe} className="mt-4">
+                {signals[timeframe] ? (
+                  <div className={`p-4 rounded-lg border-2 ${getCardStyle(signals[timeframe]!)}`}>
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="text-white font-bold text-lg">
+                          {symbol} {timeframe.toUpperCase()}
+                        </h3>
+                        <p className="text-slate-300 text-sm">
+                          {formatCurrency(currentAssetPrice)}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <Badge 
+                          variant={signals[timeframe]!.direction === 'LONG' ? 'default' : signals[timeframe]!.direction === 'SHORT' ? 'destructive' : 'outline'}
+                          className="text-sm font-bold mb-1"
+                        >
+                          {signals[timeframe]!.direction}
+                        </Badge>
+                        <div className="text-sm text-slate-300">
+                          {signals[timeframe]!.confidence}% confidence
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                      <PriceLevelDisplay
+                        label="Entry"
+                        value={signals[timeframe]!.entryPrice}
+                        timeframe={timeframe}
+                        colorClass="text-blue-400 border-blue-500"
+                      />
+                      <PriceLevelDisplay
+                        label="Stop Loss"
+                        value={signals[timeframe]!.stopLoss}
+                        timeframe={timeframe}
+                        colorClass="text-red-400 border-red-500"
+                      />
+                      <PriceLevelDisplay
+                        label="Take Profit"
+                        value={signals[timeframe]!.takeProfit}
+                        timeframe={timeframe}
+                        colorClass="text-green-400 border-green-500"
+                      />
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-white font-semibold">Risk/Reward</span>
+                        <span className="font-bold text-purple-400 px-3 py-1 rounded border border-purple-500">
+                          {signals[timeframe]!.riskReward ? signals[timeframe]!.riskReward.toFixed(2) : 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+
+                    {signals[timeframe]!.indicators && (
+                      <div className="mb-4">
+                        <h4 className="text-white font-semibold mb-2">Technical Indicators</h4>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                          {Object.entries(signals[timeframe]!.indicators as Record<string, any[]>).map(([category, indicators]) => (
+                            <div key={category} className="p-2 bg-slate-800/50 rounded">
+                              <div className="text-xs font-medium text-slate-300 mb-1 uppercase">
+                                {category}
+                              </div>
+                              <div className="space-y-1">
+                                {indicators.slice(0, 2).map((indicator, i) => (
+                                  <div key={i} className="flex justify-between text-xs">
+                                    <span className="text-slate-400">{indicator.name || indicator.id}</span>
+                                    <Badge 
+                                      variant="outline" 
+                                      className={`text-xs ${
+                                        indicator.signal === 'BUY' ? 'text-green-400 border-green-500' :
+                                        indicator.signal === 'SELL' ? 'text-red-400 border-red-500' :
+                                        'text-slate-400 border-slate-500'
+                                      }`}
+                                    >
+                                      {indicator.signal}
+                                    </Badge>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="p-8 text-center bg-slate-800/30 rounded-lg border border-slate-700">
+                    <div className="text-slate-400 mb-2">No signal data available</div>
+                    <Button 
+                      onClick={() => handleCalculateSignal(timeframe)}
+                      disabled={isCalculating}
+                      size="sm"
+                      variant="outline"
+                    >
+                      Calculate {timeframe.toUpperCase()} Signal
+                    </Button>
+                  </div>
+                )}
+              </TabsContent>
+            ))}
+          </Tabs>
+        </CardContent>
+      </Card>
       
       {/* Combined Market Analysis & Live Accuracy Panel */}
       <Card className="border-2 border-blue-500/50 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4">
@@ -2418,89 +2557,9 @@ export default function AdvancedSignalDashboard({
           {/* Performance metrics integrated into Technical Analysis Summary */}
         </CardContent>
       </Card>
-
-      <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-bold text-white flex items-center">
-            Market Analysis
-            {isCalculating && (
-              <Badge variant="outline" className="ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800">
-                Calculating...
-              </Badge>
-            )}
-          </CardTitle>
-          <CardDescription className="text-gray-100">
-            Timeframe-specific signals and trading opportunities
-          </CardDescription>
-        </CardHeader>
-        
-        <CardContent className="pb-2">
-          <Tabs 
-            defaultValue={selectedTimeframe} 
-            onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}
-            className="w-full"
-          >
-            <TabsList className="w-full grid grid-cols-7">
-              {timeframes.map(tf => (
-                <TabsTrigger 
-                  key={tf} 
-                  value={tf}
-                  disabled={!signals[tf]}
-                  className={!signals[tf] ? 'opacity-50 cursor-not-allowed' : ''}
-                >
-                  {tf}
-                  {/* Show arrow based on actual signal direction */}
-                  {signals[tf] && signals[tf]?.direction === 'LONG' && (
-                    <span className="ml-1 text-green-400">▲</span>
-                  )}
-                  {signals[tf] && signals[tf]?.direction === 'SHORT' && (
-                    <span className="ml-1 text-red-400">▼</span>
-                  )}
-                  {signals[tf] && signals[tf]?.direction === 'NEUTRAL' && (
-                    <span className="ml-1 text-gray-400">—</span>
-                  )}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            
-            {/* We'll render content for all tabs but only show the selected one */}
-            {timeframes.map(timeframe => (
-              <TabsContent 
-                key={timeframe} 
-                value={timeframe} 
-                className="mt-4 relative"
-              >
-                {!signals[timeframe] && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm rounded-md z-10">
-                    {isCalculating ? (
-                      <div className="text-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                        <p className="text-gray-300">Calculating signals...</p>
-                      </div>
-                    ) : (
-                      <div className="text-center">
-                        <AlertTriangle className="h-8 w-8 text-amber-500 mx-auto mb-2" />
-                        <p className="text-gray-300">No signal data available for {timeframe}</p>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          className="mt-2"
-                          onClick={() => {
-                            // DISABLED: Only show toast notification
-                            toast({
-                              title: "Auto-calculation active",
-                              description: "Signals refresh automatically every 3 minutes.",
-                            });
-                          }}
-                        >
-                          Calculate Now
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                )}
-                
-                {currentSignal && (
+    </div>
+  );
+}
                   <div className={`rounded-lg border p-4 ${getSignalBgClass(currentSignal.direction)}`}>
                     {/* Confidence Score and Direction */}
                     <div className="flex items-center justify-between mb-4">

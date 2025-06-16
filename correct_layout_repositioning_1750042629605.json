@@ -1,0 +1,609 @@
+{
+  "timestamp": 1750042629605,
+  "successRate": 75,
+  "issuesFound": 1,
+  "issues": [
+    "Internal repositioning failed: signal is not defined"
+  ],
+  "changes": [],
+  "findings": [
+    {
+      "step": "AdvancedSignalDashboard Structure Analysis",
+      "status": "COMPLETED",
+      "details": {
+        "sections": [
+          {
+            "name": "Unknown Section",
+            "startLine": 188,
+            "description": "<div className=\"flex justify-between items-center text-sm\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 1959,
+            "description": "<div className=\"space-y-4\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 1960,
+            "description": "<div className=\"flex justify-between items-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 1965,
+            "description": "<div className=\"flex justify-end items-center space-x-2\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 1997,
+            "description": "<div className=\"grid grid-cols-1 md:grid-cols-3 gap-2 mb-3\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 1999,
+            "description": "<div className=\"p-2 bg-emerald-600/20 rounded-lg text-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2000,
+            "description": "<div className=\"text-xs font-bold text-green-400\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2004,
+            "description": "<div className=\"text-emerald-200 text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2009,
+            "description": "<div className=\"p-2 bg-blue-600/20 rounded-lg text-center\">..."
+          },
+          {
+            "name": "Timeframe Controls Section",
+            "startLine": 2010,
+            "description": "<div className=\"text-xs font-bold text-white\">{selectedTimeframe}</div>..."
+          },
+          {
+            "name": "Timeframe Controls Section",
+            "startLine": 2011,
+            "description": "<div className=\"text-blue-200 text-xs\">Timeframe</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2013,
+            "description": "<div className=\"p-2 bg-orange-600/20 rounded-lg text-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2014,
+            "description": "<div className=\"text-xs font-bold text-orange-400\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2017,
+            "description": "<div className=\"text-orange-200 text-xs\">Next</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2020,
+            "description": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-2\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2021,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2027,
+            "description": "<div className=\"p-2 bg-slate-700/30 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2040,
+            "description": "<div className=\"flex justify-between items-center p-2 bg-slate-700/50 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2050,
+            "description": "<div className=\"flex justify-between items-center p-2 bg-slate-700/50 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2060,
+            "description": "<div className=\"flex justify-between items-center p-2 bg-slate-700/50 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2074,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2099,
+            "description": "<div key={i} className=\"p-2 bg-indigo-600/20 rounded-lg border border-indigo-500/30\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2110,
+            "description": "<div className=\"mt-4 p-3 bg-gradient-to-r from-emerald-900/20 to-cyan-900/20 rounded-lg border borde..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2117,
+            "description": "<div className=\"grid grid-cols-2 gap-3 text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2118,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2119,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2153,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2174,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2195,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2232,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2233,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2256,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2278,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2324,
+            "description": "<div className=\"flex justify-between\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2361,
+            "description": "<div className=\"mt-2 text-xs text-slate-400\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2368,
+            "description": "<div className=\"mt-6 p-4 bg-gradient-to-r from-green-900/20 to-blue-900/20 rounded-lg border border-..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2369,
+            "description": "<div className=\"flex items-center justify-between mb-3\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2379,
+            "description": "<div className=\"grid grid-cols-2 md:grid-cols-4 gap-3\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2380,
+            "description": "<div className=\"text-center p-2 bg-blue-600/20 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2381,
+            "description": "<div className=\"flex items-center justify-center mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2385,
+            "description": "<div className=\"text-xs text-blue-200\">Math Precision</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2388,
+            "description": "<div className=\"text-center p-2 bg-purple-600/20 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2389,
+            "description": "<div className=\"flex items-center justify-center mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2393,
+            "description": "<div className=\"text-xs text-purple-200\">Speed Boost</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2396,
+            "description": "<div className=\"text-center p-2 bg-green-600/20 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2397,
+            "description": "<div className=\"flex items-center justify-center mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2401,
+            "description": "<div className=\"text-xs text-green-200\">Autonomous</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2404,
+            "description": "<div className=\"text-center p-2 bg-orange-600/20 rounded-lg\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2405,
+            "description": "<div className=\"flex items-center justify-center mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2409,
+            "description": "<div className=\"text-xs text-orange-200\">Latency</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2413,
+            "description": "<div className=\"mt-3 text-xs text-slate-300\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2474,
+            "description": "<div className=\"absolute inset-0 flex items-center justify-center bg-gray-900/50 backdrop-blur-sm ro..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2476,
+            "description": "<div className=\"text-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2477,
+            "description": "<div className=\"animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mx-auto mb-2..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2481,
+            "description": "<div className=\"text-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2504,
+            "description": "<div className={`rounded-lg border p-4 ${getSignalBgClass(currentSignal.direction)}`}>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2506,
+            "description": "<div className=\"flex items-center justify-between mb-4\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2507,
+            "description": "<div className=\"flex items-center space-x-4\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2538,
+            "description": "<div className=\"text-lg font-bold text-cyan-300\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2543,
+            "description": "<div className=\"text-right\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2544,
+            "description": "<div className=\"text-sm text-gray-400 mb-1 mt-2\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2559,
+            "description": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-4\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2561,
+            "description": "<div className=\"space-y-4\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2565,
+            "description": "<div className=\"space-y-2 mb-3\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2606,
+            "description": "<div className=\"w-full bg-gray-800 rounded-full h-3 mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2612,
+            "description": "<div className=\"flex justify-between items-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2613,
+            "description": "<div className=\"flex justify-between text-xs text-gray-400 w-full\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2630,
+            "description": "<div className=\"space-y-2\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2632,
+            "description": "<div className=\"w-full bg-gray-800 rounded-full h-3 mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2641,
+            "description": "<div className=\"flex justify-between items-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2650,
+            "description": "<div className=\"space-y-2\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2652,
+            "description": "<div className=\"max-h-40 overflow-y-auto space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2655,
+            "description": "<div key={i} className=\"flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2656,
+            "description": "<div className=\"flex-1 min-w-0\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2670,
+            "description": "<div className=\"text-gray-400 text-xs\">No patterns detected</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2676,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2679,
+            "description": "<div className=\"grid grid-cols-2 gap-3\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2682,
+            "description": "<div className=\"text-red-400 text-xs font-semibold mb-1\">Resistance</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2683,
+            "description": "<div className=\"space-y-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2729,
+            "description": "<div key={`res-${i}`} className=\"flex justify-between items-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2742,
+            "description": "<div className=\"text-green-400 text-xs font-semibold mb-1\">Support</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2743,
+            "description": "<div className=\"space-y-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2789,
+            "description": "<div key={`supp-${i}`} className=\"flex justify-between items-center\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2807,
+            "description": "<div className=\"space-y-2\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2809,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2812,
+            "description": "<div className=\"flex justify-between items-center text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2836,
+            "description": "<div className=\"flex justify-between items-center text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2873,
+            "description": "<div className=\"flex justify-between items-center text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2912,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2915,
+            "description": "<div className=\"flex justify-between items-center text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2927,
+            "description": "<div className=\"flex justify-between items-center text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2934,
+            "description": "<div className=\"flex justify-between items-center text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2941,
+            "description": "<div className=\"border-t border-gray-700 pt-2 mt-1\"></div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2945,
+            "description": "<div className=\"flex justify-between items-center text-xs\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2963,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2967,
+            "description": "<div className=\"flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2977,
+            "description": "<div className=\"flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2987,
+            "description": "<div className=\"flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 2998,
+            "description": "<div className=\"flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3009,
+            "description": "<div className=\"flex justify-between items-center text-xs border-b border-gray-700/50 pb-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3018,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3020,
+            "description": "<div className=\"text-gray-100 text-xs space-y-0.5\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3023,
+            "description": "<div key={i} className=\"text-gray-100 text-xs\">• {insight}</div>..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3027,
+            "description": "<div className=\"text-gray-100 text-xs\">• Sentiment: {currentSignal?.direction === 'LONG' ? 'bullish'..."
+          },
+          {
+            "name": "Signal Quality/Confidence Section",
+            "startLine": 3028,
+            "description": "<div className=\"text-gray-100 text-xs\">• Volume: {currentSignal?.confidence > 65 ? 'strong' : curren..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3035,
+            "description": "<div className=\"space-y-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3041,
+            "description": "<div className=\"bg-gray-800/50 rounded-lg p-2 border border-gray-700\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3042,
+            "description": "<div className=\"flex items-center justify-between mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3043,
+            "description": "<div className=\"flex items-center space-x-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3051,
+            "description": "<div className=\"flex justify-between items-center mb-1\">..."
+          },
+          {
+            "name": "Unknown Section",
+            "startLine": 3060,
+            "description": "<div className=\"w-full bg-gray-700 rounded-full h-1\">..."
+          }
+        ],
+        "foundTimeframeContent": 14
+      }
+    },
+    {
+      "step": "Timeframe Signals Section Identification",
+      "status": "FOUND",
+      "details": {
+        "foundPatterns": 80,
+        "signalDisplaySection": {
+          "startLine": 1,
+          "contentLine": 42,
+          "preview": "import { TimeFrame, IndicatorCategory, IndicatorSignal, IndicatorStrength, Indicator } from '../type..."
+        }
+      }
+    },
+    {
+      "step": "Repositioned Structure Validation",
+      "status": "PARTIAL",
+      "details": {
+        "structureValidation": {
+          "hasTimeframeSignalsFirst": false,
+          "hasMarketAnalysisSecond": false,
+          "hasChartsLast": false,
+          "hasTimeframeSelector": true,
+          "hasSignalMapping": true
+        },
+        "score": "2/5"
+      }
+    },
+    {
+      "step": "System Functionality Test",
+      "status": "PASSED",
+      "details": {
+        "healthStatus": 200,
+        "signalsStatus": 200
+      }
+    }
+  ]
+}
