@@ -2092,7 +2092,7 @@ export default function AdvancedSignalDashboard({
                                 {category}
                               </div>
                               <div className="space-y-1">
-                                {indicators.slice(0, 2).map((indicator, i) => (
+                                {Array.isArray(indicators) ? indicators.slice(0, 2).map((indicator, i) => (
                                   <div key={i} className="flex justify-between text-xs">
                                     <span className="text-slate-400">{indicator.name || indicator.id}</span>
                                     <Badge 
@@ -2106,7 +2106,9 @@ export default function AdvancedSignalDashboard({
                                       {indicator.signal}
                                     </Badge>
                                   </div>
-                                ))}
+                                )) : (
+                                  <div className="text-xs text-gray-400">No indicators available</div>
+                                )}
                               </div>
                             </div>
                           ))}
