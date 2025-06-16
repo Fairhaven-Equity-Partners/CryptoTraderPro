@@ -402,8 +402,9 @@ class ComprehensivePlatformValidation {
           break;
           
         case 'Signal Direction Display':
-          // Check if direction is valid
-          const direction = data.direction;
+          // Get signal data instead of technical analysis data for direction validation
+          const signalData = await this.fetchSignals(symbol, '4h');
+          const direction = signalData[0]?.direction;
           uiValid = expectedValues.includes(direction) || ['BUY', 'SELL', 'NEUTRAL', 'LONG', 'SHORT'].includes(direction);
           break;
           
