@@ -313,12 +313,12 @@ const TechnicalAnalysisSummary: React.FC = () => {
 
             {/* Other patterns */}
             {patterns.filter(p => p.type !== 'fibonacci_50').length > 0 && (
-              <div className="space-y-2 max-h-24 overflow-y-auto">
-                <div className="text-xs text-muted-foreground">Other Patterns</div>
+              <div className="space-y-1.5 max-h-20 overflow-y-auto">
+                <div className="text-2xs text-muted-foreground">Other Patterns</div>
                 {patterns.filter(p => p.type !== 'fibonacci_50').slice(0, 2).map((pattern, index) => (
-                  <div key={index} className="flex items-center justify-between p-1.5 rounded-lg bg-background border text-xs">
+                  <div key={index} className="flex items-center justify-between p-1.5 rounded-lg bg-background border text-2xs">
                     <span className="font-medium">{pattern.type}</span>
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-2xs px-1 py-0">
                       {Math.round(pattern.confidence * 100)}%
                     </Badge>
                   </div>
@@ -332,16 +332,16 @@ const TechnicalAnalysisSummary: React.FC = () => {
 
         {/* Integrated Performance Metrics Section - Replaces eliminated Performance Analysis component */}
         {performanceData && (
-          <div className="mt-4 pt-3 border-t">
-            <div className="flex items-center gap-2 mb-3">
-              <BarChart3 className="h-4 w-4" />
-              <span className="text-sm font-medium">Performance Metrics</span>
+          <div className="mt-3 pt-2 border-t">
+            <div className="flex items-center gap-1.5 mb-2">
+              <BarChart3 className="h-3 w-3" />
+              <span className="text-xs font-medium">Performance Metrics</span>
             </div>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-1.5">
               {performanceData.indicators?.slice(0, 4).map((indicator: any, index: number) => (
-                <div key={index} className="p-2 rounded-lg bg-background border">
-                  <div className="text-xs text-muted-foreground">{indicator.name}</div>
-                  <div className="text-sm font-medium">
+                <div key={index} className="p-1.5 rounded-lg bg-background border">
+                  <div className="text-2xs text-muted-foreground">{indicator.name}</div>
+                  <div className="text-xs font-medium">
                     {typeof indicator.value === 'number' 
                       ? `${indicator.value.toFixed(1)}${indicator.id.includes('accuracy') || indicator.id.includes('uptime') ? '%' : ''}`
                       : indicator.value || 'N/A'
