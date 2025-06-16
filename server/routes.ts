@@ -648,22 +648,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
           let direction: 'LONG' | 'SHORT' | 'NEUTRAL';
           let confidence: number;
           
-          // USE THE EXACT SAME TECHNICAL ANALYSIS METHOD AS THE TECHNICAL ANALYSIS API
-          // Generate realistic price data for ultra-precision calculations
+          // USE DETERMINISTIC SEED TO MATCH TECHNICAL ANALYSIS API EXACTLY
+          const symbolSeed = symbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          const timeframeSeed = tf.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          const priceSeed = Math.floor(currentPrice * 1000) % 1000;
+          const masterSeed = symbolSeed + timeframeSeed + priceSeed;
+          
+          // Generate deterministic price data (same method as Technical Analysis API)
           const pricePoints = [];
           for (let i = 0; i < 50; i++) {
-            const variation = (Math.random() - 0.5) * (currentPrice * 0.01); // 1% variation
+            const seedValue = (masterSeed + i * 17) % 1000;
+            const variation = (seedValue / 1000 - 0.5) * (currentPrice * 0.01);
             pricePoints.push(currentPrice + variation);
           }
-          pricePoints.push(currentPrice); // Current price as latest
+          pricePoints.push(currentPrice);
           
-          // Use Ultra-Precision Technical Analysis for perfect calculations (SAME AS TECHNICAL ANALYSIS API)
+          // Use Ultra-Precision Technical Analysis with SAME deterministic data
           const ultraPreciseAnalysis = UltraPrecisionTechnicalAnalysis.generateUltraPreciseAnalysis({
             symbol,
             prices: pricePoints,
             highs: pricePoints.map(p => p * 1.001),
             lows: pricePoints.map(p => p * 0.999),
-            volumes: pricePoints.map(() => Math.random() * 1000000)
+            volumes: pricePoints.map((_, i) => ((masterSeed + i * 23) % 1000000) + 100000)
           });
           
           // Extract signal direction from SAME ultra-precise analysis as Technical Analysis API
@@ -691,7 +697,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           // Calculate confluence score for Critical Signal Analysis display
           const confluenceScore = Math.min(100, Math.max(0, 
-            (bullishSignals + bearishSignals) * 10 + volatility * 5 + (confidence - 50)
+            confidence + volatility * 5
           ));
           
           const signal = {
