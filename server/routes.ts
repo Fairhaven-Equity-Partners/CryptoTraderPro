@@ -1257,34 +1257,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`[Routes] Calculating risk assessment for ${targetSymbol} (${targetTimeframe})`);
       
-      // Get current signals for risk calculation
-      const signals = await automatedSignalCalculator.getSignals(targetSymbol, targetTimeframe);
+      // Get the same technical analysis data as the main API
+      console.log(`Looking up crypto asset with normalized symbol: ${targetSymbol}`);
+      const cryptoAsset = await storage.getCryptoAsset(targetSymbol);
       
-      if (!signals || signals.length === 0) {
+      if (!cryptoAsset) {
         return res.json({
           success: true,
           symbol: targetSymbol,
           timeframe: targetTimeframe,
           riskLevel: "MODERATE",
           riskScore: 50,
-          recommendations: ["No active signals available for risk assessment"],
+          recommendations: ["Crypto asset not found for risk assessment"],
           timestamp: new Date().toISOString()
         });
       }
       
-      const signal = signals[0];
+      const currentPrice = cryptoAsset.currentPrice;
+      if (!currentPrice) {
+        return res.json({
+          success: true,
+          symbol: targetSymbol,
+          timeframe: targetTimeframe,
+          riskLevel: "MODERATE",
+          riskScore: 50,
+          recommendations: ["No current price available for risk assessment"],
+          timestamp: new Date().toISOString()
+        });
+      }
+      
+      // Generate the same technical indicators as the Technical Analysis API
+      const ultraPrecisionEngine = new UltraPrecisionTechnicalAnalysis();
+      const ultraPreciseAnalysis = await ultraPrecisionEngine.calculateTechnicalIndicators(
+        currentPrice,
+        targetSymbol,
+        targetTimeframe
+      );
+      
+      // Use same signal generation logic as Technical Analysis API
+      const signal = {
+        direction: ultraPreciseAnalysis.direction,
+        price: currentPrice,
+        confidence: ultraPreciseAnalysis.confidence,
+        entryPrice: currentPrice,
+        stopLoss: ultraPreciseAnalysis.stopLoss,
+        takeProfit: ultraPreciseAnalysis.takeProfit
+      };
       
       // Calculate risk metrics using Monte Carlo engine
       const monteCarloEngine = new MonteCarloRiskEngine();
-      const signalInput: SignalInput = {
-        symbol: targetSymbol,
+      const signalInput = {
         direction: signal.direction as 'LONG' | 'SHORT' | 'NEUTRAL',
         entryPrice: signal.entryPrice || signal.price,
         stopLoss: signal.stopLoss,
         takeProfit: signal.takeProfit,
         confidence: signal.confidence,
         timeframe: targetTimeframe,
-        volatility: signal.volatilityAdjustment || 0.15
+        volatility: techAnalysisData.indicators?.atr?.value ? 
+          (techAnalysisData.indicators.atr.value / signal.price) : 0.15
       };
       
       const riskAnalysis = await monteCarloEngine.calculateRiskMetrics(signalInput);
