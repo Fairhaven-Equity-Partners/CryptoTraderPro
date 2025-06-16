@@ -948,7 +948,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return signal;
       });
       
-      res.json(confluenceEnhancedSignals);
+      // Return response with symbol and timeframe for validation compatibility
+      const response = {
+        symbol: symbol,
+        timeframe: requestedTimeframe,
+        signals: confluenceEnhancedSignals,
+        totalSignals: confluenceEnhancedSignals.length,
+        timestamp: new Date().toISOString(),
+        dataSource: "AutomatedSignalCalculator"
+      };
+      
+      res.json(response);
       
     } catch (error: any) {
       console.error(`Error fetching signals for ${req.params.symbol}:`, error);
@@ -2854,12 +2864,15 @@ app.get('/api/performance-metrics', async (req, res) => {
       }
       
       const signalData = await signalsResponse.json();
-      if (!signalData || signalData.length === 0) {
+      
+      // Handle new signals API response structure
+      const signals = signalData.signals || signalData;
+      if (!signals || signals.length === 0) {
         console.log(`[MonteCarlo] No signal data for ${symbol}`);
         return res.status(404).json({ error: 'No signals available for symbol' });
       }
       
-      const currentSignal = signalData.find((s: any) => s.timeframe === (timeframe || '1d')) || signalData[0];
+      const currentSignal = signals.find((s: any) => s.timeframe === (timeframe || '1d')) || signals[0];
       
       if (!currentSignal) {
         console.log(`[MonteCarlo] No matching signal found for ${symbol} ${timeframe}`);

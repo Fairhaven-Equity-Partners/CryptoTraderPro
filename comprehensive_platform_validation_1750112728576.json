@@ -1,0 +1,138 @@
+{
+  "timestamp": "2025-06-16T22:25:18.895Z",
+  "testSuite": "Comprehensive 10-Minute Platform Validation",
+  "testDuration": "10 minutes",
+  "totalTests": 305,
+  "passedTests": 270,
+  "failedTests": 35,
+  "criticalIssues": [
+    "Invalid data structure for /api/monte-carlo-risk BTC/USDT 1m",
+    "Invalid data structure for /api/signals BTC/USDT 1m",
+    "Invalid data structure for /api/signals BTC/USDT 5m",
+    "Invalid data structure for /api/signals BTC/USDT 15m",
+    "Invalid data structure for /api/signals BTC/USDT 30m",
+    "Invalid data structure for /api/signals BTC/USDT 1h",
+    "Invalid data structure for /api/signals ETH/USDT 1m",
+    "Invalid data structure for /api/signals ETH/USDT 15m",
+    "Invalid data structure for /api/signals ETH/USDT 5m",
+    "Invalid data structure for /api/signals XRP/USDT 1m",
+    "Invalid data structure for /api/signals XRP/USDT 5m",
+    "Invalid data structure for /api/signals XRP/USDT 30m",
+    "Invalid data structure for /api/signals XRP/USDT 1h",
+    "Invalid data structure for /api/signals XRP/USDT 15m",
+    "Invalid data structure for /api/signals ETH/USDT 1h",
+    "Invalid data structure for /api/signals ETH/USDT 30m",
+    "Invalid data structure for /api/signals BNB/USDT 30m",
+    "Invalid data structure for /api/signals SOL/USDT 1h",
+    "Invalid data structure for /api/signals BNB/USDT 5m",
+    "Invalid data structure for /api/signals BNB/USDT 1h",
+    "Invalid data structure for /api/signals SOL/USDT 30m",
+    "Invalid data structure for /api/signals BNB/USDT 1m",
+    "Invalid data structure for /api/signals SOL/USDT 15m",
+    "Invalid data structure for /api/signals SOL/USDT 1m",
+    "Invalid data structure for /api/signals BNB/USDT 15m",
+    "Invalid data structure for /api/signals SOL/USDT 5m",
+    "Invalid data structure for /api/monte-carlo-risk BTC/USDT 4h",
+    "RiskAssessmentDashboard failed with BTC/USDT 4h",
+    "Invalid data structure for /api/signals BTC/USDT 4h",
+    "AdvancedSignalDashboard failed with BTC/USDT 4h",
+    "Invalid data structure for /api/signals ETH/USDT 1d",
+    "AdvancedSignalDashboard failed with ETH/USDT 1d",
+    "Invalid data structure for /api/signals XRP/USDT 1h",
+    "AdvancedSignalDashboard failed with XRP/USDT 1h",
+    "UI validation failed: Signal Direction Display"
+  ],
+  "componentResults": {
+    "TechnicalAnalysisSummary": {
+      "passed": 3,
+      "failed": 0
+    },
+    "RiskAssessmentDashboard": {
+      "passed": 2,
+      "failed": 1
+    },
+    "AdvancedSignalDashboard": {
+      "passed": 0,
+      "failed": 3
+    }
+  },
+  "apiResults": {
+    "/api/technical-analysis": {
+      "passed": 28,
+      "failed": 0
+    },
+    "/api/pattern-analysis": {
+      "passed": 28,
+      "failed": 0
+    },
+    "/api/monte-carlo-risk": {
+      "passed": 0,
+      "failed": 2
+    },
+    "/api/performance-metrics": {
+      "passed": 28,
+      "failed": 0
+    },
+    "/api/accuracy": {
+      "passed": 28,
+      "failed": 0
+    },
+    "/api/signals": {
+      "passed": 0,
+      "failed": 28
+    }
+  },
+  "switchingResults": {
+    "crossPair": {
+      "passed": 11,
+      "failed": 0
+    },
+    "timeframe": {
+      "passed": 9,
+      "failed": 0
+    }
+  },
+  "performanceResults": {
+    "API Response Time": {
+      "value": 14,
+      "passed": 1,
+      "failed": 0
+    },
+    "Cross-Pair Switch Speed": {
+      "value": 34,
+      "passed": 1,
+      "failed": 0
+    },
+    "Concurrent Request Handling": {
+      "value": 70,
+      "passed": 1,
+      "failed": 0
+    },
+    "Memory Usage Stability": {
+      "value": 7.9022216796875,
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "uiResults": {
+    "Price Display Formatting": {
+      "passed": 1,
+      "failed": 0
+    },
+    "Percentage Display": {
+      "passed": 1,
+      "failed": 0
+    },
+    "Signal Direction Display": {
+      "passed": 0,
+      "failed": 1
+    },
+    "Timeframe Label Display": {
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "systemScore": 88.52,
+  "deploymentReadiness": false,
+  "detailedReport": {}
+}
