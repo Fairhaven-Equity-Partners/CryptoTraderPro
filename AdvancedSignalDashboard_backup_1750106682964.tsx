@@ -1980,7 +1980,7 @@ export default function AdvancedSignalDashboard({
         </div>
       </div>
       
-      {/* Market Analysis - Moved to top for priority */}
+      {/* Market Analysis - Timeframe-specific signals and trading opportunities */}
       <Card className="border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg font-bold text-white flex items-center">
