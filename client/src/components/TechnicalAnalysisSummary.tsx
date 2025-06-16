@@ -5,13 +5,17 @@ import { Badge } from '@/components/ui/badge';
 import { TrendingUp, TrendingDown, Activity, BarChart3 } from 'lucide-react';
 
 interface TechnicalIndicators {
-  rsi: number;
-  macd: number;
-  bb_upper: number;
-  bb_lower: number;
-  bb_middle: number;
-  stochastic_k: number;
-  stochastic_d: number;
+  rsi: {value: number, signal: string} | number;
+  macd: {value: number, signal: number, histogram: number, trend: string} | number;
+  bollingerBands?: {upper: number, middle: number, lower: number, position: string};
+  bb_upper?: number;
+  bb_lower?: number;
+  bb_middle?: number;
+  stochastic?: {k: number, d: number, signal: string};
+  stochastic_k?: number;
+  stochastic_d?: number;
+  atr?: {value: number} | number;
+  ultraPrecisionMetrics?: any;
 }
 
 interface PatternData {
@@ -184,18 +188,21 @@ const TechnicalAnalysisSummary: React.FC = () => {
     return fallback;
   };
 
-  // Extract indicator values from nested or direct structure
-  const rsiValue = safeNumber(indicators.rsi || indicators.detailed?.rsi, 50);
-  const macdValue = safeNumber(indicators.macd || indicators.detailed?.macd, 0);
-  const bbUpper = safeNumber(indicators.bb_upper || indicators.bollingerBands?.upper, 0);
-  const bbLower = safeNumber(indicators.bb_lower || indicators.bollingerBands?.lower, 0);
-  const bbMiddle = safeNumber(indicators.bb_middle || indicators.bollingerBands?.middle, 0);
-  const stochK = safeNumber(indicators.stochastic_k || indicators.stochastic?.k, 50);
-  const stochD = safeNumber(indicators.stochastic_d || indicators.stochastic?.d, 50);
+  // Extract indicator values from nested or direct structure - prioritize API structure
+  const rsiValue = safeNumber(indicators.rsi, 50);
+  const macdValue = safeNumber(indicators.macd, 0);
+  const bbUpper = safeNumber(indicators.bollingerBands?.upper || indicators.bb_upper, 0);
+  const bbLower = safeNumber(indicators.bollingerBands?.lower || indicators.bb_lower, 0);
+  const bbMiddle = safeNumber(indicators.bollingerBands?.middle || indicators.bb_middle, 0);
+  const stochK = safeNumber(indicators.stochastic?.k || indicators.stochastic_k, 50);
+  const stochD = safeNumber(indicators.stochastic?.d || indicators.stochastic_d, 50);
 
+  // Extract current price for Bollinger position calculation
+  const currentPrice = safeNumber(techData?.currentPrice, 108000);
+  
   const rsiSignal = getRSISignal(rsiValue);
   const macdSignal = getMACDSignal(macdValue);
-  const bbSignal = getBollingerPosition(0, bbUpper, bbLower, bbMiddle);
+  const bbSignal = getBollingerPosition(currentPrice, bbUpper, bbLower, bbMiddle);
   const stochSignal = getStochasticSignal(stochK, stochD);
 
   return (
