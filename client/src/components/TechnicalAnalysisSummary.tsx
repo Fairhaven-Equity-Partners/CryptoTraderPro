@@ -36,23 +36,47 @@ const TechnicalAnalysisSummary: React.FC<TechnicalAnalysisSummaryProps> = ({ sym
 
   const { data: techData, isLoading: techLoading } = useQuery({
     queryKey: ['/api/technical-analysis', encodedSymbol],
+    queryFn: async () => {
+      const response = await fetch(`/api/technical-analysis/${encodedSymbol}`);
+      if (!response.ok) throw new Error('Technical analysis data unavailable');
+      return response.json();
+    },
     refetchInterval: 300000, // Update every 5 minutes - aggressive API optimization
+    retry: 1,
   });
 
   const { data: patternData, isLoading: patternLoading } = useQuery({
     queryKey: ['/api/pattern-analysis', encodedSymbol],
+    queryFn: async () => {
+      const response = await fetch(`/api/pattern-analysis/${encodedSymbol}`);
+      if (!response.ok) throw new Error('Pattern analysis data unavailable');
+      return response.json();
+    },
     refetchInterval: 480000, // Update every 8 minutes - aggressive API optimization
+    retry: 1,
   });
 
   // Integrated performance metrics - replacing eliminated Performance Analysis component
   const { data: performanceData, isLoading: performanceLoading } = useQuery({
     queryKey: ['/api/performance-metrics'],
+    queryFn: async () => {
+      const response = await fetch('/api/performance-metrics');
+      if (!response.ok) throw new Error('Performance data unavailable');
+      return response.json();
+    },
     refetchInterval: 600000, // Update every 10 minutes - aggressive API optimization
+    retry: 1,
   });
 
   const { data: accuracyData, isLoading: accuracyLoading } = useQuery({
     queryKey: ['/api/accuracy', accuracySymbol],
+    queryFn: async () => {
+      const response = await fetch(`/api/accuracy/${accuracySymbol}`);
+      if (!response.ok) throw new Error('Accuracy data unavailable');
+      return response.json();
+    },
     refetchInterval: 420000, // Update every 7 minutes - aggressive API optimization
+    retry: 1,
   });
 
   // Enhanced data structure handling based on external testing findings
