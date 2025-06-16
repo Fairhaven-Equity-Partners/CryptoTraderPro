@@ -68,10 +68,10 @@ const Analysis: React.FC = () => {
         {/* SECONDARY PRIORITY SECTION */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <ErrorBoundary>
-            <TechnicalAnalysisSummary />
+            <TechnicalAnalysisSummary symbol={currentAsset} />
           </ErrorBoundary>
           <ErrorBoundary>
-            <RiskAssessmentDashboard />
+            <RiskAssessmentDashboard symbol={currentAsset} />
           </ErrorBoundary>
         </div>
         {

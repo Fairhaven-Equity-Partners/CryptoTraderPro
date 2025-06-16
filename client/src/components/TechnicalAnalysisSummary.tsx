@@ -26,14 +26,21 @@ interface PatternData {
   }>;
 }
 
-const TechnicalAnalysisSummary: React.FC = () => {
+interface TechnicalAnalysisSummaryProps {
+  symbol?: string;
+}
+
+const TechnicalAnalysisSummary: React.FC<TechnicalAnalysisSummaryProps> = ({ symbol = 'BTC/USDT' }) => {
+  const encodedSymbol = encodeURIComponent(symbol);
+  const accuracySymbol = symbol.replace('/', '/');
+
   const { data: techData, isLoading: techLoading } = useQuery({
-    queryKey: ['/api/technical-analysis/BTC%2FUSDT'],
+    queryKey: ['/api/technical-analysis', encodedSymbol],
     refetchInterval: 300000, // Update every 5 minutes - aggressive API optimization
   });
 
   const { data: patternData, isLoading: patternLoading } = useQuery({
-    queryKey: ['/api/pattern-analysis/BTC%2FUSDT'],
+    queryKey: ['/api/pattern-analysis', encodedSymbol],
     refetchInterval: 480000, // Update every 8 minutes - aggressive API optimization
   });
 
@@ -44,7 +51,7 @@ const TechnicalAnalysisSummary: React.FC = () => {
   });
 
   const { data: accuracyData, isLoading: accuracyLoading } = useQuery({
-    queryKey: ['/api/accuracy/BTC/USDT'],
+    queryKey: ['/api/accuracy', accuracySymbol],
     refetchInterval: 420000, // Update every 7 minutes - aggressive API optimization
   });
 

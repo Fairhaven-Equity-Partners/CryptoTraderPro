@@ -16,15 +16,19 @@ interface RiskMetrics {
   confidenceInterval: [number, number];
 }
 
-const RiskAssessmentDashboard: React.FC = () => {
+interface RiskAssessmentDashboardProps {
+  symbol?: string;
+}
+
+const RiskAssessmentDashboard: React.FC<RiskAssessmentDashboardProps> = ({ symbol = 'BTC/USDT' }) => {
   const { data: riskData, isLoading: riskLoading } = useQuery({
-    queryKey: ['/api/monte-carlo-risk'],
+    queryKey: ['/api/monte-carlo-risk', symbol],
     refetchInterval: 60000, // Update every minute for secondary priority
     queryFn: async () => {
       const response = await fetch('/api/monte-carlo-risk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbol: 'BTC/USDT', timeframe: '1d' })
+        body: JSON.stringify({ symbol, timeframe: '1d' })
       });
       if (!response.ok) throw new Error('Risk data unavailable');
       return response.json();
