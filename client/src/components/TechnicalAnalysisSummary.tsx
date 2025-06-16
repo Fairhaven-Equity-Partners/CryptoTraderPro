@@ -241,19 +241,6 @@ const TechnicalAnalysisSummary: React.FC = () => {
 
             <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
               <div className="flex items-center gap-2">
-                <Activity className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-medium">Stochastic</span>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-semibold">
-                  {stochK.toFixed(1)}
-                </div>
-                <div className={`text-xs ${stochSignal.color}`}>{stochSignal.signal}</div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-              <div className="flex items-center gap-2">
                 <macdSignal.icon className={`h-4 w-4 ${macdSignal.color}`} />
                 <span className="text-sm font-medium">MACD</span>
               </div>
@@ -279,29 +266,60 @@ const TechnicalAnalysisSummary: React.FC = () => {
             </div>
           </div>
 
-          {/* Patterns & Signals */}
+          {/* Key Patterns - Fibonacci 50% highlighted */}
           <div className="space-y-3">
-            <h4 className="font-medium text-sm text-muted-foreground">
-              Patterns Detected ({patterns.length})
-            </h4>
+            <h4 className="font-medium text-sm text-muted-foreground">Key Patterns</h4>
             
-            {patterns.length === 0 ? (
-              <div className="text-center py-4 text-muted-foreground text-sm">
-                No patterns detected
-              </div>
-            ) : (
-              <div className="space-y-2 max-h-32 overflow-y-auto">
-                {patterns.slice(0, 3).map((pattern, index) => (
-                  <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-background border">
-                    <div>
-                      <div className="text-sm font-medium">{pattern.type}</div>
-                      <div className="text-xs text-muted-foreground">{pattern.timeframe}</div>
+            {(() => {
+              const fibPattern = patterns.find(p => p.type === 'fibonacci_50');
+              if (fibPattern) {
+                return (
+                  <>
+                    {/* Fibonacci 50% Mini Box */}
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+                      <div className="flex items-center gap-2">
+                        <BarChart3 className="h-4 w-4 text-amber-600" />
+                        <span className="text-sm font-medium">Fibonacci 50%</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-semibold">{Math.round(fibPattern.confidence * 100)}%</div>
+                        <div className="text-xs text-amber-600">Resistance Zone</div>
+                      </div>
                     </div>
-                    <Badge 
-                      variant={pattern.strength >= 70 ? 'default' : 'secondary'}
-                      className="text-xs"
-                    >
-                      {pattern.strength}%
+
+                    {/* Stochastic directly under Fibonacci 50% */}
+                    <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+                      <div className="flex items-center gap-2">
+                        <Activity className="h-4 w-4 text-purple-600" />
+                        <span className="text-sm font-medium">Stochastic</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-semibold">
+                          {stochK.toFixed(1)}
+                        </div>
+                        <div className={`text-xs ${stochSignal.color}`}>{stochSignal.signal}</div>
+                      </div>
+                    </div>
+                  </>
+                );
+              } else {
+                return (
+                  <div className="text-center py-4 text-muted-foreground text-sm">
+                    No key patterns detected
+                  </div>
+                );
+              }
+            })()}
+
+            {/* Other patterns */}
+            {patterns.filter(p => p.type !== 'fibonacci_50').length > 0 && (
+              <div className="space-y-2 max-h-24 overflow-y-auto">
+                <div className="text-xs text-muted-foreground">Other Patterns</div>
+                {patterns.filter(p => p.type !== 'fibonacci_50').slice(0, 2).map((pattern, index) => (
+                  <div key={index} className="flex items-center justify-between p-1.5 rounded-lg bg-background border text-xs">
+                    <span className="font-medium">{pattern.type}</span>
+                    <Badge variant="secondary" className="text-xs">
+                      {Math.round(pattern.confidence * 100)}%
                     </Badge>
                   </div>
                 ))}
