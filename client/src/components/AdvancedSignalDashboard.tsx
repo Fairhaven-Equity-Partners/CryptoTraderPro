@@ -2136,35 +2136,35 @@ export default function AdvancedSignalDashboard({
                     </div>
 
                     {/* Pattern Analysis for this timeframe */}
-                    {patterns && patterns.length > 0 && (
+                    {formattedPatterns && formattedPatterns.length > 0 && (
                       <Card className="bg-gray-800/30 border-gray-700">
                         <CardHeader className="pb-2">
                           <CardTitle className="text-sm text-white">Pattern Analysis</CardTitle>
                         </CardHeader>
                         <CardContent className="pb-2">
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                            {patterns.slice(0, 4).map((pattern, idx) => (
+                            {formattedPatterns.slice(0, 4).map((pattern, idx) => (
                               <div key={idx} className="p-2 bg-gray-700/50 rounded-lg">
                                 <div className="flex justify-between items-center mb-1">
                                   <span className="text-xs font-semibold text-white capitalize">
-                                    {pattern.name?.replace('_', ' ') || pattern.type.replace('_', ' ')}
+                                    {pattern.type.replace('_', ' ')}
                                   </span>
                                   <Badge 
                                     variant="outline" 
                                     className={`text-xs ${
-                                      (pattern.reliability || pattern.confidence || 0) > 0.7 ? 'text-green-400 border-green-500' :
-                                      (pattern.reliability || pattern.confidence || 0) > 0.5 ? 'text-yellow-400 border-yellow-500' :
+                                      pattern.confidence > 0.7 ? 'text-green-400 border-green-500' :
+                                      pattern.confidence > 0.5 ? 'text-yellow-400 border-yellow-500' :
                                       'text-red-400 border-red-500'
                                     }`}
                                   >
-                                    {Math.round((pattern.reliability || pattern.confidence || 0) * 100)}%
+                                    {Math.round(pattern.confidence * 100)}%
                                   </Badge>
                                 </div>
                                 <div className="text-xs text-gray-300">
-                                  {pattern.direction === 'bullish' && <TrendingUp className="inline w-3 h-3 text-green-400 mr-1" />}
-                                  {pattern.direction === 'bearish' && <TrendingDown className="inline w-3 h-3 text-red-400 mr-1" />}
-                                  {!pattern.direction && <Minus className="inline w-3 h-3 text-gray-400 mr-1" />}
-                                  {pattern.description || `${pattern.direction || 'Neutral'} pattern detected`}
+                                  {pattern.signal === 'bullish_breakout' && <TrendingUp className="inline w-3 h-3 text-green-400 mr-1" />}
+                                  {pattern.signal === 'bearish_breakdown' && <TrendingDown className="inline w-3 h-3 text-red-400 mr-1" />}
+                                  {pattern.signal === 'pullback_potential' && <Minus className="inline w-3 h-3 text-gray-400 mr-1" />}
+                                  {pattern.description}
                                 </div>
                               </div>
                             ))}
