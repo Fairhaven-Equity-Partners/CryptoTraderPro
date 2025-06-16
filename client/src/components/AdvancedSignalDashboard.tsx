@@ -1954,6 +1954,20 @@ export default function AdvancedSignalDashboard({
     }
   }
 
+  // Get appropriate CSS classes for signal card styling based on direction
+  function getCardStyle(signal: any): string {
+    if (!signal) return 'border-gray-600 bg-gray-800/30';
+    
+    switch (signal.direction) {
+      case 'LONG':
+        return 'border-green-500 bg-green-900/20';
+      case 'SHORT':
+        return 'border-red-500 bg-red-900/20';
+      default:
+        return 'border-gray-500 bg-gray-800/30';
+    }
+  }
+
   // Render the component
   return (
     <div className="space-y-4">
