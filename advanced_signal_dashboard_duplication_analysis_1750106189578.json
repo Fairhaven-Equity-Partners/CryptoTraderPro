@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-06-16T20:36:29.577Z",
+  "componentAnalyzed": "./client/src/components/AdvancedSignalDashboard.tsx",
+  "duplicateSectionsFound": 3,
+  "duplicateSections": [
+    {
+      "lineNumber": 1987,
+      "content": "Market Analysis",
+      "context": "      \n      {/* Market Analysis - Timeframe-specific signals and trading opportunities */}\n      <Card className=\"border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg\">\n        <CardHeader className=\"pb-2\">\n          <CardTitle className=\"text-lg font-bold text-white flex items-center\">\n            Market Analysis\n            {isCalculating && (\n              <Badge variant=\"outline\" className=\"ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800\">\n                Calculating...\n              </Badge>\n            )}\n          </CardTitle>\n          <CardDescription className=\"text-gray-100\">\n            Timeframe-specific signals and trading opportunities\n          </CardDescription>\n        </CardHeader>\n        \n        <CardContent className=\"pb-2\">\n          <Tabs \n            defaultValue={selectedTimeframe} \n            onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}\n            className=\"w-full\"\n          >\n            <TabsList className=\"w-full grid grid-cols-7\">\n              {timeframes.map(tf => (",
+      "type": "TOP_MARKET_ANALYSIS_TIMEFRAME_SIGNALS"
+    },
+    {
+      "lineNumber": 2187,
+      "content": "📊 Market Analysis & Live Accuracy",
+      "context": "\n      {/* Combined Market Analysis & Live Accuracy Panel - MOVED TO BOTTOM */}\n      <Card className=\"border-2 border-blue-500/50 bg-gradient-to-br from-slate-800/90 to-slate-900/95 shadow-xl mb-4\">\n        <CardHeader className=\"pb-2 bg-gradient-to-r from-blue-600/20 to-indigo-600/20 rounded-t-lg\">\n          <CardTitle className=\"text-sm font-bold text-white flex items-center gap-2\">\n            📊 Market Analysis & Live Accuracy\n            <Badge className=\"bg-blue-500 text-white font-semibold px-1 py-0.5 text-xs\">\n              ENHANCED\n            </Badge>\n          </CardTitle>\n          <CardDescription className=\"text-slate-200 text-xs\">\n            Combined real-time analysis and accuracy tracking for {selectedTimeframe}\n          </CardDescription>\n        </CardHeader>\n        <CardContent className=\"pb-2\">\n          <div className=\"grid grid-cols-1 md:grid-cols-3 gap-2 mb-3\">\n            {/* Live Accuracy Metrics */}\n            <div className=\"p-2 bg-emerald-600/20 rounded-lg text-center\">\n              <div className=\"text-xs font-bold text-green-400\">\n                {realAccuracy.total > 0 ? `${realAccuracy.correct}/${realAccuracy.total}` : \n                 realAccuracy.activeTrades > 0 ? `${realAccuracy.activeTrades} Active` : 'No Data'}\n              </div>\n              <div className=\"text-emerald-200 text-xs\">\n                {realAccuracy.total > 0 ? `${realAccuracy.percentage}% Accuracy` : \n                 realAccuracy.activeTrades > 0 ? 'Predictions' : 'Accuracy'}",
+      "type": "COMBINED_MARKET_ANALYSIS_LIVE_ACCURACY"
+    },
+    {
+      "lineNumber": 2625,
+      "content": "Market Analysis",
+      "context": "      </Card>\n\n      <Card className=\"border border-gray-700 bg-gradient-to-b from-gray-900/80 to-gray-950/90 shadow-lg\">\n        <CardHeader className=\"pb-2\">\n          <CardTitle className=\"text-lg font-bold text-white flex items-center\">\n            Market Analysis\n            {isCalculating && (\n              <Badge variant=\"outline\" className=\"ml-2 text-xs bg-blue-900/20 text-blue-400 border-blue-800\">\n                Calculating...\n              </Badge>\n            )}\n          </CardTitle>\n          <CardDescription className=\"text-gray-100\">\n            Timeframe-specific signals and trading opportunities\n          </CardDescription>\n        </CardHeader>\n        \n        <CardContent className=\"pb-2\">\n          <Tabs \n            defaultValue={selectedTimeframe} \n            onValueChange={(value) => handleTimeframeSelect(value as TimeFrame)}\n            className=\"w-full\"\n          >\n            <TabsList className=\"w-full grid grid-cols-7\">\n              {timeframes.map(tf => (",
+      "type": "BOTTOM_MARKET_ANALYSIS_TIMEFRAME_SIGNALS"
+    }
+  ],
+  "recommendedAction": {
+    "action": "REMOVE_TOP_SECTION",
+    "targetLineNumber": 1987,
+    "preserveLineNumber": 2625,
+    "reasoning": "User-specified removal of TOP section per directive"
+  },
+  "impactAssessment": {
+    "functionalImpact": "LOW",
+    "uiImpact": "MEDIUM",
+    "codeQuality": "HIGH",
+    "riskLevel": "LOW"
+  },
+  "validationCriteria": [
+    "Remove TOP Market Analysis section (around line 1983)",
+    "Preserve BOTTOM Market Analysis section (around line 2625)",
+    "Verify no functional dependencies on TOP section",
+    "Test UI layout after removal",
+    "Validate timeframe functionality remains intact"
+  ],
+  "summary": {
+    "issueIdentified": "Duplicate \"Market Analysis\" sections with timeframe-specific signals",
+    "removalTarget": "TOP section (around line 1983)",
+    "preserveTarget": "BOTTOM section (around line 2625)",
+    "expectedBenefit": "Cleaner UI, reduced code duplication, improved maintainability"
+  }
+}
