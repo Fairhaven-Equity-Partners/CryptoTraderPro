@@ -1058,7 +1058,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Use UltraPrecisionTechnicalAnalysis for authentic calculations
       const technicalAnalysis = new UltraPrecisionTechnicalAnalysis();
-      const indicators = await technicalAnalysis.calculateComprehensiveIndicators(
+      const indicators = await technicalAnalysis.calculateIndicators(
         symbol, 
         requestedTimeframe,
         asset.lastPrice
