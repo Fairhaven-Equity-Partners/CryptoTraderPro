@@ -1,0 +1,386 @@
+{
+  "timestamp": "2025-06-16T21:18:26.445Z",
+  "systemHealthScore": 95.56,
+  "validationResults": {
+    "crossPairSwitching": {
+      "btcResults": {
+        "1m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "5m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "15m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "30m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1h": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "4h": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1d": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "3d": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1w": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1M": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        }
+      },
+      "xrpResults": {
+        "1m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "5m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "15m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "30m": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1h": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "4h": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1d": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "3d": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1w": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        },
+        "1M": {
+          "technical": true,
+          "signals": true,
+          "dataComplete": true
+        }
+      },
+      "btcSuccessRate": 100,
+      "xrpSuccessRate": 100,
+      "overallSuccessRate": 100
+    },
+    "mathematicalCalculations": {
+      "BTC/USDT": {
+        "validations": {
+          "hasRequiredFields": true,
+          "confidenceInRange": true,
+          "pricesPositive": true,
+          "riskRewardValid": true,
+          "timestampValid": true
+        },
+        "calculationAccuracy": 100,
+        "sampleSignal": {
+          "direction": "SHORT",
+          "confidence": 95,
+          "entryPrice": 108601.32337577378,
+          "stopLoss": 112741.06,
+          "takeProfit": 100321.85
+        },
+        "missingFields": []
+      },
+      "XRP/USDT": {
+        "validations": {
+          "hasRequiredFields": true,
+          "confidenceInRange": true,
+          "pricesPositive": true,
+          "riskRewardValid": true,
+          "timestampValid": true
+        },
+        "calculationAccuracy": 100,
+        "sampleSignal": {
+          "direction": "LONG",
+          "confidence": 95,
+          "entryPrice": 2.315979106198309,
+          "stopLoss": 2.22,
+          "takeProfit": 2.51
+        },
+        "missingFields": []
+      },
+      "ETH/USDT": {
+        "validations": {
+          "hasRequiredFields": true,
+          "confidenceInRange": true,
+          "pricesPositive": true,
+          "riskRewardValid": true,
+          "timestampValid": true
+        },
+        "calculationAccuracy": 100,
+        "sampleSignal": {
+          "direction": "SHORT",
+          "confidence": 95,
+          "entryPrice": 2655.5559982149243,
+          "stopLoss": 2762.45,
+          "takeProfit": 2441.76
+        },
+        "missingFields": []
+      }
+    },
+    "uiComponentDataFlows": {
+      "Technical Analysis Summary": {
+        "completeness": 100,
+        "fieldValidation": {
+          "data": true,
+          "indicators": true,
+          "currentPrice": true,
+          "confidence": true
+        },
+        "dataReceived": true,
+        "sampleData": {
+          "success": true,
+          "status": "success",
+          "symbol": "BTC/USDT",
+          "timeframe": "4h",
+          "currentPrice": 108588.99875049145,
+          "timestamp": "2025-06-16T21:18:26.426Z",
+          "dataSource": "CoinMarketCap_API",
+          "data": {
+            "indicators": {
+              "rsi": {
+                "value": 46.82948974,
+                "signal": "NEUTRAL"
+              },
+              "macd": {
+                "value": -137.90095587,
+                "signal": -137.90095587,
+                "histogram": 0,
+                "trend": "BEARISH"
+              },
+              "bollingerBands": {
+                "upper": 109782.72151697,
+                "middle": 108466.41562431,
+                "lower": 107150.10973164,
+                "position": "WITHIN_BANDS"
+              },
+              "atr": {
+                "value": 786.52270337
+              },
+              "stochastic": {
+                "k": 18.92718008,
+                "d": 18.92718008,
+                "signal": "OVERSOLD"
+              },
+              "ultraPrecisionMetrics": {
+                "systemRating": 100,
+                "mathematicalPrecision": "BigNumber.js 50 decimal precision",
+                "calculationEngine": "UltraPrecisionTechnicalAnalysis",
+                "confidence": 65,
+                "direction": "LONG"
+              }
+            },
+            "currentPrice": 108588.99875049145,
+            "confidence": 65,
+            "direction": "LONG",
+            "patterns": [],
+            "patternAnalysis": {
+              "totalPatterns": 0,
+              "summary": {
+                "totalPatterns": 0,
+                "bullishSignals": 0,
+                "bearishSignals": 0,
+                "neutralSignals": 0,
+                "averageConfidence": 0,
+                "strongPatterns": 0
+              },
+              "insights": {}
+            },
+            "summary": {
+              "overall": "LONG",
+              "confidence": 65,
+              "recommendation": "BUY"
+            }
+          },
+          "marketData": {
+            "volume24h": 10000000000,
+            "change24h": 3.79690796,
+            "volatility": 3.79690796
+          },
+          "ultraPrecisionMetrics": {
+            "systemRating": 100,
+            "confidence": 65,
+            "direction": "LONG",
+            "mathematicalPrecision": "50 decimal places",
+            "calculationEngine": "BigNumber.js Ultra-Precision"
+          }
+        }
+      },
+      "Risk Assessment Dashboard": {
+        "completeness": 33.33333333333333,
+        "fieldValidation": {
+          "riskLevel": true,
+          "expectedReturn": false,
+          "volatility": false
+        },
+        "dataReceived": true,
+        "sampleData": {
+          "success": true,
+          "symbol": "BTC/USDT",
+          "timeframe": "4h",
+          "riskLevel": "MODERATE",
+          "riskScore": 50,
+          "recommendations": [
+            "No active signals available for risk assessment"
+          ],
+          "timestamp": "2025-06-16T21:18:26.428Z"
+        }
+      },
+      "Advanced Signal Dashboard": {
+        "completeness": 100,
+        "fieldValidation": {
+          "entryPrice": true,
+          "stopLoss": true,
+          "takeProfit": true,
+          "confluence": true
+        },
+        "dataReceived": true,
+        "sampleData": {
+          "symbol": "BTC/USDT",
+          "timeframe": "1w",
+          "direction": "SHORT",
+          "confidence": 95,
+          "strength": 0.95,
+          "price": 108601.32337577378,
+          "entryPrice": 108601.32337577378,
+          "stopLoss": 112741.06,
+          "takeProfit": 100321.85,
+          "timestamp": 1750108706262,
+          "indicators": {
+            "change24h": 3.72819762,
+            "volume24h": 48700428853.0785,
+            "volatility": 3.72819762,
+            "rsi": 33.92994260092976,
+            "macd": {
+              "macdLine": -503.7144824122952,
+              "signalLine": -193.12790060094028,
+              "histogram": -310.5865818113549
+            },
+            "bollingerBands": {
+              "upper": 105265.4019183643,
+              "middle": 103325.90751023241,
+              "lower": 101386.41310210053
+            },
+            "atr": 1034.9336056366571,
+            "bbPosition": 185.99976992515883,
+            "reasoning": [
+              "Strong bearish confluence"
+            ]
+          },
+          "confluenceScore": 7.901570320557856,
+          "riskReward": 2.0000000000000036,
+          "volatilityAdjustment": 3.72819762,
+          "confluence": 30,
+          "confluenceAnalysis": {
+            "score": 30,
+            "factors": [
+              {
+                "name": "Signal Confidence",
+                "weight": 10,
+                "signal": "SHORT"
+              },
+              {
+                "name": "Technical Strength",
+                "weight": 10,
+                "signal": "SHORT"
+              },
+              {
+                "name": "Market Setup",
+                "weight": 9,
+                "signal": "SHORT"
+              },
+              {
+                "name": "Base Analysis",
+                "weight": 1,
+                "signal": "TECHNICAL"
+              }
+            ],
+            "strength": "WEAK",
+            "timeframe": "1w",
+            "timestamp": 1750108706429,
+            "dataSource": "MainSignalsRoute_Critical_Fix"
+          }
+        }
+      }
+    },
+    "systemPerformance": {
+      "averageResponseTime": 5,
+      "successRate": 100,
+      "performanceTests": [
+        {
+          "endpoint": "/api/technical-analysis/BTC%2FUSDT?timeframe=1h",
+          "responseTime": 12,
+          "success": true
+        },
+        {
+          "endpoint": "/api/signals/XRP%2FUSDT",
+          "responseTime": 1,
+          "success": true
+        },
+        {
+          "endpoint": "/api/risk-assessment?symbol=ETH%2FUSDT&timeframe=1d",
+          "responseTime": 2,
+          "success": true
+        }
+      ],
+      "performanceRating": "EXCELLENT"
+    }
+  },
+  "summary": {
+    "crossPairSwitching": 100,
+    "mathematicalAccuracy": 100,
+    "uiComponentReliability": 78,
+    "systemPerformance": 100
+  },
+  "recommendation": "System is performing excellently. Cross-pair switching and mathematical calculations are fully operational.",
+  "status": "EXCELLENT"
+}
