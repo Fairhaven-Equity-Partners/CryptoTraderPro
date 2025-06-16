@@ -7,6 +7,7 @@ import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
 import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
 import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
+import ErrorBoundary from '../components/ErrorBoundary';
 import { useAssetPrice } from '../hooks/useMarketData';
 import { TimeFrame } from '../types';
 const Analysis: React.FC = () => {
@@ -66,18 +67,24 @@ const Analysis: React.FC = () => {
         
         {/* SECONDARY PRIORITY SECTION */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <TechnicalAnalysisSummary />
-          <RiskAssessmentDashboard />
+          <ErrorBoundary>
+            <TechnicalAnalysisSummary />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <RiskAssessmentDashboard />
+          </ErrorBoundary>
         </div>
         {
         }
         {/* TERTIARY PRIORITY SECTION - Detailed Analysis */}
         <div className="space-y-6">
           {/* Advanced Signal Dashboard - Enhanced Version */}
-          <AdvancedSignalDashboard
-            symbol={currentAsset}
-            onTimeframeSelect={handleChangeTimeframe}
-          />
+          <ErrorBoundary>
+            <AdvancedSignalDashboard
+              symbol={currentAsset}
+              onTimeframeSelect={handleChangeTimeframe}
+            />
+          </ErrorBoundary>
         </div>
       </main>
     </div>
