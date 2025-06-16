@@ -18,7 +18,7 @@ const Analysis: React.FC = () => {
   const [assetChangeCounter, setAssetChangeCounter] = useState(0);
   const [shouldRunAnalysis, setShouldRunAnalysis] = useState(false);
   const [detectedPatterns, setDetectedPatterns] = useState([]);
-  const handlePatternChange = (patterns) => {
+  const handlePatternChange = (patterns: any[]) => {
     setDetectedPatterns(patterns);
     // Integrate pattern strength into signal confidence scoring
     if (patterns.length > 0) {
