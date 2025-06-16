@@ -2,12 +2,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import StatusBar from '../components/StatusBar';
 import Header from '../components/Header';
+import PriceOverview from '../components/PriceOverview';
 import AdvancedSignalDashboard from '../components/AdvancedSignalDashboard';
-
+import MacroIndicatorsPanel from '../components/MacroIndicatorsPanel';
+import LiveMarketOverview from '../components/LiveMarketOverview';
 import TechnicalAnalysisSummary from '../components/TechnicalAnalysisSummary';
 import RiskAssessmentDashboard from '../components/RiskAssessmentDashboard';
 import { useAssetPrice } from '../hooks/useMarketData';
-type TimeFrame = '1m' | '5m' | '15m' | '30m' | '1h' | '4h' | '1d' | '3d' | '1w' | '1M';
+import { TimeFrame } from '../types';
 const Analysis: React.FC = () => {
   const [currentAsset, setCurrentAsset] = useState('BTC/USDT');
   const [currentTimeframe, setCurrentTimeframe] = useState<TimeFrame>('4h');
@@ -16,7 +18,7 @@ const Analysis: React.FC = () => {
   const [assetChangeCounter, setAssetChangeCounter] = useState(0);
   const [shouldRunAnalysis, setShouldRunAnalysis] = useState(false);
   const [detectedPatterns, setDetectedPatterns] = useState([]);
-  const handlePatternChange = (patterns: any[]) => {
+  const handlePatternChange = (patterns) => {
     setDetectedPatterns(patterns);
     // Integrate pattern strength into signal confidence scoring
     if (patterns.length > 0) {
@@ -59,19 +61,25 @@ const Analysis: React.FC = () => {
         currentAsset={currentAsset}
         onChangeAsset={handleChangeAsset}
       />
-            <main className="flex-1 overflow-y-auto pb-16 px-4">
-        {/* MARKET ANALYSIS SECTION - TOP PRIORITY */}
-        <div className="mb-6">
+      <main className="flex-1 overflow-y-auto pb-16 px-4">
+        {/* TOP PRIORITY SECTION - Above the fold */}
+        <div className="space-y-4 mb-6">
+          <LiveMarketOverview />
+        </div>
+        {/* SECONDARY PRIORITY SECTION */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <TechnicalAnalysisSummary />
+          <RiskAssessmentDashboard />
+        </div>
+        {
+        }
+        {/* TERTIARY PRIORITY SECTION - Detailed Analysis */}
+        <div className="space-y-6">
+          {/* Advanced Signal Dashboard - Enhanced Version */}
           <AdvancedSignalDashboard
             symbol={currentAsset}
             onTimeframeSelect={handleChangeTimeframe}
           />
-        </div>
-        
-        {/* TECHNICAL ANALYSIS SECTION - SECOND PRIORITY */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <TechnicalAnalysisSummary />
-          <RiskAssessmentDashboard />
         </div>
       </main>
     </div>
