@@ -1,0 +1,58 @@
+{
+  "timestamp": "2025-06-16T02:03:51.298Z",
+  "successRate": 80,
+  "totalIssues": 0,
+  "findings": [
+    {
+      "step": "File Structure Verification",
+      "status": "PASSED",
+      "details": "6/6 files present"
+    },
+    {
+      "step": "Analysis File Structure",
+      "status": "PASSED",
+      "details": {
+        "componentUsage": {
+          "LiveMarketOverview": true,
+          "TechnicalAnalysisSummary": true,
+          "RiskAssessmentDashboard": true,
+          "CriticalSignalAnalysis": true,
+          "AdvancedSignalDashboard": true
+        },
+        "componentLines": {
+          "LiveMarketOverview": 67,
+          "TechnicalAnalysisSummary": 71,
+          "RiskAssessmentDashboard": 72,
+          "CriticalSignalAnalysis": 76,
+          "AdvancedSignalDashboard": 81
+        }
+      }
+    },
+    {
+      "step": "Component Imports",
+      "status": "PASSED",
+      "details": {
+        "LiveMarketOverview": true,
+        "TechnicalAnalysisSummary": true,
+        "RiskAssessmentDashboard": true,
+        "CriticalSignalAnalysis": true,
+        "AdvancedSignalDashboard": true
+      }
+    },
+    {
+      "step": "CriticalSignalAnalysis Component Verification",
+      "status": "PASSED",
+      "details": {
+        "hasDefaultExport": true,
+        "hasComponentDefinition": true
+      }
+    },
+    {
+      "step": "Component Visibility Test",
+      "status": "FAILED",
+      "details": "request to http://localhost:5173/ failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    }
+  ],
+  "issues": [],
+  "overallStatus": "RESOLVED"
+}
