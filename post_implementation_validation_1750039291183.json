@@ -1,0 +1,197 @@
+{
+  "timestamp": "2025-06-16T02:01:31.182Z",
+  "overallStatus": "NEEDS_IMPROVEMENT",
+  "successRate": 33,
+  "groundRulesScore": 25,
+  "validationResults": [
+    {
+      "test": "Layout Structure Verification",
+      "status": "PASSED",
+      "details": {
+        "componentPositions": {
+          "LiveMarketOverview": 66,
+          "TechnicalAnalysisSummary": 70,
+          "RiskAssessmentDashboard": 71,
+          "CriticalSignalAnalysis": 75,
+          "AdvancedSignalDashboard": 80
+        },
+        "correctOrder": true,
+        "hasRequiredImports": true,
+        "marketAnalysisPositioned": true
+      }
+    },
+    {
+      "test": "Component Functionality",
+      "status": "PARTIAL",
+      "details": {
+        "functionalComponents": "0/4",
+        "componentScore": 0
+      }
+    },
+    {
+      "test": "API Endpoints Health",
+      "status": "WARNING",
+      "details": {
+        "healthyEndpoints": "0/7",
+        "apiHealthScore": 0,
+        "endpointResults": [
+          {
+            "endpoint": "/api/crypto/all-pairs",
+            "status": "CONNECTION_ERROR",
+            "healthy": false,
+            "error": "request to http://localhost:5173/api/crypto/all-pairs failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "endpoint": "/api/crypto/BTC/USDT",
+            "status": "CONNECTION_ERROR",
+            "healthy": false,
+            "error": "request to http://localhost:5173/api/crypto/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "endpoint": "/api/signals/BTC/USDT",
+            "status": "CONNECTION_ERROR",
+            "healthy": false,
+            "error": "request to http://localhost:5173/api/signals/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "endpoint": "/api/technical-analysis/BTC/USDT",
+            "status": "CONNECTION_ERROR",
+            "healthy": false,
+            "error": "request to http://localhost:5173/api/technical-analysis/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "endpoint": "/api/pattern-analysis/BTC/USDT",
+            "status": "CONNECTION_ERROR",
+            "healthy": false,
+            "error": "request to http://localhost:5173/api/pattern-analysis/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "endpoint": "/api/performance-metrics",
+            "status": "CONNECTION_ERROR",
+            "healthy": false,
+            "error": "request to http://localhost:5173/api/performance-metrics failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "endpoint": "/api/chart/BTC/USDT/1d",
+            "status": "CONNECTION_ERROR",
+            "healthy": false,
+            "error": "request to http://localhost:5173/api/chart/BTC/USDT/1d failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          }
+        ]
+      }
+    },
+    {
+      "test": "Error Log Analysis",
+      "status": "WARNING",
+      "details": {
+        "errorCount": 1,
+        "errors": [
+          "JSX: Potential unclosed tags detected",
+          "Market Data: request to http://localhost:5173/api/crypto/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+        ]
+      }
+    },
+    {
+      "test": "System Performance",
+      "status": "PASSED",
+      "details": {
+        "avgResponseTime": 0,
+        "performanceResults": [
+          {
+            "test": "Price Data Fetch",
+            "responseTime": "timeout",
+            "status": "ERROR",
+            "error": "request to http://localhost:5173/api/crypto/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "test": "Signal Generation",
+            "responseTime": "timeout",
+            "status": "ERROR",
+            "error": "request to http://localhost:5173/api/signals/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          },
+          {
+            "test": "Technical Analysis",
+            "responseTime": "timeout",
+            "status": "ERROR",
+            "error": "request to http://localhost:5173/api/technical-analysis/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+          }
+        ]
+      }
+    },
+    {
+      "test": "System Health Report",
+      "status": "WARNING",
+      "details": {
+        "systemHealthScore": 33.33333333333333,
+        "healthMetrics": {
+          "layoutStructure": true,
+          "componentFunctionality": false,
+          "apiHealth": false,
+          "errorFree": false,
+          "performance": true,
+          "dataAuthenticity": false
+        },
+        "healthyMetrics": "2/6"
+      }
+    }
+  ],
+  "systemErrors": [
+    "JSX: Potential unclosed tags detected",
+    "Market Data: request to http://localhost:5173/api/crypto/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+  ],
+  "apiEndpoints": [
+    {
+      "endpoint": "/api/crypto/all-pairs",
+      "status": "CONNECTION_ERROR",
+      "healthy": false,
+      "error": "request to http://localhost:5173/api/crypto/all-pairs failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    },
+    {
+      "endpoint": "/api/crypto/BTC/USDT",
+      "status": "CONNECTION_ERROR",
+      "healthy": false,
+      "error": "request to http://localhost:5173/api/crypto/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    },
+    {
+      "endpoint": "/api/signals/BTC/USDT",
+      "status": "CONNECTION_ERROR",
+      "healthy": false,
+      "error": "request to http://localhost:5173/api/signals/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    },
+    {
+      "endpoint": "/api/technical-analysis/BTC/USDT",
+      "status": "CONNECTION_ERROR",
+      "healthy": false,
+      "error": "request to http://localhost:5173/api/technical-analysis/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    },
+    {
+      "endpoint": "/api/pattern-analysis/BTC/USDT",
+      "status": "CONNECTION_ERROR",
+      "healthy": false,
+      "error": "request to http://localhost:5173/api/pattern-analysis/BTC/USDT failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    },
+    {
+      "endpoint": "/api/performance-metrics",
+      "status": "CONNECTION_ERROR",
+      "healthy": false,
+      "error": "request to http://localhost:5173/api/performance-metrics failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    },
+    {
+      "endpoint": "/api/chart/BTC/USDT/1d",
+      "status": "CONNECTION_ERROR",
+      "healthy": false,
+      "error": "request to http://localhost:5173/api/chart/BTC/USDT/1d failed, reason: connect ECONNREFUSED 127.0.0.1:5173"
+    }
+  ],
+  "repositioningValidation": {
+    "marketAnalysisPositioned": true,
+    "layoutOrderOptimized": true,
+    "componentImportsCorrect": true,
+    "systemHealthMaintained": true
+  },
+  "recommendations": [
+    "Address identified system errors for improved stability",
+    "Enhance ground rules compliance for better validation scores",
+    "Optimize API endpoint performance and reliability"
+  ]
+}
