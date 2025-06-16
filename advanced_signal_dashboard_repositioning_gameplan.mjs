@@ -1,377 +1,347 @@
-#!/usr/bin/env node
-
 /**
- * ADVANCED SIGNAL DASHBOARD REPOSITIONING - EXTERNAL SHELL TESTING
- * Move timeframe-specific signals to top, shift market analysis down
+ * ADVANCED SIGNAL DASHBOARD REPOSITIONING GAMEPLAN - EXTERNAL SHELL VALIDATION
+ * Complete strategy for removing TOP duplicate and moving BOTTOM section up
  * 
- * GROUND RULES COMPLIANCE:
- * - External shell testing for all validations
- * - Before/after UI display verification
+ * Ground Rules Compliance:
+ * - External shell testing with 20+ cycles before ANY main codebase changes
  * - NO synthetic data, only authentic market calculations
- * - Complete component repositioning with validation
+ * - Real-time validation of all implementations
+ * - Zero tolerance for system crashes
+ * - Complete UI display testing before/after
  */
 
 import fs from 'fs';
-import fetch from 'node-fetch';
 
-class AdvancedSignalDashboardRepositioning {
+class AdvancedSignalDashboardRepositioningGameplan {
   constructor() {
-    this.baseUrl = 'http://localhost:5173';
-    this.backupData = {};
-    this.beforeState = {};
-    this.afterState = {};
-    
-    console.log('🎯 ADVANCED SIGNAL DASHBOARD REPOSITIONING');
-    console.log('📋 Moving timeframe signals to top, market analysis down');
-    console.log('⚡ External shell testing with before/after validation');
+    this.componentPath = './client/src/components/AdvancedSignalDashboard.tsx';
+    this.gameplan = {
+      phases: [],
+      validationCriteria: [],
+      beforeAfterTests: [],
+      riskAssessment: null
+    };
   }
 
-  async executeRepositioning() {
-    try {
-      console.log('\n=== STEP 1: CAPTURE BEFORE STATE ===');
-      await this.captureBeforeState();
-      
-      console.log('\n=== STEP 2: CREATE BACKUP ===');
-      await this.createBackup();
-      
-      console.log('\n=== STEP 3: ANALYZE CURRENT STRUCTURE ===');
-      await this.analyzeCurrentStructure();
-      
-      console.log('\n=== STEP 4: PERFORM REPOSITIONING ===');
-      await this.performRepositioning();
-      
-      console.log('\n=== STEP 5: CAPTURE AFTER STATE ===');
-      await this.captureAfterState();
-      
-      console.log('\n=== STEP 6: VALIDATE REPOSITIONING ===');
-      await this.validateRepositioning();
-      
-      return await this.generateRepositioningReport();
-      
-    } catch (error) {
-      console.error('❌ Repositioning failed:', error.message);
-      await this.executeRollback();
-    }
-  }
-
-  async captureBeforeState() {
-    console.log('📸 [STEP-1] Capturing before state');
+  async createComprehensiveGameplan() {
+    console.log('📋 [GAMEPLAN] Creating Advanced Signal Dashboard repositioning strategy');
     
     try {
-      // Test application load
-      const response = await fetch(`${this.baseUrl}/`, { timeout: 5000 });
-      this.beforeState.applicationStatus = response.ok ? 'OPERATIONAL' : 'FAILED';
-      console.log(`   → Application status: ${this.beforeState.applicationStatus}`);
+      await this.phase1_analyzeCurrentStructure();
+      await this.phase2_designRepositioningStrategy();
+      await this.phase3_createValidationFramework();
+      await this.phase4_establish20CycleTestPlan();
+      await this.phase5_defineGroundRulesCompliance();
       
-      // Test component structure
-      const componentPath = './client/src/components/AdvancedSignalDashboard.tsx';
-      const componentContent = fs.readFileSync(componentPath, 'utf8');
-      
-      // Find current order of main sections
-      const marketAnalysisIndex = componentContent.indexOf('Market Analysis');
-      const timeframeSignalsIndex = componentContent.indexOf('Timeframe-specific signals');
-      
-      this.beforeState.currentOrder = marketAnalysisIndex < timeframeSignalsIndex ? 
-        'MARKET_ANALYSIS_FIRST' : 'TIMEFRAME_SIGNALS_FIRST';
-      
-      console.log(`   → Current component order: ${this.beforeState.currentOrder}`);
-      
-      // Find the main card sections
-      const marketAnalysisCardMatch = componentContent.match(/<Card[^>]*>[\s\S]*?<CardTitle[^>]*>[\s\S]*?Market Analysis[\s\S]*?<\/Card>/);
-      const timeframeCardMatch = componentContent.match(/<Card[^>]*>[\s\S]*?<CardTitle[^>]*>[\s\S]*?Timeframe-specific signals[\s\S]*?<\/Card>/);
-      
-      this.beforeState.marketAnalysisFound = !!marketAnalysisCardMatch;
-      this.beforeState.timeframeSignalsFound = !!timeframeCardMatch;
-      
-      console.log(`   → Market Analysis card found: ${this.beforeState.marketAnalysisFound}`);
-      console.log(`   → Timeframe signals card found: ${this.beforeState.timeframeSignalsFound}`);
-      
-      // Test APIs
-      const apiTests = ['/api/signals', '/api/technical-analysis/BTC%2FUSDT'];
-      this.beforeState.apiStatus = {};
-      
-      for (const endpoint of apiTests) {
-        try {
-          const apiResponse = await fetch(`${this.baseUrl}${endpoint}`, { timeout: 3000 });
-          this.beforeState.apiStatus[endpoint] = apiResponse.ok ? 'OK' : 'FAILED';
-        } catch (error) {
-          this.beforeState.apiStatus[endpoint] = 'ERROR';
-        }
-      }
-      
-      console.log(`   → API status: ${JSON.stringify(this.beforeState.apiStatus)}`);
+      const gameplan = this.generateGameplanDocument();
+      console.log('\n📊 [GAMEPLAN-COMPLETE] Repositioning strategy ready for approval');
+      return gameplan;
       
     } catch (error) {
-      console.log(`   → Before state capture failed: ${error.message}`);
-      this.beforeState.captureStatus = 'FAILED';
+      console.error('❌ [GAMEPLAN-ERROR] Strategy creation failed:', error);
+      throw error;
     }
   }
 
-  async createBackup() {
-    console.log('💾 [STEP-2] Creating backup');
+  async phase1_analyzeCurrentStructure() {
+    console.log('\n🔍 [PHASE-1] Analyzing current Advanced Signal Dashboard structure');
     
-    const componentPath = './client/src/components/AdvancedSignalDashboard.tsx';
-    this.backupData.componentContent = fs.readFileSync(componentPath, 'utf8');
+    const content = fs.readFileSync(this.componentPath, 'utf8');
+    const lines = content.split('\n');
     
-    console.log(`   → Component backed up (${this.backupData.componentContent.length} chars)`);
+    // Find exact positions of target sections
+    const topSectionLine = this.findSectionLine(lines, 'TOP_MARKET_ANALYSIS_TIMEFRAME_SIGNALS');
+    const bottomSectionLine = this.findSectionLine(lines, 'BOTTOM_MARKET_ANALYSIS_TIMEFRAME_SIGNALS');
+    const componentStart = this.findComponentStartLine(lines);
     
-    // Write backup to file
-    const backupFilename = `AdvancedSignalDashboard_backup_${Date.now()}.tsx`;
-    fs.writeFileSync(backupFilename, this.backupData.componentContent);
-    console.log(`   → Backup saved to: ${backupFilename}`);
-  }
-
-  async analyzeCurrentStructure() {
-    console.log('🔍 [STEP-3] Analyzing current structure');
+    console.log('   📍 Current Structure Analysis:');
+    console.log(`     - Component starts at line: ${componentStart}`);
+    console.log(`     - TOP duplicate section at line: ${topSectionLine}`);
+    console.log(`     - BOTTOM section (to move) at line: ${bottomSectionLine}`);
+    console.log(`     - Distance between sections: ${bottomSectionLine - topSectionLine} lines`);
     
-    const componentPath = './client/src/components/AdvancedSignalDashboard.tsx';
-    const content = fs.readFileSync(componentPath, 'utf8');
-    
-    // Find the main container structure
-    const returnMatch = content.match(/return\s*\(\s*<div[^>]*>([\s\S]*?)<\/div>\s*\)/);
-    if (!returnMatch) {
-      throw new Error('Could not find main return structure');
-    }
-    
-    // Look for the two main Card components
-    const cards = [];
-    let searchContent = returnMatch[1];
-    let cardMatches = searchContent.match(/<Card[^>]*>[\s\S]*?<\/Card>/g);
-    
-    if (cardMatches) {
-      cardMatches.forEach((card, index) => {
-        if (card.includes('Market Analysis')) {
-          cards.push({ type: 'MARKET_ANALYSIS', index, content: card });
-        } else if (card.includes('Timeframe-specific signals')) {
-          cards.push({ type: 'TIMEFRAME_SIGNALS', index, content: card });
-        }
-      });
-    }
-    
-    console.log(`   → Found ${cards.length} main cards`);
-    cards.forEach(card => {
-      console.log(`     - ${card.type} at position ${card.index}`);
-    });
-    
-    this.beforeState.cardStructure = cards;
-  }
-
-  async performRepositioning() {
-    console.log('🔄 [STEP-4] Performing repositioning');
-    
-    const componentPath = './client/src/components/AdvancedSignalDashboard.tsx';
-    let content = fs.readFileSync(componentPath, 'utf8');
-    
-    // Find the two main Card sections that need to be swapped
-    // Market Analysis card (should go second)
-    const marketAnalysisCardRegex = /(<Card className="border border-gray-700 bg-gradient-to-b from-gray-900\/80 to-gray-950\/90 shadow-lg">\s*<CardHeader className="pb-2">\s*<CardTitle className="text-lg font-bold text-white flex items-center">\s*Market Analysis[\s\S]*?<\/Card>)/;
-    
-    // Find the timeframe signals card (should go first) - looking for the second Card
-    const timeframeSignalsCardRegex = /(<Card className="border border-gray-700 bg-gradient-to-b from-gray-900\/80 to-gray-950\/90 shadow-lg">\s*<CardHeader className="pb-2">\s*<CardTitle className="text-lg font-bold text-white flex items-center">\s*(?!Market Analysis)[\s\S]*?Timeframe-specific signals[\s\S]*?<\/Card>)/;
-    
-    const marketAnalysisMatch = content.match(marketAnalysisCardRegex);
-    const timeframeSignalsMatch = content.match(timeframeSignalsCardRegex);
-    
-    if (!marketAnalysisMatch || !timeframeSignalsMatch) {
-      console.log('   → Could not find both card sections, trying alternative approach');
-      
-      // Alternative approach: Find all Cards and identify by content
-      const allCardMatches = content.match(/<Card className="border border-gray-700 bg-gradient-to-b from-gray-900\/80 to-gray-950\/90 shadow-lg">[\s\S]*?<\/Card>/g);
-      
-      if (allCardMatches && allCardMatches.length >= 2) {
-        let marketCard = null;
-        let timeframeCard = null;
-        
-        allCardMatches.forEach(card => {
-          if (card.includes('Market Analysis') && card.includes('Timeframe-specific signals')) {
-            timeframeCard = card;
-          } else if (card.includes('Market Analysis')) {
-            marketCard = card;
-          }
-        });
-        
-        if (marketCard && timeframeCard) {
-          // Swap the cards
-          content = content.replace(marketCard, '___TIMEFRAME_PLACEHOLDER___');
-          content = content.replace(timeframeCard, marketCard);
-          content = content.replace('___TIMEFRAME_PLACEHOLDER___', timeframeCard);
-          
-          console.log('   → Cards repositioned using alternative method');
-        } else {
-          throw new Error('Could not identify both cards for repositioning');
-        }
-      } else {
-        throw new Error('Could not find sufficient card elements');
-      }
-    } else {
-      // Original method: swap the matched cards
-      const marketCard = marketAnalysisMatch[1];
-      const timeframeCard = timeframeSignalsMatch[1];
-      
-      // Replace market analysis card with placeholder
-      content = content.replace(marketCard, '___MARKET_PLACEHOLDER___');
-      // Replace timeframe card with market card
-      content = content.replace(timeframeCard, marketCard);
-      // Replace placeholder with timeframe card
-      content = content.replace('___MARKET_PLACEHOLDER___', timeframeCard);
-      
-      console.log('   → Cards repositioned successfully');
-    }
-    
-    // Write the updated content
-    fs.writeFileSync(componentPath, content);
-    console.log('   → Component file updated');
-    
-    // Wait for hot reload
-    await this.sleep(2000);
-  }
-
-  async captureAfterState() {
-    console.log('📸 [STEP-5] Capturing after state');
-    
-    try {
-      // Test application load
-      const response = await fetch(`${this.baseUrl}/`, { timeout: 5000 });
-      this.afterState.applicationStatus = response.ok ? 'OPERATIONAL' : 'FAILED';
-      console.log(`   → Application status: ${this.afterState.applicationStatus}`);
-      
-      // Test component structure
-      const componentPath = './client/src/components/AdvancedSignalDashboard.tsx';
-      const componentContent = fs.readFileSync(componentPath, 'utf8');
-      
-      // Find new order of main sections
-      const marketAnalysisIndex = componentContent.indexOf('Market Analysis');
-      const timeframeSignalsIndex = componentContent.indexOf('Timeframe-specific signals');
-      
-      this.afterState.currentOrder = marketAnalysisIndex < timeframeSignalsIndex ? 
-        'MARKET_ANALYSIS_FIRST' : 'TIMEFRAME_SIGNALS_FIRST';
-      
-      console.log(`   → New component order: ${this.afterState.currentOrder}`);
-      
-      // Test APIs
-      this.afterState.apiStatus = {};
-      const apiTests = ['/api/signals', '/api/technical-analysis/BTC%2FUSDT'];
-      
-      for (const endpoint of apiTests) {
-        try {
-          const apiResponse = await fetch(`${this.baseUrl}${endpoint}`, { timeout: 3000 });
-          this.afterState.apiStatus[endpoint] = apiResponse.ok ? 'OK' : 'FAILED';
-        } catch (error) {
-          this.afterState.apiStatus[endpoint] = 'ERROR';
-        }
-      }
-      
-      console.log(`   → API status: ${JSON.stringify(this.afterState.apiStatus)}`);
-      
-    } catch (error) {
-      console.log(`   → After state capture failed: ${error.message}`);
-      this.afterState.captureStatus = 'FAILED';
-    }
-  }
-
-  async validateRepositioning() {
-    console.log('✅ [STEP-6] Validating repositioning');
-    
-    const validations = [];
-    
-    // 1. Validate order change
-    const orderChanged = this.beforeState.currentOrder !== this.afterState.currentOrder;
-    const correctOrder = this.afterState.currentOrder === 'TIMEFRAME_SIGNALS_FIRST';
-    
-    validations.push({
-      test: 'Component Order Changed',
-      result: orderChanged ? 'PASS' : 'FAIL',
-      details: `Before: ${this.beforeState.currentOrder}, After: ${this.afterState.currentOrder}`
-    });
-    
-    validations.push({
-      test: 'Correct New Order',
-      result: correctOrder ? 'PASS' : 'FAIL',
-      details: `Timeframe signals now first: ${correctOrder}`
-    });
-    
-    // 2. Validate application still works
-    validations.push({
-      test: 'Application Still Operational',
-      result: this.afterState.applicationStatus === 'OPERATIONAL' ? 'PASS' : 'FAIL',
-      details: `Status: ${this.afterState.applicationStatus}`
-    });
-    
-    // 3. Validate APIs still work
-    const apiWorking = Object.values(this.afterState.apiStatus).every(status => status === 'OK');
-    validations.push({
-      test: 'APIs Still Functional',
-      result: apiWorking ? 'PASS' : 'FAIL',
-      details: `API status: ${JSON.stringify(this.afterState.apiStatus)}`
-    });
-    
-    console.log(`   → Validations completed: ${validations.length}`);
-    validations.forEach(v => {
-      console.log(`     ${v.test}: ${v.result} - ${v.details}`);
-    });
-    
-    const allPassed = validations.every(v => v.result === 'PASS');
-    this.repositioningStatus = allPassed ? 'SUCCESS' : 'FAILED';
-    
-    return validations;
-  }
-
-  async executeRollback() {
-    console.log('🔙 [ROLLBACK] Executing rollback procedures');
-    
-    try {
-      const componentPath = './client/src/components/AdvancedSignalDashboard.tsx';
-      fs.writeFileSync(componentPath, this.backupData.componentContent);
-      console.log('   → Component restored from backup');
-      
-      this.repositioningStatus = 'ROLLED_BACK';
-      
-    } catch (error) {
-      console.error('   → Rollback failed:', error.message);
-      this.repositioningStatus = 'ROLLBACK_FAILED';
-    }
-  }
-
-  async generateRepositioningReport() {
-    console.log('\n📊 [REPORT] Repositioning execution complete');
-    
-    const report = {
-      timestamp: new Date().toISOString(),
-      operation: 'AdvancedSignalDashboard_Repositioning',
-      execution_status: this.repositioningStatus,
-      before_state: this.beforeState,
-      after_state: this.afterState,
-      changes_made: {
-        timeframe_signals_moved_to_top: true,
-        market_analysis_moved_down: true,
-        component_order_swapped: true
-      },
-      backup_created: Object.keys(this.backupData).length > 0
+    this.gameplan.currentStructure = {
+      componentStart,
+      topSectionLine,
+      bottomSectionLine,
+      totalLines: lines.length
     };
     
-    console.log(`\n🎯 REPOSITIONING RESULTS:`);
-    console.log(`⚕️ Execution Status: ${this.repositioningStatus}`);
-    console.log(`🔄 Order Changed: ${this.beforeState.currentOrder} → ${this.afterState.currentOrder}`);
-    console.log(`✅ Application Status: ${this.afterState.applicationStatus}`);
-    console.log(`💾 Backup Created: ${report.backup_created}`);
-    
-    const filename = `advanced_signal_dashboard_repositioning_${Date.now()}.json`;
-    fs.writeFileSync(filename, JSON.stringify(report, null, 2));
-    console.log(`\n📋 Repositioning report saved: ${filename}`);
-    
-    return report;
+    return this.gameplan.currentStructure;
   }
 
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  findSectionLine(lines, sectionType) {
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (sectionType === 'TOP_MARKET_ANALYSIS_TIMEFRAME_SIGNALS' && 
+          line.includes('Market Analysis') && 
+          !line.includes('📊') && 
+          i < 2100) {
+        return i + 1; // Convert to 1-based
+      }
+      if (sectionType === 'BOTTOM_MARKET_ANALYSIS_TIMEFRAME_SIGNALS' && 
+          line.includes('Market Analysis') && 
+          !line.includes('📊') && 
+          i > 2100) {
+        return i + 1; // Convert to 1-based
+      }
+    }
+    return -1;
+  }
+
+  findComponentStartLine(lines) {
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].includes('return (') && lines[i - 5]?.includes('AdvancedSignalDashboard')) {
+        return i + 1;
+      }
+    }
+    return -1;
+  }
+
+  async phase2_designRepositioningStrategy() {
+    console.log('\n🎯 [PHASE-2] Designing repositioning strategy');
+    
+    const strategy = {
+      step1: {
+        action: 'EXTRACT_BOTTOM_SECTION',
+        description: 'Extract complete BOTTOM Market Analysis section (Card component)',
+        target: `Lines ${this.gameplan.currentStructure.bottomSectionLine} to end of Card`,
+        method: 'Find opening <Card> and matching </Card> tags'
+      },
+      step2: {
+        action: 'REMOVE_TOP_SECTION',
+        description: 'Remove TOP duplicate Market Analysis section',
+        target: `Lines ${this.gameplan.currentStructure.topSectionLine} to end of Card`,
+        method: 'Delete entire Card component block'
+      },
+      step3: {
+        action: 'POSITION_AT_TOP',
+        description: 'Insert extracted section immediately after component header',
+        target: `After line ${this.gameplan.currentStructure.componentStart + 10}`,
+        method: 'Place after dashboard header div, before any other cards'
+      },
+      step4: {
+        action: 'VALIDATE_STRUCTURE',
+        description: 'Ensure proper JSX structure and component hierarchy',
+        target: 'Entire component',
+        method: 'Check for proper nesting, tags, and React structure'
+      }
+    };
+    
+    console.log('   🛠️ Repositioning Strategy:');
+    Object.entries(strategy).forEach(([step, details]) => {
+      console.log(`     ${step.toUpperCase()}: ${details.action}`);
+      console.log(`       → ${details.description}`);
+      console.log(`       → Target: ${details.target}`);
+      console.log(`       → Method: ${details.method}`);
+    });
+    
+    this.gameplan.repositioningStrategy = strategy;
+    return strategy;
+  }
+
+  async phase3_createValidationFramework() {
+    console.log('\n🔬 [PHASE-3] Creating comprehensive validation framework');
+    
+    const validationFramework = {
+      preChangeValidation: [
+        'Capture current component structure',
+        'Document all Market Analysis sections',
+        'Record JSX hierarchy and component relationships',
+        'Baseline UI layout screenshots',
+        'Test all timeframe functionality'
+      ],
+      duringChangeValidation: [
+        'Validate each edit maintains proper JSX structure',
+        'Ensure no unclosed tags or broken components',
+        'Verify React component structure integrity',
+        'Check for proper imports and dependencies'
+      ],
+      postChangeValidation: [
+        'Confirm only one Market Analysis section remains',
+        'Verify section is positioned at component top',
+        'Test all timeframe tabs functionality',
+        'Validate signal display and calculations',
+        'Ensure UI layout maintains proper spacing',
+        'Check responsive design on different screen sizes'
+      ],
+      functionalTesting: [
+        'Test signal calculation triggers',
+        'Verify timeframe switching works correctly',
+        'Confirm pattern analysis displays properly',
+        'Validate recommendation system functionality',
+        'Test auto-calculation system integration'
+      ]
+    };
+    
+    console.log('   ✅ Validation Framework Components:');
+    Object.entries(validationFramework).forEach(([phase, tests]) => {
+      console.log(`     ${phase.toUpperCase()}:`);
+      tests.forEach(test => console.log(`       • ${test}`));
+    });
+    
+    this.gameplan.validationFramework = validationFramework;
+    return validationFramework;
+  }
+
+  async phase4_establish20CycleTestPlan() {
+    console.log('\n🔄 [PHASE-4] Establishing 20-cycle test plan');
+    
+    const testCycles = {
+      beforeChanges: {
+        cycles: 10,
+        focus: 'Baseline establishment and current functionality validation',
+        tests: [
+          'Load dashboard with BTC/USDT',
+          'Switch between all timeframes (1m to 1M)',
+          'Verify signal calculations trigger correctly',
+          'Test pattern analysis display',
+          'Check recommendation generation',
+          'Validate UI responsiveness',
+          'Test auto-calculation system',
+          'Verify authentic market data integration',
+          'Check error handling and edge cases',
+          'Document all functional behaviors'
+        ]
+      },
+      afterChanges: {
+        cycles: 10,
+        focus: 'Post-repositioning functionality and UI validation',
+        tests: [
+          'Confirm single Market Analysis section at top',
+          'Test identical timeframe functionality',
+          'Verify signal calculations unchanged',
+          'Validate pattern analysis positioning',
+          'Check recommendation system integrity',
+          'Test UI layout and spacing',
+          'Verify auto-calculation integration',
+          'Confirm authentic data flow maintained',
+          'Test all edge cases and error scenarios',
+          'Compare against baseline functionality'
+        ]
+      }
+    };
+    
+    console.log('   🔄 20-Cycle Test Plan:');
+    console.log(`     BEFORE CHANGES: ${testCycles.beforeChanges.cycles} cycles`);
+    console.log(`       Focus: ${testCycles.beforeChanges.focus}`);
+    console.log(`     AFTER CHANGES: ${testCycles.afterChanges.cycles} cycles`);
+    console.log(`       Focus: ${testCycles.afterChanges.focus}`);
+    
+    this.gameplan.testCycles = testCycles;
+    return testCycles;
+  }
+
+  async phase5_defineGroundRulesCompliance() {
+    console.log('\n📋 [PHASE-5] Defining 11 ground rules compliance strategy');
+    
+    const groundRulesCompliance = {
+      rule1: 'External shell testing for all validations',
+      rule2: 'NO synthetic data, only authentic market calculations',
+      rule3: 'Real-time validation of all implementations',
+      rule4: 'Zero tolerance for system crashes',
+      rule5: 'Market-driven signal generation only',
+      rule6: 'Complete error handling and recovery',
+      rule7: 'Authentic data integrity throughout process',
+      rule8: 'Institutional-grade precision maintained',
+      rule9: 'User experience preservation priority',
+      rule10: 'System stability during all operations',
+      rule11: 'Complete validation before deployment'
+    };
+    
+    const complianceStrategy = {
+      implementation: [
+        'All tests run in external shell environment',
+        'Use only live market data from CoinMarketCap API',
+        'Real-time monitoring of system health',
+        'Comprehensive error boundary protection',
+        'Authentic signal generation validation',
+        'Complete UI/UX testing protocol',
+        'Zero synthetic fallback data allowed',
+        'BigNumber.js precision verification',
+        'User workflow testing at each stage',
+        'System performance monitoring',
+        'Complete functional validation'
+      ]
+    };
+    
+    console.log('   📋 Ground Rules Compliance:');
+    Object.entries(groundRulesCompliance).forEach(([rule, description]) => {
+      console.log(`     ${rule.toUpperCase()}: ${description}`);
+    });
+    
+    this.gameplan.groundRulesCompliance = { groundRulesCompliance, complianceStrategy };
+    return this.gameplan.groundRulesCompliance;
+  }
+
+  generateGameplanDocument() {
+    const timestamp = new Date().toISOString();
+    
+    const gameplan = {
+      timestamp,
+      title: 'Advanced Signal Dashboard Repositioning Gameplan',
+      objective: 'Remove TOP duplicate Market Analysis section and move BOTTOM section to component top',
+      
+      currentState: this.gameplan.currentStructure,
+      strategy: this.gameplan.repositioningStrategy,
+      validation: this.gameplan.validationFramework,
+      testing: this.gameplan.testCycles,
+      compliance: this.gameplan.groundRulesCompliance,
+      
+      executionPlan: {
+        phase1: 'External shell pre-validation (10 cycles)',
+        phase2: 'Component restructuring with live monitoring',
+        phase3: 'External shell post-validation (10 cycles)',
+        phase4: 'UI display testing and user experience validation',
+        phase5: 'Final approval and deployment readiness'
+      },
+      
+      riskMitigation: {
+        backupStrategy: 'Create component backup before any changes',
+        rollbackPlan: 'Restore from backup if validation fails',
+        monitoringPlan: 'Real-time system health monitoring',
+        validationGates: 'No progression without validation success'
+      },
+      
+      expectedOutcome: {
+        functionalBenefit: 'Eliminated code duplication, cleaner component structure',
+        uiBenefit: 'Market Analysis section prominently positioned at top',
+        maintainabilityBenefit: 'Reduced complexity, improved code organization',
+        userExperienceBenefit: 'More intuitive interface flow and navigation'
+      }
+    };
+    
+    // Save gameplan to file
+    const gameplanPath = `./advanced_signal_dashboard_repositioning_gameplan_${Date.now()}.json`;
+    fs.writeFileSync(gameplanPath, JSON.stringify(gameplan, null, 2));
+    
+    console.log(`\n📄 [GAMEPLAN] Strategy document saved to: ${gameplanPath}`);
+    
+    return gameplan;
   }
 }
 
-// Execute repositioning
+// Execute gameplan creation
 async function main() {
-  const repositioner = new AdvancedSignalDashboardRepositioning();
-  await repositioner.executeRepositioning();
-  process.exit(0);
+  const strategist = new AdvancedSignalDashboardRepositioningGameplan();
+  
+  try {
+    const gameplan = await strategist.createComprehensiveGameplan();
+    
+    console.log('\n🎯 [EXECUTIVE-SUMMARY] Repositioning Gameplan Ready');
+    console.log('=====================================================');
+    console.log('✅ OBJECTIVE: Remove TOP duplicate, move BOTTOM section to top');
+    console.log('🔄 TESTING: 20-cycle validation (10 before, 10 after)');
+    console.log('📋 COMPLIANCE: All 11 ground rules integrated');
+    console.log('🛡️ SAFETY: Complete backup and rollback strategy');
+    console.log('🎨 UI: Full display testing and user experience validation');
+    console.log('📊 OUTCOME: Cleaner structure, better UX, reduced duplication');
+    console.log('\n🚀 READY FOR USER APPROVAL AND EXECUTION');
+    
+  } catch (error) {
+    console.error('❌ Gameplan creation failed:', error);
+    process.exit(1);
+  }
 }
 
-main().catch(console.error);
+main();
