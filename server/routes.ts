@@ -28,6 +28,9 @@ import { unifiedDataSynchronizer } from "./unifiedDataSynchronizer";
 import { authenticTechnicalAnalysis } from "./authenticTechnicalAnalysis";
 import { legitimatePerformanceTracker } from "./legitimateFeedbackSystem";
 import { UltraPrecisionTechnicalAnalysis } from "./ultraPrecisionTechnicalAnalysis";
+import { MultiTimeframeConfluenceAnalyzer } from "./MultiTimeframeConfluenceAnalyzer";
+import { AdvancedPatternRecognitionEngine } from "./AdvancedPatternRecognitionEngine";
+import { DynamicRiskManager, MarketSentimentAnalyzer } from "./DynamicRiskManager";
 import { MonteCarloRiskEngine, type SignalInput, type MonteCarloResult } from "./monteCarloRiskEngine";
 import { patternRecognition } from "./enhancedPatternRecognition";
 
@@ -44,6 +47,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Start feedback analysis system
   console.log('[System] Starting intelligent feedback analysis system');
   await feedbackAnalyzer.start();
+  
+  // Initialize all enhancement engines with BigNumber precision
+  console.log('[System] Initializing Multi-Timeframe Confluence Analysis Engine');
+  const confluenceAnalyzer = new MultiTimeframeConfluenceAnalyzer();
+  
+  console.log('[System] Initializing Advanced Pattern Recognition Engine');
+  const patternEngine = new AdvancedPatternRecognitionEngine();
+  
+  console.log('[System] Initializing Dynamic Risk Management System');
+  const riskManager = new DynamicRiskManager();
+  
+  console.log('[System] Initializing Market Sentiment Analysis Engine');
+  const sentimentAnalyzer = new MarketSentimentAnalyzer();
   
   // Set up WebSocket server for real-time updates
   const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
@@ -3274,6 +3290,187 @@ app.get('/api/performance-metrics', async (req, res) => {
   });
 
   // Multi-timeframe Confluence Analysis - Maximum Accuracy
+  // Enhanced Multi-Timeframe Confluence Analysis with BigNumber Precision
+  app.get('/api/enhanced-confluence-analysis/:symbol(*)', async (req: Request, res: Response) => {
+    try {
+      let symbol = req.params.symbol;
+      const timeframe = req.query.timeframe as string || '4h';
+      
+      if (symbol && symbol.includes('%')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      
+      if (!symbol || !symbol.includes('/')) {
+        return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
+      }
+
+      // Get current price for analysis
+      const priceData = await optimizedCoinMarketCapService.getCurrentPrice(symbol);
+      if (!priceData || !priceData.price) {
+        return res.status(404).json({ error: 'Price data not available' });
+      }
+
+      // Run enhanced confluence analysis with BigNumber precision
+      const confluenceResults = await confluenceAnalyzer.analyzeConfluence(symbol, timeframe, priceData.price);
+      
+      res.json({
+        success: true,
+        symbol,
+        timestamp: new Date().toISOString(),
+        confluenceAnalysis: {
+          ...confluenceResults,
+          baseTimeframe: timeframe,
+          currentPrice: priceData.price,
+          enhancement: 'ENHANCED_MULTI_TIMEFRAME_CONFLUENCE',
+          ultraPrecision: true,
+          calculationEngine: 'BigNumber.js Ultra-Precision'
+        }
+      });
+    } catch (error) {
+      console.error('Enhanced confluence analysis error:', error);
+      res.status(500).json({ 
+        error: 'Failed to perform enhanced confluence analysis',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Advanced Pattern Recognition with Enhanced Scoring
+  app.get('/api/enhanced-pattern-analysis/:symbol(*)', async (req: Request, res: Response) => {
+    try {
+      let symbol = req.params.symbol;
+      const timeframe = req.query.timeframe as string || '4h';
+      
+      if (symbol && symbol.includes('%')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      
+      if (!symbol || !symbol.includes('/')) {
+        return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
+      }
+
+      // Get current price for analysis
+      const priceData = await optimizedCoinMarketCapService.getPrice(symbol);
+      if (!priceData || !priceData.price) {
+        return res.status(404).json({ error: 'Price data not available' });
+      }
+
+      // Run enhanced pattern recognition with BigNumber precision
+      const patternResults = await patternEngine.analyzeAdvancedPatterns(symbol, timeframe, priceData);
+      
+      res.json({
+        success: true,
+        symbol,
+        timestamp: new Date().toISOString(),
+        patternAnalysis: {
+          ...patternResults,
+          timeframe,
+          currentPrice: priceData.price,
+          enhancement: 'ENHANCED_PATTERN_RECOGNITION',
+          ultraPrecision: true,
+          calculationEngine: 'BigNumber.js Ultra-Precision'
+        }
+      });
+    } catch (error) {
+      console.error('Enhanced pattern analysis error:', error);
+      res.status(500).json({ 
+        error: 'Failed to perform enhanced pattern analysis',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Dynamic Risk Management Optimization
+  app.get('/api/enhanced-risk-management/:symbol(*)', async (req: Request, res: Response) => {
+    try {
+      let symbol = req.params.symbol;
+      const timeframe = req.query.timeframe as string || '4h';
+      
+      if (symbol && symbol.includes('%')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      
+      if (!symbol || !symbol.includes('/')) {
+        return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
+      }
+
+      // Get current price and signal data
+      const priceData = await optimizedCoinMarketCapService.getPrice(symbol);
+      if (!priceData || !priceData.price) {
+        return res.status(404).json({ error: 'Price data not available' });
+      }
+
+      // Create signal object for risk analysis
+      const signalData = {
+        price: priceData.price,
+        direction: 'NEUTRAL', // Would be determined by actual signal
+        confidence: 70, // Default confidence
+        timeframe
+      };
+
+      // Run dynamic risk optimization with BigNumber precision
+      const riskResults = await riskManager.optimizeRiskParameters(symbol, timeframe, signalData);
+      
+      res.json({
+        success: true,
+        symbol,
+        timestamp: new Date().toISOString(),
+        riskManagement: {
+          ...riskResults,
+          timeframe,
+          currentPrice: priceData.price,
+          enhancement: 'DYNAMIC_RISK_OPTIMIZATION',
+          ultraPrecision: true,
+          calculationEngine: 'BigNumber.js Ultra-Precision'
+        }
+      });
+    } catch (error) {
+      console.error('Enhanced risk management error:', error);
+      res.status(500).json({ 
+        error: 'Failed to perform enhanced risk management',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Market Sentiment Integration Analysis
+  app.get('/api/enhanced-sentiment-analysis/:symbol(*)', async (req: Request, res: Response) => {
+    try {
+      let symbol = req.params.symbol;
+      const timeframe = req.query.timeframe as string || '4h';
+      
+      if (symbol && symbol.includes('%')) {
+        symbol = decodeURIComponent(symbol);
+      }
+      
+      if (!symbol || !symbol.includes('/')) {
+        return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
+      }
+
+      // Run market sentiment analysis with BigNumber precision
+      const sentimentResults = await sentimentAnalyzer.analyzeSentiment(symbol, timeframe);
+      
+      res.json({
+        success: true,
+        symbol,
+        timestamp: new Date().toISOString(),
+        sentimentAnalysis: {
+          ...sentimentResults,
+          timeframe,
+          enhancement: 'MARKET_SENTIMENT_INTEGRATION',
+          ultraPrecision: true,
+          calculationEngine: 'BigNumber.js Ultra-Precision'
+        }
+      });
+    } catch (error) {
+      console.error('Enhanced sentiment analysis error:', error);
+      res.status(500).json({ 
+        error: 'Failed to perform enhanced sentiment analysis',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
   app.get('/api/confluence-analysis/:symbol(*)', async (req: Request, res: Response) => {
     try {
       // Ensure JSON response
