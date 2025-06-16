@@ -3333,8 +3333,23 @@ app.get('/api/performance-metrics', async (req, res) => {
         });
       }
       
-      const indicators = technicalData.indicators;
+      const indicators = technicalData.data?.indicators || technicalData.indicators;
       const currentPrice = technicalData.currentPrice;
+      
+      console.log(`[Routes] Pattern analysis indicators structure for ${symbol}:`, JSON.stringify(indicators, null, 2));
+      
+      // Validate indicators structure before pattern analysis
+      if (!indicators || typeof indicators !== 'object') {
+        return res.status(400).json({
+          success: false,
+          error: 'Invalid indicators data structure',
+          symbol,
+          timeframe,
+          receivedData: typeof indicators,
+          technicalDataKeys: Object.keys(technicalData),
+          dataStructure: technicalData.data ? Object.keys(technicalData.data) : 'no data key'
+        });
+      }
       
       // Run comprehensive pattern analysis
       const patternAnalysis = patternRecognition.analyzeAllPatterns(

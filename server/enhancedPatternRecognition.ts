@@ -36,8 +36,14 @@ export class EnhancedPatternRecognition {
     const patterns: PatternResult[] = [];
     const timestamp = new Date().toISOString();
 
+    // Validate indicators structure first
+    if (!indicators || typeof indicators !== 'object') {
+      console.log(`[PatternRecognition] Invalid indicators structure for ${pair}: ${typeof indicators}`);
+      return patterns;
+    }
+
     // Doji pattern detection (RSI-based)
-    if (indicators.rsi && Math.abs(indicators.rsi.value - 50) < 5) {
+    if (indicators.rsi && typeof indicators.rsi === 'object' && indicators.rsi.value !== undefined && Math.abs(indicators.rsi.value - 50) < 5) {
       patterns.push({
         type: 'doji_indecision',
         category: 'candlestick',

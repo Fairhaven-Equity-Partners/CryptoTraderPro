@@ -52,16 +52,28 @@ const TechnicalAnalysisSummary: React.FC = () => {
   const indicators = (() => {
     if (!techData) return {} as TechnicalIndicators;
     
+    // Debug log to understand the actual data structure
+    console.log('TechnicalAnalysisSummary parsing indicators from:', techData);
+    
     // Handle nested indicators structure from API response
+    if (techData.data?.indicators && typeof techData.data.indicators === 'object') {
+      console.log('Found indicators in techData.data.indicators:', techData.data.indicators);
+      return techData.data.indicators as TechnicalIndicators;
+    }
+    
+    // Handle direct indicators structure
     if (techData.indicators && typeof techData.indicators === 'object') {
+      console.log('Found indicators in techData.indicators:', techData.indicators);
       return techData.indicators as TechnicalIndicators;
     }
     
     // Fallback for direct data structure
     if (techData.rsi !== undefined || techData.macd !== undefined) {
+      console.log('Found direct indicators in techData:', { rsi: techData.rsi, macd: techData.macd });
       return techData as TechnicalIndicators;
     }
     
+    console.log('No indicators found, returning empty object');
     return {} as TechnicalIndicators;
   })();
   

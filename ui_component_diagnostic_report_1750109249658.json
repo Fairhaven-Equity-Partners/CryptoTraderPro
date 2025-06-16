@@ -1,0 +1,194 @@
+{
+  "timestamp": "2025-06-16T21:27:29.658Z",
+  "systemHealth": 66,
+  "diagnosticResults": {
+    "apiEndpoints": {
+      "Technical Analysis Summary": {
+        "status": "SUCCESS",
+        "completeness": 100,
+        "dataValidation": {
+          "data": true,
+          "indicators": true,
+          "currentPrice": true,
+          "confidence": true,
+          "patterns": true
+        },
+        "sampleResponse": {
+          "success": true,
+          "status": "success",
+          "symbol": "BTC/USDT",
+          "timeframe": "1d",
+          "currentPrice": 108678.82375333078
+        },
+        "responseType": "Object",
+        "responseSize": 10
+      },
+      "Pattern Analysis (FAILING)": {
+        "status": "FAILED",
+        "error": "Request failed: HTTP 500: Internal Server Error",
+        "completeness": 0
+      },
+      "Risk Assessment Dashboard": {
+        "status": "SUCCESS",
+        "completeness": 25,
+        "dataValidation": {
+          "riskLevel": true,
+          "expectedReturn": false,
+          "volatility": false,
+          "riskReward": false
+        },
+        "sampleResponse": {
+          "success": true,
+          "symbol": "BTC/USDT",
+          "timeframe": "4h",
+          "riskLevel": "MODERATE",
+          "riskScore": 50
+        },
+        "responseType": "Object",
+        "responseSize": 7
+      },
+      "Advanced Signal Dashboard": {
+        "status": "SUCCESS",
+        "completeness": 100,
+        "dataValidation": {
+          "entryPrice": true,
+          "stopLoss": true,
+          "takeProfit": true,
+          "confidence": true,
+          "direction": true
+        },
+        "sampleResponse": {
+          "symbol": "BTC/USDT",
+          "timeframe": "1w",
+          "direction": "SHORT",
+          "confidence": 95,
+          "strength": 0.95
+        },
+        "responseType": "Array",
+        "responseSize": 6
+      },
+      "Ultra Precision Calculations": {
+        "status": "FAILED",
+        "error": "Request failed: Expected JSON but received: <!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script type=\"module\">\nimport { createHotContext } fro...",
+        "completeness": 0
+      }
+    },
+    "dataStructure": {
+      "technicalAnalysis": {
+        "hasTopLevelData": true,
+        "hasIndicators": true,
+        "indicatorsStructure": {
+          "available": [
+            "rsi",
+            "macd",
+            "bollingerBands",
+            "atr",
+            "stochastic"
+          ],
+          "missing": [],
+          "total": 5
+        },
+        "hasCurrentPrice": true,
+        "hasConfidence": false,
+        "hasPatterns": false,
+        "patternAnalysisStructure": {
+          "hasData": false
+        }
+      },
+      "compatibility": 60
+    },
+    "autoCalculation": {
+      "pairResults": {
+        "BTC/USDT": {
+          "signalsGenerated": 6,
+          "hasRecentSignals": true,
+          "signalQuality": 100,
+          "timeframes": [
+            "5m",
+            "15m",
+            "1h",
+            "4h",
+            "1d",
+            "1w"
+          ]
+        },
+        "XRP/USDT": {
+          "signalsGenerated": 6,
+          "hasRecentSignals": true,
+          "signalQuality": 100,
+          "timeframes": [
+            "5m",
+            "15m",
+            "1h",
+            "4h",
+            "1d",
+            "1w"
+          ]
+        },
+        "ETH/USDT": {
+          "signalsGenerated": 6,
+          "hasRecentSignals": true,
+          "signalQuality": 100,
+          "timeframes": [
+            "5m",
+            "15m",
+            "1h",
+            "4h",
+            "1d",
+            "1w"
+          ]
+        }
+      },
+      "responseTime": 2,
+      "systemActive": true,
+      "overallHealth": 100
+    },
+    "componentIssues": {
+      "technicalAnalysisSummary": {
+        "issue": "Data received but indicators showing as empty object {}",
+        "logEvidence": "TechnicalAnalysisSummary DEBUG: indicators: Object, patterns: Array(0)",
+        "severity": "HIGH",
+        "rootCause": "Data structure parsing problem in component"
+      },
+      "patternAnalysis": {
+        "issue": "API returning 500 Internal Server Error",
+        "logEvidence": "Failed to load resource: the server responded with a status of 500",
+        "severity": "CRITICAL",
+        "rootCause": "Backend pattern analysis endpoint crashing"
+      },
+      "riskAssessmentDashboard": {
+        "issue": "Component not displaying data correctly",
+        "logEvidence": "Previous validation showed 33% data completeness",
+        "severity": "MEDIUM",
+        "rootCause": "Missing required fields in risk assessment data"
+      },
+      "autoCalculationDisplay": {
+        "issue": "Backend calculations running but UI not updating",
+        "logEvidence": "Calculated 48 signals for 50 pairs but UI components not reflecting updates",
+        "severity": "HIGH",
+        "rootCause": "Component state not updating with new calculation data"
+      }
+    }
+  },
+  "priorityFixes": [
+    {
+      "priority": "CRITICAL",
+      "issue": "Pattern Analysis API 500 Error",
+      "action": "Fix backend pattern analysis endpoint crash"
+    },
+    {
+      "priority": "HIGH",
+      "issue": "Technical Analysis data structure processing",
+      "action": "Fix component data binding and indicator structure parsing"
+    }
+  ],
+  "implementationPlan": [
+    "1. Fix Pattern Analysis API 500 error in backend",
+    "2. Repair Technical Analysis Summary component data processing",
+    "3. Fix Risk Assessment Dashboard data completeness",
+    "4. Implement proper UI state updates for auto-calculation results",
+    "5. Test all components with cross-pair switching",
+    "6. Validate complete system integration"
+  ],
+  "status": "ACCEPTABLE"
+}
