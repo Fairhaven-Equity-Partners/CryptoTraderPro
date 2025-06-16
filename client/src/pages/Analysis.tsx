@@ -59,23 +59,24 @@ const Analysis: React.FC = () => {
         currentAsset={currentAsset}
         onChangeAsset={handleChangeAsset}
       />
-      <main className="flex-1 overflow-y-auto pb-16 px-4">
-        {/* TOP PRIORITY SECTION - Above the fold */}
-        <div className="space-y-4 mb-6">
-          <LiveMarketOverview />
-        </div>
-        {/* SECONDARY PRIORITY SECTION */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <TechnicalAnalysisSummary />
-          <RiskAssessmentDashboard />
-        </div>
-        
-        {/* ADVANCED SIGNAL DASHBOARD - REPOSITIONED */}
+            <main className="flex-1 overflow-y-auto pb-16 px-4">
+        {/* MARKET ANALYSIS SECTION - TOP PRIORITY */}
         <div className="mb-6">
           <AdvancedSignalDashboard
             symbol={currentAsset}
             onTimeframeSelect={handleChangeTimeframe}
           />
+        </div>
+        
+        {/* LIVE MARKET OVERVIEW - SECOND PRIORITY */}
+        <div className="space-y-4 mb-6">
+          <LiveMarketOverview />
+        </div>
+        
+        {/* TECHNICAL ANALYSIS SECTION - THIRD PRIORITY */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <TechnicalAnalysisSummary />
+          <RiskAssessmentDashboard />
         </div>
       </main>
     </div>
