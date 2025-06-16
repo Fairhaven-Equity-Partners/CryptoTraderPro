@@ -1,230 +1,210 @@
 #!/usr/bin/env node
 /**
- * UI COMPONENT FIXES VALIDATION TEST
- * External Shell Testing - Comprehensive Validation of All Component Fixes
+ * UI COMPONENT FIXES VALIDATION - EXTERNAL SHELL
+ * Direct API testing to identify Technical Analysis Summary data structure issues
  * 
  * Ground Rules Compliance:
  * - External shell testing for all validations
  * - NO synthetic data, only authentic market calculations
- * - Real-time validation of all implementations
- * - Zero tolerance for system crashes
+ * - Real-time validation of data structure issues
+ * - Zero tolerance for undefined data display
  */
 
 class UIComponentFixesValidation {
   constructor() {
     this.results = {
-      patternAnalysisAPI: { status: 'pending', score: 0, details: [] },
-      technicalAnalysisSummary: { status: 'pending', score: 0, details: [] },
-      riskAssessmentDashboard: { status: 'pending', score: 0, details: [] },
-      systemHealth: { status: 'pending', score: 0, details: [] },
+      technicalAnalysisAPI: { score: 0, details: [], issues: [] },
+      riskAssessmentAPI: { score: 0, details: [], issues: [] },
+      dataStructure: { score: 0, details: [], issues: [] },
       overallScore: 0
     };
     this.baseUrl = 'http://localhost:5000';
   }
 
   async runCompleteValidation() {
-    console.log('🔍 Starting UI Component Fixes Validation...\n');
+    console.log('🔍 UI COMPONENT FIXES VALIDATION - Direct API Testing\n');
     
     try {
-      await this.validatePatternAnalysisAPI();
-      await this.validateTechnicalAnalysisSummary();
-      await this.validateRiskAssessmentDashboard();
-      await this.validateSystemHealth();
+      await this.validateTechnicalAnalysisAPI();
+      await this.validateRiskAssessmentAPI();
+      await this.validateDataStructureConsistency();
       
       this.calculateOverallScore();
-      await this.generateValidationReport();
+      await this.generateDetailedReport();
       
     } catch (error) {
-      console.error('❌ Validation failed:', error.message);
+      console.error('❌ UI component validation failed:', error.message);
       await this.handleValidationFailure(error);
     }
   }
 
-  async validatePatternAnalysisAPI() {
-    console.log('🧪 Testing Pattern Analysis API Fix...');
+  async validateTechnicalAnalysisAPI() {
+    console.log('🧪 Testing Technical Analysis API Data Structure...');
     
-    try {
-      const response = await this.makeRequest('/api/pattern-analysis/BTC/USDT');
-      
-      if (response.success && response.patternAnalysis) {
-        this.results.patternAnalysisAPI.status = 'passed';
-        this.results.patternAnalysisAPI.score = 100;
-        this.results.patternAnalysisAPI.details.push('✅ API no longer crashes');
-        this.results.patternAnalysisAPI.details.push(`✅ Patterns detected: ${response.patternAnalysis.patterns.length}`);
-        this.results.patternAnalysisAPI.details.push(`✅ Pattern summary available: ${response.patternAnalysis.summary.totalPatterns} patterns`);
-        this.results.patternAnalysisAPI.details.push(`✅ Insights generated: ${response.patternAnalysis.insights.primarySignal}`);
-        
-        console.log('✅ Pattern Analysis API: FIXED and operational');
-      } else {
-        this.results.patternAnalysisAPI.status = 'failed';
-        this.results.patternAnalysisAPI.score = 0;
-        this.results.patternAnalysisAPI.details.push('❌ API still returning invalid data');
-      }
-      
-    } catch (error) {
-      this.results.patternAnalysisAPI.status = 'failed';
-      this.results.patternAnalysisAPI.score = 0;
-      this.results.patternAnalysisAPI.details.push(`❌ API still crashing: ${error.message}`);
-      console.log('❌ Pattern Analysis API: Still failing');
-    }
-  }
-
-  async validateTechnicalAnalysisSummary() {
-    console.log('🧪 Testing Technical Analysis Summary Data Processing...');
+    const testSymbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT'];
     
-    try {
-      const response = await this.makeRequest('/api/technical-analysis/BTC/USDT');
-      
-      if (response.success && response.data && response.data.indicators) {
-        const indicators = response.data.indicators;
+    for (const symbol of testSymbols) {
+      try {
+        const response = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(symbol)}`);
         
-        this.results.technicalAnalysisSummary.status = 'passed';
-        this.results.technicalAnalysisSummary.score = 100;
-        this.results.technicalAnalysisSummary.details.push('✅ Indicators data structure fixed');
-        this.results.technicalAnalysisSummary.details.push(`✅ RSI available: ${indicators.rsi?.value}`);
-        this.results.technicalAnalysisSummary.details.push(`✅ MACD available: ${indicators.macd?.value}`);
-        this.results.technicalAnalysisSummary.details.push(`✅ Bollinger Bands available: ${indicators.bollingerBands ? 'Yes' : 'No'}`);
-        this.results.technicalAnalysisSummary.details.push(`✅ Data structure: techData.data.indicators works`);
+        console.log(`\n🔍 ${symbol} Technical Analysis Response:`);
+        console.log(`   Success: ${response.success}`);
+        console.log(`   Data field: ${response.data ? 'present' : 'MISSING'}`);
         
-        console.log('✅ Technical Analysis Summary: Data structure FIXED');
-      } else {
-        this.results.technicalAnalysisSummary.status = 'failed';
-        this.results.technicalAnalysisSummary.score = 0;
-        this.results.technicalAnalysisSummary.details.push('❌ Indicators data structure still invalid');
-      }
-      
-    } catch (error) {
-      this.results.technicalAnalysisSummary.status = 'failed';
-      this.results.technicalAnalysisSummary.score = 0;
-      this.results.technicalAnalysisSummary.details.push(`❌ API error: ${error.message}`);
-    }
-  }
-
-  async validateRiskAssessmentDashboard() {
-    console.log('🧪 Testing Risk Assessment Dashboard...');
-    
-    try {
-      const response = await this.makeRequest('/api/enhanced-risk-management/BTC/USDT');
-      
-      if (response.success && response.riskAssessment) {
-        const assessment = response.riskAssessment;
-        
-        this.results.riskAssessmentDashboard.status = 'passed';
-        this.results.riskAssessmentDashboard.score = 85;
-        this.results.riskAssessmentDashboard.details.push('✅ Risk assessment API working');
-        this.results.riskAssessmentDashboard.details.push(`✅ Risk level: ${assessment.riskLevel}`);
-        this.results.riskAssessmentDashboard.details.push(`✅ Position sizing: ${assessment.positionSizing?.recommended}%`);
-        this.results.riskAssessmentDashboard.details.push(`✅ Stop loss: ${assessment.stopLoss?.distance}%`);
-        
-        console.log('✅ Risk Assessment Dashboard: Working correctly');
-      } else {
-        this.results.riskAssessmentDashboard.status = 'partial';
-        this.results.riskAssessmentDashboard.score = 25;
-        this.results.riskAssessmentDashboard.details.push('⚠️ Risk assessment data incomplete');
-      }
-      
-    } catch (error) {
-      this.results.riskAssessmentDashboard.status = 'failed';
-      this.results.riskAssessmentDashboard.score = 0;
-      this.results.riskAssessmentDashboard.details.push(`❌ API error: ${error.message}`);
-    }
-  }
-
-  async validateSystemHealth() {
-    console.log('🧪 Testing Overall System Health...');
-    
-    try {
-      const endpoints = [
-        '/api/crypto/BTC/USDT',
-        '/api/signals/BTC/USDT',
-        '/api/technical-analysis/BTC/USDT',
-        '/api/pattern-analysis/BTC/USDT',
-        '/api/enhanced-risk-management/BTC/USDT',
-        '/api/enhanced-sentiment-analysis/BTC/USDT'
-      ];
-      
-      let workingEndpoints = 0;
-      const endpointResults = [];
-      
-      for (const endpoint of endpoints) {
-        try {
-          const response = await this.makeRequest(endpoint);
-          if (response.success) {
-            workingEndpoints++;
-            endpointResults.push(`✅ ${endpoint}: Working`);
-          } else {
-            endpointResults.push(`❌ ${endpoint}: Error response`);
+        if (response.data) {
+          console.log(`   Indicators field: ${response.data.indicators ? 'present' : 'MISSING'}`);
+          
+          if (response.data.indicators) {
+            const indicators = response.data.indicators;
+            console.log(`   RSI: ${indicators.rsi ? indicators.rsi.value : 'MISSING'}`);
+            console.log(`   MACD: ${indicators.macd ? indicators.macd.value : 'MISSING'}`);
+            console.log(`   Bollinger Bands: ${indicators.bollingerBands ? 'present' : 'MISSING'}`);
           }
-        } catch (error) {
-          endpointResults.push(`❌ ${endpoint}: ${error.message}`);
         }
+        
+        // Check for UI compatibility
+        if (response.success && response.data && response.data.indicators) {
+          this.results.technicalAnalysisAPI.details.push(`✅ ${symbol}: Complete data structure`);
+          this.results.technicalAnalysisAPI.score += 30;
+        } else {
+          this.results.technicalAnalysisAPI.issues.push(`❌ ${symbol}: Incomplete data structure`);
+        }
+        
+      } catch (error) {
+        console.log(`   ERROR: ${error.message}`);
+        this.results.technicalAnalysisAPI.issues.push(`❌ ${symbol}: API request failed - ${error.message}`);
+      }
+    }
+  }
+
+  async validateRiskAssessmentAPI() {
+    console.log('\n🧪 Testing Risk Assessment API Data Structure...');
+    
+    const testSymbols = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT'];
+    
+    for (const symbol of testSymbols) {
+      try {
+        const response = await this.makeRequest(`/api/enhanced-risk-management/${encodeURIComponent(symbol)}`);
+        
+        console.log(`\n🔍 ${symbol} Risk Assessment Response:`);
+        console.log(`   Success: ${response.success}`);
+        console.log(`   Error: ${response.error || 'none'}`);
+        console.log(`   Risk Assessment field: ${response.riskAssessment ? 'present' : 'MISSING'}`);
+        
+        if (response.riskAssessment) {
+          console.log(`   Risk Level: ${response.riskAssessment.riskLevel || 'MISSING'}`);
+          console.log(`   Position Sizing: ${response.riskAssessment.positionSizing || 'MISSING'}`);
+          console.log(`   Stop Loss: ${response.riskAssessment.stopLoss || 'MISSING'}`);
+          console.log(`   Take Profit: ${response.riskAssessment.takeProfit || 'MISSING'}`);
+        }
+        
+        // Check for UI compatibility
+        if (response.success && response.riskAssessment) {
+          this.results.riskAssessmentAPI.details.push(`✅ ${symbol}: Risk assessment data available`);
+          this.results.riskAssessmentAPI.score += 25;
+        } else {
+          this.results.riskAssessmentAPI.issues.push(`❌ ${symbol}: ${response.error || 'Risk assessment data missing'}`);
+        }
+        
+      } catch (error) {
+        console.log(`   ERROR: ${error.message}`);
+        this.results.riskAssessmentAPI.issues.push(`❌ ${symbol}: API request failed - ${error.message}`);
+      }
+    }
+  }
+
+  async validateDataStructureConsistency() {
+    console.log('\n🧪 Testing Data Structure Consistency...');
+    
+    try {
+      // Test signals endpoint for entry price / stop loss data
+      const signalsResponse = await this.makeRequest('/api/signals/BTC%2FUSDT');
+      
+      console.log('\n🔍 Signals Endpoint Response:');
+      console.log(`   Type: ${Array.isArray(signalsResponse) ? 'array' : typeof signalsResponse}`);
+      console.log(`   Length: ${Array.isArray(signalsResponse) ? signalsResponse.length : 'N/A'}`);
+      
+      if (Array.isArray(signalsResponse) && signalsResponse.length > 0) {
+        const signal = signalsResponse[0];
+        console.log(`   Entry Price: ${signal.entryPrice || signal.price || 'MISSING'}`);
+        console.log(`   Stop Loss: ${signal.stopLoss || 'MISSING'}`);
+        console.log(`   Take Profit: ${signal.takeProfit || 'MISSING'}`);
+        console.log(`   Direction: ${signal.direction || 'MISSING'}`);
+        console.log(`   Confidence: ${signal.confidence || 'MISSING'}`);
+        
+        if ((signal.entryPrice || signal.price) && signal.stopLoss && signal.takeProfit) {
+          this.results.dataStructure.details.push('✅ Complete signal data structure');
+          this.results.dataStructure.score += 40;
+        } else {
+          this.results.dataStructure.issues.push('❌ Incomplete signal data structure');
+        }
+      } else {
+        this.results.dataStructure.issues.push('❌ No signals available or invalid format');
       }
       
-      const healthScore = Math.round((workingEndpoints / endpoints.length) * 100);
-      
-      this.results.systemHealth.status = healthScore >= 80 ? 'passed' : 'partial';
-      this.results.systemHealth.score = healthScore;
-      this.results.systemHealth.details = endpointResults;
-      this.results.systemHealth.details.push(`✅ System Health: ${healthScore}% (${workingEndpoints}/${endpoints.length} endpoints)`);
-      
-      console.log(`✅ System Health: ${healthScore}% operational`);
-      
     } catch (error) {
-      this.results.systemHealth.status = 'failed';
-      this.results.systemHealth.score = 0;
-      this.results.systemHealth.details.push(`❌ System health check failed: ${error.message}`);
+      console.log(`   ERROR: ${error.message}`);
+      this.results.dataStructure.issues.push(`❌ Signals endpoint failed - ${error.message}`);
     }
   }
 
   calculateOverallScore() {
     const scores = [
-      this.results.patternAnalysisAPI.score,
-      this.results.technicalAnalysisSummary.score,
-      this.results.riskAssessmentDashboard.score,
-      this.results.systemHealth.score
+      this.results.technicalAnalysisAPI.score,
+      this.results.riskAssessmentAPI.score,
+      this.results.dataStructure.score
     ];
     
-    this.results.overallScore = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+    const maxScores = [90, 75, 40]; // Maximum possible scores for each category
+    const totalScore = scores.reduce((a, b) => a + b, 0);
+    const maxScore = maxScores.reduce((a, b) => a + b, 0);
+    
+    this.results.overallScore = Math.round((totalScore / maxScore) * 100);
   }
 
-  async generateValidationReport() {
+  async generateDetailedReport() {
     console.log('\n📊 UI COMPONENT FIXES VALIDATION REPORT');
-    console.log('='.repeat(50));
+    console.log('='.repeat(60));
     
     console.log(`\n🎯 OVERALL SCORE: ${this.results.overallScore}/100`);
     
-    console.log('\n📈 COMPONENT STATUS:');
-    console.log(`   Pattern Analysis API: ${this.results.patternAnalysisAPI.score}/100 (${this.results.patternAnalysisAPI.status})`);
-    console.log(`   Technical Analysis Summary: ${this.results.technicalAnalysisSummary.score}/100 (${this.results.technicalAnalysisSummary.status})`);
-    console.log(`   Risk Assessment Dashboard: ${this.results.riskAssessmentDashboard.score}/100 (${this.results.riskAssessmentDashboard.status})`);
-    console.log(`   System Health: ${this.results.systemHealth.score}/100 (${this.results.systemHealth.status})`);
+    console.log('\n🔍 DETAILED ANALYSIS:');
     
-    console.log('\n🔍 DETAILED RESULTS:');
+    // Technical Analysis API
+    console.log('\n📈 TECHNICAL ANALYSIS API:');
+    if (this.results.technicalAnalysisAPI.issues.length > 0) {
+      this.results.technicalAnalysisAPI.issues.forEach(issue => console.log(`   ${issue}`));
+    }
+    this.results.technicalAnalysisAPI.details.forEach(detail => console.log(`   ${detail}`));
     
-    Object.entries(this.results).forEach(([key, result]) => {
-      if (key === 'overallScore') return;
-      
-      console.log(`\n${key.toUpperCase()}:`);
-      result.details.forEach(detail => {
-        console.log(`   ${detail}`);
-      });
-    });
+    // Risk Assessment API
+    console.log('\n🛡️ RISK ASSESSMENT API:');
+    if (this.results.riskAssessmentAPI.issues.length > 0) {
+      this.results.riskAssessmentAPI.issues.forEach(issue => console.log(`   ${issue}`));
+    }
+    this.results.riskAssessmentAPI.details.forEach(detail => console.log(`   ${detail}`));
     
-    console.log('\n✅ FIXES IMPLEMENTED:');
-    console.log('   ✅ Pattern Analysis API crash resolved');
-    console.log('   ✅ Technical Analysis Summary data parsing fixed');
-    console.log('   ✅ Indicators data structure properly extracted');
-    console.log('   ✅ Error handling and validation improved');
+    // Data Structure
+    console.log('\n📊 DATA STRUCTURE CONSISTENCY:');
+    if (this.results.dataStructure.issues.length > 0) {
+      this.results.dataStructure.issues.forEach(issue => console.log(`   ${issue}`));
+    }
+    this.results.dataStructure.details.forEach(detail => console.log(`   ${detail}`));
     
-    if (this.results.overallScore >= 90) {
-      console.log('\n🎉 SUCCESS: All critical UI component issues RESOLVED!');
-    } else if (this.results.overallScore >= 70) {
-      console.log('\n✅ GOOD: Major UI component issues resolved, minor improvements needed');
+    console.log('\n🚨 PRIORITY FIXES NEEDED:');
+    const allIssues = [
+      ...this.results.technicalAnalysisAPI.issues,
+      ...this.results.riskAssessmentAPI.issues,
+      ...this.results.dataStructure.issues
+    ];
+    
+    if (allIssues.length === 0) {
+      console.log('   ✅ No critical issues found!');
     } else {
-      console.log('\n⚠️ NEEDS WORK: Some UI component issues still require attention');
+      allIssues.forEach(issue => console.log(`   ${issue}`));
     }
     
-    console.log('\n' + '='.repeat(50));
+    console.log('\n' + '='.repeat(60));
   }
 
   async makeRequest(endpoint) {
@@ -234,11 +214,11 @@ class UIComponentFixesValidation {
   }
 
   async handleValidationFailure(error) {
-    console.error('\n❌ VALIDATION FAILURE REPORT');
-    console.error('='.repeat(40));
+    console.error('\n❌ UI COMPONENT VALIDATION FAILURE');
+    console.error('='.repeat(50));
     console.error(`Error: ${error.message}`);
     console.error(`Stack: ${error.stack}`);
-    console.error('='.repeat(40));
+    console.error('='.repeat(50));
   }
 
   sleep(ms) {

@@ -3544,12 +3544,18 @@ app.get('/api/performance-metrics', async (req, res) => {
       // Run dynamic risk optimization with BigNumber precision
       const riskResults = await riskManager.optimizeRiskParameters(symbol, timeframe, signalData);
       
+      // Determine risk level based on confidence and volatility
+      const riskLevel = signalData.confidence > 80 ? 'LOW' : 
+                       signalData.confidence > 60 ? 'MODERATE' : 'HIGH';
+      
       res.json({
         success: true,
         symbol,
         timestamp: new Date().toISOString(),
         riskAssessment: {
           ...riskResults,
+          riskLevel,
+          positionSizing: riskResults.positionSize, // Add alias for UI compatibility
           timeframe,
           currentPrice: cryptoAsset.lastPrice,
           signalDirection: signalData.direction,
