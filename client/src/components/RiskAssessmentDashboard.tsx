@@ -23,13 +23,13 @@ interface RiskAssessmentDashboardProps {
 
 const RiskAssessmentDashboard: React.FC<RiskAssessmentDashboardProps> = ({ symbol = 'BTC/USDT', timeframe = '1d' }) => {
   const { data: riskData, isLoading: riskLoading } = useQuery({
-    queryKey: ['/api/monte-carlo-risk', symbol],
+    queryKey: ['/api/monte-carlo-risk', symbol, timeframe],
     refetchInterval: 60000, // Update every minute for secondary priority
     queryFn: async () => {
       const response = await fetch('/api/monte-carlo-risk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbol, timeframe: '1d' })
+        body: JSON.stringify({ symbol, timeframe })
       });
       if (!response.ok) throw new Error('Risk data unavailable');
       return response.json();

@@ -47,9 +47,9 @@ const TechnicalAnalysisSummary: React.FC<TechnicalAnalysisSummaryProps> = ({ sym
   });
 
   const { data: patternData, isLoading: patternLoading } = useQuery({
-    queryKey: ['/api/pattern-analysis', encodedSymbol],
+    queryKey: ['/api/pattern-analysis', symbol, timeframe],
     queryFn: async () => {
-      const response = await fetch(`/api/pattern-analysis/${encodedSymbol}`);
+      const response = await fetch(`/api/pattern-analysis/${encodedSymbol}?timeframe=${timeframe}`);
       if (!response.ok) throw new Error('Pattern analysis data unavailable');
       return response.json();
     },
@@ -70,9 +70,9 @@ const TechnicalAnalysisSummary: React.FC<TechnicalAnalysisSummaryProps> = ({ sym
   });
 
   const { data: accuracyData, isLoading: accuracyLoading } = useQuery({
-    queryKey: ['/api/accuracy', accuracySymbol],
+    queryKey: ['/api/accuracy', symbol, timeframe],
     queryFn: async () => {
-      const response = await fetch(`/api/accuracy/${accuracySymbol}`);
+      const response = await fetch(`/api/accuracy/${accuracySymbol}?timeframe=${timeframe}`);
       if (!response.ok) throw new Error('Accuracy data unavailable');
       return response.json();
     },
