@@ -28,16 +28,17 @@ interface PatternData {
 
 interface TechnicalAnalysisSummaryProps {
   symbol?: string;
+  timeframe?: string;
 }
 
-const TechnicalAnalysisSummary: React.FC<TechnicalAnalysisSummaryProps> = ({ symbol = 'BTC/USDT' }) => {
+const TechnicalAnalysisSummary: React.FC<TechnicalAnalysisSummaryProps> = ({ symbol = 'BTC/USDT', timeframe = '1d' }) => {
   const encodedSymbol = encodeURIComponent(symbol);
   const accuracySymbol = symbol.replace('/', '/');
 
   const { data: techData, isLoading: techLoading } = useQuery({
-    queryKey: ['/api/technical-analysis', encodedSymbol],
+    queryKey: ['/api/technical-analysis', symbol, timeframe],
     queryFn: async () => {
-      const response = await fetch(`/api/technical-analysis/${encodedSymbol}`);
+      const response = await fetch(`/api/technical-analysis/${encodedSymbol}?timeframe=${timeframe}`);
       if (!response.ok) throw new Error('Technical analysis data unavailable');
       return response.json();
     },

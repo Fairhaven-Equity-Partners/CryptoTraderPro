@@ -18,9 +18,10 @@ interface RiskMetrics {
 
 interface RiskAssessmentDashboardProps {
   symbol?: string;
+  timeframe?: string;
 }
 
-const RiskAssessmentDashboard: React.FC<RiskAssessmentDashboardProps> = ({ symbol = 'BTC/USDT' }) => {
+const RiskAssessmentDashboard: React.FC<RiskAssessmentDashboardProps> = ({ symbol = 'BTC/USDT', timeframe = '1d' }) => {
   const { data: riskData, isLoading: riskLoading } = useQuery({
     queryKey: ['/api/monte-carlo-risk', symbol],
     refetchInterval: 60000, // Update every minute for secondary priority
@@ -38,7 +39,13 @@ const RiskAssessmentDashboard: React.FC<RiskAssessmentDashboardProps> = ({ symbo
 
   const { data: portfolioData } = useQuery({
     queryKey: ['/api/performance-metrics'],
+    queryFn: async () => {
+      const response = await fetch('/api/performance-metrics');
+      if (!response.ok) throw new Error('Performance data unavailable');
+      return response.json();
+    },
     refetchInterval: 120000,
+    retry: 1,
   });
 
   const riskMetrics = riskData?.riskMetrics as RiskMetrics;

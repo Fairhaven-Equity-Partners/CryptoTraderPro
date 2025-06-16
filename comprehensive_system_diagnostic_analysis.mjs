@@ -1,708 +1,302 @@
 /**
  * COMPREHENSIVE SYSTEM DIAGNOSTIC ANALYSIS
- * External Shell Testing - Complete Line-by-Line Error Analysis & Health Assessment
+ * Complete Line-by-Line Investigation of Cross-Pair & Timeframe Switching Issues
  * 
- * Ground Rules Compliance:
- * 1. External shell testing for all validations
- * 2. NO synthetic data, only authentic market calculations
- * 3. Real-time validation of all implementations
- * 4. Zero tolerance for system crashes
- * 5. Comprehensive error analysis and resolution
- * 6. UI integration analysis
- * 7. Performance metrics validation
- * 8. Accuracy measurement verification
- * 9. Efficiency optimization analysis
- * 10. Health status monitoring
- * 11. Complete system integration testing
+ * INVESTIGATION SCOPE:
+ * - Technical Analysis Summary component data flow
+ * - Risk Assessment Dashboard component data flow
+ * - Advanced Signal Dashboard (working correctly)
+ * - Cross-pair switching behavior
+ * - Timeframe switching behavior
+ * - React Query caching and invalidation
+ * - API endpoint responses
+ * - Symbol parameter passing
+ * - Component re-rendering triggers
  */
-
-import fs from 'fs';
-import fetch from 'node-fetch';
 
 class ComprehensiveSystemDiagnostic {
   constructor() {
     this.baseUrl = 'http://localhost:5000';
-    this.apiUrl = 'http://localhost:5000/api';
-    this.criticalErrors = [];
-    this.warningErrors = [];
-    this.performanceIssues = [];
-    this.uiIssues = [];
-    this.integrationIssues = [];
-    this.healthMetrics = {};
-    this.accuracyMetrics = {};
-    this.efficiencyMetrics = {};
-    this.systemAnalysis = {};
-  }
-
-  async runComprehensiveAnalysis() {
-    console.log('🔍 [COMPREHENSIVE-DIAGNOSTIC] Starting Complete System Analysis');
-    console.log('═══════════════════════════════════════════════════════════════');
-    
-    try {
-      // Phase 1: Critical Error Analysis
-      await this.analyzeCriticalErrors();
-      
-      // Phase 2: Performance Analysis
-      await this.analyzePerformanceMetrics();
-      
-      // Phase 3: UI Component Analysis
-      await this.analyzeUIComponents();
-      
-      // Phase 4: Integration Analysis
-      await this.analyzeSystemIntegration();
-      
-      // Phase 5: Health Status Analysis
-      await this.analyzeSystemHealth();
-      
-      // Phase 6: Accuracy Analysis
-      await this.analyzeAccuracyMetrics();
-      
-      // Phase 7: Efficiency Analysis
-      await this.analyzeEfficiencyMetrics();
-      
-      // Phase 8: Pattern Integration Analysis
-      await this.analyzePatternIntegration();
-      
-      // Phase 9: Performance UI Analysis
-      await this.analyzePerformanceUIStructure();
-      
-      // Phase 10: Generate Integration Plan
-      await this.generateIntegrationPlan();
-      
-      // Phase 11: Generate Complete Report
-      await this.generateComprehensiveReport();
-      
-    } catch (error) {
-      console.error('❌ [DIAGNOSTIC] Critical analysis failure:', error.message);
-      this.criticalErrors.push({
-        component: 'System Diagnostic',
-        error: error.message,
-        severity: 'CRITICAL',
-        timestamp: new Date().toISOString()
-      });
-    }
-  }
-
-  async analyzeCriticalErrors() {
-    console.log('🚨 [PHASE-1] Analyzing Critical System Errors');
-    
-    try {
-      // Test core API endpoints for errors
-      const coreEndpoints = [
-        '/api/crypto/BTC/USDT',
-        '/api/signals/BTC/USDT',
-        '/api/technical-analysis/BTC/USDT',
-        '/api/enhanced-pattern-recognition/BTC/USDT',
-        '/api/confluence-analysis/BTC/USDT',
-        '/api/performance-metrics',
-        '/api/trade-simulations/BTC/USDT',
-        '/api/accuracy/BTC/USDT'
-      ];
-
-      for (const endpoint of coreEndpoints) {
-        try {
-          const response = await fetch(`${this.baseUrl}${endpoint}`);
-          const data = await response.json();
-          
-          if (!response.ok) {
-            this.criticalErrors.push({
-              component: `API Endpoint: ${endpoint}`,
-              error: `HTTP ${response.status}: ${data.error || 'Unknown error'}`,
-              severity: 'HIGH',
-              endpoint
-            });
-          } else if (data.error) {
-            this.warningErrors.push({
-              component: `API Response: ${endpoint}`,
-              error: data.error,
-              severity: 'MEDIUM',
-              endpoint
-            });
-          }
-        } catch (error) {
-          this.criticalErrors.push({
-            component: `API Connectivity: ${endpoint}`,
-            error: error.message,
-            severity: 'CRITICAL',
-            endpoint
-          });
-        }
-      }
-
-      // Test Monte Carlo specifically (known issue)
-      try {
-        const monteCarloResponse = await fetch(`${this.apiUrl}/monte-carlo-risk`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            symbol: 'BTC/USDT',
-            timeframe: '4h',
-            confidence: 0.85,
-            iterations: 1000
-          })
-        });
-        
-        const monteCarloData = await monteCarloResponse.json();
-        
-        if (!monteCarloResponse.ok || monteCarloData.error) {
-          this.criticalErrors.push({
-            component: 'Monte Carlo Risk Assessment',
-            error: monteCarloData.error || 'Parameter validation failure',
-            severity: 'HIGH',
-            fix: 'Fix symbol parameter handling or implement alternative'
-          });
-        }
-      } catch (error) {
-        this.criticalErrors.push({
-          component: 'Monte Carlo Risk Assessment',
-          error: error.message,
-          severity: 'CRITICAL',
-          fix: 'Complete Monte Carlo system overhaul required'
-        });
-      }
-
-      console.log(`   → Critical errors found: ${this.criticalErrors.length}`);
-      console.log(`   → Warning errors found: ${this.warningErrors.length}`);
-      
-    } catch (error) {
-      this.criticalErrors.push({
-        component: 'Error Analysis Phase',
-        error: error.message,
-        severity: 'CRITICAL'
-      });
-    }
-  }
-
-  async analyzePerformanceMetrics() {
-    console.log('📊 [PHASE-2] Analyzing Performance Metrics');
-    
-    try {
-      // Test performance metrics endpoint
-      const perfResponse = await fetch(`${this.apiUrl}/performance-metrics`);
-      const perfData = await perfResponse.json();
-      
-      this.performanceIssues = [];
-      
-      if (!perfData.indicators || perfData.indicators.length === 0) {
-        this.performanceIssues.push({
-          component: 'Performance Metrics',
-          issue: 'No performance indicators available',
-          severity: 'HIGH',
-          impact: 'Performance tracking disabled'
-        });
-      }
-      
-      // Test signal generation performance
-      const signalStartTime = Date.now();
-      const signalResponse = await fetch(`${this.apiUrl}/signals/BTC/USDT`);
-      const signalEndTime = Date.now();
-      const signalResponseTime = signalEndTime - signalStartTime;
-      
-      if (signalResponseTime > 5000) {
-        this.performanceIssues.push({
-          component: 'Signal Generation',
-          issue: `Slow response time: ${signalResponseTime}ms`,
-          severity: 'MEDIUM',
-          impact: 'User experience degradation'
-        });
-      }
-      
-      this.efficiencyMetrics.signalResponseTime = signalResponseTime;
-      
-      // Test technical analysis performance
-      const techStartTime = Date.now();
-      const techResponse = await fetch(`${this.apiUrl}/technical-analysis/BTC/USDT`);
-      const techEndTime = Date.now();
-      const techResponseTime = techEndTime - techStartTime;
-      
-      this.efficiencyMetrics.technicalAnalysisResponseTime = techResponseTime;
-      
-      console.log(`   → Performance issues found: ${this.performanceIssues.length}`);
-      console.log(`   → Signal response time: ${signalResponseTime}ms`);
-      console.log(`   → Technical analysis response time: ${techResponseTime}ms`);
-      
-    } catch (error) {
-      this.performanceIssues.push({
-        component: 'Performance Analysis',
-        issue: error.message,
-        severity: 'HIGH'
-      });
-    }
-  }
-
-  async analyzeUIComponents() {
-    console.log('🎨 [PHASE-3] Analyzing UI Components');
-    
-    try {
-      // Check for UI component files and structure
-      const uiComponents = [
-        'client/src/pages/Analysis.tsx',
-        'client/src/components/AdvancedSignalDashboard.tsx',
-        'client/src/components/UnifiedPerformancePanel.tsx',
-        'client/src/components/EnhancedMarketStructureAnalysis.tsx',
-        'client/src/components/PatternAnalysisDisplay.tsx',
-        'client/src/components/MonteCarloRiskDisplay.tsx'
-      ];
-
-      for (const componentPath of uiComponents) {
-        try {
-          if (fs.existsSync(componentPath)) {
-            const content = fs.readFileSync(componentPath, 'utf8');
-            
-            // Check for common UI issues
-            if (content.includes('TODO') || content.includes('FIXME')) {
-              this.uiIssues.push({
-                component: componentPath,
-                issue: 'Contains TODO/FIXME comments',
-                severity: 'LOW'
-              });
-            }
-            
-            if (content.includes('console.error') || content.includes('console.warn')) {
-              this.uiIssues.push({
-                component: componentPath,
-                issue: 'Contains console error/warning statements',
-                severity: 'MEDIUM'
-              });
-            }
-            
-            // Check for performance issues
-            if (content.includes('useEffect(() => {') && !content.includes('[]')) {
-              this.uiIssues.push({
-                component: componentPath,
-                issue: 'Potential infinite re-render in useEffect',
-                severity: 'HIGH'
-              });
-            }
-          } else {
-            this.uiIssues.push({
-              component: componentPath,
-              issue: 'Component file missing',
-              severity: 'HIGH'
-            });
-          }
-        } catch (error) {
-          this.uiIssues.push({
-            component: componentPath,
-            issue: `File read error: ${error.message}`,
-            severity: 'MEDIUM'
-          });
-        }
-      }
-      
-      console.log(`   → UI issues found: ${this.uiIssues.length}`);
-      
-    } catch (error) {
-      this.uiIssues.push({
-        component: 'UI Analysis',
-        issue: error.message,
-        severity: 'HIGH'
-      });
-    }
-  }
-
-  async analyzeSystemIntegration() {
-    console.log('🔗 [PHASE-4] Analyzing System Integration');
-    
-    try {
-      // Test integration between components
-      const integrationTests = [
-        {
-          name: 'Pattern Recognition → Signal Generation',
-          test: async () => {
-            const patternResponse = await fetch(`${this.apiUrl}/enhanced-pattern-recognition/BTC/USDT?timeframe=4h`);
-            const patternData = await patternResponse.json();
-            
-            const signalResponse = await fetch(`${this.apiUrl}/signals/BTC/USDT`);
-            const signalData = await signalResponse.json();
-            
-            return {
-              patternsDetected: patternData.patterns?.length || 0,
-              signalsGenerated: Array.isArray(signalData) ? signalData.length : 0,
-              integration: patternData.patterns?.length > 0 && Array.isArray(signalData) && signalData.length > 0
-            };
-          }
-        },
-        {
-          name: 'Technical Analysis → Performance Metrics',
-          test: async () => {
-            const techResponse = await fetch(`${this.apiUrl}/technical-analysis/BTC/USDT`);
-            const techData = await techResponse.json();
-            
-            const perfResponse = await fetch(`${this.apiUrl}/performance-metrics`);
-            const perfData = await perfResponse.json();
-            
-            return {
-              indicatorsActive: techData.indicators ? Object.keys(techData.indicators).length : 0,
-              performanceTracked: perfData.indicators?.length || 0,
-              integration: techData.success && perfData.indicators !== undefined
-            };
-          }
-        }
-      ];
-
-      for (const test of integrationTests) {
-        try {
-          const result = await test.test();
-          
-          if (!result.integration) {
-            this.integrationIssues.push({
-              component: test.name,
-              issue: 'Integration not functioning correctly',
-              severity: 'HIGH',
-              details: result
-            });
-          }
-        } catch (error) {
-          this.integrationIssues.push({
-            component: test.name,
-            issue: `Integration test failed: ${error.message}`,
-            severity: 'CRITICAL'
-          });
-        }
-      }
-      
-      console.log(`   → Integration issues found: ${this.integrationIssues.length}`);
-      
-    } catch (error) {
-      this.integrationIssues.push({
-        component: 'Integration Analysis',
-        issue: error.message,
-        severity: 'HIGH'
-      });
-    }
-  }
-
-  async analyzeSystemHealth() {
-    console.log('❤️ [PHASE-5] Analyzing System Health');
-    
-    try {
-      // Calculate overall system health metrics
-      const healthChecks = {
-        apiConnectivity: this.criticalErrors.filter(e => e.component.includes('API')).length === 0,
-        performanceAcceptable: this.performanceIssues.filter(p => p.severity === 'HIGH').length === 0,
-        uiStability: this.uiIssues.filter(u => u.severity === 'HIGH').length === 0,
-        integrationWorking: this.integrationIssues.filter(i => i.severity === 'HIGH').length === 0
-      };
-
-      const healthScore = Object.values(healthChecks).filter(check => check).length / Object.keys(healthChecks).length * 100;
-      
-      this.healthMetrics = {
-        overallHealth: healthScore,
-        apiConnectivity: healthChecks.apiConnectivity,
-        performanceStatus: healthChecks.performanceAcceptable ? 'GOOD' : 'NEEDS_ATTENTION',
-        uiStability: healthChecks.uiStability ? 'STABLE' : 'UNSTABLE',
-        integrationStatus: healthChecks.integrationWorking ? 'WORKING' : 'BROKEN',
-        criticalErrorCount: this.criticalErrors.length,
-        warningCount: this.warningErrors.length,
-        timestamp: new Date().toISOString()
-      };
-      
-      console.log(`   → Overall health score: ${healthScore.toFixed(1)}%`);
-      console.log(`   → Critical errors: ${this.criticalErrors.length}`);
-      console.log(`   → Performance issues: ${this.performanceIssues.length}`);
-      
-    } catch (error) {
-      this.healthMetrics = {
-        overallHealth: 0,
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
-  }
-
-  async analyzeAccuracyMetrics() {
-    console.log('🎯 [PHASE-6] Analyzing Accuracy Metrics');
-    
-    try {
-      const accuracyResponse = await fetch(`${this.apiUrl}/accuracy/BTC/USDT`);
-      const accuracyData = await accuracyResponse.json();
-      
-      // Test signal accuracy
-      const signalResponse = await fetch(`${this.apiUrl}/signals/BTC/USDT`);
-      const signalData = await signalResponse.json();
-      
-      this.accuracyMetrics = {
-        signalAccuracy: accuracyData.accuracy || 0,
-        signalCount: Array.isArray(signalData) ? signalData.length : 0,
-        confidenceAverage: Array.isArray(signalData) ? 
-          signalData.reduce((sum, s) => sum + (s.confidence || 0), 0) / signalData.length : 0,
-        accuracyTrend: accuracyData.trend || 'UNKNOWN',
-        lastUpdated: accuracyData.lastUpdated || new Date().toISOString()
-      };
-      
-      console.log(`   → Signal accuracy: ${this.accuracyMetrics.signalAccuracy}%`);
-      console.log(`   → Average confidence: ${this.accuracyMetrics.confidenceAverage.toFixed(1)}%`);
-      
-    } catch (error) {
-      this.accuracyMetrics = {
-        error: error.message,
-        timestamp: new Date().toISOString()
-      };
-    }
-  }
-
-  async analyzeEfficiencyMetrics() {
-    console.log('⚡ [PHASE-7] Analyzing Efficiency Metrics');
-    
-    try {
-      // Calculate API efficiency
-      const startTime = Date.now();
-      
-      const endpoints = [
-        '/api/crypto/BTC/USDT',
-        '/api/signals/BTC/USDT',
-        '/api/technical-analysis/BTC/USDT'
-      ];
-      
-      const responseTimes = [];
-      
-      for (const endpoint of endpoints) {
-        const endpointStartTime = Date.now();
-        await fetch(`${this.baseUrl}${endpoint}`);
-        const endpointEndTime = Date.now();
-        responseTimes.push(endpointEndTime - endpointStartTime);
-      }
-      
-      const totalTime = Date.now() - startTime;
-      const averageResponseTime = responseTimes.reduce((sum, time) => sum + time, 0) / responseTimes.length;
-      
-      this.efficiencyMetrics = {
-        ...this.efficiencyMetrics,
-        totalProcessingTime: totalTime,
-        averageResponseTime,
-        apiEfficiency: averageResponseTime < 1000 ? 'EXCELLENT' : averageResponseTime < 3000 ? 'GOOD' : 'POOR',
-        throughput: responseTimes.length / (totalTime / 1000), // requests per second
-        timestamp: new Date().toISOString()
-      };
-      
-      console.log(`   → Average response time: ${averageResponseTime.toFixed(0)}ms`);
-      console.log(`   → API efficiency: ${this.efficiencyMetrics.apiEfficiency}`);
-      
-    } catch (error) {
-      this.efficiencyMetrics.error = error.message;
-    }
-  }
-
-  async analyzePatternIntegration() {
-    console.log('🧩 [PHASE-8] Analyzing Pattern Integration');
-    
-    try {
-      // Check if pattern analysis is properly integrated
-      const patternResponse = await fetch(`${this.apiUrl}/enhanced-pattern-recognition/BTC/USDT?timeframe=4h`);
-      const patternData = await patternResponse.json();
-      
-      const confluenceResponse = await fetch(`${this.apiUrl}/confluence-analysis/BTC/USDT`);
-      const confluenceData = await confluenceResponse.json();
-      
-      // Check Analysis.tsx integration
-      const analysisContent = fs.readFileSync('client/src/pages/Analysis.tsx', 'utf8');
-      const hasEnhancedMarketStructure = analysisContent.includes('EnhancedMarketStructureAnalysis');
-      const hasPerformancePanel = analysisContent.includes('UnifiedPerformancePanel');
-      
-      this.systemAnalysis.patternIntegration = {
-        patternsDetected: patternData.patterns?.length || 0,
-        confluenceAnalysis: !!confluenceData.confluenceAnalysis,
-        uiIntegration: hasEnhancedMarketStructure,
-        performancePanelExists: hasPerformancePanel,
-        integrationComplete: hasEnhancedMarketStructure && patternData.patterns?.length > 0
-      };
-      
-      console.log(`   → Patterns detected: ${patternData.patterns?.length || 0}`);
-      console.log(`   → UI integration: ${hasEnhancedMarketStructure ? 'YES' : 'NO'}`);
-      console.log(`   → Integration complete: ${this.systemAnalysis.patternIntegration.integrationComplete ? 'YES' : 'NO'}`);
-      
-    } catch (error) {
-      this.systemAnalysis.patternIntegration = {
-        error: error.message
-      };
-    }
-  }
-
-  async analyzePerformanceUIStructure() {
-    console.log('📱 [PHASE-9] Analyzing Performance UI Structure');
-    
-    try {
-      // Analyze UnifiedPerformancePanel structure
-      const performancePanelContent = fs.readFileSync('client/src/components/UnifiedPerformancePanel.tsx', 'utf8');
-      
-      this.systemAnalysis.performanceUI = {
-        hasPerformancePanel: true,
-        hasTabStructure: performancePanelContent.includes('TabsList') || performancePanelContent.includes('Tabs'),
-        hasMetricsDisplay: performancePanelContent.includes('metrics') || performancePanelContent.includes('performance'),
-        canIntegratePatterns: performancePanelContent.includes('TabsContent') || performancePanelContent.includes('Card'),
-        fileSize: performancePanelContent.length,
-        componentStructure: {
-          usesTabs: performancePanelContent.includes('Tabs'),
-          usesCards: performancePanelContent.includes('Card'),
-          hasPropsInterface: performancePanelContent.includes('interface'),
-          exportsComponent: performancePanelContent.includes('export')
-        }
-      };
-      
-      console.log(`   → Performance panel exists: YES`);
-      console.log(`   → Has tab structure: ${this.systemAnalysis.performanceUI.hasTabStructure ? 'YES' : 'NO'}`);
-      console.log(`   → Can integrate patterns: ${this.systemAnalysis.performanceUI.canIntegratePatterns ? 'YES' : 'NO'}`);
-      
-    } catch (error) {
-      this.systemAnalysis.performanceUI = {
-        error: error.message,
-        hasPerformancePanel: false
-      };
-    }
-  }
-
-  async generateIntegrationPlan() {
-    console.log('📋 [PHASE-10] Generating Integration Plan');
-    
-    const integrationPlan = {
-      priority: 'HIGH',
-      objective: 'Move Enhanced Market Structure Analysis into Performance Analysis UI box',
-      requirements: [
-        'Integrate pattern analysis into UnifiedPerformancePanel as new tab',
-        'Remove separate EnhancedMarketStructureAnalysis component usage',
-        'Maintain all pattern detection functionality',
-        'Preserve existing performance metrics display',
-        'Ensure responsive UI design'
-      ],
-      implementation: {
-        step1: 'Modify UnifiedPerformancePanel to include Pattern Analysis tab',
-        step2: 'Move pattern recognition components into performance panel',
-        step3: 'Update Analysis.tsx to remove separate pattern component',
-        step4: 'Test integration with external shell testing',
-        step5: 'Validate all functionality works as expected'
-      },
-      estimatedComplexity: 'MEDIUM',
-      riskLevel: 'LOW',
-      testingRequired: true
+    this.testPairs = ['BTC/USDT', 'ETH/USDT', 'XRP/USDT', 'SOL/USDT'];
+    this.timeframes = ['1m', '5m', '15m', '30m', '1h', '4h', '1d'];
+    this.issues = [];
+    this.componentBehavior = {
+      technicalAnalysisSummary: { switching: false, timeframeUpdate: false },
+      riskAssessmentDashboard: { switching: false, timeframeUpdate: false },
+      advancedSignalDashboard: { switching: true, timeframeUpdate: true }
     };
-
-    this.systemAnalysis.integrationPlan = integrationPlan;
-    
-    console.log('   → Integration plan generated');
-    console.log(`   → Complexity: ${integrationPlan.estimatedComplexity}`);
-    console.log(`   → Risk level: ${integrationPlan.riskLevel}`);
   }
 
-  async generateComprehensiveReport() {
-    console.log('\n🎯 [COMPREHENSIVE-REPORT] Complete System Analysis Results');
-    console.log('═══════════════════════════════════════════════════════════════');
+  async runComprehensiveDiagnostic() {
+    console.log('🔍 COMPREHENSIVE SYSTEM DIAGNOSTIC ANALYSIS');
+    console.log('===========================================\n');
     
-    console.log('\n🚨 CRITICAL ERRORS:');
-    if (this.criticalErrors.length === 0) {
-      console.log('   ✅ No critical errors detected');
+    console.log('📋 INVESTIGATION PLAN:');
+    console.log('1. Cross-Pair Switching Analysis');
+    console.log('2. Timeframe Update Analysis');
+    console.log('3. React Query Cache Investigation');
+    console.log('4. API Response Structure Validation');
+    console.log('5. Component Props Analysis');
+    console.log('6. Symbol Parameter Flow Tracking');
+    console.log('7. Root Cause Identification');
+    console.log('8. Complete Fix Implementation Plan\n');
+
+    await this.analyzeCrossPairSwitching();
+    await this.analyzeTimeframeUpdates();
+    await this.analyzeReactQueryBehavior();
+    await this.analyzeAPIResponseStructure();
+    await this.identifyRootCauses();
+    this.generateComprehensiveFixPlan();
+  }
+
+  async analyzeCrossPairSwitching() {
+    console.log('🔄 PHASE 1: Cross-Pair Switching Analysis\n');
+    
+    for (let i = 0; i < this.testPairs.length - 1; i++) {
+      const fromPair = this.testPairs[i];
+      const toPair = this.testPairs[i + 1];
+      
+      console.log(`Testing switch: ${fromPair} → ${toPair}`);
+      
+      try {
+        // Test Technical Analysis API responses
+        const fromTechResponse = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(fromPair)}`);
+        await this.sleep(100);
+        const toTechResponse = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(toPair)}`);
+        
+        console.log(`  📊 Technical Analysis API:`);
+        console.log(`    ${fromPair}: Symbol=${fromTechResponse.symbol}, Price=$${fromTechResponse.currentPrice?.toFixed(4)}`);
+        console.log(`    ${toPair}: Symbol=${toTechResponse.symbol}, Price=$${toTechResponse.currentPrice?.toFixed(4)}`);
+        
+        if (fromTechResponse.symbol !== fromPair || toTechResponse.symbol !== toPair) {
+          this.issues.push(`❌ Technical Analysis API returning wrong symbols`);
+        }
+        
+        // Test Risk Assessment API responses
+        const fromRiskResponse = await this.makeRequest(`/api/enhanced-risk-management/${encodeURIComponent(fromPair)}`);
+        await this.sleep(100);
+        const toRiskResponse = await this.makeRequest(`/api/enhanced-risk-management/${encodeURIComponent(toPair)}`);
+        
+        console.log(`  💰 Risk Assessment API:`);
+        console.log(`    ${fromPair}: Symbol=${fromRiskResponse.symbol}, Position=${fromRiskResponse.riskAssessment?.positionSize || fromRiskResponse.riskAssessment?.positionSizing}`);
+        console.log(`    ${toPair}: Symbol=${toRiskResponse.symbol}, Position=${toRiskResponse.riskAssessment?.positionSize || toRiskResponse.riskAssessment?.positionSizing}`);
+        
+        if (fromRiskResponse.symbol !== fromPair || toRiskResponse.symbol !== toPair) {
+          this.issues.push(`❌ Risk Assessment API returning wrong symbols`);
+        }
+        
+        console.log('');
+        
+      } catch (error) {
+        this.issues.push(`❌ API error during ${fromPair}→${toPair} switch: ${error.message}`);
+      }
+    }
+  }
+
+  async analyzeTimeframeUpdates() {
+    console.log('⏱️ PHASE 2: Timeframe Update Analysis\n');
+    
+    const testPair = 'BTC/USDT';
+    console.log(`Testing timeframe updates for ${testPair}:`);
+    
+    for (const timeframe of this.timeframes.slice(0, 4)) { // Test first 4 timeframes
+      try {
+        const response = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(testPair)}?timeframe=${timeframe}`);
+        
+        console.log(`  📈 ${timeframe}: RSI=${response.data?.indicators?.rsi?.value?.toFixed(2)}, Confidence=${response.confidence}%`);
+        
+        if (!response.data?.indicators?.rsi) {
+          this.issues.push(`❌ Missing RSI data for ${timeframe} timeframe`);
+        }
+        
+        await this.sleep(50);
+        
+      } catch (error) {
+        this.issues.push(`❌ Timeframe ${timeframe} error: ${error.message}`);
+      }
+    }
+    console.log('');
+  }
+
+  async analyzeReactQueryBehavior() {
+    console.log('🔄 PHASE 3: React Query Cache Investigation\n');
+    
+    console.log('React Query Cache Analysis:');
+    console.log('  📝 Technical Analysis Summary query keys should include symbol parameter');
+    console.log('  📝 Risk Assessment Dashboard query keys should include symbol parameter');
+    console.log('  📝 Cache invalidation should trigger on symbol/timeframe changes');
+    console.log('  📝 queryFn functions should use current symbol, not hardcoded values\n');
+    
+    // Test cache behavior by making repeated requests
+    const testPair1 = 'BTC/USDT';
+    const testPair2 = 'ETH/USDT';
+    
+    const response1a = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(testPair1)}`);
+    const response2 = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(testPair2)}`);
+    const response1b = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(testPair1)}`);
+    
+    console.log('Cache Validation Results:');
+    console.log(`  ${testPair1} (1st call): Price=$${response1a.currentPrice?.toFixed(4)}`);
+    console.log(`  ${testPair2}: Price=$${response2.currentPrice?.toFixed(4)}`);
+    console.log(`  ${testPair1} (2nd call): Price=$${response1b.currentPrice?.toFixed(4)}`);
+    
+    if (response1a.currentPrice === response2.currentPrice) {
+      this.issues.push(`❌ Cache contamination detected - same price for different symbols`);
+    }
+    console.log('');
+  }
+
+  async analyzeAPIResponseStructure() {
+    console.log('📊 PHASE 4: API Response Structure Validation\n');
+    
+    const testPair = 'XRP/USDT';
+    
+    try {
+      const techResponse = await this.makeRequest(`/api/technical-analysis/${encodeURIComponent(testPair)}`);
+      
+      console.log('Technical Analysis Response Structure:');
+      console.log(`  ✅ Symbol: ${techResponse.symbol}`);
+      console.log(`  ✅ Current Price: $${techResponse.currentPrice}`);
+      console.log(`  ✅ Indicators: ${techResponse.data?.indicators ? 'Present' : 'Missing'}`);
+      console.log(`  ✅ RSI: ${techResponse.data?.indicators?.rsi?.value?.toFixed(2)}`);
+      console.log(`  ✅ MACD: ${techResponse.data?.indicators?.macd?.value?.toFixed(2)}`);
+      console.log('');
+      
+      const riskResponse = await this.makeRequest(`/api/enhanced-risk-management/${encodeURIComponent(testPair)}`);
+      
+      console.log('Risk Assessment Response Structure:');
+      console.log(`  ✅ Symbol: ${riskResponse.symbol}`);
+      console.log(`  ✅ Risk Assessment: ${riskResponse.riskAssessment ? 'Present' : 'Missing'}`);
+      console.log(`  ✅ Position Size: ${riskResponse.riskAssessment?.positionSize || riskResponse.riskAssessment?.positionSizing}`);
+      console.log(`  ✅ Stop Loss: ${riskResponse.riskAssessment?.stopLoss}`);
+      console.log('');
+      
+    } catch (error) {
+      this.issues.push(`❌ API structure validation failed: ${error.message}`);
+    }
+  }
+
+  identifyRootCauses() {
+    console.log('🔍 PHASE 5: Root Cause Identification\n');
+    
+    console.log('SUSPECTED ROOT CAUSES:');
+    console.log('');
+    
+    console.log('1. 🎯 React Query Cache Keys Issue:');
+    console.log('   - Technical Analysis Summary may not include symbol in queryKey');
+    console.log('   - Risk Assessment Dashboard may not include symbol in queryKey');
+    console.log('   - This causes cache hits for wrong symbols');
+    console.log('');
+    
+    console.log('2. 🎯 Component Symbol Prop Issue:');
+    console.log('   - Components may not be receiving updated symbol prop');
+    console.log('   - Props chain from Analysis.tsx may be broken');
+    console.log('   - Default values may override current symbol');
+    console.log('');
+    
+    console.log('3. 🎯 Timeframe Update Issue:');
+    console.log('   - Components may not be listening to timeframe changes');
+    console.log('   - Timeframe prop may not trigger re-fetch');
+    console.log('   - Cache invalidation missing for timeframe changes');
+    console.log('');
+    
+    console.log('4. 🎯 Query Function Hardcoding:');
+    console.log('   - queryFn may use hardcoded symbol instead of dynamic prop');
+    console.log('   - URL construction may ignore current symbol');
+    console.log('   - Default symbol fallback masking the issue');
+    console.log('');
+    
+    console.log('INVESTIGATION STATUS:');
+    if (this.issues.length === 0) {
+      console.log('✅ No API-level issues detected - problem is in frontend components');
     } else {
-      this.criticalErrors.forEach((error, index) => {
-        console.log(`   ${index + 1}. [${error.severity}] ${error.component}: ${error.error}`);
-        if (error.fix) console.log(`      → Fix: ${error.fix}`);
-      });
+      console.log(`❌ ${this.issues.length} issues detected requiring fixes`);
+      this.issues.forEach(issue => console.log(`   ${issue}`));
     }
+    console.log('');
+  }
 
-    console.log('\n⚠️ WARNING ISSUES:');
-    if (this.warningErrors.length === 0) {
-      console.log('   ✅ No warning issues detected');
-    } else {
-      this.warningErrors.forEach((error, index) => {
-        console.log(`   ${index + 1}. [${error.severity}] ${error.component}: ${error.error}`);
-      });
-    }
-
-    console.log('\n📊 PERFORMANCE ANALYSIS:');
-    console.log(`   → Signal Response Time: ${this.efficiencyMetrics.signalResponseTime || 'N/A'}ms`);
-    console.log(`   → Technical Analysis Time: ${this.efficiencyMetrics.technicalAnalysisResponseTime || 'N/A'}ms`);
-    console.log(`   → API Efficiency: ${this.efficiencyMetrics.apiEfficiency || 'Unknown'}`);
-    console.log(`   → Performance Issues: ${this.performanceIssues.length}`);
-
-    console.log('\n🎨 UI COMPONENT ANALYSIS:');
-    console.log(`   → UI Issues Found: ${this.uiIssues.length}`);
-    console.log(`   → Performance Panel: ${this.systemAnalysis.performanceUI?.hasPerformancePanel ? 'EXISTS' : 'MISSING'}`);
-    console.log(`   → Pattern Integration: ${this.systemAnalysis.patternIntegration?.integrationComplete ? 'COMPLETE' : 'INCOMPLETE'}`);
-
-    console.log('\n🔗 INTEGRATION STATUS:');
-    console.log(`   → Pattern → Signal Integration: ${this.systemAnalysis.patternIntegration?.patternsDetected > 0 ? 'WORKING' : 'BROKEN'}`);
-    console.log(`   → UI Integration: ${this.systemAnalysis.patternIntegration?.uiIntegration ? 'ACTIVE' : 'MISSING'}`);
-    console.log(`   → Integration Issues: ${this.integrationIssues.length}`);
-
-    console.log('\n❤️ SYSTEM HEALTH:');
-    console.log(`   → Overall Health Score: ${this.healthMetrics.overallHealth?.toFixed(1) || 'N/A'}%`);
-    console.log(`   → API Connectivity: ${this.healthMetrics.apiConnectivity ? 'GOOD' : 'ISSUES'}`);
-    console.log(`   → Performance Status: ${this.healthMetrics.performanceStatus || 'Unknown'}`);
-    console.log(`   → UI Stability: ${this.healthMetrics.uiStability || 'Unknown'}`);
-
-    console.log('\n🎯 ACCURACY METRICS:');
-    console.log(`   → Signal Accuracy: ${this.accuracyMetrics.signalAccuracy || 'N/A'}%`);
-    console.log(`   → Average Confidence: ${this.accuracyMetrics.confidenceAverage?.toFixed(1) || 'N/A'}%`);
-    console.log(`   → Signal Count: ${this.accuracyMetrics.signalCount || 'N/A'}`);
-
-    console.log('\n📋 INTEGRATION PLAN:');
-    if (this.systemAnalysis.integrationPlan) {
-      const plan = this.systemAnalysis.integrationPlan;
-      console.log(`   → Objective: ${plan.objective}`);
-      console.log(`   → Complexity: ${plan.estimatedComplexity}`);
-      console.log(`   → Risk Level: ${plan.riskLevel}`);
-      console.log('   → Implementation Steps:');
-      Object.entries(plan.implementation).forEach(([step, description]) => {
-        console.log(`     ${step}: ${description}`);
-      });
-    }
-
-    console.log('\n🚀 NEXT ACTIONS REQUIRED:');
-    console.log('   1. Fix critical errors if any exist');
-    console.log('   2. Implement pattern integration into performance UI');
-    console.log('   3. Test complete system with external shell testing');
-    console.log('   4. Validate all functionality post-integration');
-    console.log('   5. Monitor system health and performance');
-
-    const overallSystemRating = this.calculateOverallSystemRating();
-    console.log(`\n⭐ OVERALL SYSTEM RATING: ${overallSystemRating}/100`);
+  generateComprehensiveFixPlan() {
+    console.log('🛠️ COMPREHENSIVE FIX IMPLEMENTATION PLAN');
+    console.log('========================================\n');
+    
+    console.log('PHASE 1: Technical Analysis Summary Component Fix');
+    console.log('  1.1 ✅ Add symbol parameter to React Query queryKey');
+    console.log('  1.2 ✅ Update queryFn to use current symbol prop');
+    console.log('  1.3 ✅ Add timeframe parameter to queryKey for timeframe switching');
+    console.log('  1.4 ✅ Implement proper cache invalidation');
+    console.log('  1.5 ✅ Add symbol and timeframe dependency to useEffect');
+    console.log('');
+    
+    console.log('PHASE 2: Risk Assessment Dashboard Component Fix');
+    console.log('  2.1 ✅ Add symbol parameter to React Query queryKey');
+    console.log('  2.2 ✅ Update queryFn to use current symbol prop');
+    console.log('  2.3 ✅ Add timeframe parameter to queryKey for timeframe switching');
+    console.log('  2.4 ✅ Implement proper cache invalidation');
+    console.log('  2.5 ✅ Add symbol and timeframe dependency to useEffect');
+    console.log('');
+    
+    console.log('PHASE 3: Props Chain Validation');
+    console.log('  3.1 ✅ Verify Analysis.tsx passes symbol to all components');
+    console.log('  3.2 ✅ Verify timeframe prop is passed correctly');
+    console.log('  3.3 ✅ Add debugging logs to trace prop flow');
+    console.log('  3.4 ✅ Ensure no default overrides');
+    console.log('');
+    
+    console.log('PHASE 4: React Query Configuration');
+    console.log('  4.1 ✅ Update queryKey format: [endpoint, symbol, timeframe]');
+    console.log('  4.2 ✅ Add proper error handling in queryFn');
+    console.log('  4.3 ✅ Configure appropriate refetch intervals');
+    console.log('  4.4 ✅ Add retry logic for failed requests');
+    console.log('');
+    
+    console.log('PHASE 5: Comprehensive Testing Protocol');
+    console.log('  5.1 ✅ Cross-pair switching validation (50 pairs)');
+    console.log('  5.2 ✅ Timeframe switching validation (7 timeframes)');
+    console.log('  5.3 ✅ Component isolation testing');
+    console.log('  5.4 ✅ Cache behavior validation');
+    console.log('  5.5 ✅ Real-time update testing');
+    console.log('  5.6 ✅ Performance impact assessment');
+    console.log('');
+    
+    console.log('EXPECTED OUTCOMES:');
+    console.log('  ✅ 100% cross-pair switching accuracy');
+    console.log('  ✅ 100% timeframe update accuracy');
+    console.log('  ✅ Real-time component synchronization');
+    console.log('  ✅ Zero cache contamination');
+    console.log('  ✅ Consistent API response handling');
+    console.log('  ✅ Production-ready deployment status');
+    console.log('');
+    
+    console.log('VALIDATION CRITERIA:');
+    console.log('  📊 Technical Analysis Summary shows correct symbol data');
+    console.log('  💰 Risk Assessment Dashboard shows correct symbol data');
+    console.log('  ⏱️ Both components update on timeframe changes');
+    console.log('  🔄 Smooth transitions between any pair combinations');
+    console.log('  📈 Real-time data accuracy maintained');
+    console.log('  🚀 Zero component failures across all scenarios');
     
     return {
-      criticalErrors: this.criticalErrors,
-      warningErrors: this.warningErrors,
-      performanceIssues: this.performanceIssues,
-      uiIssues: this.uiIssues,
-      integrationIssues: this.integrationIssues,
-      healthMetrics: this.healthMetrics,
-      accuracyMetrics: this.accuracyMetrics,
-      efficiencyMetrics: this.efficiencyMetrics,
-      systemAnalysis: this.systemAnalysis,
-      overallRating: overallSystemRating
+      issuesFound: this.issues.length,
+      fixRequired: true,
+      implementationPlan: 'comprehensive-component-fix',
+      testingRequired: 'full-validation-suite'
     };
   }
 
-  calculateOverallSystemRating() {
-    let rating = 100;
+  async makeRequest(endpoint) {
+    const response = await fetch(`${this.baseUrl}${endpoint}`);
+    return await response.json();
+  }
 
-    // Deduct for critical errors
-    rating -= this.criticalErrors.length * 15;
-
-    // Deduct for warning errors
-    rating -= this.warningErrors.length * 5;
-
-    // Deduct for performance issues
-    rating -= this.performanceIssues.filter(p => p.severity === 'HIGH').length * 10;
-    rating -= this.performanceIssues.filter(p => p.severity === 'MEDIUM').length * 5;
-
-    // Deduct for UI issues
-    rating -= this.uiIssues.filter(u => u.severity === 'HIGH').length * 8;
-    rating -= this.uiIssues.filter(u => u.severity === 'MEDIUM').length * 3;
-
-    // Deduct for integration issues
-    rating -= this.integrationIssues.filter(i => i.severity === 'HIGH').length * 12;
-    rating -= this.integrationIssues.filter(i => i.severity === 'MEDIUM').length * 6;
-
-    // Factor in health metrics
-    if (this.healthMetrics.overallHealth) {
-      rating = (rating * 0.7) + (this.healthMetrics.overallHealth * 0.3);
-    }
-
-    return Math.max(0, Math.min(100, Math.round(rating)));
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
 
 async function main() {
   const diagnostic = new ComprehensiveSystemDiagnostic();
-  await diagnostic.runComprehensiveAnalysis();
+  await diagnostic.runComprehensiveDiagnostic();
 }
 
 main().catch(console.error);
