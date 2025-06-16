@@ -241,6 +241,19 @@ const TechnicalAnalysisSummary: React.FC = () => {
 
             <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
               <div className="flex items-center gap-2">
+                <Activity className="h-4 w-4 text-purple-600" />
+                <span className="text-sm font-medium">Stochastic</span>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-semibold">
+                  {stochK.toFixed(1)}
+                </div>
+                <div className={`text-xs ${stochSignal.color}`}>{stochSignal.signal}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-2">
                 <macdSignal.icon className={`h-4 w-4 ${macdSignal.color}`} />
                 <span className="text-sm font-medium">MACD</span>
               </div>
@@ -262,19 +275,6 @@ const TechnicalAnalysisSummary: React.FC = () => {
                   <div>Lower: {bbLower > 0 ? bbLower.toFixed(0) : 'N/A'}</div>
                 </div>
                 <div className={`text-xs ${bbSignal.color}`}>{bbSignal.signal}</div>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/50">
-              <div className="flex items-center gap-2">
-                <Activity className="h-4 w-4 text-purple-600" />
-                <span className="text-sm font-medium">Stochastic</span>
-              </div>
-              <div className="text-right">
-                <div className="text-sm font-semibold">
-                  {stochK.toFixed(1)}
-                </div>
-                <div className={`text-xs ${stochSignal.color}`}>{stochSignal.signal}</div>
               </div>
             </div>
           </div>
