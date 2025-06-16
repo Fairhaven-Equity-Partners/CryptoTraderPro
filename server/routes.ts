@@ -3493,19 +3493,53 @@ app.get('/api/performance-metrics', async (req, res) => {
         return res.status(400).json({ error: 'Invalid symbol format. Expected format: BTC/USDT' });
       }
 
-      // Get current price and signal data
-      const priceData = await optimizedCoinMarketCapService.fetchPrice(symbol);
-      if (!priceData || !priceData.price) {
-        return res.status(404).json({ error: 'Price data not available' });
+      // Use existing crypto asset data from storage instead of external API call
+      const normalizedSymbol = symbol.replace('/', '');
+      let cryptoAsset = await storage.getCryptoAssetBySymbol(normalizedSymbol);
+      
+      // Try alternative symbol formats if first lookup fails
+      if (!cryptoAsset) {
+        cryptoAsset = await storage.getCryptoAssetBySymbol(symbol);
+      }
+      
+      // Try finding by base currency name
+      if (!cryptoAsset) {
+        const baseCurrency = symbol.split('/')[0];
+        const allAssets = await storage.getAllCryptoAssets();
+        cryptoAsset = allAssets.find(asset => 
+          asset.symbol.includes(baseCurrency) || 
+          asset.name.toLowerCase().includes(baseCurrency.toLowerCase())
+        );
       }
 
-      // Create signal object for risk analysis
-      const signalData = {
-        price: priceData.price,
-        direction: 'NEUTRAL', // Would be determined by actual signal
-        confidence: 70, // Default confidence
-        timeframe
-      };
+      if (!cryptoAsset || !cryptoAsset.lastPrice) {
+        return res.status(404).json({ error: 'Symbol not found or no price data available' });
+      }
+
+      // Get actual signal data for this symbol
+      const signals = await automatedSignalCalculator.getSignals(symbol, timeframe);
+      let signalData;
+      
+      if (signals && signals.length > 0) {
+        const latestSignal = signals[0];
+        signalData = {
+          price: cryptoAsset.lastPrice,
+          direction: latestSignal.direction,
+          confidence: latestSignal.confidence,
+          timeframe,
+          entryPrice: latestSignal.price || cryptoAsset.lastPrice,
+          stopLoss: latestSignal.stopLoss,
+          takeProfit: latestSignal.takeProfit
+        };
+      } else {
+        signalData = {
+          price: cryptoAsset.lastPrice,
+          direction: 'NEUTRAL',
+          confidence: 70,
+          timeframe,
+          entryPrice: cryptoAsset.lastPrice
+        };
+      }
 
       // Run dynamic risk optimization with BigNumber precision
       const riskResults = await riskManager.optimizeRiskParameters(symbol, timeframe, signalData);
@@ -3514,10 +3548,12 @@ app.get('/api/performance-metrics', async (req, res) => {
         success: true,
         symbol,
         timestamp: new Date().toISOString(),
-        riskManagement: {
+        riskAssessment: {
           ...riskResults,
           timeframe,
-          currentPrice: priceData.price,
+          currentPrice: cryptoAsset.lastPrice,
+          signalDirection: signalData.direction,
+          signalConfidence: signalData.confidence,
           enhancement: 'DYNAMIC_RISK_OPTIMIZATION',
           ultraPrecision: true,
           calculationEngine: 'BigNumber.js Ultra-Precision'
