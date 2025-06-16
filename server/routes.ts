@@ -3352,6 +3352,7 @@ app.get('/api/performance-metrics', async (req, res) => {
       }
       
       // Run comprehensive pattern analysis
+      console.log(`[Routes] Calling pattern analysis with indicators type: ${typeof indicators}, currentPrice: ${currentPrice}`);
       const patternAnalysis = patternRecognition.analyzeAllPatterns(
         indicators,
         currentPrice,
