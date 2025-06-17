@@ -14,6 +14,15 @@ import { smartCacheManager } from './smartCacheManager.js';
 import { AdaptiveTimingManager } from './adaptiveTimingManager.js';
 import { optimizedCoinMarketCapService } from './optimizedCoinMarketCapService.js';
 
+interface PatternResult {
+  type: string;
+  strength: number;
+  price: number;
+  touches: number;
+  lastTouch: number;
+  significance?: number;
+}
+
 interface CalculatedSignal {
   symbol: string;
   timeframe: string;
@@ -1333,8 +1342,8 @@ export class AutomatedSignalCalculator {
   /**
    * Detect candlestick patterns from OHLCV data
    */
-  private detectCandlestickPatterns(ohlcData: any): any[] {
-    const patterns = [];
+  private detectCandlestickPatterns(ohlcData: any): PatternResult[] {
+    const patterns: PatternResult[] = [];
     const { open, high, low, close } = ohlcData;
     
     if (close.length < 3) return patterns;
@@ -1409,8 +1418,8 @@ export class AutomatedSignalCalculator {
   /**
    * Identify support and resistance levels
    */
-  private identifySupportResistanceLevels(prices: number[]): any[] {
-    const levels = [];
+  private identifySupportResistanceLevels(prices: number[]): PatternResult[] {
+    const levels: PatternResult[] = [];
     
     if (prices.length < 10) return levels;
     
