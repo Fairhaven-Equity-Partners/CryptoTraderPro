@@ -13,6 +13,9 @@ import { marketSentimentEngine, type SentimentAdjustedSignal } from './marketSen
 import { smartCacheManager } from './smartCacheManager.js';
 import { AdaptiveTimingManager } from './adaptiveTimingManager.js';
 import { optimizedCoinMarketCapService } from './optimizedCoinMarketCapService.js';
+import { AdaptiveWeightManager } from './adaptiveWeightManager.js';
+import { MarketRegimeDetector, MarketRegime } from './marketRegimeDetector.js';
+import { ConfluenceAnalysisEngine } from './confluenceAnalysisEngine.js';
 
 interface PatternResult {
   type: string;
@@ -78,9 +81,16 @@ export class AutomatedSignalCalculator {
     EXTREME: 0.20 // 20% daily change
   };
 
+  private adaptiveWeightManager: AdaptiveWeightManager;
+  private marketRegimeDetector: MarketRegimeDetector;
+  private confluenceEngine: ConfluenceAnalysisEngine;
+
   constructor() {
-    console.log('[AutomatedSignalCalculator] Initializing adaptive timing signal calculation system');
+    console.log('[AutomatedSignalCalculator] Initializing enhanced signal calculation system with AI platform optimizations');
     this.timingManager = new AdaptiveTimingManager();
+    this.adaptiveWeightManager = new AdaptiveWeightManager();
+    this.marketRegimeDetector = new MarketRegimeDetector();
+    this.confluenceEngine = new ConfluenceAnalysisEngine();
     this.initializeTimeframeMetrics();
     this.registerTimeframeCallbacks();
   }
