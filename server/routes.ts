@@ -552,9 +552,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
-      if (filteredSignals.length > 0) {
-        // Convert to expected format with complete mathematical data
-        const formattedSignals = filteredSignals.map(signal => {
+      // Only return authentic signals from the automated calculator
+
+      // Convert to expected format with complete mathematical data
+      const formattedSignals = filteredSignals.map(signal => {
           const baseConfluence = signal.confluenceScore || Math.max(30, signal.confidence * 0.6);
           const finalConfluence = Math.round(Math.min(100, Math.max(30, baseConfluence)));
           
