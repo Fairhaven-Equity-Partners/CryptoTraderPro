@@ -595,16 +595,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return;
       }
       
-      // Return existing calculated signals from the analysis engine for all symbols
+      // Check if we have signals for the requested timeframe specifically
       const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
       
-      if (signals.length > 0) {
-        if (timeframe) {
-          const filteredSignals = signals.filter(s => s.timeframe === timeframe);
+      if (timeframe && signals.length > 0) {
+        const filteredSignals = signals.filter(s => s.timeframe === timeframe);
+        if (filteredSignals.length > 0) {
           res.json(filteredSignals);
-        } else {
-          res.json(signals);
+          return;
         }
+        // Continue to generate signals for this specific timeframe if none found
+      } else if (!timeframe && signals.length > 0) {
+        res.json(signals);
         return;
       }
       
@@ -636,7 +638,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const targetTimeframes = timeframe ? [timeframe] : allTimeframes;
         const generatedSignals = [];
         
-        for (const tf of timeframes) {
+        for (const tf of targetTimeframes) {
           // Authentic market analysis calculations
           const volatility = Math.abs(change24h);
           const isHighVolatility = volatility > 5;
