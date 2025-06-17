@@ -550,8 +550,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           
           filteredSignals.push(existingSignal);
         });
-      } else {
-        
+      }
+      
+      if (filteredSignals.length > 0) {
         // Convert to expected format with complete mathematical data
         const formattedSignals = filteredSignals.map(signal => {
           const baseConfluence = signal.confluenceScore || Math.max(30, signal.confidence * 0.6);
@@ -788,10 +789,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           generatedSignals.push(signal);
         }
         
-        // Store and return the generated signals
-        for (const signal of generatedSignals) {
-          await storage.insertSignal(signal);
-        }
+        // Return the generated signals (storage not implemented yet)
         
         res.json(generatedSignals);
         
