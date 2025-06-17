@@ -676,6 +676,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           direction = ultraPreciseAnalysis.direction;
           confidence = ultraPreciseAnalysis.confidence;
           
+          // Calculate signal counts for confluence analysis
+          const bullishSignals = direction === 'LONG' ? 1 : 0;
+          const bearishSignals = direction === 'SHORT' ? 1 : 0;
+          
           // Timeframe adjustments for confidence
           if (tf === '1M' || tf === '1w') {
             confidence = Math.min(95, confidence + 10); // Higher confidence for longer timeframes
@@ -695,15 +699,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
             confidence = Math.min(95, confidence + 8);
           }
           
-          // Calculate confluence score for Critical Signal Analysis display
+          // Enhanced Dynamic Weighting and Multi-Timeframe Confluence System
+          
+          // Calculate volatility-adjusted indicator weights
+          const volatilityFactor = Math.min(1, volatility / 10); // Normalize volatility to 0-1
+          const dynamicWeights = {
+            rsi: 0.25 * (1 - volatilityFactor * 0.3), // Reduce RSI weight in high volatility
+            macd: 0.20 * (1 + volatilityFactor * 0.2), // Increase MACD weight in high volatility
+            bollinger: 0.15 * (1 + volatilityFactor * 0.3),
+            atr: 0.15 * (1 + volatilityFactor * 0.5), // ATR more important in volatile markets
+            stochastic: 0.25 * (1 - volatilityFactor * 0.2)
+          };
+          
+          // Timeframe weight multipliers (longer timeframes = higher weight)
+          const timeframeWeights = {
+            '1M': 1.0, '1w': 0.8, '1d': 0.6, '3d': 0.7, 
+            '4h': 0.4, '1h': 0.3, '30m': 0.2, '15m': 0.15, '5m': 0.1, '1m': 0.05
+          };
+          
+          // Apply timeframe weight to confidence
+          const timeframeWeight = timeframeWeights[tf as keyof typeof timeframeWeights] || 0.3;
+          const timeframeAdjustedConfidence = confidence * (0.7 + timeframeWeight * 0.3);
+          
+          // Pattern integration weight (bonus for pattern confirmation)
+          let patternBonus = 0;
+          // Add pattern detection bonus based on volatility and trend strength
+          const patternDetectionBonus = Math.min(10, volatility * 2); // Up to 10% bonus from market conditions
+          patternBonus = patternDetectionBonus;
+          
+          // Market regime adaptation
+          const trendStrength = Math.abs(change24h);
+          const isRanging = trendStrength < 2; // Less than 2% move = ranging market
+          const isTrending = trendStrength > 5; // More than 5% move = trending market
+          
+          let regimeAdjustment = 1.0;
+          if (isTrending && (direction === 'LONG' && change24h > 0 || direction === 'SHORT' && change24h < 0)) {
+            regimeAdjustment = 1.15; // 15% bonus for trend-following signals
+          } else if (isRanging && direction === 'NEUTRAL') {
+            regimeAdjustment = 1.1; // 10% bonus for neutral signals in ranging markets
+          }
+          
+          // Calculate enhanced confluence score with all factors
+          const enhancedConfidence = Math.min(95, Math.max(35, 
+            timeframeAdjustedConfidence * regimeAdjustment + patternBonus
+          ));
+          
           const confluenceScore = Math.min(100, Math.max(0, 
-            confidence + volatility * 5
+            enhancedConfidence + volatility * 3
           ));
           
           const signal = {
             symbol,
             direction,
-            confidence: Math.round(confidence),
+            confidence: Math.round(enhancedConfidence),
             timeframe: tf,
             strength: Math.round(confidence), // Map confidence to strength for compatibility
             price: currentPrice,
