@@ -17,10 +17,11 @@ import { optimizedCoinMarketCapService } from './optimizedCoinMarketCapService.j
 interface PatternResult {
   type: string;
   strength: number;
-  price: number;
-  touches: number;
-  lastTouch: number;
-  significance?: number;
+  price?: number;
+  touches?: number;
+  lastTouch?: number;
+  significance?: string;
+  timeDetected?: number;
 }
 
 interface CalculatedSignal {
@@ -1370,7 +1371,10 @@ export class AutomatedSignalCalculator {
         type: 'doji',
         significance: 'REVERSAL',
         strength: Math.max(50, 90 - (bodySize / totalRange) * 400),
-        timeDetected: Date.now()
+        timeDetected: Date.now(),
+        price: current.close,
+        touches: 1,
+        lastTouch: Date.now()
       });
     }
     
@@ -1382,7 +1386,10 @@ export class AutomatedSignalCalculator {
         type: 'hammer',
         significance: 'BULLISH_REVERSAL',
         strength: Math.min(90, 50 + (lowerShadow / bodySize) * 10),
-        timeDetected: Date.now()
+        timeDetected: Date.now(),
+        price: current.close,
+        touches: 1,
+        lastTouch: Date.now()
       });
     }
     
