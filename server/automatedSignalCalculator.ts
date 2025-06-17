@@ -1404,7 +1404,10 @@ export class AutomatedSignalCalculator {
         type: 'engulfing_bullish',
         significance: 'BULLISH_REVERSAL',
         strength: Math.min(90, 60 + (currBodySize / prevBodySize) * 20),
-        timeDetected: Date.now()
+        timeDetected: Date.now(),
+        price: current.close,
+        touches: 1,
+        lastTouch: Date.now()
       });
     }
     
@@ -1415,7 +1418,10 @@ export class AutomatedSignalCalculator {
         type: 'engulfing_bearish',
         significance: 'BEARISH_REVERSAL',
         strength: Math.min(90, 60 + (currBodySize / prevBodySize) * 20),
-        timeDetected: Date.now()
+        timeDetected: Date.now(),
+        price: current.close,
+        touches: 1,
+        lastTouch: Date.now()
       });
     }
     
