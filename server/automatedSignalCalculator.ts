@@ -707,6 +707,117 @@ export class AutomatedSignalCalculator {
   }
 
   /**
+   * CRITICAL OPTIMIZATION 2: Pattern Recognition Integration
+   * Integrates pattern analysis as confidence modifiers and direction confirmers
+   */
+  private async integratePatternRecognition(symbol: string, direction: string, baseConfidence: number): Promise<{
+    enhancedConfidence: number;
+    patternReasons: string[];
+  }> {
+    try {
+      // Fetch pattern analysis from the existing pattern recognition API
+      const patternResponse = await fetch(`http://localhost:5000/api/pattern-analysis/${encodeURIComponent(symbol)}`);
+      const patternData = await patternResponse.json();
+      
+      if (!patternData.success || !patternData.patterns) {
+        return { enhancedConfidence: baseConfidence, patternReasons: ["No patterns detected"] };
+      }
+      
+      let confidenceBoost = 0;
+      const patternReasons: string[] = [];
+      
+      // Apply pattern modifiers based on AI platform audit recommendations
+      for (const pattern of patternData.patterns) {
+        const patternModifier = this.getPatternModifier(pattern, direction);
+        confidenceBoost += patternModifier.boost;
+        if (patternModifier.boost > 0) {
+          patternReasons.push(patternModifier.reason);
+        }
+      }
+      
+      const enhancedConfidence = Math.min(95, Math.max(35, baseConfidence + confidenceBoost));
+      
+      return { enhancedConfidence, patternReasons };
+      
+    } catch (error) {
+      // If pattern API fails, return original confidence without synthetic data
+      return { enhancedConfidence: baseConfidence, patternReasons: ["Pattern analysis unavailable"] };
+    }
+  }
+
+  /**
+   * Pattern modifier calculation based on AI platform audit research
+   */
+  private getPatternModifier(pattern: any, signalDirection: string): { boost: number; reason: string } {
+    const patternWeights = {
+      'doji_reversal': { weight: 0.15, type: 'reversal' },
+      'bollinger_breakout': { weight: 0.20, type: 'directional' },
+      'trend_continuation': { weight: 0.25, type: 'trend' },
+      'fibonacci_618': { weight: 0.20, type: 'support_resistance' },
+      'volume_confirmation': { weight: 0.20, type: 'confirmation' }
+    };
+    
+    const patternConfig = patternWeights[pattern.type as keyof typeof patternWeights];
+    if (!patternConfig) {
+      return { boost: 0, reason: `Unknown pattern: ${pattern.type}` };
+    }
+    
+    let boost = 0;
+    let reason = "";
+    
+    // Calculate pattern boost based on type and signal direction alignment
+    const patternConfidence = pattern.confidence || 50;
+    const baseBoost = (patternConfidence / 100) * (patternConfig.weight * 100);
+    
+    switch (patternConfig.type) {
+      case 'reversal':
+        if (pattern.signal === 'INDECISION') {
+          boost = baseBoost * 0.5; // Neutral pattern reduces confidence slightly
+          reason = `${pattern.type}: Market indecision (+${boost.toFixed(1)}%)`;
+        }
+        break;
+        
+      case 'directional':
+        if ((pattern.signal === 'BULLISH' && signalDirection === 'LONG') ||
+            (pattern.signal === 'BEARISH' && signalDirection === 'SHORT')) {
+          boost = baseBoost;
+          reason = `${pattern.type}: ${pattern.signal} confirmation (+${boost.toFixed(1)}%)`;
+        }
+        break;
+        
+      case 'trend':
+        if ((pattern.signal === 'BULLISH' && signalDirection === 'LONG') ||
+            (pattern.signal === 'BEARISH' && signalDirection === 'SHORT')) {
+          boost = baseBoost * 1.2; // Strongest pattern type
+          reason = `${pattern.type}: Strong ${pattern.signal} trend (+${boost.toFixed(1)}%)`;
+        }
+        break;
+        
+      case 'support_resistance':
+        if (pattern.signal === 'RESISTANCE' && signalDirection === 'SHORT') {
+          boost = baseBoost;
+          reason = `${pattern.type}: Resistance level confirms SHORT (+${boost.toFixed(1)}%)`;
+        } else if (pattern.signal === 'SUPPORT' && signalDirection === 'LONG') {
+          boost = baseBoost;
+          reason = `${pattern.type}: Support level confirms LONG (+${boost.toFixed(1)}%)`;
+        }
+        break;
+        
+      case 'confirmation':
+        if (pattern.signal === 'BULLISH' && signalDirection === 'LONG') {
+          boost = baseBoost;
+          reason = `${pattern.type}: Volume confirms LONG (+${boost.toFixed(1)}%)`;
+        } else if (pattern.signal === 'BEARISH' && signalDirection === 'SHORT') {
+          boost = baseBoost;
+          reason = `${pattern.type}: Volume confirms SHORT (+${boost.toFixed(1)}%)`;
+        }
+        break;
+    }
+    
+    return { boost: Math.round(boost * 10) / 10, reason };
+  }
+
+  /**
    * Fetch real historical price data from CoinMarketCap API
    * NO synthetic DATA - Only authentic market data
    */
