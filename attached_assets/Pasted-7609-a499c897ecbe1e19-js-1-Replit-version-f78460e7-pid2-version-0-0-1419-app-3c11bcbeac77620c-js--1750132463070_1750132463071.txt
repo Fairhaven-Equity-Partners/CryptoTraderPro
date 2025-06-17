@@ -1,0 +1,92 @@
+7609-a499c897ecbe1e19.js:1 Replit version f78460e7, pid2 version 0.0.1419
+_app-3c11bcbeac77620c.js:38 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-3c11bcbeac77620c.js:38 [LaunchDarkly] LaunchDarkly client initialized
+CryptoTraderPro-1:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'battery'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-0d0768abefd29406.js:1
+framework-0d0768abefd29406.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-0d0768abefd29406.js:1
