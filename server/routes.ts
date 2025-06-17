@@ -595,19 +595,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return;
       }
       
-      // Check if we have signals for the requested timeframe specifically
-      const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
-      
-      if (timeframe && signals.length > 0) {
-        const filteredSignals = signals.filter(s => s.timeframe === timeframe);
-        if (filteredSignals.length > 0) {
-          res.json(filteredSignals);
+      // Always generate fresh signals for timeframe-specific requests
+      if (timeframe) {
+        // Generate signals for specific timeframe
+      } else {
+        // Check existing signals only for general requests
+        const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
+        if (signals.length > 0) {
+          res.json(signals);
           return;
         }
-        // Continue to generate signals for this specific timeframe if none found
-      } else if (!timeframe && signals.length > 0) {
-        res.json(signals);
-        return;
       }
       
       // For other cryptocurrencies, generate authentic market analysis signals
@@ -660,7 +657,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           const symbolSeed = symbol.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
           const tfSeedValue = tf.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
           const priceSeed = Math.floor(currentPrice * 1000) % 1000;
-          const masterSeed = symbolSeed + timeframeSeed + priceSeed;
+          const masterSeed = symbolSeed + tfSeedValue + priceSeed;
           
           // Generate deterministic price data (same method as Technical Analysis API)
           const pricePoints = [];
@@ -1592,15 +1589,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const riskAnalysis = await monteCarloEngine.performMonteCarloAnalysis(signalInput);
       
+      // Calculate volatility based on price movements
+      const volatility = Math.abs(signal.price - (signal.entryPrice || signal.price)) * 100 / signal.price || 15.5;
+      
+      // Determine risk level based on confidence and volatility
+      let riskLevel = 'MODERATE';
+      if (signal.confidence > 75 && volatility < 10) riskLevel = 'LOW';
+      else if (signal.confidence < 50 || volatility > 20) riskLevel = 'HIGH';
+      
       res.json({
         success: true,
         symbol: targetSymbol,
         timeframe: targetTimeframe,
-        riskLevel: riskAnalysis.riskLevel,
+        riskLevel: riskLevel,
+        volatility: parseFloat(volatility.toFixed(3)),
         riskScore: Math.round(riskAnalysis.expectedReturn * 100),
         monteCarloAnalysis: riskAnalysis,
+        signalInput: signalInput,
         recommendations: [
-          `Risk level: ${riskAnalysis.riskLevel}`,
+          `Risk level: ${riskLevel}`,
+          `Volatility: ${volatility.toFixed(2)}%`,
           `Expected return: ${(riskAnalysis.expectedReturn * 100).toFixed(2)}%`,
           `Success probability: ${(riskAnalysis.winProbability * 100).toFixed(1)}%`
         ],
@@ -2177,6 +2185,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
                 mathematicalPrecision: "50 decimal places",
                 calculationEngine: "BigNumber.js Ultra-Precision"
               }
+            },
+            data: {
+              rsi: Math.round(rsi * 10) / 10,
+              macd: macdValue,
+              bollingerBands: {
+                upper: upperBand,
+                middle: price,
+                lower: lowerBand
+              },
+              stochastic: {
+                k: stochK,
+                d: stochD
+              },
+              atr: atr,
+              ema: ema,
+              sma: sma
             },
             analysis: {
               trend: momentum > 2 ? 'BULLISH' : momentum < -2 ? 'BEARISH' : 'SIDEWAYS',
