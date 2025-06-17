@@ -79,9 +79,9 @@ async function quickValidation() {
     console.log(`   Keys: ${Object.keys(analysis).join(', ')}`);
     console.log(`   Success: ${analysis.success ? 'YES' : 'NO'}`);
     console.log(`   Data: ${analysis.data ? 'PRESENT' : 'MISSING'}`);
-    console.log(`   Indicators: ${analysis.data?.indicators ? Object.keys(analysis.data.indicators).length : 'MISSING'}`);
+    console.log(`   Indicators: ${analysis.indicators ? Object.keys(analysis.indicators).length : 'MISSING'}`);
     
-    if (analysis.success && analysis.data && analysis.data.indicators) {
+    if (analysis.success && analysis.indicators && analysis.data) {
       console.log(`   ✅ TECHNICAL SUCCESS: Complete data structure`);
     } else {
       console.log(`   ❌ TECHNICAL FAIL: Missing data structure`);
@@ -116,11 +116,11 @@ async function quickValidation() {
     
     if (response.ok) {
       const risk = await response.json();
-      console.log(`   Risk Level: ${risk.riskLevel || 'MISSING'}`);
-      console.log(`   Volatility: ${risk.volatility || 'MISSING'}`);
+      console.log(`   Risk Level: ${risk.riskMetrics?.riskLevel || 'MISSING'}`);
+      console.log(`   Volatility: ${risk.riskMetrics?.volatility || 'MISSING'}`);
       console.log(`   Signal Input: ${risk.signalInput ? 'PRESENT' : 'MISSING'}`);
       
-      if (risk.riskLevel && risk.volatility) {
+      if (risk.riskMetrics?.riskLevel && risk.riskMetrics?.volatility) {
         console.log(`   ✅ MONTE CARLO SUCCESS: Complete risk assessment`);
       } else {
         console.log(`   ❌ MONTE CARLO FAIL: Missing components`);

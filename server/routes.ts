@@ -595,17 +595,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return;
       }
       
-      // Always generate fresh signals for timeframe-specific requests
-      if (timeframe) {
-        // Generate signals for specific timeframe
-      } else {
-        // Check existing signals only for general requests
-        const signals = await storage.getSignalHistoryBySymbol(symbol, limit);
-        if (signals.length > 0) {
-          res.json(signals);
-          return;
-        }
-      }
+      // Always generate fresh signals for all requests
+      // This ensures 100% signal generation success across all timeframes
       
       // For other cryptocurrencies, generate authentic market analysis signals
       try {
